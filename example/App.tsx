@@ -21,7 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -44,10 +44,11 @@ type ActiveTab =
   | 'pan-input-field'
   | 'toast'
   | 'modal'
-  | 'card';
+  | 'card'
+  | 'pagination';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('toast');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('pagination');
   const theme = useUx4gTheme();
 
   return (
@@ -626,6 +627,32 @@ const ShowcaseHub: React.FC = () => {
               💳 Card
             </Text>
           </Pressable>
+          <Pressable
+            onPress={() => setActiveTab('pagination')}
+            style={[
+              styles.tabItem,
+              activeTab === 'pagination' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'pagination'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              📄 Pagination
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -671,6 +698,8 @@ const ShowcaseHub: React.FC = () => {
           <ModalShowcase />
         ) : activeTab === 'card' ? (
           <CardShowcase />
+        ) : activeTab === 'pagination' ? (
+          <PaginationShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

@@ -186,6 +186,17 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>▲</Text>;
   },
 
+  chevronLeft: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>‹</Text>;
+  },
+
   chevronRight: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (

@@ -19,3 +19,5 @@ export * from './PanInputFieldShowcase';
 export * from './ToastShowcase';
 export * from './ModalShowcase';
 export * from './CardShowcase';
+export * from './PaginationShowcase';
+
