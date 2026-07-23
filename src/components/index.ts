@@ -20,4 +20,6 @@ export * from './toast';
 export * from './modal';
 export * from './card';
 export * from './pagination';
+export * from './status-banner';
+
 

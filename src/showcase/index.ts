@@ -20,4 +20,6 @@ export * from './ToastShowcase';
 export * from './ModalShowcase';
 export * from './CardShowcase';
 export * from './PaginationShowcase';
+export * from './StatusBannerShowcase';
+
 

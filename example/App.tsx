@@ -21,7 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -45,10 +45,11 @@ type ActiveTab =
   | 'toast'
   | 'modal'
   | 'card'
-  | 'pagination';
+  | 'pagination'
+  | 'status-banner';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('pagination');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('status-banner');
   const theme = useUx4gTheme();
 
   return (
@@ -653,6 +654,32 @@ const ShowcaseHub: React.FC = () => {
               📄 Pagination
             </Text>
           </Pressable>
+          <Pressable
+            onPress={() => setActiveTab('status-banner')}
+            style={[
+              styles.tabItem,
+              activeTab === 'status-banner' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'status-banner'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              📢 Status Banner
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -700,6 +727,8 @@ const ShowcaseHub: React.FC = () => {
           <CardShowcase />
         ) : activeTab === 'pagination' ? (
           <PaginationShowcase />
+        ) : activeTab === 'status-banner' ? (
+          <StatusBannerShowcase />
         ) : (
           <SocialLinksShowcase />
         )}
