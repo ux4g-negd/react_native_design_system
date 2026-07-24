@@ -21,7 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -46,10 +46,11 @@ type ActiveTab =
   | 'modal'
   | 'card'
   | 'pagination'
-  | 'status-banner';
+  | 'status-banner'
+  | 'otp-input';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('status-banner');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('otp-input');
   const theme = useUx4gTheme();
 
   return (
@@ -680,6 +681,32 @@ const ShowcaseHub: React.FC = () => {
               📢 Status Banner
             </Text>
           </Pressable>
+          <Pressable
+            onPress={() => setActiveTab('otp-input')}
+            style={[
+              styles.tabItem,
+              activeTab === 'otp-input' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'otp-input'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🔢 OTP Input
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -729,6 +756,8 @@ const ShowcaseHub: React.FC = () => {
           <PaginationShowcase />
         ) : activeTab === 'status-banner' ? (
           <StatusBannerShowcase />
+        ) : activeTab === 'otp-input' ? (
+          <OtpInputShowcase />
         ) : (
           <SocialLinksShowcase />
         )}
