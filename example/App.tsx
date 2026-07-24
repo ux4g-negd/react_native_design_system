@@ -21,7 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -47,10 +47,11 @@ type ActiveTab =
   | 'card'
   | 'pagination'
   | 'status-banner'
-  | 'otp-input';
+  | 'otp-input'
+  | 'app-header';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('otp-input');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('app-header');
   const theme = useUx4gTheme();
 
   return (
@@ -707,6 +708,33 @@ const ShowcaseHub: React.FC = () => {
               🔢 OTP Input
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('app-header')}
+            style={[
+              styles.tabItem,
+              activeTab === 'app-header' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'app-header'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🔝 App Header
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -758,6 +786,8 @@ const ShowcaseHub: React.FC = () => {
           <StatusBannerShowcase />
         ) : activeTab === 'otp-input' ? (
           <OtpInputShowcase />
+        ) : activeTab === 'app-header' ? (
+          <AppHeaderShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

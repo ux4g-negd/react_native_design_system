@@ -37,8 +37,11 @@ export type Ux4gIconName =
   | 'biometric'
   | 'verification'
   | 'star'
-  | 'shield'
   | 'mic'
+  | 'settings'
+  | 'menu'
+  | 'notifications'
+  | 'scan'
   | string;
 
 export interface Ux4gIconData {
@@ -333,6 +336,59 @@ export const Ux4gIcons = {
       );
     }
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🎤</Text>;
+  },
+
+  settings: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚙️</Text>;
+  },
+
+  menu: ({ size = 24, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>☰</Text>;
+  },
+
+  notifications: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔔</Text>;
+  },
+
+  scan: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M9.5,6.5v3h-3v-3H9.5 M11,5H5v6h6V5L11,5z M9.5,14.5v3h-3v-3H9.5 M11,13H5v6h6V13L11,13z M17.5,6.5v3h-3v-3H17.5 M19,5h-6v6h6V5L19,5z M13,13h1.5v1.5H13V13z M14.5,14.5H16V16h-1.5V14.5z M16,13h1.5v1.5H16V13z M13,16h1.5v1.5H13V16z M17.5,14.5H19V16h-1.5V14.5z M16,17.5h1.5V19H16V17.5z M17.5,17.5H19V19h-1.5V17.5z M22,7h-2V4h-3V2h5V7z M22,22h-5v-2h3v-3h2V22z M2,22h5v-2H4v-3H2V22z M2,2v5h2V4h3V2H2z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⛶</Text>;
   },
 };
 
