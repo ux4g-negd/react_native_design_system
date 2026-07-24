@@ -25,3 +25,4 @@ export * from './OtpInputShowcase';
 export * from './AppHeaderShowcase';
 
 
+export * from './ResultListShowcase';

@@ -183,7 +183,7 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
   // 2. Compute effective colors with direct prop overrides and disabled opacities
   const isInteractive = enabled && !isLoading;
 
-  // When button is outlinebutton, border and text color should be same as per the flutter button component
+  // When button is outlinebutton, border and text color should be same as per the flutter button component (if not explicitly overridden)
   const outlineSharedColor =
     variant === 'outline'
       ? (contentColor ?? borderColor ?? baseContentColor)
@@ -197,15 +197,11 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
         : 'transparent');
 
   const effectiveContentColor = isInteractive
-    ? (variant === 'outline'
-        ? outlineSharedColor!
-        : contentColor ?? baseContentColor)
+    ? contentColor ?? (variant === 'outline' ? outlineSharedColor! : baseContentColor)
     : disabledContentColor ?? getHexWithAlpha(theme.colors.onSurface, '61'); // 38% alpha
 
   const effectiveBorderColor = isInteractive
-    ? (variant === 'outline'
-        ? outlineSharedColor!
-        : borderColor ?? baseBorderColor)
+    ? borderColor ?? (variant === 'outline' ? outlineSharedColor! : baseBorderColor)
     : borderColor ??
       (variant === 'outline'
         ? getHexWithAlpha(theme.colors.onSurface, '1F')

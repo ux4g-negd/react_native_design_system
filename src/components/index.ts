@@ -25,3 +25,4 @@ export * from './otp-input';
 export * from './app-header';
 
 
+export * from './result-list';

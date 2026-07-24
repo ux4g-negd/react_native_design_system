@@ -89,6 +89,7 @@ export interface Ux4gPillSegment {
 export interface Ux4gUnifiedPillTagProps {
   segments: Ux4gPillSegment[];
   backgroundColor?: string;
+  borderColor?: string;
   dividerColor?: string;
   height?: number;
   containerStyle?: StyleProp<ViewStyle>;
@@ -237,23 +238,26 @@ export const Ux4gTag: React.FC<Ux4gTagProps> = ({
 export const Ux4gUnifiedPillTag: React.FC<Ux4gUnifiedPillTagProps> = ({
   segments,
   backgroundColor,
+  borderColor,
   dividerColor,
   height = 24,
   containerStyle,
   testID,
 }) => {
   const theme = useUx4gTheme();
-  const bg = backgroundColor ?? (theme.isDark ? '#27272A' : '#F4F4F5');
+  // Flutter defaults bgColor to `surface`, border to `onSurface.withValues(alpha: 0.12)`, divider to `0.15`
+  const bg = backgroundColor ?? theme.colors.surface;
+  const borderCol = borderColor ?? (theme.isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)');
   const divCol = dividerColor ?? (theme.isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)');
-  const typoStrong = theme.typography.lS_strong;
-  const typoDefault = theme.typography.lS_default;
+  const typoStrong = theme.typography.lM_strong;
+  const typoDefault = theme.typography.lM_default;
 
   return (
     <View
       testID={testID}
       style={[
         styles.unifiedContainer,
-        { backgroundColor: bg, height, borderRadius: 8, borderColor: divCol, borderWidth: 1 },
+        { backgroundColor: bg, height, borderRadius: 8, borderColor: borderCol, borderWidth: 1 },
         containerStyle,
       ]}
     >
