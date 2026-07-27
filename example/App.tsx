@@ -21,7 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -53,10 +53,11 @@ type ActiveTab =
   | 'linear-progress-bar'
   | 'circular-progress'
   | 'half-circle-progress'
-  | 'sla-progress';
+  | 'sla-progress'
+  | 'tooltip';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('result-list');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('tooltip');
   const theme = useUx4gTheme();
 
   return (
@@ -875,6 +876,33 @@ const ShowcaseHub: React.FC = () => {
               📈 SLA Progress
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('tooltip')}
+            style={[
+              styles.tabItem,
+              activeTab === 'tooltip' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'tooltip'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              💬 Tooltips
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -938,6 +966,8 @@ const ShowcaseHub: React.FC = () => {
           <HalfCircleProgressShowcase />
         ) : activeTab === 'sla-progress' ? (
           <SlaProgressShowcase />
+        ) : activeTab === 'tooltip' ? (
+          <TooltipShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

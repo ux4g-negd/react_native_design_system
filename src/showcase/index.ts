@@ -30,3 +30,4 @@ export * from './LinearProgressBarShowcase';
 export * from './CircularProgressShowcase';
 export * from './HalfCircleProgressShowcase';
 export * from './SlaProgressShowcase';
+export * from './TooltipShowcase';
