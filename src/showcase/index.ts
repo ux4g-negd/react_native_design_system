@@ -26,3 +26,4 @@ export * from './AppHeaderShowcase';
 
 
 export * from './ResultListShowcase';
+export * from './LinearProgressBarShowcase';

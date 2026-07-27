@@ -21,7 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -49,7 +49,8 @@ type ActiveTab =
   | 'status-banner'
   | 'otp-input'
   | 'app-header'
-  | 'result-list';
+  | 'result-list'
+  | 'linear-progress-bar';
 
 const ShowcaseHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('result-list');
@@ -763,6 +764,33 @@ const ShowcaseHub: React.FC = () => {
               📋 Result List
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('linear-progress-bar')}
+            style={[
+              styles.tabItem,
+              activeTab === 'linear-progress-bar' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'linear-progress-bar'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              📊 Progress
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -818,6 +846,8 @@ const ShowcaseHub: React.FC = () => {
           <AppHeaderShowcase />
         ) : activeTab === 'result-list' ? (
           <ResultListShowcase />
+        ) : activeTab === 'linear-progress-bar' ? (
+          <LinearProgressBarShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

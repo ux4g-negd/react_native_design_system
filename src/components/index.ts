@@ -26,3 +26,4 @@ export * from './app-header';
 
 
 export * from './result-list';
+export * from './linear-progress-bar';
