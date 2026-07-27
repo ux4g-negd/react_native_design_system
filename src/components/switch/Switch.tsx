@@ -618,7 +618,7 @@ const styles = StyleSheet.create({
   thumbShadow: {
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: 'UX4GColors.neutral1000black',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 2,
@@ -627,7 +627,7 @@ const styles = StyleSheet.create({
         elevation: 2,
       },
       default: {
-        shadowColor: '#000',
+        shadowColor: 'UX4GColors.neutral1000black',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 2,

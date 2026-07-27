@@ -768,7 +768,7 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 10000,
     elevation: 10,
-    shadowColor: '#000000',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,

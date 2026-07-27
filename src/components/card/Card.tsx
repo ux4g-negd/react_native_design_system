@@ -576,7 +576,7 @@ export const Ux4gCard: React.FC<Ux4gCardProps> = ({
 
   // Determine content colour based on background brightness
   const dark = isDarkColor(resolvedBg);
-  const contentColor = dark ? '#FFFFFF' : theme.colors.onSurface;
+  const contentColor = dark ? UX4GColors.white : theme.colors.onSurface;
 
   // Shadow / elevation styles
   const elevationStyle: ViewStyle =

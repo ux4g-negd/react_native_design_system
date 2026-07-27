@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   percentageInside: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontWeight: 'bold',
     paddingRight: 12,
   },

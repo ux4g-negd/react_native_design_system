@@ -792,7 +792,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     elevation: 6,
-    shadowColor: '#000000',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.18,
     shadowRadius: 8,

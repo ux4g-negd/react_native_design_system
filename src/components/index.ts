@@ -27,3 +27,4 @@ export * from './app-header';
 
 export * from './result-list';
 export * from './linear-progress-bar';
+export * from './circular-progress-indicator';

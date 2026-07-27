@@ -1,3 +1,4 @@
+import { UX4GColors } from '../../foundation/colors';
 import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
@@ -184,8 +185,8 @@ export const Ux4gAccordion: React.FC<Ux4gAccordionProps> = ({
   const { colors, typography, isDark } = useUx4gTheme();
 
   // Surface and fallback colors
-  const surface = colors?.surface ?? (isDark ? '#18181B' : '#FFFFFF');
-  const onSurfaceColor = colors?.onSurface ?? (isDark ? '#FAFAFA' : '#18181B');
+  const surface = colors?.surface ?? (isDark ? UX4GColors.neutral900 : UX4GColors.white);
+  const onSurfaceColor = colors?.onSurface ?? (isDark ? UX4GColors.neutral50 : UX4GColors.neutral900);
 
   const resolvedCollapsedBorderColor =
     collapsedBorderColor ?? addOpacityToHex(onSurfaceColor, 0.12);

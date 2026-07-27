@@ -13,6 +13,7 @@ import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
 import { Ux4gSpace } from '../../foundation/dimensions';
 import { Ux4gIcons } from '../../foundation/icons';
 import { Ux4gRadius } from '../../foundation/dimensions';
+import { UX4GColors } from '../../foundation/colors';
 
 export type Ux4gToastCategory = 'info' | 'success' | 'warning' | 'error' | 'slot';
 export type Ux4gToastLayout = 'full' | 'stacked';
@@ -70,12 +71,12 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
 
   // Resolve base styles based on category
   const getBaseStyle = () => {
-    const surface = colors.surface ?? (isDark ? '#18181B' : '#FFFFFF');
-    const info = colors.info ?? '#0052CC';
-    const success = colors.success ?? '#00875A';
-    const warning = colors.warning ?? '#FF991F';
-    const error = colors.error ?? '#DE350B';
-    const primary = colors.primary ?? '#0052CC';
+    const surface = colors.surface ?? (isDark ? 'UX4GColors.neutral900' : 'UX4GColors.white');
+    const info = colors.info ?? 'UX4GColors.blue600';
+    const success = colors.success ?? 'UX4GColors.green600';
+    const warning = colors.warning ?? 'UX4GColors.orange500';
+    const error = colors.error ?? 'UX4GColors.red600';
+    const primary = colors.primary ?? 'UX4GColors.blue600';
 
     // Simple hex blend approximation for React Native (like Color.lerp(surface, color, 0.12))
     // Instead of precise lerp, we'll use a very light background tint
@@ -124,8 +125,8 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
     }
   };
 
-  const onSurface = colors.onSurface ?? (isDark ? '#F4F4F5' : '#09090B');
-  const onSurfaceMuted = isDark ? '#A1A1AA' : '#71717A';
+  const onSurface = colors.onSurface ?? (isDark ? 'UX4GColors.neutral100' : 'UX4GColors.neutral950');
+  const onSurfaceMuted = isDark ? 'UX4GColors.neutral400' : 'UX4GColors.neutral500';
 
   const containerPaddingH = resolvedLayout === 'full' ? Ux4gSpace.space16 : Ux4gSpace.space12;
   const containerPaddingV = resolvedLayout === 'full' ? Ux4gSpace.space8 : Ux4gSpace.space12;
@@ -143,7 +144,7 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
     );
   };
 
-  const surfaceColor = colors.surface ?? (isDark ? '#18181B' : '#FFFFFF');
+  const surfaceColor = colors.surface ?? (isDark ? 'UX4GColors.neutral900' : 'UX4GColors.white');
 
   if (resolvedLayout === 'full') {
     return (
@@ -371,7 +372,7 @@ export const Ux4gToastProvider: React.FC<Ux4gToastProviderProps> = ({ children, 
              {...currentToast}
              onCloseClick={dismiss}
              style={{
-                shadowColor: '#000',
+                shadowColor: 'UX4GColors.neutral1000black',
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.15,
                 shadowRadius: 12,

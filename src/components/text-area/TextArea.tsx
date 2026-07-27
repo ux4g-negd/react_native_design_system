@@ -200,13 +200,13 @@ export const Ux4gTextArea: React.FC<Ux4gTextAreaProps> = ({
   const inputRef = useRef<TextInput>(null);
 
   // Surface and border colors
-  const surface = colors?.surface ?? (isDark ? '#18181B' : '#FFFFFF');
-  const onSurfaceColor = colors?.onSurface ?? (isDark ? '#FAFAFA' : '#18181B');
+  const surface = colors?.surface ?? (isDark ? 'UX4GColors.neutral900' : 'UX4GColors.white');
+  const onSurfaceColor = colors?.onSurface ?? (isDark ? 'UX4GColors.neutral50' : 'UX4GColors.neutral900');
   const onBackground = colors?.onBackground ?? onSurfaceColor;
-  const primaryColor = colors?.primary ?? (isDark ? '#60A5FA' : '#3271EA');
-  const errorColor = colors?.error ?? (isDark ? '#F87171' : '#DC2626');
-  const warningColor = colors?.warning ?? (isDark ? '#FBBF24' : '#D97706');
-  const successColor = colors?.success ?? (isDark ? '#34D399' : '#059669');
+  const primaryColor = colors?.primary ?? (isDark ? 'UX4GColors.blue400' : 'UX4GColors.blue600');
+  const errorColor = colors?.error ?? (isDark ? 'UX4GColors.red400' : 'UX4GColors.red600');
+  const warningColor = colors?.warning ?? (isDark ? 'UX4GColors.yellow400' : 'UX4GColors.orange600');
+  const successColor = colors?.success ?? (isDark ? 'UX4GColors.green400' : 'UX4GColors.green600');
 
   const getBorderColor = (): string => {
     if (!enabled) return addOpacityToHex(onSurfaceColor, 0.3);

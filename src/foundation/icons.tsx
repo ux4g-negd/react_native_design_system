@@ -115,7 +115,7 @@ export const Ux4gIcons = {
   /**
    * Shield security icon asset matching `Icons.shield`.
    */
-  shield: ({ size = 12, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  shield: ({ size = 12, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -132,7 +132,7 @@ export const Ux4gIcons = {
   /**
    * Checkmark icon (`Icons.check`).
    */
-  check: ({ size = 12, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  check: ({ size = 12, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -143,7 +143,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✓</Text>;
   },
 
-  close: ({ size = 16, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  close: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -157,7 +157,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✕</Text>;
   },
 
-  add: ({ size = 18, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  add: ({ size = 18, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -168,7 +168,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>+</Text>;
   },
 
-  arrowDropDown: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  arrowDropDown: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -179,7 +179,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>▼</Text>;
   },
 
-  arrowUp: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  arrowUp: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -190,7 +190,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>▲</Text>;
   },
 
-  chevronLeft: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  chevronLeft: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -201,7 +201,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>‹</Text>;
   },
 
-  chevronRight: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  chevronRight: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -212,7 +212,29 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>›</Text>;
   },
 
-  search: ({ size = 18, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  chevronDown: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>∨</Text>;
+  },
+
+  chevronUp: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>∧</Text>;
+  },
+
+  search: ({ size = 18, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -226,7 +248,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔍</Text>;
   },
 
-  info: ({ size = 16, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  info: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -240,7 +262,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>ℹ️</Text>;
   },
 
-  error: ({ size = 16, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  error: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -254,7 +276,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
   },
 
-  warning: ({ size = 16, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  warning: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -268,7 +290,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
   },
 
-  success: ({ size = 16, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  success: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -282,7 +304,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✓</Text>;
   },
 
-  visibility: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  visibility: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -296,7 +318,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>👁️</Text>;
   },
 
-  visibilityOff: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  visibilityOff: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -310,7 +332,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🙈</Text>;
   },
 
-  lock: ({ size = 16, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  lock: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -324,7 +346,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔒</Text>;
   },
 
-  mic: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  mic: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -338,7 +360,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🎤</Text>;
   },
 
-  settings: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  settings: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -352,7 +374,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚙️</Text>;
   },
 
-  menu: ({ size = 24, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  menu: ({ size = 24, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -363,7 +385,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>☰</Text>;
   },
 
-  notifications: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  notifications: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -377,7 +399,7 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔔</Text>;
   },
 
-  scan: ({ size = 20, color = '#FFFFFF' }: Ux4gIconProps = {}): React.ReactElement => {
+  scan: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -401,7 +423,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   fallbackText: {
-    color: '#FFFFFF',
+    color: 'UX4GColors.white',
     fontWeight: 'bold',
     textAlign: 'center',
     includeFontPadding: false,

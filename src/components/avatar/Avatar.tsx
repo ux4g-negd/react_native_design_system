@@ -1,3 +1,4 @@
+import { UX4GColors } from '../../foundation/colors';
 import React from 'react';
 import {
   View,
@@ -114,16 +115,16 @@ function getStatusColor(
   switch (variant) {
     case 'online':
     case 'success':
-      return colors.success ?? '#4CAF50';
+      return colors.success ?? UX4GColors.green500;
     case 'offline': {
-      const base = colors.onSurface ?? '#888';
+      const base = colors.onSurface ?? UX4GColors.neutral500;
       return isDark ? `${base}80` : `${base}80`;
     }
     case 'busy':
     case 'error':
-      return colors.error ?? '#F44336';
+      return colors.error ?? UX4GColors.red500;
     case 'warning':
-      return colors.warning ?? '#FF9800';
+      return colors.warning ?? UX4GColors.orange500;
   }
 }
 
@@ -407,21 +408,21 @@ export const Ux4gProfileAvatar: React.FC<Ux4gProfileAvatarProps> = ({
             width: containerDims,
             height: containerDims,
             borderRadius: containerDims / 2,
-            backgroundColor: '#4B39EF',
+            backgroundColor: UX4GColors.primary600,
             justifyContent: 'center',
             alignItems: 'center',
             borderWidth: 2,
-            borderColor: '#FFFFFF',
+            borderColor: UX4GColors.white,
           }}
         >
-          {Ux4gIcons.shield({ size: indicatorSize * 0.6, color: '#FFFFFF' })}
+          {Ux4gIcons.shield({ size: indicatorSize * 0.6, color: UX4GColors.white })}
         </View>
       );
     }
 
     const icon = ICON_RENDERERS[variant];
     const containerDims = indicatorSize + 4;
-    const bgColor = variant === 'remove' ? '#F44336' : '#4B39EF';
+    const bgColor = variant === 'remove' ? UX4GColors.red500 : UX4GColors.primary600;
     return (
       <View
         style={{
@@ -432,10 +433,10 @@ export const Ux4gProfileAvatar: React.FC<Ux4gProfileAvatarProps> = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderWidth: 2,
-          borderColor: '#FFFFFF',
+          borderColor: UX4GColors.white,
         }}
       >
-        {icon({ size: indicatorSize * 0.6, color: '#FFFFFF' })}
+        {icon({ size: indicatorSize * 0.6, color: UX4GColors.white })}
       </View>
     );
   };

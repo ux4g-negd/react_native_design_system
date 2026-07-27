@@ -1,3 +1,4 @@
+import { UX4GColors } from '../../foundation/colors';
 import React from 'react';
 import {
   View,
@@ -200,7 +201,7 @@ export const Ux4gAppHeader: React.FC<Ux4gAppHeaderProps> = ({
     borderBottomColor: resolvedBorderColor,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: UX4GColors.neutral1000black,
         shadowOffset: { width: 0, height: elevation / 2 },
         shadowOpacity: elevation > 0 ? 0.1 : 0,
         shadowRadius: elevation,

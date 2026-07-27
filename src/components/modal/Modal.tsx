@@ -1,3 +1,4 @@
+import { UX4GColors } from '../../foundation/colors';
 import React from 'react';
 import {
   Modal as RNModal,
@@ -491,7 +492,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: UX4GColors.neutral1000black,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 12,

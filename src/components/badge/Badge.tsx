@@ -73,7 +73,7 @@ export interface Ux4gBadgeProps {
    */
   containerColor?: string;
   /**
-   * Custom text/icon color inside the badge (defaults to `#FFFFFF`).
+   * Custom text/icon color inside the badge (defaults to `UX4GColors.white`).
    */
   contentColor?: string;
   /**

@@ -21,7 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -50,7 +50,8 @@ type ActiveTab =
   | 'otp-input'
   | 'app-header'
   | 'result-list'
-  | 'linear-progress-bar';
+  | 'linear-progress-bar'
+  | 'circular-progress';
 
 const ShowcaseHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('result-list');
@@ -791,6 +792,33 @@ const ShowcaseHub: React.FC = () => {
               📊 Progress
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('circular-progress')}
+            style={[
+              styles.tabItem,
+              activeTab === 'circular-progress' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'circular-progress'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🔄 Circular Progress
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -848,6 +876,8 @@ const ShowcaseHub: React.FC = () => {
           <ResultListShowcase />
         ) : activeTab === 'linear-progress-bar' ? (
           <LinearProgressBarShowcase />
+        ) : activeTab === 'circular-progress' ? (
+          <CircularProgressShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

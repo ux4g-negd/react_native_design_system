@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
 import { SOCIAL_SVG_ICONS } from './socialIconData';
+import { UX4GColors } from '../../foundation/colors';
 
 // Dynamic import of react-native-svg
 let Svg: any = null;
@@ -120,7 +121,7 @@ function renderSocialSvg(
     const fallback = SOCIAL_ICON_FALLBACK[icon] ?? '?';
     return (
       <View style={[iconStyles.fallbackBox, { width: size, height: size }]}>
-        <Text style={[iconStyles.fallbackText, { fontSize: size * 0.55, color: tintColor ?? '#888' }]}>
+        <Text style={[iconStyles.fallbackText, { fontSize: size * 0.55, color: tintColor ?? 'UX4GColors.neutral500' }]}>
           {fallback}
         </Text>
       </View>
@@ -140,7 +141,7 @@ function renderSocialSvg(
           width={r.width}
           height={r.height}
           rx={r.rx}
-          fill={shouldTint ? (tintColor ?? '#FFFFFF') : (r.fill ?? '#FFFFFF')}
+          fill={shouldTint ? (tintColor ?? 'UX4GColors.white') : (r.fill ?? 'UX4GColors.white')}
         />
       ))}
       {variant.circles?.map((c, idx) => (
@@ -149,14 +150,14 @@ function renderSocialSvg(
           cx={c.cx}
           cy={c.cy}
           r={c.r}
-          fill={shouldTint ? (tintColor ?? '#FFFFFF') : (c.fill ?? '#FFFFFF')}
+          fill={shouldTint ? (tintColor ?? 'UX4GColors.white') : (c.fill ?? 'UX4GColors.white')}
         />
       ))}
       {variant.paths.map((p, idx) => (
         <Path
           key={`path-${idx}`}
           d={p.d}
-          fill={shouldTint ? (tintColor ?? '#FFFFFF') : (p.fill ?? '#FFFFFF')}
+          fill={shouldTint ? (tintColor ?? 'UX4GColors.white') : (p.fill ?? 'UX4GColors.white')}
           fillRule={p.fillRule}
           clipRule={p.clipRule}
         />

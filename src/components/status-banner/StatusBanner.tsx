@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
     borderWidth: 1,
-    shadowColor: '#000',
+    shadowColor: 'UX4GColors.neutral1000black',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 10,

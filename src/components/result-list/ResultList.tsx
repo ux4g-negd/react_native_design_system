@@ -107,7 +107,7 @@ export const Ux4gResultList: React.FC<Ux4gResultListProps> = ({
   };
 
   const ChevronDown = Ux4gIcons.chevronDown as any;
-  const borderColor = isDark ? '#27272A' : '#D4D4D8'; // neutral800 vs neutral300 approximation
+  const borderColor = isDark ? 'UX4GColors.neutral800' : 'UX4GColors.neutral300'; // neutral800 vs neutral300 approximation
 
   const renderDetails = () => {
     if (!isExpanded) return null;
