@@ -98,10 +98,12 @@ export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
     (mode === 'range' && selectedRange !== undefined);
 
   // Colors logic
-  const disabledBorderColor = `${colors.onSurface}60`; // 0.38 alpha
-  const disabledTextColor = `${colors.onSurface}60`;
+  const disabledBgColor = `${colors.onSurface}14`; // Muted filled background for disabled state (#EAEAEA / dark surface overlay)
+  const disabledTextColor = `${colors.onSurface}60`; // 0.38 alpha muted gray
 
-  let borderColor = disabledBorderColor;
+  const fieldBgColor = enabled ? colors.surface : disabledBgColor;
+
+  let borderColor = 'transparent';
   if (enabled) {
     switch (status) {
       case 'error':
@@ -115,13 +117,22 @@ export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
         break;
       case 'defaultStatus':
       default:
-        borderColor = isSelected ? colors.primary : disabledBorderColor;
+        borderColor = isSelected ? colors.primary : `${colors.onSurface}33`; // 0.20 alpha
         break;
     }
   }
 
-  const textColor = isSelected ? colors.onSurface : disabledTextColor;
-  const iconColor = isSelected ? colors.primary : disabledTextColor;
+  const textColor = enabled
+    ? isSelected
+      ? colors.onSurface
+      : disabledTextColor
+    : disabledTextColor;
+
+  const iconColor = enabled
+    ? isSelected
+      ? colors.primary
+      : disabledTextColor
+    : disabledTextColor;
 
   const handleOpenPicker = () => {
     if (enabled) {
@@ -147,7 +158,7 @@ export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
         style={[
           styles.fieldBox,
           {
-            backgroundColor: colors.surface,
+            backgroundColor: fieldBgColor,
             borderColor,
           },
         ]}

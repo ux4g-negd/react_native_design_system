@@ -36,3 +36,4 @@ export * from './CarouselShowcase';
 export * from './StatusPipelineShowcase';
 export * from './JourneyTimelineShowcase';
 export * from './DatePickerShowcase';
+export * from './TimePickerShowcase';

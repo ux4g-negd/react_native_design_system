@@ -26,6 +26,7 @@ import { CarouselShowcase } from '../src/showcase/CarouselShowcase';
 import { StatusPipelineShowcase } from '../src/showcase/StatusPipelineShowcase';
 import { JourneyTimelineShowcase } from '../src/showcase/JourneyTimelineShowcase';
 import { DatePickerShowcase } from '../src/showcase/DatePickerShowcase';
+import { TimePickerShowcase } from '../src/showcase/TimePickerShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
@@ -64,10 +65,11 @@ type ActiveTab =
   | 'carousel'
   | 'status-pipeline'
   | 'journey-timeline'
-  | 'date-picker';
+  | 'date-picker'
+  | 'time-picker';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('date-picker');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('time-picker');
   const theme = useUx4gTheme();
 
   return (
@@ -1048,6 +1050,33 @@ const ShowcaseHub: React.FC = () => {
               📅 Date Picker
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('time-picker')}
+            style={[
+              styles.tabItem,
+              activeTab === 'time-picker' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'time-picker'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              ⏰ Time Picker
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1123,6 +1152,8 @@ const ShowcaseHub: React.FC = () => {
           <JourneyTimelineShowcase />
         ) : activeTab === 'date-picker' ? (
           <DatePickerShowcase />
+        ) : activeTab === 'time-picker' ? (
+          <TimePickerShowcase />
         ) : (
           <SocialLinksShowcase />
         )}
