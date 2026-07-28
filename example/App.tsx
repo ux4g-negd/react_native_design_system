@@ -22,6 +22,7 @@ import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
 import { StepperShowcase } from '../src/showcase/StepperShowcase';
+import { CarouselShowcase } from '../src/showcase/CarouselShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
@@ -56,10 +57,11 @@ type ActiveTab =
   | 'half-circle-progress'
   | 'sla-progress'
   | 'tooltip'
-  | 'stepper';
+  | 'stepper'
+  | 'carousel';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('stepper');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('carousel');
   const theme = useUx4gTheme();
 
   return (
@@ -932,6 +934,33 @@ const ShowcaseHub: React.FC = () => {
               👣 Steppers
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('carousel')}
+            style={[
+              styles.tabItem,
+              activeTab === 'carousel' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'carousel'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🎠 Carousel
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -999,6 +1028,8 @@ const ShowcaseHub: React.FC = () => {
           <TooltipShowcase />
         ) : activeTab === 'stepper' ? (
           <StepperShowcase />
+        ) : activeTab === 'carousel' ? (
+          <CarouselShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

@@ -32,3 +32,4 @@ export * from './HalfCircleProgressShowcase';
 export * from './SlaProgressShowcase';
 export * from './TooltipShowcase';
 export * from './StepperShowcase';
+export * from './CarouselShowcase';

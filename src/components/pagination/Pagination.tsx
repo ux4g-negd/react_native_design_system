@@ -233,7 +233,7 @@ export const Ux4gPaginationDotted: React.FC<Ux4gPaginationDottedProps> = ({
   const effectiveActiveColor =
     activeColor ?? colors.primary ?? UX4GColors.primary600;
   const effectiveInactiveColor =
-    inactiveColor ?? colors.surface ?? (isDark ? UX4GColors.neutral900 : UX4GColors.white);
+    inactiveColor ?? (isDark ? UX4GColors.primary800 : UX4GColors.primary100);
   const effectiveInactiveBorderColor =
     inactiveBorderColor ?? (isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)');
 
@@ -246,7 +246,7 @@ export const Ux4gPaginationDotted: React.FC<Ux4gPaginationDottedProps> = ({
     arrowTestID?: string
   ) => {
     const iconSize = sizeConfig.arrowSize * 0.5;
-    const arrowBg = withAlpha(effectiveActiveColor, 0.12);
+    const arrowBg = effectiveInactiveColor;
     const arrowIconColor = canClick
       ? effectiveActiveColor
       : withAlpha(effectiveActiveColor, 0.38);
@@ -422,7 +422,7 @@ export const Ux4gPagination = Ux4gPaginationDotted;
 
 const styles = StyleSheet.create({
   outerContainer: {
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
   },
   rowCentered: {
     flexDirection: 'row',
