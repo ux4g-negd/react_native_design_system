@@ -27,6 +27,8 @@ export interface Ux4gCarouselProps {
   autoPlayInterval?: number;
   /** Whether to show the bottom pagination dots (default: true) */
   showPagination?: boolean;
+  /** Whether to show arrow navigation buttons in pagination overlay (default: false) */
+  showArrows?: boolean;
   /** Carousel container height (default: 200) */
   height?: number;
   /** Fraction of the viewport occupied by each item (default: 1.0) */
