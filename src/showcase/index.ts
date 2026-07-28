@@ -34,3 +34,4 @@ export * from './TooltipShowcase';
 export * from './StepperShowcase';
 export * from './CarouselShowcase';
 export * from './StatusPipelineShowcase';
+export * from './JourneyTimelineShowcase';

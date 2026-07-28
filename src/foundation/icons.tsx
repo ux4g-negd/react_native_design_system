@@ -412,6 +412,20 @@ export const Ux4gIcons = {
     }
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⛶</Text>;
   },
+
+  link: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M 3.9 12 c 0 -1.71 1.39 -3.1 3.1 -3.1 h 4 v 1.9 H 7 c -0.66 0 -1.2 0.54 -1.2 1.2 s 0.54 1.2 1.2 1.2 h 4 v 1.9 H 7 c -1.71 0 -3.1 -1.39 -3.1 -3.1 z M 8 13 h 8 v -2 H 8 v 2 z M 17 8 h -4 v 1.9 h 4 c 0.66 0 1.2 0.54 1.2 1.2 s -0.54 1.2 -1.2 1.2 h -4 v 1.9 h 4 c 1.71 0 3.1 -1.39 3.1 -3.1 s -1.39 -3.1 -3.1 -3.1 z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>🔗</Text>;
+  },
 };
 
 

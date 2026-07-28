@@ -33,3 +33,4 @@ export * from './circular-progress-indicator';
 export * from './half-circle-progress';
 export * from './carousel';
 export * from './status-pipeline';
+export * from './journey-timeline';

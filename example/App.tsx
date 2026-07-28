@@ -24,6 +24,7 @@ import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
 import { StepperShowcase } from '../src/showcase/StepperShowcase';
 import { CarouselShowcase } from '../src/showcase/CarouselShowcase';
 import { StatusPipelineShowcase } from '../src/showcase/StatusPipelineShowcase';
+import { JourneyTimelineShowcase } from '../src/showcase/JourneyTimelineShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
@@ -60,10 +61,11 @@ type ActiveTab =
   | 'tooltip'
   | 'stepper'
   | 'carousel'
-  | 'status-pipeline';
+  | 'status-pipeline'
+  | 'journey-timeline';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('status-pipeline');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('journey-timeline');
   const theme = useUx4gTheme();
 
   return (
@@ -990,6 +992,33 @@ const ShowcaseHub: React.FC = () => {
               🔄 Status Pipeline
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('journey-timeline')}
+            style={[
+              styles.tabItem,
+              activeTab === 'journey-timeline' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'journey-timeline'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🗺️ Journey Timeline
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1061,6 +1090,8 @@ const ShowcaseHub: React.FC = () => {
           <CarouselShowcase />
         ) : activeTab === 'status-pipeline' ? (
           <StatusPipelineShowcase />
+        ) : activeTab === 'journey-timeline' ? (
+          <JourneyTimelineShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

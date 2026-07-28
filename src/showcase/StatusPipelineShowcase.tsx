@@ -76,7 +76,8 @@ export const StatusPipelineShowcase: React.FC = () => {
             style={[
               styles.navButton,
               {
-                backgroundColor: currentStep > 0 ? theme.colors.primary : '#CCCCCC',
+                backgroundColor:
+                  currentStep > 0 ? theme.colors.primary : `${theme.colors.onSurface}26`,
                 flex: 1,
                 marginRight: 6,
               },
@@ -91,7 +92,9 @@ export const StatusPipelineShowcase: React.FC = () => {
               styles.navButton,
               {
                 backgroundColor:
-                  currentStep < standardSteps.length - 1 ? theme.colors.primary : '#CCCCCC',
+                  currentStep < standardSteps.length - 1
+                    ? theme.colors.primary
+                    : `${theme.colors.onSurface}26`,
                 flex: 1,
                 marginLeft: 6,
               },
