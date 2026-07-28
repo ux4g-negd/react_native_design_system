@@ -34,3 +34,4 @@ export * from './half-circle-progress';
 export * from './carousel';
 export * from './status-pipeline';
 export * from './journey-timeline';
+export * from './date-picker';

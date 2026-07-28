@@ -248,6 +248,42 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔍</Text>;
   },
 
+  calendar: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>📅</Text>;
+  },
+
+  arrowBack: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>←</Text>;
+  },
+
+  arrowForward: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>→</Text>;
+  },
+
   info: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
