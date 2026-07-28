@@ -23,6 +23,7 @@ import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
 import { StepperShowcase } from '../src/showcase/StepperShowcase';
 import { CarouselShowcase } from '../src/showcase/CarouselShowcase';
+import { StatusPipelineShowcase } from '../src/showcase/StatusPipelineShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
@@ -58,10 +59,11 @@ type ActiveTab =
   | 'sla-progress'
   | 'tooltip'
   | 'stepper'
-  | 'carousel';
+  | 'carousel'
+  | 'status-pipeline';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('carousel');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('status-pipeline');
   const theme = useUx4gTheme();
 
   return (
@@ -961,6 +963,33 @@ const ShowcaseHub: React.FC = () => {
               🎠 Carousel
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('status-pipeline')}
+            style={[
+              styles.tabItem,
+              activeTab === 'status-pipeline' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'status-pipeline'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🔄 Status Pipeline
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1030,6 +1059,8 @@ const ShowcaseHub: React.FC = () => {
           <StepperShowcase />
         ) : activeTab === 'carousel' ? (
           <CarouselShowcase />
+        ) : activeTab === 'status-pipeline' ? (
+          <StatusPipelineShowcase />
         ) : (
           <SocialLinksShowcase />
         )}
