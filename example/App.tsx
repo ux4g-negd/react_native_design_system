@@ -21,6 +21,7 @@ import { SwitchShowcase } from '../src/showcase/SwitchShowcase';
 import { TagShowcase } from '../src/showcase/TagShowcase';
 import { BadgeShowcase } from '../src/showcase/BadgeShowcase';
 import { SocialLinksShowcase } from '../src/showcase/SocialLinksShowcase';
+import { StepperShowcase } from '../src/showcase/StepperShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
@@ -54,10 +55,11 @@ type ActiveTab =
   | 'circular-progress'
   | 'half-circle-progress'
   | 'sla-progress'
-  | 'tooltip';
+  | 'tooltip'
+  | 'stepper';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('tooltip');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('stepper');
   const theme = useUx4gTheme();
 
   return (
@@ -903,6 +905,33 @@ const ShowcaseHub: React.FC = () => {
               💬 Tooltips
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('stepper')}
+            style={[
+              styles.tabItem,
+              activeTab === 'stepper' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'stepper'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              👣 Steppers
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -968,6 +997,8 @@ const ShowcaseHub: React.FC = () => {
           <SlaProgressShowcase />
         ) : activeTab === 'tooltip' ? (
           <TooltipShowcase />
+        ) : activeTab === 'stepper' ? (
+          <StepperShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

@@ -15,6 +15,7 @@ export * from './search-field';
 export * from './text-area';
 export * from './accordion';
 export * from './tooltip';
+export * from './stepper';
 export * from './aadhaar-input-field';
 export * from './pan-input-field';
 export * from './toast';
