@@ -4,8 +4,10 @@ import Svg, { Path, Defs, LinearGradient, Stop } from 'react-native-svg';
 import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
 import { UX4GColors } from '../../foundation/colors';
 
+import { Ux4gStrokeCap } from '../circular-progress-indicator';
+
 export type Ux4gHalfCircleProgressSize = 's' | 'm' | 'l' | 'xl';
-export type Ux4gStrokeCap = 'butt' | 'round';
+export type { Ux4gStrokeCap };
 
 export interface Ux4gHalfCircleProgressProps {
   /**
