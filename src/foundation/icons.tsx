@@ -42,6 +42,12 @@ export type Ux4gIconName =
   | 'menu'
   | 'notifications'
   | 'scan'
+  | 'sentiment-very-dissatisfied'
+  | 'sentiment-dissatisfied'
+  | 'sentiment-neutral'
+  | 'sentiment-satisfied'
+  | 'sentiment-very-satisfied'
+  | 'thumb-up'
   | string;
 
 export interface Ux4gIconData {
@@ -92,16 +98,14 @@ export const Ux4gIcons = {
   /**
    * Gold 5-pointed star badge asset (`star.svg`).
    */
-  star: ({ size = 18, color = UX4GColors.gold500 }: Ux4gIconProps = {}): React.ReactElement => {
-    if (Svg && Path && G) {
+  star: ({ size = 24, color = UX4GColors.gold500 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
       return (
-        <Svg width={size} height={size} viewBox="-1 -1 18 18" fill="none">
-          <G>
-            <Path
-              d="M8 13.3995L11.8799 15.8549C12.5904 16.3049 13.4599 15.6397 13.2729 14.7984L12.2445 10.1811L15.6756 7.07027C16.302 6.50289 15.9654 5.42682 15.1427 5.35834L10.6271 4.95726L8.86012 0.594284C8.54225 -0.198095 7.45775 -0.198095 7.13988 0.594284L5.3729 4.94748L0.857274 5.34856C0.034552 5.41703 -0.302016 6.4931 0.324375 7.06049L3.7555 10.1713L2.7271 14.7886C2.54012 15.6299 3.40958 16.2951 4.12012 15.8451L8 13.3995Z"
-              fill={color}
-            />
-          </G>
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+            fill={color}
+          />
         </Svg>
       );
     }
@@ -141,6 +145,82 @@ export const Ux4gIcons = {
       );
     }
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✓</Text>;
+  },
+
+  /**
+   * Thumb Up icon (`Icons.thumb_up`).
+   */
+  thumbUp: ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>👍</Text>;
+  },
+
+  'sentiment-very-dissatisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 27 27" fill="none">
+          <Path d="M13.32 0C5.96 0 0 5.97333 0 13.3333C0 20.6933 5.96 26.6667 13.32 26.6667C20.6933 26.6667 26.6667 20.6933 26.6667 13.3333C26.6667 5.97333 20.6933 0 13.32 0ZM13.3333 24C7.44 24 2.66667 19.2267 2.66667 13.3333C2.66667 7.44 7.44 2.66667 13.3333 2.66667C19.2267 2.66667 24 7.44 24 13.3333C24 19.2267 19.2267 24 13.3333 24ZM18 12C19.1067 12 20 11.1067 20 10C20 8.89333 19.1067 8 18 8C16.8933 8 16 8.89333 16 10C16 11.1067 16.8933 12 18 12ZM8.66667 12C9.77333 12 10.6667 11.1067 10.6667 10C10.6667 8.89333 9.77333 8 8.66667 8C7.56 8 6.66667 8.89333 6.66667 10C6.66667 11.1067 7.56 12 8.66667 12ZM13.3333 15.3333C10.2267 15.3333 7.58667 17.28 6.52 20H20.1467C19.08 17.28 16.44 15.3333 13.3333 15.3333Z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>😫</Text>;
+  },
+
+  'sentiment-dissatisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 27 27" fill="none">
+          <Path d="M18 12C19.1046 12 20 11.1046 20 10C20 8.89543 19.1046 8 18 8C16.8954 8 16 8.89543 16 10C16 11.1046 16.8954 12 18 12Z" fill={color} />
+          <Path d="M8.66667 12C9.77124 12 10.6667 11.1046 10.6667 10C10.6667 8.89543 9.77124 8 8.66667 8C7.5621 8 6.66667 8.89543 6.66667 10C6.66667 11.1046 7.5621 12 8.66667 12Z" fill={color} />
+          <Path d="M13.3333 16C10.2267 16 7.57333 17.9333 6.50667 20.6667H8.73333C9.65333 19.08 11.36 18 13.3333 18C15.3067 18 17 19.08 17.9333 20.6667H20.16C19.0933 17.9333 16.44 16 13.3333 16ZM13.32 0C5.96 0 0 5.97333 0 13.3333C0 20.6933 5.96 26.6667 13.32 26.6667C20.6933 26.6667 26.6667 20.6933 26.6667 13.3333C26.6667 5.97333 20.6933 0 13.32 0ZM13.3333 24C7.44 24 2.66667 19.2267 2.66667 13.3333C2.66667 7.44 7.44 2.66667 13.3333 2.66667C19.2267 2.66667 24 7.44 24 13.3333C24 19.2267 19.2267 24 13.3333 24Z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>🙁</Text>;
+  },
+
+  'sentiment-neutral': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 27 27" fill="none">
+          <Path d="M9.33333 16H17.3333V18H9.33333V16Z" fill={color} />
+          <Path d="M18 12C19.1046 12 20 11.1046 20 10C20 8.89543 19.1046 8 18 8C16.8954 8 16 8.89543 16 10C16 11.1046 16.8954 12 18 12Z" fill={color} />
+          <Path d="M8.66667 12C9.77124 12 10.6667 11.1046 10.6667 10C10.6667 8.89543 9.77124 8 8.66667 8C7.5621 8 6.66667 8.89543 6.66667 10C6.66667 11.1046 7.5621 12 8.66667 12Z" fill={color} />
+          <Path d="M13.32 0C5.96 0 0 5.97333 0 13.3333C0 20.6933 5.96 26.6667 13.32 26.6667C20.6933 26.6667 26.6667 20.6933 26.6667 13.3333C26.6667 5.97333 20.6933 0 13.32 0ZM13.3333 24C7.44 24 2.66667 19.2267 2.66667 13.3333C2.66667 7.44 7.44 2.66667 13.3333 2.66667C19.2267 2.66667 24 7.44 24 13.3333C24 19.2267 19.2267 24 13.3333 24Z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>😐</Text>;
+  },
+
+  'sentiment-satisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 27 27" fill="none">
+          <Path d="M18 12C19.1046 12 20 11.1046 20 10C20 8.89543 19.1046 8 18 8C16.8954 8 16 8.89543 16 10C16 11.1046 16.8954 12 18 12Z" fill={color} />
+          <Path d="M8.66667 12C9.77124 12 10.6667 11.1046 10.6667 10C10.6667 8.89543 9.77124 8 8.66667 8C7.5621 8 6.66667 8.89543 6.66667 10C6.66667 11.1046 7.5621 12 8.66667 12Z" fill={color} />
+          <Path d="M13.3333 18.6667C11.36 18.6667 9.66667 17.5867 8.73333 16H6.50667C7.57333 18.7333 10.2267 20.6667 13.3333 20.6667C16.44 20.6667 19.0933 18.7333 20.16 16H17.9333C17 17.5867 15.3067 18.6667 13.3333 18.6667ZM13.32 0C5.96 0 0 5.97333 0 13.3333C0 20.6933 5.96 26.6667 13.32 26.6667C20.6933 26.6667 26.6667 20.6933 26.6667 13.3333C26.6667 5.97333 20.6933 0 13.32 0ZM13.3333 24C7.44 24 2.66667 19.2267 2.66667 13.3333C2.66667 7.44 7.44 2.66667 13.3333 2.66667C19.2267 2.66667 24 7.44 24 13.3333C24 19.2267 19.2267 24 13.3333 24Z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>🙂</Text>;
+  },
+
+  'sentiment-very-satisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 27 27" fill="none">
+          <Path d="M13.32 0C5.96 0 0 5.97333 0 13.3333C0 20.6933 5.96 26.6667 13.32 26.6667C20.6933 26.6667 26.6667 20.6933 26.6667 13.3333C26.6667 5.97333 20.6933 0 13.32 0ZM13.3333 24C7.44 24 2.66667 19.2267 2.66667 13.3333C2.66667 7.44 7.44 2.66667 13.3333 2.66667C19.2267 2.66667 24 7.44 24 13.3333C24 19.2267 19.2267 24 13.3333 24ZM18 12C19.1067 12 20 11.1067 20 10C20 8.89333 19.1067 8 18 8C16.8933 8 16 8.89333 16 10C16 11.1067 16.8933 12 18 12ZM8.66667 12C9.77333 12 10.6667 11.1067 10.6667 10C10.6667 8.89333 9.77333 8 8.66667 8C7.56 8 6.66667 8.89333 6.66667 10C6.66667 11.1067 7.56 12 8.66667 12ZM13.3333 20.6667C16.44 20.6667 19.08 18.72 20.1467 16H6.52C7.58667 18.72 10.2267 20.6667 13.3333 20.6667Z" fill={color} />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>😁</Text>;
   },
 
   close: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -615,6 +695,76 @@ export const Ux4gIcons = {
       );
     }
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✅</Text>;
+  },
+
+  sentimentVeryDissatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-3.18-8c.45 0 .82-.37.82-.82s-.37-.82-.82-.82-.82.37-.82.82.37.82.82.82zm6.36 0c.45 0 .82-.37.82-.82s-.37-.82-.82-.82-.82.37-.82.82.37.82.82.82zM12 14c-2.33 0-4.32 1.45-5.12 3.5h1.67c.69-1.19 1.97-2 3.45-2s2.75.81 3.45 2h1.67c-.8-2.05-2.79-3.5-5.12-3.5z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>😫</Text>;
+  },
+
+  sentimentDissatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 3c-2.33 0-4.31 1.46-5.11 3.5h10.22c-.8-2.04-2.78-3.5-5.11-3.5z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>🙁</Text>;
+  },
+
+  sentimentNeutral: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M9 14h6v1.5H9z M15.5 9.5c0 .8-.7 1.5-1.5 1.5s-1.5-.7-1.5-1.5.7-1.5 1.5-1.5 1.5.7 1.5 1.5zm-7 0c0 .8-.7 1.5-1.5 1.5S5.5 10.3 5.5 9.5 6.2 8 7 8s1.5.7 1.5 1.5zm3.5-7.5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>😐</Text>;
+  },
+
+  sentimentSatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>🙂</Text>;
+  },
+
+  sentimentVerySatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.1-6.1c1.55 0 2.92-.81 3.73-2.05l-1.49-.6c-.53.79-1.43 1.3-2.24 1.3s-1.72-.51-2.24-1.3l-1.49.6c.8 1.24 2.17 2.05 3.73 2.05zM9 11c.83 0 1.5-.67 1.5-1.5S9.83 8 9 8s-1.5.67-1.5 1.5S8.17 11 9 11zm6 0c.83 0 1.5-.67 1.5-1.5S15.83 8 15 8s-1.5.67-1.5 1.5S14.17 11 15 11z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color }}>😁</Text>;
   },
 };
 

@@ -39,3 +39,4 @@ export * from './DatePickerShowcase';
 export * from './TimePickerShowcase';
 export * from './FileUploadShowcase';
 export * from './SlotGridShowcase';
+export * from './FeedbackFormShowcase';
