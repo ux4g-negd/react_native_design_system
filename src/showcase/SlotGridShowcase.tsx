@@ -2,10 +2,9 @@
  * SlotGridShowcase
  *
  * Interactive showcase for Ux4gTimeslot / SlotGrid component demonstrating:
- *  - Interactive Calendar Grid with status indicators (noSlots, publicHoliday, weeklyOff)
- *  - Expanded view mode time slot picker sheet
- *  - Compact (grid) view mode time slot picker sheet
- *  - Date selection & slot confirmation callbacks
+ *  1. Current Month (Dynamic live system date)
+ *  2. Pre-populated Data with Expanded View Sheet
+ *  3. Pre-populated Data with Compact (Grid) View Sheet
  */
 
 import React, { useState } from 'react';
@@ -27,15 +26,30 @@ export const SlotGridShowcase: React.FC = () => {
   const [selectedDateInfo, setSelectedDateInfo] = useState<string>('None');
   const [confirmedSlotInfo, setConfirmedSlotInfo] = useState<string>('None');
 
-  const today = new Date(2026, 3, 15); // April 15, 2026
+  // ── 1. Live Current System Month Data ──
+  const now = new Date();
+  const currentMonthData: Ux4gTimeslotData = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    today: now,
+    selectedDate: now,
+    weeklyOffWeekdays: [6, 7], // Sat & Sun
+    viewMode: 'expanded',
+    dates: [
+      { date: new Date(now.getFullYear(), now.getMonth(), 5), status: 'publicHoliday' },
+      { date: new Date(now.getFullYear(), now.getMonth(), 12), status: 'noSlots' },
+      { date: new Date(now.getFullYear(), now.getMonth(), 20), status: 'publicHoliday' },
+    ],
+  };
 
-  // Sample data for Expanded View Mode
+  // ── 2. Pre-populated Sample Data (Expanded View Mode) ──
+  const sampleToday = new Date(2026, 3, 15); // April 15, 2026
   const expandedData: Ux4gTimeslotData = {
     year: 2026,
     month: 4,
-    today,
+    today: sampleToday,
     selectedDate: new Date(2026, 3, 23),
-    weeklyOffWeekdays: [6, 7], // Sat & Sun
+    weeklyOffWeekdays: [6, 7],
     viewMode: 'expanded',
     dates: [
       { date: new Date(2026, 3, 9), status: 'publicHoliday' },
@@ -44,11 +58,11 @@ export const SlotGridShowcase: React.FC = () => {
     ],
   };
 
-  // Sample data for Compact View Mode
+  // ── 3. Pre-populated Sample Data (Compact View Mode) ──
   const compactData: Ux4gTimeslotData = {
     year: 2026,
     month: 4,
-    today,
+    today: sampleToday,
     selectedDate: new Date(2026, 3, 18),
     weeklyOffWeekdays: [6, 7],
     viewMode: 'compact',
@@ -93,13 +107,32 @@ export const SlotGridShowcase: React.FC = () => {
         </Text>
       </View>
 
-      {/* ── Section 1: Expanded View Mode ── */}
+      {/* ── Section 1: Current Month Showcase (Live System Date) ── */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: sectionTitleColor }]}>
-          Expanded View Mode (Vertical Sheet List)
+          1. Current Month (Live System Date)
         </Text>
         <Text style={[styles.sectionDesc, { color: subtitleColor }]}>
-          Tap any available date to open vertical list time slot picker
+          Renders calendar for the current real-time month ({MONTH_NAMES[now.getMonth()]} {now.getFullYear()})
+        </Text>
+        <Ux4gTimeslot
+          data={currentMonthData}
+          timeSlotProvider={timeSlotProvider}
+          onDateSelected={(d) => setSelectedDateInfo(d.toDateString())}
+          onSlotConfirmed={(d, slot) => {
+            setSelectedDateInfo(d.toDateString());
+            setConfirmedSlotInfo(`${slot.time} (${slot.slotCount} slots)`);
+          }}
+        />
+      </View>
+
+      {/* ── Section 2: Pre-populated Data (Expanded View) ── */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: sectionTitleColor }]}>
+          2. Pre-populated Data (Expanded View Sheet)
+        </Text>
+        <Text style={[styles.sectionDesc, { color: subtitleColor }]}>
+          April 2026 pre-populated with public holiday, no slots & vertical slot sheet
         </Text>
         <Ux4gTimeslot
           data={expandedData}
@@ -112,13 +145,13 @@ export const SlotGridShowcase: React.FC = () => {
         />
       </View>
 
-      {/* ── Section 2: Compact View Mode ── */}
+      {/* ── Section 3: Pre-populated Data (Compact View) ── */}
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: sectionTitleColor }]}>
-          Compact View Mode (Grid Sheet)
+          3. Pre-populated Data (Compact Grid Sheet)
         </Text>
         <Text style={[styles.sectionDesc, { color: subtitleColor }]}>
-          Tap any available date to open 2-column grid time slot picker
+          April 2026 pre-populated data with 2-column grid time slot sheet
         </Text>
         <Ux4gTimeslot
           data={compactData}
@@ -135,6 +168,21 @@ export const SlotGridShowcase: React.FC = () => {
     </ScrollView>
   );
 };
+
+const MONTH_NAMES = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 const styles = StyleSheet.create({
   scrollContent: {
