@@ -38,3 +38,5 @@ export * from './JourneyTimelineShowcase';
 export * from './DatePickerShowcase';
 export * from './TimePickerShowcase';
 export * from './FileUploadShowcase';
+export * from './SlotGridShowcase';
+

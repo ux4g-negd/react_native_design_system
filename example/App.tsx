@@ -28,6 +28,7 @@ import { JourneyTimelineShowcase } from '../src/showcase/JourneyTimelineShowcase
 import { DatePickerShowcase } from '../src/showcase/DatePickerShowcase';
 import { TimePickerShowcase } from '../src/showcase/TimePickerShowcase';
 import { FileUploadShowcase } from '../src/showcase/FileUploadShowcase';
+import { SlotGridShowcase } from '../src/showcase/SlotGridShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
@@ -68,7 +69,8 @@ type ActiveTab =
   | 'journey-timeline'
   | 'date-picker'
   | 'time-picker'
-  | 'file-upload';
+  | 'file-upload'
+  | 'slot-grid';
 
 const ShowcaseHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('time-picker');
@@ -1106,6 +1108,33 @@ const ShowcaseHub: React.FC = () => {
               📁 File Upload
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('slot-grid')}
+            style={[
+              styles.tabItem,
+              activeTab === 'slot-grid' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'slot-grid'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🗓️ Slot Grid
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1185,6 +1214,8 @@ const ShowcaseHub: React.FC = () => {
           <TimePickerShowcase />
         ) : activeTab === 'file-upload' ? (
           <FileUploadShowcase />
+        ) : activeTab === 'slot-grid' ? (
+          <SlotGridShowcase />
         ) : (
           <SocialLinksShowcase />
         )}
