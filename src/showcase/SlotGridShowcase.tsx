@@ -58,23 +58,14 @@ export const SlotGridShowcase: React.FC = () => {
     ],
   };
 
-  // Time slot provider
-  const timeSlotProvider = (date: Date): SlotTimeEntry[] => {
-    const day = date.getDate();
-    if (day % 3 === 0) {
-      return [
-        { time: '09:00 AM - 10:00 AM', slotCount: 5, status: 'available' },
-        { time: '10:30 AM - 11:30 AM', slotCount: 2, status: 'limited' },
-        { time: '02:00 PM - 03:00 PM', slotCount: 0, status: 'noSlots' },
-        { time: '04:00 PM - 05:00 PM', slotCount: 8, status: 'available' },
-      ];
-    }
+  // Time slot provider (matches Flutter Widgetbook example)
+  const timeSlotProvider = (_date: Date): SlotTimeEntry[] => {
     return [
-      { time: '10:00 AM - 11:00 AM', slotCount: 4, status: 'available' },
-      { time: '11:30 AM - 12:30 PM', slotCount: 1, status: 'limited' },
-      { time: '01:30 PM - 02:30 PM', slotCount: 6, status: 'available' },
-      { time: '03:00 PM - 04:00 PM', slotCount: 3, status: 'available' },
-      { time: '04:30 PM - 05:30 PM', slotCount: 0, status: 'noSlots' },
+      { time: '9:00 AM', slotCount: 2, status: 'available' },
+      { time: '10:00 AM', slotCount: 1, status: 'limited' },
+      { time: '12:00 PM', slotCount: 0, status: 'noSlots' },
+      { time: '2:00 PM', slotCount: 3, status: 'available' },
+      { time: '4:00 PM', slotCount: 5, status: 'available' },
     ];
   };
 

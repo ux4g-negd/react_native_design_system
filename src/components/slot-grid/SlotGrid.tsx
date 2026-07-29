@@ -380,31 +380,34 @@ export const SlotTimePickerSheet: React.FC<SlotTimePickerSheetProps> = ({
               },
             ]}
           >
-            {isSelected ? (
-              <View style={sheetStyles.slotTileSelectedRow}>
-                {Ux4gIcons.checkCircle({ size: 18, color: primary })}
-                <Text style={[sheetStyles.slotTileSelectedText, { color: primary }]}>
-                  Selected
-                </Text>
-              </View>
-            ) : (
-              <View style={sheetStyles.slotTileContent}>
-                <Text style={[sheetStyles.slotTileTime, { color: onSurface }]}>
-                  {slot.time}
-                </Text>
-                <Text
-                  style={[
-                    sheetStyles.slotTileCount,
-                    {
-                      color:
-                        slot.status === 'limited' ? warning : `${onSurface}60`,
-                    },
-                  ]}
-                >
-                  {slot.slotCount} slots
-                </Text>
-              </View>
-            )}
+            <View style={sheetStyles.slotTileContent}>
+              <Text
+                style={[
+                  sheetStyles.slotTileTime,
+                  {
+                    color: isSelected ? primary : onSurface,
+                    fontWeight: isSelected ? '700' : '600',
+                  },
+                ]}
+              >
+                {slot.time}
+              </Text>
+              <Text
+                style={[
+                  sheetStyles.slotTileCount,
+                  {
+                    color:
+                      slot.status === 'limited'
+                        ? warning
+                        : isSelected
+                          ? primary
+                          : `${onSurface}60`,
+                  },
+                ]}
+              >
+                {slot.slotCount} slots
+              </Text>
+            </View>
           </TouchableOpacity>
         );
       })}
