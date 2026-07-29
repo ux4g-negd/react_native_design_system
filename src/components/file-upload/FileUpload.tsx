@@ -15,10 +15,12 @@ import {
   TouchableOpacity,
   Animated,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
 import { UX4GColors } from '../../foundation/colors';
 import { Ux4gIcons } from '../../foundation/icons';
+import { Ux4gButton } from '../button/Button';
 
 // ── SVG imports for dashed border ───────────────────────────────────────────
 let Svg: any = null;
@@ -282,6 +284,30 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
             showError('Missing Dependency', 'react-native-image-picker is not installed.');
             return;
           }
+
+          // Request Camera Permission on Android if not already granted
+          if (Platform.OS === 'android') {
+            try {
+              const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                  title: 'Camera Permission Required',
+                  message: 'This app needs access to your camera to scan documents.',
+                  buttonNeutral: 'Ask Me Later',
+                  buttonNegative: 'Cancel',
+                  buttonPositive: 'OK',
+                },
+              );
+              if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+                showError('Permission Denied', 'Camera permission is required to scan documents.');
+                return;
+              }
+            } catch (err: any) {
+              showError('Permission Error', `Failed to request camera permission: ${err?.message ?? err}`);
+              return;
+            }
+          }
+
           const result = await new Promise<any>((resolve) => {
             launchCamera(
               { mediaType: 'photo', quality: 0.8, saveToPhotos: false },
@@ -289,7 +315,26 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
             );
           });
 
-          if (result.didCancel || result.errorCode) return;
+          if (result.didCancel) return;
+
+          if (result.errorCode === 'permission') {
+            showError(
+              'Permission Denied',
+              'Camera permission denied. Please allow camera access in your device Settings.',
+            );
+            return;
+          }
+
+          if (result.errorCode === 'camera_unavailable') {
+            showError('Camera Unavailable', 'Camera is not available on this device.');
+            return;
+          }
+
+          if (result.errorCode) {
+            showError('Camera Error', result.errorMessage ?? 'An error occurred while launching camera.');
+            return;
+          }
+
           const asset = result.assets?.[0];
           if (!asset) return;
 
@@ -452,59 +497,41 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
 
       {/* Buttons Row */}
       <View style={localStyles.buttonRow}>
-        {/* Upload Button (Outlined) */}
-        <TouchableOpacity
-          testID="upload-button"
-          activeOpacity={0.7}
-          onPress={() => pickFile(false)}
-          style={[
-            localStyles.uploadBtn,
-            {
-              borderColor: buttonBorderColor ?? primary,
-              borderRadius: buttonBorderRadius,
-            },
-          ]}
-        >
-          {Ux4gIcons.cloudUpload({ size: 18, color: buttonColor ?? primary })}
-          <Text
-            style={{
-              marginLeft: 6,
-              fontSize: 14,
-              fontWeight: '600',
-              color: buttonColor ?? primary,
-            }}
-          >
-            Upload
-          </Text>
-        </TouchableOpacity>
+        {/* Upload Button (Outline Variant) */}
+        <View style={{ flex: 1 }}>
+          <Ux4gButton
+            testID="upload-button"
+            variant="outline"
+            text="Upload"
+            size="medium"
+            leadingIcon={({ color, size }) =>
+              Ux4gIcons.cloudUpload({ size, color: buttonColor ?? color })
+            }
+            borderColor={buttonBorderColor ?? primary}
+            contentColor={buttonColor ?? primary}
+            borderRadius={buttonBorderRadius}
+            onPress={() => pickFile(false)}
+          />
+        </View>
 
         <View style={{ width: 12 }} />
 
-        {/* Scan Button (Filled) */}
-        <TouchableOpacity
-          testID="scan-button"
-          activeOpacity={0.7}
-          onPress={() => pickFile(true)}
-          style={[
-            localStyles.scanBtn,
-            {
-              backgroundColor: buttonColor ?? primary,
-              borderRadius: buttonBorderRadius,
-            },
-          ]}
-        >
-          {Ux4gIcons.camera({ size: 18, color: onPrimary })}
-          <Text
-            style={{
-              marginLeft: 6,
-              fontSize: 14,
-              fontWeight: '600',
-              color: onPrimary,
-            }}
-          >
-            Scan
-          </Text>
-        </TouchableOpacity>
+        {/* Scan Button (Primary Variant) */}
+        <View style={{ flex: 1 }}>
+          <Ux4gButton
+            testID="scan-button"
+            variant="primary"
+            text="Scan"
+            size="medium"
+            leadingIcon={({ color, size }) =>
+              Ux4gIcons.camera({ size, color: onPrimary })
+            }
+            backgroundColor={buttonColor ?? primary}
+            contentColor={onPrimary}
+            borderRadius={buttonBorderRadius}
+            onPress={() => pickFile(true)}
+          />
+        </View>
       </View>
     </View>
   );
