@@ -27,6 +27,7 @@ import { StatusPipelineShowcase } from '../src/showcase/StatusPipelineShowcase';
 import { JourneyTimelineShowcase } from '../src/showcase/JourneyTimelineShowcase';
 import { DatePickerShowcase } from '../src/showcase/DatePickerShowcase';
 import { TimePickerShowcase } from '../src/showcase/TimePickerShowcase';
+import { FileUploadShowcase } from '../src/showcase/FileUploadShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
 
 type ActiveTab =
@@ -66,7 +67,8 @@ type ActiveTab =
   | 'status-pipeline'
   | 'journey-timeline'
   | 'date-picker'
-  | 'time-picker';
+  | 'time-picker'
+  | 'file-upload';
 
 const ShowcaseHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('time-picker');
@@ -1077,6 +1079,33 @@ const ShowcaseHub: React.FC = () => {
               ⏰ Time Picker
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('file-upload')}
+            style={[
+              styles.tabItem,
+              activeTab === 'file-upload' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'file-upload'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              📁 File Upload
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1154,6 +1183,8 @@ const ShowcaseHub: React.FC = () => {
           <DatePickerShowcase />
         ) : activeTab === 'time-picker' ? (
           <TimePickerShowcase />
+        ) : activeTab === 'file-upload' ? (
+          <FileUploadShowcase />
         ) : (
           <SocialLinksShowcase />
         )}
