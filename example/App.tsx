@@ -28,8 +28,7 @@ import { JourneyTimelineShowcase } from '../src/showcase/JourneyTimelineShowcase
 import { DatePickerShowcase } from '../src/showcase/DatePickerShowcase';
 import { TimePickerShowcase } from '../src/showcase/TimePickerShowcase';
 import { FileUploadShowcase } from '../src/showcase/FileUploadShowcase';
-import { SlotGridShowcase } from '../src/showcase/SlotGridShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider, SlotGridShowcase } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -1108,7 +1107,6 @@ const ShowcaseHub: React.FC = () => {
               📁 File Upload
             </Text>
           </Pressable>
-
           <Pressable
             onPress={() => setActiveTab('slot-grid')}
             style={[
@@ -1132,7 +1130,7 @@ const ShowcaseHub: React.FC = () => {
                 },
               ]}
             >
-              🗓️ Slot Grid
+              📅 Slot Grid
             </Text>
           </Pressable>
         </ScrollView>

@@ -1,224 +1,170 @@
-/**
- * SlotGridShowcase
- *
- * Interactive showcase for Ux4gTimeslot / SlotGrid component demonstrating:
- *  1. Current Month (Dynamic live system date)
- *  2. Pre-populated Data with Expanded View Sheet
- *  3. Pre-populated Data with Compact (Grid) View Sheet
- */
-
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import {
-  Ux4gTimeslot,
-  Ux4gTimeslotData,
-  SlotTimeEntry,
-} from '../components/slot-grid';
+import { Ux4gTimeslot, SlotDateStatus, SlotPickerViewMode, SlotTimeStatus, SlotTimeEntry } from '../components/slot-grid/SlotGrid';
 import { useUx4gTheme } from '../theme/Ux4gThemeContext';
-import { UX4GColors } from '../foundation/colors';
 
 export const SlotGridShowcase: React.FC = () => {
   const theme = useUx4gTheme();
-
-  const sectionTitleColor = theme.colors.onBackground;
-  const subtitleColor = theme.isDark ? UX4GColors.neutral400 : UX4GColors.neutral600;
-
-  const [selectedDateInfo, setSelectedDateInfo] = useState<string>('None');
-  const [confirmedSlotInfo, setConfirmedSlotInfo] = useState<string>('None');
-
-  // ── 1. Live Current System Month Data ──
-  const now = new Date();
-  const currentMonthData: Ux4gTimeslotData = {
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-    today: now,
-    selectedDate: now,
-    weeklyOffWeekdays: [6, 7], // Sat & Sun
-    viewMode: 'expanded',
-    dates: [
-      { date: new Date(now.getFullYear(), now.getMonth(), 5), status: 'publicHoliday' },
-      { date: new Date(now.getFullYear(), now.getMonth(), 12), status: 'noSlots' },
-      { date: new Date(now.getFullYear(), now.getMonth(), 20), status: 'publicHoliday' },
-    ],
+  const colors = theme.colors;
+  
+  const [selectedDate1, setSelectedDate1] = useState<Date | undefined>();
+  const [confirmedSlot1, setConfirmedSlot1] = useState<SlotTimeEntry | undefined>();
+  
+  const [selectedDate2, setSelectedDate2] = useState<Date | undefined>();
+  const [confirmedSlot2, setConfirmedSlot2] = useState<SlotTimeEntry | undefined>();
+  
+  const handleDateSelected1 = (date: Date) => {
+    setSelectedDate1(date);
+    setConfirmedSlot1(undefined);
   };
 
-  // ── 2. Pre-populated Sample Data (Expanded View Mode) ──
-  const sampleToday = new Date(2026, 3, 15); // April 15, 2026
-  const expandedData: Ux4gTimeslotData = {
-    year: 2026,
-    month: 4,
-    today: sampleToday,
-    selectedDate: new Date(2026, 3, 23),
-    weeklyOffWeekdays: [6, 7],
-    viewMode: 'expanded',
-    dates: [
-      { date: new Date(2026, 3, 9), status: 'publicHoliday' },
-      { date: new Date(2026, 3, 21), status: 'noSlots' },
-      { date: new Date(2026, 3, 28), status: 'publicHoliday' },
-    ],
+  const handleSlotConfirmed1 = (date: Date, slot: SlotTimeEntry) => {
+    setSelectedDate1(date);
+    setConfirmedSlot1(slot);
+  };
+  
+  const handleDateSelected2 = (date: Date) => {
+    setSelectedDate2(date);
+    setConfirmedSlot2(undefined);
   };
 
-  // ── 3. Pre-populated Sample Data (Compact View Mode) ──
-  const compactData: Ux4gTimeslotData = {
-    year: 2026,
-    month: 4,
-    today: sampleToday,
-    selectedDate: new Date(2026, 3, 18),
-    weeklyOffWeekdays: [6, 7],
-    viewMode: 'compact',
-    dates: [
-      { date: new Date(2026, 3, 14), status: 'publicHoliday' },
-      { date: new Date(2026, 3, 22), status: 'noSlots' },
-    ],
+  const handleSlotConfirmed2 = (date: Date, slot: SlotTimeEntry) => {
+    setSelectedDate2(date);
+    setConfirmedSlot2(slot);
   };
 
-  // Time slot provider (matches Flutter Widgetbook example)
-  const timeSlotProvider = (_date: Date): SlotTimeEntry[] => {
+  const getDummyTimeSlots = async (date: Date): Promise<SlotTimeEntry[]> => {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const day = date.getDate();
+    
+    if (day % 3 === 0) {
+      return [
+        { time: '09:00 AM', slotCount: 2, status: SlotTimeStatus.limited },
+        { time: '10:00 AM', slotCount: 5, status: SlotTimeStatus.available },
+        { time: '11:00 AM', slotCount: 0, status: SlotTimeStatus.noSlots },
+        { time: '12:00 PM', slotCount: 1, status: SlotTimeStatus.limited },
+        { time: '01:00 PM', slotCount: 3, status: SlotTimeStatus.available },
+      ];
+    } else if (day % 2 === 0) {
+      return [
+        { time: '09:30 AM', slotCount: 12, status: SlotTimeStatus.available },
+        { time: '11:30 AM', slotCount: 8, status: SlotTimeStatus.available },
+        { time: '02:30 PM', slotCount: 0, status: SlotTimeStatus.noSlots },
+        { time: '04:30 PM', slotCount: 4, status: SlotTimeStatus.available },
+      ];
+    }
+    
     return [
-      { time: '9:00 AM', slotCount: 2, status: 'available' },
-      { time: '10:00 AM', slotCount: 1, status: 'limited' },
-      { time: '12:00 PM', slotCount: 0, status: 'noSlots' },
-      { time: '2:00 PM', slotCount: 3, status: 'available' },
-      { time: '4:00 PM', slotCount: 5, status: 'available' },
+      { time: '09:00 AM', slotCount: 5, status: SlotTimeStatus.available },
+      { time: '10:00 AM', slotCount: 0, status: SlotTimeStatus.noSlots },
+      { time: '11:00 AM', slotCount: 2, status: SlotTimeStatus.limited },
+      { time: '12:00 PM', slotCount: 8, status: SlotTimeStatus.available },
+      { time: '01:00 PM', slotCount: 1, status: SlotTimeStatus.limited },
+      { time: '02:00 PM', slotCount: 0, status: SlotTimeStatus.noSlots },
+      { time: '03:00 PM', slotCount: 4, status: SlotTimeStatus.available },
     ];
   };
 
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Main Title */}
-      <Text style={[styles.mainTitle, { color: sectionTitleColor }]}>
-        📅 Ux4gTimeslot / SlotGrid
-      </Text>
-      <Text style={[styles.mainSubtitle, { color: subtitleColor }]}>
-        Calendar slot grid & interactive time slot picker sheet
-      </Text>
-
-      {/* Selected Info Banner */}
-      <View style={[styles.infoCard, { backgroundColor: `${theme.colors.primary}14`, borderColor: theme.colors.primary }]}>
-        <Text style={[styles.infoText, { color: sectionTitleColor }]}>
-          <Text style={{ fontWeight: '700' }}>Selected Date:</Text> {selectedDateInfo}
-        </Text>
-        <Text style={[styles.infoText, { color: sectionTitleColor, marginTop: 4 }]}>
-          <Text style={{ fontWeight: '700' }}>Confirmed Slot:</Text> {confirmedSlotInfo}
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.contentContainer}>
+      <View style={styles.header}>
+        <Text style={[styles.title, { color: colors.onBackground }]}>📅 Slot Grid</Text>
+        <Text style={[styles.subText, { color: theme.isDark ? '#A1A1AA' : '#71717A' }]}>
+          Calendar-style slot grid with an integrated time slot picker sheet.
         </Text>
       </View>
 
-      {/* ── Section 1: Current Month Showcase (Live System Date) ── */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: sectionTitleColor }]}>
-          1. Current Month (Live System Date)
+      <View style={[styles.card, { backgroundColor: theme.isDark ? '#1F1F1F' : '#FFFFFF', borderColor: theme.isDark ? '#333333' : '#E4E4E7' }]}>
+        <Text style={[styles.sectionTitle, { color: theme.isDark ? '#F4F4F5' : '#18181B' }]}>1. Expanded View Mode</Text>
+        <Text style={[styles.subText, { color: theme.isDark ? '#A1A1AA' : '#71717A', marginBottom: 16 }]}>
+          Vertical list for time slot selection.
         </Text>
-        <Text style={[styles.sectionDesc, { color: subtitleColor }]}>
-          Renders calendar for the current real-time month ({MONTH_NAMES[now.getMonth()]} {now.getFullYear()})
-        </Text>
+        
         <Ux4gTimeslot
-          data={currentMonthData}
-          timeSlotProvider={timeSlotProvider}
-          onDateSelected={(d) => setSelectedDateInfo(d.toDateString())}
-          onSlotConfirmed={(d, slot) => {
-            setSelectedDateInfo(d.toDateString());
-            setConfirmedSlotInfo(`${slot.time} (${slot.slotCount} slots)`);
+          data={{
+            year: 2026,
+            month: 7,
+            today: '2026-07-29',
+            selectedDate: selectedDate1 ? selectedDate1.toISOString() : undefined,
+            weeklyOffWeekdays: [6, 7], // Saturday, Sunday
+            dates: [
+              { date: '2026-07-15', status: SlotDateStatus.noSlots },
+              { date: '2026-07-20', status: SlotDateStatus.publicHoliday },
+            ],
+            allowTapOnPublicHoliday: true,
+            viewMode: SlotPickerViewMode.expanded
           }}
+          onDateSelected={handleDateSelected1}
+          onSlotConfirmed={handleSlotConfirmed1}
+          timeSlotProvider={getDummyTimeSlots}
         />
-      </View>
 
-      {/* ── Section 2: Pre-populated Data (Expanded View) ── */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: sectionTitleColor }]}>
-          2. Pre-populated Data (Expanded View Sheet)
+        {(selectedDate1 || confirmedSlot1) && (
+          <View style={[styles.resultBox, { backgroundColor: theme.colors.primary + '14', borderColor: theme.colors.primary }]}>
+            <Text style={[styles.resultTitle, { color: theme.colors.onSurface }]}>Selection Result:</Text>
+            {selectedDate1 && <Text style={[styles.resultText, { color: theme.colors.onSurface }]}>• Date: {selectedDate1.toDateString()}</Text>}
+            {confirmedSlot1 && <Text style={[styles.resultText, { color: theme.colors.onSurface }]}>• Time: {confirmedSlot1.time}</Text>}
+            {!confirmedSlot1 && <Text style={[styles.resultText, { color: theme.colors.onSurface + '99' }]}>• Time: None selected yet</Text>}
+          </View>
+        )}
+      </View>
+      
+      <View style={[styles.card, { backgroundColor: theme.isDark ? '#1F1F1F' : '#FFFFFF', borderColor: theme.isDark ? '#333333' : '#E4E4E7' }]}>
+        <Text style={[styles.sectionTitle, { color: theme.isDark ? '#F4F4F5' : '#18181B' }]}>2. Compact View Mode</Text>
+        <Text style={[styles.subText, { color: theme.isDark ? '#A1A1AA' : '#71717A', marginBottom: 16 }]}>
+          Grid layout for time slot selection.
         </Text>
-        <Text style={[styles.sectionDesc, { color: subtitleColor }]}>
-          April 2026 pre-populated with public holiday, no slots & vertical slot sheet
-        </Text>
+        
         <Ux4gTimeslot
-          data={expandedData}
-          timeSlotProvider={timeSlotProvider}
-          onDateSelected={(d) => setSelectedDateInfo(d.toDateString())}
-          onSlotConfirmed={(d, slot) => {
-            setSelectedDateInfo(d.toDateString());
-            setConfirmedSlotInfo(`${slot.time} (${slot.slotCount} slots)`);
+          data={{
+            year: 2026,
+            month: 7,
+            today: '2026-07-29',
+            selectedDate: selectedDate2 ? selectedDate2.toISOString() : undefined,
+            weeklyOffWeekdays: [7], // Only Sunday off
+            dates: [],
+            viewMode: SlotPickerViewMode.compact
           }}
+          onDateSelected={handleDateSelected2}
+          onSlotConfirmed={handleSlotConfirmed2}
+          timeSlotProvider={getDummyTimeSlots}
         />
-      </View>
 
-      {/* ── Section 3: Pre-populated Data (Compact View) ── */}
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: sectionTitleColor }]}>
-          3. Pre-populated Data (Compact Grid Sheet)
-        </Text>
-        <Text style={[styles.sectionDesc, { color: subtitleColor }]}>
-          April 2026 pre-populated data with 2-column grid time slot sheet
-        </Text>
-        <Ux4gTimeslot
-          data={compactData}
-          timeSlotProvider={timeSlotProvider}
-          onDateSelected={(d) => setSelectedDateInfo(d.toDateString())}
-          onSlotConfirmed={(d, slot) => {
-            setSelectedDateInfo(d.toDateString());
-            setConfirmedSlotInfo(`${slot.time} (${slot.slotCount} slots)`);
-          }}
-        />
+        {(selectedDate2 || confirmedSlot2) && (
+          <View style={[styles.resultBox, { backgroundColor: theme.colors.primary + '14', borderColor: theme.colors.primary }]}>
+            <Text style={[styles.resultTitle, { color: theme.colors.onSurface }]}>Selection Result:</Text>
+            {selectedDate2 && <Text style={[styles.resultText, { color: theme.colors.onSurface }]}>• Date: {selectedDate2.toDateString()}</Text>}
+            {confirmedSlot2 && <Text style={[styles.resultText, { color: theme.colors.onSurface }]}>• Time: {confirmedSlot2.time}</Text>}
+            {!confirmedSlot2 && <Text style={[styles.resultText, { color: theme.colors.onSurface + '99' }]}>• Time: None selected yet</Text>}
+          </View>
+        )}
       </View>
-
-      <View style={{ height: 40 }} />
     </ScrollView>
   );
 };
 
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 const styles = StyleSheet.create({
-  scrollContent: {
-    padding: 16,
-    paddingBottom: 40,
-  },
-  mainTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  mainSubtitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 16,
-  },
-  infoCard: {
+  container: { flex: 1 },
+  contentContainer: { padding: 16, paddingBottom: 40 },
+  header: { marginBottom: 16 },
+  title: { fontSize: 22, fontWeight: '800', marginBottom: 6 },
+  subText: { fontSize: 14, lineHeight: 20 },
+  card: { borderWidth: 1, borderRadius: 16, padding: 16, marginBottom: 16 },
+  sectionTitle: { fontSize: 16, fontWeight: '700', marginBottom: 4 },
+  resultBox: {
+    marginTop: 16,
     padding: 12,
     borderRadius: 8,
     borderWidth: 1,
-    marginBottom: 20,
   },
-  infoText: {
-    fontSize: 13,
-  },
-  section: {
-    marginBottom: 28,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+  resultTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
     marginBottom: 4,
   },
-  sectionDesc: {
-    fontSize: 13,
-    fontWeight: '500',
-    marginBottom: 12,
+  resultText: {
+    fontSize: 14,
+    marginTop: 2,
   },
 });
