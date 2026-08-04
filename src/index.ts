@@ -2,6 +2,7 @@
 export * from './foundation/colors';
 export * from './foundation/typography';
 export * from './foundation/dimensions';
+export * from './foundation/shadow';
 export * from './foundation/icons';
 
 // Export theme architecture, providers, and hooks

@@ -3,6 +3,9 @@ import { Sidebar } from './components/Sidebar';
 import { Introduction } from './pages/Introduction';
 import { ButtonDoc } from './pages/ButtonDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
+import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
+import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
+import { DimensionsDoc, DimensionsSection } from './pages/DimensionsDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -15,8 +18,17 @@ const getMobileBreadcrumb = (page: string) => {
     const s = page.replace('colors-', '');
     return `Token / Colors / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
   }
-  if (['typography', 'spacing', 'radius'].includes(page)) {
-    return `Token / ${page.charAt(0).toUpperCase() + page.slice(1)}`;
+  if (page.startsWith('typography')) {
+    const s = page.replace('typography-', '').replace('typography', 'header');
+    return `Token / Typography / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
+  }
+  if (page.startsWith('shadow')) {
+    const s = page.replace('shadow-', '').replace('shadow', 'scale');
+    return `Token / Shadow / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
+  }
+  if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) {
+    const s = page.replace('dimensions-', '').replace('dimensions', 'spacing');
+    return `Token / Dimensions / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
   }
   if (['forms', 'headers'].includes(page)) {
     return `Patterns / ${page.charAt(0).toUpperCase() + page.slice(1)}`;
@@ -59,6 +71,21 @@ const App: React.FC = () => {
     if (activePage.startsWith('colors-')) {
       const section = activePage.replace('colors-', '') as ColorsSection;
       return <ColorsDoc isDark={isDark} section={section} />;
+    }
+    if (activePage.startsWith('typography')) {
+      const section = (activePage.replace('typography-', '').replace('typography', 'header')) as TypographySection;
+      return <TypographyDoc isDark={isDark} section={section} />;
+    }
+    if (activePage.startsWith('shadow')) {
+      const section = (activePage.replace('shadow-', '').replace('shadow', 'scale')) as ShadowSection;
+      return <ShadowDoc isDark={isDark} section={section} />;
+    }
+    if (activePage.startsWith('dimensions') || ['spacing', 'radius'].includes(activePage)) {
+      let section: DimensionsSection = 'spacing';
+      if (activePage === 'radius' || activePage === 'dimensions-radius') section = 'radius';
+      else if (activePage === 'dimensions-border') section = 'border';
+      else if (activePage === 'dimensions-usage') section = 'usage';
+      return <DimensionsDoc isDark={isDark} section={section} />;
     }
     switch (activePage) {
       case 'introduction':

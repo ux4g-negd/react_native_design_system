@@ -47,9 +47,39 @@ const NAV_ITEMS: NavItem[] = [
           { id: 'colors-semantic', label: 'Semantic Tokens', icon: 'layers' },
         ],
       },
-      { id: 'typography', label: 'Typography', icon: 'text_fields' },
-      { id: 'spacing', label: 'Spacing', icon: 'straighten' },
-      { id: 'radius', label: 'Radius', icon: 'rounded_corner' },
+      {
+        id: 'typography',
+        label: 'Typography',
+        icon: 'folder',
+        children: [
+          { id: 'typography-header', label: 'Header', icon: 'layers' },
+          { id: 'typography-display', label: 'Display', icon: 'layers' },
+          { id: 'typography-body', label: 'Body', icon: 'layers' },
+          { id: 'typography-label', label: 'Label', icon: 'layers' },
+          { id: 'typography-title', label: 'Title', icon: 'layers' },
+          { id: 'typography-usage', label: 'How to use', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'shadow',
+        label: 'Shadow',
+        icon: 'folder',
+        children: [
+          { id: 'shadow-scale', label: 'Scale', icon: 'layers' },
+          { id: 'shadow-usage', label: 'How to use', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'dimensions',
+        label: 'Dimensions',
+        icon: 'folder',
+        children: [
+          { id: 'dimensions-spacing', label: 'Spacing', icon: 'layers' },
+          { id: 'dimensions-radius', label: 'Border Radius', icon: 'layers' },
+          { id: 'dimensions-border', label: 'Border Width', icon: 'layers' },
+          { id: 'dimensions-usage', label: 'How to use', icon: 'layers' },
+        ],
+      },
     ],
   },
   {
@@ -100,8 +130,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   React.useEffect(() => {
     if (activePage.startsWith('colors-')) {
       setExpandedGroups((prev) => ({ ...prev, tokens: true, colors: true }));
-    } else if (['typography', 'spacing', 'radius'].includes(activePage)) {
-      setExpandedGroups((prev) => ({ ...prev, tokens: true }));
+    } else if (activePage.startsWith('typography')) {
+      setExpandedGroups((prev) => ({ ...prev, tokens: true, typography: true }));
+    } else if (activePage.startsWith('shadow')) {
+      setExpandedGroups((prev) => ({ ...prev, tokens: true, shadow: true }));
+    } else if (activePage.startsWith('dimensions') || ['spacing', 'radius'].includes(activePage)) {
+      setExpandedGroups((prev) => ({ ...prev, tokens: true, dimensions: true }));
     } else if (['forms', 'headers'].includes(activePage)) {
       setExpandedGroups((prev) => ({ ...prev, patterns: true }));
     } else if (
@@ -225,9 +259,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`sidebar ${isDark ? 'dark' : ''} ${isResizing ? 'resizing' : ''} ${
-        isMobileOpen ? 'mobile-open' : ''
-      }`}
+      className={`sidebar ${isDark ? 'dark' : ''} ${isResizing ? 'resizing' : ''} ${isMobileOpen ? 'mobile-open' : ''
+        }`}
       style={{
         width: sidebarWidth,
         minWidth: sidebarWidth,
