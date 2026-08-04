@@ -12,6 +12,8 @@ interface SidebarProps {
   onNavigate: (page: string) => void;
   isDark: boolean;
   onToggleTheme: () => void;
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -83,13 +85,42 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNavigate,
   isDark,
   onToggleTheme,
+  isMobileOpen = false,
+  onCloseMobile,
 }) => {
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
     components: true,
+    tokens: true,
+    colors: true,
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [sidebarWidth, setSidebarWidth] = useState(260);
   const [isResizing, setIsResizing] = useState(false);
+
+  React.useEffect(() => {
+    if (activePage.startsWith('colors-')) {
+      setExpandedGroups((prev) => ({ ...prev, tokens: true, colors: true }));
+    } else if (['typography', 'spacing', 'radius'].includes(activePage)) {
+      setExpandedGroups((prev) => ({ ...prev, tokens: true }));
+    } else if (['forms', 'headers'].includes(activePage)) {
+      setExpandedGroups((prev) => ({ ...prev, patterns: true }));
+    } else if (
+      [
+        'button',
+        'input-field',
+        'checkbox',
+        'radio-button',
+        'switch',
+        'card',
+        'badge',
+        'avatar',
+        'modal',
+        'toast',
+      ].includes(activePage)
+    ) {
+      setExpandedGroups((prev) => ({ ...prev, components: true }));
+    }
+  }, [activePage]);
 
   const startResizing = useCallback(
     (mouseDownEvent: React.MouseEvent) => {
@@ -194,7 +225,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`sidebar ${isDark ? 'dark' : ''} ${isResizing ? 'resizing' : ''}`}
+      className={`sidebar ${isDark ? 'dark' : ''} ${isResizing ? 'resizing' : ''} ${
+        isMobileOpen ? 'mobile-open' : ''
+      }`}
       style={{
         width: sidebarWidth,
         minWidth: sidebarWidth,
@@ -203,6 +236,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         position: 'relative',
       }}
     >
+      {/* Bottom Sheet Pull Handle (visible on mobile) */}
+      <div className="bottom-sheet-handle-wrapper" onClick={onCloseMobile}>
+        <div className="bottom-sheet-handle" />
+      </div>
+
       {/* Header with UX4G Logo asset */}
       <div className="sidebar-header">
         <div

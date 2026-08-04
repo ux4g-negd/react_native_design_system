@@ -1,0 +1,76 @@
+// Helper mapping between activePage ID and clean URL path string
+const PAGE_TO_PATH: Record<string, string> = {
+  introduction: 'introduction',
+  quickstart: 'quickstart',
+  'colors-primary': 'token/colors/primary',
+  'colors-secondary': 'token/colors/secondary',
+  'colors-tertiary': 'token/colors/tertiary',
+  'colors-red': 'token/colors/red',
+  'colors-orange': 'token/colors/orange',
+  'colors-yellow': 'token/colors/yellow',
+  'colors-gold': 'token/colors/gold',
+  'colors-green': 'token/colors/green',
+  'colors-lime': 'token/colors/lime',
+  'colors-blue': 'token/colors/blue',
+  'colors-skyblue': 'token/colors/skyblue',
+  'colors-cyan': 'token/colors/cyan',
+  'colors-purple': 'token/colors/purple',
+  'colors-pink': 'token/colors/pink',
+  'colors-neutral': 'token/colors/neutral',
+  'colors-semantic': 'token/colors/semantic',
+  typography: 'token/typography',
+  spacing: 'token/spacing',
+  radius: 'token/radius',
+  button: 'components/button',
+  'input-field': 'components/input-field',
+  checkbox: 'components/checkbox',
+  'radio-button': 'components/radio-button',
+  switch: 'components/switch',
+  card: 'components/card',
+  badge: 'components/badge',
+  avatar: 'components/avatar',
+  modal: 'components/modal',
+  toast: 'components/toast',
+  forms: 'patterns/forms',
+  headers: 'patterns/headers',
+};
+
+// Reverse map from clean URL path to activePage ID
+const PATH_TO_PAGE: Record<string, string> = Object.fromEntries(
+  Object.entries(PAGE_TO_PATH).map(([page, path]) => [path.toLowerCase(), page])
+);
+
+export function getPathFromPage(page: string): string {
+  return PAGE_TO_PATH[page] ?? page;
+}
+
+export function getPageFromPath(path: string): string {
+  const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+  return PATH_TO_PAGE[cleanPath] ?? 'introduction';
+}
+
+export function getPageFromUrl(): string {
+  const hash = window.location.hash;
+  if (!hash) return 'introduction';
+
+  // Support /#/?path=token/colors/primary and /#/token/colors/primary
+  const matchPathQuery = hash.match(/#\/\?path=([^&]+)/);
+  if (matchPathQuery && matchPathQuery[1]) {
+    return getPageFromPath(matchPathQuery[1]);
+  }
+
+  const matchSimpleHash = hash.match(/#\/(.+)/);
+  if (matchSimpleHash && matchSimpleHash[1]) {
+    return getPageFromPath(matchSimpleHash[1]);
+  }
+
+  return 'introduction';
+}
+
+export function updateUrlForPage(page: string) {
+  const path = getPathFromPage(page);
+  const targetHash = `#/?path=${path}`;
+  if (window.location.hash !== targetHash) {
+    window.history.pushState(null, '', targetHash);
+  }
+}

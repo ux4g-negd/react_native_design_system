@@ -1642,7 +1642,64 @@ body {
   margin-top: 2px;
 }
 
-/* ===== Responsive ===== */
+/* ===== Mobile Topbar & Overlay ===== */
+.mobile-topbar {
+  display: none;
+  height: 56px;
+  width: 100%;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E5E5E5;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 900;
+}
+
+.mobile-topbar.dark {
+  background: #171717;
+  border-bottom-color: #404040;
+  color: #FFFFFF;
+}
+
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #111827;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.mobile-topbar.dark .mobile-menu-btn {
+  color: #FFFFFF;
+}
+
+.mobile-logo-wrapper {
+  cursor: pointer;
+}
+
+.mobile-logo-img {
+  height: 24px;
+  width: auto;
+}
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 950;
+}
+
+/* ===== Responsive Breakpoints for Tablet & Mobile ===== */
 @media (max-width: 1024px) {
   .intro-top {
     flex-direction: column;
@@ -1653,15 +1710,216 @@ body {
   }
 }
 
-@media (max-width: 768px) {
+/* ===== Mobile Bottom Navigation Bar (matching docux4g.dl6.in/web) ===== */
+.mobile-bottombar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #FFFFFF;
+  border-top: 1px solid #E5E7EB;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1100;
+  cursor: pointer;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-bottombar.dark {
+  background: #171717;
+  border-top-color: #404040;
+  color: #FFFFFF;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.mobile-bottombar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.mobile-bottombar.dark .mobile-bottombar-left {
+  color: #FFFFFF;
+}
+
+.mobile-bottombar-icon {
+  font-size: 20px;
+  color: #4A2BC2;
+}
+
+.mobile-bottombar.dark .mobile-bottombar-icon {
+  color: #C0B3FF;
+}
+
+.mobile-bottombar-path {
+  font-family: 'Roboto', 'Inter', sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+/* ===== Bottom Sheet Handle ===== */
+.bottom-sheet-handle-wrapper {
+  display: none;
+  width: 100%;
+  padding: 10px 0 4px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.bottom-sheet-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #D1D5DB;
+}
+
+.sidebar.dark .bottom-sheet-handle {
+  background: #4B5563;
+}
+
+@media (max-width: 900px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #root {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .app-layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .mobile-topbar {
+    display: flex;
+  }
+
+  .mobile-bottombar {
+    display: flex;
+  }
+
+  .sidebar-backdrop {
+    display: block;
+  }
+
+  .bottom-sheet-handle-wrapper {
+    display: flex;
+  }
+
+  /* Bottom Sheet Mobile Drawer (matching doc.ux4g.gov.in/web) */
   .sidebar {
-    width: 220px;
-    min-width: 220px;
+    position: fixed !important;
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 80vh !important;
+    max-height: 80vh !important;
+    z-index: 1000 !important;
+    border-radius: 20px 20px 0 0 !important;
+    border-top: 1px solid #E5E7EB !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), background 0.3s ease;
   }
+
+  .sidebar.dark {
+    border-top-color: #404040 !important;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateY(0);
+  }
+
+  .sidebar-resizer {
+    display: none;
+  }
+
   .main-content {
+    margin-top: 56px;
+    margin-bottom: 48px;
     padding: 24px 20px 60px;
+    height: auto;
+    overflow-y: visible;
   }
-  .intro-heading {
+
+  .welcome-wrapper {
+    padding: 36px 20px 80px;
+  }
+
+  .hero-title {
     font-size: 32px;
+  }
+
+  .doc-title {
+    font-size: 26px;
+  }
+
+  .palette-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .semantic-pairs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .main-content {
+    padding: 16px 12px 60px;
+  }
+
+  .doc-title {
+    font-size: 22px;
+  }
+
+  .palette-grid {
+    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+    gap: 8px;
+  }
+
+  .swatch-color {
+    height: 60px;
+  }
+
+  .swatch-info {
+    padding: 8px;
+  }
+
+  .swatch-label {
+    font-size: 11.5px;
+  }
+
+  .swatch-hex {
+    font-size: 10px;
+  }
+
+  .swatch-code-text {
+    font-size: 10px;
+  }
+
+  .semantic-pair-row {
+    flex-direction: column;
+    gap: 8px;
   }
 }
