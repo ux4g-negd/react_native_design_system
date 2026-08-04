@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 interface NavItem {
   id: string;
@@ -22,7 +22,29 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Token',
     icon: 'folder',
     children: [
-      { id: 'colors', label: 'Colors', icon: 'invert_colors' },
+      {
+        id: 'colors',
+        label: 'Colors',
+        icon: 'folder',
+        children: [
+          { id: 'colors-primary', label: 'Primary', icon: 'layers' },
+          { id: 'colors-secondary', label: 'Secondary', icon: 'layers' },
+          { id: 'colors-tertiary', label: 'Tertiary', icon: 'layers' },
+          { id: 'colors-red', label: 'Red (Error)', icon: 'layers' },
+          { id: 'colors-orange', label: 'Orange (Warning)', icon: 'layers' },
+          { id: 'colors-yellow', label: 'Yellow', icon: 'layers' },
+          { id: 'colors-gold', label: 'Gold', icon: 'layers' },
+          { id: 'colors-green', label: 'Green (Success)', icon: 'layers' },
+          { id: 'colors-lime', label: 'Lime', icon: 'layers' },
+          { id: 'colors-blue', label: 'Blue (Info)', icon: 'layers' },
+          { id: 'colors-skyblue', label: 'Sky Blue', icon: 'layers' },
+          { id: 'colors-cyan', label: 'Cyan', icon: 'layers' },
+          { id: 'colors-purple', label: 'Purple', icon: 'layers' },
+          { id: 'colors-pink', label: 'Pink', icon: 'layers' },
+          { id: 'colors-neutral', label: 'Neutral', icon: 'layers' },
+          { id: 'colors-semantic', label: 'Semantic Tokens', icon: 'layers' },
+        ],
+      },
       { id: 'typography', label: 'Typography', icon: 'text_fields' },
       { id: 'spacing', label: 'Spacing', icon: 'straighten' },
       { id: 'radius', label: 'Radius', icon: 'rounded_corner' },
@@ -66,6 +88,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
     components: true,
   });
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarWidth, setSidebarWidth] = useState(260);
+  const [isResizing, setIsResizing] = useState(false);
+
+  const startResizing = useCallback(
+    (mouseDownEvent: React.MouseEvent) => {
+      mouseDownEvent.preventDefault();
+      setIsResizing(true);
+
+      const startX = mouseDownEvent.clientX;
+      const startWidth = sidebarWidth;
+
+      const onMouseMove = (mouseMoveEvent: MouseEvent) => {
+        const currentWidth = startWidth + (mouseMoveEvent.clientX - startX);
+        const clampedWidth = Math.min(Math.max(currentWidth, 180), 500);
+        setSidebarWidth(clampedWidth);
+      };
+
+      const onMouseUp = () => {
+        setIsResizing(false);
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      };
+
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    },
+    [sidebarWidth]
+  );
+
+  const handleResetWidth = () => {
+    setSidebarWidth(260);
+  };
 
   const toggleGroup = (id: string) => {
     setExpandedGroups((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -74,29 +128,88 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const filterItems = (items: NavItem[]): NavItem[] => {
     if (!searchQuery.trim()) return items;
     const q = searchQuery.toLowerCase();
-    return items
-      .map((item) => {
-        if (item.children) {
-          const filteredChildren = item.children.filter((c) =>
-            c.label.toLowerCase().includes(q)
-          );
-          if (filteredChildren.length > 0) {
-            return { ...item, children: filteredChildren };
+    const filter = (list: NavItem[]): NavItem[] =>
+      list
+        .map((item) => {
+          if (item.children) {
+            const filteredChildren = filter(item.children);
+            if (filteredChildren.length > 0) {
+              return { ...item, children: filteredChildren };
+            }
           }
-        }
-        if (item.label.toLowerCase().includes(q)) return item;
-        return null;
-      })
-      .filter(Boolean) as NavItem[];
+          if (item.label.toLowerCase().includes(q)) return item;
+          return null;
+        })
+        .filter(Boolean) as NavItem[];
+    return filter(items);
+  };
+
+  const renderNavItem = (item: NavItem, depth: number): React.ReactElement => {
+    if (item.children) {
+      const isExpanded = expandedGroups[item.id] || !!searchQuery.trim();
+      return (
+        <div key={item.id}>
+          <button
+            className={`nav-group-header ${depth > 0 ? 'nav-group-header-nested' : ''}`}
+            onClick={() => toggleGroup(item.id)}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span className="material-symbols-outlined nav-icon">
+                {isExpanded ? 'folder_open' : item.icon}
+              </span>
+              {item.label}
+            </span>
+            <span
+              className="material-symbols-outlined chevron-icon"
+              style={{
+                fontSize: 16,
+                transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease',
+              }}
+            >
+              expand_more
+            </span>
+          </button>
+          <div className={`nav-group-children ${isExpanded ? 'expanded' : ''}`}>
+            {item.children.map((child) => renderNavItem(child, depth + 1))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <button
+        key={item.id}
+        className={`nav-item ${depth > 0 ? 'nav-item-nested' : ''} ${activePage === item.id ? 'active' : ''
+          }`}
+        onClick={() => onNavigate(item.id)}
+      >
+        <span className="material-symbols-outlined nav-icon">{item.icon}</span>
+        {item.label}
+      </button>
+    );
   };
 
   const filteredItems = filterItems(NAV_ITEMS);
 
   return (
-    <aside className={`sidebar ${isDark ? 'dark' : ''}`}>
+    <aside
+      className={`sidebar ${isDark ? 'dark' : ''} ${isResizing ? 'resizing' : ''}`}
+      style={{
+        width: sidebarWidth,
+        minWidth: sidebarWidth,
+        maxWidth: sidebarWidth,
+        flexShrink: 0,
+        position: 'relative',
+      }}
+    >
       {/* Header with UX4G Logo asset */}
       <div className="sidebar-header">
-        <div className="sidebar-logo-img-wrapper" onClick={() => onNavigate('introduction')} style={{ cursor: 'pointer' }}>
+        <div
+          className="sidebar-logo-img-wrapper"
+          onClick={() => onNavigate('introduction')}
+          style={{ cursor: 'pointer' }}
+        >
           <img
             src="/ux4g_logo.svg"
             alt="UX4G Logo"
@@ -118,7 +231,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Search */}
       <div className="sidebar-search">
         <div className="search-wrapper">
-          <span className="material-symbols-outlined search-icon" style={{ fontSize: 18 }}>search</span>
+          <span className="material-symbols-outlined search-icon" style={{ fontSize: 18 }}>
+            search
+          </span>
           <input
             className="search-input"
             type="text"
@@ -131,51 +246,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation */}
       <nav className="sidebar-nav">
-        {filteredItems.map((item) => {
-          if (item.children) {
-            const isExpanded = expandedGroups[item.id] || !!searchQuery.trim();
-            return (
-              <div key={item.id}>
-                <button
-                  className="nav-group-header"
-                  onClick={() => toggleGroup(item.id)}
-                >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span className="material-symbols-outlined nav-icon">{item.icon}</span>
-                    {item.label}
-                  </span>
-                  <span className="material-symbols-outlined chevron-icon" style={{ fontSize: 16, transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}>
-                    expand_more
-                  </span>
-                </button>
-                <div className={`nav-group-children ${isExpanded ? 'expanded' : ''}`}>
-                  {item.children.map((child) => (
-                    <button
-                      key={child.id}
-                      className={`nav-item ${activePage === child.id ? 'active' : ''}`}
-                      onClick={() => onNavigate(child.id)}
-                    >
-                      <span className="material-symbols-outlined nav-icon">{child.icon}</span>
-                      {child.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            );
-          }
-
-          return (
-            <button
-              key={item.id}
-              className={`nav-item ${activePage === item.id ? 'active' : ''}`}
-              onClick={() => onNavigate(item.id)}
-            >
-              <span className="material-symbols-outlined nav-icon">{item.icon}</span>
-              {item.label}
-            </button>
-          );
-        })}
+        {filteredItems.map((item) => renderNavItem(item, 0))}
       </nav>
+
+      {/* Resizer Handle */}
+      <div
+        className="sidebar-resizer"
+        onMouseDown={startResizing}
+        onDoubleClick={handleResetWidth}
+        title="Drag to resize sidebar (Double click to reset)"
+      />
     </aside>
   );
 };

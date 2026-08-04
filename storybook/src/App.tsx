@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Introduction } from './pages/Introduction';
 import { ButtonDoc } from './pages/ButtonDoc';
+import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState('introduction');
@@ -10,6 +11,10 @@ const App: React.FC = () => {
   const toggleTheme = () => setIsDark((prev) => !prev);
 
   const renderPage = () => {
+    if (activePage.startsWith('colors-')) {
+      const section = activePage.replace('colors-', '') as ColorsSection;
+      return <ColorsDoc isDark={isDark} section={section} />;
+    }
     switch (activePage) {
       case 'introduction':
         return <Introduction isDark={isDark} onNavigate={setActivePage} />;
