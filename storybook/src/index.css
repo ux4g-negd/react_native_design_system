@@ -94,6 +94,45 @@ body {
   background: rgba(165, 180, 252, 0.4);
 }
 
+/* ===== Mobile Topbar ===== */
+.mobile-topbar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    padding: 0 16px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #E5E7EB;
+    z-index: 999;
+  }
+
+  .mobile-topbar.dark {
+    background: #171717;
+    border-bottom-color: #404040;
+  }
+
+  .mobile-logo-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .mobile-logo-img {
+    height: 28px;
+    width: auto;
+  }
+}
+
+
 .sidebar-header {
   padding: 24px 20px 16px;
   display: flex;
