@@ -119,9 +119,9 @@ export const Ux4gFeedbackFormStar: React.FC<Ux4gFeedbackFormStarProps> = ({
 
   const currentActiveRatingColor = resolveActiveRatingColor();
   const currentInactiveRatingColor = inactiveRatingColor ?? (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)');
-  
+
   const onBackgroundColor = colors.onBackground ?? colors.onSurface ?? (isDark ? UX4GColors.white : UX4GColors.neutral1000black);
-  
+
   const finalSuccessIconColor = successIconColor ?? colors.success ?? UX4GColors.green600;
 
   if (isSubmitted) {

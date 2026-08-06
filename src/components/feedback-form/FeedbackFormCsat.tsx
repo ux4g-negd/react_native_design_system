@@ -90,10 +90,10 @@ export const Ux4gFeedbackFormCsat: React.FC<Ux4gFeedbackFormCsatProps> = ({
   const unselectedBgColor = isDark ? UX4GColors.neutral800 : UX4GColors.neutral100;
   const unselectedIconColor = isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
 
-  const selectedBgColors = isDark 
+  const selectedBgColors = isDark
     ? [UX4GColors.red900, UX4GColors.red950, UX4GColors.orange950, UX4GColors.green950, UX4GColors.green900]
     : [UX4GColors.red100, UX4GColors.red50, UX4GColors.orange50, UX4GColors.green50, UX4GColors.green100];
-  
+
   const selectedIconColors = isDark
     ? [UX4GColors.red300, UX4GColors.red300, UX4GColors.orange300, UX4GColors.green300, UX4GColors.green300]
     : [UX4GColors.red600, UX4GColors.red600, UX4GColors.orange600, UX4GColors.green600, UX4GColors.green600];

@@ -18,28 +18,18 @@ const getMobileBreadcrumb = (page: string) => {
     const s = page.replace('colors-', '');
     return `Token / Colors / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
   }
-  if (page.startsWith('typography')) {
-    const s = page.replace('typography-', '').replace('typography', 'header');
-    return `Token / Typography / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
-  }
-  if (page.startsWith('shadow')) {
-    const s = page.replace('shadow-', '').replace('shadow', 'scale');
-    return `Token / Shadow / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
-  }
-  if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) {
-    const s = page.replace('dimensions-', '').replace('dimensions', 'spacing');
-    return `Token / Dimensions / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
-  }
-  if (['forms', 'headers'].includes(page)) {
-    return `Patterns / ${page.charAt(0).toUpperCase() + page.slice(1)}`;
-  }
-  return `Components / ${page.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}`;
+  if (page.startsWith('typography')) return 'Token / Typography';
+  if (page.startsWith('shadow')) return 'Token / Shadow';
+  if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page.startsWith('button')) return 'Components / Buttons';
+  if (page.startsWith('date-picker')) return 'Components / Date Picker';
+  return 'Documentation';
 };
 
-const App: React.FC = () => {
-  const [activePage, setActivePage] = useState<string>(() => getPageFromUrl());
-  const [isDark, setIsDark] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+export const App: React.FC = () => {
+  const [activePage, setActivePage] = useState<string>('introduction');
+  const [isDark, setIsDark] = useState<boolean>(false);
+  const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
 
   const toggleTheme = () => setIsDark((prev) => !prev);
 
@@ -50,12 +40,12 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Initial sync of URL hash
-    updateUrlForPage(activePage);
+    const initialPage = getPageFromUrl();
+    setActivePage(initialPage);
 
     const handleUrlChange = () => {
-      const pageFromUrl = getPageFromUrl();
-      setActivePage(pageFromUrl);
+      const page = getPageFromUrl();
+      setActivePage(page);
     };
 
     window.addEventListener('popstate', handleUrlChange);
@@ -87,26 +77,15 @@ const App: React.FC = () => {
       else if (activePage === 'dimensions-usage') section = 'usage';
       return <DimensionsDoc isDark={isDark} section={section} />;
     }
+    if (activePage.startsWith('button')) {
+      return <ButtonDoc isDark={isDark} story={activePage} />;
+    }
+
     switch (activePage) {
       case 'introduction':
         return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
-      case 'button':
-        return <ButtonDoc isDark={isDark} />;
       default:
-        // Placeholder for pages not yet built
-        return (
-          <div className="doc-container">
-            <div className="doc-header">
-              <h1 className="doc-title" style={{ textTransform: 'capitalize' }}>
-                {activePage.replace(/-/g, ' ')}
-              </h1>
-              <p className="doc-description">
-                Documentation for this component is coming soon. Currently only the
-                Button component is documented with live preview and code.
-              </p>
-            </div>
-          </div>
-        );
+        return <ButtonDoc isDark={isDark} story={activePage} />;
     }
   };
 
@@ -148,7 +127,7 @@ const App: React.FC = () => {
         {renderPage()}
       </main>
 
-      {/* Mobile Bottom Navigation Bar (matching docux4g web layout) */}
+      {/* Mobile Bottom Navigation Bar */}
       <div
         className={`mobile-bottombar ${isDark ? 'dark' : ''}`}
         onClick={() => setIsMobileOpen((prev) => !prev)}

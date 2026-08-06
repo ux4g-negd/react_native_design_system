@@ -976,11 +976,13 @@ body {
     flex-direction: column;
     gap: 40px;
   }
+
   .hero-left,
   .hero-right {
     width: 100%;
     min-width: unset;
   }
+
   .cards-grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -990,21 +992,26 @@ body {
   .welcome-wrapper {
     padding: 32px 20px;
   }
+
   .hero-title {
     font-size: 32px;
   }
+
   .section-heading {
     font-size: 24px;
   }
+
   .cards-grid-2x2,
   .cards-grid-3 {
     grid-template-columns: 1fr;
   }
+
   .overview-stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
+
   .stat-divider {
     display: none;
   }
@@ -1196,7 +1203,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   border-bottom: 1px solid #2d2d44;
 }
 
@@ -1236,7 +1243,7 @@ body {
 }
 
 .copy-btn:hover {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-color: #C0B3FF;
   color: #C0B3FF;
 }
@@ -2053,9 +2060,10 @@ body {
 .main-content.dark .dimensions-border-val {
   color: rgba(255, 255, 255, 0.4);
 }
-  border-color: #6A4EFF;
-  border-radius: 6px;
-  background: rgba(106, 78, 255, 0.05);
+
+border-color: #6A4EFF;
+border-radius: 6px;
+background: rgba(106, 78, 255, 0.05);
 }
 
 /* ===== Mobile Topbar & Overlay ===== */
@@ -2120,6 +2128,7 @@ body {
   .intro-top {
     flex-direction: column;
   }
+
   .intro-right {
     width: 100%;
     min-width: unset;
@@ -2338,4 +2347,420 @@ body {
     flex-direction: column;
     gap: 8px;
   }
+}
+
+/* ==========================================================================
+   Widgetbook Page & Panel Layout (Matching Image Reference)
+   ========================================================================== */
+
+.wb-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #FFFFFF;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #0F172A;
+}
+
+.dark .wb-page {
+  background-color: #0F172A;
+  color: #F8FAFC;
+}
+
+/* Header */
+.wb-header {
+  padding: 24px 32px 16px;
+  border-bottom: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
+}
+
+.dark .wb-header {
+  background-color: #0F172A;
+  border-bottom-color: #1E293B;
+}
+
+.wb-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.wb-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.dark .wb-title {
+  color: #F8FAFC;
+}
+
+.wb-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background-color: #EEF2FF;
+  color: #4F46E5;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dark .wb-badge {
+  background-color: rgba(79, 70, 229, 0.2);
+  color: #818CF8;
+}
+
+.wb-subtitle {
+  font-size: 14px;
+  color: #64748B;
+  margin: 0;
+  max-width: 800px;
+  line-height: 1.5;
+}
+
+.dark .wb-subtitle {
+  color: #94A3B8;
+}
+
+/* Main Body (Main left + Panel right) */
+.wb-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  flex-direction: row;
+}
+
+/* Left Main Area */
+.wb-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 32px;
+  overflow-y: auto;
+  background-color: #FFFFFF;
+}
+
+.dark .wb-main {
+  background-color: #0F172A;
+}
+
+/* Main Tab Bar (Preview / Code / Props) */
+.wb-tab-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  border-bottom: 1px solid #E2E8F0;
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+}
+
+.dark .wb-tab-bar {
+  border-bottom-color: #1E293B;
+}
+
+.wb-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748B;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.wb-tab:hover {
+  color: #0F172A;
+}
+
+.dark .wb-tab {
+  color: #94A3B8;
+}
+
+.dark .wb-tab:hover {
+  color: #F8FAFC;
+}
+
+.wb-tab.active {
+  color: #2563EB;
+  font-weight: 600;
+}
+
+.dark .wb-tab.active {
+  color: #60A5FA;
+}
+
+.wb-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #2563EB;
+  border-radius: 2px;
+}
+
+.dark .wb-tab.active::after {
+  background-color: #60A5FA;
+}
+
+.wb-tab-icon {
+  font-size: 18px !important;
+}
+
+/* Tab Content */
+.wb-tab-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.wb-preview-area {
+  flex: 1;
+  min-height: 420px;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  overflow: auto;
+}
+
+.wb-preview-area.dark {
+  background-color: #1E293B;
+  border-color: #334155;
+}
+
+.wb-code-area {
+  background-color: #0F172A;
+  border-radius: 12px;
+  padding: 16px;
+  overflow: auto;
+}
+
+.wb-props-area {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dark .wb-props-area {
+  background-color: #1E293B;
+  border-color: #334155;
+}
+
+.props-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.props-table th {
+  background-color: #F1F5F9;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.dark .props-table th {
+  background-color: #0F172A;
+  color: #94A3B8;
+  border-bottom-color: #334155;
+}
+
+.props-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F1F5F9;
+  color: #334155;
+}
+
+.dark .props-table td {
+  border-bottom-color: #1E293B;
+  color: #CBD5E1;
+}
+
+.prop-name {
+  font-family: monospace;
+  font-weight: 600;
+  color: #2563EB;
+}
+
+.dark .prop-name {
+  color: #60A5FA;
+}
+
+.prop-type {
+  font-family: monospace;
+  color: #D97706;
+}
+
+.dark .prop-type {
+  color: #FBBF24;
+}
+
+.prop-default {
+  font-family: monospace;
+  color: #64748B;
+}
+
+/* ── Right Panel Sidebar (Matching Flutter Widgetbook Screenshot) ── */
+.wb-panel {
+  width: 300px;
+  min-width: 300px;
+  background-color: #FFFFFF;
+  border-left: 1px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.dark .wb-panel {
+  background-color: #0F172A;
+  border-left-color: #1E293B;
+}
+
+/* Top Panel Tabs: Panel | Settings */
+.wb-panel-tabs {
+  display: flex;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.dark .wb-panel-tabs {
+  border-bottom-color: #1E293B;
+}
+
+.wb-panel-tab {
+  flex: 1;
+  padding: 14px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748B;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.wb-panel-tab.active {
+  color: #0284C7;
+}
+
+.dark .wb-panel-tab.active {
+  color: #38BDF8;
+}
+
+.wb-panel-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #0284C7;
+}
+
+.dark .wb-panel-tab.active::after {
+  background-color: #38BDF8;
+}
+
+/* Panel Body Knobs */
+.wb-panel-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wb-knob-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wb-knob-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0284C7;
+}
+
+.dark .wb-knob-label {
+  color: #38BDF8;
+}
+
+.wb-select,
+.wb-text-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  background-color: #EDF2F7;
+  font-size: 14px;
+  color: #1E293B;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.wb-select:focus,
+.wb-text-input:focus {
+  border-color: #0284C7;
+  background-color: #FFFFFF;
+}
+
+.dark .wb-select,
+.dark .wb-text-input {
+  background-color: #1E293B;
+  border-color: #334155;
+  color: #F8FAFC;
+}
+
+/* Toggle Switch Control in Panel */
+.wb-toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: #CBD5E1;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.wb-toggle.active {
+  background-color: #0284C7;
+}
+
+.wb-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.wb-toggle.active .wb-toggle-thumb {
+  transform: translateX(20px);
 }

@@ -75,7 +75,7 @@ export const Ux4gTooltip: React.FC<Ux4gTooltipProps> = ({
   const [isVisible, setIsVisible] = useState(false);
   const [hasAutoShown, setHasAutoShown] = useState(false);
   const [anchorRect, setAnchorRect] = useState({ x: 0, y: 0, width: 0, height: 0 });
-  
+
   // To measure tooltip dimensions
   const [tooltipSize, setTooltipSize] = useState({ width: 0, height: 0 });
   const [isMeasured, setIsMeasured] = useState(false);
@@ -101,7 +101,7 @@ export const Ux4gTooltip: React.FC<Ux4gTooltipProps> = ({
           useNativeDriver: true,
         }),
       ]).start();
-      
+
       // Auto dismiss if not persistent
       if (!persistent) {
         const timer = setTimeout(() => {
@@ -186,16 +186,16 @@ export const Ux4gTooltip: React.FC<Ux4gTooltipProps> = ({
   // Calculate X and Y coordinates for the tooltip container (including arrow)
   let tooltipX = 0;
   let tooltipY = 0;
-  
+
   // Arrow offset relative to tooltip container
   let arrowTop: number | undefined;
   let arrowBottom: number | undefined;
   let arrowLeft: number | undefined;
   let arrowRight: number | undefined;
-  
+
   // We need to construct the arrow shape using border tricks
   let arrowStyle: any = { position: 'absolute' };
-  
+
   const arrowHalf = arrowWidth / 2;
   const tipOffset = cornerRadius + arrowHalf + 8; // Margin from edges
 
@@ -289,7 +289,7 @@ export const Ux4gTooltip: React.FC<Ux4gTooltipProps> = ({
   // Bound within screen
   tooltipX = Math.max(8, Math.min(tooltipX, windowWidth - tooltipSize.width - 8));
   tooltipY = Math.max(8, Math.min(tooltipY, windowHeight - tooltipSize.height - 8));
-  
+
   // Transform origin calculation based on placement
   // Note: standard transformOrigin is not consistently supported across all RN versions without extra config,
   // but Animated.View uses scale which defaults to center.

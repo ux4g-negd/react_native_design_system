@@ -60,6 +60,23 @@ export function getPathFromPage(page: string): string {
 
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+  if (cleanPath.startsWith('components/button')) {
+    if (cleanPath.includes('introduction')) return 'button-introduction';
+    if (cleanPath.includes('variants')) return 'button-variants';
+    if (cleanPath.includes('sizes')) return 'button-sizes';
+    if (cleanPath.includes('icon-button')) return 'button-icon-button';
+    if (cleanPath.includes('icons')) return 'button-icons';
+    if (cleanPath.includes('states')) return 'button-states';
+    if (cleanPath.includes('convenience')) return 'button-convenience';
+    return 'button-primary';
+  }
+
+  if (cleanPath.startsWith('components/date-picker')) {
+    if (cleanPath.includes('range')) return 'date-picker-range';
+    return 'date-picker-default';
+  }
+
   return PATH_TO_PAGE[cleanPath] ?? 'introduction';
 }
 

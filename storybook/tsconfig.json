@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -16,10 +20,19 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "react-native": ["./node_modules/react-native-web"],
-      "ux4g-design-system": ["../src"],
-      "ux4g-design-system/*": ["../src/*"]
+      "react-native": [
+        "./node_modules/react-native-web"
+      ],
+      "ux4g-design-system": [
+        "../src"
+      ],
+      "ux4g-design-system/*": [
+        "../src/*"
+      ]
     }
   },
-  "include": ["src", "../src"]
+  "include": [
+    "src",
+    "../src"
+  ]
 }

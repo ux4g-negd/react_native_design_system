@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native';
-import { 
-  Ux4gTooltip, 
+import {
+  Ux4gTooltip,
   Ux4gRichTooltip,
   Ux4gTooltipPlacement,
   Ux4gButton,
@@ -20,7 +20,7 @@ export const TooltipShowcase: React.FC = () => {
   );
 
   const placements: Ux4gTooltipPlacement[] = [
-    'topStart', 'top', 'topEnd', 
+    'topStart', 'top', 'topEnd',
     'bottomStart', 'bottom', 'bottomEnd',
     'leftStart', 'left', 'leftEnd',
     'rightStart', 'right', 'rightEnd'
@@ -31,7 +31,7 @@ export const TooltipShowcase: React.FC = () => {
       <Text style={[styles.title, { color: theme.colors.onBackground }]}>
         Standard Tooltips
       </Text>
-      
+
       <Text style={[styles.desc, { color: theme.colors.onBackground, opacity: 0.7 }]}>
         Tap the badges to see standard tooltips in different placements.
       </Text>

@@ -88,15 +88,15 @@ const NAV_ITEMS: NavItem[] = [
     icon: 'folder',
     children: [
       { id: 'button', label: 'Button', icon: 'smart_button' },
-      { id: 'input-field', label: 'Input Field', icon: 'edit_note' },
-      { id: 'checkbox', label: 'Checkbox', icon: 'check_box' },
-      { id: 'radio-button', label: 'Radio Button', icon: 'radio_button_checked' },
-      { id: 'switch', label: 'Switch', icon: 'toggle_on' },
-      { id: 'card', label: 'Card', icon: 'view_agenda' },
-      { id: 'badge', label: 'Badge', icon: 'loyalty' },
-      { id: 'avatar', label: 'Avatar', icon: 'account_circle' },
-      { id: 'modal', label: 'Modal', icon: 'web_asset' },
-      { id: 'toast', label: 'Toast', icon: 'notifications' },
+      // { id: 'input-field', label: 'Input Field', icon: 'edit_note' },
+      // { id: 'checkbox', label: 'Checkbox', icon: 'check_box' },
+      // { id: 'radio-button', label: 'Radio Button', icon: 'radio_button_checked' },
+      // { id: 'switch', label: 'Switch', icon: 'toggle_on' },
+      // { id: 'card', label: 'Card', icon: 'view_agenda' },
+      // { id: 'badge', label: 'Badge', icon: 'loyalty' },
+      // { id: 'avatar', label: 'Avatar', icon: 'account_circle' },
+      // { id: 'modal', label: 'Modal', icon: 'web_asset' },
+      // { id: 'toast', label: 'Toast', icon: 'notifications' },
     ],
   },
   {
@@ -118,16 +118,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isMobileOpen = false,
   onCloseMobile,
 }) => {
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    components: true,
-    tokens: true,
-    colors: true,
-  });
+  // All sidebar folders collapsed by default
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState('');
   const [sidebarWidth, setSidebarWidth] = useState(260);
   const [isResizing, setIsResizing] = useState(false);
 
+  // Auto-expand only the parent group of the currently active sub-page
   React.useEffect(() => {
+    if (!activePage || activePage === 'introduction' || activePage === 'quickstart') {
+      return;
+    }
     if (activePage.startsWith('colors-')) {
       setExpandedGroups((prev) => ({ ...prev, tokens: true, colors: true }));
     } else if (activePage.startsWith('typography')) {
@@ -138,9 +139,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, tokens: true, dimensions: true }));
     } else if (['forms', 'headers'].includes(activePage)) {
       setExpandedGroups((prev) => ({ ...prev, patterns: true }));
+    } else if (activePage.startsWith('button')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'button-group': true }));
+    } else if (activePage.startsWith('date-picker')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'date-picker-group': true }));
+    } else if (activePage.startsWith('modal')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'modal-group': true }));
     } else if (
       [
-        'button',
         'input-field',
         'checkbox',
         'radio-button',
@@ -148,7 +154,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         'card',
         'badge',
         'avatar',
-        'modal',
         'toast',
       ].includes(activePage)
     ) {
