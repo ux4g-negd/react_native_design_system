@@ -182,7 +182,7 @@ export const Ux4gFeedbackFormNps: React.FC<Ux4gFeedbackFormNpsProps> = ({
           <View style={{ marginTop: 8 }}>
             <Ux4gButton
               text={skipButtonText}
-              variant="tertiary"
+              variant="ghost"
               size="large"
               width="100%"
               onPress={onSkip}

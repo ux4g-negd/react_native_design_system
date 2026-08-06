@@ -2,6 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Introduction } from './pages/Introduction';
 import { ButtonDoc } from './pages/ButtonDoc';
+import { DatePickerDoc } from './pages/DatePickerDoc';
+import { DropdownDoc } from './pages/DropdownDoc';
+import { InputFieldDoc } from './pages/InputFieldDoc';
+import { SpinnerDoc } from './pages/SpinnerDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -79,6 +83,18 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('button')) {
       return <ButtonDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('date-picker')) {
+      return <DatePickerDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('dropdown')) {
+      return <DropdownDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('input')) {
+      return <InputFieldDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('spinner')) {
+      return <SpinnerDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {

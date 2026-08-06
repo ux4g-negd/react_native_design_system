@@ -431,8 +431,8 @@ const JourneyStepCard: React.FC<{
         {statusPillSegments.length > 0 && (
           <View style={{ marginTop: 8, alignSelf: 'flex-start' }}>
             <Ux4gUnifiedPillTag
-              size="l"
-              customBorderRadius={8}
+              height={24}
+              containerStyle={{ borderRadius: 8 }}
               segments={statusPillSegments}
             />
           </View>

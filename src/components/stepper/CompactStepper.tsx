@@ -118,6 +118,7 @@ interface CapsuleIndicatorProps {
   currentStep: number;
   activeColor: string;
   inactiveColor: string;
+  expand?: boolean;
 }
 
 const CapsuleIndicator: React.FC<CapsuleIndicatorProps> = ({
@@ -125,6 +126,7 @@ const CapsuleIndicator: React.FC<CapsuleIndicatorProps> = ({
   currentStep,
   activeColor,
   inactiveColor,
+  expand,
 }) => {
   return (
     <View

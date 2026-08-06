@@ -118,7 +118,7 @@ export const AppHeaderShowcase: React.FC = () => {
             leadingWidgets={[<Text style={{ fontSize: 24, color: colors.onSurface }}>☰</Text>]}
             actions={[{ icon: 'notifications' }, { icon: 'settings' }]}
             showAvatar
-            avatarIcon={<Text style={{ fontSize: 16, color: colors.onPrimary }}>👤</Text>}
+            avatar={<Text style={{ fontSize: 16, color: colors.onPrimary }}>👤</Text>}
             avatarSize="s"
             useSafeArea={false}
           />

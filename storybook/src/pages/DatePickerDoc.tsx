@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Ux4gButton, Ux4gButtonSize, Ux4gButtonVariant } from '../../../src/components/button/Button';
+import { Ux4gDatePickerMode } from '../../../src/components/date-picker/DatePicker';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { CodeBlock } from '../components/CodeBlock';
 
-interface ButtonDocProps {
+interface DatePickerDocProps {
   isDark: boolean;
   story?: string;
 }
@@ -11,63 +11,46 @@ interface ButtonDocProps {
 type MainTab = 'preview' | 'code' | 'props';
 type PanelTab = 'panel' | 'settings';
 
-export const ButtonDoc: React.FC<ButtonDocProps> = ({ isDark, story = 'button-primary' }) => {
+export const DatePickerDoc: React.FC<DatePickerDocProps> = ({ isDark, story = 'date-picker-single' }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
-  const [activePanelTab, setActivePanelTab] = useState<PanelTab>('panel');
 
-  /* ── Knobs (Matching Flutter Widgetbook Image) ── */
-  const [size, setSize] = useState<Ux4gButtonSize>('medium');
-  const [text, setText] = useState<string>('Primary Button');
+  /* ── Knobs ── */
+  const [mode, setMode] = useState<Ux4gDatePickerMode>('single');
+  const [label, setLabel] = useState<string>('Select Date');
   const [enabled, setEnabled] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [variant, setVariant] = useState<Ux4gButtonVariant>('primary');
 
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push(`import { Ux4gButton } from 'ux4g-react-native-design-system';`);
+    lines.push(`import { Ux4gDatePicker } from 'ux4g-react-native-design-system';`);
     lines.push('');
-    lines.push('<Ux4gButton');
-    if (variant !== 'primary') lines.push(`  variant="${variant}"`);
-    if (size !== 'medium') lines.push(`  size="${size}"`);
-    lines.push(`  text="${text}"`);
+    lines.push('<Ux4gDatePicker');
+    lines.push(`  mode="${mode}"`);
+    lines.push(`  label="${label}"`);
     if (!enabled) lines.push('  enabled={false}');
-    if (loading) lines.push('  isLoading={true}');
-    lines.push('  onPress={() => console.log("Button pressed")}\n/>');
+    lines.push('/>');
     return lines.join('\n');
-  }, [variant, size, text, enabled, loading]);
+  }, [mode, label, enabled]);
 
   /* ── Live Preview (Expo Snack) ── */
   const renderStoryPreview = () => {
     let componentsSnippet = '';
 
-    if (story === 'button-introduction') {
-      componentsSnippet = `        <Ux4gButton text="Primary Button" variant="primary" size="${size}" enabled={${enabled}} isLoading={${loading}} />
-        <Ux4gButton text="Outline Button" variant="outline" size="${size}" enabled={${enabled}} isLoading={${loading}} />
-        <Ux4gButton text="Ghost Button" variant="ghost" size="${size}" enabled={${enabled}} isLoading={${loading}} />`;
-    } else if (story === 'button-variants') {
-      componentsSnippet = `        <Ux4gButton text="Primary" variant="primary" size="${size}" enabled={${enabled}} isLoading={${loading}} />
-        <Ux4gButton text="Secondary" variant="secondary" size="${size}" enabled={${enabled}} isLoading={${loading}} />
-        <Ux4gButton text="Outline" variant="outline" size="${size}" enabled={${enabled}} isLoading={${loading}} />
-        <Ux4gButton text="Ghost" variant="ghost" size="${size}" enabled={${enabled}} isLoading={${loading}} />`;
-    } else if (story === 'button-sizes') {
-      componentsSnippet = `        <Ux4gButton text="Small" size="small" variant="${variant}" enabled={${enabled}} isLoading={${loading}} />
-        <Ux4gButton text="Medium" size="medium" variant="${variant}" enabled={${enabled}} isLoading={${loading}} />
-        <Ux4gButton text="Large" size="large" variant="${variant}" enabled={${enabled}} isLoading={${loading}} />`;
+    if (story === 'date-picker-single') {
+      componentsSnippet = `        <Ux4gDatePicker mode="single" label="Single Date Picker" enabled={${enabled}} />`;
+    } else if (story === 'date-picker-range') {
+      componentsSnippet = `        <Ux4gDatePicker mode="range" label="Date Range Picker" enabled={${enabled}} />`;
     } else {
-      componentsSnippet = `        <Ux4gButton
-          variant="${variant}"
-          size="${size}"
-          text="${text}"
+      componentsSnippet = `        <Ux4gDatePicker
+          mode="${mode}"
+          label="${label}"
           enabled={${enabled}}
-          isLoading={${loading}}
-          onPress={() => console.log("Button pressed")}
         />`;
     }
 
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gDatePicker, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
 
 export default function App() {
   return (
@@ -88,7 +71,7 @@ const styles = StyleSheet.create({
     padding: 20
   }
 });`;
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gDatePicker%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
     return (
       <iframe
         src={snackUrl}
@@ -100,14 +83,19 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'text', type: 'string', default: '—', desc: 'Text label inside the button' },
-    { name: 'variant', type: "'primary' | 'secondary' | 'outline' | 'ghost'", default: "'primary'", desc: 'Visual button style variant' },
-    { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", desc: 'Button sizing preset (32pt / 40pt / 48pt)' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether button is interactive and enabled' },
-    { name: 'isLoading', type: 'boolean', default: 'false', desc: 'Shows spinner and prevents press' },
-    { name: 'leadingIcon', type: 'ReactNode | Function', default: '—', desc: 'Icon rendered before text' },
-    { name: 'trailingIcon', type: 'ReactNode | Function', default: '—', desc: 'Icon rendered after text' },
-    { name: 'onPress', type: '() => void', default: '—', desc: 'Press handler callback' },
+    { name: 'mode', type: "'single' | 'range'", default: "'single'", desc: 'Mode for date selection' },
+    { name: 'initialDate', type: 'Date', default: '—', desc: 'Initial selected date' },
+    { name: 'initialDateRange', type: 'DateRange', default: '—', desc: 'Initial selected date range' },
+    { name: 'minDate', type: 'Date', default: '—', desc: 'Minimum selectable date' },
+    { name: 'maxDate', type: 'Date', default: '—', desc: 'Maximum selectable date' },
+    { name: 'onDateSelected', type: '(date: Date) => void', default: '—', desc: 'Callback fired when a single date is selected' },
+    { name: 'onDateRangeSelected', type: '(range: DateRange) => void', default: '—', desc: 'Callback fired when a date range is selected' },
+    { name: 'placeholder', type: 'string', default: "'Select date'", desc: 'Placeholder hint when no date is selected' },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether interaction is enabled' },
+    { name: 'label', type: 'string', default: '—', desc: 'Label text rendered above the field box' },
+    { name: 'description', type: 'string', default: '—', desc: 'Description / caption text rendered below the field box' },
+    { name: 'isRequired', type: 'boolean', default: 'false', desc: 'Whether field is required' },
+    { name: 'status', type: 'Ux4gInputFieldStatus', default: "'defaultStatus'", desc: 'Status variant controlling border & caption color' },
   ];
 
   return (
@@ -115,11 +103,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Button</h1>
+          <h1 className="wb-title">Date Picker</h1>
           <span className="wb-badge">Component</span>
         </div>
         <p className="wb-subtitle">
-          Button trigger an action or event, such as submitting a form, opening a dialog or performing a specific task. It provide users with a clear Call to Action (CTA), guiding them through a workflow.
+          Date Picker allows users to select a specific date or a range of dates from a calendar interface.
         </p>
       </div>
 
@@ -165,7 +153,7 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'code' && (
               <div className="wb-code-area">
-                <CodeBlock code={codeString} language="TSX" filename="ButtonExample.tsx" />
+                <CodeBlock code={codeString} language="TSX" filename="DatePickerExample.tsx" />
               </div>
             )}
 
@@ -201,4 +189,4 @@ const styles = StyleSheet.create({
   );
 };
 
-export default ButtonDoc;
+export default DatePickerDoc;

@@ -213,7 +213,7 @@ export const Ux4gFeedbackFormStar: React.FC<Ux4gFeedbackFormStarProps> = ({
           <View style={{ marginTop: 8 }}>
             <Ux4gButton
               text={skipButtonText}
-              variant="tertiary"
+              variant="ghost"
               size="large"
               width="100%"
               onPress={onSkip}

@@ -332,7 +332,7 @@ export const Ux4gTooltip: React.FC<Ux4gTooltipProps> = ({
                             {icon}
                           </View>
                         )}
-                        <Text style={[theme.typography.labelSmall, textStyle, { color: fgColor, flexShrink: 1 }]}>
+                        <Text style={[theme.typography.lS_default, textStyle, { color: fgColor, flexShrink: 1 }]}>
                           {text}
                         </Text>
                       </View>
@@ -346,14 +346,14 @@ export const Ux4gTooltip: React.FC<Ux4gTooltipProps> = ({
                               </View>
                             )}
                             {title && (
-                              <Text style={[theme.typography.titleSmall, { fontWeight: 'bold', color: fgColor, flexShrink: 1 }]}>
+                              <Text style={[theme.typography.tS_strong, { fontWeight: 'bold', color: fgColor, flexShrink: 1 }]}>
                                 {title}
                               </Text>
                             )}
                           </View>
                         )}
                         {text && (
-                          <Text style={[theme.typography.labelSmall, textStyle, { color: fgColor }]}>
+                          <Text style={[theme.typography.lS_default, textStyle, { color: fgColor }]}>
                             {text}
                           </Text>
                         )}

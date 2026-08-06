@@ -1,8 +1,7 @@
 import * as React from "react";
-import Svg, { Path } from "react-native-svg";
-const SvgNationalAmblamLogo = (props) => (
+import Svg, { Path, SvgProps } from "react-native-svg";
+const SvgNationalAmblamLogo = (props: SvgProps) => (
   <Svg
-    xmlns="http://www.w3.org/2000/svg"
     width={23}
     height={40}
     viewBox="0 0 23 40"

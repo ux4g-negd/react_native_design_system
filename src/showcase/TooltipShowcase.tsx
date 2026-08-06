@@ -81,7 +81,7 @@ export const TooltipShowcase: React.FC = () => {
           placement="bottom"
           trigger="press"
           action={
-            <Ux4gTextButton label="Got it" size="small" />
+            <Ux4gTextButton text="Got it" size="small" />
           }
         >
           <View style={[styles.targetBox, { backgroundColor: theme.colors.secondary }]}>

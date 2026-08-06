@@ -2061,11 +2061,6 @@ body {
   color: rgba(255, 255, 255, 0.4);
 }
 
-border-color: #6A4EFF;
-border-radius: 6px;
-background: rgba(106, 78, 255, 0.05);
-}
-
 /* ===== Mobile Topbar & Overlay ===== */
 .mobile-topbar {
   display: none;
@@ -2755,7 +2750,7 @@ background: rgba(106, 78, 255, 0.05);
   border-radius: 50%;
   background-color: #FFFFFF;
   transition: transform 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .wb-toggle.active .wb-toggle-thumb {
