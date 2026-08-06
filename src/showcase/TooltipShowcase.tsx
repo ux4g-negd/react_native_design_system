@@ -9,7 +9,6 @@ import {
   useUx4gTheme,
   UX4GColors,
 } from '../index';
-import { InfoIcon, SettingsIcon, AddUserIcon } from '../foundation/icons'; // Assuming these exist, if not we'll use a fallback
 
 export const TooltipShowcase: React.FC = () => {
   const theme = useUx4gTheme();

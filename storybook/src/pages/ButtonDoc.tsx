@@ -126,12 +126,11 @@ const styles = StyleSheet.create({
     padding: 20
   }
 });`;
-    const snackUrl = `https://snack.expo.dev/?platform=android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Preview&preview=true&code=${encodeURIComponent(snackCodeString)}`;
-
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&code=${encodeURIComponent(snackCodeString)}`;
     return (
       <iframe
         src={snackUrl}
-        style={{ width: '100%', height: '100%', minHeight: '600px', border: 'none', borderRadius: '8px' }}
+        style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
         title="Expo Snack Preview"
       />
     );
@@ -235,85 +234,6 @@ const styles = StyleSheet.create({
           </div>
         </div>
 
-        {/* Panel Sidebar */}
-        <aside className="wb-panel">
-          <div className="wb-panel-tabs">
-            <button
-              className={`wb-panel-tab ${activePanelTab === 'panel' ? 'active' : ''}`}
-              onClick={() => setActivePanelTab('panel')}
-              type="button"
-            >
-              Panel
-            </button>
-            <button
-              className={`wb-panel-tab ${activePanelTab === 'settings' ? 'active' : ''}`}
-              onClick={() => setActivePanelTab('settings')}
-              type="button"
-            >
-              Settings
-            </button>
-          </div>
-
-          <div className="wb-panel-body">
-            {activePanelTab === 'panel' ? (
-              <>
-                <div className="wb-knob-row">
-                  <label className="wb-knob-label">Size</label>
-                  <select
-                    className="wb-select"
-                    value={size}
-                    onChange={(e) => setSize(e.target.value as Ux4gButtonSize)}
-                  >
-                    <option value="medium">Medium</option>
-                    <option value="small">Small</option>
-                    <option value="large">Large</option>
-                  </select>
-                </div>
-
-                <div className="wb-knob-row">
-                  <label className="wb-knob-label">Text</label>
-                  <input
-                    className="wb-text-input"
-                    type="text"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                  />
-                </div>
-
-                <div className="wb-knob-row">
-                  <label className="wb-knob-label">Enabled</label>
-                  <button
-                    className={`wb-toggle ${enabled ? 'active' : ''}`}
-                    onClick={() => setEnabled(!enabled)}
-                    type="button"
-                  >
-                    <span className="wb-toggle-thumb" />
-                  </button>
-                </div>
-
-                <div className="wb-knob-row">
-                  <label className="wb-knob-label">Loading</label>
-                  <button
-                    className={`wb-toggle ${loading ? 'active' : ''}`}
-                    onClick={() => setLoading(!loading)}
-                    type="button"
-                  >
-                    <span className="wb-toggle-thumb" />
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="wb-settings-pane">
-                <div className="wb-knob-row">
-                  <label className="wb-knob-label">Theme</label>
-                  <div className="wb-select" style={{ display: 'flex', alignItems: 'center' }}>
-                    {isDark ? 'Dark Mode' : 'Light Mode'}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </aside>
       </div>
     </div>
   );
