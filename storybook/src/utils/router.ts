@@ -41,6 +41,16 @@ const PAGE_TO_PATH: Record<string, string> = {
   'radio-button': 'components/radio-button',
   switch: 'components/switch',
   card: 'components/card',
+  'card-basic': 'components/card/basic',
+  'card-actions': 'components/card/actions',
+  'card-horizontal': 'components/card/horizontal',
+  'card-media': 'components/card/media',
+  'card-rich': 'components/card/rich',
+  'card-rich-horizontal': 'components/card/rich-horizontal',
+  carousel: 'components/carousel',
+  'carousel-intro': 'components/carousel/introduction',
+  'carousel-rich-hero': 'components/carousel/rich-hero',
+  'carousel-image': 'components/carousel/image',
   badge: 'components/badge',
   'badge-basic': 'components/badge/basic',
   'badge-count': 'components/badge/count',
@@ -70,6 +80,15 @@ export function getPathFromPage(page: string): string {
 
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+  if (cleanPath.startsWith('components/card') || cleanPath.startsWith('card')) {
+    if (cleanPath.includes('actions')) return 'card-actions';
+    if (cleanPath.includes('horizontal') && cleanPath.includes('rich')) return 'card-rich-horizontal';
+    if (cleanPath.includes('horizontal')) return 'card-horizontal';
+    if (cleanPath.includes('media')) return 'card-media';
+    if (cleanPath.includes('rich') || cleanPath.includes('full')) return 'card-rich';
+    return 'card-basic';
+  }
 
   if (cleanPath.startsWith('components/badge') || cleanPath.startsWith('badge')) {
     if (cleanPath.includes('count')) return 'badge-count';
@@ -101,6 +120,12 @@ export function getPageFromPath(path: string): string {
   if (cleanPath.startsWith('components/date-picker')) {
     if (cleanPath.includes('range')) return 'date-picker-range';
     return 'date-picker-single';
+  }
+
+  if (cleanPath.startsWith('components/carousel') || cleanPath.startsWith('carousel')) {
+    if (cleanPath.includes('rich-hero') || cleanPath.includes('richhero')) return 'carousel-rich-hero';
+    if (cleanPath.includes('image')) return 'carousel-image';
+    return 'carousel-intro';
   }
 
   return PATH_TO_PAGE[cleanPath] ?? 'introduction';

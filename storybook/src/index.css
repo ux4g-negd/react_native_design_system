@@ -2755,3 +2755,90 @@ body {
 .wb-toggle.active .wb-toggle-thumb {
   transform: translateX(20px);
 }
+
+/* ===== Card Preview Responsive Styles ===== */
+.wb-preview-area {
+  min-height: 420px;
+  padding: 32px;
+}
+
+.wb-preview-area iframe {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .wb-preview-area {
+    min-height: 320px;
+    padding: 20px 16px;
+  }
+
+  .wb-preview-area iframe {
+    height: 450px !important;
+  }
+
+  .wb-main {
+    padding: 16px 16px;
+  }
+
+  .wb-header {
+    padding: 16px 16px 12px;
+  }
+
+  .wb-title {
+    font-size: 22px;
+  }
+
+  .wb-subtitle {
+    font-size: 13px;
+  }
+
+  .wb-tab-bar {
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .wb-tab {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 500px) {
+  .wb-preview-area {
+    min-height: 280px;
+    padding: 12px 8px;
+    border-radius: 8px;
+  }
+
+  .wb-preview-area iframe {
+    height: 380px !important;
+    border-radius: 8px !important;
+  }
+
+  .wb-main {
+    padding: 12px 8px;
+  }
+
+  .wb-header {
+    padding: 12px 8px 10px;
+  }
+
+  .wb-title {
+    font-size: 20px;
+  }
+
+  .wb-tab-bar {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .wb-tab {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .wb-tab-icon {
+    font-size: 16px !important;
+  }
+}

@@ -13,6 +13,8 @@ import { AccordionGroupDoc } from './pages/AccordionGroupDoc';
 import { AppHeaderDoc } from './pages/AppHeaderDoc';
 import { AvatarDoc } from './pages/AvatarDoc';
 import { BadgeDoc } from './pages/BadgeDoc';
+import { CardDoc } from './pages/CardDoc';
+import { CarouselDoc } from './pages/CarouselDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -33,6 +35,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
   if (page.startsWith('button')) return 'Components / Buttons';
+  if (page.startsWith('carousel')) return 'Components / Carousel';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
   if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
@@ -124,6 +127,12 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('badge')) {
       return <BadgeDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('card')) {
+      return <CardDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('carousel')) {
+      return <CarouselDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {

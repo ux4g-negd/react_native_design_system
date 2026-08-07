@@ -131,6 +131,19 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'card-parent-group',
+        label: 'Card',
+        icon: 'folder',
+        children: [
+          { id: 'card-basic', label: 'Basic Content', icon: 'layers' },
+          { id: 'card-actions', label: 'With Actions', icon: 'layers' },
+          { id: 'card-horizontal', label: 'Horizontal Layout', icon: 'layers' },
+          { id: 'card-media', label: 'With Media', icon: 'layers' },
+          { id: 'card-rich', label: 'Rich Card', icon: 'layers' },
+          { id: 'card-rich-horizontal', label: 'Rich Card (Horizontal)', icon: 'layers' },
+        ],
+      },
+      {
         id: 'button-group',
         label: 'Button',
         icon: 'folder',
@@ -165,6 +178,16 @@ const NAV_ITEMS: NavItem[] = [
         icon: 'folder',
         children: [
           { id: 'input-basic', label: 'Basic', icon: 'input' },
+        ],
+      },
+      {
+        id: 'carousel-group',
+        label: 'Carousel',
+        icon: 'folder',
+        children: [
+          { id: 'carousel-intro', label: 'Introduction', icon: 'layers' },
+          { id: 'carousel-rich-hero', label: 'Rich Hero Carousel', icon: 'layers' },
+          { id: 'carousel-image', label: 'Image Carousel', icon: 'layers' },
         ],
       },
       {
@@ -237,6 +260,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'app-header-group': true }));
     } else if (activePage.startsWith('avatar')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'avatar-parent-group': true }));
+    } else if (activePage.startsWith('card')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'card-parent-group': true }));
+    } else if (activePage.startsWith('carousel')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'carousel-group': true }));
     } else if (activePage.startsWith('badge')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'badge-parent-group': true }));
     } else if (
