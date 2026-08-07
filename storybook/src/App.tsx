@@ -12,6 +12,7 @@ import { AccordionDoc } from './pages/AccordionDoc';
 import { AccordionGroupDoc } from './pages/AccordionGroupDoc';
 import { AppHeaderDoc } from './pages/AppHeaderDoc';
 import { AvatarDoc } from './pages/AvatarDoc';
+import { BadgeDoc } from './pages/BadgeDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -120,6 +121,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('avatar')) {
       return <AvatarDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('badge')) {
+      return <BadgeDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {

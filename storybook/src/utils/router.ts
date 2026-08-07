@@ -42,6 +42,12 @@ const PAGE_TO_PATH: Record<string, string> = {
   switch: 'components/switch',
   card: 'components/card',
   badge: 'components/badge',
+  'badge-basic': 'components/badge/basic',
+  'badge-count': 'components/badge/count',
+  'badge-label': 'components/badge/standalone',
+  'badge-standalone': 'components/badge/standalone',
+  'badge-semantic': 'components/badge/semantic',
+  'badge-overlay': 'components/badge/overlay',
   avatar: 'components/avatar',
   'avatar-basic': 'components/avatar/basic',
   'avatar-status': 'components/avatar/status',
@@ -64,6 +70,14 @@ export function getPathFromPage(page: string): string {
 
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+  if (cleanPath.startsWith('components/badge') || cleanPath.startsWith('badge')) {
+    if (cleanPath.includes('count')) return 'badge-count';
+    if (cleanPath.includes('label') || cleanPath.includes('standalone')) return 'badge-standalone';
+    if (cleanPath.includes('semantic')) return 'badge-semantic';
+    if (cleanPath.includes('overlay')) return 'badge-overlay';
+    return 'badge-basic';
+  }
 
   if (cleanPath.startsWith('components/avatar') || cleanPath.startsWith('avatar')) {
     if (cleanPath.includes('status')) return 'avatar-status';

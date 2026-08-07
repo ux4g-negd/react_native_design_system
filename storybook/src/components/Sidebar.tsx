@@ -119,6 +119,18 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'badge-parent-group',
+        label: 'Badge',
+        icon: 'folder',
+        children: [
+          { id: 'badge-basic', label: 'Basic & Dot', icon: 'layers' },
+          { id: 'badge-count', label: 'Count Badge', icon: 'layers' },
+          { id: 'badge-standalone', label: 'Standalone Variants', icon: 'layers' },
+          { id: 'badge-semantic', label: 'Semantic Colors & Border', icon: 'layers' },
+          { id: 'badge-overlay', label: 'Overlay & Placement', icon: 'layers' },
+        ],
+      },
+      {
         id: 'button-group',
         label: 'Button',
         icon: 'folder',
@@ -225,6 +237,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'app-header-group': true }));
     } else if (activePage.startsWith('avatar')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'avatar-parent-group': true }));
+    } else if (activePage.startsWith('badge')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'badge-parent-group': true }));
     } else if (
       [
         'input-field',
@@ -301,7 +315,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div key={item.id}>
           <button
             className={`nav-group-header ${depth > 0 ? 'nav-group-header-nested' : ''}`}
-            onClick={() => toggleGroup(item.id)}
+            onClick={() => {
+              toggleGroup(item.id);
+              if (item.children && item.children.length > 0) {
+                const firstChild = item.children[0];
+                if (firstChild.children && firstChild.children.length > 0) {
+                  onNavigate(firstChild.children[0].id);
+                } else if (firstChild.id) {
+                  onNavigate(firstChild.id);
+                }
+              }
+            }}
           >
             <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <span className="material-symbols-outlined nav-icon">
