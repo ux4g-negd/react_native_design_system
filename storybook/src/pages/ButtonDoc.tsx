@@ -43,10 +43,12 @@ export const ButtonDoc: React.FC<ButtonDocProps> = ({ isDark, story = 'button-pr
 
     if (story === 'button-introduction') {
       componentsSnippet = `        <Ux4gButton text="Primary Button" variant="primary" size="${size}" enabled={${enabled}} isLoading={${loading}} />
+        <Ux4gButton text="Tonal Button" variant="primary" backgroundColor={${isDark ? 'UX4GColors.primary700' : 'UX4GColors.primary50'}} contentColor={${isDark ? 'UX4GColors.primary50' : 'UX4GColors.primary600'}} size="${size}" enabled={${enabled}} isLoading={${loading}} />
         <Ux4gButton text="Outline Button" variant="outline" size="${size}" enabled={${enabled}} isLoading={${loading}} />
         <Ux4gButton text="Ghost Button" variant="ghost" size="${size}" enabled={${enabled}} isLoading={${loading}} />`;
     } else if (story === 'button-variants') {
       componentsSnippet = `        <Ux4gButton text="Primary" variant="primary" size="${size}" enabled={${enabled}} isLoading={${loading}} />
+        <Ux4gButton text="Tonal" variant="primary" backgroundColor={${isDark ? 'UX4GColors.primary700' : 'UX4GColors.primary50'}} contentColor={${isDark ? 'UX4GColors.primary50' : 'UX4GColors.primary600'}} size="${size}" enabled={${enabled}} isLoading={${loading}} />
         <Ux4gButton text="Secondary" variant="secondary" size="${size}" enabled={${enabled}} isLoading={${loading}} />
         <Ux4gButton text="Outline" variant="outline" size="${size}" enabled={${enabled}} isLoading={${loading}} />
         <Ux4gButton text="Ghost" variant="ghost" size="${size}" enabled={${enabled}} isLoading={${loading}} />`;
@@ -67,7 +69,7 @@ export const ButtonDoc: React.FC<ButtonDocProps> = ({ isDark, story = 'button-pr
 
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gThemeProvider, UX4GColors } from 'ux4g-react-native-design-system';
 
 export default function App() {
   return (
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     padding: 20
   }
 });`;
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
     return (
       <iframe
         src={snackUrl}

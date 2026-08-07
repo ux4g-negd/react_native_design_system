@@ -69,8 +69,8 @@ export interface Ux4gButtonProps
   elevation?: number;
   /** Style override for main button container */
   style?:
-    | StyleProp<ViewStyle>
-    | ((state: PressableStateCallbackType) => StyleProp<ViewStyle>);
+  | StyleProp<ViewStyle>
+  | ((state: PressableStateCallbackType) => StyleProp<ViewStyle>);
   /** Style override for inner horizontal flex row (`leadingIcon` + `text` + `trailingIcon`) */
   contentContainerStyle?: StyleProp<ViewStyle>;
   /** Style override for typography of the button `text` */
@@ -192,9 +192,9 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
   const effectiveBgColor = isInteractive
     ? backgroundColor ?? baseBgColor
     : disabledBackgroundColor ??
-      (variant === 'primary' || variant === 'secondary'
-        ? getHexWithAlpha(theme.colors.onSurface, '1F') // 12% alpha
-        : 'transparent');
+    (variant === 'primary' || variant === 'secondary'
+      ? getHexWithAlpha(theme.colors.onSurface, '1F') // 12% alpha
+      : 'transparent');
 
   const effectiveContentColor = isInteractive
     ? contentColor ?? (variant === 'outline' ? outlineSharedColor! : baseContentColor)
@@ -203,9 +203,9 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
   const effectiveBorderColor = isInteractive
     ? borderColor ?? (variant === 'outline' ? outlineSharedColor! : baseBorderColor)
     : borderColor ??
-      (variant === 'outline'
-        ? getHexWithAlpha(theme.colors.onSurface, '1F')
-        : 'transparent');
+    (variant === 'outline'
+      ? getHexWithAlpha(theme.colors.onSurface, '1F')
+      : 'transparent');
 
   const effectiveBorderWidth = borderWidth ?? baseBorderWidth;
   const effectiveBorderRadius = borderRadius ?? theme.radius.radius8;
@@ -259,8 +259,8 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
         const pressedBgColor =
           state.pressed && isInteractive && Platform.OS !== 'android'
             ? (variant === 'outline' || variant === 'ghost'
-                ? rippleColor
-                : getHexWithAlpha(theme.colors.onSurface, '1F'))
+              ? rippleColor
+              : getHexWithAlpha(theme.colors.onSurface, '1F'))
             : effectiveBgColor;
 
         return [
@@ -278,12 +278,12 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
           width !== undefined ? { width } : undefined,
           elevation > 0
             ? {
-                elevation,
-                shadowColor: UX4GColors.neutral1000black,
-                shadowOffset: { width: 0, height: elevation * 0.5 },
-                shadowOpacity: 0.15,
-                shadowRadius: elevation * 0.8,
-              }
+              elevation,
+              shadowColor: UX4GColors.neutral1000black,
+              shadowOffset: { width: 0, height: elevation * 0.5 },
+              shadowOpacity: 0.15,
+              shadowRadius: elevation * 0.8,
+            }
             : undefined,
           customStyle,
         ];

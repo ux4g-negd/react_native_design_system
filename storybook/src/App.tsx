@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Introduction } from './pages/Introduction';
 import { ButtonDoc } from './pages/ButtonDoc';
+import { ButtonShowcaseDoc } from './pages/ButtonShowcaseDoc';
+import { IconButtonDoc } from './pages/IconButtonDoc';
 import { DatePickerDoc } from './pages/DatePickerDoc';
 import { DropdownDoc } from './pages/DropdownDoc';
 import { InputFieldDoc } from './pages/InputFieldDoc';
@@ -80,6 +82,12 @@ export const App: React.FC = () => {
       else if (activePage === 'dimensions-border') section = 'border';
       else if (activePage === 'dimensions-usage') section = 'usage';
       return <DimensionsDoc isDark={isDark} section={section} />;
+    }
+    if (activePage === 'button-showcase') {
+      return <ButtonShowcaseDoc isDark={isDark} />;
+    }
+    if (activePage === 'button-icon-button') {
+      return <IconButtonDoc isDark={isDark} />;
     }
     if (activePage.startsWith('button')) {
       return <ButtonDoc isDark={isDark} story={activePage} />;

@@ -87,15 +87,56 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Components',
     icon: 'folder',
     children: [
-      { id: 'button', label: 'Button', icon: 'smart_button' },
-      { id: 'date-picker', label: 'Date Picker', icon: 'calendar_month' },
-      { id: 'dropdown', label: 'Dropdown', icon: 'arrow_drop_down_circle' },
-      { id: 'input', label: 'Input Field', icon: 'input' },
+      {
+        id: 'button-group',
+        label: 'Button',
+        icon: 'folder',
+        children: [
+          { id: 'button-introduction', label: 'Introduction', icon: 'layers' },
+          { id: 'button-variants', label: 'Variants', icon: 'layers' },
+          { id: 'button-sizes', label: 'Sizes', icon: 'layers' },
+          { id: 'button-showcase', label: 'Showcase', icon: 'layers' },
+          { id: 'button-icon-button', label: 'IconButton', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'date-picker-group',
+        label: 'Date Picker',
+        icon: 'folder',
+        children: [
+          { id: 'date-picker-single', label: 'Single Date', icon: 'calendar_today' },
+          { id: 'date-picker-range', label: 'Date Range', icon: 'date_range' },
+        ],
+      },
+      {
+        id: 'dropdown-group',
+        label: 'Dropdown',
+        icon: 'folder',
+        children: [
+          { id: 'dropdown-basic', label: 'Basic', icon: 'arrow_drop_down_circle' },
+        ],
+      },
+      {
+        id: 'input-group',
+        label: 'Input Field',
+        icon: 'folder',
+        children: [
+          { id: 'input-basic', label: 'Basic', icon: 'input' },
+        ],
+      },
+      {
+        id: 'spinner-group',
+        label: 'Spinner',
+        icon: 'folder',
+        children: [
+          { id: 'spinner-basic', label: 'Basic', icon: 'autorenew' },
+        ],
+      },
+      // Placeholders for remaining components
       { id: 'modal', label: 'Modal', icon: 'web_asset' },
       { id: 'pagination', label: 'Pagination', icon: 'linear_scale' },
       { id: 'radio', label: 'Radio Button', icon: 'radio_button_checked' },
       { id: 'search', label: 'Search Field', icon: 'search' },
-      { id: 'spinner', label: 'Spinner', icon: 'autorenew' },
       { id: 'switch', label: 'Switch', icon: 'toggle_on' },
       { id: 'toast', label: 'Toast', icon: 'call_to_action' },
       { id: 'tooltip', label: 'Tooltip', icon: 'chat_bubble' },
