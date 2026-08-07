@@ -82,3 +82,7 @@ export const Ux4gAssets = {
   icons: Ux4gAssetIcons,
   images: Ux4gAssetImages,
 } as const;
+
+export { default as SvgNationalAmblamLogo } from './icons/NationalEmblemLogoSvg';
+export { default as SvgUnion } from './icons/UnionSvg';
+

@@ -8,6 +8,10 @@ import { DatePickerDoc } from './pages/DatePickerDoc';
 import { DropdownDoc } from './pages/DropdownDoc';
 import { InputFieldDoc } from './pages/InputFieldDoc';
 import { SpinnerDoc } from './pages/SpinnerDoc';
+import { AccordionDoc } from './pages/AccordionDoc';
+import { AccordionGroupDoc } from './pages/AccordionGroupDoc';
+import { AppHeaderDoc } from './pages/AppHeaderDoc';
+import { AvatarDoc } from './pages/AvatarDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -29,6 +33,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
   if (page.startsWith('button')) return 'Components / Buttons';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
+  if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
 };
 
@@ -104,12 +109,25 @@ export const App: React.FC = () => {
     if (activePage.startsWith('spinner')) {
       return <SpinnerDoc isDark={isDark} story={activePage} />;
     }
+    if (activePage === 'accordion-group') {
+      return <AccordionGroupDoc isDark={isDark} />;
+    }
+    if (activePage.startsWith('accordion')) {
+      return <AccordionDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('app-header')) {
+      return <AppHeaderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('avatar')) {
+      return <AvatarDoc isDark={isDark} story={activePage} />;
+    }
 
     switch (activePage) {
       case 'introduction':
+      case 'quickstart':
         return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
       default:
-        return <ButtonDoc isDark={isDark} story={activePage} />;
+        return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
     }
   };
 

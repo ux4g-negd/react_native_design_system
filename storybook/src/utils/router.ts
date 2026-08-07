@@ -43,6 +43,10 @@ const PAGE_TO_PATH: Record<string, string> = {
   card: 'components/card',
   badge: 'components/badge',
   avatar: 'components/avatar',
+  'avatar-basic': 'components/avatar/basic',
+  'avatar-status': 'components/avatar/status',
+  'avatar-profile': 'components/avatar/profile',
+  'avatar-group': 'components/avatar/group',
   modal: 'components/modal',
   toast: 'components/toast',
   forms: 'patterns/forms',
@@ -61,6 +65,13 @@ export function getPathFromPage(page: string): string {
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
 
+  if (cleanPath.startsWith('components/avatar') || cleanPath.startsWith('avatar')) {
+    if (cleanPath.includes('status')) return 'avatar-status';
+    if (cleanPath.includes('profile')) return 'avatar-profile';
+    if (cleanPath.includes('group')) return 'avatar-group';
+    return 'avatar-basic';
+  }
+
   if (cleanPath.startsWith('components/button')) {
     if (cleanPath.includes('introduction')) return 'button-introduction';
     if (cleanPath.includes('variants')) return 'button-variants';
@@ -69,12 +80,13 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('icons')) return 'button-icons';
     if (cleanPath.includes('states')) return 'button-states';
     if (cleanPath.includes('convenience')) return 'button-convenience';
-    return 'button-primary';
+    if (cleanPath.includes('showcase')) return 'button-showcase';
+    return 'button-introduction';
   }
 
   if (cleanPath.startsWith('components/date-picker')) {
     if (cleanPath.includes('range')) return 'date-picker-range';
-    return 'date-picker-default';
+    return 'date-picker-single';
   }
 
   return PATH_TO_PAGE[cleanPath] ?? 'introduction';

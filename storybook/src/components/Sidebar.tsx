@@ -88,6 +88,37 @@ const NAV_ITEMS: NavItem[] = [
     icon: 'folder',
     children: [
       {
+        id: 'accordion-grouping',
+        label: 'Accordion',
+        icon: 'folder',
+        children: [
+          { id: 'accordion-basic', label: 'Basic', icon: 'layers' },
+          { id: 'accordion-group', label: 'AccordionGroup', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'app-header-group',
+        label: 'App Header',
+        icon: 'folder',
+        children: [
+          { id: 'app-header-basic', label: 'Introduction', icon: 'layers' },
+          { id: 'app-header-back', label: 'Back Button', icon: 'layers' },
+          { id: 'app-header-filled', label: 'Filled', icon: 'layers' },
+          { id: 'app-header-custom-leading', label: 'Custom Leading Widgets', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'avatar-parent-group',
+        label: 'Avatar',
+        icon: 'folder',
+        children: [
+          { id: 'avatar-basic', label: 'Basic', icon: 'layers' },
+          { id: 'avatar-status', label: 'Status Avatar', icon: 'layers' },
+          { id: 'avatar-profile', label: 'Profile Badges & Actions', icon: 'layers' },
+          { id: 'avatar-group', label: 'Avatar Group', icon: 'layers' },
+        ],
+      },
+      {
         id: 'button-group',
         label: 'Button',
         icon: 'folder',
@@ -188,6 +219,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'date-picker-group': true }));
     } else if (activePage.startsWith('modal')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'modal-group': true }));
+    } else if (activePage.startsWith('accordion')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'accordion-grouping': true }));
+    } else if (activePage.startsWith('app-header')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'app-header-group': true }));
+    } else if (activePage.startsWith('avatar')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'avatar-parent-group': true }));
     } else if (
       [
         'input-field',

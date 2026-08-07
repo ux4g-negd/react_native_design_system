@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { UX4GColors } from './colors';
+import SvgNationalAmblamLogo from '../assets/icons/NationalEmblemLogoSvg';
+import SvgUnion from '../assets/icons/UnionSvg';
 
 let Svg: any = null;
 let Path: any = null;
@@ -48,6 +50,8 @@ export type Ux4gIconName =
   | 'sentiment-satisfied'
   | 'sentiment-very-satisfied'
   | 'thumb-up'
+  | 'national-emblem-logo'
+  | 'union'
   | string;
 
 export interface Ux4gIconData {
@@ -766,6 +770,14 @@ export const Ux4gIcons = {
     }
     return <Text style={{ fontSize: size, color }}>😁</Text>;
   },
+
+  nationalEmblemLogo: ({ size = 26 }: Ux4gIconProps = {}): React.ReactElement => (
+    <SvgNationalAmblamLogo width={size * 0.615} height={size} />
+  ),
+
+  union: ({ size = 20 }: Ux4gIconProps = {}): React.ReactElement => (
+    <SvgUnion width={size} height={size} />
+  ),
 };
 
 
