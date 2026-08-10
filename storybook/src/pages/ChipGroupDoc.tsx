@@ -26,8 +26,11 @@ export const ChipGroupDoc: React.FC<ChipGroupDocProps> = ({ isDark, story = 'chi
     lines.push('');
     lines.push('// Wrap Chip Group');
     lines.push('const [selectedIdx, setSelectedIdx] = useState(0);');
-    lines.push('<Ux4gChipGroup arrangement="wrap" spacing={8} runSpacing={8}>');
-    lines.push('  {["React Native", "TypeScript", "Expo", "Storybook", "UX4G"].map((tag, i) => (');
+    lines.push('<Ux4gChipGroup');
+    lines.push('  arrangement="wrap"');
+    lines.push('  spacing={8}');
+    lines.push('  runSpacing={8}');
+    lines.push('  chips={["React Native", "TypeScript", "Expo", "Storybook", "UX4G"].map((tag, i) => (');
     lines.push('    <Ux4gChoiceChip');
     lines.push('      key={tag}');
     lines.push('      text={tag}');
@@ -35,7 +38,7 @@ export const ChipGroupDoc: React.FC<ChipGroupDocProps> = ({ isDark, story = 'chi
     lines.push('      onClick={() => setSelectedIdx(i)}');
     lines.push('    />');
     lines.push('  ))}');
-    lines.push('</Ux4gChipGroup>');
+    lines.push('/>');
     lines.push('');
     lines.push('// Input Chip Field');
     lines.push('const [text, setText] = useState("");');
@@ -68,8 +71,11 @@ export const ChipGroupDoc: React.FC<ChipGroupDocProps> = ({ isDark, story = 'chi
           ))}
         />`;
     } else {
-      componentsSnippet = `        <Ux4gChipGroup arrangement="wrap" spacing={8} runSpacing={8}>
-          {['React Native', 'TypeScript', 'Expo', 'Storybook', 'UX4G Design System', 'Government Stack'].map((item, idx) => (
+      componentsSnippet = `        <Ux4gChipGroup
+          arrangement="wrap"
+          spacing={8}
+          runSpacing={8}
+          chips={['React Native', 'TypeScript', 'Expo', 'Storybook', 'UX4G Design System', 'Government Stack'].map((item, idx) => (
             <Ux4gChoiceChip
               key={item}
               text={item}
@@ -77,7 +83,7 @@ export const ChipGroupDoc: React.FC<ChipGroupDocProps> = ({ isDark, story = 'chi
               onClick={() => setSelectedCategory(idx)}
             />
           ))}
-        </Ux4gChipGroup>`;
+        />`;
     }
 
     const snackCodeString = `import React, { useState } from 'react';
@@ -112,7 +118,7 @@ const styles = StyleSheet.create({
   }
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChipGroup%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@latest,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChipGroup%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.2,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

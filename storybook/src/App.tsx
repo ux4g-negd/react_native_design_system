@@ -19,6 +19,7 @@ import { CheckboxDoc } from './pages/CheckboxDoc';
 import { ChipsDoc } from './pages/ChipsDoc';
 import { ChipGroupDoc } from './pages/ChipGroupDoc';
 import { DividerDoc } from './pages/DividerDoc';
+import { StatusBannerDoc } from './pages/StatusBannerDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -44,6 +45,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('chips')) return 'Components / Chips';
   if (page.startsWith('chip-group')) return 'Components / Chip Group';
   if (page.startsWith('divider')) return 'Components / Divider';
+  if (page.startsWith('status-banner')) return 'Components / Status Banner';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
   if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
@@ -153,6 +155,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('divider')) {
       return <DividerDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('status-banner')) {
+      return <StatusBannerDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {

@@ -435,9 +435,13 @@ export type Ux4gChipGroupArrangement = 'horizontal' | 'wrap';
 
 export interface Ux4gChipGroupProps {
   /**
-   * List of chip components (`Ux4gChoiceChip`, `Ux4gFilterChip`, or `Ux4gInputChip`) to render.
+   * Array of chip elements to lay out in group.
    */
-  chips: React.ReactNode[];
+  chips?: React.ReactNode[];
+  /**
+   * Children chip elements (alternative syntax to `chips` array prop).
+   */
+  children?: React.ReactNode;
   /**
    * Layout arrangement (`horizontal` inside horizontal `ScrollView`, or `wrap` grid).
    * @default 'wrap'
@@ -471,12 +475,15 @@ export interface Ux4gChipGroupProps {
  */
 export const Ux4gChipGroup: React.FC<Ux4gChipGroupProps> = ({
   chips,
+  children,
   arrangement = 'wrap',
   spacing = 8,
   runSpacing = 8,
   containerStyle,
   testID,
 }) => {
+  const chipItems = (chips ?? (children ? React.Children.toArray(children) : [])) as React.ReactNode[];
+
   if (arrangement === 'horizontal') {
     return (
       <ScrollView
@@ -489,7 +496,7 @@ export const Ux4gChipGroup: React.FC<Ux4gChipGroupProps> = ({
           containerStyle,
         ]}
       >
-        {chips.map((chip, idx) => (
+        {chipItems.map((chip, idx) => (
           <View key={`chip-${idx}`}>{chip}</View>
         ))}
       </ScrollView>
@@ -508,7 +515,7 @@ export const Ux4gChipGroup: React.FC<Ux4gChipGroupProps> = ({
         containerStyle,
       ]}
     >
-      {chips.map((chip, idx) => (
+      {chipItems.map((chip, idx) => (
         <View
           key={`chip-${idx}`}
           style={{

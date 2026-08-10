@@ -205,11 +205,24 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'status-banner-group',
+        label: 'Draft Status',
+        icon: 'folder',
+        children: [
+          { id: 'status-banner-basic', label: 'Basic Banners', icon: 'layers' },
+          { id: 'status-banner-draft', label: 'Draft & Application Statuses', icon: 'layers' },
+          { id: 'status-banner-variants', label: 'All Color Variants', icon: 'layers' },
+        ],
+      },
+      {
         id: 'dropdown-group',
         label: 'Dropdown',
         icon: 'folder',
         children: [
-          { id: 'dropdown-basic', label: 'Basic', icon: 'arrow_drop_down_circle' },
+          { id: 'dropdown-basic', label: 'Basic Single Select', icon: 'layers' },
+          { id: 'dropdown-multi', label: 'Multi-Select Mode', icon: 'layers' },
+          { id: 'dropdown-search', label: 'Searchable Dropdown', icon: 'layers' },
+          { id: 'dropdown-status', label: 'Form Status Validation', icon: 'layers' },
         ],
       },
       {
