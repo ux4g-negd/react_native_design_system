@@ -9,7 +9,6 @@ interface IconButtonDocProps {
 
 export const IconButtonDoc: React.FC<IconButtonDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<'preview' | 'code' | 'props'>('preview');
-  const [activePanelTab, setActivePanelTab] = useState<'panel' | 'settings'>('panel');
 
   const [variant, setVariant] = useState<Ux4gButtonVariant>('primary');
   const [size, setSize] = useState<number>(40);
@@ -140,12 +139,19 @@ const styles = StyleSheet.create({
   };
 
   const propsData = [
-    { name: 'icon', type: 'Ux4gIconProp', default: '—', desc: 'Icon element or callback ({ color, size }) => ReactNode' },
-    { name: 'variant', type: "'primary' | 'secondary' | 'outline' | 'ghost'", default: "'primary'", desc: 'Visual button style variant' },
-    { name: 'size', type: 'number', default: '40', desc: 'Square width and height dimension in points' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the icon button is interactive' },
-    { name: 'isLoading', type: 'boolean', default: 'false', desc: 'Shows spinner instead of icon' },
-    { name: 'onPress', type: '() => void', default: '—', desc: 'Press handler callback' },
+    { name: 'icon', type: 'Ux4gIconProp', default: '—', desc: 'Icon element or callback ({ color, size }) => ReactNode.', required: true },
+    { name: 'isLoading', type: 'boolean', default: 'false', desc: 'Displays spinner instead of icon.', required: false },
+    { name: 'variant', type: "'primary' | 'secondary' | 'outline' | 'ghost'", default: "'primary'", desc: 'Visual button style variant.', required: false },
+    { name: 'size', type: 'number', default: '40', desc: 'Square width and height in points.', required: false },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether icon button is interactive.', required: false },
+    { name: 'backgroundColor', type: 'string', default: 'variant-based token', desc: 'Background color override.', required: false },
+    { name: 'contentColor', type: 'string', default: 'variant-based token', desc: 'Icon foreground color override.', required: false },
+    { name: 'borderColor', type: 'string', default: 'variant-based token', desc: 'Border color override.', required: false },
+    { name: 'borderRadius', type: 'number', default: 'theme.radius.radius8', desc: 'Corner radius override.', required: false },
+    { name: 'elevation', type: 'number', default: '0', desc: 'Android elevation/iOS shadow depth.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle> | (state) => StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for icon button container.', required: false },
+    { name: 'onPress', type: '() => void', default: 'required', desc: 'Press handler callback.', required: true },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -156,6 +162,9 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Component</span>
         </div>
         <p className="wb-subtitle">Icon button contain only an icon and do not include text labels. It is used to represent common actions in a compact and visually accessible way.</p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
+        </p>
       </div>
 
       <div className="wb-body" style={{ display: 'block' }}>
@@ -179,26 +188,33 @@ const styles = StyleSheet.create({
               </pre>
             )}
             {activeMainTab === 'props' && (
-              <table className="wb-props-table">
+              <div className="wb-props-area">
+                <table className="props-table">
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>Prop</th>
                     <th>Type</th>
-                    <th>Default</th>
                     <th>Description</th>
+                    <th>Default</th>
                   </tr>
                 </thead>
                 <tbody>
                   {propsData.map((prop) => (
                     <tr key={prop.name}>
-                      <td><code className="wb-prop-name">{prop.name}</code></td>
-                      <td><code className="wb-prop-type">{prop.type}</code></td>
-                      <td><code className="wb-prop-default">{prop.default}</code></td>
+                      <td>
+                        <span className="prop-name">
+                          {prop.name}
+                          {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                        </span>
+                      </td>
+                      <td><span className="prop-type">{prop.type}</span></td>
                       <td>{prop.desc}</td>
+                      <td><span className="prop-default">{prop.default}</span></td>
                     </tr>
                   ))}
                 </tbody>
-              </table>
+                </table>
+              </div>
             )}
           </div>
         </div>

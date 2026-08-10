@@ -13,7 +13,9 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Animated,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
   Platform,
   PermissionsAndroid,
 } from 'react-native';
@@ -96,8 +98,11 @@ export interface Ux4gFileUploadProps {
   buttonBorderRadius?: number;
   buttonColor?: string;
   buttonBorderColor?: string;
+  buttonStyle?: StyleProp<ViewStyle>;
   errorTitle?: string;
   errorText?: string;
+  errorTitleStyle?: StyleProp<TextStyle>;
+  errorTextStyle?: StyleProp<TextStyle>;
   /** Pre-populated initial files for testing / showcase */
   initialFiles?: UploadedFile[];
 }
@@ -148,8 +153,11 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
   buttonBorderRadius = 8,
   buttonColor,
   buttonBorderColor,
+  buttonStyle,
   errorTitle,
   errorText,
+  errorTitleStyle,
+  errorTextStyle,
   initialFiles,
 }) => {
   const theme = useUx4gTheme();
@@ -195,14 +203,40 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
 
       toast?.showToast({
         category: 'error' as any,
-        title: displayTitle,
-        subtitle: displayText,
+        // Match Flutter behavior: toast uses original title/message.
+        title,
+        subtitle: message,
         showCloseButton: true,
         autoClose: true,
         durationMs: 4000,
       });
     },
     [errorTitle, errorText, toast],
+  );
+
+  const requestAndroidPermission = useCallback(
+    async (
+      permission: PermissionsAndroid.Permission,
+      title: string,
+      message: string,
+    ): Promise<boolean> => {
+      if (Platform.OS !== 'android') return true;
+
+      try {
+        const granted = await PermissionsAndroid.request(permission, {
+          title,
+          message,
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        });
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err: any) {
+        showError('Permission Error', `Failed to request permission: ${err?.message ?? err}`);
+        return false;
+      }
+    },
+    [showError],
   );
 
   // ── Upload simulation ──────────────────────────────────────────────────
@@ -285,27 +319,14 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
             return;
           }
 
-          // Request Camera Permission on Android if not already granted
-          if (Platform.OS === 'android') {
-            try {
-              const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-                {
-                  title: 'Camera Permission Required',
-                  message: 'This app needs access to your camera to scan documents.',
-                  buttonNeutral: 'Ask Me Later',
-                  buttonNegative: 'Cancel',
-                  buttonPositive: 'OK',
-                },
-              );
-              if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-                showError('Permission Denied', 'Camera permission is required to scan documents.');
-                return;
-              }
-            } catch (err: any) {
-              showError('Permission Error', `Failed to request camera permission: ${err?.message ?? err}`);
-              return;
-            }
+          const hasCameraPermission = await requestAndroidPermission(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            'Camera Permission Required',
+            'This app needs access to your camera to scan documents.',
+          );
+          if (!hasCameraPermission) {
+            showError('Permission Denied', 'Camera permission is required to scan documents.');
+            return;
           }
 
           const result = await new Promise<any>((resolve) => {
@@ -346,6 +367,25 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
             showError('Missing Dependency', 'react-native-document-picker is not installed.');
             return;
           }
+
+          if (Platform.OS === 'android') {
+            const androidVersion = typeof Platform.Version === 'number' ? Platform.Version : parseInt(String(Platform.Version), 10);
+            const readPermission = androidVersion >= 33
+              ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+              : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
+            const hasReadPermission = await requestAndroidPermission(
+              readPermission,
+              'Storage Permission Required',
+              'This app needs access to your files to upload documents.',
+            );
+
+            if (!hasReadPermission) {
+              showError('Permission Denied', 'Storage permission is required to upload documents.');
+              return;
+            }
+          }
+
           const result = await DocumentPicker.pick({
             type: allowedExtensions.map((ext: string) => {
               if (ext === 'pdf') return 'application/pdf';
@@ -407,7 +447,7 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
         showError('Error', `Failed to pick file: ${e?.message ?? e}`);
       }
     },
-    [files.length, maxFiles, maxFileSize, allowedExtensions, onUpload, showError, uploadFile, onFilesChanged],
+    [files.length, maxFiles, maxFileSize, allowedExtensions, onUpload, showError, uploadFile, onFilesChanged, requestAndroidPermission],
   );
 
   // ── Retry upload ───────────────────────────────────────────────────────
@@ -467,12 +507,15 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
 
       {/* Title */}
       <Text
-        style={{
+        style={[
+          {
           fontSize: hasGlobalError ? 16 : 24,
           fontWeight: '700',
           color: onBackground,
           textAlign: 'center',
-        }}
+          },
+          hasGlobalError ? errorTitleStyle : undefined,
+        ]}
       >
         {hasGlobalError ? (currentErrorTitle ?? 'Could not scan') : 'Upload Documents'}
       </Text>
@@ -481,12 +524,15 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
 
       {/* Description */}
       <Text
-        style={{
+        style={[
+          {
           fontSize: bsDefault.fontSize,
           fontWeight: bsDefault.fontWeight,
           color: hasGlobalError ? errorColor : `${onSurface}99`, // 60% opacity
           textAlign: 'center',
-        }}
+          },
+          hasGlobalError ? errorTextStyle : undefined,
+        ]}
       >
         {hasGlobalError
           ? (currentErrorText ?? 'File exceeds the upload limit.')
@@ -510,6 +556,7 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
             borderColor={buttonBorderColor ?? primary}
             contentColor={buttonColor ?? primary}
             borderRadius={buttonBorderRadius}
+            style={buttonStyle}
             onPress={() => pickFile(false)}
           />
         </View>
@@ -529,6 +576,7 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
             backgroundColor={buttonColor ?? primary}
             contentColor={onPrimary}
             borderRadius={buttonBorderRadius}
+            style={buttonStyle}
             onPress={() => pickFile(true)}
           />
         </View>

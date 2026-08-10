@@ -9,7 +9,6 @@ interface DatePickerDocProps {
 }
 
 type MainTab = 'preview' | 'code' | 'props';
-type PanelTab = 'panel' | 'settings';
 
 export const DatePickerDoc: React.FC<DatePickerDocProps> = ({ isDark, story = 'date-picker-single' }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
@@ -83,19 +82,21 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'mode', type: "'single' | 'range'", default: "'single'", desc: 'Mode for date selection' },
-    { name: 'initialDate', type: 'Date', default: '—', desc: 'Initial selected date' },
-    { name: 'initialDateRange', type: 'DateRange', default: '—', desc: 'Initial selected date range' },
-    { name: 'minDate', type: 'Date', default: '—', desc: 'Minimum selectable date' },
-    { name: 'maxDate', type: 'Date', default: '—', desc: 'Maximum selectable date' },
-    { name: 'onDateSelected', type: '(date: Date) => void', default: '—', desc: 'Callback fired when a single date is selected' },
-    { name: 'onDateRangeSelected', type: '(range: DateRange) => void', default: '—', desc: 'Callback fired when a date range is selected' },
-    { name: 'placeholder', type: 'string', default: "'Select date'", desc: 'Placeholder hint when no date is selected' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether interaction is enabled' },
-    { name: 'label', type: 'string', default: '—', desc: 'Label text rendered above the field box' },
-    { name: 'description', type: 'string', default: '—', desc: 'Description / caption text rendered below the field box' },
-    { name: 'isRequired', type: 'boolean', default: 'false', desc: 'Whether field is required' },
-    { name: 'status', type: 'Ux4gInputFieldStatus', default: "'defaultStatus'", desc: 'Status variant controlling border & caption color' },
+    { name: 'mode', type: "'single' | 'range'", default: "'single'", desc: 'Date selection mode.', required: false },
+    { name: 'initialDate', type: 'Date', default: 'undefined', desc: 'Initial selected date in single mode.', required: false },
+    { name: 'initialDateRange', type: 'DateRange', default: 'undefined', desc: 'Initial selected date range in range mode.', required: false },
+    { name: 'minDate', type: 'Date', default: 'undefined', desc: 'Minimum selectable date.', required: false },
+    { name: 'maxDate', type: 'Date', default: 'undefined', desc: 'Maximum selectable date.', required: false },
+    { name: 'onDateSelected', type: '(date: Date) => void', default: 'undefined', desc: 'Callback fired when a single date is selected.', required: false },
+    { name: 'onDateRangeSelected', type: '(range: DateRange) => void', default: 'undefined', desc: 'Callback fired when a date range is selected.', required: false },
+    { name: 'placeholder', type: 'string', default: "'Select date'", desc: 'Placeholder text shown when no value is selected.', required: false },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether interaction is enabled.', required: false },
+    { name: 'label', type: 'string', default: 'undefined', desc: 'Label text above the field.', required: false },
+    { name: 'description', type: 'string', default: 'undefined', desc: 'Caption/helper text below the field.', required: false },
+    { name: 'isRequired', type: 'boolean', default: 'false', desc: 'Shows required asterisk next to label.', required: false },
+    { name: 'required', type: 'boolean', default: 'false', desc: 'Alias of `isRequired`.', required: false },
+    { name: 'status', type: 'Ux4gInputFieldStatus', default: "'defaultStatus'", desc: 'Status variant for border/caption color.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for outer container.', required: false },
   ];
 
   return (
@@ -108,6 +109,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Date Picker allows users to select a specific date or a range of dates from a calendar interface.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          This component has no required props.
         </p>
       </div>
 
@@ -164,17 +168,22 @@ const styles = StyleSheet.create({
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((p) => (
                       <tr key={p.name}>
-                        <td><span className="prop-name">{p.name}</span></td>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
                         <td><span className="prop-type">{p.type}</span></td>
-                        <td><span className="prop-default">{p.default}</span></td>
                         <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

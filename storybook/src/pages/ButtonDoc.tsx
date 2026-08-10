@@ -9,11 +9,9 @@ interface ButtonDocProps {
 }
 
 type MainTab = 'preview' | 'code' | 'props';
-type PanelTab = 'panel' | 'settings';
 
 export const ButtonDoc: React.FC<ButtonDocProps> = ({ isDark, story = 'button-primary' }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
-  const [activePanelTab, setActivePanelTab] = useState<PanelTab>('panel');
 
   /* ── Knobs (Matching Flutter Widgetbook Image) ── */
   const [size, setSize] = useState<Ux4gButtonSize>('medium');
@@ -102,14 +100,32 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'text', type: 'string', default: '—', desc: 'Text label inside the button' },
-    { name: 'variant', type: "'primary' | 'secondary' | 'outline' | 'ghost'", default: "'primary'", desc: 'Visual button style variant' },
-    { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", desc: 'Button sizing preset (32pt / 40pt / 48pt)' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether button is interactive and enabled' },
-    { name: 'isLoading', type: 'boolean', default: 'false', desc: 'Shows spinner and prevents press' },
-    { name: 'leadingIcon', type: 'ReactNode | Function', default: '—', desc: 'Icon rendered before text' },
-    { name: 'trailingIcon', type: 'ReactNode | Function', default: '—', desc: 'Icon rendered after text' },
-    { name: 'onPress', type: '() => void', default: '—', desc: 'Press handler callback' },
+    { name: 'text', type: 'string', default: 'undefined', desc: 'Text label inside the button.', required: false },
+    { name: 'children', type: 'ReactNode', default: 'undefined', desc: 'Custom child content overriding/supplementing text.', required: false },
+    { name: 'variant', type: "'primary' | 'secondary' | 'outline' | 'ghost'", default: "'primary'", desc: 'Visual button style variant.', required: false },
+    { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", desc: 'Button sizing preset.', required: false },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether button is interactive and enabled.', required: false },
+    { name: 'isLoading', type: 'boolean', default: 'false', desc: 'Shows spinner and prevents press.', required: false },
+    { name: 'backgroundColor', type: 'string', default: 'variant-based token', desc: 'Background color override.', required: false },
+    { name: 'contentColor', type: 'string', default: 'variant-based token', desc: 'Foreground text/icon color override.', required: false },
+    { name: 'disabledBackgroundColor', type: 'string', default: 'computed disabled color', desc: 'Background color override when disabled.', required: false },
+    { name: 'disabledContentColor', type: 'string', default: 'computed disabled color', desc: 'Foreground color override when disabled.', required: false },
+    { name: 'borderColor', type: 'string', default: 'variant-based token', desc: 'Border color override.', required: false },
+    { name: 'borderWidth', type: 'number', default: 'variant-based', desc: 'Border width override.', required: false },
+    { name: 'borderRadius', type: 'number', default: 'theme.radius.radius8', desc: 'Corner radius override.', required: false },
+    { name: 'paddingHorizontal', type: 'number', default: 'size-based', desc: 'Horizontal padding override.', required: false },
+    { name: 'paddingVertical', type: 'number', default: 'size-based', desc: 'Vertical padding override.', required: false },
+    { name: 'leadingIcon', type: 'Ux4gIconProp', default: 'undefined', desc: 'Icon rendered before text.', required: false },
+    { name: 'trailingIcon', type: 'Ux4gIconProp', default: 'undefined', desc: 'Icon rendered after text.', required: false },
+    { name: 'iconSize', type: 'number', default: 'size-based', desc: 'Explicit icon size override.', required: false },
+    { name: 'width', type: 'DimensionValue', default: 'undefined', desc: 'Explicit width.', required: false },
+    { name: 'height', type: 'number', default: 'size-based', desc: 'Explicit height.', required: false },
+    { name: 'elevation', type: 'number', default: '0', desc: 'Android elevation / iOS shadow depth.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle> | (state) => StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for button container.', required: false },
+    { name: 'contentContainerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for inner content row.', required: false },
+    { name: 'textStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for label text.', required: false },
+    { name: 'onPress', type: '() => void', default: 'required', desc: 'Press handler callback.', required: true },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -122,6 +138,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Button trigger an action or event, such as submitting a form, opening a dialog or performing a specific task. It provide users with a clear Call to Action (CTA), guiding them through a workflow.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -178,17 +197,22 @@ const styles = StyleSheet.create({
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((p) => (
                       <tr key={p.name}>
-                        <td><span className="prop-name">{p.name}</span></td>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
                         <td><span className="prop-type">{p.type}</span></td>
-                        <td><span className="prop-default">{p.default}</span></td>
                         <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

@@ -47,7 +47,7 @@ export const ChipGroupDoc: React.FC<ChipGroupDocProps> = ({ isDark, story = 'chi
     lines.push('  value={text}');
     lines.push('  onValueChange={setText}');
     lines.push('  onAddChip={(newTag) => setTags([...tags, newTag])}');
-    lines.push('  chips={tags.map(t => <Ux4gInputChip key={t} text={t} onDeleted={() => setTags(tags.filter(x => x !== t))} />)}');
+    lines.push('  chips={tags.map(t => <Ux4gInputChip key={t} text={t} onDismiss={() => setTags(tags.filter(x => x !== t))} />)}');
     lines.push('/>');
     return lines.join('\n');
   }, []);
@@ -66,7 +66,7 @@ export const ChipGroupDoc: React.FC<ChipGroupDocProps> = ({ isDark, story = 'chi
             <Ux4gInputChip
               key={chipText}
               text={chipText}
-              onDeleted={() => setChipsList(chipsList.filter((c) => c !== chipText))}
+              onDismiss={() => setChipsList(chipsList.filter((c) => c !== chipText))}
             />
           ))}
         />`;
@@ -131,13 +131,20 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'arrangement', type: "'wrap' | 'horizontal'", default: "'wrap'", desc: 'Arrangement layout mode for the grouped chips' },
-    { name: 'spacing', type: 'number', default: '8', desc: 'Horizontal gap spacing between chips in pixels' },
-    { name: 'runSpacing', type: 'number', default: '8', desc: 'Vertical row spacing when wrapped onto multiple lines' },
-    { name: 'chips', type: 'ReactNode[]', default: '[]', desc: 'Array of chip elements to lay out in group or field' },
-    { name: 'value', type: 'string', default: '—', desc: 'Input text value for `Ux4gInputChipField`' },
-    { name: 'onValueChange', type: '(val: string) => void', default: '—', desc: 'Text change handler for `Ux4gInputChipField`' },
-    { name: 'onAddChip', type: '(chipText: string) => void', default: '—', desc: 'Add chip callback triggered when user submits input tag' },
+    { name: 'chips', type: 'ReactNode[]', default: 'required in InputChipField / optional in ChipGroup', desc: 'Chip elements to render in group/field.', required: true },
+    { name: 'children', type: 'ReactNode', default: 'undefined', desc: 'Alternative to `chips` for Ux4gChipGroup.', required: false },
+    { name: 'arrangement', type: "'horizontal' | 'wrap'", default: "'wrap'", desc: 'Layout arrangement for Ux4gChipGroup and InputChipField chips.', required: false },
+    { name: 'spacing', type: 'number', default: '8', desc: 'Horizontal gap between chips (Ux4gChipGroup).', required: false },
+    { name: 'runSpacing', type: 'number', default: '8', desc: 'Vertical gap between wrapped rows (Ux4gChipGroup).', required: false },
+    { name: 'value', type: 'string', default: 'required', desc: 'Current input text value (Ux4gInputChipField).', required: true },
+    { name: 'onValueChange', type: '(value: string) => void', default: 'required', desc: 'Input change callback (Ux4gInputChipField).', required: true },
+    { name: 'onAddChip', type: '(chipText: string) => void', default: 'required', desc: 'Callback when a new chip is added (Ux4gInputChipField).', required: true },
+    { name: 'isDropdown', type: 'boolean', default: 'false', desc: 'Switches field to dropdown selection mode.', required: false },
+    { name: 'dropdownOptions', type: 'string[]', default: '[]', desc: 'Dropdown options when `isDropdown` is true.', required: false },
+    { name: 'placeholder', type: 'string', default: "'Add chip...'", desc: 'Placeholder text for input/dropdown trigger.', required: false },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the field/group interaction is enabled.', required: false },
+    { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Container style override.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -149,6 +156,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Group container for arranging multiple chips horizontally or wrapped across multiple lines, including interactive InputChipField controls.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -195,22 +205,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

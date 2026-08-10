@@ -8,6 +8,7 @@ import { DatePickerDoc } from './pages/DatePickerDoc';
 import { DropdownDoc } from './pages/DropdownDoc';
 import { InputFieldDoc } from './pages/InputFieldDoc';
 import { SpinnerDoc } from './pages/SpinnerDoc';
+import { FileUploadDoc } from './pages/FileUploadDoc';
 import { AccordionDoc } from './pages/AccordionDoc';
 import { AccordionGroupDoc } from './pages/AccordionGroupDoc';
 import { AppHeaderDoc } from './pages/AppHeaderDoc';
@@ -15,11 +16,21 @@ import { AvatarDoc } from './pages/AvatarDoc';
 import { BadgeDoc } from './pages/BadgeDoc';
 import { CardDoc } from './pages/CardDoc';
 import { CarouselDoc } from './pages/CarouselDoc';
+import { JourneyTimelineDoc } from './pages/JourneyTimelineDoc';
+import { LinkDoc } from './pages/LinkDoc';
+import { ModalDoc } from './pages/ModalDoc';
+import { PaginationDoc } from './pages/PaginationDoc';
+import { PopoverDoc } from './pages/PopoverDoc';
+import { ProgressIndicatorDoc } from './pages/ProgressIndicatorDoc';
 import { CheckboxDoc } from './pages/CheckboxDoc';
 import { ChipsDoc } from './pages/ChipsDoc';
 import { ChipGroupDoc } from './pages/ChipGroupDoc';
 import { DividerDoc } from './pages/DividerDoc';
 import { StatusBannerDoc } from './pages/StatusBannerDoc';
+import { EmptyStateDoc } from './pages/EmptyStateDoc';
+import { FeedbackStarDoc } from './pages/FeedbackStarDoc';
+import { FeedbackCsatDoc } from './pages/FeedbackCsatDoc';
+import { FeedbackNpsDoc } from './pages/FeedbackNpsDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -41,11 +52,25 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
   if (page.startsWith('button')) return 'Components / Buttons';
   if (page.startsWith('carousel')) return 'Components / Carousel';
+  if (page.startsWith('journey-timeline')) return 'Components / Journey Timeline';
+  if (page.startsWith('link')) return 'Components / Link';
+  if (page.startsWith('modal')) return 'Components / Modal';
+  if (page.startsWith('pagination')) return 'Components / Pagination';
+  if (page.startsWith('progress-sla')) return 'Components / Progress SLA Indicator';
+  if (page.startsWith('progress')) return 'Components / Progress Indicator';
+  if (page.startsWith('popover')) return 'Components / Popover';
   if (page.startsWith('checkbox')) return 'Components / Checkbox';
   if (page.startsWith('chips')) return 'Components / Chips';
   if (page.startsWith('chip-group')) return 'Components / Chip Group';
   if (page.startsWith('divider')) return 'Components / Divider';
   if (page.startsWith('status-banner')) return 'Components / Status Banner';
+  if (page.startsWith('input-aadhaar')) return 'Components / Input Aadhaar';
+  if (page.startsWith('input-pan')) return 'Components / Input Pan';
+  if (page.startsWith('input-otp')) return 'Components / Input Otp';
+  if (page.startsWith('input')) return 'Components / Input Field';
+  if (page.startsWith('fileupload')) return 'Components / FileUpload';
+  if (page.startsWith('feedbackform')) return 'Components / Feedback';
+  if (page.startsWith('empty-state')) return 'Components / Empty State';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
   if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
@@ -117,6 +142,9 @@ export const App: React.FC = () => {
     if (activePage.startsWith('dropdown')) {
       return <DropdownDoc isDark={isDark} story={activePage} />;
     }
+    if (activePage.startsWith('fileupload')) {
+      return <FileUploadDoc isDark={isDark} story={activePage} />;
+    }
     if (activePage.startsWith('input')) {
       return <InputFieldDoc isDark={isDark} story={activePage} />;
     }
@@ -144,6 +172,27 @@ export const App: React.FC = () => {
     if (activePage.startsWith('carousel')) {
       return <CarouselDoc isDark={isDark} story={activePage} />;
     }
+    if (activePage.startsWith('journey-timeline')) {
+      return <JourneyTimelineDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('link')) {
+      return <LinkDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('modal')) {
+      return <ModalDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('pagination')) {
+      return <PaginationDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('progress-sla')) {
+      return <ProgressIndicatorDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('progress')) {
+      return <ProgressIndicatorDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('popover')) {
+      return <PopoverDoc isDark={isDark} story={activePage} />;
+    }
     if (activePage.startsWith('checkbox')) {
       return <CheckboxDoc isDark={isDark} story={activePage} />;
     }
@@ -158,6 +207,18 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('status-banner')) {
       return <StatusBannerDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'feedbackformstar') {
+      return <FeedbackStarDoc isDark={isDark} />;
+    }
+    if (activePage === 'feedbackformcsat') {
+      return <FeedbackCsatDoc isDark={isDark} />;
+    }
+    if (activePage === 'feedbackformnps') {
+      return <FeedbackNpsDoc isDark={isDark} />;
+    }
+    if (activePage.startsWith('empty-state')) {
+      return <EmptyStateDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {

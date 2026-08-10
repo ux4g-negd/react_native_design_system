@@ -136,14 +136,26 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'variant', type: 'Ux4gBannerVariant', default: "'infoLight'", desc: 'Visual variant theme (`warningSolid`, `warningLight`, `errorLight`, `successLight`, `infoLight`, `primaryLight`, etc.)' },
-    { name: 'title', type: 'string', default: '—', desc: 'Main title text header' },
-    { name: 'subtitle', type: 'string', default: 'undefined', desc: 'Secondary description text' },
-    { name: 'leadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Custom leading icon widget' },
-    { name: 'trailingIcon', type: 'ReactNode', default: 'undefined', desc: 'Custom trailing icon widget' },
-    { name: 'badge', type: 'ReactNode', default: 'undefined', desc: 'Badge displayed next to title' },
-    { name: 'actions', type: 'ReactNode[]', default: 'undefined', desc: 'Action buttons displayed at bottom of banner' },
-    { name: 'onDismiss', type: '() => void', default: 'undefined', desc: 'Dismiss callback when close icon is tapped' },
+    { name: 'variant', type: 'Ux4gBannerVariant', default: 'required', desc: 'Banner visual variant theme.', required: true },
+    { name: 'title', type: 'string', default: 'required', desc: 'Main title text header.', required: true },
+    { name: 'subtitle', type: 'string', default: 'undefined', desc: 'Secondary subtitle text description.', required: false },
+    { name: 'subtitleWidget', type: 'ReactNode', default: 'undefined', desc: 'Custom subtitle widget overriding subtitle text.', required: false },
+    { name: 'titleStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for title text.', required: false },
+    { name: 'subtitleStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for subtitle text.', required: false },
+    { name: 'badge', type: 'ReactNode', default: 'undefined', desc: 'Badge displayed next to title.', required: false },
+    { name: 'leadingIcon', type: 'ReactNode', default: 'auto by variant', desc: 'Custom leading icon (variant icon used by default).', required: false },
+    { name: 'trailingIcon', type: 'ReactNode', default: 'undefined', desc: 'Custom top-right trailing icon.', required: false },
+    { name: 'actions', type: 'ReactNode[]', default: 'undefined', desc: 'Action widgets shown in bottom row.', required: false },
+    { name: 'onDismiss', type: '() => void', default: 'undefined', desc: 'Dismiss callback when close icon is pressed.', required: false },
+    { name: 'backgroundColor', type: 'string', default: 'variant-based', desc: 'Background color override.', required: false },
+    { name: 'borderColor', type: 'string', default: 'variant-based', desc: 'Border color override.', required: false },
+    { name: 'actionsAlignment', type: "'start' | 'center' | 'end' | 'space-between' | 'space-around'", default: "'start'", desc: 'Alignment for bottom actions row.', required: false },
+    { name: 'width', type: 'DimensionValue', default: "'100%'", desc: 'Explicit banner width.', required: false },
+    { name: 'height', type: 'number', default: 'undefined', desc: 'Explicit banner height.', required: false },
+    { name: 'marginStyle', type: 'StyleProp<ViewStyle>', default: '{ marginHorizontal: 16, marginVertical: 8 }', desc: 'Outer margin style override.', required: false },
+    { name: 'paddingStyle', type: 'StyleProp<ViewStyle>', default: '{ paddingHorizontal: 16, paddingVertical: 12 }', desc: 'Inner padding style override.', required: false },
+    { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Additional container style override.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -155,6 +167,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Prominent alert banner used for draft statuses, system warnings, errors, success notifications, and workflow action prompts.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -201,22 +216,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

@@ -185,14 +185,30 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'title', type: 'string', default: "'Title'", desc: 'Header title text' },
-    { name: 'variant', type: "'light' | 'filled' | 'outlined'", default: "'outlined'", desc: 'Visual variant of the app header' },
-    { name: 'showBackButton', type: 'boolean', default: 'false', desc: 'Whether to display the back arrow button' },
-    { name: 'actions', type: 'Ux4gAppHeaderAction[]', default: '—', desc: 'Array of trailing action buttons/icons' },
-    { name: 'showAvatar', type: 'boolean', default: 'false', desc: 'Whether to display a leading avatar' },
-    { name: 'avatarInitials', type: 'string', default: '—', desc: 'Initials displayed on avatar if no image' },
-    { name: 'leadingWidgets', type: 'ReactNode[]', default: 'undefined', desc: 'Custom leading icons/logos (e.g. National Emblem)' },
-    { name: 'onBackPress', type: '() => void', default: '—', desc: 'Callback fired when back button is pressed' },
+    { name: 'title', type: 'string', default: "'Title'", desc: 'Header title text.', required: false },
+    { name: 'variant', type: "'light' | 'filled' | 'outlined'", default: "'outlined'", desc: 'Visual variant of the app header.', required: false },
+    { name: 'showBackButton', type: 'boolean', default: 'false', desc: 'Whether to display the back arrow button.', required: false },
+    { name: 'onBackPressed', type: '() => void', default: 'undefined', desc: 'Callback fired when back button is pressed.', required: false },
+    { name: 'leadingWidgets', type: 'ReactNode[]', default: 'undefined', desc: 'Custom leading widgets/logo row.', required: false },
+    { name: 'actions', type: 'Ux4gAppHeaderAction[]', default: 'undefined', desc: 'Array of trailing action buttons/icons.', required: false },
+    { name: 'avatar', type: 'ReactNode', default: 'undefined', desc: 'Custom avatar widget.', required: false },
+    { name: 'avatarSize', type: "'xs' | 's' | 'm' | 'l' | 'xl'", default: "'s'", desc: 'Size used when rendering default avatar.', required: false },
+    { name: 'showAvatar', type: 'boolean', default: 'false', desc: 'Whether to display default leading avatar.', required: false },
+    { name: 'avatarImageUrl', type: 'string', default: 'undefined', desc: 'Avatar image URL for default avatar.', required: false },
+    { name: 'avatarInitials', type: 'string', default: 'undefined', desc: 'Initials used when avatar image is absent.', required: false },
+    { name: 'onAvatarPressed', type: '() => void', default: 'undefined', desc: 'Callback fired when avatar is tapped.', required: false },
+    { name: 'titleWidget', type: 'ReactNode', default: 'undefined', desc: 'Custom title widget replacing text title.', required: false },
+    { name: 'titleStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for title text.', required: false },
+    { name: 'backgroundColor', type: 'string', default: 'variant-based token', desc: 'Header background color override.', required: false },
+    { name: 'foregroundColor', type: 'string', default: 'variant-based token', desc: 'Foreground color for title/icons.', required: false },
+    { name: 'borderColor', type: 'string', default: 'onSurface @ 12%', desc: 'Bottom border color for outlined variant.', required: false },
+    { name: 'height', type: 'number', default: '48/56 responsive', desc: 'Explicit header height override.', required: false },
+    { name: 'horizontalPadding', type: 'number', default: '12', desc: 'Horizontal padding inside header.', required: false },
+    { name: 'leadingSpacing', type: 'number', default: '8', desc: 'Spacing between leading section and title.', required: false },
+    { name: 'actionSpacing', type: 'number', default: '4', desc: 'Spacing between action items.', required: false },
+    { name: 'elevation', type: 'number', default: '0', desc: 'Android elevation/iOS shadow intensity.', required: false },
+    { name: 'useSafeArea', type: 'boolean', default: 'true', desc: 'Wrap content with SafeAreaView.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -204,6 +220,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Top app bar navigation header supporting screen titles, back buttons, avatars, leading national emblem logos, and trailing actions.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          This component has no required props.
         </p>
       </div>
 
@@ -250,22 +269,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

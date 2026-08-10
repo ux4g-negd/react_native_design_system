@@ -9,11 +9,9 @@ interface AccordionDocProps {
 }
 
 type MainTab = 'preview' | 'code' | 'props';
-type PanelTab = 'panel' | 'settings';
 
 export const AccordionDoc: React.FC<AccordionDocProps> = ({ isDark, story = 'accordion-basic' }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
-  const [activePanelTab, setActivePanelTab] = useState<PanelTab>('panel');
 
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
@@ -117,11 +115,27 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'title', type: 'string', default: '—', desc: 'Title text displayed in the accordion header' },
-    { name: 'expanded', type: 'boolean', default: 'false', desc: 'Whether the accordion panel is currently expanded' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the accordion is interactive' },
-    { name: 'chevronPosition', type: "'leading' | 'trailing'", default: "'trailing'", desc: 'Position of the chevron icon' },
-    { name: 'onExpandedChange', type: '(expanded: boolean) => void', default: '—', desc: 'Callback fired when header is tapped' },
+    { name: 'title', type: 'string', default: '—', desc: 'Title text displayed in the accordion header.', required: true },
+    { name: 'children', type: 'ReactNode', default: 'undefined', desc: 'Content inside the expandable panel.', required: false },
+    { name: 'content', type: 'ReactNode', default: 'undefined', desc: 'Alias for children, mirrors Flutter child.', required: false },
+    { name: 'expanded', type: 'boolean', default: 'false', desc: 'Whether the accordion panel is currently expanded.', required: false },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the accordion is interactive and enabled.', required: false },
+    { name: 'onExpandedChange', type: '(expanded: boolean) => void', default: 'undefined', desc: 'Callback fired when user taps the header.', required: false },
+    { name: 'backgroundColor', type: 'string', default: 'theme.colors.surface', desc: 'Background color for the header bar.', required: false },
+    { name: 'contentBackgroundColor', type: 'string', default: 'backgroundColor', desc: 'Background color for expanded content container.', required: false },
+    { name: 'collapsedBorderColor', type: 'string', default: 'onSurface @ 12%', desc: 'Border color when collapsed.', required: false },
+    { name: 'expandedBorderColor', type: 'string', default: 'collapsedBorderColor', desc: 'Border color when expanded.', required: false },
+    { name: 'titleColor', type: 'string', default: 'theme.colors.onSurface', desc: 'Title text color.', required: false },
+    { name: 'disabledTitleColor', type: 'string', default: 'onSurface @ 38%', desc: 'Title text color when disabled.', required: false },
+    { name: 'iconColor', type: 'string', default: 'theme.colors.onSurface', desc: 'Chevron and leading icon color.', required: false },
+    { name: 'disabledIconColor', type: 'string', default: 'onSurface @ 38%', desc: 'Chevron and leading icon color when disabled.', required: false },
+    { name: 'leadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Optional leading icon displayed before title.', required: false },
+    { name: 'chevronPosition', type: "'leading' | 'trailing'", default: "'trailing'", desc: 'Position of the chevron indicator.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Custom style for outer wrapper.', required: false },
+    { name: 'headerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Custom style for header row container.', required: false },
+    { name: 'contentStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Custom style for expanded content container.', required: false },
+    { name: 'titleStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Custom style for header title text.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -133,6 +147,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Expandable panel component supporting custom borders, chevrons, and animated transitions.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -179,22 +196,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

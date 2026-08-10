@@ -28,7 +28,7 @@ import { JourneyTimelineShowcase } from '../src/showcase/JourneyTimelineShowcase
 import { DatePickerShowcase } from '../src/showcase/DatePickerShowcase';
 import { TimePickerShowcase } from '../src/showcase/TimePickerShowcase';
 import { FileUploadShowcase } from '../src/showcase/FileUploadShowcase';
-import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider, SlotGridShowcase, FeedbackFormShowcase } from '../src/index';
+import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider, SlotGridShowcase, FeedbackFormShowcase, EmptyStateShowcase } from '../src/index';
 
 type ActiveTab =
   | 'spinners'
@@ -70,7 +70,8 @@ type ActiveTab =
   | 'time-picker'
   | 'file-upload'
   | 'slot-grid'
-  | 'feedback-form';
+  | 'feedback-form'
+  | 'empty-state';
 
 const ShowcaseHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('time-picker');
@@ -1160,6 +1161,32 @@ const ShowcaseHub: React.FC = () => {
               ⭐ Feedback Form
             </Text>
           </Pressable>
+          <Pressable
+            onPress={() => setActiveTab('empty-state')}
+            style={[
+              styles.tabItem,
+              activeTab === 'empty-state' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'empty-state'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              📭 Empty State
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1243,6 +1270,8 @@ const ShowcaseHub: React.FC = () => {
           <SlotGridShowcase />
         ) : activeTab === 'feedback-form' ? (
           <FeedbackFormShowcase />
+        ) : activeTab === 'empty-state' ? (
+          <EmptyStateShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

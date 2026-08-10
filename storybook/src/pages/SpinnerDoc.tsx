@@ -9,7 +9,6 @@ interface SpinnerDocProps {
 }
 
 type MainTab = 'preview' | 'code' | 'props';
-type PanelTab = 'panel' | 'settings';
 
 export const SpinnerDoc: React.FC<SpinnerDocProps> = ({ isDark, story = 'spinner-basic' }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
@@ -74,12 +73,14 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'size', type: 'number', default: '40', desc: 'Diameter size of the spinner ring' },
-    { name: 'color', type: 'string', default: 'theme.colors.primary', desc: 'Primary color of the spinner arc' },
-    { name: 'gradientColors', type: 'string[]', default: '—', desc: 'List of colors for gradient ring segments' },
-    { name: 'percentage', type: 'number', default: '100', desc: 'Arc fill percentage (0 to 100)' },
-    { name: 'strokeWidth', type: 'number', default: '4', desc: 'Thickness of the spinner ring' },
-    { name: 'rotationDurationMillis', type: 'number', default: '1200', desc: 'Milliseconds for a full 360° rotation' },
+    { name: 'size', type: 'number', default: '40', desc: 'Diameter size of the spinner ring.', required: false },
+    { name: 'color', type: 'string', default: 'theme.colors.primary', desc: 'Primary color of the spinner arc.', required: false },
+    { name: 'gradientColors', type: 'string[]', default: 'undefined', desc: 'List of colors for multi-tone arc segments.', required: false },
+    { name: 'percentage', type: 'number', default: '100', desc: 'Arc fill percentage from 0 to 100.', required: false },
+    { name: 'strokeWidth', type: 'number', default: '4', desc: 'Thickness of the spinner ring.', required: false },
+    { name: 'rotationDurationMillis', type: 'number', default: '1200', desc: 'Milliseconds for a full 360-degree rotation.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for outer spinner container.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -91,6 +92,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Spinner displays an animated circular progress indicator for loading states.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          This component has no required props.
         </p>
       </div>
 
@@ -145,17 +149,22 @@ const styles = StyleSheet.create({
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((p) => (
                       <tr key={p.name}>
-                        <td><span className="prop-name">{p.name}</span></td>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
                         <td><span className="prop-type">{p.type}</span></td>
-                        <td><span className="prop-default">{p.default}</span></td>
                         <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

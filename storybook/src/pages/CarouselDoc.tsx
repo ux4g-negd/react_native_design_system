@@ -262,17 +262,18 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'items', type: 'React.ReactNode[]', default: '[]', desc: 'Array of slide widgets to display in carousel', required: true },
-    { name: 'autoPlay', type: 'boolean', default: 'true', desc: 'Enable auto-play scrolling' },
-    { name: 'autoPlayInterval', type: 'number', default: '3000', desc: 'Auto-play interval in milliseconds' },
-    { name: 'showPagination', type: 'boolean', default: 'true', desc: 'Show bottom pagination dots' },
-    { name: 'showArrows', type: 'boolean', default: 'false', desc: 'Show arrow navigation buttons' },
-    { name: 'height', type: 'number', default: '200', desc: 'Carousel container height' },
-    { name: 'viewportFraction', type: 'number', default: '1.0', desc: 'Fraction of viewport per item (0.1 to 1.0)' },
-    { name: 'paginationVariant', type: "'default' | 'defaultVariant' | 'capsule'", default: "'default'", desc: 'Pagination dot style variant' },
-    { name: 'paginationSize', type: "'small' | 'medium'", default: "'small'", desc: 'Pagination dot size' },
-    { name: 'activeColor', type: 'string', default: 'theme.colors.primary', desc: 'Active indicator color' },
-    { name: 'inactiveColor', type: 'string', default: 'theme.colors.variant', desc: 'Inactive indicator color' },
+    { name: 'items', type: 'ReactNode[]', default: 'required', desc: 'Array of slide widgets to display in carousel.', required: true },
+    { name: 'autoPlay', type: 'boolean', default: 'true', desc: 'Enable auto-play scrolling.', required: false },
+    { name: 'autoPlayInterval', type: 'number', default: '3000', desc: 'Auto-play interval in milliseconds.', required: false },
+    { name: 'showPagination', type: 'boolean', default: 'true', desc: 'Show bottom pagination dots.', required: false },
+    { name: 'showArrows', type: 'boolean', default: 'false', desc: 'Show arrow navigation buttons.', required: false },
+    { name: 'height', type: 'number', default: '200', desc: 'Carousel container height.', required: false },
+    { name: 'viewportFraction', type: 'number', default: '1.0', desc: 'Fraction of viewport occupied by each item.', required: false },
+    { name: 'paginationVariant', type: 'Ux4gPaginationVariant', default: "'default'", desc: 'Pagination indicator style variant.', required: false },
+    { name: 'paginationSize', type: 'Ux4gPaginationSize', default: "'small'", desc: 'Pagination indicator size.', required: false },
+    { name: 'activeColor', type: 'string', default: 'undefined', desc: 'Active indicator color override.', required: false },
+    { name: 'inactiveColor', type: 'string', default: 'undefined', desc: 'Inactive indicator and arrow background color override.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Custom container style override.', required: false },
   ];
 
   /* ── Story Title & Description ── */
@@ -302,6 +303,9 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Component</span>
         </div>
         <p className="wb-subtitle">{config.description}</p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
+        </p>
       </div>
 
       {/* Main Body */}
@@ -357,17 +361,22 @@ const styles = StyleSheet.create({
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((p) => (
                       <tr key={p.name}>
-                        <td><span className="prop-name">{p.name}{p.required && ' *'}</span></td>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
                         <td><span className="prop-type">{p.type}</span></td>
-                        <td><span className="prop-default">{p.default}</span></td>
                         <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

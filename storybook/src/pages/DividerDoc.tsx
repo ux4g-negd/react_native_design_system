@@ -127,14 +127,18 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", desc: 'Orientation direction of the divider line' },
-    { name: 'style', type: "'solid' | 'dashed' | 'dotted'", default: "'solid'", desc: 'Stroke pattern style of the line' },
-    { name: 'thickness', type: 'number', default: '1.0', desc: 'Thickness / stroke width of the line in pixels' },
-    { name: 'color', type: 'string', default: 'theme.colors.onSurface (20%)', desc: 'Line color override' },
-    { name: 'startIndent', type: 'number', default: '0.0', desc: 'Leading indentation before the divider line begins' },
-    { name: 'endIndent', type: 'number', default: '0.0', desc: 'Trailing indentation after the divider line ends' },
-    { name: 'label', type: 'ReactNode | string', default: 'undefined', desc: 'Center label text or custom component splitting the line' },
-    { name: 'labelSpacing', type: 'number', default: '8.0', desc: 'Horizontal / vertical gap around center label' },
+    { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", desc: 'Orientation direction of the divider line.', required: false },
+    { name: 'color', type: 'string', default: 'theme.colors.onSurface @ 20%', desc: 'Line color override.', required: false },
+    { name: 'thickness', type: 'number', default: '1.0', desc: 'Thickness/stroke width of divider line.', required: false },
+    { name: 'style', type: "'solid' | 'dashed' | 'dotted'", default: "'solid'", desc: 'Stroke pattern style of the line.', required: false },
+    { name: 'startIndent', type: 'number', default: '0.0', desc: 'Leading indentation before divider begins.', required: false },
+    { name: 'endIndent', type: 'number', default: '0.0', desc: 'Trailing indentation after divider ends.', required: false },
+    { name: 'label', type: 'ReactNode | string', default: 'undefined', desc: 'Center label that splits divider into two segments.', required: false },
+    { name: 'labelSpacing', type: 'number', default: '8.0', desc: 'Spacing around center label.', required: false },
+    { name: 'width', type: 'number | string', default: 'undefined', desc: 'Explicit width of divider container.', required: false },
+    { name: 'height', type: 'number | string', default: 'undefined', desc: 'Explicit height of divider container.', required: false },
+    { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for root divider container.', required: false },
+    { name: 'labelTextStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for label text when label is string.', required: false },
   ];
 
   return (
@@ -146,6 +150,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Visual rule separator used to group and partition content. Supports horizontal/vertical orientation, solid/dashed/dotted styles, indents, and center labels.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          This component has no required props.
         </p>
       </div>
 
@@ -192,22 +199,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

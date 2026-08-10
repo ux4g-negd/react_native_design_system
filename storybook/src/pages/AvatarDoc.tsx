@@ -236,15 +236,63 @@ const styles = StyleSheet.create({
   };
 
   /* ── Props Table Data ── */
-  const propsData = [
-    { name: 'size', type: "'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'", default: "'m'", desc: 'Size preset of the avatar' },
-    { name: 'shape', type: "'circle' | 'rounded' | 'square'", default: "'circle'", desc: 'Shape of the avatar border' },
-    { name: 'imageUrl', type: 'string', default: 'undefined', desc: 'Remote image URL' },
-    { name: 'initials', type: 'string', default: 'undefined', desc: 'Fallback text initials' },
-    { name: 'icon', type: 'ReactNode', default: 'undefined', desc: 'Custom icon widget' },
-    { name: 'containerColor', type: 'string', default: 'theme.colors.primary + 1A', desc: 'Background container color' },
-    { name: 'contentColor', type: 'string', default: 'theme.colors.primary', desc: 'Text or icon color' },
-  ];
+  const propsData = useMemo(() => {
+    if (story === 'avatar-group') {
+      return [
+        { name: 'items', type: 'Ux4gAvatarGroupItem[]', default: '—', desc: 'List of avatar group items.', required: true },
+        { name: 'size', type: "'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'", default: "'m'", desc: 'Avatar size for all items.', required: false },
+        { name: 'maxLimit', type: 'number', default: 'items.length', desc: 'Maximum visible entries before +N overflow.', required: false },
+        { name: 'collapsed', type: 'boolean', default: 'true', desc: 'Use overlapping collapsed layout.', required: false },
+        { name: 'borderColor', type: 'string', default: 'theme.colors.surface', desc: 'Border color in collapsed mode.', required: false },
+        { name: 'borderWidth', type: 'number', default: '2', desc: 'Border width in collapsed mode.', required: false },
+        { name: 'onRemainingPress', type: '() => void', default: 'undefined', desc: 'Callback for +N remaining bubble.', required: false },
+        { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for group container.', required: false },
+        { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
+      ];
+    }
+
+    if (story === 'avatar-status') {
+      return [
+        { name: 'size', type: "'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'", default: "'m'", desc: 'Size preset of status avatar.', required: false },
+        { name: 'shape', type: "'circle' | 'rounded' | 'square'", default: "'circle'", desc: 'Shape of the main avatar.', required: false },
+        { name: 'imageUrl', type: 'string', default: 'undefined', desc: 'Remote image URL.', required: false },
+        { name: 'initials', type: 'string', default: 'undefined', desc: 'Fallback initials.', required: false },
+        { name: 'avatarIcon', type: 'ReactNode', default: 'undefined', desc: 'Custom fallback icon for avatar.', required: false },
+        { name: 'variant', type: "'online' | 'offline' | 'busy' | 'success' | 'error' | 'warning'", default: "'online'", desc: 'Status indicator variant.', required: false },
+        { name: 'statusSize', type: 'number', default: 'auto by size', desc: 'Override size of status indicator.', required: false },
+        { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for outer wrapper.', required: false },
+        { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
+      ];
+    }
+
+    if (story === 'avatar-profile') {
+      return [
+        { name: 'size', type: "'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'", default: "'m'", desc: 'Size preset of profile avatar.', required: false },
+        { name: 'shape', type: "'circle' | 'rounded' | 'square'", default: "'circle'", desc: 'Shape of the main avatar.', required: false },
+        { name: 'imageUrl', type: 'string', default: 'undefined', desc: 'Remote image URL.', required: false },
+        { name: 'initials', type: 'string', default: 'undefined', desc: 'Fallback initials.', required: false },
+        { name: 'avatarIcon', type: 'ReactNode', default: 'undefined', desc: 'Custom fallback icon for avatar.', required: false },
+        { name: 'variant', type: "'verified' | 'star' | 'admin' | 'edit' | 'camera' | 'remove'", default: 'undefined', desc: 'Badge/action variant overlay.', required: false },
+        { name: 'badgeSize', type: 'number', default: 'auto by size', desc: 'Override overlay badge/action size.', required: false },
+        { name: 'onVariantPress', type: '() => void', default: 'undefined', desc: 'Callback when overlay badge/action is pressed.', required: false },
+        { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for outer wrapper.', required: false },
+        { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
+      ];
+    }
+
+    return [
+      { name: 'size', type: "'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'", default: "'m'", desc: 'Size preset of the avatar.', required: false },
+      { name: 'shape', type: "'circle' | 'rounded' | 'square'", default: "'circle'", desc: 'Shape of the avatar border.', required: false },
+      { name: 'imageUrl', type: 'string', default: 'undefined', desc: 'Remote image URL.', required: false },
+      { name: 'initials', type: 'string', default: 'undefined', desc: 'Fallback text initials.', required: false },
+      { name: 'icon', type: 'ReactNode', default: 'undefined', desc: 'Custom icon widget.', required: false },
+      { name: 'containerColor', type: 'string', default: 'theme.colors.primary + 1A', desc: 'Background container color.', required: false },
+      { name: 'contentColor', type: 'string', default: 'theme.colors.primary', desc: 'Text color for initials.', required: false },
+      { name: 'iconColor', type: 'string', default: 'theme.colors.primary', desc: 'Icon color when icon is shown.', required: false },
+      { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for avatar container.', required: false },
+      { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
+    ];
+  }, [story]);
 
   return (
     <div className="wb-page">
@@ -256,6 +304,11 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Avatars represent user profiles, initials, status badges, and group representations across 7 sizes.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          {propsData.some((p) => p.required)
+            ? <><span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.</>
+            : 'This component variant has no required props.'}
         </p>
       </div>
 
@@ -312,17 +365,22 @@ const styles = StyleSheet.create({
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((p) => (
                       <tr key={p.name}>
-                        <td><span className="prop-name">{p.name}</span></td>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
                         <td><span className="prop-type">{p.type}</span></td>
-                        <td><span className="prop-default">{p.default}</span></td>
                         <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

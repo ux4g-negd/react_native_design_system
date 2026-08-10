@@ -256,14 +256,24 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'variant', type: "'dot' | 'count' | 'label' | 'icon' | 'readyToUse'", default: "'dot'", desc: 'Type of badge indicator' },
-    { name: 'count', type: 'number', default: 'undefined', desc: 'Numeric count displayed when variant = count' },
-    { name: 'limit', type: "'singleDigit' | 'doubleDigit'", default: "'singleDigit'", desc: 'Threshold formatting (9+ or 99+)' },
-    { name: 'label', type: 'string', default: 'undefined', desc: 'Short text string displayed when variant = label' },
-    { name: 'alignment', type: "'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft'", default: "'topRight'", desc: 'Placement alignment when wrapping child' },
-    { name: 'containerColor', type: 'string', default: 'theme.colors.primary', desc: 'Badge pill background color' },
-    { name: 'contentColor', type: 'string', default: 'UX4GColors.white', desc: 'Text or icon color inside badge' },
-    { name: 'showBorder', type: 'boolean', default: 'false', desc: 'Whether to render 1.5px border around badge' },
+    { name: 'child', type: 'ReactNode', default: 'undefined', desc: 'Child element around which badge is overlaid.', required: false },
+    { name: 'children', type: 'ReactNode', default: 'undefined', desc: 'Alias for child.', required: false },
+    { name: 'variant', type: "'dot' | 'count' | 'label' | 'icon' | 'readyToUse'", default: "'dot'", desc: 'Type of badge indicator (auto-inferred when omitted).', required: false },
+    { name: 'count', type: 'number', default: 'undefined', desc: 'Numeric count value for count variant.', required: false },
+    { name: 'limit', type: "'singleDigit' | 'doubleDigit'", default: "'singleDigit'", desc: 'Threshold formatting (9+ or 99+).', required: false },
+    { name: 'label', type: 'string', default: 'undefined', desc: 'Short text for label variant.', required: false },
+    { name: 'icon', type: 'ReactNode', default: 'undefined', desc: 'Custom icon for icon variant.', required: false },
+    { name: 'assetPath', type: 'string | ImageSourcePropType | ReactNode | ((props) => ReactElement)', default: 'undefined', desc: 'Asset source for readyToUse variant.', required: false },
+    { name: 'containerColor', type: 'string', default: 'theme.colors.primary', desc: 'Badge background color.', required: false },
+    { name: 'contentColor', type: 'string', default: 'UX4GColors.white', desc: 'Text/icon color inside badge.', required: false },
+    { name: 'alignment', type: "'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft'", default: "'topRight'", desc: 'Overlay placement when wrapping a child.', required: false },
+    { name: 'offset', type: '{ top?: number; right?: number; bottom?: number; left?: number }', default: 'undefined', desc: 'Precise offset override for overlay placement.', required: false },
+    { name: 'showBorder', type: 'boolean', default: 'false', desc: 'Whether to render a border around badge.', required: false },
+    { name: 'borderColor', type: 'string', default: 'theme.colors.surface', desc: 'Border color when showBorder is true.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for wrapper/standalone container.', required: false },
+    { name: 'badgeStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for badge pill element.', required: false },
+    { name: 'textStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Text style override for count/label.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -276,6 +286,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Badges display status indicators, numerical counts, text labels, or custom icons overlayed on UI elements or standalone.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          This component has no required props.
         </p>
       </div>
 
@@ -332,17 +345,22 @@ const styles = StyleSheet.create({
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((p) => (
                       <tr key={p.name}>
-                        <td><span className="prop-name">{p.name}</span></td>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
                         <td><span className="prop-type">{p.type}</span></td>
-                        <td><span className="prop-default">{p.default}</span></td>
                         <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

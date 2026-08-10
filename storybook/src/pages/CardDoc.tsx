@@ -256,23 +256,39 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'direction', type: "'vertical' | 'horizontal'", default: "'vertical'", desc: 'Layout orientation of media thumbnail and content' },
-    { name: 'title', type: 'string', default: 'undefined', desc: 'Primary card headline title' },
-    { name: 'subtitle', type: 'string', default: 'undefined', desc: 'Secondary subtitle text below headline' },
-    { name: 'body', type: 'string', default: 'undefined', desc: 'Main description body text' },
-    { name: 'mediaImageUrl', type: 'string', default: 'undefined', desc: 'Image asset URL for top hero (vertical) or left thumbnail (horizontal)' },
-    { name: 'mediaLabelText', type: 'string', default: 'undefined', desc: 'Badge label overlayed on top left of media image' },
-    { name: 'avatar', type: 'ReactNode', default: 'undefined', desc: 'Avatar component in card header' },
-    { name: 'statusChips', type: '(string | ReactNode)[]', default: 'undefined', desc: 'Status tags separated by vertical dividers' },
-    { name: 'bottomChips', type: '(string | ReactNode)[]', default: 'undefined', desc: 'Pill chips/tags rendered below body text' },
-    { name: 'footerType', type: "'none' | 'primaryOnly' | 'secondaryOnly' | 'primaryAndSecondary'", default: "'none'", desc: 'Footer action button layout configuration' },
-    { name: 'primaryButtonText', type: 'string', default: "'Confirm'", desc: 'Label text for primary action button' },
-    { name: 'secondaryButtonText', type: 'string', default: "'Cancel'", desc: 'Label text for secondary action button' },
-    { name: 'cornerRadius', type: 'number', default: '12', desc: 'Corner border radius in density pixels' },
-    { name: 'borderWidth', type: 'number', default: '0', desc: 'Outer border stroke width' },
-    { name: 'borderColor', type: 'string', default: "'transparent'", desc: 'Border stroke color' },
-    { name: 'elevation', type: 'number', default: '0', desc: 'Shadow elevation depth' },
-    { name: 'backgroundColor', type: 'string', default: 'theme.colors.surface', desc: 'Explicit background surface color' },
+    { name: 'children', type: 'ReactNode', default: 'undefined', desc: 'Custom child content. When provided, rich card layout is skipped.', required: false },
+    { name: 'cornerRadius', type: 'number', default: 'Ux4gRadius.radius12', desc: 'Corner radius of the card.', required: false },
+    { name: 'backgroundColor', type: 'string', default: 'theme.colors.surface', desc: 'Background color override.', required: false },
+    { name: 'borderColor', type: 'string', default: "'transparent'", desc: 'Border color.', required: false },
+    { name: 'borderWidth', type: 'number', default: '0', desc: 'Border width.', required: false },
+    { name: 'elevation', type: 'number', default: '0', desc: 'Elevation/shadow depth.', required: false },
+    { name: 'isClickable', type: 'boolean', default: 'false', desc: 'Wrap card in Pressable when true.', required: false },
+    { name: 'onPress', type: '() => void', default: 'undefined', desc: 'Card press callback (used when isClickable=true).', required: false },
+    { name: 'direction', type: "'vertical' | 'horizontal'", default: "'vertical'", desc: 'Layout direction of rich card.', required: false },
+    { name: 'mediaImageUrl', type: 'string', default: 'undefined', desc: 'Media image URL (top in vertical, left in horizontal).', required: false },
+    { name: 'mediaHeight', type: 'number', default: '180', desc: 'Media height in vertical mode.', required: false },
+    { name: 'mediaWidth', type: 'number', default: '120', desc: 'Media width in horizontal mode.', required: false },
+    { name: 'mediaLabelText', type: 'string', default: 'undefined', desc: 'Badge label text over media.', required: false },
+    { name: 'mediaTrailingAction', type: 'ReactNode', default: 'undefined', desc: 'Trailing action over media.', required: false },
+    { name: 'avatar', type: 'ReactNode', default: 'undefined', desc: 'Avatar element in card header.', required: false },
+    { name: 'title', type: 'string', default: 'undefined', desc: 'Primary title text.', required: false },
+    { name: 'subtitle', type: 'string', default: 'undefined', desc: 'Secondary subtitle text.', required: false },
+    { name: 'headerTrailingAction', type: 'ReactNode', default: 'undefined', desc: 'Trailing action in header row.', required: false },
+    { name: 'statusChips', type: '(string | ReactNode)[]', default: 'undefined', desc: 'Status chips rendered above body.', required: false },
+    { name: 'body', type: 'string', default: 'undefined', desc: 'Body description text.', required: false },
+    { name: 'bottomChips', type: '(string | ReactNode)[]', default: 'undefined', desc: 'Bottom chip row rendered below body.', required: false },
+    { name: 'footerType', type: "'none' | 'primaryOnly' | 'secondaryOnly' | 'primaryAndSecondary'", default: "'none'", desc: 'Footer button layout type.', required: false },
+    { name: 'footerAlignment', type: "'left' | 'centered' | 'right'", default: "'left'", desc: 'Footer buttons alignment.', required: false },
+    { name: 'primaryButtonText', type: 'string', default: "'Confirm'", desc: 'Primary button label.', required: false },
+    { name: 'secondaryButtonText', type: 'string', default: "'Cancel'", desc: 'Secondary button label.', required: false },
+    { name: 'onPrimaryClick', type: '() => void', default: 'undefined', desc: 'Primary button callback.', required: false },
+    { name: 'onSecondaryClick', type: '() => void', default: 'undefined', desc: 'Secondary button callback.', required: false },
+    { name: 'primaryButtonLeadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Leading icon for primary button.', required: false },
+    { name: 'primaryButtonTrailingIcon', type: 'ReactNode', default: 'undefined', desc: 'Trailing icon for primary button.', required: false },
+    { name: 'secondaryButtonLeadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Leading icon for secondary button.', required: false },
+    { name: 'secondaryButtonTrailingIcon', type: 'ReactNode', default: 'undefined', desc: 'Trailing icon for secondary button.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Additional style for outer card container.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -285,6 +301,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Cards contain content and actions about a single subject, supporting hero images, avatars, tags, and flexible action footers.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          This component has no required props.
         </p>
       </div>
 
@@ -341,17 +360,22 @@ const styles = StyleSheet.create({
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((p) => (
                       <tr key={p.name}>
-                        <td><span className="prop-name">{p.name}</span></td>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
                         <td><span className="prop-type">{p.type}</span></td>
-                        <td><span className="prop-default">{p.default}</span></td>
                         <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

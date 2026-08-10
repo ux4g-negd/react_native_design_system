@@ -37,6 +37,21 @@ const PAGE_TO_PATH: Record<string, string> = {
   radius: 'token/dimensions/radius',
   button: 'components/button',
   'input-field': 'components/input-field',
+  'input-basic': 'components/input-field/basic',
+  'input-status': 'components/input-field/status',
+  'input-password': 'components/input-field/password',
+  'input-icons': 'components/input-field/icons',
+  'input-aadhaar-basic': 'components/input-aadhaar/basic',
+  'input-aadhaar-varients': 'components/input-aadhaar/varients',
+  'input-aadhaar': 'components/input-aadhaar/basic',
+  'input-pan-basic': 'components/input-pan/basic',
+  'input-pan-varients': 'components/input-pan/varients',
+  'input-pan': 'components/input-pan/basic',
+  'input-otp-basic': 'components/input-otp/basic',
+  'input-otp-varients': 'components/input-otp/varients',
+  'input-otp': 'components/input-otp/basic',
+  'input-prefix-postfix': 'components/input-field/prefix-postfix',
+  'input-required-disabled': 'components/input-field/required-disabled',
   checkbox: 'components/checkbox',
   'radio-button': 'components/radio-button',
   switch: 'components/switch',
@@ -51,6 +66,41 @@ const PAGE_TO_PATH: Record<string, string> = {
   'carousel-intro': 'components/carousel/introduction',
   'carousel-rich-hero': 'components/carousel/rich-hero',
   'carousel-image': 'components/carousel/image',
+  'journey-timeline-basic': 'components/journey-timeline/basic',
+  'journey-timeline-horizontal': 'components/journey-timeline/horizontal',
+  'journey-timeline-custom': 'components/journey-timeline/custom',
+  'journey-timeline': 'components/journey-timeline/basic',
+  'link-basic': 'components/link/basic',
+  'link-text': 'components/link/text',
+  'link-custom-child': 'components/link/custom-child',
+  link: 'components/link/basic',
+  'modal-full-preview': 'components/modal/full-preview',
+  'modal-header-left': 'components/modal/header-left',
+  'modal-header-centered': 'components/modal/header-centered',
+  'pagination-default-arrows': 'components/pagination/default-arrows',
+  'pagination-capsule-arrows': 'components/pagination/capsule-arrows',
+  'pagination-capsule-dots': 'components/pagination/capsule-dots',
+  'pagination-arrows-right': 'components/pagination/arrows-right',
+  'pagination-dotted': 'components/pagination/default-arrows',
+  pagination: 'components/pagination/default-arrows',
+  'progress-linear': 'components/progress-indicator/linear',
+  'progress-circular': 'components/progress-indicator/circular',
+  'progress-half-circle': 'components/progress-indicator/half-circle',
+  'progress-animated': 'components/progress-indicator/animated',
+  'progress-sla-circular': 'components/progress-sla-indicator/circular',
+  'progress-sla-linear': 'components/progress-sla-indicator/linear',
+  'progress-sla': 'components/progress-sla-indicator/circular',
+  'progress-indicator': 'components/progress-indicator/linear',
+  progress: 'components/progress-indicator/linear',
+  'progress-sla-indicator': 'components/progress-sla-indicator/circular',
+  'popover-basic': 'components/popover/basic',
+  'popover-rich': 'components/popover/rich',
+  'popover-placements': 'components/popover/placements',
+  'popover-custom-content': 'components/popover/custom-content',
+  'popover-trigger': 'components/popover/trigger',
+  popover: 'components/popover/basic',
+  tooltip: 'components/popover/basic',
+  modal: 'components/modal/full-preview',
   badge: 'components/badge',
   'badge-basic': 'components/badge/basic',
   'badge-count': 'components/badge/count',
@@ -58,6 +108,15 @@ const PAGE_TO_PATH: Record<string, string> = {
   'badge-standalone': 'components/badge/standalone',
   'badge-semantic': 'components/badge/semantic',
   'badge-overlay': 'components/badge/overlay',
+  'empty-state-basic': 'components/empty-state/basic',
+  'empty-state-variants': 'components/empty-state/variants',
+  'empty-state-action': 'components/empty-state/action',
+  'fileupload-basic': 'components/fileupload/basic',
+  'fileupload-dashed': 'components/fileupload/dashed',
+  'fileupload-preloaded': 'components/fileupload/preloaded',
+  feedbackformstar: 'components/feedback/feedbackformstar',
+  feedbackformcsat: 'components/feedback/feedbackformcsat',
+  feedbackformnps: 'components/feedback/feedbackformnps',
   avatar: 'components/avatar',
   'avatar-basic': 'components/avatar/basic',
   'avatar-status': 'components/avatar/status',
@@ -105,6 +164,48 @@ export function getPageFromPath(path: string): string {
     return 'avatar-basic';
   }
 
+  if (cleanPath.startsWith('components/empty-state') || cleanPath.startsWith('empty-state')) {
+    if (cleanPath.includes('variants')) return 'empty-state-variants';
+    if (cleanPath.includes('action')) return 'empty-state-action';
+    return 'empty-state-basic';
+  }
+
+  if (cleanPath.startsWith('components/fileupload') || cleanPath.startsWith('fileupload')) {
+    if (cleanPath.includes('dashed')) return 'fileupload-dashed';
+    if (cleanPath.includes('preloaded')) return 'fileupload-preloaded';
+    return 'fileupload-basic';
+  }
+
+  if (cleanPath.startsWith('components/input-aadhaar') || cleanPath.startsWith('input-aadhaar')) {
+    if (cleanPath.includes('varients')) return 'input-aadhaar-varients';
+    return 'input-aadhaar-basic';
+  }
+
+  if (cleanPath.startsWith('components/input-pan') || cleanPath.startsWith('input-pan')) {
+    if (cleanPath.includes('varients')) return 'input-pan-varients';
+    return 'input-pan-basic';
+  }
+
+  if (cleanPath.startsWith('components/input-otp') || cleanPath.startsWith('input-otp')) {
+    if (cleanPath.includes('varients')) return 'input-otp-varients';
+    return 'input-otp-basic';
+  }
+
+  if (cleanPath.startsWith('components/input-field') || cleanPath.startsWith('input-field') || cleanPath.startsWith('input')) {
+    if (cleanPath.includes('status')) return 'input-status';
+    if (cleanPath.includes('password')) return 'input-password';
+    if (cleanPath.includes('icons')) return 'input-icons';
+    if (cleanPath.includes('prefix') || cleanPath.includes('postfix')) return 'input-prefix-postfix';
+    if (cleanPath.includes('required') || cleanPath.includes('disabled')) return 'input-required-disabled';
+    return 'input-basic';
+  }
+
+  if (cleanPath.startsWith('components/feedback') || cleanPath.startsWith('feedback')) {
+    if (cleanPath.includes('feedbackformcsat') || cleanPath.includes('csat')) return 'feedbackformcsat';
+    if (cleanPath.includes('feedbackformnps') || cleanPath.includes('nps')) return 'feedbackformnps';
+    return 'feedbackformstar';
+  }
+
   if (cleanPath.startsWith('components/button')) {
     if (cleanPath.includes('introduction')) return 'button-introduction';
     if (cleanPath.includes('variants')) return 'button-variants';
@@ -126,6 +227,51 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('rich-hero') || cleanPath.includes('richhero')) return 'carousel-rich-hero';
     if (cleanPath.includes('image')) return 'carousel-image';
     return 'carousel-intro';
+  }
+
+  if (cleanPath.startsWith('components/journey-timeline') || cleanPath.startsWith('journey-timeline')) {
+    if (cleanPath.includes('horizontal')) return 'journey-timeline-horizontal';
+    if (cleanPath.includes('custom')) return 'journey-timeline-custom';
+    return 'journey-timeline-basic';
+  }
+
+  if (cleanPath.startsWith('components/link') || cleanPath.startsWith('link')) {
+    if (cleanPath.includes('text')) return 'link-text';
+    if (cleanPath.includes('custom')) return 'link-custom-child';
+    return 'link-basic';
+  }
+
+  if (cleanPath.startsWith('components/modal') || cleanPath.startsWith('modal')) {
+    if (cleanPath.includes('header-centered')) return 'modal-header-centered';
+    if (cleanPath.includes('header-left')) return 'modal-header-left';
+    return 'modal-full-preview';
+  }
+
+  if (cleanPath.startsWith('components/pagination') || cleanPath.startsWith('pagination')) {
+    if (cleanPath.includes('capsule-arrows')) return 'pagination-capsule-arrows';
+    if (cleanPath.includes('capsule-dots')) return 'pagination-capsule-dots';
+    if (cleanPath.includes('arrows-right')) return 'pagination-arrows-right';
+    return 'pagination-default-arrows';
+  }
+
+  if (cleanPath.startsWith('components/progress-sla-indicator') || cleanPath.startsWith('progress-sla-indicator') || cleanPath.startsWith('progress-sla')) {
+    if (cleanPath.includes('linear')) return 'progress-sla-linear';
+    return 'progress-sla-circular';
+  }
+
+  if (cleanPath.startsWith('components/progress-indicator') || cleanPath.startsWith('progress-indicator') || cleanPath.startsWith('progress')) {
+    if (cleanPath.includes('circular')) return 'progress-circular';
+    if (cleanPath.includes('half-circle')) return 'progress-half-circle';
+    if (cleanPath.includes('animated')) return 'progress-animated';
+    return 'progress-linear';
+  }
+
+  if (cleanPath.startsWith('components/popover') || cleanPath.startsWith('popover') || cleanPath.startsWith('tooltip')) {
+    if (cleanPath.includes('rich')) return 'popover-rich';
+    if (cleanPath.includes('placement')) return 'popover-placements';
+    if (cleanPath.includes('custom')) return 'popover-custom-content';
+    if (cleanPath.includes('trigger')) return 'popover-trigger';
+    return 'popover-basic';
   }
 
   return PATH_TO_PAGE[cleanPath] ?? 'introduction';

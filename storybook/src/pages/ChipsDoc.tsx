@@ -49,7 +49,7 @@ export const ChipsDoc: React.FC<ChipsDocProps> = ({ isDark, story = 'chips-basic
     lines.push('// Input Chips with Delete');
     lines.push('<Ux4gInputChip');
     lines.push('  text="React Native"');
-    lines.push('  onDeleted={() => console.log("Deleted")}\n/>');
+    lines.push('  onDismiss={() => console.log("Dismissed")}\n/>');
     lines.push('');
     lines.push('// Suggestion Chips');
     lines.push('<Ux4gSuggestionChip');
@@ -71,11 +71,11 @@ export const ChipsDoc: React.FC<ChipsDocProps> = ({ isDark, story = 'chips-basic
         <View style={{ height: 12 }} />
         <Ux4gActionChip text="Share Link" enabled={false} onClick={() => {}} />`;
     } else if (story === 'chips-input') {
-      componentsSnippet = `        <Ux4gInputChip text="React Native" onDeleted={() => console.log("Deleted 1")} />
+      componentsSnippet = `        <Ux4gInputChip text="React Native" onDismiss={() => console.log("Dismissed 1")} />
         <View style={{ height: 12 }} />
-        <Ux4gInputChip text="TypeScript" onDeleted={() => console.log("Deleted 2")} />
+        <Ux4gInputChip text="TypeScript" onDismiss={() => console.log("Dismissed 2")} />
         <View style={{ height: 12 }} />
-        <Ux4gInputChip text="Disabled Tag" enabled={false} onDeleted={() => {}} />`;
+        <Ux4gInputChip text="Disabled Tag" enabled={false} onDismiss={() => {}} />`;
     } else {
       componentsSnippet = `        <Ux4gChoiceChip text="Choice 1 (Selected)" selected={choice1} onClick={() => setChoice1(!choice1)} />
         <View style={{ height: 12 }} />
@@ -134,14 +134,19 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'text', type: 'string', default: '—', desc: 'Label text displayed inside the chip' },
-    { name: 'selected', type: 'boolean', default: 'false', desc: 'Whether the chip is active/selected (ChoiceChip / FilterChip)' },
-    { name: 'onClick', type: '() => void', default: '—', desc: 'Callback fired when chip is clicked/tapped' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether chip is interactive' },
-    { name: 'size', type: "'s' | 'm'", default: "'m'", desc: 'Size of the chip (`s` small padding, `m` medium padding)' },
-    { name: 'leadingContent', type: 'ReactNode', default: 'undefined', desc: 'Optional leading widget/icon' },
-    { name: 'trailingContent', type: 'ReactNode', default: 'undefined', desc: 'Optional trailing widget/icon' },
-    { name: 'onDeleted', type: '() => void', default: 'undefined', desc: 'Callback fired when delete icon is pressed on InputChip' },
+    { name: 'text', type: 'string', default: 'required', desc: 'Chip label text (required by ChoiceChip, FilterChip, InputChip).', required: true },
+    { name: 'selected', type: 'boolean', default: 'required', desc: 'Selection state (required by ChoiceChip and FilterChip).', required: true },
+    { name: 'onClick', type: '() => void', default: 'required', desc: 'Tap callback (required by ChoiceChip and FilterChip).', required: true },
+    { name: 'onPress', type: '() => void', default: 'undefined', desc: 'Optional press callback alias for ChoiceChip/FilterChip.', required: false },
+    { name: 'onDismiss', type: '() => void', default: 'undefined', desc: 'Dismiss callback for InputChip trailing close action.', required: false },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the chip is interactive.', required: false },
+    { name: 'size', type: "Ux4gChoiceChipSize | Ux4gFilterChipSize | Ux4gInputChipSize", default: "'m'", desc: 'Size token (Choice/Filter: s|m, Input: xs|s|m).', required: false },
+    { name: 'leadingContent', type: 'ReactNode', default: 'undefined', desc: 'Optional leading content/icon.', required: false },
+    { name: 'trailingContent', type: 'ReactNode', default: 'undefined', desc: 'Optional trailing content/icon (Choice/Filter).', required: false },
+    { name: 'borderRadius', type: 'number', default: 'size-based', desc: 'Corner radius override (ChoiceChip only).', required: false },
+    { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for chip container.', required: false },
+    { name: 'textStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for chip text.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -153,6 +158,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Compact interactive elements representing choices, attributes, actions, or input tags. Includes Choice, Filter, Input, Suggestion, and Action chips.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -199,22 +207,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

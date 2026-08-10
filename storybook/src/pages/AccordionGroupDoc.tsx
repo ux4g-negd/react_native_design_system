@@ -103,11 +103,13 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'items', type: 'Ux4gAccordionItem[]', default: '—', desc: 'Array of accordion items' },
-    { name: 'expandedIndex', type: 'number | null', default: '—', desc: 'Index of the currently expanded item' },
-    { name: 'onExpandedIndexChange', type: '(index: number | null) => void', default: '—', desc: 'Callback fired when an item is expanded or collapsed' },
-    { name: 'itemSpacing', type: 'number', default: 'Ux4gSpace.space20', desc: 'Vertical spacing between accordion items' },
-    { name: 'contentBuilder', type: '(index, item) => React.ReactNode', default: '—', desc: 'Optional builder function returning ReactNode for a given item/index' },
+    { name: 'items', type: 'Ux4gAccordionItem[]', default: '—', desc: 'Array of accordion items.', required: true },
+    { name: 'expandedIndex', type: 'number | null', default: 'undefined', desc: 'Index of the currently expanded item (or null/undefined if none).', required: false },
+    { name: 'onExpandedIndexChange', type: '(index: number | null) => void', default: 'undefined', desc: 'Callback fired when an item is expanded or collapsed.', required: false },
+    { name: 'itemSpacing', type: 'number', default: 'Ux4gSpace.space20', desc: 'Vertical spacing between accordion items.', required: false },
+    { name: 'contentBuilder', type: '(index: number, item: Ux4gAccordionItem) => ReactNode', default: 'undefined', desc: 'Optional builder function returning content per item.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Custom style for the group container.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -119,6 +121,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           AccordionGroup ensures only one item is open at a time.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -165,22 +170,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

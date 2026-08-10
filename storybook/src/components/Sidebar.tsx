@@ -189,8 +189,8 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Date Picker',
         icon: 'folder',
         children: [
-          { id: 'date-picker-single', label: 'Single Date', icon: 'calendar_today' },
-          { id: 'date-picker-range', label: 'Date Range', icon: 'date_range' },
+          { id: 'date-picker-single', label: 'Single Date', icon: 'layers' },
+          { id: 'date-picker-range', label: 'Date Range', icon: 'layers' },
         ],
       },
       {
@@ -215,6 +215,26 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'feedback-group',
+        label: 'Feedback',
+        icon: 'folder',
+        children: [
+          { id: 'feedbackformstar', label: 'feedbackformstar', icon: 'layers' },
+          { id: 'feedbackformcsat', label: 'feedbackformcsat', icon: 'layers' },
+          { id: 'feedbackformnps', label: 'feedbackformnps', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'empty-state-group',
+        label: 'Empty State',
+        icon: 'folder',
+        children: [
+          { id: 'empty-state-basic', label: 'Basic', icon: 'layers' },
+          { id: 'empty-state-variants', label: 'Variants', icon: 'layers' },
+          { id: 'empty-state-action', label: 'With Action', icon: 'layers' },
+        ],
+      },
+      {
         id: 'dropdown-group',
         label: 'Dropdown',
         icon: 'folder',
@@ -226,11 +246,53 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'fileupload-group',
+        label: 'FileUpload',
+        icon: 'folder',
+        children: [
+          { id: 'fileupload-basic', label: 'Basic', icon: 'layers' },
+          { id: 'fileupload-dashed', label: 'Dashed Border', icon: 'layers' },
+          { id: 'fileupload-preloaded', label: 'Preloaded Files', icon: 'layers' },
+        ],
+      },
+      {
         id: 'input-group',
         label: 'Input Field',
         icon: 'folder',
         children: [
-          { id: 'input-basic', label: 'Basic', icon: 'input' },
+          { id: 'input-basic', label: 'Basic', icon: 'layers' },
+          { id: 'input-status', label: 'Validation Status', icon: 'layers' },
+          { id: 'input-password', label: 'Password', icon: 'layers' },
+          { id: 'input-icons', label: 'Icons', icon: 'layers' },
+          { id: 'input-prefix-postfix', label: 'Prefix & Postfix', icon: 'layers' },
+          { id: 'input-required-disabled', label: 'Required & Disabled', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'input-aadhaar-group',
+        label: 'Input Aadhaar',
+        icon: 'folder',
+        children: [
+          { id: 'input-aadhaar-basic', label: 'Basic', icon: 'layers' },
+          { id: 'input-aadhaar-varients', label: 'Varients', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'input-pan-group',
+        label: 'Input Pan',
+        icon: 'folder',
+        children: [
+          { id: 'input-pan-basic', label: 'Basic', icon: 'layers' },
+          { id: 'input-pan-varients', label: 'Varients', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'input-otp-group',
+        label: 'Input Otp',
+        icon: 'folder',
+        children: [
+          { id: 'input-otp-basic', label: 'Basic', icon: 'layers' },
+          { id: 'input-otp-varients', label: 'Varients', icon: 'layers' },
         ],
       },
       {
@@ -244,21 +306,91 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'journey-timeline-group',
+        label: 'Journey Timeline',
+        icon: 'folder',
+        children: [
+          { id: 'journey-timeline-basic', label: 'Basic', icon: 'layers' },
+          { id: 'journey-timeline-horizontal', label: 'Horizontal', icon: 'layers' },
+          { id: 'journey-timeline-custom', label: 'Custom Status', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'link-group',
+        label: 'Link',
+        icon: 'folder',
+        children: [
+          { id: 'link-basic', label: 'Basic', icon: 'layers' },
+          { id: 'link-text', label: 'Text Link', icon: 'layers' },
+          { id: 'link-custom-child', label: 'Custom Child', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'modal-group',
+        label: 'Modal',
+        icon: 'folder',
+        children: [
+          { id: 'modal-full-preview', label: 'Full Preview', icon: 'layers' },
+          { id: 'modal-header-left', label: 'Header Left', icon: 'layers' },
+          { id: 'modal-header-centered', label: 'Header Centered', icon: 'layers' },
+        ],
+      },
+      {
         id: 'spinner-group',
         label: 'Spinner',
         icon: 'folder',
         children: [
-          { id: 'spinner-basic', label: 'Basic', icon: 'autorenew' },
+          { id: 'spinner-basic', label: 'Basic', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'pagination-group',
+        label: 'Pagination',
+        icon: 'folder',
+        children: [
+          { id: 'pagination-default-arrows', label: 'Default Arrows', icon: 'layers' },
+          { id: 'pagination-capsule-arrows', label: 'Capsule Arrows', icon: 'layers' },
+          { id: 'pagination-capsule-dots', label: 'Capsule Dots', icon: 'layers' },
+          { id: 'pagination-arrows-right', label: 'Arrows Right', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'progress-indicator-group',
+        label: 'Progress Indicator',
+        icon: 'folder',
+        children: [
+          { id: 'progress-linear', label: 'Linear', icon: 'layers' },
+          { id: 'progress-circular', label: 'Circular', icon: 'layers' },
+          { id: 'progress-half-circle', label: 'Half Circle', icon: 'layers' },
+          { id: 'progress-animated', label: 'Animated', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'progress-sla-group',
+        label: 'Progress SLA Indicator',
+        icon: 'folder',
+        children: [
+          { id: 'progress-sla-circular', label: 'Circular', icon: 'layers' },
+          { id: 'progress-sla-linear', label: 'Linear', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'popover-group',
+        label: 'Popover',
+        icon: 'folder',
+        children: [
+          { id: 'popover-basic', label: 'Basic', icon: 'layers' },
+          { id: 'popover-rich', label: 'Rich', icon: 'layers' },
+          { id: 'popover-placements', label: 'Placements', icon: 'layers' },
+          { id: 'popover-custom-content', label: 'Custom Content', icon: 'layers' },
+          { id: 'popover-trigger', label: 'Trigger', icon: 'layers' },
         ],
       },
       // Placeholders for remaining components
-      { id: 'modal', label: 'Modal', icon: 'web_asset' },
-      { id: 'pagination', label: 'Pagination', icon: 'linear_scale' },
       { id: 'radio', label: 'Radio Button', icon: 'radio_button_checked' },
       { id: 'search', label: 'Search Field', icon: 'search' },
       { id: 'switch', label: 'Switch', icon: 'toggle_on' },
       { id: 'toast', label: 'Toast', icon: 'call_to_action' },
-      { id: 'tooltip', label: 'Tooltip', icon: 'chat_bubble' },
     ],
   },
   {
@@ -317,8 +449,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'card-parent-group': true }));
     } else if (activePage.startsWith('carousel')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'carousel-group': true }));
+    } else if (activePage.startsWith('journey-timeline')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'journey-timeline-group': true }));
+    } else if (activePage.startsWith('link')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'link-group': true }));
+    } else if (activePage.startsWith('pagination')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'pagination-group': true }));
+    } else if (activePage.startsWith('progress-sla')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'progress-sla-group': true }));
+    } else if (activePage.startsWith('progress')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'progress-indicator-group': true }));
+    } else if (activePage.startsWith('popover')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'popover-group': true }));
     } else if (activePage.startsWith('badge')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'badge-parent-group': true }));
+    } else if (activePage.startsWith('input-aadhaar')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-aadhaar-group': true }));
+    } else if (activePage.startsWith('input-pan')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-pan-group': true }));
+    } else if (activePage.startsWith('input-otp')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-otp-group': true }));
+    } else if (activePage.startsWith('input')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-group': true }));
+    } else if (activePage.startsWith('fileupload')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'fileupload-group': true }));
+    } else if (activePage.startsWith('feedbackform')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'feedback-group': true }));
+    } else if (activePage.startsWith('empty-state')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'empty-state-group': true }));
     } else if (
       [
         'input-field',

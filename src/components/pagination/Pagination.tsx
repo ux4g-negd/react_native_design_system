@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Pressable,
@@ -119,6 +119,11 @@ const withAlpha = (color: string, alpha: number): string => {
   return color;
 };
 
+const isTransparentColor = (color: string): boolean => {
+  const normalized = color.replace(/\s+/g, '').toLowerCase();
+  return normalized === 'transparent' || normalized === 'rgba(0,0,0,0)' || normalized === '#00000000';
+};
+
 interface DotProps {
   index: number;
   masterAnim: Animated.Value;
@@ -144,6 +149,8 @@ const DotItem: React.FC<DotProps> = ({
   onPress,
   testID,
 }) => {
+  const showBorder = !isTransparentColor(inactiveBorderColor);
+
   const targetActiveColor = enabled ? activeColor : withAlpha(activeColor, 0.38);
 
   const animatedWidth = masterAnim.interpolate({
@@ -168,6 +175,12 @@ const DotItem: React.FC<DotProps> = ({
     extrapolate: 'clamp',
   });
 
+  const animatedBorderWidth = masterAnim.interpolate({
+    inputRange: [index - 1, index, index + 1],
+    outputRange: [showBorder ? 1 : 0, 0, showBorder ? 1 : 0],
+    extrapolate: 'clamp',
+  });
+
   return (
     <AnimatedPressable
       testID={testID}
@@ -181,7 +194,7 @@ const DotItem: React.FC<DotProps> = ({
           height: dotSize,
           borderRadius: 999,
           backgroundColor: animatedBgColor as any,
-          borderWidth: 1,
+          borderWidth: animatedBorderWidth as any,
           borderColor: animatedBorderColor as any,
         },
       ]}
@@ -235,7 +248,8 @@ export const Ux4gPaginationDotted: React.FC<Ux4gPaginationDottedProps> = ({
   const effectiveInactiveColor =
     inactiveColor ?? (isDark ? UX4GColors.primary800 : UX4GColors.primary100);
   const effectiveInactiveBorderColor =
-    inactiveBorderColor ?? (isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)');
+    inactiveBorderColor ?? UX4GColors.transparent;
+  const surfaceColor = colors.surface ?? (isDark ? UX4GColors.neutral950 : UX4GColors.white);
 
   const isCapsule = variant === 'capsule';
 
@@ -309,7 +323,7 @@ export const Ux4gPaginationDotted: React.FC<Ux4gPaginationDottedProps> = ({
           style={[
             styles.capsuleDotsContainer,
             {
-              backgroundColor: effectiveInactiveColor,
+              backgroundColor: surfaceColor,
               borderRadius: 999,
             },
           ]}
@@ -382,7 +396,7 @@ export const Ux4gPaginationDotted: React.FC<Ux4gPaginationDottedProps> = ({
             {
               paddingHorizontal: showArrows ? 8 : 14,
               paddingVertical: showArrows ? 4 : 6,
-              backgroundColor: effectiveInactiveColor,
+              backgroundColor: surfaceColor,
               borderRadius: 999,
               borderColor: withAlpha(effectiveActiveColor, 0.12),
               borderWidth: 1,
@@ -395,13 +409,62 @@ export const Ux4gPaginationDotted: React.FC<Ux4gPaginationDottedProps> = ({
     }
   }
 
+  const [contentSize, setContentSize] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+
+  const fitScale = useMemo(() => {
+    const hasMeasuredSize = contentSize.width > 0 && contentSize.height > 0;
+    if (!hasMeasuredSize) return 1;
+
+    const scaleX = width !== undefined ? width / contentSize.width : Number.POSITIVE_INFINITY;
+    const scaleY = height !== undefined ? height / contentSize.height : Number.POSITIVE_INFINITY;
+    const scale = Math.min(scaleX, scaleY);
+
+    if (!Number.isFinite(scale) || scale <= 0) return 1;
+    return scale;
+  }, [contentSize.height, contentSize.width, height, width]);
+
+  if (width !== undefined || height !== undefined) {
+    return (
+      <View
+        testID={testID}
+        style={[
+          styles.outerContainer,
+          {
+            width,
+            height,
+            overflow: 'hidden',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          containerStyle,
+        ]}
+      >
+        <View
+          onLayout={(event) => {
+            const { width: measuredWidth, height: measuredHeight } = event.nativeEvent.layout;
+            if (
+              measuredWidth !== contentSize.width ||
+              measuredHeight !== contentSize.height
+            ) {
+              setContentSize({ width: measuredWidth, height: measuredHeight });
+            }
+          }}
+          style={{ transform: [{ scale: fitScale }] }}
+        >
+          {mainContent}
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View
       testID={testID}
       style={[
         styles.outerContainer,
-        width !== undefined && { width },
-        height !== undefined && { height },
         containerStyle,
       ]}
     >

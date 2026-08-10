@@ -137,17 +137,21 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'value', type: 'boolean | null', default: 'false', desc: 'Checked state (`true` = checked, `false` = unchecked, `null` = indeterminate dash)' },
-    { name: 'onChanged', type: '(val: boolean | null) => void', default: '—', desc: 'Callback fired when user taps the checkbox or label text' },
-    { name: 'label', type: 'string', default: '—', desc: 'Primary text label next to the checkbox' },
-    { name: 'description', type: 'string', default: '—', desc: 'Secondary helper/description text below the primary label' },
-    { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", desc: 'Size of the checkbox box (`small`=16pt, `medium`=20pt, `large`=24pt)' },
-    { name: 'isRequired', type: 'boolean', default: 'false', desc: 'Appends a red asterisk (`*`) to the label text' },
-    { name: 'hasError', type: 'boolean', default: 'false', desc: 'Highlights the checkbox box border in error state color' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Enables or disables touch interaction and applies muted opacity' },
-    { name: 'descriptionVariant', type: "'helper' | 'error' | 'warning' | 'success'", default: "'helper'", desc: 'Semantic color variant for description text' },
-    { name: 'activeColor', type: 'string', default: 'theme.colors.primary', desc: 'Custom fill/border background color when checked' },
-    { name: 'checkColor', type: 'string', default: 'theme.colors.onPrimary', desc: 'Custom checkmark / dash icon color' },
+    { name: 'value', type: 'boolean | null', default: 'false', desc: 'Checked state (`true` checked, `false` unchecked, `null` indeterminate).', required: true },
+    { name: 'onChanged', type: '(newValue: boolean | null) => void', default: 'required', desc: 'Callback fired when user presses checkbox or label.', required: true },
+    { name: 'label', type: 'string', default: 'undefined', desc: 'Primary text label next to checkbox.', required: false },
+    { name: 'description', type: 'string', default: 'undefined', desc: 'Secondary helper/description text.', required: false },
+    { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", desc: 'Checkbox box size.', required: false },
+    { name: 'isRequired', type: 'boolean', default: 'false', desc: 'Appends red asterisk to the label.', required: false },
+    { name: 'hasError', type: 'boolean', default: 'false', desc: 'Highlights checkbox border in error state.', required: false },
+    { name: 'descriptionVariant', type: "'helper' | 'error' | 'warning' | 'success'", default: "'helper'", desc: 'Semantic style for description text.', required: false },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether checkbox is interactive.', required: false },
+    { name: 'activeColor', type: 'string', default: 'theme.colors.primary', desc: 'Active fill/border color for checked/indeterminate state.', required: false },
+    { name: 'checkColor', type: 'string', default: 'theme.colors.onPrimary', desc: 'Checkmark/dash icon color.', required: false },
+    { name: 'style', type: 'StyleProp<ViewStyle> | (state) => StyleProp<ViewStyle>', default: 'undefined', desc: 'Style override for outer Pressable row.', required: false },
+    { name: 'labelStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for label text.', required: false },
+    { name: 'descriptionStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for description text.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -159,6 +163,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Selection control for single items, multi-select lists, and parent-child tristate selection with interactive checkmark and indeterminate state animations.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -205,22 +212,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>

@@ -245,16 +245,22 @@ const styles = StyleSheet.create({
 
   /* ── Props Table Data ── */
   const propsData = [
-    { name: 'options', type: 'Ux4gDropdownOption[]', default: '[]', desc: 'Array of option objects (`{ id: string, label: string }`)' },
-    { name: 'selectedOptionIds', type: 'string[]', default: '[]', desc: 'Array of currently selected option IDs' },
-    { name: 'onSelectionChange', type: '(ids: string[]) => void', default: '—', desc: 'Callback fired when selected options change' },
-    { name: 'label', type: 'string', default: 'undefined', desc: 'Label text displayed above the dropdown box' },
-    { name: 'placeholder', type: 'string', default: "'Please select..'", desc: 'Placeholder text shown when no option is selected' },
-    { name: 'mode', type: "'single' | 'multi'", default: "'single'", desc: 'Selection mode (`single` selection or `multi` chip selection)' },
-    { name: 'size', type: "'s' | 'm' | 'l'", default: "'m'", desc: 'Size preset of the dropdown input field' },
-    { name: 'status', type: "'defaultStatus' | 'error' | 'warning' | 'success'", default: "'defaultStatus'", desc: 'Validation status styling' },
-    { name: 'searchEnabled', type: 'boolean', default: 'false', desc: 'Whether to show a filter search input inside the popover menu' },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the dropdown is interactive' },
+    { name: 'options', type: 'Ux4gDropdownOption[]', default: 'required', desc: 'List of selectable dropdown options.', required: true },
+    { name: 'selectedOptionIds', type: 'string[]', default: 'required', desc: 'Currently selected option IDs.', required: true },
+    { name: 'onSelectionChange', type: '(selectedOptionIds: string[]) => void', default: 'required', desc: 'Callback fired when selection changes.', required: true },
+    { name: 'label', type: 'string', default: 'undefined', desc: 'Label text displayed above dropdown box.', required: false },
+    { name: 'description', type: 'string', default: 'undefined', desc: 'Helper/error text displayed below dropdown box.', required: false },
+    { name: 'placeholder', type: 'string', default: "'Please select..'", desc: 'Placeholder shown when nothing is selected.', required: false },
+    { name: 'size', type: "'s' | 'm' | 'l'", default: "'m'", desc: 'Dropdown field size preset.', required: false },
+    { name: 'mode', type: "'single' | 'multi'", default: "'single'", desc: 'Selection mode.', required: false },
+    { name: 'status', type: "'defaultStatus' | 'error' | 'disabled'", default: "'defaultStatus'", desc: 'Validation/disabled status.', required: false },
+    { name: 'searchEnabled', type: 'boolean', default: 'false', desc: 'Shows search input inside dropdown menu.', required: false },
+    { name: 'filterType', type: "'contains' | 'startsWith' | 'startsWithPerTerm'", default: "'contains'", desc: 'Search filter matching strategy.', required: false },
+    { name: 'labelTextStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for label text.', required: false },
+    { name: 'valueTextStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for selected value text.', required: false },
+    { name: 'leadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Leading icon/content inside dropdown trigger.', required: false },
+    { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Container style override.', required: false },
+    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
   ];
 
   return (
@@ -266,6 +272,9 @@ const styles = StyleSheet.create({
         </div>
         <p className="wb-subtitle">
           Collapsible selection menu supporting single choice, multi-select tag chips, search filtering, and form validation states.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
       </div>
 
@@ -312,22 +321,27 @@ const styles = StyleSheet.create({
 
             {activeMainTab === 'props' && (
               <div className="wb-props-area">
-                <table className="wb-props-table">
+                <table className="props-table">
                   <thead>
                     <tr>
                       <th>Prop</th>
                       <th>Type</th>
-                      <th>Default</th>
                       <th>Description</th>
+                      <th>Default</th>
                     </tr>
                   </thead>
                   <tbody>
                     {propsData.map((prop) => (
                       <tr key={prop.name}>
-                        <td><code className="wb-prop-name">{prop.name}</code></td>
-                        <td><code className="wb-prop-type">{prop.type}</code></td>
-                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>
+                          <span className="prop-name">
+                            {prop.name}
+                            {prop.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{prop.type}</span></td>
                         <td>{prop.desc}</td>
+                        <td><span className="prop-default">{prop.default}</span></td>
                       </tr>
                     ))}
                   </tbody>
