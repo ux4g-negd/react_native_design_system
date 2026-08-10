@@ -194,6 +194,17 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'divider-group',
+        label: 'Divider',
+        icon: 'folder',
+        children: [
+          { id: 'divider-basic', label: 'Basic & Indents', icon: 'layers' },
+          { id: 'divider-styles', label: 'Solid, Dashed & Dotted', icon: 'layers' },
+          { id: 'divider-label', label: 'With Center Label', icon: 'layers' },
+          { id: 'divider-vertical', label: 'Vertical Orientation', icon: 'layers' },
+        ],
+      },
+      {
         id: 'dropdown-group',
         label: 'Dropdown',
         icon: 'folder',

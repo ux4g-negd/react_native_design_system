@@ -18,6 +18,7 @@ import { CarouselDoc } from './pages/CarouselDoc';
 import { CheckboxDoc } from './pages/CheckboxDoc';
 import { ChipsDoc } from './pages/ChipsDoc';
 import { ChipGroupDoc } from './pages/ChipGroupDoc';
+import { DividerDoc } from './pages/DividerDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -42,6 +43,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('checkbox')) return 'Components / Checkbox';
   if (page.startsWith('chips')) return 'Components / Chips';
   if (page.startsWith('chip-group')) return 'Components / Chip Group';
+  if (page.startsWith('divider')) return 'Components / Divider';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
   if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
@@ -148,6 +150,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('chip-group')) {
       return <ChipGroupDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('divider')) {
+      return <DividerDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {
