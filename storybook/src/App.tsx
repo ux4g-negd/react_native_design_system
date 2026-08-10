@@ -22,6 +22,7 @@ import { ModalDoc } from './pages/ModalDoc';
 import { PaginationDoc } from './pages/PaginationDoc';
 import { PopoverDoc } from './pages/PopoverDoc';
 import { ProgressIndicatorDoc } from './pages/ProgressIndicatorDoc';
+import { RadioButtonDoc } from './pages/RadioButtonDoc';
 import { CheckboxDoc } from './pages/CheckboxDoc';
 import { ChipsDoc } from './pages/ChipsDoc';
 import { ChipGroupDoc } from './pages/ChipGroupDoc';
@@ -59,6 +60,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('progress-sla')) return 'Components / Progress SLA Indicator';
   if (page.startsWith('progress')) return 'Components / Progress Indicator';
   if (page.startsWith('popover')) return 'Components / Popover';
+  if (page.startsWith('radio')) return 'Components / Radio Button';
   if (page.startsWith('checkbox')) return 'Components / Checkbox';
   if (page.startsWith('chips')) return 'Components / Chips';
   if (page.startsWith('chip-group')) return 'Components / Chip Group';
@@ -192,6 +194,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('popover')) {
       return <PopoverDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('radio')) {
+      return <RadioButtonDoc isDark={isDark} story={activePage} />;
     }
     if (activePage.startsWith('checkbox')) {
       return <CheckboxDoc isDark={isDark} story={activePage} />;

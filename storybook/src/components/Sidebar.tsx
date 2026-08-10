@@ -386,8 +386,17 @@ const NAV_ITEMS: NavItem[] = [
           { id: 'popover-trigger', label: 'Trigger', icon: 'layers' },
         ],
       },
+      {
+        id: 'radio-group',
+        label: 'Radio Button',
+        icon: 'folder',
+        children: [
+          { id: 'radio-basic', label: 'Basic', icon: 'layers' },
+          { id: 'radio-sizes', label: 'Sizes', icon: 'layers' },
+          { id: 'radio-status', label: 'Status', icon: 'layers' },
+        ],
+      },
       // Placeholders for remaining components
-      { id: 'radio', label: 'Radio Button', icon: 'radio_button_checked' },
       { id: 'search', label: 'Search Field', icon: 'search' },
       { id: 'switch', label: 'Switch', icon: 'toggle_on' },
       { id: 'toast', label: 'Toast', icon: 'call_to_action' },
@@ -461,6 +470,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'progress-indicator-group': true }));
     } else if (activePage.startsWith('popover')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'popover-group': true }));
+    } else if (activePage.startsWith('radio')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'radio-group': true }));
     } else if (activePage.startsWith('badge')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'badge-parent-group': true }));
     } else if (activePage.startsWith('input-aadhaar')) {

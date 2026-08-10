@@ -53,7 +53,11 @@ const PAGE_TO_PATH: Record<string, string> = {
   'input-prefix-postfix': 'components/input-field/prefix-postfix',
   'input-required-disabled': 'components/input-field/required-disabled',
   checkbox: 'components/checkbox',
-  'radio-button': 'components/radio-button',
+  'radio-button': 'components/radio-button/basic',
+  radio: 'components/radio-button/basic',
+  'radio-basic': 'components/radio-button/basic',
+  'radio-sizes': 'components/radio-button/sizes',
+  'radio-status': 'components/radio-button/status',
   switch: 'components/switch',
   card: 'components/card',
   'card-basic': 'components/card/basic',
@@ -252,6 +256,12 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('capsule-dots')) return 'pagination-capsule-dots';
     if (cleanPath.includes('arrows-right')) return 'pagination-arrows-right';
     return 'pagination-default-arrows';
+  }
+
+  if (cleanPath.startsWith('components/radio-button') || cleanPath.startsWith('radio-button') || cleanPath.startsWith('radio')) {
+    if (cleanPath.includes('sizes')) return 'radio-sizes';
+    if (cleanPath.includes('status')) return 'radio-status';
+    return 'radio-basic';
   }
 
   if (cleanPath.startsWith('components/progress-sla-indicator') || cleanPath.startsWith('progress-sla-indicator') || cleanPath.startsWith('progress-sla')) {
