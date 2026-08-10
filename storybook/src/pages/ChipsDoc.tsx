@@ -1,0 +1,229 @@
+import React, { useState, useMemo } from 'react';
+import {
+  Ux4gChoiceChip,
+  Ux4gFilterChip,
+  Ux4gInputChip,
+  Ux4gSuggestionChip,
+  Ux4gActionChip,
+} from '../../../src/components/chips/Chips';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
+import { CodeBlock } from '../components/CodeBlock';
+
+interface ChipsDocProps {
+  isDark: boolean;
+  story?: string;
+}
+
+type MainTab = 'preview' | 'code' | 'props';
+
+export const ChipsDoc: React.FC<ChipsDocProps> = ({ isDark, story = 'chips-basic' }) => {
+  const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
+
+  /* ── Code Generator ── */
+  const codeString = useMemo(() => {
+    const lines: string[] = [];
+    lines.push(`import { `);
+    lines.push(`  Ux4gChoiceChip,`);
+    lines.push(`  Ux4gFilterChip,`);
+    lines.push(`  Ux4gInputChip,`);
+    lines.push(`  Ux4gSuggestionChip,`);
+    lines.push(`  Ux4gActionChip,`);
+    lines.push(`} from 'ux4g-react-native-design-system';`);
+    lines.push(`import { useState } from 'react';`);
+    lines.push('');
+    lines.push('// Choice Chips');
+    lines.push('const [selected, setSelected] = useState(true);');
+    lines.push('<Ux4gChoiceChip');
+    lines.push('  text="Option 1"');
+    lines.push('  selected={selected}');
+    lines.push('  onClick={() => setSelected(!selected)}');
+    lines.push('/>');
+    lines.push('');
+    lines.push('// Filter Chips');
+    lines.push('<Ux4gFilterChip');
+    lines.push('  text="In Stock"');
+    lines.push('  selected={true}');
+    lines.push('  onClick={() => {}}');
+    lines.push('/>');
+    lines.push('');
+    lines.push('// Input Chips with Delete');
+    lines.push('<Ux4gInputChip');
+    lines.push('  text="React Native"');
+    lines.push('  onDeleted={() => console.log("Deleted")}\n/>');
+    lines.push('');
+    lines.push('// Suggestion Chips');
+    lines.push('<Ux4gSuggestionChip');
+    lines.push('  text="Design System"');
+    lines.push('  onClick={() => {}}\n/>');
+    return lines.join('\n');
+  }, []);
+
+  /* ── Live Preview (Expo Snack) ── */
+  const renderStoryPreview = () => {
+    let componentsSnippet = '';
+
+    if (story === 'chips-action') {
+      componentsSnippet = `        <Ux4gSuggestionChip text="React Native" onClick={() => {}} />
+        <View style={{ height: 12 }} />
+        <Ux4gSuggestionChip text="UX4G Design System" onClick={() => {}} />
+        <View style={{ height: 12 }} />
+        <Ux4gActionChip text="Download Report" onClick={() => {}} />
+        <View style={{ height: 12 }} />
+        <Ux4gActionChip text="Share Link" enabled={false} onClick={() => {}} />`;
+    } else if (story === 'chips-input') {
+      componentsSnippet = `        <Ux4gInputChip text="React Native" onDeleted={() => console.log("Deleted 1")} />
+        <View style={{ height: 12 }} />
+        <Ux4gInputChip text="TypeScript" onDeleted={() => console.log("Deleted 2")} />
+        <View style={{ height: 12 }} />
+        <Ux4gInputChip text="Disabled Tag" enabled={false} onDeleted={() => {}} />`;
+    } else {
+      componentsSnippet = `        <Ux4gChoiceChip text="Choice 1 (Selected)" selected={choice1} onClick={() => setChoice1(!choice1)} />
+        <View style={{ height: 12 }} />
+        <Ux4gChoiceChip text="Choice 2 (Unselected)" selected={choice2} onClick={() => setChoice2(!choice2)} />
+        <View style={{ height: 16 }} />
+        <Ux4gFilterChip text="Filter: Active" selected={filter1} onClick={() => setFilter1(!filter1)} />
+        <View style={{ height: 12 }} />
+        <Ux4gFilterChip text="Filter: Inactive" selected={filter2} onClick={() => setFilter2(!filter2)} />`;
+    }
+
+    const snackCodeString = `import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import {
+  Ux4gChoiceChip,
+  Ux4gFilterChip,
+  Ux4gInputChip,
+  Ux4gSuggestionChip,
+  Ux4gActionChip,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [choice1, setChoice1] = useState(true);
+  const [choice2, setChoice2] = useState(false);
+  const [filter1, setFilter1] = useState(true);
+  const [filter2, setFilter2] = useState(false);
+
+  return (
+    <Ux4gThemeProvider isDark={${isDark}}>
+      <View style={styles.container}>
+${componentsSnippet}
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    padding: 24
+  }
+});`;
+
+    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChips%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@latest,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+
+    return (
+      <iframe
+        src={snackUrl}
+        style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
+        title="Expo Snack Chips Preview"
+      />
+    );
+  };
+
+  /* ── Props Table Data ── */
+  const propsData = [
+    { name: 'text', type: 'string', default: '—', desc: 'Label text displayed inside the chip' },
+    { name: 'selected', type: 'boolean', default: 'false', desc: 'Whether the chip is active/selected (ChoiceChip / FilterChip)' },
+    { name: 'onClick', type: '() => void', default: '—', desc: 'Callback fired when chip is clicked/tapped' },
+    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether chip is interactive' },
+    { name: 'size', type: "'s' | 'm'", default: "'m'", desc: 'Size of the chip (`s` small padding, `m` medium padding)' },
+    { name: 'leadingContent', type: 'ReactNode', default: 'undefined', desc: 'Optional leading widget/icon' },
+    { name: 'trailingContent', type: 'ReactNode', default: 'undefined', desc: 'Optional trailing widget/icon' },
+    { name: 'onDeleted', type: '() => void', default: 'undefined', desc: 'Callback fired when delete icon is pressed on InputChip' },
+  ];
+
+  return (
+    <div className="wb-page">
+      <div className="wb-header">
+        <div className="wb-header-row">
+          <h1 className="wb-title">Chips</h1>
+          <span className="wb-badge">Component</span>
+        </div>
+        <p className="wb-subtitle">
+          Compact interactive elements representing choices, attributes, actions, or input tags. Includes Choice, Filter, Input, Suggestion, and Action chips.
+        </p>
+      </div>
+
+      <div className="wb-body">
+        <div className="wb-main">
+          <div className="wb-tab-bar">
+            <button
+              className={`wb-tab ${activeMainTab === 'preview' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('preview')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">visibility</span> Preview
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('code')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">code</span> Code
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'props' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('props')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">tune</span> Props
+            </button>
+          </div>
+
+          <div className="wb-content">
+            {activeMainTab === 'preview' && (
+              <Ux4gThemeProvider isDark={isDark}>
+                <div className={`wb-preview-area ${isDark ? 'dark' : ''}`}>
+                  {renderStoryPreview()}
+                </div>
+              </Ux4gThemeProvider>
+            )}
+
+            {activeMainTab === 'code' && (
+              <div className="wb-code-area">
+                <CodeBlock code={codeString} language="TSX" filename="ChipsExample.tsx" />
+              </div>
+            )}
+
+            {activeMainTab === 'props' && (
+              <div className="wb-props-area">
+                <table className="wb-props-table">
+                  <thead>
+                    <tr>
+                      <th>Prop</th>
+                      <th>Type</th>
+                      <th>Default</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {propsData.map((prop) => (
+                      <tr key={prop.name}>
+                        <td><code className="wb-prop-name">{prop.name}</code></td>
+                        <td><code className="wb-prop-type">{prop.type}</code></td>
+                        <td><code className="wb-prop-default">{prop.default}</code></td>
+                        <td>{prop.desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

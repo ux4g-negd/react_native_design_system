@@ -156,6 +156,35 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'checkbox-group',
+        label: 'Checkbox',
+        icon: 'folder',
+        children: [
+          { id: 'checkbox-basic', label: 'Basic & States', icon: 'layers' },
+          { id: 'checkbox-sizes', label: 'Sizes', icon: 'layers' },
+          { id: 'checkbox-tristate', label: 'Tristate (Indeterminate)', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'chips-parent-group',
+        label: 'Chips',
+        icon: 'folder',
+        children: [
+          { id: 'chips-basic', label: 'Choice & Filter Chips', icon: 'layers' },
+          { id: 'chips-action', label: 'Suggestion & Action Chips', icon: 'layers' },
+          { id: 'chips-input', label: 'Input Chips', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'chip-group-parent',
+        label: 'Chip Group',
+        icon: 'folder',
+        children: [
+          { id: 'chip-group-wrap', label: 'Wrap & Horizontal Groups', icon: 'layers' },
+          { id: 'chip-group-input-field', label: 'Input Chip Field', icon: 'layers' },
+        ],
+      },
+      {
         id: 'date-picker-group',
         label: 'Date Picker',
         icon: 'folder',

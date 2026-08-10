@@ -1,11 +1,11 @@
 {
   "name": "ux4g-react-native-design-system",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "Foundations, design tokens, and theme architecture of the UX4G Design System for React Native and TypeScript.",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
   "types": "lib/typescript/index.d.ts",
-  "react-native": "src/index.ts",
+  "react-native": "lib/module/index.js",
   "source": "src/index",
   "files": [
     "src",
@@ -39,6 +39,14 @@
     "react-native-image-picker": ">=7.0.0",
     "react-native-svg": ">=15.0.0"
   },
+  "peerDependenciesMeta": {
+    "react-native-document-picker": {
+      "optional": true
+    },
+    "react-native-image-picker": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@react-native/babel-preset": "^0.86.0",
     "@testing-library/react-native": "^12.6.0",
@@ -67,7 +75,5 @@
       ]
     ]
   },
-  "dependencies": {
-    "ux4g-react-native-design-system": "file:ux4g-react-native-design-system-1.0.0.tgz"
-  }
+  "dependencies": {}
 }

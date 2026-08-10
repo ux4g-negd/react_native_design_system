@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
   ],
-  base: '/storybook/',
+  base: '/',
   resolve: {
     alias: [
       // Redirect react-native/Libraries/* to stub (must come first)

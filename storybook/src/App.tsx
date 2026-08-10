@@ -15,6 +15,9 @@ import { AvatarDoc } from './pages/AvatarDoc';
 import { BadgeDoc } from './pages/BadgeDoc';
 import { CardDoc } from './pages/CardDoc';
 import { CarouselDoc } from './pages/CarouselDoc';
+import { CheckboxDoc } from './pages/CheckboxDoc';
+import { ChipsDoc } from './pages/ChipsDoc';
+import { ChipGroupDoc } from './pages/ChipGroupDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -36,6 +39,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
   if (page.startsWith('button')) return 'Components / Buttons';
   if (page.startsWith('carousel')) return 'Components / Carousel';
+  if (page.startsWith('checkbox')) return 'Components / Checkbox';
+  if (page.startsWith('chips')) return 'Components / Chips';
+  if (page.startsWith('chip-group')) return 'Components / Chip Group';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
   if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
@@ -133,6 +139,15 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('carousel')) {
       return <CarouselDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('checkbox')) {
+      return <CheckboxDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('chips')) {
+      return <ChipsDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('chip-group')) {
+      return <ChipGroupDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {
