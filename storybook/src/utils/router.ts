@@ -64,6 +64,12 @@ const PAGE_TO_PATH: Record<string, string> = {
   'result-list-metadata': 'components/result-list/metadata',
   'result-list-expanded': 'components/result-list/expanded',
   'result-list-rejected': 'components/result-list/rejected',
+  'search-field': 'components/search-field/basic',
+  search: 'components/search-field/basic',
+  'search-basic': 'components/search-field/basic',
+  'search-submit': 'components/search-field/submit',
+  'search-autocomplete': 'components/search-field/autocomplete',
+  'search-status': 'components/search-field/status',
   switch: 'components/switch',
   card: 'components/card',
   'card-basic': 'components/card/basic',
@@ -275,6 +281,13 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('expanded')) return 'result-list-expanded';
     if (cleanPath.includes('rejected')) return 'result-list-rejected';
     return 'result-list-basic';
+  }
+
+  if (cleanPath.startsWith('components/search-field') || cleanPath.startsWith('search-field') || cleanPath.startsWith('search')) {
+    if (cleanPath.includes('submit')) return 'search-submit';
+    if (cleanPath.includes('autocomplete')) return 'search-autocomplete';
+    if (cleanPath.includes('status')) return 'search-status';
+    return 'search-basic';
   }
 
   if (cleanPath.startsWith('components/progress-sla-indicator') || cleanPath.startsWith('progress-sla-indicator') || cleanPath.startsWith('progress-sla')) {

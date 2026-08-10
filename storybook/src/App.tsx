@@ -33,6 +33,7 @@ import { EmptyStateDoc } from './pages/EmptyStateDoc';
 import { FeedbackStarDoc } from './pages/FeedbackStarDoc';
 import { FeedbackCsatDoc } from './pages/FeedbackCsatDoc';
 import { FeedbackNpsDoc } from './pages/FeedbackNpsDoc';
+import { SearchFieldDoc } from './pages/SearchFieldDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -63,6 +64,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('popover')) return 'Components / Popover';
   if (page.startsWith('radio')) return 'Components / Radio Button';
   if (page.startsWith('result-list')) return 'Components / Result List';
+  if (page.startsWith('search')) return 'Components / Search Field';
   if (page.startsWith('checkbox')) return 'Components / Checkbox';
   if (page.startsWith('chips')) return 'Components / Chips';
   if (page.startsWith('chip-group')) return 'Components / Chip Group';
@@ -202,6 +204,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('result-list')) {
       return <ResultListDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('search')) {
+      return <SearchFieldDoc isDark={isDark} story={activePage} />;
     }
     if (activePage.startsWith('checkbox')) {
       return <CheckboxDoc isDark={isDark} story={activePage} />;

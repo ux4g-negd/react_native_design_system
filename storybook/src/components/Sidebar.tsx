@@ -407,8 +407,18 @@ const NAV_ITEMS: NavItem[] = [
           { id: 'result-list-rejected', label: 'Rejected', icon: 'layers' },
         ],
       },
+      {
+        id: 'search-group',
+        label: 'Search Field',
+        icon: 'folder',
+        children: [
+          { id: 'search-basic', label: 'Basic', icon: 'layers' },
+          { id: 'search-submit', label: 'Search with Submit', icon: 'layers' },
+          { id: 'search-autocomplete', label: 'Autocomplete', icon: 'layers' },
+          { id: 'search-status', label: 'Status', icon: 'layers' },
+        ],
+      },
       // Placeholders for remaining components
-      { id: 'search', label: 'Search Field', icon: 'search' },
       { id: 'switch', label: 'Switch', icon: 'toggle_on' },
       { id: 'toast', label: 'Toast', icon: 'call_to_action' },
     ],
@@ -485,6 +495,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'radio-group': true }));
     } else if (activePage.startsWith('result-list')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'result-list-group': true }));
+    } else if (activePage.startsWith('search')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'search-group': true }));
     } else if (activePage.startsWith('badge')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'badge-parent-group': true }));
     } else if (activePage.startsWith('input-aadhaar')) {
