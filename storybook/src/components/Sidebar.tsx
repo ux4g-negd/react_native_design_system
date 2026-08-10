@@ -396,6 +396,17 @@ const NAV_ITEMS: NavItem[] = [
           { id: 'radio-status', label: 'Status', icon: 'layers' },
         ],
       },
+      {
+        id: 'result-list-group',
+        label: 'Result List',
+        icon: 'folder',
+        children: [
+          { id: 'result-list-basic', label: 'Basic', icon: 'layers' },
+          { id: 'result-list-metadata', label: 'Metadata', icon: 'layers' },
+          { id: 'result-list-expanded', label: 'Expanded', icon: 'layers' },
+          { id: 'result-list-rejected', label: 'Rejected', icon: 'layers' },
+        ],
+      },
       // Placeholders for remaining components
       { id: 'search', label: 'Search Field', icon: 'search' },
       { id: 'switch', label: 'Switch', icon: 'toggle_on' },
@@ -472,6 +483,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'popover-group': true }));
     } else if (activePage.startsWith('radio')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'radio-group': true }));
+    } else if (activePage.startsWith('result-list')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'result-list-group': true }));
     } else if (activePage.startsWith('badge')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'badge-parent-group': true }));
     } else if (activePage.startsWith('input-aadhaar')) {

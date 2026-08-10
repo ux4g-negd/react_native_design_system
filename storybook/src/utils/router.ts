@@ -58,6 +58,12 @@ const PAGE_TO_PATH: Record<string, string> = {
   'radio-basic': 'components/radio-button/basic',
   'radio-sizes': 'components/radio-button/sizes',
   'radio-status': 'components/radio-button/status',
+  'result-list': 'components/result-list/basic',
+  result: 'components/result-list/basic',
+  'result-list-basic': 'components/result-list/basic',
+  'result-list-metadata': 'components/result-list/metadata',
+  'result-list-expanded': 'components/result-list/expanded',
+  'result-list-rejected': 'components/result-list/rejected',
   switch: 'components/switch',
   card: 'components/card',
   'card-basic': 'components/card/basic',
@@ -262,6 +268,13 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('sizes')) return 'radio-sizes';
     if (cleanPath.includes('status')) return 'radio-status';
     return 'radio-basic';
+  }
+
+  if (cleanPath.startsWith('components/result-list') || cleanPath.startsWith('result-list') || cleanPath.startsWith('result')) {
+    if (cleanPath.includes('metadata')) return 'result-list-metadata';
+    if (cleanPath.includes('expanded')) return 'result-list-expanded';
+    if (cleanPath.includes('rejected')) return 'result-list-rejected';
+    return 'result-list-basic';
   }
 
   if (cleanPath.startsWith('components/progress-sla-indicator') || cleanPath.startsWith('progress-sla-indicator') || cleanPath.startsWith('progress-sla')) {
