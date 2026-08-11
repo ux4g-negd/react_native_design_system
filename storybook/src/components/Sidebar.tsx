@@ -529,9 +529,54 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'tooltip-group',
+        label: 'Tooltip',
+        icon: 'folder',
+        children: [
+          { id: 'tooltip-introduction', label: 'Introduction', icon: 'layers' },
+          { id: 'tooltip-basic', label: 'Placements', icon: 'layers' },
+          { id: 'tooltip-interactive', label: 'Interactive', icon: 'layers' },
+          { id: 'tooltip-variants', label: 'All Variants', icon: 'layers' },
+          { id: 'tooltip-rich', label: 'Rich Tooltip', icon: 'layers' },
+        ],
+      },
       // Placeholders for remaining components
-      { id: 'switch', label: 'Switch', icon: 'toggle_on' },
-      { id: 'toast', label: 'Toast', icon: 'call_to_action' },
+      {
+        id: 'switch-group',
+        label: 'Switch',
+        icon: 'folder',
+        children: [
+          { id: 'switch-basic', label: 'Basic & Sizes', icon: 'layers' },
+          { id: 'switch-labels', label: 'Label Positions', icon: 'layers' },
+          { id: 'switch-status', label: 'Status Descriptions', icon: 'layers' },
+          { id: 'switch-required', label: 'Required & Icons', icon: 'layers' },
+          { id: 'switch-disabled', label: 'Disabled', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'toast-group',
+        label: 'Toast',
+        icon: 'folder',
+        children: [
+          { id: 'toast-basic', label: 'Categories', icon: 'layers' },
+          { id: 'toast-stacked', label: 'Stacked Layout', icon: 'layers' },
+          { id: 'toast-actions', label: 'Action & Close', icon: 'layers' },
+          { id: 'toast-custom', label: 'Customization', icon: 'layers' },
+          { id: 'toast-provider', label: 'Provider Demo', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'timeslot-group',
+        label: 'Time Slot',
+        icon: 'folder',
+        children: [
+          { id: 'timeslot-introduction', label: 'Introduction', icon: 'layers' },
+          { id: 'timeslot-basic', label: 'Booking (Expanded)', icon: 'layers' },
+          { id: 'timeslot-compact', label: 'Compact View', icon: 'layers' },
+          { id: 'timeslot-json', label: 'JSON Data Source', icon: 'layers' },
+        ],
+      },
     ],
   },
   {
@@ -600,6 +645,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'progress-sla-group': true }));
     } else if (activePage.startsWith('progress')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'progress-indicator-group': true }));
+    } else if (activePage.startsWith('tooltip')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'tooltip-group': true }));
     } else if (activePage.startsWith('popover')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'popover-group': true }));
     } else if (activePage.startsWith('radio')) {
@@ -635,6 +682,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       }));
     } else if (activePage.startsWith('timepicker')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'timepicker-group': true }));
+    } else if (activePage.startsWith('toast')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'toast-group': true }));
     } else if (activePage.startsWith('textarea')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'textarea-group': true }));
     } else if (activePage.startsWith('tag')) {
@@ -643,6 +692,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'stepper-group': true, 'compact-stepper-group': true }));
     } else if (activePage.startsWith('stepper')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'stepper-group': true }));
+    } else if (activePage.startsWith('timeslot')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'timeslot-group': true }));
+    } else if (activePage.startsWith('switch')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'switch-group': true }));
     } else if (activePage.startsWith('slider')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'slider-group': true }));
     } else if (

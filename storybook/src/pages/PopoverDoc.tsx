@@ -55,7 +55,7 @@ const storyMeta: Record<PopoverStory, { title: string; description: string }> = 
 const getStoryCode = (story: PopoverStory): string => {
   if (story === 'popover-rich') {
     return `import React from 'react';
-import { Text, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { Ux4gButton, Ux4gTooltip } from 'ux4g-react-native-design-system';
 
 export default function PopoverRichExample() {
@@ -68,9 +68,9 @@ export default function PopoverRichExample() {
       action={<Ux4gButton text='Verify Now' size='small' />}
       isPersistent={true}
     >
-      <Pressable style={{ paddingHorizontal: 14, paddingVertical: 10, borderRadius: 8, backgroundColor: '#4A2BC2' }}>
+      <View style={{ paddingHorizontal: 14, paddingVertical: 10, borderRadius: 8, backgroundColor: '#4A2BC2' }}>
         <Text style={{ color: '#FFFFFF', fontWeight: '600' }}>Open Rich Popover</Text>
-      </Pressable>
+      </View>
     </Ux4gTooltip>
   );
 }`;
@@ -78,13 +78,13 @@ export default function PopoverRichExample() {
 
   if (story === 'popover-placements') {
     return `import React from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { Ux4gTooltip } from 'ux4g-react-native-design-system';
 
 const Anchor = ({ label }: { label: string }) => (
-  <Pressable style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: '#EEF2FF' }}>
+  <View style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: '#EEF2FF' }}>
     <Text style={{ color: '#312E81', fontWeight: '600' }}>{label}</Text>
-  </Pressable>
+  </View>
 );
 
 export default function PopoverPlacementsExample() {
@@ -111,7 +111,7 @@ export default function PopoverPlacementsExample() {
 
   if (story === 'popover-custom-content') {
     return `import React from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { Ux4gTooltip } from 'ux4g-react-native-design-system';
 
 export default function PopoverCustomContentExample() {
@@ -129,9 +129,9 @@ export default function PopoverCustomContentExample() {
         </View>
       }
     >
-      <Pressable style={{ paddingHorizontal: 14, paddingVertical: 10, borderRadius: 8, backgroundColor: '#E0E7FF' }}>
+      <View style={{ paddingHorizontal: 14, paddingVertical: 10, borderRadius: 8, backgroundColor: '#E0E7FF' }}>
         <Text style={{ color: '#312E81', fontWeight: '600' }}>Open Custom Popover</Text>
-      </Pressable>
+      </View>
     </Ux4gTooltip>
   );
 }`;
@@ -139,13 +139,13 @@ export default function PopoverCustomContentExample() {
 
   if (story === 'popover-trigger') {
     return `import React from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { Ux4gTooltip } from 'ux4g-react-native-design-system';
 
 const TriggerChip = ({ label }: { label: string }) => (
-  <Pressable style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: '#F3F4F6' }}>
+  <View style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: '#F3F4F6' }}>
     <Text style={{ color: '#111827', fontWeight: '600' }}>{label}</Text>
-  </Pressable>
+  </View>
 );
 
 export default function PopoverTriggerExample() {
@@ -163,15 +163,15 @@ export default function PopoverTriggerExample() {
   }
 
   return `import React from 'react';
-import { Text, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { Ux4gTooltip } from 'ux4g-react-native-design-system';
 
 export default function PopoverBasicExample() {
   return (
     <Ux4gTooltip text='This is a basic popover message.' placement='top' trigger='press'>
-      <Pressable style={{ paddingHorizontal: 14, paddingVertical: 10, borderRadius: 8, backgroundColor: '#EEF2FF' }}>
+      <View style={{ paddingHorizontal: 14, paddingVertical: 10, borderRadius: 8, backgroundColor: '#EEF2FF' }}>
         <Text style={{ color: '#312E81', fontWeight: '600' }}>Open Popover</Text>
-      </Pressable>
+      </View>
     </Ux4gTooltip>
   );
 }`;
@@ -187,27 +187,27 @@ const getSnackFields = (story: PopoverStory): string => {
           action={<Ux4gButton text='Verify Now' size='small' />}
           isPersistent={true}
         >
-          <Pressable style={styles.primaryAnchor}>
+          <View style={styles.primaryAnchor}>
             <Text style={styles.primaryAnchorText}>Open Rich Popover</Text>
-          </Pressable>
+          </View>
         </Ux4gTooltip>`;
   }
 
   if (story === 'popover-placements') {
     return `        <View style={styles.placementStack}>
           <Ux4gTooltip text='Top placement' placement='top' trigger='press'>
-            <Pressable style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Top</Text></Pressable>
+            <View style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Top</Text></View>
           </Ux4gTooltip>
           <View style={styles.rowGap}>
             <Ux4gTooltip text='Left placement' placement='left' trigger='press'>
-              <Pressable style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Left</Text></Pressable>
+              <View style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Left</Text></View>
             </Ux4gTooltip>
             <Ux4gTooltip text='Right placement' placement='right' trigger='press'>
-              <Pressable style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Right</Text></Pressable>
+              <View style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Right</Text></View>
             </Ux4gTooltip>
           </View>
           <Ux4gTooltip text='Bottom placement' placement='bottom' trigger='press'>
-            <Pressable style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Bottom</Text></Pressable>
+            <View style={styles.neutralAnchor}><Text style={styles.neutralAnchorText}>Bottom</Text></View>
           </Ux4gTooltip>
         </View>`;
   }
@@ -226,27 +226,27 @@ const getSnackFields = (story: PopoverStory): string => {
             </View>
           }
         >
-          <Pressable style={styles.neutralAnchor}>
+          <View style={styles.neutralAnchor}>
             <Text style={styles.neutralAnchorText}>Open Custom Popover</Text>
-          </Pressable>
+          </View>
         </Ux4gTooltip>`;
   }
 
   if (story === 'popover-trigger') {
     return `        <View style={styles.placementStack}>
           <Ux4gTooltip text='Opens on press' trigger='press' placement='top'>
-            <Pressable style={styles.grayAnchor}><Text style={styles.grayAnchorText}>Press Trigger</Text></Pressable>
+            <View style={styles.grayAnchor}><Text style={styles.grayAnchorText}>Press Trigger</Text></View>
           </Ux4gTooltip>
           <Ux4gTooltip text='Opens on long press' trigger='longPress' placement='top'>
-            <Pressable style={styles.grayAnchor}><Text style={styles.grayAnchorText}>Long Press Trigger</Text></Pressable>
+            <View style={styles.grayAnchor}><Text style={styles.grayAnchorText}>Long Press Trigger</Text></View>
           </Ux4gTooltip>
         </View>`;
   }
 
   return `        <Ux4gTooltip text='This is a basic popover message.' placement='top' trigger='press'>
-          <Pressable style={styles.neutralAnchor}>
+          <View style={styles.neutralAnchor}>
             <Text style={styles.neutralAnchorText}>Open Popover</Text>
-          </Pressable>
+          </View>
         </Ux4gTooltip>`;
 };
 
@@ -259,7 +259,7 @@ export const PopoverDoc: React.FC<PopoverDocProps> = ({ isDark, story = 'popover
 
   const renderStoryPreview = () => {
     const snackCodeString = `import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ux4gButton, Ux4gThemeProvider, Ux4gTooltip } from 'ux4g-react-native-design-system';
 
 export default function App() {

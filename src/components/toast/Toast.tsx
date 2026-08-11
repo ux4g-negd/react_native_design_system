@@ -44,6 +44,48 @@ export interface Ux4gToastProps extends Omit<Ux4gToastData, 'autoClose' | 'durat
   style?: StyleProp<ViewStyle>;
 }
 
+/**
+ * Exact `Color.lerp(from, to, t)` equivalent for hex colors (Flutter parity).
+ */
+const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
+  let h = hex.replace('#', '').trim();
+  if (h.length === 3) h = h.split('').map((c) => c + c).join('');
+  if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+  return {
+    r: parseInt(h.substring(0, 2), 16),
+    g: parseInt(h.substring(2, 4), 16),
+    b: parseInt(h.substring(4, 6), 16),
+  };
+};
+
+const lerpColor = (from: string, to: string, t: number): string => {
+  const a = hexToRgb(from);
+  const b = hexToRgb(to);
+  if (!a || !b) return to;
+  const channel = (start: number, end: number) =>
+    Math.round(start + (end - start) * t).toString(16).padStart(2, '0');
+  return `#${channel(a.r, b.r)}${channel(a.g, b.g)}${channel(a.b, b.b)}`;
+};
+
+/**
+ * Helper to compute hex with alpha or rgba color string.
+ */
+const addOpacityToHex = (color: string, opacity: number): string => {
+  if (color.startsWith('#')) {
+    let hex = color.replace('#', '');
+    if (hex.length === 3) {
+      hex = hex.split('').map((c) => c + c).join('');
+    }
+    if (hex.length === 6) {
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+  }
+  return color;
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // TOAST PRESENTATIONAL COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
@@ -71,35 +113,25 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
 
   // Resolve base styles based on category
   const getBaseStyle = () => {
-    const surface = colors.surface ?? (isDark ? 'UX4GColors.neutral900' : 'UX4GColors.white');
-    const info = colors.info ?? 'UX4GColors.blue600';
-    const success = colors.success ?? 'UX4GColors.green600';
-    const warning = colors.warning ?? 'UX4GColors.orange500';
-    const error = colors.error ?? 'UX4GColors.red600';
-    const primary = colors.primary ?? 'UX4GColors.blue600';
-
-    // Simple hex blend approximation for React Native (like Color.lerp(surface, color, 0.12))
-    // Instead of precise lerp, we'll use a very light background tint
-    const getTint = (baseHex: string) => {
-       if (isDark) {
-          // Dark mode: very dark tint
-          return `${baseHex}20`; // 12% opacity roughly
-       }
-       return `${baseHex}15`; // 10-15% opacity tint for light mode
-    };
+    const surface = colors.surface ?? (isDark ? UX4GColors.neutral900 : UX4GColors.white);
+    const info = colors.info ?? (isDark ? UX4GColors.cyan400 : UX4GColors.cyan600);
+    const success = colors.success ?? (isDark ? UX4GColors.green400 : UX4GColors.green600);
+    const warning = colors.warning ?? (isDark ? UX4GColors.orange500 : UX4GColors.orange600);
+    const error = colors.error ?? (isDark ? UX4GColors.red400 : UX4GColors.red600);
+    const primary = colors.primary ?? (isDark ? UX4GColors.blue400 : UX4GColors.blue600);
 
     switch (category) {
       case 'info':
-        return { bg: getTint(info), iconCol: info, actCol: info, defaultIcon: 'info' };
+        return { bg: lerpColor(surface, info, 0.12), iconCol: info, actCol: info, icon: Ux4gIcons.infoOutline };
       case 'success':
-        return { bg: getTint(success), iconCol: success, actCol: success, defaultIcon: 'success' };
+        return { bg: lerpColor(surface, success, 0.12), iconCol: success, actCol: success, icon: Ux4gIcons.checkCircle };
       case 'warning':
-        return { bg: getTint(warning), iconCol: warning, actCol: warning, defaultIcon: 'warning' };
+        return { bg: lerpColor(surface, warning, 0.12), iconCol: warning, actCol: warning, icon: Ux4gIcons.warningAmber };
       case 'error':
-        return { bg: getTint(error), iconCol: error, actCol: error, defaultIcon: 'error' };
+        return { bg: lerpColor(surface, error, 0.12), iconCol: error, actCol: error, icon: Ux4gIcons.errorOutline };
       case 'slot':
       default:
-        return { bg: getTint(primary), iconCol: primary, actCol: primary, defaultIcon: 'settings' };
+        return { bg: lerpColor(surface, primary, 0.12), iconCol: primary, actCol: primary, icon: Ux4gIcons.settings };
     }
   };
 
@@ -107,26 +139,14 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
   const resolvedBgColor = backgroundColor ?? baseStyle.bg;
   const resolvedIconColor = iconColor ?? baseStyle.iconCol;
   const resolvedActionColor = actionColor ?? baseStyle.actCol;
-  
+
   const renderIcon = () => {
     if (icon) return icon;
-    const size = 20;
-    const color = resolvedIconColor;
-    switch (baseStyle.defaultIcon) {
-      case 'success':
-        return typeof Ux4gIcons.success === 'function' ? Ux4gIcons.success({ size, color }) : <Text style={{color, fontSize: size}}>✓</Text>;
-      case 'warning':
-        return typeof Ux4gIcons.warning === 'function' ? Ux4gIcons.warning({ size, color }) : <Text style={{color, fontSize: size}}>⚠️</Text>;
-      case 'error':
-        return typeof Ux4gIcons.error === 'function' ? Ux4gIcons.error({ size, color }) : <Text style={{color, fontSize: size}}>✕</Text>;
-      case 'info':
-      default:
-        return typeof Ux4gIcons.info === 'function' ? Ux4gIcons.info({ size, color }) : <Text style={{color, fontSize: size}}>ℹ</Text>;
-    }
+    return baseStyle.icon({ size: 20, color: resolvedIconColor });
   };
 
-  const onSurface = colors.onSurface ?? (isDark ? 'UX4GColors.neutral100' : 'UX4GColors.neutral950');
-  const onSurfaceMuted = isDark ? 'UX4GColors.neutral400' : 'UX4GColors.neutral500';
+  const onSurface = colors.onSurface ?? (isDark ? UX4GColors.neutral100 : UX4GColors.neutral950);
+  const onSurfaceMuted = addOpacityToHex(onSurface, 0.6);
 
   const containerPaddingH = resolvedLayout === 'full' ? Ux4gSpace.space16 : Ux4gSpace.space12;
   const containerPaddingV = resolvedLayout === 'full' ? Ux4gSpace.space8 : Ux4gSpace.space12;
@@ -144,7 +164,7 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
     );
   };
 
-  const surfaceColor = colors.surface ?? (isDark ? 'UX4GColors.neutral900' : 'UX4GColors.white');
+  const surfaceColor = colors.surface ?? (isDark ? UX4GColors.neutral900 : UX4GColors.white);
 
   if (resolvedLayout === 'full') {
     return (
@@ -181,7 +201,7 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
       <View style={[StyleSheet.absoluteFill, { backgroundColor: resolvedBgColor, borderRadius: Ux4gRadius.radius4 }]} />
       <View style={[styles.innerContainer, styles.stackedContainer, { paddingHorizontal: containerPaddingH, paddingVertical: containerPaddingV }]}>
         <View style={styles.stackedHeader}>
-         <View style={styles.fullIcon}>{renderIcon()}</View>
+         <View style={styles.stackedIcon}>{renderIcon()}</View>
          <Text style={[typography.bS_strong, { color: onSurface, fontWeight: '700', flex: 1 }]} numberOfLines={2}>
             {title}
          </Text>
@@ -239,12 +259,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
+  stackedIcon: {
+    marginRight: Ux4gSpace.space8,
+  },
   stackedSubtitle: {
-    paddingLeft: 20 + Ux4gSpace.space12, // icon size + gap
+    paddingLeft: 20 + Ux4gSpace.space8, // icon size + gap (Flutter parity: 28)
     marginTop: 2,
   },
   stackedAction: {
-    paddingLeft: 20 + Ux4gSpace.space12,
+    paddingLeft: 20 + Ux4gSpace.space8,
     marginTop: 6,
     alignSelf: 'flex-start',
   },
@@ -371,13 +394,6 @@ export const Ux4gToastProvider: React.FC<Ux4gToastProviderProps> = ({ children, 
            <Ux4gToast
              {...currentToast}
              onCloseClick={dismiss}
-             style={{
-                shadowColor: 'UX4GColors.neutral1000black',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.15,
-                shadowRadius: 12,
-                elevation: 6,
-             }}
            />
          </Animated.View>
       )}

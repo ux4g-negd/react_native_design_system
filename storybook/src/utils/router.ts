@@ -71,6 +71,11 @@ const PAGE_TO_PATH: Record<string, string> = {
   'search-autocomplete': 'components/search-field/autocomplete',
   'search-status': 'components/search-field/status',
   switch: 'components/switch',
+  'switch-basic': 'components/switch/basic',
+  'switch-labels': 'components/switch/labels',
+  'switch-status': 'components/switch/status',
+  'switch-required': 'components/switch/required',
+  'switch-disabled': 'components/switch/disabled',
   card: 'components/card',
   'card-basic': 'components/card/basic',
   'card-actions': 'components/card/actions',
@@ -123,6 +128,18 @@ const PAGE_TO_PATH: Record<string, string> = {
   'timepicker-disabled': 'components/time-picker/disabled',
   timepicker: 'components/time-picker/basic',
   'time-picker': 'components/time-picker/basic',
+  'timeslot-introduction': 'components/time-slot/introduction',
+  'timeslot-basic': 'components/time-slot/basic',
+  'timeslot-compact': 'components/time-slot/compact',
+  'timeslot-json': 'components/time-slot/json',
+  timeslot: 'components/time-slot/introduction',
+  'time-slot': 'components/time-slot/introduction',
+  'toast-basic': 'components/toast/basic',
+  'toast-stacked': 'components/toast/stacked',
+  'toast-actions': 'components/toast/actions',
+  'toast-custom': 'components/toast/custom',
+  'toast-provider': 'components/toast/provider',
+  toast: 'components/toast/basic',
   'stepper-horizontal': 'components/stepper/horizontal',
   'stepper-horizontal-dashed': 'components/stepper/horizontal-dashed',
   'stepper-vertical': 'components/stepper/vertical',
@@ -164,7 +181,12 @@ const PAGE_TO_PATH: Record<string, string> = {
   'popover-custom-content': 'components/popover/custom-content',
   'popover-trigger': 'components/popover/trigger',
   popover: 'components/popover/basic',
-  tooltip: 'components/popover/basic',
+  'tooltip-introduction': 'components/tooltip/introduction',
+  'tooltip-basic': 'components/tooltip/basic',
+  'tooltip-interactive': 'components/tooltip/interactive',
+  'tooltip-variants': 'components/tooltip/variants',
+  'tooltip-rich': 'components/tooltip/rich',
+  tooltip: 'components/tooltip/introduction',
   modal: 'components/modal/full-preview',
   badge: 'components/badge',
   'badge-basic': 'components/badge/basic',
@@ -187,8 +209,6 @@ const PAGE_TO_PATH: Record<string, string> = {
   'avatar-status': 'components/avatar/status',
   'avatar-profile': 'components/avatar/profile',
   'avatar-group': 'components/avatar/group',
-  modal: 'components/modal',
-  toast: 'components/toast',
   forms: 'patterns/forms',
   headers: 'patterns/headers',
 };
@@ -204,6 +224,14 @@ export function getPathFromPage(page: string): string {
 
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+  if (cleanPath.startsWith('components/switch') || cleanPath.startsWith('switch')) {
+    if (cleanPath.includes('label')) return 'switch-labels';
+    if (cleanPath.includes('status')) return 'switch-status';
+    if (cleanPath.includes('required')) return 'switch-required';
+    if (cleanPath.includes('disabled')) return 'switch-disabled';
+    return 'switch-basic';
+  }
 
   if (cleanPath.startsWith('components/card') || cleanPath.startsWith('card')) {
     if (cleanPath.includes('actions')) return 'card-actions';
@@ -329,6 +357,13 @@ export function getPageFromPath(path: string): string {
     return 'textarea-basic';
   }
 
+  if (cleanPath.startsWith('components/time-slot') || cleanPath.startsWith('time-slot') || cleanPath.startsWith('timeslot')) {
+    if (cleanPath.includes('compact')) return 'timeslot-compact';
+    if (cleanPath.includes('json')) return 'timeslot-json';
+    if (cleanPath.includes('basic')) return 'timeslot-basic';
+    return 'timeslot-introduction';
+  }
+
   if (cleanPath.startsWith('components/time-picker') || cleanPath.startsWith('time-picker') || cleanPath.startsWith('timepicker')) {
     if (cleanPath.includes('label')) return 'timepicker-label';
     if (cleanPath.includes('status')) return 'timepicker-status';
@@ -336,6 +371,14 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('initial')) return 'timepicker-initial';
     if (cleanPath.includes('disabled')) return 'timepicker-disabled';
     return 'timepicker-basic';
+  }
+
+  if (cleanPath.startsWith('components/toast') || cleanPath.startsWith('toast')) {
+    if (cleanPath.includes('stacked')) return 'toast-stacked';
+    if (cleanPath.includes('actions')) return 'toast-actions';
+    if (cleanPath.includes('custom')) return 'toast-custom';
+    if (cleanPath.includes('provider')) return 'toast-provider';
+    return 'toast-basic';
   }
 
   if (cleanPath.startsWith('components/stepper') || cleanPath.startsWith('stepper')) {
@@ -409,7 +452,15 @@ export function getPageFromPath(path: string): string {
     return 'progress-linear';
   }
 
-  if (cleanPath.startsWith('components/popover') || cleanPath.startsWith('popover') || cleanPath.startsWith('tooltip')) {
+  if (cleanPath.startsWith('components/tooltip') || cleanPath.startsWith('tooltip')) {
+    if (cleanPath.includes('rich')) return 'tooltip-rich';
+    if (cleanPath.includes('interactive')) return 'tooltip-interactive';
+    if (cleanPath.includes('variants') || cleanPath.includes('variant')) return 'tooltip-variants';
+    if (cleanPath.includes('basic')) return 'tooltip-basic';
+    return 'tooltip-introduction';
+  }
+
+  if (cleanPath.startsWith('components/popover') || cleanPath.startsWith('popover')) {
     if (cleanPath.includes('rich')) return 'popover-rich';
     if (cleanPath.includes('placement')) return 'popover-placements';
     if (cleanPath.includes('custom')) return 'popover-custom-content';

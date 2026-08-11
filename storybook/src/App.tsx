@@ -34,6 +34,10 @@ import { StepperDoc } from './pages/StepperDoc';
 import { TagDoc } from './pages/TagDoc';
 import { TextAreaDoc } from './pages/TextAreaDoc';
 import { TimePickerDoc } from './pages/TimePickerDoc';
+import { ToastDoc } from './pages/ToastDoc';
+import { SwitchDoc } from './pages/SwitchDoc';
+import { TimeSlotDoc } from './pages/TimeSlotDoc';
+import { TooltipDoc } from './pages/TooltipDoc';
 import { EmptyStateDoc } from './pages/EmptyStateDoc';
 import { FeedbackStarDoc } from './pages/FeedbackStarDoc';
 import { FeedbackCsatDoc } from './pages/FeedbackCsatDoc';
@@ -77,6 +81,10 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('divider')) return 'Components / Divider';
   if (page.startsWith('status-banner')) return 'Components / Status Banner';
   if (page.startsWith('status-pipeline')) return 'Components / Status Pipeline';
+  if (page.startsWith('tooltip')) return 'Components / Tooltip';
+  if (page.startsWith('timeslot')) return 'Components / Time Slot';
+  if (page.startsWith('switch')) return 'Components / Switch';
+  if (page.startsWith('toast')) return 'Components / Toast';
   if (page.startsWith('timepicker')) return 'Components / Time Picker';
   if (page.startsWith('textarea')) return 'Components / Text Area';
   if (page.startsWith('tag')) return 'Components / Tag';
@@ -247,6 +255,18 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('timepicker')) {
       return <TimePickerDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('toast')) {
+      return <ToastDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('switch')) {
+      return <SwitchDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('timeslot')) {
+      return <TimeSlotDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('tooltip')) {
+      return <TooltipDoc isDark={isDark} story={activePage} />;
     }
     if (activePage.startsWith('stepper') || activePage.startsWith('compact-stepper')) {
       return <StepperDoc isDark={isDark} story={activePage} />;

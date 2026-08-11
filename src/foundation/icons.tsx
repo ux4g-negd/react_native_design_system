@@ -410,6 +410,40 @@ export const Ux4gIcons = {
     return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
   },
 
+  /**
+   * Info outline icon (`Icons.info_outline`).
+   */
+  infoOutline: ({ size = 20, color = UX4GColors.cyan600 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>ℹ️</Text>;
+  },
+
+  /**
+   * Warning amber rounded icon (`Icons.warning_amber_rounded`).
+   */
+  warningAmber: ({ size = 20, color = UX4GColors.orange600 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
+  },
+
   warning: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
     if (Svg && Path) {
       return (
