@@ -216,14 +216,14 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
 
   const requestAndroidPermission = useCallback(
     async (
-      permission: PermissionsAndroid.Permission,
+      permission: (typeof PermissionsAndroid.PERMISSIONS)[keyof typeof PermissionsAndroid.PERMISSIONS],
       title: string,
       message: string,
     ): Promise<boolean> => {
       if (Platform.OS !== 'android') return true;
 
       try {
-        const granted = await PermissionsAndroid.request(permission, {
+        const granted = await PermissionsAndroid.request(permission as any, {
           title,
           message,
           buttonNeutral: 'Ask Me Later',

@@ -41,3 +41,4 @@ export * from './FileUploadShowcase';
 export * from './SlotGridShowcase';
 export * from './FeedbackFormShowcase';
 export * from './EmptyStateShowcase';
+export * from './SliderShowcase';

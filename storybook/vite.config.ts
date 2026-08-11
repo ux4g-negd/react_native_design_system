@@ -37,6 +37,11 @@ export default defineConfig({
         find: 'react-native',
         replacement: rnwPath,
       },
+      // Map @/ alias to src directory (matches root tsconfig paths)
+      {
+        find: /^@\/(.*)/,
+        replacement: path.resolve(__dirname, '../src/$1'),
+      },
     ],
     extensions: ['.web.tsx', '.web.ts', '.web.js', '.tsx', '.ts', '.js'],
   },

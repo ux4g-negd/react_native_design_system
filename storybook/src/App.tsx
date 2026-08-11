@@ -34,6 +34,7 @@ import { FeedbackStarDoc } from './pages/FeedbackStarDoc';
 import { FeedbackCsatDoc } from './pages/FeedbackCsatDoc';
 import { FeedbackNpsDoc } from './pages/FeedbackNpsDoc';
 import { SearchFieldDoc } from './pages/SearchFieldDoc';
+import { SliderDoc } from './pages/SliderDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -77,6 +78,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('fileupload')) return 'Components / FileUpload';
   if (page.startsWith('feedbackform')) return 'Components / Feedback';
   if (page.startsWith('empty-state')) return 'Components / Empty State';
+  if (page.startsWith('slider')) return 'Components / Slider';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
   if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
@@ -234,6 +236,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('empty-state')) {
       return <EmptyStateDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('slider')) {
+      return <SliderDoc isDark={isDark} story={activePage} />;
     }
 
     switch (activePage) {

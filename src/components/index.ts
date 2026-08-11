@@ -41,3 +41,4 @@ export * from './file-upload';
 export * from './slot-grid';
 export * from './feedback-form';
 export * from './empty-state';
+export * from './slider';

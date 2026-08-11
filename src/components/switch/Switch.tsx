@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
 import { UX4GColors } from '../../foundation/colors';
-import { Ux4gTypography } from '@/foundation/typography';
+import type { Ux4gTypography } from '../../foundation/typography';
 
 // Dynamic import of react-native-svg for optional vector icons inside status descriptions
 let SvgComponent: any = null;

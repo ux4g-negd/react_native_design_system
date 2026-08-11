@@ -418,6 +418,19 @@ const NAV_ITEMS: NavItem[] = [
           { id: 'search-status', label: 'Status', icon: 'layers' },
         ],
       },
+      {
+        id: 'slider-group',
+        label: 'Slider',
+        icon: 'folder',
+        children: [
+          { id: 'slider-basic', label: 'Basic', icon: 'layers' },
+          { id: 'slider-sizes', label: 'Sizes', icon: 'layers' },
+          { id: 'slider-steps', label: 'Steps', icon: 'layers' },
+          { id: 'slider-custom-range', label: 'Custom Range', icon: 'layers' },
+          { id: 'slider-formatter', label: 'Value Formatter', icon: 'layers' },
+          { id: 'slider-disabled', label: 'Disabled', icon: 'layers' },
+        ],
+      },
       // Placeholders for remaining components
       { id: 'switch', label: 'Switch', icon: 'toggle_on' },
       { id: 'toast', label: 'Toast', icon: 'call_to_action' },
@@ -513,6 +526,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'feedback-group': true }));
     } else if (activePage.startsWith('empty-state')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'empty-state-group': true }));
+    } else if (activePage.startsWith('slider')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'slider-group': true }));
     } else if (
       [
         'input-field',
