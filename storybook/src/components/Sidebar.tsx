@@ -248,6 +248,20 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'tag-group',
+        label: 'Tag',
+        icon: 'folder',
+        children: [
+          { id: 'tag-basic', label: 'Basic', icon: 'layers' },
+          { id: 'tag-shapes', label: 'Shapes', icon: 'layers' },
+          { id: 'tag-styles', label: 'Styles', icon: 'layers' },
+          { id: 'tag-colors', label: 'Color Schemes', icon: 'layers' },
+          { id: 'tag-leading', label: 'Leading Content', icon: 'layers' },
+          { id: 'tag-dismissable', label: 'Dismissible', icon: 'layers' },
+          { id: 'tag-pill', label: 'Unified Pill Tag', icon: 'layers' },
+        ],
+      },
+      {
         id: 'feedback-group',
         label: 'Feedback',
         icon: 'folder',
@@ -594,6 +608,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ? 'status-pipeline-horizontal-group'
           : 'status-pipeline-vertical-group']: true,
       }));
+    } else if (activePage.startsWith('tag')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'tag-group': true }));
     } else if (activePage.startsWith('compact-stepper')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'stepper-group': true, 'compact-stepper-group': true }));
     } else if (activePage.startsWith('stepper')) {

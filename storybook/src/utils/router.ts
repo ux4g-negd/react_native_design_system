@@ -100,6 +100,14 @@ const PAGE_TO_PATH: Record<string, string> = {
   'status-pipeline-horizontal-nolabels': 'components/status-pipeline/horizontal/nolabels',
   'status-pipeline-sizes': 'components/status-pipeline/vertical/sizes',
   'status-pipeline': 'components/status-pipeline/vertical/basic',
+  'tag-basic': 'components/tag/basic',
+  'tag-shapes': 'components/tag/shapes',
+  'tag-styles': 'components/tag/styles',
+  'tag-colors': 'components/tag/colors',
+  'tag-leading': 'components/tag/leading',
+  'tag-dismissable': 'components/tag/dismissable',
+  'tag-pill': 'components/tag/pill',
+  tag: 'components/tag/basic',
   'stepper-horizontal': 'components/stepper/horizontal',
   'stepper-horizontal-dashed': 'components/stepper/horizontal-dashed',
   'stepper-vertical': 'components/stepper/vertical',
@@ -286,6 +294,16 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('color')) return `${base}-colors`;
     if (cleanPath.includes('label') || cleanPath.includes('nolabels')) return `${base}-${cleanPath.includes('nolabels') ? 'nolabels' : 'labels'}`;
     return base;
+  }
+
+  if (cleanPath.startsWith('components/tag') || cleanPath.startsWith('tag')) {
+    if (cleanPath.includes('shapes')) return 'tag-shapes';
+    if (cleanPath.includes('styles')) return 'tag-styles';
+    if (cleanPath.includes('colors') || cleanPath.includes('colours')) return 'tag-colors';
+    if (cleanPath.includes('leading')) return 'tag-leading';
+    if (cleanPath.includes('dismiss')) return 'tag-dismissable';
+    if (cleanPath.includes('pill')) return 'tag-pill';
+    return 'tag-basic';
   }
 
   if (cleanPath.startsWith('components/stepper') || cleanPath.startsWith('stepper')) {
