@@ -86,6 +86,20 @@ const PAGE_TO_PATH: Record<string, string> = {
   'journey-timeline-horizontal': 'components/journey-timeline/horizontal',
   'journey-timeline-custom': 'components/journey-timeline/custom',
   'journey-timeline': 'components/journey-timeline/basic',
+  'status-pipeline-vertical': 'components/status-pipeline/vertical/basic',
+  'status-pipeline-vertical-states': 'components/status-pipeline/vertical/states',
+  'status-pipeline-vertical-sizes': 'components/status-pipeline/vertical/sizes',
+  'status-pipeline-vertical-colors': 'components/status-pipeline/vertical/colors',
+  'status-pipeline-vertical-labels': 'components/status-pipeline/vertical/labels',
+  'status-pipeline-vertical-nolabels': 'components/status-pipeline/vertical/nolabels',
+  'status-pipeline-horizontal': 'components/status-pipeline/horizontal/basic',
+  'status-pipeline-horizontal-states': 'components/status-pipeline/horizontal/states',
+  'status-pipeline-horizontal-sizes': 'components/status-pipeline/horizontal/sizes',
+  'status-pipeline-horizontal-colors': 'components/status-pipeline/horizontal/colors',
+  'status-pipeline-horizontal-labels': 'components/status-pipeline/horizontal/labels',
+  'status-pipeline-horizontal-nolabels': 'components/status-pipeline/horizontal/nolabels',
+  'status-pipeline-sizes': 'components/status-pipeline/vertical/sizes',
+  'status-pipeline': 'components/status-pipeline/vertical/basic',
   'link-basic': 'components/link/basic',
   'link-text': 'components/link/text',
   'link-custom-child': 'components/link/custom-child',
@@ -249,6 +263,17 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('horizontal')) return 'journey-timeline-horizontal';
     if (cleanPath.includes('custom')) return 'journey-timeline-custom';
     return 'journey-timeline-basic';
+  }
+
+  if (cleanPath.startsWith('components/status-pipeline') || cleanPath.startsWith('status-pipeline')) {
+    const horizontal = cleanPath.includes('/horizontal') || cleanPath.includes('horizontal');
+    const base = horizontal ? 'status-pipeline-horizontal' : 'status-pipeline-vertical';
+
+    if (cleanPath.includes('states')) return `${base}-states`;
+    if (cleanPath.includes('sizes')) return `${base}-sizes`;
+    if (cleanPath.includes('color')) return `${base}-colors`;
+    if (cleanPath.includes('label') || cleanPath.includes('nolabels')) return `${base}-${cleanPath.includes('nolabels') ? 'nolabels' : 'labels'}`;
+    return base;
   }
 
   if (cleanPath.startsWith('components/link') || cleanPath.startsWith('link')) {

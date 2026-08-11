@@ -29,6 +29,7 @@ import { ChipsDoc } from './pages/ChipsDoc';
 import { ChipGroupDoc } from './pages/ChipGroupDoc';
 import { DividerDoc } from './pages/DividerDoc';
 import { StatusBannerDoc } from './pages/StatusBannerDoc';
+import { StatusPipelineDoc } from './pages/StatusPipelineDoc';
 import { EmptyStateDoc } from './pages/EmptyStateDoc';
 import { FeedbackStarDoc } from './pages/FeedbackStarDoc';
 import { FeedbackCsatDoc } from './pages/FeedbackCsatDoc';
@@ -71,6 +72,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('chip-group')) return 'Components / Chip Group';
   if (page.startsWith('divider')) return 'Components / Divider';
   if (page.startsWith('status-banner')) return 'Components / Status Banner';
+  if (page.startsWith('status-pipeline')) return 'Components / Status Pipeline';
   if (page.startsWith('input-aadhaar')) return 'Components / Input Aadhaar';
   if (page.startsWith('input-pan')) return 'Components / Input Pan';
   if (page.startsWith('input-otp')) return 'Components / Input Otp';
@@ -224,6 +226,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('status-banner')) {
       return <StatusBannerDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('status-pipeline')) {
+      return <StatusPipelineDoc isDark={isDark} story={activePage} />;
     }
     if (activePage === 'feedbackformstar') {
       return <FeedbackStarDoc isDark={isDark} />;

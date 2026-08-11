@@ -215,6 +215,39 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'status-pipeline-group',
+        label: 'Status Pipeline',
+        icon: 'folder',
+        children: [
+          {
+            id: 'status-pipeline-vertical-group',
+            label: 'Vertical',
+            icon: 'folder',
+            children: [
+              { id: 'status-pipeline-vertical', label: 'Basic', icon: 'layers' },
+              { id: 'status-pipeline-vertical-states', label: 'All States', icon: 'layers' },
+              { id: 'status-pipeline-vertical-sizes', label: 'Sizes', icon: 'layers' },
+              { id: 'status-pipeline-vertical-colors', label: 'Custom Colors', icon: 'layers' },
+              { id: 'status-pipeline-vertical-labels', label: 'Labels Only', icon: 'layers' },
+              { id: 'status-pipeline-vertical-nolabels', label: 'Circles Only', icon: 'layers' },
+            ],
+          },
+          {
+            id: 'status-pipeline-horizontal-group',
+            label: 'Horizontal',
+            icon: 'folder',
+            children: [
+              { id: 'status-pipeline-horizontal', label: 'Basic', icon: 'layers' },
+              { id: 'status-pipeline-horizontal-states', label: 'All States', icon: 'layers' },
+              { id: 'status-pipeline-horizontal-sizes', label: 'Sizes', icon: 'layers' },
+              { id: 'status-pipeline-horizontal-colors', label: 'Custom Colors', icon: 'layers' },
+              { id: 'status-pipeline-horizontal-labels', label: 'Labels Only', icon: 'layers' },
+              { id: 'status-pipeline-horizontal-nolabels', label: 'Circles Only', icon: 'layers' },
+            ],
+          },
+        ],
+      },
+      {
         id: 'feedback-group',
         label: 'Feedback',
         icon: 'folder',
@@ -526,6 +559,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setExpandedGroups((prev) => ({ ...prev, components: true, 'feedback-group': true }));
     } else if (activePage.startsWith('empty-state')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'empty-state-group': true }));
+    } else if (activePage.startsWith('status-pipeline')) {
+      setExpandedGroups((prev) => ({
+        ...prev,
+        components: true,
+        'status-pipeline-group': true,
+        [activePage.startsWith('status-pipeline-horizontal')
+          ? 'status-pipeline-horizontal-group'
+          : 'status-pipeline-vertical-group']: true,
+      }));
     } else if (activePage.startsWith('slider')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'slider-group': true }));
     } else if (
