@@ -464,6 +464,32 @@ const NAV_ITEMS: NavItem[] = [
           { id: 'slider-disabled', label: 'Disabled', icon: 'layers' },
         ],
       },
+      {
+        id: 'stepper-group',
+        label: 'Stepper',
+        icon: 'folder',
+        children: [
+          { id: 'stepper-horizontal', label: 'Horizontal', icon: 'layers' },
+          { id: 'stepper-horizontal-dashed', label: 'Horizontal (Dashed)', icon: 'layers' },
+          { id: 'stepper-vertical', label: 'Vertical', icon: 'layers' },
+          { id: 'stepper-error', label: 'Error State', icon: 'layers' },
+          { id: 'stepper-bottom-lines', label: 'Horizontal (Bottom Line)', icon: 'layers' },
+          { id: 'stepper-bottom-background', label: 'Bottom Lines + Background', icon: 'layers' },
+          { id: 'stepper-edge-alignment', label: 'Edge Label Alignment', icon: 'layers' },
+          {
+            id: 'compact-stepper-group',
+            label: 'Compact Stepper',
+            icon: 'folder',
+            children: [
+              { id: 'compact-stepper-linear', label: 'Linear', icon: 'layers' },
+              { id: 'compact-stepper-right-aligned', label: 'Right Aligned', icon: 'layers' },
+              { id: 'compact-stepper-centered', label: 'Centered', icon: 'layers' },
+              { id: 'compact-stepper-centered-between', label: 'Centered (Arrows Outside)', icon: 'layers' },
+              { id: 'compact-stepper-split', label: 'Split', icon: 'layers' },
+            ],
+          },
+        ],
+      },
       // Placeholders for remaining components
       { id: 'switch', label: 'Switch', icon: 'toggle_on' },
       { id: 'toast', label: 'Toast', icon: 'call_to_action' },
@@ -568,6 +594,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ? 'status-pipeline-horizontal-group'
           : 'status-pipeline-vertical-group']: true,
       }));
+    } else if (activePage.startsWith('compact-stepper')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'stepper-group': true, 'compact-stepper-group': true }));
+    } else if (activePage.startsWith('stepper')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'stepper-group': true }));
     } else if (activePage.startsWith('slider')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'slider-group': true }));
     } else if (

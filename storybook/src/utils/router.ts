@@ -100,6 +100,18 @@ const PAGE_TO_PATH: Record<string, string> = {
   'status-pipeline-horizontal-nolabels': 'components/status-pipeline/horizontal/nolabels',
   'status-pipeline-sizes': 'components/status-pipeline/vertical/sizes',
   'status-pipeline': 'components/status-pipeline/vertical/basic',
+  'stepper-horizontal': 'components/stepper/horizontal',
+  'stepper-horizontal-dashed': 'components/stepper/horizontal-dashed',
+  'stepper-vertical': 'components/stepper/vertical',
+  'stepper-error': 'components/stepper/error',
+  'stepper-bottom-lines': 'components/stepper/bottom-lines',
+  'stepper-bottom-background': 'components/stepper/bottom-background',
+  'stepper-edge-alignment': 'components/stepper/edge-alignment',
+  'compact-stepper-linear': 'components/compact-stepper/linear',
+  'compact-stepper-right-aligned': 'components/compact-stepper/right-aligned',
+  'compact-stepper-centered': 'components/compact-stepper/centered',
+  'compact-stepper-centered-between': 'components/compact-stepper/centered-between',
+  'compact-stepper-split': 'components/compact-stepper/split',
   'link-basic': 'components/link/basic',
   'link-text': 'components/link/text',
   'link-custom-child': 'components/link/custom-child',
@@ -274,6 +286,26 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('color')) return `${base}-colors`;
     if (cleanPath.includes('label') || cleanPath.includes('nolabels')) return `${base}-${cleanPath.includes('nolabels') ? 'nolabels' : 'labels'}`;
     return base;
+  }
+
+  if (cleanPath.startsWith('components/stepper') || cleanPath.startsWith('stepper')) {
+    if (cleanPath.includes('dashed')) return 'stepper-horizontal-dashed';
+    if (cleanPath.includes('vertical')) return 'stepper-vertical';
+    if (cleanPath.includes('error')) return 'stepper-error';
+    if (cleanPath.includes('bottom')) {
+      if (cleanPath.includes('background')) return 'stepper-bottom-background';
+      return 'stepper-bottom-lines';
+    }
+    if (cleanPath.includes('edge')) return 'stepper-edge-alignment';
+    return 'stepper-horizontal';
+  }
+
+  if (cleanPath.startsWith('components/compact-stepper') || cleanPath.startsWith('compact-stepper')) {
+    if (cleanPath.includes('right-aligned') || cleanPath.includes('rightaligned')) return 'compact-stepper-right-aligned';
+    if (cleanPath.includes('centered-between')) return 'compact-stepper-centered-between';
+    if (cleanPath.includes('centered')) return 'compact-stepper-centered';
+    if (cleanPath.includes('split')) return 'compact-stepper-split';
+    return 'compact-stepper-linear';
   }
 
   if (cleanPath.startsWith('components/link') || cleanPath.startsWith('link')) {
