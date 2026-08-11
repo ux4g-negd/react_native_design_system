@@ -32,6 +32,8 @@ import { StatusBannerDoc } from './pages/StatusBannerDoc';
 import { StatusPipelineDoc } from './pages/StatusPipelineDoc';
 import { StepperDoc } from './pages/StepperDoc';
 import { TagDoc } from './pages/TagDoc';
+import { TextAreaDoc } from './pages/TextAreaDoc';
+import { TimePickerDoc } from './pages/TimePickerDoc';
 import { EmptyStateDoc } from './pages/EmptyStateDoc';
 import { FeedbackStarDoc } from './pages/FeedbackStarDoc';
 import { FeedbackCsatDoc } from './pages/FeedbackCsatDoc';
@@ -75,6 +77,8 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('divider')) return 'Components / Divider';
   if (page.startsWith('status-banner')) return 'Components / Status Banner';
   if (page.startsWith('status-pipeline')) return 'Components / Status Pipeline';
+  if (page.startsWith('timepicker')) return 'Components / Time Picker';
+  if (page.startsWith('textarea')) return 'Components / Text Area';
   if (page.startsWith('tag')) return 'Components / Tag';
   if (page.startsWith('stepper')) return 'Components / Stepper';
   if (page.startsWith('compact-stepper')) return 'Components / Compact Stepper';
@@ -237,6 +241,12 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('tag')) {
       return <TagDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('textarea')) {
+      return <TextAreaDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('timepicker')) {
+      return <TimePickerDoc isDark={isDark} story={activePage} />;
     }
     if (activePage.startsWith('stepper') || activePage.startsWith('compact-stepper')) {
       return <StepperDoc isDark={isDark} story={activePage} />;

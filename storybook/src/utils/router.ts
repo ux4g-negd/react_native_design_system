@@ -108,6 +108,21 @@ const PAGE_TO_PATH: Record<string, string> = {
   'tag-dismissable': 'components/tag/dismissable',
   'tag-pill': 'components/tag/pill',
   tag: 'components/tag/basic',
+  'textarea-basic': 'components/text-area/basic',
+  'textarea-label': 'components/text-area/label',
+  'textarea-status': 'components/text-area/status',
+  'textarea-count': 'components/text-area/count',
+  'textarea-disabled': 'components/text-area/disabled',
+  textarea: 'components/text-area/basic',
+  'text-area': 'components/text-area/basic',
+  'timepicker-basic': 'components/time-picker/basic',
+  'timepicker-label': 'components/time-picker/label',
+  'timepicker-status': 'components/time-picker/status',
+  'timepicker-interval': 'components/time-picker/interval',
+  'timepicker-initial': 'components/time-picker/initial',
+  'timepicker-disabled': 'components/time-picker/disabled',
+  timepicker: 'components/time-picker/basic',
+  'time-picker': 'components/time-picker/basic',
   'stepper-horizontal': 'components/stepper/horizontal',
   'stepper-horizontal-dashed': 'components/stepper/horizontal-dashed',
   'stepper-vertical': 'components/stepper/vertical',
@@ -304,6 +319,23 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('dismiss')) return 'tag-dismissable';
     if (cleanPath.includes('pill')) return 'tag-pill';
     return 'tag-basic';
+  }
+
+  if (cleanPath.startsWith('components/text-area') || cleanPath.startsWith('text-area') || cleanPath.startsWith('textarea')) {
+    if (cleanPath.includes('label')) return 'textarea-label';
+    if (cleanPath.includes('status')) return 'textarea-status';
+    if (cleanPath.includes('count')) return 'textarea-count';
+    if (cleanPath.includes('disabled') || cleanPath.includes('readonly') || cleanPath.includes('read-only')) return 'textarea-disabled';
+    return 'textarea-basic';
+  }
+
+  if (cleanPath.startsWith('components/time-picker') || cleanPath.startsWith('time-picker') || cleanPath.startsWith('timepicker')) {
+    if (cleanPath.includes('label')) return 'timepicker-label';
+    if (cleanPath.includes('status')) return 'timepicker-status';
+    if (cleanPath.includes('interval')) return 'timepicker-interval';
+    if (cleanPath.includes('initial')) return 'timepicker-initial';
+    if (cleanPath.includes('disabled')) return 'timepicker-disabled';
+    return 'timepicker-basic';
   }
 
   if (cleanPath.startsWith('components/stepper') || cleanPath.startsWith('stepper')) {

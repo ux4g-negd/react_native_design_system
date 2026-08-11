@@ -262,6 +262,31 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'textarea-group',
+        label: 'Text Area',
+        icon: 'folder',
+        children: [
+          { id: 'textarea-basic', label: 'Basic', icon: 'layers' },
+          { id: 'textarea-label', label: 'Label & Required', icon: 'layers' },
+          { id: 'textarea-status', label: 'Validation Status', icon: 'layers' },
+          { id: 'textarea-count', label: 'Character Count', icon: 'layers' },
+          { id: 'textarea-disabled', label: 'Disabled & Read Only', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'timepicker-group',
+        label: 'Time Picker',
+        icon: 'folder',
+        children: [
+          { id: 'timepicker-basic', label: 'Basic', icon: 'layers' },
+          { id: 'timepicker-label', label: 'Label & Required', icon: 'layers' },
+          { id: 'timepicker-status', label: 'Validation Status', icon: 'layers' },
+          { id: 'timepicker-interval', label: 'Minute Interval', icon: 'layers' },
+          { id: 'timepicker-initial', label: 'Initial Time', icon: 'layers' },
+          { id: 'timepicker-disabled', label: 'Disabled', icon: 'layers' },
+        ],
+      },
+      {
         id: 'feedback-group',
         label: 'Feedback',
         icon: 'folder',
@@ -608,6 +633,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ? 'status-pipeline-horizontal-group'
           : 'status-pipeline-vertical-group']: true,
       }));
+    } else if (activePage.startsWith('timepicker')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'timepicker-group': true }));
+    } else if (activePage.startsWith('textarea')) {
+      setExpandedGroups((prev) => ({ ...prev, components: true, 'textarea-group': true }));
     } else if (activePage.startsWith('tag')) {
       setExpandedGroups((prev) => ({ ...prev, components: true, 'tag-group': true }));
     } else if (activePage.startsWith('compact-stepper')) {
