@@ -748,18 +748,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             className={`nav-group-header ${depth > 0 ? 'nav-group-header-nested' : ''}`}
             onClick={() => {
-              const wasExpanded = isExpanded;
               toggleGroup(item.id);
-              // Expand + navigate to the first child in a single click.
-              // When collapsing, just collapse without navigating.
-              if (!wasExpanded && item.children && item.children.length > 0) {
-                const firstChild = item.children[0];
-                if (firstChild.children && firstChild.children.length > 0) {
-                  onNavigate(firstChild.children[0].id);
-                } else if (firstChild.id) {
-                  onNavigate(firstChild.id);
-                }
-              }
             }}
           >
             <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
