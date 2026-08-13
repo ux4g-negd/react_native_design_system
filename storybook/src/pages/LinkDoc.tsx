@@ -41,17 +41,23 @@ import { Ux4gLink } from 'ux4g-react-native-design-system';
 export default function LinkTextExample() {
   return (
     <View style={{ gap: 12 }}>
-      <Ux4gLink url='https://ux4g.com'>
-        <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
-          Visit UX4G website
-        </Text>
-      </Ux4gLink>
+      <Ux4gLink
+        url='https://ux4g.com'
+        child={
+          <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
+            Visit UX4G website
+          </Text>
+        }
+      />
 
-      <Ux4gLink url='https://github.com'>
-        <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
-          Open GitHub
-        </Text>
-      </Ux4gLink>
+      <Ux4gLink
+        url='https://github.com'
+        child={
+          <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
+            Open GitHub
+          </Text>
+        }
+      />
     </View>
   );
 }`;
@@ -64,29 +70,32 @@ import { Ux4gLink, Ux4gIcons } from 'ux4g-react-native-design-system';
 
 export default function LinkCustomChildExample() {
   return (
-    <Ux4gLink url='https://ux4g.com/docs'>
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: '#D4D4D8',
-          borderRadius: 10,
-          padding: 14,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <View>
-          <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>
-            UX4G Documentation
-          </Text>
-          <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>
-            Open component guidelines and API docs
-          </Text>
+    <Ux4gLink
+      url='https://ux4g.com/docs'
+      child={
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: '#D4D4D8',
+            borderRadius: 10,
+            padding: 14,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <View>
+            <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>
+              UX4G Documentation
+            </Text>
+            <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>
+              Open component guidelines and API docs
+            </Text>
+          </View>
+          {Ux4gIcons.link({ size: 18, color: '#2563EB' })}
         </View>
-        {Ux4gIcons.link({ size: 18, color: '#2563EB' })}
-      </View>
-    </Ux4gLink>
+      }
+    />
   );
 }`;
   }
@@ -97,9 +106,10 @@ import { Ux4gLink } from 'ux4g-react-native-design-system';
 
 export default function LinkBasicExample() {
   return (
-    <Ux4gLink url='https://www.ux4g.com'>
-      <Text style={{ color: '#2563EB', fontWeight: '600' }}>Open UX4G</Text>
-    </Ux4gLink>
+    <Ux4gLink
+      url='https://www.ux4g.com'
+      child={<Text style={{ color: '#2563EB', fontWeight: '600' }}>Open UX4G</Text>}
+    />
   );
 }`;
 };
@@ -107,48 +117,58 @@ export default function LinkBasicExample() {
 const getSnackFields = (story: LinkStory): string => {
   if (story === 'link-text') {
     return `        <View style={styles.stack}>
-          <Ux4gLink url='https://ux4g.com'>
-            <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
-              Visit UX4G website
-            </Text>
-          </Ux4gLink>
-          <Ux4gLink url='https://github.com'>
-            <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
-              Open GitHub
-            </Text>
-          </Ux4gLink>
+          <Ux4gLink
+            url='https://ux4g.com'
+            child={
+              <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
+                Visit UX4G website
+              </Text>
+            }
+          />
+          <Ux4gLink
+            url='https://github.com'
+            child={
+              <Text style={{ color: '#2563EB', textDecorationLine: 'underline' }}>
+                Open GitHub
+              </Text>
+            }
+          />
         </View>`;
   }
 
   if (story === 'link-custom-child') {
-    return `        <Ux4gLink url='https://ux4g.com/docs'>
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: '#D4D4D8',
-              borderRadius: 10,
-              padding: 14,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <View>
-              <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>
-                UX4G Documentation
-              </Text>
-              <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>
-                Open component guidelines and API docs
-              </Text>
+    return `        <Ux4gLink
+          url='https://ux4g.com/docs'
+          child={
+            <View
+              style={{
+                borderWidth: 1,
+                borderColor: '#D4D4D8',
+                borderRadius: 10,
+                padding: 14,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <View>
+                <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>
+                  UX4G Documentation
+                </Text>
+                <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>
+                  Open component guidelines and API docs
+                </Text>
+              </View>
+              {Ux4gIcons.link({ size: 18, color: '#2563EB' })}
             </View>
-            {Ux4gIcons.link({ size: 18, color: '#2563EB' })}
-          </View>
-        </Ux4gLink>`;
+          }
+        />`;
   }
 
-  return `        <Ux4gLink url='https://www.ux4g.com'>
-          <Text style={{ color: '#2563EB', fontWeight: '600' }}>Open UX4G</Text>
-        </Ux4gLink>`;
+  return `        <Ux4gLink
+          url='https://www.ux4g.com'
+          child={<Text style={{ color: '#2563EB', fontWeight: '600' }}>Open UX4G</Text>}
+        />`;
 };
 
 export const LinkDoc: React.FC<LinkDocProps> = ({ isDark, story = 'link-basic' }) => {
@@ -185,7 +205,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gLink%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.4,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gLink%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.5,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

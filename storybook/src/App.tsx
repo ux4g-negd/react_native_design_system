@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Introduction } from './pages/Introduction';
+import { QuickStart } from './pages/QuickStart';
 import { ButtonDoc } from './pages/ButtonDoc';
 import { ButtonShowcaseDoc } from './pages/ButtonShowcaseDoc';
 import { IconButtonDoc } from './pages/IconButtonDoc';
@@ -289,8 +290,9 @@ export const App: React.FC = () => {
 
     switch (activePage) {
       case 'introduction':
-      case 'quickstart':
         return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
+      case 'quickstart':
+        return <QuickStart isDark={isDark} onNavigate={handleNavigate} />;
       default:
         return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
     }

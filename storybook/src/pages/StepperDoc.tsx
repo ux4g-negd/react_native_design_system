@@ -278,7 +278,7 @@ export const StepperDoc: React.FC<StepperDocProps> = ({ isDark, story = 'stepper
   const codeString = useMemo(() => buildFunctionalCode(activeStory, isDark), [activeStory, isDark]);
 
   const renderStoryPreview = () => {
-    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gStepper%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.4,react-native-svg@*&code=${encodeURIComponent(codeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gStepper%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.5,react-native-svg@*&code=${encodeURIComponent(codeString)}`;
 
     return (
       <iframe

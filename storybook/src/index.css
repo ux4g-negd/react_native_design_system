@@ -1020,6 +1020,14 @@ body {
 .doc-container {
   width: 100%;
   max-width: 100%;
+  padding: 24px 32px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .doc-container {
+    padding: 16px;
+  }
 }
 
 .doc-header {
@@ -2841,4 +2849,308 @@ body {
   .wb-tab-icon {
     font-size: 16px !important;
   }
+}
+
+/* ==========================================================================
+   Quick Start Guide Page (matches Flutter Widgetbook Quick Guide)
+   ========================================================================== */
+
+.qg-page {
+  background-color: #FFFFFF;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #111827;
+  min-height: 100%;
+}
+
+.qg-page.dark {
+  background-color: #121212;
+  color: #F8FAFC;
+}
+
+.qg-content {
+  width: 100%;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .qg-content {
+    padding: 20px 16px;
+  }
+}
+
+.qg-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #111827;
+  margin: 0;
+}
+
+.qg-title.dark {
+  color: #FFFFFF;
+}
+
+.qg-accent {
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #2563EB;
+  margin-top: 8px;
+  margin-bottom: 28px;
+}
+
+/* Section */
+.qg-section {
+  margin-bottom: 24px;
+}
+
+.qg-section-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px;
+}
+
+.qg-section-heading.dark {
+  color: #FFFFFF;
+}
+
+.qg-section-body {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #4B5563;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.qg-section-body.dark {
+  color: #9CA3AF;
+}
+
+/* Requirements table */
+.qg-req-table {
+  width: 100%;
+  margin-top: 14px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.qg-req-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  align-items: center;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.qg-req-row:last-child {
+  border-bottom: none;
+}
+
+.qg-req-row.dark {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.qg-req-head {
+  background-color: #F9FAFB;
+}
+
+.qg-req-head.dark {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.qg-req-head .qg-req-cell {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #6B7280;
+}
+
+.qg-req-head.dark .qg-req-cell {
+  color: #9CA3AF;
+}
+
+.qg-req-cell {
+  padding: 10px 16px;
+}
+
+.qg-req-cell code {
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.qg-req-cell.dark code {
+  color: #CDD6F4;
+}
+
+.qg-req-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.qg-req-badge-yes {
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.dark .qg-req-badge-yes {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #4ADE80;
+}
+
+.qg-req-badge-opt {
+  background-color: #F3F4F6;
+  color: #6B7280;
+}
+
+.dark .qg-req-badge-opt {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #9CA3AF;
+}
+
+@media (max-width: 768px) {
+  .qg-req-row {
+    grid-template-columns: 1fr 1fr 90px;
+  }
+
+  .qg-req-cell {
+    padding: 8px 10px;
+  }
+}
+
+/* Code block */
+.qg-code-wrap {
+  margin-bottom: 24px;
+}
+
+.qg-code-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #6B7280;
+  margin-bottom: 6px;
+  white-space: pre-line;
+}
+
+.qg-code-label.dark {
+  color: #9CA3AF;
+}
+
+.qg-code-block {
+  position: relative;
+  background-color: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 14px 16px;
+  min-height: 52px;
+}
+
+.qg-code-block.dark {
+  background-color: #1E1E2E;
+  border-color: transparent;
+}
+
+.qg-code-block pre {
+  margin: 0;
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #374151;
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding-right: 56px;
+}
+
+.qg-code-block.dark pre {
+  color: #CDD6F4;
+}
+
+.qg-copy-corner {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.qg-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: #E5E7EB;
+  color: #2563EB;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qg-copy-btn.dark {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #89DCEB;
+}
+
+.qg-copy-btn.copied {
+  color: #059669;
+}
+
+.qg-copy-btn.dark.copied {
+  color: #A6E3A1;
+}
+
+/* Next steps chips */
+.qg-next-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.qg-next-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background-color: #F9FAFB;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.qg-next-chip:hover {
+  border-color: #BFDBFE;
+  background-color: #EFF6FF;
+  color: #2563EB;
+}
+
+.qg-next-chip.dark {
+  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #F8FAFC;
+}
+
+.qg-next-chip.dark:hover {
+  border-color: rgba(96, 165, 250, 0.6);
+  background-color: rgba(37, 99, 235, 0.15);
+  color: #93C5FD;
+}
+
+.qg-next-chip-icon {
+  font-size: 16px !important;
 }

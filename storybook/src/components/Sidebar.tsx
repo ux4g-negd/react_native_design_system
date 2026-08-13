@@ -579,16 +579,24 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  {
-    id: 'patterns',
-    label: 'Patterns',
-    icon: 'folder',
-    children: [
-      { id: 'forms', label: 'Forms', icon: 'assignment' },
-      { id: 'headers', label: 'Headers', icon: 'web' },
-    ],
-  },
+  // {
+  //   id: 'patterns',
+  //   label: 'Patterns',
+  //   icon: 'folder',
+  //   children: [
+  //     { id: 'forms', label: 'Forms', icon: 'assignment' },
+  //     { id: 'headers', label: 'Headers', icon: 'web' },
+  //   ],
+  // },
 ];
+
+// Sort the Components group alphabetically by label (sub-sections keep their own order)
+const componentsNavItem = NAV_ITEMS.find((item) => item.id === 'components');
+if (componentsNavItem?.children) {
+  componentsNavItem.children.sort((a, b) =>
+    a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })
+  );
+}
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activePage,
