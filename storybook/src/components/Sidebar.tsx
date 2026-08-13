@@ -628,6 +628,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('accordion')) return ['components', 'accordion-grouping'];
     if (page.startsWith('app-header')) return ['components', 'app-header-group'];
     if (page.startsWith('avatar')) return ['components', 'avatar-parent-group'];
+    if (page.startsWith('checkbox')) return ['components', 'checkbox-group'];
+    if (page.startsWith('chips')) return ['components', 'chips-parent-group'];
+    if (page.startsWith('chip-group')) return ['components', 'chip-group-parent'];
+    if (page.startsWith('divider')) return ['components', 'divider-group'];
+    if (page.startsWith('status-banner')) return ['components', 'status-banner-group'];
+    if (page.startsWith('dropdown')) return ['components', 'dropdown-group'];
+    if (page.startsWith('spinner')) return ['components', 'spinner-group'];
     if (page.startsWith('card')) return ['components', 'card-parent-group'];
     if (page.startsWith('carousel')) return ['components', 'carousel-group'];
     if (page.startsWith('journey-timeline')) return ['components', 'journey-timeline-group'];

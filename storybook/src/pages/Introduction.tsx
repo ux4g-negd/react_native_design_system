@@ -32,10 +32,10 @@ export const Introduction: React.FC<IntroductionProps> = ({ isDark, onNavigate }
             </p>
 
             <div className="hero-actions">
-              <button className="btn-hero-primary" onClick={() => onNavigate('button')}>
+              <button className="btn-hero-primary" onClick={() => onNavigate('quickstart')}>
                 Get Started
               </button>
-              <button className="btn-hero-secondary" onClick={() => onNavigate('button')}>
+              <button className="btn-hero-secondary" onClick={() => onNavigate('accordion-basic')}>
                 Component Library
               </button>
             </div>

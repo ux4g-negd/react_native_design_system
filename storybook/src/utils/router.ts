@@ -209,6 +209,45 @@ const PAGE_TO_PATH: Record<string, string> = {
   'avatar-status': 'components/avatar/status',
   'avatar-profile': 'components/avatar/profile',
   'avatar-group': 'components/avatar/group',
+  'accordion-basic': 'components/accordion/basic',
+  'accordion-group': 'components/accordion/group',
+  'app-header-basic': 'components/app-header/introduction',
+  'app-header-back': 'components/app-header/back',
+  'app-header-filled': 'components/app-header/filled',
+  'app-header-custom-leading': 'components/app-header/custom-leading',
+  'button-introduction': 'components/button/introduction',
+  'button-variants': 'components/button/variants',
+  'button-sizes': 'components/button/sizes',
+  'button-showcase': 'components/button/showcase',
+  'button-icon-button': 'components/button/icon-button',
+  'checkbox-basic': 'components/checkbox/basic',
+  'checkbox-sizes': 'components/checkbox/sizes',
+  'checkbox-tristate': 'components/checkbox/tristate',
+  'chips-basic': 'components/chips/basic',
+  'chips-action': 'components/chips/action',
+  'chips-input': 'components/chips/input',
+  'chip-group-wrap': 'components/chip-group/wrap',
+  'chip-group-input-field': 'components/chip-group/input-field',
+  'date-picker-single': 'components/date-picker/single',
+  'date-picker-range': 'components/date-picker/range',
+  'divider-basic': 'components/divider/basic',
+  'divider-styles': 'components/divider/styles',
+  'divider-label': 'components/divider/label',
+  'divider-vertical': 'components/divider/vertical',
+  'status-banner-basic': 'components/status-banner/basic',
+  'status-banner-draft': 'components/status-banner/draft',
+  'status-banner-variants': 'components/status-banner/variants',
+  'dropdown-basic': 'components/dropdown/basic',
+  'dropdown-multi': 'components/dropdown/multi',
+  'dropdown-search': 'components/dropdown/search',
+  'dropdown-status': 'components/dropdown/status',
+  'spinner-basic': 'components/spinner/basic',
+  'slider-basic': 'components/slider/basic',
+  'slider-sizes': 'components/slider/sizes',
+  'slider-steps': 'components/slider/steps',
+  'slider-custom-range': 'components/slider/custom-range',
+  'slider-formatter': 'components/slider/formatter',
+  'slider-disabled': 'components/slider/disabled',
   forms: 'patterns/forms',
   headers: 'patterns/headers',
 };
@@ -466,6 +505,68 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('custom')) return 'popover-custom-content';
     if (cleanPath.includes('trigger')) return 'popover-trigger';
     return 'popover-basic';
+  }
+
+  if (cleanPath.startsWith('components/accordion') || cleanPath.startsWith('accordion')) {
+    if (cleanPath.includes('group')) return 'accordion-group';
+    return 'accordion-basic';
+  }
+
+  if (cleanPath.startsWith('components/app-header') || cleanPath.startsWith('app-header')) {
+    if (cleanPath.includes('back')) return 'app-header-back';
+    if (cleanPath.includes('filled')) return 'app-header-filled';
+    if (cleanPath.includes('custom-leading')) return 'app-header-custom-leading';
+    return 'app-header-basic';
+  }
+
+  if (cleanPath.startsWith('components/checkbox') || cleanPath.startsWith('checkbox')) {
+    if (cleanPath.includes('sizes')) return 'checkbox-sizes';
+    if (cleanPath.includes('tristate') || cleanPath.includes('indeterminate')) return 'checkbox-tristate';
+    return 'checkbox-basic';
+  }
+
+  if (cleanPath.startsWith('components/chips') || cleanPath.startsWith('chips')) {
+    if (cleanPath.includes('action')) return 'chips-action';
+    if (cleanPath.includes('input')) return 'chips-input';
+    return 'chips-basic';
+  }
+
+  if (cleanPath.startsWith('components/chip-group') || cleanPath.startsWith('chip-group')) {
+    if (cleanPath.includes('input-field')) return 'chip-group-input-field';
+    return 'chip-group-wrap';
+  }
+
+  if (cleanPath.startsWith('components/divider') || cleanPath.startsWith('divider')) {
+    if (cleanPath.includes('styles') || cleanPath.includes('solid') || cleanPath.includes('dashed') || cleanPath.includes('dotted')) return 'divider-styles';
+    if (cleanPath.includes('label')) return 'divider-label';
+    if (cleanPath.includes('vertical')) return 'divider-vertical';
+    return 'divider-basic';
+  }
+
+  if (cleanPath.startsWith('components/status-banner') || cleanPath.startsWith('status-banner')) {
+    if (cleanPath.includes('draft')) return 'status-banner-draft';
+    if (cleanPath.includes('variants')) return 'status-banner-variants';
+    return 'status-banner-basic';
+  }
+
+  if (cleanPath.startsWith('components/dropdown') || cleanPath.startsWith('dropdown')) {
+    if (cleanPath.includes('multi')) return 'dropdown-multi';
+    if (cleanPath.includes('search')) return 'dropdown-search';
+    if (cleanPath.includes('status')) return 'dropdown-status';
+    return 'dropdown-basic';
+  }
+
+  if (cleanPath.startsWith('components/spinner') || cleanPath.startsWith('spinner')) {
+    return 'spinner-basic';
+  }
+
+  if (cleanPath.startsWith('components/slider') || cleanPath.startsWith('slider')) {
+    if (cleanPath.includes('sizes')) return 'slider-sizes';
+    if (cleanPath.includes('steps')) return 'slider-steps';
+    if (cleanPath.includes('custom-range')) return 'slider-custom-range';
+    if (cleanPath.includes('formatter')) return 'slider-formatter';
+    if (cleanPath.includes('disabled')) return 'slider-disabled';
+    return 'slider-basic';
   }
 
   return PATH_TO_PAGE[cleanPath] ?? 'introduction';
