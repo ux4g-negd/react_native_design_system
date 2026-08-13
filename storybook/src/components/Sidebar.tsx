@@ -612,114 +612,78 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [sidebarWidth, setSidebarWidth] = useState(260);
   const [isResizing, setIsResizing] = useState(false);
 
-  // Auto-expand only the parent group of the currently active sub-page
-  React.useEffect(() => {
-    if (!activePage || activePage === 'introduction' || activePage === 'quickstart') {
-      return;
+  // Tracks groups the user has manually toggled, so auto-expand never overrides their choice
+  const userToggledRef = React.useRef<Set<string>>(new Set());
+
+  const getAutoExpandIds = (page: string): string[] => {
+    if (!page || page === 'introduction' || page === 'quickstart') return [];
+    if (page.startsWith('colors-')) return ['tokens', 'colors'];
+    if (page.startsWith('typography')) return ['tokens', 'typography'];
+    if (page.startsWith('shadow')) return ['tokens', 'shadow'];
+    if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
+    if (['forms', 'headers'].includes(page)) return ['patterns'];
+    if (page.startsWith('button')) return ['components', 'button-group'];
+    if (page.startsWith('date-picker')) return ['components', 'date-picker-group'];
+    if (page.startsWith('modal')) return ['components', 'modal-group'];
+    if (page.startsWith('accordion')) return ['components', 'accordion-grouping'];
+    if (page.startsWith('app-header')) return ['components', 'app-header-group'];
+    if (page.startsWith('avatar')) return ['components', 'avatar-parent-group'];
+    if (page.startsWith('card')) return ['components', 'card-parent-group'];
+    if (page.startsWith('carousel')) return ['components', 'carousel-group'];
+    if (page.startsWith('journey-timeline')) return ['components', 'journey-timeline-group'];
+    if (page.startsWith('link')) return ['components', 'link-group'];
+    if (page.startsWith('pagination')) return ['components', 'pagination-group'];
+    if (page.startsWith('progress-sla')) return ['components', 'progress-sla-group'];
+    if (page.startsWith('progress')) return ['components', 'progress-indicator-group'];
+    if (page.startsWith('tooltip')) return ['components', 'tooltip-group'];
+    if (page.startsWith('popover')) return ['components', 'popover-group'];
+    if (page.startsWith('radio')) return ['components', 'radio-group'];
+    if (page.startsWith('result-list')) return ['components', 'result-list-group'];
+    if (page.startsWith('search')) return ['components', 'search-group'];
+    if (page.startsWith('badge')) return ['components', 'badge-parent-group'];
+    if (page.startsWith('input-aadhaar')) return ['components', 'input-aadhaar-group'];
+    if (page.startsWith('input-pan')) return ['components', 'input-pan-group'];
+    if (page.startsWith('input-otp')) return ['components', 'input-otp-group'];
+    if (page.startsWith('input')) return ['components', 'input-group'];
+    if (page.startsWith('fileupload')) return ['components', 'fileupload-group'];
+    if (page.startsWith('feedbackform')) return ['components', 'feedback-group'];
+    if (page.startsWith('empty-state')) return ['components', 'empty-state-group'];
+    if (page.startsWith('status-pipeline-horizontal')) {
+      return ['components', 'status-pipeline-group', 'status-pipeline-horizontal-group'];
     }
-    if (activePage.startsWith('colors-')) {
-      setExpandedGroups((prev) => ({ ...prev, tokens: true, colors: true }));
-    } else if (activePage.startsWith('typography')) {
-      setExpandedGroups((prev) => ({ ...prev, tokens: true, typography: true }));
-    } else if (activePage.startsWith('shadow')) {
-      setExpandedGroups((prev) => ({ ...prev, tokens: true, shadow: true }));
-    } else if (activePage.startsWith('dimensions') || ['spacing', 'radius'].includes(activePage)) {
-      setExpandedGroups((prev) => ({ ...prev, tokens: true, dimensions: true }));
-    } else if (['forms', 'headers'].includes(activePage)) {
-      setExpandedGroups((prev) => ({ ...prev, patterns: true }));
-    } else if (activePage.startsWith('button')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'button-group': true }));
-    } else if (activePage.startsWith('date-picker')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'date-picker-group': true }));
-    } else if (activePage.startsWith('modal')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'modal-group': true }));
-    } else if (activePage.startsWith('accordion')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'accordion-grouping': true }));
-    } else if (activePage.startsWith('app-header')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'app-header-group': true }));
-    } else if (activePage.startsWith('avatar')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'avatar-parent-group': true }));
-    } else if (activePage.startsWith('card')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'card-parent-group': true }));
-    } else if (activePage.startsWith('carousel')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'carousel-group': true }));
-    } else if (activePage.startsWith('journey-timeline')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'journey-timeline-group': true }));
-    } else if (activePage.startsWith('link')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'link-group': true }));
-    } else if (activePage.startsWith('pagination')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'pagination-group': true }));
-    } else if (activePage.startsWith('progress-sla')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'progress-sla-group': true }));
-    } else if (activePage.startsWith('progress')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'progress-indicator-group': true }));
-    } else if (activePage.startsWith('tooltip')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'tooltip-group': true }));
-    } else if (activePage.startsWith('popover')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'popover-group': true }));
-    } else if (activePage.startsWith('radio')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'radio-group': true }));
-    } else if (activePage.startsWith('result-list')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'result-list-group': true }));
-    } else if (activePage.startsWith('search')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'search-group': true }));
-    } else if (activePage.startsWith('badge')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'badge-parent-group': true }));
-    } else if (activePage.startsWith('input-aadhaar')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-aadhaar-group': true }));
-    } else if (activePage.startsWith('input-pan')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-pan-group': true }));
-    } else if (activePage.startsWith('input-otp')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-otp-group': true }));
-    } else if (activePage.startsWith('input')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'input-group': true }));
-    } else if (activePage.startsWith('fileupload')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'fileupload-group': true }));
-    } else if (activePage.startsWith('feedbackform')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'feedback-group': true }));
-    } else if (activePage.startsWith('empty-state')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'empty-state-group': true }));
-    } else if (activePage.startsWith('status-pipeline')) {
-      setExpandedGroups((prev) => ({
-        ...prev,
-        components: true,
-        'status-pipeline-group': true,
-        [activePage.startsWith('status-pipeline-horizontal')
-          ? 'status-pipeline-horizontal-group'
-          : 'status-pipeline-vertical-group']: true,
-      }));
-    } else if (activePage.startsWith('timepicker')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'timepicker-group': true }));
-    } else if (activePage.startsWith('toast')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'toast-group': true }));
-    } else if (activePage.startsWith('textarea')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'textarea-group': true }));
-    } else if (activePage.startsWith('tag')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'tag-group': true }));
-    } else if (activePage.startsWith('compact-stepper')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'stepper-group': true, 'compact-stepper-group': true }));
-    } else if (activePage.startsWith('stepper')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'stepper-group': true }));
-    } else if (activePage.startsWith('timeslot')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'timeslot-group': true }));
-    } else if (activePage.startsWith('switch')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'switch-group': true }));
-    } else if (activePage.startsWith('slider')) {
-      setExpandedGroups((prev) => ({ ...prev, components: true, 'slider-group': true }));
-    } else if (
-      [
-        'input-field',
-        'checkbox',
-        'radio-button',
-        'switch',
-        'card',
-        'badge',
-        'avatar',
-        'toast',
-      ].includes(activePage)
+    if (page.startsWith('status-pipeline')) {
+      return ['components', 'status-pipeline-group', 'status-pipeline-vertical-group'];
+    }
+    if (page.startsWith('timepicker')) return ['components', 'timepicker-group'];
+    if (page.startsWith('toast')) return ['components', 'toast-group'];
+    if (page.startsWith('textarea')) return ['components', 'textarea-group'];
+    if (page.startsWith('tag')) return ['components', 'tag-group'];
+    if (page.startsWith('compact-stepper')) {
+      return ['components', 'stepper-group', 'compact-stepper-group'];
+    }
+    if (page.startsWith('stepper')) return ['components', 'stepper-group'];
+    if (page.startsWith('timeslot')) return ['components', 'timeslot-group'];
+    if (page.startsWith('switch')) return ['components', 'switch-group'];
+    if (page.startsWith('slider')) return ['components', 'slider-group'];
+    if (
+      ['input-field', 'checkbox', 'radio-button', 'switch', 'card', 'badge', 'avatar', 'toast'].includes(page)
     ) {
-      setExpandedGroups((prev) => ({ ...prev, components: true }));
+      return ['components'];
     }
+    return [];
+  };
+
+  // Auto-expand only the groups of the currently active page, but never override
+  // groups the user has manually collapsed/expanded
+  React.useEffect(() => {
+    const ids = getAutoExpandIds(activePage);
+    setExpandedGroups((prev) => {
+      const next = { ...prev };
+      for (const id of ids) {
+        if (!userToggledRef.current.has(id)) next[id] = true;
+      }
+      return next;
+    });
   }, [activePage]);
 
   const startResizing = useCallback(
@@ -753,6 +717,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const toggleGroup = (id: string) => {
+    userToggledRef.current.add(id);
     setExpandedGroups((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
@@ -783,8 +748,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             className={`nav-group-header ${depth > 0 ? 'nav-group-header-nested' : ''}`}
             onClick={() => {
+              const wasExpanded = isExpanded;
               toggleGroup(item.id);
-              if (item.children && item.children.length > 0) {
+              // Expand + navigate to the first child in a single click.
+              // When collapsing, just collapse without navigating.
+              if (!wasExpanded && item.children && item.children.length > 0) {
                 const firstChild = item.children[0];
                 if (firstChild.children && firstChild.children.length > 0) {
                   onNavigate(firstChild.children[0].id);

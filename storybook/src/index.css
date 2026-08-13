@@ -377,7 +377,7 @@ body {
 }
 
 .nav-group-children.expanded {
-  max-height: 2400px;
+  max-height: 10000px;
 }
 
 .nav-item-nested {
