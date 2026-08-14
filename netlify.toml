@@ -1,0 +1,14 @@
+[build]
+  command = "cd storybook && npm install && npm run build"
+  publish = "storybook/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache, no-store, must-revalidate"
