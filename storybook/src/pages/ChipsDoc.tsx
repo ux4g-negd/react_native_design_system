@@ -3,8 +3,6 @@ import {
   Ux4gChoiceChip,
   Ux4gFilterChip,
   Ux4gInputChip,
-  Ux4gSuggestionChip,
-  Ux4gActionChip,
 } from '../../../src/components/chips/Chips';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { CodeBlock } from '../components/CodeBlock';
