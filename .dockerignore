@@ -2,7 +2,10 @@
 node_modules
 storybook/node_modules
 storybook/dist
+lib
+example
 *.log
 .vscode
 .idea
 .DS_Store
+
