@@ -105,4 +105,25 @@ describe('Ux4gStatusBanner Component', () => {
     fireEvent.press(dismissBtn);
     expect(onDismissMock).toHaveBeenCalledTimes(1);
   });
+
+  it('should support titleNumberOfLines, subtitleNumberOfLines, and ellipsizeMode for text truncation', () => {
+    const { getByText } = renderWithTheme(
+      <Ux4gStatusBanner
+        variant="infoLight"
+        title="Very long title that exceeds single line capacity"
+        subtitle="Very long subtitle description that should truncate gracefully"
+        titleNumberOfLines={1}
+        subtitleNumberOfLines={2}
+        ellipsizeMode="tail"
+      />
+    );
+
+    const titleNode = getByText('Very long title that exceeds single line capacity');
+    expect(titleNode.props.numberOfLines).toBe(1);
+    expect(titleNode.props.ellipsizeMode).toBe('tail');
+
+    const subtitleNode = getByText('Very long subtitle description that should truncate gracefully');
+    expect(subtitleNode.props.numberOfLines).toBe(2);
+    expect(subtitleNode.props.ellipsizeMode).toBe('tail');
+  });
 });

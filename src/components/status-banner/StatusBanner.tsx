@@ -48,6 +48,18 @@ export interface Ux4gStatusBannerProps {
    */
   subtitleWidget?: React.ReactNode;
   /**
+   * Maximum number of lines for the title before truncating.
+   */
+  titleNumberOfLines?: number;
+  /**
+   * Maximum number of lines for the subtitle before truncating.
+   */
+  subtitleNumberOfLines?: number;
+  /**
+   * Truncation mode for title and subtitle text. Defaults to `'tail'`.
+   */
+  ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
+  /**
    * Custom style override for the title text.
    */
   titleStyle?: StyleProp<TextStyle>;
@@ -173,6 +185,9 @@ export const Ux4gStatusBanner: React.FC<Ux4gStatusBannerProps> = ({
   subtitleWidget,
   titleStyle,
   subtitleStyle,
+  titleNumberOfLines,
+  subtitleNumberOfLines,
+  ellipsizeMode = 'tail',
   badge,
   leadingIcon,
   trailingIcon,
@@ -309,6 +324,8 @@ export const Ux4gStatusBanner: React.FC<Ux4gStatusBannerProps> = ({
         <View style={styles.contentColumn}>
           <View style={styles.titleWrap}>
             <Text
+              numberOfLines={titleNumberOfLines}
+              ellipsizeMode={ellipsizeMode}
               style={[
                 styles.titleText,
                 {
@@ -329,6 +346,8 @@ export const Ux4gStatusBanner: React.FC<Ux4gStatusBannerProps> = ({
             <View style={styles.subtitleMargin}>{subtitleWidget}</View>
           ) : subtitle ? (
             <Text
+              numberOfLines={subtitleNumberOfLines}
+              ellipsizeMode={ellipsizeMode}
               style={[
                 styles.subtitleText,
                 {
@@ -380,7 +399,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
     borderWidth: 1,
-    shadowColor: 'UX4GColors.neutral1000black',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
@@ -414,6 +433,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     includeFontPadding: false,
+    flexShrink: 1,
   },
   badgeContainer: {
     justifyContent: 'center',
