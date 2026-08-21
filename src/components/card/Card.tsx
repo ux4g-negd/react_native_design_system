@@ -42,11 +42,11 @@ export interface Ux4gCardProps {
   cornerRadius?: number;
   /** Background color override. Defaults to `theme.colors.surface`. */
   backgroundColor?: string;
-  /** Border color. @default 'transparent' */
+  /** Border color. Defaults to theme border color (`isDark ? UX4GColors.neutral700 : UX4GColors.neutral200`). */
   borderColor?: string;
-  /** Border width. @default 0 */
+  /** Border width. @default 1 */
   borderWidth?: number;
-  /** Elevation / shadow depth. @default 0 */
+  /** Elevation / shadow depth. @default 1 */
   elevation?: number;
   /** When `true` the card is wrapped in a `Pressable`. @default false */
   isClickable?: boolean;
@@ -537,9 +537,9 @@ export const Ux4gCard: React.FC<Ux4gCardProps> = ({
   children,
   cornerRadius = Ux4gRadius.radius12,
   backgroundColor,
-  borderColor = 'transparent',
-  borderWidth = 0,
-  elevation = 0,
+  borderColor,
+  borderWidth = 1,
+  elevation = 1,
   isClickable = false,
   onPress,
   direction = 'vertical',
@@ -570,9 +570,11 @@ export const Ux4gCard: React.FC<Ux4gCardProps> = ({
 }) => {
   const theme = useUx4gTheme();
 
-  // Resolve background
+  // Resolve background and border
+  const defaultBorderColor = theme.isDark ? UX4GColors.neutral700 : UX4GColors.neutral200;
   const resolvedBg = backgroundColor ?? theme.colors.surface;
-  const hasBorder = borderWidth > 0 && borderColor !== 'transparent';
+  const resolvedBorderColor = borderColor ?? defaultBorderColor;
+  const hasBorder = borderWidth > 0 && resolvedBorderColor !== 'transparent';
 
   // Determine content colour based on background brightness
   const dark = isDarkColor(resolvedBg);
@@ -586,7 +588,7 @@ export const Ux4gCard: React.FC<Ux4gCardProps> = ({
           default: {
             shadowColor: UX4GColors.neutral1000black,
             shadowOffset: { width: 0, height: elevation * 0.5 },
-            shadowOpacity: 0.15,
+            shadowOpacity: 0.1,
             shadowRadius: elevation * 0.8,
           },
         }) ?? {}
@@ -598,7 +600,7 @@ export const Ux4gCard: React.FC<Ux4gCardProps> = ({
     borderRadius: cornerRadius,
     overflow: 'hidden',
     ...(hasBorder
-      ? { borderColor, borderWidth }
+      ? { borderColor: resolvedBorderColor, borderWidth }
       : {}),
     ...elevationStyle,
   };
