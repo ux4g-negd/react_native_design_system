@@ -196,9 +196,14 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
       ? getHexWithAlpha(theme.colors.onSurface, '1F') // 12% alpha
       : 'transparent');
 
+  const defaultDisabledContentColor =
+    variant === 'ghost' && !theme.isDark
+      ? UX4GColors.neutral400
+      : getHexWithAlpha(theme.colors.onSurface, '61');
+
   const effectiveContentColor = isInteractive
     ? contentColor ?? (variant === 'outline' ? outlineSharedColor! : baseContentColor)
-    : disabledContentColor ?? getHexWithAlpha(theme.colors.onSurface, '61'); // 38% alpha
+    : disabledContentColor ?? defaultDisabledContentColor;
 
   const effectiveBorderColor = isInteractive
     ? borderColor ?? (variant === 'outline' ? outlineSharedColor! : baseBorderColor)

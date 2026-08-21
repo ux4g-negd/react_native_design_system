@@ -125,6 +125,17 @@ describe('Ux4gButton Component Suite', () => {
 
       expect(getByText('Skip')).toBeTruthy();
     });
+
+    it('should use neutral400 text color when disabled in light mode', () => {
+      const { getByText } = renderWithTheme(
+        <Ux4gTextButton text="Disabled Text Button" enabled={false} />
+      );
+
+      const textNode = getByText('Disabled Text Button');
+      expect(textNode.props.style).toContainEqual(
+        expect.objectContaining({ color: '#A1A1A1' })
+      );
+    });
   });
 
   describe('Ux4gIconButton Component', () => {
