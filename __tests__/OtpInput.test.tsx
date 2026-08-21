@@ -92,4 +92,22 @@ describe('Ux4gOtpInput Component Suite', () => {
     expect(getByText("Didn't get code?")).toBeTruthy();
     expect(getByText('Resend Now')).toBeTruthy();
   });
+
+  it('should adaptively scale box size when constrained by onLayout', () => {
+    const { getByTestId } = renderWithTheme(
+      <Ux4gOtpInput
+        testID="responsive-otp"
+        length={6}
+        value=""
+        onChanged={jest.fn()}
+      />
+    );
+
+    // Simulate narrow container width (e.g. 288dp on a 320dp screen with margins)
+    fireEvent(getByTestId('responsive-otp'), 'layout', {
+      nativeEvent: { layout: { width: 280, height: 60 } },
+    });
+
+    expect(getByTestId('responsive-otp-box-0')).toBeTruthy();
+  });
 });

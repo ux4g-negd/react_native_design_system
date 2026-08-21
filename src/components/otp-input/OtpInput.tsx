@@ -13,6 +13,8 @@ import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
   TextInputKeyPressEventData,
+  useWindowDimensions,
+  LayoutChangeEvent,
 } from 'react-native';
 import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
 import { UX4GColors } from '../../foundation/colors';
@@ -186,9 +188,9 @@ export const Ux4gOtpBox: React.FC<Ux4gOtpBoxProps> = ({
           style={[
             styles.boxText,
             {
-              fontSize: hsStrong.fontSize,
+              fontSize: size < 44 ? Math.round(hsStrong.fontSize * (size / 48)) : hsStrong.fontSize,
               fontWeight: hsStrong.fontWeight,
-              lineHeight: hsStrong.lineHeight,
+              lineHeight: size < 44 ? Math.round(hsStrong.lineHeight * (size / 48)) : hsStrong.lineHeight,
               color: status === 'disabled' ? withAlpha(onSurface, 0.35) : onSurface,
             },
           ]}
@@ -202,7 +204,7 @@ export const Ux4gOtpBox: React.FC<Ux4gOtpBoxProps> = ({
           style={[
             styles.boxText,
             {
-              fontSize: bmDefault.fontSize,
+              fontSize: size < 44 ? Math.round(bmDefault.fontSize * (size / 48)) : bmDefault.fontSize,
               color: withAlpha(onSurface, 0.3),
             },
           ]}
@@ -429,6 +431,8 @@ export const Ux4gOtpInput: React.FC<Ux4gOtpInputProps> = ({
 
   const bsStrong = typography.bS_strong;
 
+  const { width: windowWidth } = useWindowDimensions();
+  const [containerWidth, setContainerWidth] = useState<number>(0);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const [remainingSeconds, setRemainingSeconds] = useState<number>(
     autoCountdownSeconds ?? 0
@@ -436,6 +440,21 @@ export const Ux4gOtpInput: React.FC<Ux4gOtpInputProps> = ({
   const [countdownExpired, setCountdownExpired] = useState<boolean>(false);
 
   const inputRefs = useRef<Array<TextInput | null>>([]);
+
+  // Responsive calculation: if available width is constrained (< requiredWidth), adaptively scale boxSize & gap
+  const availableWidth = containerWidth > 0 ? containerWidth : windowWidth;
+  const separatorWidth = showSeparator ? 24 : 0;
+  const requiredWidth = length * boxSize + (length - 1) * gap + separatorWidth;
+
+  let effectiveBoxSize = boxSize;
+  let effectiveGap = gap;
+
+  if (availableWidth > 0 && availableWidth < requiredWidth) {
+    const scaleFactor = availableWidth / requiredWidth;
+    effectiveGap = Math.max(4, Math.floor(gap * scaleFactor));
+    const remainingForBoxes = availableWidth - ((length - 1) * effectiveGap + separatorWidth);
+    effectiveBoxSize = Math.max(28, Math.floor(remainingForBoxes / length));
+  }
 
   // Clean value string sanitized to digits and spaces, padded to max length
   const rawClean = (value ?? '').replace(/[^0-9 ]/g, '').slice(0, length);
@@ -599,7 +618,16 @@ export const Ux4gOtpInput: React.FC<Ux4gOtpInputProps> = ({
   };
 
   return (
-    <View testID={testID} style={[styles.container, containerStyle]}>
+    <View
+      testID={testID}
+      style={[styles.container, containerStyle]}
+      onLayout={(e: LayoutChangeEvent) => {
+        const w = e.nativeEvent.layout.width;
+        if (w > 0 && Math.abs(w - containerWidth) > 1) {
+          setContainerWidth(w);
+        }
+      }}
+    >
       {/* Top Label */}
       {label && (
         <View style={styles.labelRow}>
@@ -636,12 +664,12 @@ export const Ux4gOtpInput: React.FC<Ux4gOtpInputProps> = ({
                   <Text style={[styles.dashText, { color: withAlpha(onSurface, 0.4) }]}>—</Text>
                 </View>
               )}
-              <View style={[styles.boxWrapper, { marginRight: i < length - 1 && !showDash ? gap : 0 }]}>
+              <View style={[styles.boxWrapper, { marginRight: i < length - 1 && !showDash ? effectiveGap : 0 }]}>
                 <Ux4gOtpBox
                   testID={testID ? `${testID}-box-${i}` : undefined}
                   value={val}
                   status={bStatus}
-                  size={boxSize}
+                  size={effectiveBoxSize}
                   obscure={obscure}
                 />
                 {/* Dedicated Per-Box Overlay TextInput */}
@@ -687,6 +715,7 @@ export const Ux4gOtpInput: React.FC<Ux4gOtpInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
+    maxWidth: '100%',
     alignSelf: 'flex-start',
   },
   labelRow: {
