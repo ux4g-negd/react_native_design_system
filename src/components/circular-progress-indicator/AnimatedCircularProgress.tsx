@@ -28,14 +28,17 @@ export const Ux4gAnimatedCircularProgress: React.FC<Ux4gAnimatedCircularProgress
       setCurrentValue(val);
     });
 
-    Animated.timing(animatedValue, {
+    const animation = Animated.timing(animatedValue, {
       toValue: Math.max(0, Math.min(value, 1)),
       duration,
       easing: Easing.inOut(Easing.ease),
       useNativeDriver: false,
-    }).start();
+    });
+
+    animation.start();
 
     return () => {
+      animation.stop();
       animatedValue.removeListener(listener);
     };
   }, [value, duration]);
