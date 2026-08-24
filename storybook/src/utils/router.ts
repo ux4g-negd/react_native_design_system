@@ -264,6 +264,10 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-otp-verify-voice': 'patterns/identity-and-access/otp-verification/verify-mobile-with-voice-fallback',
   'verify-mobile-with-voice-fallback': 'patterns/identity-and-access/otp-verification/verify-mobile-with-voice-fallback',
   'verify-voice': 'patterns/identity-and-access/otp-verification/verify-mobile-with-voice-fallback',
+  'pattern-otp-verify-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning',
+  'verify-mobile-with-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning',
+  'verify-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning',
+  'verify-attempt': 'patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -597,6 +601,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('verify-mobile-with-attempt-warning') || cleanPath.includes('attempt-warning') || cleanPath.includes('verify-attempt') || (cleanPath.includes('otp-verification') && cleanPath.includes('attempt'))) {
+      return 'pattern-otp-verify-attempt-warning';
+    }
     if (cleanPath.includes('verify-mobile-with-voice-fallback') || cleanPath.includes('voice-fallback') || cleanPath.includes('verify-voice') || (cleanPath.includes('otp-verification') && cleanPath.includes('voice'))) {
       return 'pattern-otp-verify-voice';
     }

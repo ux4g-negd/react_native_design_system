@@ -12,22 +12,22 @@ import { defaultUx4gTypography } from '../../../src/foundation/typography';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gOtpInput } from '../../../src/components/otp-input/OtpInput';
 import { Ux4gButton } from '../../../src/components/button/Button';
+import { Ux4gStatusBanner } from '../../../src/components/status-banner/StatusBanner';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
 
-interface VerifyMobileOtpDocProps {
+interface VerifyMobileAttemptWarningDocProps {
   isDark: boolean;
 }
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'default' | 'card';
 
-export const VerifyMobileOtpDoc: React.FC<VerifyMobileOtpDocProps> = ({ isDark }) => {
+export const VerifyMobileAttemptWarningDoc: React.FC<VerifyMobileAttemptWarningDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
   const [otp, setOtp] = useState<string>('');
-  const [resendNonce, setResendNonce] = useState<number>(0);
 
   // Exact color tokens from UX4G Flutter Design System
   const colors = useMemo(() => {
@@ -44,19 +44,27 @@ export const VerifyMobileOtpDoc: React.FC<VerifyMobileOtpDocProps> = ({ isDark }
       primaryLight: UX4GColors.primary300, // #A391FF
       buttonBg: isDark ? UX4GColors.primary300 : UX4GColors.primary, // #A391FF / #4A2BC2
       buttonText: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0, // #171717 / #FFFFFF
-      ghostButtonText: isDark ? UX4GColors.primary300 : UX4GColors.primary, // #A391FF / #4A2BC2
+      backIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary, // #A391FF / #4A2BC2
+      // Warning Banner Tokens
+      bannerBg: isDark ? UX4GColors.orange900 : UX4GColors.orange50, // #4D2600 / #FFFBF0
+      bannerBorder: isDark ? UX4GColors.orange600 : UX4GColors.orange300, // #E67300 / #FFD580
+      bannerTitle: isDark ? UX4GColors.orange300 : UX4GColors.orange800, // #FFD580 / #803B00
+      bannerSubtitle: isDark ? UX4GColors.orange300 : UX4GColors.orange800, // #FFD580 / #803B00
+      badgeBg: isDark ? UX4GColors.orange800 : UX4GColors.orange100, // #803B00 / #FFEEC2
+      badgeText: isDark ? UX4GColors.orange300 : UX4GColors.orange800, // #FFD580 / #803B00
+      warningIcon: isDark ? UX4GColors.orange500 : UX4GColors.orange600, // #FF9933 / #E67300
     };
   }, [isDark]);
 
   const handleVerify = () => {
-    alert(otp.length === 6 ? `OTP Verified successfully: ${otp}` : 'Please enter all 6 digits of the OTP.');
+    alert(otp.length === 6 ? `OTP Verified: ${otp}` : 'Please enter all 6 digits of the OTP.');
   };
 
-  const handleChangeMobile = () => {
-    alert('Navigating to change mobile number...');
+  const handleBack = () => {
+    alert('Back button pressed');
   };
 
-  // Clean React Native TSX code snippet matching Flutter otpVerifyMobileComponent
+  // Clean React Native TSX code snippet matching Flutter otpVerifyAttemptWarningComponent
   const codeString = useMemo(() => {
     if (variant === 'card') {
       return `import React, { useState } from 'react';
@@ -71,20 +79,28 @@ import {
   Ux4gAppHeader,
   Ux4gOtpInput,
   Ux4gButton,
+  Ux4gStatusBanner,
   Ux4gDivider,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
+import Svg, { Circle, Path } from 'react-native-svg';
 
-export const VerifyMobileOtpCardPattern = () => {
+const WarningIcon = ({ size = 20, color = UX4GColors.orange600 }: { size?: number; color?: string }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="12" cy="12" r="10" fill={color} />
+    <Path d="M12 7v6M12 16v1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
+  </Svg>
+);
+
+export const VerifyMobileAttemptWarningCardPattern = () => {
   const [otp, setOtp] = useState('');
-  const [resendNonce, setResendNonce] = useState(0);
 
   const handleVerify = () => {
     console.log('Verify OTP:', otp);
   };
 
-  const handleChangeMobile = () => {
-    console.log('Change mobile number pressed');
+  const handleBack = () => {
+    console.log('Go back');
   };
 
   return (
@@ -119,10 +135,20 @@ export const VerifyMobileOtpCardPattern = () => {
 
       {/* 2. Soft-Purple Background & Floating Card */}
       <View style={styles.cardContainer}>
-        <View style={{ height: 56 }} />
-
         {/* Floating White Card */}
         <View style={styles.card}>
+          {/* Back Action */}
+          <Ux4gButton
+            text="Back"
+            variant="ghost"
+            size="small"
+            height={48}
+            onPress={handleBack}
+            style={styles.backButton}
+          />
+
+          <View style={{ height: 16 }} />
+
           <Text style={styles.title}>
             Verify your mobile{\\n}number
           </Text>
@@ -131,26 +157,39 @@ export const VerifyMobileOtpCardPattern = () => {
 
           <View style={{ height: 20 }} />
 
-          {/* 6 OTP boxes with built-in 60s auto-resend countdown */}
+          {/* 6 OTP boxes without caption */}
           <Ux4gOtpInput
-            key={\`verify_mobile_otp_card_\${resendNonce}\`}
             length={6}
             value={otp}
             onChanged={setOtp}
             boxSize={44}
             gap={8}
             showSeparator={false}
-            captionVariant="resendTimer"
-            captionLeadingText="Didn't receive OTP?"
-            captionTrailingText="Resend OTP"
-            autoCountdownSeconds={60}
-            onCaptionTrailingTap={() => {
-              setOtp('');
-              setResendNonce((n) => n + 1);
-            }}
           />
 
-          <View style={{ height: 24 }} />
+          <View style={{ height: 16 }} />
+
+          {/* Warning banner  Incorrect OTP with countdown to lockout */}
+          <Ux4gStatusBanner
+            variant="warningLight"
+            backgroundColor={UX4GColors.orange50}
+            borderColor={UX4GColors.orange300}
+            title="Incorrect OTP"
+            titleStyle={styles.bannerTitle}
+            leadingIcon={<WarningIcon size={20} color={UX4GColors.orange600} />}
+            subtitleWidget={
+              <View style={styles.bannerSubtitleRow}>
+                <Text style={styles.bannerSubtitleText}>
+                  1 more incorrect entry{\\n}before 30-min lockout
+                </Text>
+                <View style={styles.attemptBadge}>
+                  <Text style={styles.attemptBadgeText}>Attempt 1 of 3</Text>
+                </View>
+              </View>
+            }
+          />
+
+          <View style={{ height: 20 }} />
 
           {/* Primary CTA: Verify OTP */}
           <Ux4gButton
@@ -161,19 +200,6 @@ export const VerifyMobileOtpCardPattern = () => {
             width="100%"
             onPress={handleVerify}
           />
-
-          <View style={{ height: 4 }} />
-
-          {/* Ghost CTA: Change mobile number */}
-          <View style={styles.centerAlign}>
-            <Ux4gButton
-              height={48}
-              text="Change mobile number"
-              variant="ghost"
-              size="small"
-              onPress={handleChangeMobile}
-            />
-          </View>
         </View>
 
         <View style={{ flex: 1 }} />
@@ -200,6 +226,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     backgroundColor: UX4GColors.primary100, // #DCD4FF
+    paddingTop: 24,
     paddingHorizontal: 16,
     paddingBottom: 20,
     alignItems: 'center',
@@ -224,12 +251,18 @@ const styles = StyleSheet.create({
     backgroundColor: UX4GColors.neutral0,
     borderRadius: 16,
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingTop: 16,
+    paddingBottom: 24,
     shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.04,
     shadowRadius: 16,
     elevation: 3,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'transparent',
+    paddingHorizontal: 0,
   },
   title: {
     fontSize: 26,
@@ -243,8 +276,36 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral500,
     lineHeight: 18,
   },
-  centerAlign: {
+  bannerTitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: UX4GColors.orange800,
+    lineHeight: 18,
+  },
+  bannerSubtitleRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  bannerSubtitleText: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.orange800,
+    lineHeight: 18,
+  },
+  attemptBadge: {
+    backgroundColor: UX4GColors.orange100,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 6,
+    marginLeft: 8,
+  },
+  attemptBadgeText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: UX4GColors.orange800,
   },
   footer: {
     marginTop: 8,
@@ -274,20 +335,28 @@ import {
   Ux4gAppHeader,
   Ux4gOtpInput,
   Ux4gButton,
+  Ux4gStatusBanner,
   Ux4gDivider,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
+import Svg, { Circle, Path } from 'react-native-svg';
 
-export const VerifyMobileOtpDefaultPattern = () => {
+const WarningIcon = ({ size = 20, color = UX4GColors.orange600 }: { size?: number; color?: string }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="12" cy="12" r="10" fill={color} />
+    <Path d="M12 7v6M12 16v1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
+  </Svg>
+);
+
+export const VerifyMobileAttemptWarningDefaultPattern = () => {
   const [otp, setOtp] = useState('');
-  const [resendNonce, setResendNonce] = useState(0);
 
   const handleVerify = () => {
     console.log('Verify OTP:', otp);
   };
 
-  const handleChangeMobile = () => {
-    console.log('Change mobile number pressed');
+  const handleBack = () => {
+    console.log('Go back');
   };
 
   return (
@@ -320,9 +389,21 @@ export const VerifyMobileOtpDefaultPattern = () => {
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Flat Layout with 56px Top Inset */}
+      {/* 2. Flat Layout with 32px Top Inset & Back Action */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.content}>
+          {/* Back Action */}
+          <Ux4gButton
+            text="Back"
+            variant="ghost"
+            size="small"
+            height={48}
+            onPress={handleBack}
+            style={styles.backButton}
+          />
+
+          <View style={{ height: 24 }} />
+
           <Text style={styles.title}>
             Verify your mobile{\\n}number
           </Text>
@@ -331,26 +412,39 @@ export const VerifyMobileOtpDefaultPattern = () => {
 
           <View style={{ height: 24 }} />
 
-          {/* 6 OTP boxes with built-in 60s auto-resend countdown */}
+          {/* 6 OTP boxes without caption */}
           <Ux4gOtpInput
-            key={\`verify_mobile_otp_\${resendNonce}\`}
             length={6}
             value={otp}
             onChanged={setOtp}
             boxSize={44}
             gap={8}
             showSeparator={false}
-            captionVariant="resendTimer"
-            captionLeadingText="Didn't receive OTP?"
-            captionTrailingText="Resend OTP"
-            autoCountdownSeconds={60}
-            onCaptionTrailingTap={() => {
-              setOtp('');
-              setResendNonce((n) => n + 1);
-            }}
           />
 
-          <View style={{ height: 24 }} />
+          <View style={{ height: 16 }} />
+
+          {/* Warning banner  Incorrect OTP with countdown to lockout */}
+          <Ux4gStatusBanner
+            variant="warningLight"
+            backgroundColor={UX4GColors.orange50}
+            borderColor={UX4GColors.orange300}
+            title="Incorrect OTP"
+            titleStyle={styles.bannerTitle}
+            leadingIcon={<WarningIcon size={20} color={UX4GColors.orange600} />}
+            subtitleWidget={
+              <View style={styles.bannerSubtitleRow}>
+                <Text style={styles.bannerSubtitleText}>
+                  1 more incorrect entry{\\n}before 30-min lockout
+                </Text>
+                <View style={styles.attemptBadge}>
+                  <Text style={styles.attemptBadgeText}>Attempt 1 of 3</Text>
+                </View>
+              </View>
+            }
+          />
+
+          <View style={{ height: 20 }} />
 
           {/* Primary CTA: Verify OTP */}
           <Ux4gButton
@@ -361,19 +455,6 @@ export const VerifyMobileOtpDefaultPattern = () => {
             width="100%"
             onPress={handleVerify}
           />
-
-          <View style={{ height: 8 }} />
-
-          {/* Ghost CTA: Change mobile number */}
-          <View style={styles.centerAlign}>
-            <Ux4gButton
-              height={48}
-              text="Change mobile number"
-              variant="ghost"
-              size="small"
-              onPress={handleChangeMobile}
-            />
-          </View>
         </View>
 
         {/* 3. Powered by Digital India Footer */}
@@ -413,13 +494,18 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 56,
+    paddingTop: 32,
     paddingBottom: 20,
   },
   content: {
     width: '100%',
     maxWidth: 328,
     alignSelf: 'center',
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'transparent',
+    paddingHorizontal: 0,
   },
   title: {
     fontSize: 26,
@@ -433,8 +519,36 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral500,
     lineHeight: 18,
   },
-  centerAlign: {
+  bannerTitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: UX4GColors.orange800,
+    lineHeight: 18,
+  },
+  bannerSubtitleRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  bannerSubtitleText: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.orange800,
+    lineHeight: 18,
+  },
+  attemptBadge: {
+    backgroundColor: UX4GColors.orange100,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 6,
+    marginLeft: 8,
+  },
+  attemptBadgeText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: UX4GColors.orange800,
   },
   footer: {
     marginTop: 8,
@@ -453,7 +567,7 @@ const styles = StyleSheet.create({
 });`;
   }, [variant]);
 
-  // Live interactive mockup using our actual Ux4gOtpInput, Ux4gAppHeader & Ux4gButton
+  // Live interactive mockup using our actual Ux4gOtpInput, Ux4gAppHeader, Ux4gStatusBanner & Ux4gButton
   const renderLiveMockup = () => {
     const isCard = variant === 'card';
     const bgScreenColor = isCard ? colors.cardScreenBg : colors.defaultScreenBg;
@@ -536,19 +650,16 @@ const styles = StyleSheet.create({
               flexDirection: 'column',
               backgroundColor: colors.cardScreenBg,
               justifyContent: 'space-between',
-              padding: '0 16px 20px 16px',
+              padding: '24px 16px 20px 16px',
             }}
           >
             <div>
-              {/* Soft purple gap above card */}
-              <div style={{ height: 56 }} />
-
               {/* Floating White Card */}
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '24px 20px',
+                  padding: '16px 20px 24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -556,6 +667,31 @@ const styles = StyleSheet.create({
                   flexDirection: 'column',
                 }}
               >
+                {/* Back Button */}
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors.backIcon,
+                    fontSize: 14,
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    padding: 0,
+                    alignSelf: 'flex-start',
+                    marginBottom: 16,
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                    arrow_back
+                  </span>
+                  Back
+                </button>
+
                 {/* 2-line Title */}
                 <h2
                   style={{
@@ -585,29 +721,98 @@ const styles = StyleSheet.create({
                   OTP sent to +91 98765 XXXXX
                 </p>
 
-                {/* 6 OTP boxes via Ux4gOtpInput design-system component */}
+                {/* 6 OTP boxes without caption */}
                 <div style={{ marginTop: 20 }}>
                   <Ux4gOtpInput
-                    key={`verify_mobile_otp_card_${resendNonce}`}
+                    key="verify_mobile_attempt_card"
                     length={6}
                     value={otp}
                     onChanged={(val) => setOtp(val)}
                     boxSize={44}
                     gap={8}
                     showSeparator={false}
-                    captionVariant="resendTimer"
-                    captionLeadingText="Didn't receive OTP?"
-                    captionTrailingText="Resend OTP"
-                    autoCountdownSeconds={60}
-                    onCaptionTrailingTap={() => {
-                      setOtp('');
-                      setResendNonce((n) => n + 1);
-                    }}
                   />
                 </div>
 
+                {/* Warning Banner: Incorrect OTP with Attempt Pill */}
+                <div
+                  style={{
+                    marginTop: 16,
+                    backgroundColor: colors.bannerBg,
+                    border: `1px solid ${colors.bannerBorder}`,
+                    borderRadius: 8,
+                    padding: '12px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 4,
+                  }}
+                >
+                  {/* Top row: Warning icon + Title */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span
+                      className="material-symbols-outlined"
+                      style={{
+                        fontSize: 20,
+                        color: colors.warningIcon,
+                        fontVariationSettings: "'FILL' 1",
+                      }}
+                    >
+                      error
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 400,
+                        color: colors.bannerTitle,
+                        lineHeight: '18px',
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      }}
+                    >
+                      Incorrect OTP
+                    </span>
+                  </div>
+
+                  {/* Bottom row: Subtitle + Attempt Badge */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingLeft: 28,
+                      gap: 8,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: colors.bannerSubtitle,
+                        lineHeight: '18px',
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                        whiteSpace: 'pre-line',
+                      }}
+                    >
+                      {`1 more incorrect entry\nbefore 30-min lockout`}
+                    </span>
+                    <span
+                      style={{
+                        backgroundColor: colors.badgeBg,
+                        color: colors.badgeText,
+                        fontSize: 12,
+                        fontWeight: 500,
+                        padding: '4px 10px',
+                        borderRadius: 6,
+                        whiteSpace: 'nowrap',
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      }}
+                    >
+                      Attempt 1 of 3
+                    </span>
+                  </div>
+                </div>
+
                 {/* Verify OTP Primary Button */}
-                <div style={{ marginTop: 24, width: '100%' }}>
+                <div style={{ marginTop: 20, width: '100%' }}>
                   <Ux4gButton
                     text="Verify OTP"
                     variant="primary"
@@ -625,25 +830,6 @@ const styles = StyleSheet.create({
                       color: colors.buttonText,
                       fontWeight: '600',
                       fontSize: defaultUx4gTypography.lL_default.fontSize,
-                    }}
-                  />
-                </div>
-
-                {/* Change mobile number Ghost Button */}
-                <div style={{ marginTop: 4, display: 'flex', justifyContent: 'center' }}>
-                  <Ux4gButton
-                    text="Change mobile number"
-                    variant="ghost"
-                    size="small"
-                    height={48}
-                    onPress={handleChangeMobile}
-                    style={{
-                      backgroundColor: 'transparent',
-                    }}
-                    textStyle={{
-                      color: colors.ghostButtonText,
-                      fontWeight: '600',
-                      fontSize: 14,
                     }}
                   />
                 </div>
@@ -689,10 +875,35 @@ const styles = StyleSheet.create({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '56px 20px 20px 20px',
+              padding: '32px 20px 20px 20px',
             }}
           >
             <div>
+              {/* Back Button */}
+              <button
+                type="button"
+                onClick={handleBack}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: 'transparent',
+                  border: 'none',
+                  color: colors.backIcon,
+                  fontSize: 14,
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  padding: 0,
+                  alignSelf: 'flex-start',
+                  marginBottom: 24,
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                  arrow_back
+                </span>
+                Back
+              </button>
+
               {/* 2-line Title */}
               <h2
                 style={{
@@ -722,29 +933,98 @@ const styles = StyleSheet.create({
                 OTP sent to +91 98765 XXXXX
               </p>
 
-              {/* 6 OTP boxes via Ux4gOtpInput design-system component */}
+              {/* 6 OTP boxes without caption */}
               <div style={{ marginTop: 24 }}>
                 <Ux4gOtpInput
-                  key={`verify_mobile_otp_default_${resendNonce}`}
+                  key="verify_mobile_attempt_default"
                   length={6}
                   value={otp}
                   onChanged={(val) => setOtp(val)}
                   boxSize={44}
                   gap={8}
                   showSeparator={false}
-                  captionVariant="resendTimer"
-                  captionLeadingText="Didn't receive OTP?"
-                  captionTrailingText="Resend OTP"
-                  autoCountdownSeconds={60}
-                  onCaptionTrailingTap={() => {
-                    setOtp('');
-                    setResendNonce((n) => n + 1);
-                  }}
                 />
               </div>
 
+              {/* Warning Banner: Incorrect OTP with Attempt Pill */}
+              <div
+                style={{
+                  marginTop: 16,
+                  backgroundColor: colors.bannerBg,
+                  border: `1px solid ${colors.bannerBorder}`,
+                  borderRadius: 8,
+                  padding: '12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
+                }}
+              >
+                {/* Top row: Warning icon + Title */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span
+                    className="material-symbols-outlined"
+                    style={{
+                      fontSize: 20,
+                      color: colors.warningIcon,
+                      fontVariationSettings: "'FILL' 1",
+                    }}
+                  >
+                    error
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 400,
+                      color: colors.bannerTitle,
+                      lineHeight: '18px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Incorrect OTP
+                  </span>
+                </div>
+
+                {/* Bottom row: Subtitle + Attempt Badge */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingLeft: 28,
+                    gap: 8,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: colors.bannerSubtitle,
+                      lineHeight: '18px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      whiteSpace: 'pre-line',
+                    }}
+                  >
+                    {`1 more incorrect entry\nbefore 30-min lockout`}
+                  </span>
+                  <span
+                    style={{
+                      backgroundColor: colors.badgeBg,
+                      color: colors.badgeText,
+                      fontSize: 12,
+                      fontWeight: 500,
+                      padding: '4px 10px',
+                      borderRadius: 6,
+                      whiteSpace: 'nowrap',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Attempt 1 of 3
+                  </span>
+                </div>
+              </div>
+
               {/* Verify OTP Primary Button */}
-              <div style={{ marginTop: 24, width: '100%' }}>
+              <div style={{ marginTop: 20, width: '100%' }}>
                 <Ux4gButton
                   text="Verify OTP"
                   variant="primary"
@@ -762,25 +1042,6 @@ const styles = StyleSheet.create({
                     color: colors.buttonText,
                     fontWeight: '600',
                     fontSize: defaultUx4gTypography.lL_default.fontSize,
-                  }}
-                />
-              </div>
-
-              {/* Change mobile number Ghost Button */}
-              <div style={{ marginTop: 8, display: 'flex', justifyContent: 'center' }}>
-                <Ux4gButton
-                  text="Change mobile number"
-                  variant="ghost"
-                  size="small"
-                  height={48}
-                  onPress={handleChangeMobile}
-                  style={{
-                    backgroundColor: 'transparent',
-                  }}
-                  textStyle={{
-                    color: colors.ghostButtonText,
-                    fontWeight: '600',
-                    fontSize: 14,
                   }}
                 />
               </div>
@@ -827,11 +1088,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Verify your mobile number</h1>
+          <h1 className="wb-title">Verify mobile with attempt warning</h1>
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          Mobile-number OTP verification screen with 6 single-digit input boxes, a built-in 60-second resend countdown, a verify action, and a "Change mobile number" link. Use the [Variant] knob to toggle between the flat layout and the card-style layout. Mobile-sized layout (360px).
+          Mobile-number OTP verification screen showing a warning banner after a wrong OTP. Counts down remaining attempts before a 30-minute lockout. Toggle between the flat layout and the card-style layout. Mobile-sized layout (360px).
         </p>
       </div>
 
@@ -955,7 +1216,7 @@ const styles = StyleSheet.create({
                 <CodeBlock
                   code={codeString}
                   language="TSX"
-                  filename={variant === 'card' ? 'VerifyMobileOtpCardPattern.tsx' : 'VerifyMobileOtpDefaultPattern.tsx'}
+                  filename={variant === 'card' ? 'VerifyMobileAttemptWarningCardPattern.tsx' : 'VerifyMobileAttemptWarningDefaultPattern.tsx'}
                 />
               </div>
             )}
@@ -966,4 +1227,4 @@ const styles = StyleSheet.create({
   );
 };
 
-export default VerifyMobileOtpDoc;
+export default VerifyMobileAttemptWarningDoc;

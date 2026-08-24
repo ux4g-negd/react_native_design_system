@@ -15,6 +15,7 @@ import { Ux4gOtpInput } from '../../../src/components/otp-input/OtpInput';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { CodeBlock } from '../components/CodeBlock';
+import { UnionLogo } from '../components/UnionLogo';
 
 interface EnterOtpDocProps {
   isDark: boolean;
@@ -560,15 +561,7 @@ const styles = StyleSheet.create({
                   margin: '0 4px',
                 }}
               />,
-              <img
-                key="union"
-                src="/Union.svg"
-                alt="Union Logo"
-                style={{
-                  height: 32,
-                  filter: isDark ? 'brightness(1.5)' : 'none',
-                }}
-              />,
+              <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
           />
           <div

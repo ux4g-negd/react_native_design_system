@@ -3,7 +3,9 @@ import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { defaultUx4gTypography } from '../../../src/foundation/typography';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
+import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { CodeBlock } from '../components/CodeBlock';
+import { UnionLogo } from '../components/UnionLogo';
 
 interface SignInDefaultDocProps {
   isDark: boolean;
@@ -717,15 +719,7 @@ const styles = StyleSheet.create({
                   margin: '0 4px',
                 }}
               />,
-              <img
-                key="union"
-                src="/Union.svg"
-                alt="Union Logo"
-                style={{
-                  height: 32,
-                  filter: isDark ? 'brightness(1.5)' : 'none',
-                }}
-              />,
+              <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
           />
           <div

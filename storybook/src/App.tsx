@@ -61,6 +61,7 @@ import { SignInAadhaarDoc } from './pages/SignInAadhaarDoc';
 import { SignedInSuccessDoc } from './pages/SignedInSuccessDoc';
 import { VerifyMobileOtpDoc } from './pages/VerifyMobileOtpDoc';
 import { VerifyMobileVoiceDoc } from './pages/VerifyMobileVoiceDoc';
+import { VerifyMobileAttemptWarningDoc } from './pages/VerifyMobileAttemptWarningDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -76,6 +77,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-otp-verify-attempt-warning' || page.includes('attempt-warning') || page.includes('verify-attempt')) {
+    return 'Patterns / Identity and Access / OTP Verification / Verify mobile with attempt warning';
+  }
   if (page === 'pattern-otp-verify-voice' || page.includes('verify-voice') || page.includes('voice-fallback')) {
     return 'Patterns / Identity and Access / OTP Verification / Verify mobile with voice fallback';
   }
@@ -325,6 +329,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-otp-verify-attempt-warning' || activePage === 'verify-mobile-with-attempt-warning' || activePage === 'verify-attempt') {
+      return <VerifyMobileAttemptWarningDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-otp-verify-voice' || activePage === 'verify-mobile-with-voice-fallback' || activePage === 'verify-voice') {
       return <VerifyMobileVoiceDoc isDark={isDark} />;
