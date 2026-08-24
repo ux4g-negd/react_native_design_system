@@ -610,6 +610,11 @@ const NAV_ITEMS: NavItem[] = [
                 icon: 'layers',
               },
               {
+                id: 'pattern-signin-success',
+                label: 'Signed in success',
+                icon: 'layers',
+              },
+              {
                 id: 'pattern-signin-mobile',
                 label: 'Sign in account with Mobile No',
                 icon: 'layers',

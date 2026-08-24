@@ -58,6 +58,7 @@ import { SignInAccountDoc } from './pages/SignInAccountDoc';
 import { SignInDefaultDoc } from './pages/SignInDefaultDoc';
 import { EnterOtpDoc } from './pages/EnterOtpDoc';
 import { SignInAadhaarDoc } from './pages/SignInAadhaarDoc';
+import { SignedInSuccessDoc } from './pages/SignedInSuccessDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -81,6 +82,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-signin-aadhaar' || page.includes('aadhaar')) {
     return 'Patterns / Identity and Access / SignIn / Sign in with Aadhaar';
+  }
+  if (page === 'pattern-signin-success' || page.includes('success')) {
+    return 'Patterns / Identity and Access / SignIn / Signed in success';
   }
   if (page === 'pattern-signin-mobile' || page.startsWith('signin') || page.startsWith('identity')) {
     return 'Patterns / Identity and Access / SignIn / Sign in account with Mobile No';
@@ -322,6 +326,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-signin-aadhaar' || activePage === 'signin-aadhaar' || activePage === 'signin-with-aadhaar') {
       return <SignInAadhaarDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-signin-success' || activePage === 'signin-success' || activePage === 'signed-in-success') {
+      return <SignedInSuccessDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-signin-mobile' || activePage.startsWith('signin') || activePage.startsWith('identity')) {
       return <SignInAccountDoc isDark={isDark} />;

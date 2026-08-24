@@ -256,12 +256,15 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'pattern-signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'pattern-signin-aadhaar': 'patterns/identity-and-access/signin/sign-in-with-aadhaar',
+  'pattern-signin-success': 'patterns/identity-and-access/signin/signed-in-success',
   'pattern-signin-mobile': 'patterns/identity-and-access/signin/sign-in-account-with-mobile-no',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
   'signin-aadhaar': 'patterns/identity-and-access/signin/sign-in-with-aadhaar',
   'signin-with-aadhaar': 'patterns/identity-and-access/signin/sign-in-with-aadhaar',
+  'signin-success': 'patterns/identity-and-access/signin/signed-in-success',
+  'signed-in-success': 'patterns/identity-and-access/signin/signed-in-success',
   'signin-mobile': 'patterns/identity-and-access/signin/sign-in-account-with-mobile-no',
   forms: 'patterns/forms',
   headers: 'patterns/headers',
@@ -593,6 +596,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('aadhaar')) {
       return 'pattern-signin-aadhaar';
+    }
+    if (cleanPath.includes('success')) {
+      return 'pattern-signin-success';
     }
     if (cleanPath.includes('mobile')) {
       return 'pattern-signin-mobile';
