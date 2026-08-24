@@ -631,6 +631,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Verify your mobile number',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-otp-verify-voice',
+                label: 'Verify mobile with voice fallback',
+                icon: 'layers',
+              },
             ],
           },
         ],

@@ -261,6 +261,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-otp-verify-mobile': 'patterns/identity-and-access/otp-verification/verify-your-mobile-number',
   'verify-your-mobile-number': 'patterns/identity-and-access/otp-verification/verify-your-mobile-number',
   'verify-mobile': 'patterns/identity-and-access/otp-verification/verify-your-mobile-number',
+  'pattern-otp-verify-voice': 'patterns/identity-and-access/otp-verification/verify-mobile-with-voice-fallback',
+  'verify-mobile-with-voice-fallback': 'patterns/identity-and-access/otp-verification/verify-mobile-with-voice-fallback',
+  'verify-voice': 'patterns/identity-and-access/otp-verification/verify-mobile-with-voice-fallback',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -594,6 +597,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('verify-mobile-with-voice-fallback') || cleanPath.includes('voice-fallback') || cleanPath.includes('verify-voice') || (cleanPath.includes('otp-verification') && cleanPath.includes('voice'))) {
+      return 'pattern-otp-verify-voice';
+    }
     if (cleanPath.includes('verify-your-mobile-number') || cleanPath.includes('verify-mobile') || (cleanPath.includes('otp-verification') && cleanPath.includes('mobile'))) {
       return 'pattern-otp-verify-mobile';
     }
