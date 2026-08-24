@@ -254,7 +254,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'patterns-cards': 'patterns/cards',
   'patterns-feedback': 'patterns/feedback',
   'pattern-signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
+  'pattern-signin-mobile': 'patterns/identity-and-access/signin/sign-in-account-with-mobile-no',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
+  'signin-mobile': 'patterns/identity-and-access/signin/sign-in-account-with-mobile-no',
   forms: 'patterns/forms',
   headers: 'patterns/headers',
   auth: 'patterns/authentication',
@@ -580,6 +582,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('mobile')) {
+      return 'pattern-signin-mobile';
+    }
     if (cleanPath.includes('sign-in') || cleanPath.includes('signin') || cleanPath.includes('account') || cleanPath.includes('identity')) {
       return 'pattern-signin-account';
     }

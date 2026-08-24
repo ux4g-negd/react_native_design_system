@@ -55,6 +55,7 @@ import { PatternsAuthDoc } from './pages/PatternsAuthDoc';
 import { PatternsCardsDoc } from './pages/PatternsCardsDoc';
 import { PatternsFeedbackDoc } from './pages/PatternsFeedbackDoc';
 import { SignInAccountDoc } from './pages/SignInAccountDoc';
+import { SignInDefaultDoc } from './pages/SignInDefaultDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -70,7 +71,10 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
-  if (page === 'pattern-signin-account' || page.startsWith('signin') || page.startsWith('identity')) {
+  if (page === 'pattern-signin-account') {
+    return 'Patterns / Identity and Access / SignIn / Sign in to your account';
+  }
+  if (page === 'pattern-signin-mobile' || page.startsWith('signin') || page.startsWith('identity')) {
     return 'Patterns / Identity and Access / SignIn / Sign in account with Mobile No';
   }
   if (page.startsWith('patterns-forms') || page === 'forms') return 'Patterns / Forms & Inputs';
@@ -302,7 +306,10 @@ export const App: React.FC = () => {
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
     }
-    if (activePage === 'pattern-signin-account' || activePage.startsWith('signin') || activePage.startsWith('identity')) {
+    if (activePage === 'pattern-signin-account') {
+      return <SignInDefaultDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-signin-mobile' || activePage.startsWith('signin') || activePage.startsWith('identity')) {
       return <SignInAccountDoc isDark={isDark} />;
     }
     if (activePage === 'patterns-forms' || activePage === 'forms') {

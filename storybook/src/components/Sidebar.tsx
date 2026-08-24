@@ -596,6 +596,11 @@ const NAV_ITEMS: NavItem[] = [
             children: [
               {
                 id: 'pattern-signin-account',
+                label: 'Sign in to your account',
+                icon: 'layers',
+              },
+              {
+                id: 'pattern-signin-mobile',
                 label: 'Sign in account with Mobile No',
                 icon: 'layers',
               },

@@ -5,24 +5,20 @@ import { defaultUx4gTypography } from '../../../src/foundation/typography';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { CodeBlock } from '../components/CodeBlock';
 
-interface SignInAccountDocProps {
+interface SignInDefaultDocProps {
   isDark: boolean;
 }
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'default' | 'card';
 
-export const SignInAccountDoc: React.FC<SignInAccountDocProps> = ({ isDark }) => {
+export const SignInDefaultDoc: React.FC<SignInDefaultDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Strictly filter only numbers (0-9) and max 10 digits
-  const handleMobileNumberChange = (text: string) => {
-    const numericOnly = text.replace(/\D/g, '').slice(0, 10);
-    setMobileNumber(numericOnly);
-  };
 
   // Exact color tokens from UX4G Flutter Design System (Ux4gColors & Ux4gPalette)
   const colors = useMemo(() => {
@@ -53,7 +49,7 @@ export const SignInAccountDoc: React.FC<SignInAccountDocProps> = ({ isDark }) =>
     };
   }, [isDark]);
 
-  // Clean React Native TSX code snippet with exact Flutter typography tokens
+  // Clean React Native TSX code snippet matching Flutter signInDefaultComponent
   const codeString = useMemo(() => {
     if (variant === 'card') {
       return `import React, { useState } from 'react';
@@ -85,16 +81,11 @@ const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; co
 );
 
 export const SignInAccountCardPattern = () => {
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Strictly enforce numbers only (0-9) and 10 digits
-  const handleMobileChange = (val: string) => {
-    const numericValue = val.replace(/\\D/g, '').slice(0, 10);
-    setMobileNumber(numericValue);
-  };
-
-  const handleSendOtp = () => {
+  const handleSignIn = () => {
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 1500);
   };
@@ -132,25 +123,32 @@ export const SignInAccountCardPattern = () => {
       {/* 2. Soft Purple Background (UX4GColors.primary100 / #DCD4FF) & Floating Card */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.card}>
-          {/* Title with defaultUx4gTypography.hM_strong */}
+          {/* Title */}
           <Text style={styles.title}>Sign in to your account</Text>
-          {/* Subtitle with defaultUx4gTypography.bM_default */}
+          {/* Subtitle */}
           <Text style={styles.subtitle}>
             Access your government services securely
           </Text>
 
           <View style={{ height: 20 }} />
 
-          {/* Mobile Number Input (Numbers only) */}
+          {/* Username Input */}
           <Ux4gInputField
-            label="Mobile Number"
-            placeholder="Enter mobile number"
-            prefixText="+91"
-            value={mobileNumber}
-            onValueChange={handleMobileChange}
-            keyboardType="numeric"
-            type="number"
-            maxLength={10}
+            label="Username"
+            placeholder="Enter your username"
+            value={username}
+            onValueChange={setUsername}
+          />
+
+          <View style={{ height: 16 }} />
+
+          {/* Password Input with eye reveal toggle */}
+          <Ux4gInputField
+            label="Password"
+            placeholder="............"
+            value={password}
+            onValueChange={setPassword}
+            type="password"
           />
 
           <View style={{ height: 16 }} />
@@ -159,7 +157,7 @@ export const SignInAccountCardPattern = () => {
           <View style={styles.statusBanner}>
             <View style={styles.statusHeaderRow}>
               <ErrorIcon size={18} color={UX4GColors.red600} />
-              <Text style={styles.statusTitle}>Your status message goes here</Text>
+              <Text style={styles.statusTitle}>Username not found.</Text>
             </View>
             <View style={styles.statusActionRow}>
               <TouchableOpacity onPress={() => console.log('Take action')}>
@@ -173,19 +171,19 @@ export const SignInAccountCardPattern = () => {
 
           <View style={{ height: 20 }} />
 
-          {/* Primary CTA: Send OTP */}
+          {/* Primary CTA: Sign In */}
           <Ux4gButton
-            text="Send OTP"
+            text="Sign In"
             variant="primary"
             size="large"
             isLoading={isLoading}
-            onPress={handleSendOtp}
-            style={styles.sendOtpButton}
+            onPress={handleSignIn}
+            style={styles.signInButton}
           />
 
           <View style={{ height: 16 }} />
 
-          {/* OR Divider with defaultUx4gTypography.lM_default */}
+          {/* OR Divider */}
           <Ux4gDivider
             label="OR"
             color={UX4GColors.neutral200}
@@ -212,7 +210,7 @@ export const SignInAccountCardPattern = () => {
           </TouchableOpacity>
         </View>
 
-        {/* 3. Powered by Digital India Footer with defaultUx4gTypography.lS_default */}
+        {/* 3. Powered by Digital India Footer */}
         <View style={styles.footer}>
           <Text style={styles.poweredByText}>Powered by -</Text>
           <Image
@@ -263,16 +261,13 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   title: {
-    fontSize: defaultUx4gTypography.hM_strong.fontSize, // 24px
-    fontWeight: defaultUx4gTypography.hM_strong.fontWeight, // '700'
-    lineHeight: defaultUx4gTypography.hM_strong.lineHeight, // 28px
+    fontSize: 22,
+    fontWeight: '800',
     color: UX4GColors.gray900, // #121212
     letterSpacing: -0.3,
   },
   subtitle: {
-    fontSize: defaultUx4gTypography.bM_default.fontSize, // 14px
-    fontWeight: defaultUx4gTypography.bM_default.fontWeight, // '500'
-    lineHeight: defaultUx4gTypography.bM_default.lineHeight, // 18px
+    fontSize: 13,
     color: UX4GColors.neutral500, // #737373
     marginTop: 6,
   },
@@ -317,7 +312,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: UX4GColors.red800, // #8A1A16
   },
-  sendOtpButton: {
+  signInButton: {
     backgroundColor: UX4GColors.primary, // #4A2BC2
     height: 48,
     borderRadius: 8,
@@ -389,16 +384,11 @@ const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; co
 );
 
 export const SignInAccountDefaultPattern = () => {
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Strictly enforce numbers only (0-9) and 10 digits
-  const handleMobileChange = (val: string) => {
-    const numericValue = val.replace(/\\D/g, '').slice(0, 10);
-    setMobileNumber(numericValue);
-  };
-
-  const handleSendOtp = () => {
+  const handleSignIn = () => {
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 1500);
   };
@@ -436,25 +426,32 @@ export const SignInAccountDefaultPattern = () => {
       {/* 2. Main Full-Screen Layout */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.content}>
-          {/* Title with defaultUx4gTypography.hM_strong */}
+          {/* Title */}
           <Text style={styles.title}>Sign in to your account</Text>
-          {/* Subtitle with defaultUx4gTypography.bM_default */}
+          {/* Subtitle */}
           <Text style={styles.subtitle}>
             Access your government services securely
           </Text>
 
           <View style={{ height: 24 }} />
 
-          {/* Mobile Number Input (Numbers only) */}
+          {/* Username Input */}
           <Ux4gInputField
-            label="Mobile Number"
-            placeholder="Enter mobile number"
-            prefixText="+91"
-            value={mobileNumber}
-            onValueChange={handleMobileChange}
-            keyboardType="numeric"
-            type="number"
-            maxLength={10}
+            label="Username"
+            placeholder="Enter your username"
+            value={username}
+            onValueChange={setUsername}
+          />
+
+          <View style={{ height: 16 }} />
+
+          {/* Password Input with eye reveal toggle */}
+          <Ux4gInputField
+            label="Password"
+            placeholder="............"
+            value={password}
+            onValueChange={setPassword}
+            type="password"
           />
 
           <View style={{ height: 16 }} />
@@ -463,7 +460,7 @@ export const SignInAccountDefaultPattern = () => {
           <View style={styles.statusBanner}>
             <View style={styles.statusHeaderRow}>
               <ErrorIcon size={18} color={UX4GColors.red600} />
-              <Text style={styles.statusTitle}>Your status message goes here</Text>
+              <Text style={styles.statusTitle}>Username not found.</Text>
             </View>
             <View style={styles.statusActionRow}>
               <TouchableOpacity onPress={() => console.log('Take action')}>
@@ -477,19 +474,19 @@ export const SignInAccountDefaultPattern = () => {
 
           <View style={{ height: 20 }} />
 
-          {/* Primary CTA: Send OTP */}
+          {/* Primary CTA: Sign In */}
           <Ux4gButton
-            text="Send OTP"
+            text="Sign In"
             variant="primary"
             size="large"
             isLoading={isLoading}
-            onPress={handleSendOtp}
-            style={styles.sendOtpButton}
+            onPress={handleSignIn}
+            style={styles.signInButton}
           />
 
           <View style={{ height: 16 }} />
 
-          {/* OR Divider with defaultUx4gTypography.lM_default */}
+          {/* OR Divider */}
           <Ux4gDivider
             label="OR"
             color={UX4GColors.neutral200}
@@ -516,7 +513,7 @@ export const SignInAccountDefaultPattern = () => {
           </TouchableOpacity>
         </View>
 
-        {/* 3. Powered by Digital India Footer with defaultUx4gTypography.lS_default */}
+        {/* 3. Powered by Digital India Footer */}
         <View style={styles.footer}>
           <Text style={styles.poweredByText}>Powered by -</Text>
           <Image
@@ -615,7 +612,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: UX4GColors.red800, // #8A1A16
   },
-  sendOtpButton: {
+  signInButton: {
     backgroundColor: UX4GColors.primary, // #4A2BC2
     height: 48,
     borderRadius: 8,
@@ -659,7 +656,7 @@ const styles = StyleSheet.create({
 });`;
   }, [variant]);
 
-  // Live interactive mockup matching Flutter typography tokens exactly
+  // Live interactive mockup matching Flutter signInDefaultComponent exactly
   const renderLiveMockup = () => {
     const isCard = variant === 'card';
     const bgScreenColor = isCard ? colors.cardScreenBg : colors.defaultScreenBg;
@@ -765,10 +762,10 @@ const styles = StyleSheet.create({
               flexDirection: 'column',
             }}
           >
-            {/* Title with hM_strong (24px, 700, -0.3px) */}
+            {/* Title with hM_strong */}
             <h2
               style={{
-                fontSize: defaultUx4gTypography.hM_strong.fontSize,
+                fontSize: isCard ? 22 : defaultUx4gTypography.hM_strong.fontSize,
                 fontWeight: defaultUx4gTypography.hM_strong.fontWeight,
                 lineHeight: `${defaultUx4gTypography.hM_strong.lineHeight}px`,
                 color: colors.title,
@@ -779,10 +776,10 @@ const styles = StyleSheet.create({
               Sign in to your account
             </h2>
 
-            {/* Subtitle with bM_default (14px, 500, 18px) */}
+            {/* Subtitle with bM_default */}
             <p
               style={{
-                fontSize: defaultUx4gTypography.bM_default.fontSize,
+                fontSize: isCard ? 13 : defaultUx4gTypography.bM_default.fontSize,
                 fontWeight: defaultUx4gTypography.bM_default.fontWeight,
                 lineHeight: `${defaultUx4gTypography.bM_default.lineHeight}px`,
                 color: colors.subtleText,
@@ -792,7 +789,7 @@ const styles = StyleSheet.create({
               Access your government services securely
             </p>
 
-            {/* Mobile Number Field */}
+            {/* Username Input Field */}
             <div style={{ marginTop: 22 }}>
               <label
                 style={{
@@ -803,7 +800,7 @@ const styles = StyleSheet.create({
                   marginBottom: 6,
                 }}
               >
-                Mobile Number
+                Username
               </label>
               <div
                 style={{
@@ -816,24 +813,11 @@ const styles = StyleSheet.create({
                   height: 44,
                 }}
               >
-                <span
-                  style={{
-                    fontSize: 14,
-                    color: colors.mutedText,
-                    marginRight: 8,
-                    fontWeight: 500,
-                  }}
-                >
-                  +91
-                </span>
                 <input
-                  type="tel"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  maxLength={10}
-                  placeholder="Enter mobile number"
-                  value={mobileNumber}
-                  onChange={(e) => handleMobileNumberChange(e.target.value)}
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   style={{
                     border: 'none',
                     outline: 'none',
@@ -846,7 +830,66 @@ const styles = StyleSheet.create({
               </div>
             </div>
 
-            {/* Status Message Alert Banner */}
+            {/* Password Input Field with eye toggle */}
+            <div style={{ marginTop: 16 }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: isDark ? UX4GColors.neutral100 : UX4GColors.neutral800,
+                  marginBottom: 6,
+                }}
+              >
+                Password
+              </label>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: colors.inputBg,
+                  border: `1px solid ${colors.inputBorder}`,
+                  borderRadius: 8,
+                  padding: '0 12px',
+                  height: 44,
+                }}
+              >
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="............"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: 14,
+                    color: colors.title,
+                    width: '100%',
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    border: 'none',
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    color: colors.mutedText,
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: 0,
+                  }}
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
+                    {showPassword ? 'visibility_off' : 'visibility'}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Status Message Alert Banner: "Username not found." */}
             <div
               style={{
                 marginTop: 16,
@@ -869,7 +912,7 @@ const styles = StyleSheet.create({
                     color: colors.bannerTitle,
                   }}
                 >
-                  Your status message goes here
+                  Username not found.
                 </span>
               </div>
               <div
@@ -910,7 +953,7 @@ const styles = StyleSheet.create({
               </div>
             </div>
 
-            {/* Send OTP Primary Button */}
+            {/* Sign In Primary Button */}
             <button
               type="button"
               onClick={() => {
@@ -933,10 +976,10 @@ const styles = StyleSheet.create({
                 justifyContent: 'center',
               }}
             >
-              {isLoading ? 'Sending...' : 'Send OTP'}
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
 
-            {/* OR Divider with lM_default (12px, 500, letterSpacing 0.5px) */}
+            {/* OR Divider with lM_default */}
             <div
               style={{
                 display: 'flex',
@@ -1008,7 +1051,7 @@ const styles = StyleSheet.create({
             </div>
           </div>
 
-          {/* Powered by Digital India Footer with lS_default (11px, 500, 14px) */}
+          {/* Powered by Digital India Footer with lS_default */}
           <div
             style={{
               textAlign: 'center',
@@ -1048,11 +1091,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Sign in account with Mobile No</h1>
+          <h1 className="wb-title">Sign in to your account</h1>
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          Mobile-number sign-in pattern with a +91 prefix, an OTP send button, Aadhaar alternate sign-in, and status banner. Toggle between the default layout and the card-style layout. Mobile-sized layout (360px).
+          A government-grade sign-in pattern. Toggle between the default Username/Password layout and the card-style layout. Mobile-sized layout (360px).
         </p>
       </div>
 
@@ -1187,4 +1230,4 @@ const styles = StyleSheet.create({
   );
 };
 
-export default SignInAccountDoc;
+export default SignInDefaultDoc;
