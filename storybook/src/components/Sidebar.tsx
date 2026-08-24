@@ -605,6 +605,11 @@ const NAV_ITEMS: NavItem[] = [
                 icon: 'layers',
               },
               {
+                id: 'pattern-signin-aadhaar',
+                label: 'Sign in with Aadhaar',
+                icon: 'layers',
+              },
+              {
                 id: 'pattern-signin-mobile',
                 label: 'Sign in account with Mobile No',
                 icon: 'layers',

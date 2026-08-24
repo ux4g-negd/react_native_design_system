@@ -187,7 +187,7 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
   label = 'Aadhaar Number',
   required = false,
   placeholder = 'XXXX XXXX XXXX',
-  caption = 'Enter your 12-digit Aadhaar number',
+  caption,
   leadingIcon,
   trailingIcon,
   onTrailingIconPressed,
@@ -208,10 +208,10 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
     if (status === 'defaultStatus') {
       if (validateAadhaar(value)) {
         currentStatus = 'success';
-        currentCaption = 'Valid Aadhaar number';
+        currentCaption = caption !== undefined ? caption : 'Valid Aadhaar number';
       } else {
         currentStatus = 'error';
-        currentCaption = 'Please enter a valid Aadhaar number';
+        currentCaption = caption !== undefined ? caption : 'Please enter a valid Aadhaar number';
       }
     }
   }

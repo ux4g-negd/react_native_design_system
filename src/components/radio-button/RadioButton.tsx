@@ -192,10 +192,14 @@ export function Ux4gRadioButton<T = any>({
     ? UX4GColors.neutral700
     : UX4GColors.neutral300;
 
+  const defaultPrimaryColor = theme.isDark
+    ? UX4GColors.primary300
+    : theme.colors.primary;
+
   const radioColor = !enabled
     ? getHexWithAlpha(theme.colors.onSurface, '61') // 38% alpha
     : isSelected
-    ? color ?? statusColor ?? theme.colors.primary
+    ? color ?? statusColor ?? defaultPrimaryColor
     : unselectedBorderColor;
 
   // 4. Ring / Donut thickness and disabled fills
@@ -354,7 +358,7 @@ export function Ux4gRadioButton<T = any>({
                 backgroundColor: !enabled
                   ? radioColor
                   : theme.isDark
-                  ? UX4GColors.neutral1000black
+                  ? UX4GColors.gray900
                   : UX4GColors.white,
               }}
             />
@@ -472,7 +476,7 @@ const styles = StyleSheet.create({
   labelRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
   },
   labelText: {
     includeFontPadding: false,
