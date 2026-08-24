@@ -914,8 +914,7 @@ const styles = StyleSheet.create({
             <button
               type="button"
               onClick={() => {
-                setIsLoading(true);
-                setTimeout(() => setIsLoading(false), 1200);
+                alert('Send OTP clicked');
               }}
               style={{
                 marginTop: 20,
@@ -933,7 +932,7 @@ const styles = StyleSheet.create({
                 justifyContent: 'center',
               }}
             >
-              {isLoading ? 'Sending...' : 'Send OTP'}
+              Send OTP
             </button>
 
             {/* OR Divider with lM_default (12px, 500, letterSpacing 0.5px) */}

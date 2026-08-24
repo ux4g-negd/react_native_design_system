@@ -600,6 +600,11 @@ const NAV_ITEMS: NavItem[] = [
                 icon: 'layers',
               },
               {
+                id: 'pattern-signin-otp',
+                label: 'Enter OTP',
+                icon: 'layers',
+              },
+              {
                 id: 'pattern-signin-mobile',
                 label: 'Sign in account with Mobile No',
                 icon: 'layers',

@@ -56,6 +56,7 @@ import { PatternsCardsDoc } from './pages/PatternsCardsDoc';
 import { PatternsFeedbackDoc } from './pages/PatternsFeedbackDoc';
 import { SignInAccountDoc } from './pages/SignInAccountDoc';
 import { SignInDefaultDoc } from './pages/SignInDefaultDoc';
+import { EnterOtpDoc } from './pages/EnterOtpDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -73,6 +74,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
   if (page === 'pattern-signin-account') {
     return 'Patterns / Identity and Access / SignIn / Sign in to your account';
+  }
+  if (page === 'pattern-signin-otp' || page.includes('otp')) {
+    return 'Patterns / Identity and Access / SignIn / Enter OTP';
   }
   if (page === 'pattern-signin-mobile' || page.startsWith('signin') || page.startsWith('identity')) {
     return 'Patterns / Identity and Access / SignIn / Sign in account with Mobile No';
@@ -308,6 +312,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-signin-account') {
       return <SignInDefaultDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-signin-otp' || activePage === 'signin-otp' || activePage === 'enter-otp') {
+      return <EnterOtpDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-signin-mobile' || activePage.startsWith('signin') || activePage.startsWith('identity')) {
       return <SignInAccountDoc isDark={isDark} />;
