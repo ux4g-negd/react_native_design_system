@@ -49,6 +49,12 @@ import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
 import { DimensionsDoc, DimensionsSection } from './pages/DimensionsDoc';
+import { PatternsFormsDoc } from './pages/PatternsFormsDoc';
+import { PatternsHeadersDoc } from './pages/PatternsHeadersDoc';
+import { PatternsAuthDoc } from './pages/PatternsAuthDoc';
+import { PatternsCardsDoc } from './pages/PatternsCardsDoc';
+import { PatternsFeedbackDoc } from './pages/PatternsFeedbackDoc';
+import { SignInAccountDoc } from './pages/SignInAccountDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -64,6 +70,15 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-signin-account' || page.startsWith('signin') || page.startsWith('identity')) {
+    return 'Patterns / Identity and Access / SignIn / Sign in account with Mobile No';
+  }
+  if (page.startsWith('patterns-forms') || page === 'forms') return 'Patterns / Forms & Inputs';
+  if (page.startsWith('patterns-headers') || page === 'headers') return 'Patterns / App Headers';
+  if (page.startsWith('patterns-auth') || page === 'auth') return 'Patterns / Authentication & OTP';
+  if (page.startsWith('patterns-cards') || page === 'cards') return 'Patterns / Cards & Dashboards';
+  if (page.startsWith('patterns-feedback') || page === 'feedback') return 'Patterns / Feedback & Surveys';
+  if (page.startsWith('patterns')) return 'Patterns';
   if (page.startsWith('button')) return 'Components / Buttons';
   if (page.startsWith('carousel')) return 'Components / Carousel';
   if (page.startsWith('journey-timeline')) return 'Components / Journey Timeline';
@@ -286,6 +301,24 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-signin-account' || activePage.startsWith('signin') || activePage.startsWith('identity')) {
+      return <SignInAccountDoc isDark={isDark} />;
+    }
+    if (activePage === 'patterns-forms' || activePage === 'forms') {
+      return <PatternsFormsDoc isDark={isDark} />;
+    }
+    if (activePage === 'patterns-headers' || activePage === 'headers') {
+      return <PatternsHeadersDoc isDark={isDark} />;
+    }
+    if (activePage === 'patterns-auth' || activePage === 'auth') {
+      return <PatternsAuthDoc isDark={isDark} />;
+    }
+    if (activePage === 'patterns-cards' || activePage === 'cards') {
+      return <PatternsCardsDoc isDark={isDark} />;
+    }
+    if (activePage === 'patterns-feedback' || activePage === 'feedback') {
+      return <PatternsFeedbackDoc isDark={isDark} />;
     }
 
     switch (activePage) {

@@ -579,15 +579,32 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  // {
-  //   id: 'patterns',
-  //   label: 'Patterns',
-  //   icon: 'folder',
-  //   children: [
-  //     { id: 'forms', label: 'Forms', icon: 'assignment' },
-  //     { id: 'headers', label: 'Headers', icon: 'web' },
-  //   ],
-  // },
+  {
+    id: 'patterns',
+    label: 'Patterns',
+    icon: 'folder',
+    children: [
+      {
+        id: 'identity-and-access-group',
+        label: 'Identity and Access',
+        icon: 'folder',
+        children: [
+          {
+            id: 'signin-group',
+            label: 'SignIn',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-signin-account',
+                label: 'Sign in account with Mobile No',
+                icon: 'layers',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // Sort the Components group alphabetically by label (sub-sections keep their own order)
@@ -621,7 +638,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
-    if (['forms', 'headers'].includes(page)) return ['patterns'];
+    if (page === 'pattern-signin-account' || page.startsWith('signin') || page.startsWith('identity')) {
+      return ['patterns', 'identity-and-access-group', 'signin-group'];
+    }
+    if (page.startsWith('patterns-') || ['patterns', 'forms', 'headers', 'auth', 'cards', 'feedback'].includes(page)) return ['patterns'];
     if (page.startsWith('button')) return ['components', 'button-group'];
     if (page.startsWith('date-picker')) return ['components', 'date-picker-group'];
     if (page.startsWith('modal')) return ['components', 'modal-group'];
@@ -748,7 +768,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const renderNavItem = (item: NavItem, depth: number): React.ReactElement => {
-    if (item.children) {
+    if (item.children && item.children.length > 0) {
       const isExpanded = expandedGroups[item.id] || !!searchQuery.trim();
       return (
         <div key={item.id}>

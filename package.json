@@ -1,6 +1,6 @@
 {
   "name": "ux4g-react-native-design-system",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Foundations, design tokens, and theme architecture of the UX4G Design System for React Native and TypeScript.",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",

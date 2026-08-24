@@ -248,8 +248,18 @@ const PAGE_TO_PATH: Record<string, string> = {
   'slider-custom-range': 'components/slider/custom-range',
   'slider-formatter': 'components/slider/formatter',
   'slider-disabled': 'components/slider/disabled',
+  'patterns-forms': 'patterns/forms',
+  'patterns-headers': 'patterns/headers',
+  'patterns-auth': 'patterns/authentication',
+  'patterns-cards': 'patterns/cards',
+  'patterns-feedback': 'patterns/feedback',
+  'pattern-signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
+  'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   forms: 'patterns/forms',
   headers: 'patterns/headers',
+  auth: 'patterns/authentication',
+  cards: 'patterns/cards',
+  feedback: 'patterns/feedback',
 };
 
 // Reverse map from clean URL path to activePage ID
@@ -567,6 +577,17 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('formatter')) return 'slider-formatter';
     if (cleanPath.includes('disabled')) return 'slider-disabled';
     return 'slider-basic';
+  }
+
+  if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('sign-in') || cleanPath.includes('signin') || cleanPath.includes('account') || cleanPath.includes('identity')) {
+      return 'pattern-signin-account';
+    }
+    if (cleanPath.includes('header')) return 'patterns-headers';
+    if (cleanPath.includes('auth') || cleanPath.includes('otp')) return 'patterns-auth';
+    if (cleanPath.includes('card') || cleanPath.includes('dashboard')) return 'patterns-cards';
+    if (cleanPath.includes('feedback') || cleanPath.includes('survey')) return 'patterns-feedback';
+    return 'pattern-signin-account';
   }
 
   return PATH_TO_PAGE[cleanPath] ?? 'introduction';
