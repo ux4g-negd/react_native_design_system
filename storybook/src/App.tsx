@@ -59,6 +59,7 @@ import { SignInDefaultDoc } from './pages/SignInDefaultDoc';
 import { EnterOtpDoc } from './pages/EnterOtpDoc';
 import { SignInAadhaarDoc } from './pages/SignInAadhaarDoc';
 import { SignedInSuccessDoc } from './pages/SignedInSuccessDoc';
+import { VerifyMobileOtpDoc } from './pages/VerifyMobileOtpDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -74,6 +75,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-otp-verify-mobile' || page.includes('verify-mobile') || page.includes('verify-your-mobile-number')) {
+    return 'Patterns / Identity and Access / OTP Verification / Verify your mobile number';
+  }
   if (page === 'pattern-signin-account') {
     return 'Patterns / Identity and Access / SignIn / Sign in to your account';
   }
@@ -317,6 +321,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-otp-verify-mobile' || activePage === 'verify-mobile' || activePage === 'verify-your-mobile-number') {
+      return <VerifyMobileOtpDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-signin-account') {
       return <SignInDefaultDoc isDark={isDark} />;

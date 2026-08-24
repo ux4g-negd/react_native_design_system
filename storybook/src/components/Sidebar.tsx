@@ -621,6 +621,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'otp-verification-group',
+            label: 'OTP Verification',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-otp-verify-mobile',
+                label: 'Verify your mobile number',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -658,6 +670,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
+    if (page === 'pattern-otp-verify-mobile' || page.startsWith('pattern-otp') || page.includes('verify-mobile')) {
+      return ['patterns', 'identity-and-access-group', 'otp-verification-group'];
+    }
     if (page === 'pattern-signin-account' || page.startsWith('signin') || page.startsWith('identity')) {
       return ['patterns', 'identity-and-access-group', 'signin-group'];
     }

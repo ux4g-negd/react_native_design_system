@@ -258,6 +258,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-signin-aadhaar': 'patterns/identity-and-access/signin/sign-in-with-aadhaar',
   'pattern-signin-success': 'patterns/identity-and-access/signin/signed-in-success',
   'pattern-signin-mobile': 'patterns/identity-and-access/signin/sign-in-account-with-mobile-no',
+  'pattern-otp-verify-mobile': 'patterns/identity-and-access/otp-verification/verify-your-mobile-number',
+  'verify-your-mobile-number': 'patterns/identity-and-access/otp-verification/verify-your-mobile-number',
+  'verify-mobile': 'patterns/identity-and-access/otp-verification/verify-your-mobile-number',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -591,6 +594,15 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('verify-your-mobile-number') || cleanPath.includes('verify-mobile') || (cleanPath.includes('otp-verification') && cleanPath.includes('mobile'))) {
+      return 'pattern-otp-verify-mobile';
+    }
+    if (cleanPath.includes('enter-otp') || cleanPath.includes('signin-otp') || cleanPath.includes('signin/otp')) {
+      return 'pattern-signin-otp';
+    }
+    if (cleanPath.includes('otp-verification')) {
+      return 'pattern-otp-verify-mobile';
+    }
     if (cleanPath.includes('otp')) {
       return 'pattern-signin-otp';
     }
