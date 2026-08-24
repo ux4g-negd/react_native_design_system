@@ -641,6 +641,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Verify mobile with attempt warning',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-otp-verify-last-attempt',
+                label: 'Verify mobile with last-attempt warning',
+                icon: 'layers',
+              },
             ],
           },
         ],

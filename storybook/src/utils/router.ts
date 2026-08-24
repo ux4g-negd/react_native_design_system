@@ -268,6 +268,11 @@ const PAGE_TO_PATH: Record<string, string> = {
   'verify-mobile-with-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning',
   'verify-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning',
   'verify-attempt': 'patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning',
+  'pattern-otp-verify-last-attempt': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
+  'verify-mobile-with-last-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
+  'verify-mobile-with-lats-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
+  'verify-last-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
+  'verify-last-attempt': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -601,6 +606,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('verify-mobile-with-last-attempt-warning') || cleanPath.includes('last-attempt') || cleanPath.includes('lats-attempt') || (cleanPath.includes('otp-verification') && (cleanPath.includes('last') || cleanPath.includes('lats')))) {
+      return 'pattern-otp-verify-last-attempt';
+    }
     if (cleanPath.includes('verify-mobile-with-attempt-warning') || cleanPath.includes('attempt-warning') || cleanPath.includes('verify-attempt') || (cleanPath.includes('otp-verification') && cleanPath.includes('attempt'))) {
       return 'pattern-otp-verify-attempt-warning';
     }
