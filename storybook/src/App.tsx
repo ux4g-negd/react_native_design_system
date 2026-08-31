@@ -68,6 +68,7 @@ import { OtpVerifiedSuccessDoc } from './pages/OtpVerifiedSuccessDoc';
 import { SessionTimeoutDialogDoc } from './pages/SessionTimeoutDialogDoc';
 import { AuthIncorrectOtpDoc } from './pages/AuthIncorrectOtpDoc';
 import { AuthAttemptWarningDoc } from './pages/AuthAttemptWarningDoc';
+import { AuthLastAttemptDoc } from './pages/AuthLastAttemptDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -83,6 +84,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-auth-last-attempt' || page.includes('last-attempt-warning') || page.includes('last-attempt')) {
+    return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — last-attempt warning';
+  }
   if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
   }
@@ -359,6 +363,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-auth-last-attempt' || activePage.includes('last-attempt-warning') || (activePage.includes('auth-errors') && activePage.includes('last-attempt'))) {
+      return <AuthLastAttemptDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-auth-attempt-warning' || activePage.includes('attempt-warning') || (activePage.includes('auth-errors') && activePage.includes('attempt'))) {
       return <AuthAttemptWarningDoc isDark={isDark} />;
