@@ -305,6 +305,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-auth-suspicious-activity': 'patterns/identity-and-access/auth-errors-and-lockout/otp-step-up-suspicious-activity',
   'otp-step-up-suspicious-activity': 'patterns/identity-and-access/auth-errors-and-lockout/otp-step-up-suspicious-activity',
   'suspicious-activity': 'patterns/identity-and-access/auth-errors-and-lockout/otp-step-up-suspicious-activity',
+  'pattern-aadhaar-verify-method': 'patterns/identity-and-access/aadhaar-authentication-gate/verify-with-aadhaar-choose-method',
+  'aadhaar-verify-method': 'patterns/identity-and-access/aadhaar-authentication-gate/verify-with-aadhaar-choose-method',
+  'verify-with-aadhaar-choose-method': 'patterns/identity-and-access/aadhaar-authentication-gate/verify-with-aadhaar-choose-method',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -638,6 +641,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('verify-with-aadhaar-choose-method') || cleanPath.includes('aadhaar-verify-method') || (cleanPath.includes('aadhaar') && cleanPath.includes('choose-method'))) {
+      return 'pattern-aadhaar-verify-method';
+    }
     if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
       return 'pattern-auth-suspicious-activity';
     }

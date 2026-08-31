@@ -72,6 +72,7 @@ import { AuthLastAttemptDoc } from './pages/AuthLastAttemptDoc';
 import { AuthAccountLockedDoc } from './pages/AuthAccountLockedDoc';
 import { AuthRetryUnlockedDoc } from './pages/AuthRetryUnlockedDoc';
 import { AuthSuspiciousActivityDoc } from './pages/AuthSuspiciousActivityDoc';
+import { AadhaarVerifyMethodDoc } from './pages/AadhaarVerifyMethodDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -87,6 +88,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-aadhaar-verify-method' || page.includes('aadhaar-verify-method') || page.includes('choose-method')) {
+    return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Verify with Aadhaar — choose method';
+  }
   if (page === 'pattern-auth-suspicious-activity' || page.includes('suspicious-activity')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP step-up — suspicious activity';
   }
@@ -375,6 +379,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-aadhaar-verify-method' || activePage.includes('aadhaar-verify-method') || activePage.includes('choose-method')) {
+      return <AadhaarVerifyMethodDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-auth-suspicious-activity' || activePage.includes('suspicious-activity') || (activePage.includes('auth-errors') && activePage.includes('suspicious'))) {
       return <AuthSuspiciousActivityDoc isDark={isDark} />;

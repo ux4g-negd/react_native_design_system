@@ -707,6 +707,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'aadhaar-auth-gate-group',
+            label: 'Aadhaar Authentication Gate',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-aadhaar-verify-method',
+                label: 'Verify with Aadhaar — choose method',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
