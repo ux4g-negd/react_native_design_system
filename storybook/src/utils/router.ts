@@ -311,6 +311,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-aadhaar-otp-enter': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-otp-enter-code',
   'aadhaar-otp-enter-code': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-otp-enter-code',
   'aadhaar-otp-enter': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-otp-enter-code',
+  'pattern-aadhaar-face-auth-permission': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-face-auth-camera-permission',
+  'aadhaar-face-auth-camera-permission': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-face-auth-camera-permission',
+  'aadhaar-face-auth-permission': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-face-auth-camera-permission',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -644,6 +647,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('aadhaar-face-auth-camera-permission') || cleanPath.includes('aadhaar-face-auth-permission') || (cleanPath.includes('aadhaar') && cleanPath.includes('camera-permission'))) {
+      return 'pattern-aadhaar-face-auth-permission';
+    }
     if (cleanPath.includes('aadhaar-otp-enter-code') || cleanPath.includes('aadhaar-otp-enter') || (cleanPath.includes('aadhaar') && cleanPath.includes('enter-code'))) {
       return 'pattern-aadhaar-otp-enter';
     }

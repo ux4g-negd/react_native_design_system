@@ -722,6 +722,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Aadhaar OTP — enter code',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-aadhaar-face-auth-permission',
+                label: 'Aadhaar Face Auth — camera permission',
+                icon: 'layers',
+              },
             ],
           },
         ],
