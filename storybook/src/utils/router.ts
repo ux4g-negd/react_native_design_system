@@ -302,6 +302,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-auth-retry-unlocked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-retry-unlocked',
   'otp-retry-unlocked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-retry-unlocked',
   'retry-unlocked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-retry-unlocked',
+  'pattern-auth-suspicious-activity': 'patterns/identity-and-access/auth-errors-and-lockout/otp-step-up-suspicious-activity',
+  'otp-step-up-suspicious-activity': 'patterns/identity-and-access/auth-errors-and-lockout/otp-step-up-suspicious-activity',
+  'suspicious-activity': 'patterns/identity-and-access/auth-errors-and-lockout/otp-step-up-suspicious-activity',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -635,6 +638,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
+      return 'pattern-auth-suspicious-activity';
+    }
     if (cleanPath.includes('otp-retry-unlocked') || cleanPath.includes('retry-unlocked') || (cleanPath.includes('auth-errors') && cleanPath.includes('unlocked'))) {
       return 'pattern-auth-retry-unlocked';
     }

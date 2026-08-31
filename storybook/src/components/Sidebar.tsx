@@ -700,6 +700,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'OTP retry — unlocked',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-auth-suspicious-activity',
+                label: 'OTP step-up — suspicious activity',
+                icon: 'layers',
+              },
             ],
           },
         ],
