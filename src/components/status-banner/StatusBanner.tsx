@@ -268,7 +268,7 @@ export const Ux4gStatusBanner: React.FC<Ux4gStatusBannerProps> = ({
         defaultIcon = Ux4gIcons.warning({ size: 20, color: onWarning });
         break;
       case 'errorLight':
-        defaultIcon = Ux4gIcons.error({ size: 20, color: error });
+        defaultIcon = Ux4gIcons.fillRevInfo({ size: 20, color: error });
         break;
       case 'successLight':
         defaultIcon = Ux4gIcons.success({ size: 20, color: success });
@@ -444,6 +444,7 @@ const styles = StyleSheet.create({
   },
   subtitleMargin: {
     marginTop: 4,
+    alignSelf: 'flex-start',
   },
   trailingContainer: {
     marginLeft: 16,

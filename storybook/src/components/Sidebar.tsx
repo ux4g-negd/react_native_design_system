@@ -732,6 +732,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Aadhaar verified — success',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-aadhaar-verification-failed',
+                label: 'Aadhaar verification failed',
+                icon: 'layers',
+              },
             ],
           },
         ],
