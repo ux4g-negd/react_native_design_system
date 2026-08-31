@@ -19,12 +19,18 @@ import { UnionLogo } from '../components/UnionLogo';
 
 interface VerifyMobileAccountLockedDocProps {
   isDark: boolean;
+  pageTitle?: string;
+  breadcrumb?: string;
 }
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'default' | 'card';
 
-export const VerifyMobileAccountLockedDoc: React.FC<VerifyMobileAccountLockedDocProps> = ({ isDark }) => {
+export const VerifyMobileAccountLockedDoc: React.FC<VerifyMobileAccountLockedDocProps> = ({
+  isDark,
+  pageTitle = 'Verify mobile — account locked',
+  breadcrumb,
+}) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
 
@@ -1062,16 +1068,29 @@ const styles = StyleSheet.create({
   };
 
   return (
-    <div className="wb-page">
+    <div className={`wb-page ${isDark ? 'dark' : ''}`}>
       {/* Header */}
       <div className="wb-header">
-        <div className="wb-header-row">
-          <h1 className="wb-title">Verify mobile — account locked</h1>
-          <span className="wb-badge">Pattern</span>
+        <div>
+          {breadcrumb ? (
+            <div className="wb-breadcrumb">
+              {breadcrumb.split(' / ').map((part, idx, arr) => (
+                <React.Fragment key={idx}>
+                  <span className={idx === arr.length - 1 ? 'active' : ''}>{part}</span>
+                  {idx < arr.length - 1 && ' / '}
+                </React.Fragment>
+              ))}
+            </div>
+          ) : (
+            <div className="wb-breadcrumb">
+              <span>Patterns</span> / <span>Identity and Access</span> / <span>OTP Verification</span> / <span className="active">{pageTitle}</span>
+            </div>
+          )}
+          <h1 className="wb-title">{pageTitle}</h1>
+          <p className="wb-subtitle">
+            Terminal lockout state shown after the user exhausts all OTP attempts. Includes a disabled OTP field, a live "Locked for mm:ss" caption from the design-system OTP component, an error banner, and a support phone link. Use the [Variant] knob on the right to toggle between the flat layout and the card-style layout. Mobile-sized layout (360px).
+          </p>
         </div>
-        <p className="wb-subtitle">
-          Terminal lockout state shown after the user exhausts all OTP attempts. Includes a disabled OTP field, a live "Locked for mm:ss" caption from the design-system OTP component, an error banner, and a support phone link. Use the [Variant] knob on the right to toggle between the flat layout and the card-style layout. Mobile-sized layout (360px).
-        </p>
       </div>
 
       {/* Main Body */}

@@ -297,6 +297,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-auth-last-attempt': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-last-attempt-warning',
   'otp-error-last-attempt-warning': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-last-attempt-warning',
   'last-attempt-warning': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-last-attempt-warning',
+  'pattern-auth-account-locked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-account-locked',
+  'otp-error-account-locked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-account-locked',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -630,6 +632,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('otp-error-account-locked') || (cleanPath.includes('auth-errors') && cleanPath.includes('account-locked')) || (cleanPath.includes('auth-errors') && cleanPath.includes('locked'))) {
+      return 'pattern-auth-account-locked';
+    }
     if (cleanPath.includes('otp-error-last-attempt-warning') || cleanPath.includes('last-attempt-warning') || (cleanPath.includes('auth-errors') && cleanPath.includes('last-attempt'))) {
       return 'pattern-auth-last-attempt';
     }

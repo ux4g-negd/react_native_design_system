@@ -690,6 +690,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'OTP error — last-attempt warning',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-auth-account-locked',
+                label: 'OTP error — account locked',
+                icon: 'layers',
+              },
             ],
           },
         ],
