@@ -291,6 +291,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-auth-incorrect-otp': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-incorrect-entry',
   'otp-error-incorrect-entry': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-incorrect-entry',
   'incorrect-entry': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-incorrect-entry',
+  'pattern-auth-attempt-warning': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-attempt-warning',
+  'otp-error-attempt-warning': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-attempt-warning',
+  'attempt-warning': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-attempt-warning',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -624,6 +627,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('otp-error-attempt-warning') || cleanPath.includes('attempt-warning') || (cleanPath.includes('auth-errors') && cleanPath.includes('attempt'))) {
+      return 'pattern-auth-attempt-warning';
+    }
     if (cleanPath.includes('otp-error-incorrect-entry') || cleanPath.includes('incorrect-entry') || (cleanPath.includes('auth-errors') && cleanPath.includes('incorrect'))) {
       return 'pattern-auth-incorrect-otp';
     }

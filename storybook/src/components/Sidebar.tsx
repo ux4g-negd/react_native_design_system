@@ -680,6 +680,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'OTP error — incorrect entry',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-auth-attempt-warning',
+                label: 'OTP error — attempt warning',
+                icon: 'layers',
+              },
             ],
           },
         ],

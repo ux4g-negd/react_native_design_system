@@ -67,6 +67,7 @@ import { VerifyMobileAccountLockedDoc } from './pages/VerifyMobileAccountLockedD
 import { OtpVerifiedSuccessDoc } from './pages/OtpVerifiedSuccessDoc';
 import { SessionTimeoutDialogDoc } from './pages/SessionTimeoutDialogDoc';
 import { AuthIncorrectOtpDoc } from './pages/AuthIncorrectOtpDoc';
+import { AuthAttemptWarningDoc } from './pages/AuthAttemptWarningDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -82,6 +83,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
+    return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
+  }
   if (page === 'pattern-auth-incorrect-otp' || page.includes('incorrect-entry')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — incorrect entry';
   }
@@ -355,6 +359,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-auth-attempt-warning' || activePage.includes('attempt-warning') || (activePage.includes('auth-errors') && activePage.includes('attempt'))) {
+      return <AuthAttemptWarningDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-auth-incorrect-otp' || activePage.includes('incorrect-entry') || (activePage.includes('auth-errors') && activePage.includes('incorrect'))) {
       return <AuthIncorrectOtpDoc isDark={isDark} />;
