@@ -668,7 +668,18 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Your session is expiring',
                 icon: 'layers',
               },
-
+            ],
+          },
+          {
+            id: 'auth-errors-and-lockout-group',
+            label: 'Auth errors and lockout',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-auth-incorrect-otp',
+                label: 'OTP error — incorrect entry',
+                icon: 'layers',
+              },
             ],
           },
         ],

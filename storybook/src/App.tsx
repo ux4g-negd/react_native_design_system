@@ -66,6 +66,7 @@ import { VerifyMobileLastAttemptDoc } from './pages/VerifyMobileLastAttemptDoc';
 import { VerifyMobileAccountLockedDoc } from './pages/VerifyMobileAccountLockedDoc';
 import { OtpVerifiedSuccessDoc } from './pages/OtpVerifiedSuccessDoc';
 import { SessionTimeoutDialogDoc } from './pages/SessionTimeoutDialogDoc';
+import { AuthIncorrectOtpDoc } from './pages/AuthIncorrectOtpDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -81,6 +82,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-auth-incorrect-otp' || page.includes('incorrect-entry')) {
+    return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — incorrect entry';
+  }
   if (page === 'pattern-session-ended' || (page.includes('session') && page.includes('ended'))) {
     return 'Patterns / Identity and Access / Session Time-out Dialog / Session ended';
   }
@@ -351,6 +355,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-auth-incorrect-otp' || activePage.includes('incorrect-entry') || (activePage.includes('auth-errors') && activePage.includes('incorrect'))) {
+      return <AuthIncorrectOtpDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-session-ended' || (activePage.includes('session') && activePage.includes('ended'))) {
       return <SessionTimeoutDialogDoc isDark={isDark} initialSubTab="session-ended" />;

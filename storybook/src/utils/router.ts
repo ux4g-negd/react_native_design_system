@@ -288,6 +288,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'session-expiring-soon': 'patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring-soon',
   'pattern-session-ended': 'patterns/identity-and-access/session-timeout-dialog/session-ended',
   'session-ended': 'patterns/identity-and-access/session-timeout-dialog/session-ended',
+  'pattern-auth-incorrect-otp': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-incorrect-entry',
+  'otp-error-incorrect-entry': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-incorrect-entry',
+  'incorrect-entry': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-incorrect-entry',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -621,6 +624,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('otp-error-incorrect-entry') || cleanPath.includes('incorrect-entry') || (cleanPath.includes('auth-errors') && cleanPath.includes('incorrect'))) {
+      return 'pattern-auth-incorrect-otp';
+    }
     if (cleanPath.includes('session-ended') || (cleanPath.includes('session-timeout') && cleanPath.includes('ended'))) {
       return 'pattern-session-ended';
     }
