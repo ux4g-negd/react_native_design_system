@@ -651,6 +651,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Verify mobile — account locked',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-otp-verify-success',
+                label: 'OTP verified — success',
+                icon: 'layers',
+              },
             ],
           },
         ],

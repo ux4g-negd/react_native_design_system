@@ -64,6 +64,7 @@ import { VerifyMobileVoiceDoc } from './pages/VerifyMobileVoiceDoc';
 import { VerifyMobileAttemptWarningDoc } from './pages/VerifyMobileAttemptWarningDoc';
 import { VerifyMobileLastAttemptDoc } from './pages/VerifyMobileLastAttemptDoc';
 import { VerifyMobileAccountLockedDoc } from './pages/VerifyMobileAccountLockedDoc';
+import { OtpVerifiedSuccessDoc } from './pages/OtpVerifiedSuccessDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -79,6 +80,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-otp-verify-success' || page.includes('otp-verified-success') || page.includes('otp-success')) {
+    return 'Patterns / Identity and Access / OTP Verification / OTP verified — success';
+  }
   if (page === 'pattern-otp-verify-account-locked' || page.includes('account-locked') || page.includes('locked')) {
     return 'Patterns / Identity and Access / OTP Verification / Verify mobile — account locked';
   }
@@ -337,6 +341,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-otp-verify-success' || activePage === 'otp-verified-success' || activePage.includes('otp-verified') || activePage.includes('otp-success')) {
+      return <OtpVerifiedSuccessDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-otp-verify-account-locked' || activePage === 'verify-mobile-account-locked' || activePage.includes('account-locked')) {
       return <VerifyMobileAccountLockedDoc isDark={isDark} />;

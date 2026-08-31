@@ -277,6 +277,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'verify-mobile-account-locked': 'patterns/identity-and-access/otp-verification/verify-mobile-account-locked',
   'verify-account-locked': 'patterns/identity-and-access/otp-verification/verify-mobile-account-locked',
   'account-locked': 'patterns/identity-and-access/otp-verification/verify-mobile-account-locked',
+  'pattern-otp-verify-success': 'patterns/identity-and-access/otp-verification/otp-verified-success',
+  'otp-verified-success': 'patterns/identity-and-access/otp-verification/otp-verified-success',
+  'otp-success': 'patterns/identity-and-access/otp-verification/otp-verified-success',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -610,6 +613,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('otp-verified-success') || cleanPath.includes('otp-verified') || (cleanPath.includes('otp-verification') && cleanPath.includes('success'))) {
+      return 'pattern-otp-verify-success';
+    }
     if (cleanPath.includes('verify-mobile-account-locked') || cleanPath.includes('account-locked') || (cleanPath.includes('otp-verification') && cleanPath.includes('locked')) || (cleanPath.includes('locked') && cleanPath.includes('mobile'))) {
       return 'pattern-otp-verify-account-locked';
     }
