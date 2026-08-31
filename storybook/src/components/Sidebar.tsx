@@ -658,6 +658,19 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'session-timeout-dialog-group',
+            label: 'Session Time-out Dialog',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-session-expiring',
+                label: 'Your session is expiring',
+                icon: 'layers',
+              },
+
+            ],
+          },
         ],
       },
     ],

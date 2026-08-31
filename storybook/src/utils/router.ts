@@ -280,6 +280,14 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-otp-verify-success': 'patterns/identity-and-access/otp-verification/otp-verified-success',
   'otp-verified-success': 'patterns/identity-and-access/otp-verification/otp-verified-success',
   'otp-success': 'patterns/identity-and-access/otp-verification/otp-verified-success',
+  'pattern-session-expiring': 'patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring',
+  'your-session-is-expiring': 'patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring',
+  'session-expiring': 'patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring',
+  'pattern-session-expiring-soon': 'patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring-soon',
+  'your-session-is-expiring-soon': 'patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring-soon',
+  'session-expiring-soon': 'patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring-soon',
+  'pattern-session-ended': 'patterns/identity-and-access/session-timeout-dialog/session-ended',
+  'session-ended': 'patterns/identity-and-access/session-timeout-dialog/session-ended',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -613,6 +621,15 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('session-ended') || (cleanPath.includes('session-timeout') && cleanPath.includes('ended'))) {
+      return 'pattern-session-ended';
+    }
+    if (cleanPath.includes('your-session-is-expiring-soon') || cleanPath.includes('expiring-soon') || (cleanPath.includes('session-timeout') && cleanPath.includes('soon'))) {
+      return 'pattern-session-expiring-soon';
+    }
+    if (cleanPath.includes('your-session-is-expiring') || cleanPath.includes('session-expiring') || cleanPath.includes('session-timeout')) {
+      return 'pattern-session-expiring';
+    }
     if (cleanPath.includes('otp-verified-success') || cleanPath.includes('otp-verified') || (cleanPath.includes('otp-verification') && cleanPath.includes('success'))) {
       return 'pattern-otp-verify-success';
     }

@@ -65,6 +65,7 @@ import { VerifyMobileAttemptWarningDoc } from './pages/VerifyMobileAttemptWarnin
 import { VerifyMobileLastAttemptDoc } from './pages/VerifyMobileLastAttemptDoc';
 import { VerifyMobileAccountLockedDoc } from './pages/VerifyMobileAccountLockedDoc';
 import { OtpVerifiedSuccessDoc } from './pages/OtpVerifiedSuccessDoc';
+import { SessionTimeoutDialogDoc } from './pages/SessionTimeoutDialogDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -80,6 +81,15 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-session-ended' || (page.includes('session') && page.includes('ended'))) {
+    return 'Patterns / Identity and Access / Session Time-out Dialog / Session ended';
+  }
+  if (page === 'pattern-session-expiring-soon' || page.includes('expiring-soon')) {
+    return 'Patterns / Identity and Access / Session Time-out Dialog / Your session is expiring soon';
+  }
+  if (page === 'pattern-session-expiring' || page.includes('session')) {
+    return 'Patterns / Identity and Access / Session Time-out Dialog / Your session is expiring';
+  }
   if (page === 'pattern-otp-verify-success' || page.includes('otp-verified-success') || page.includes('otp-success')) {
     return 'Patterns / Identity and Access / OTP Verification / OTP verified — success';
   }
@@ -341,6 +351,15 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-session-ended' || (activePage.includes('session') && activePage.includes('ended'))) {
+      return <SessionTimeoutDialogDoc isDark={isDark} initialSubTab="session-ended" />;
+    }
+    if (activePage === 'pattern-session-expiring-soon' || activePage.includes('expiring-soon')) {
+      return <SessionTimeoutDialogDoc isDark={isDark} initialSubTab="expiring-soon" />;
+    }
+    if (activePage === 'pattern-session-expiring' || activePage.includes('session-expiring') || activePage.includes('session-timeout')) {
+      return <SessionTimeoutDialogDoc isDark={isDark} initialSubTab="expiring" />;
     }
     if (activePage === 'pattern-otp-verify-success' || activePage === 'otp-verified-success' || activePage.includes('otp-verified') || activePage.includes('otp-success')) {
       return <OtpVerifiedSuccessDoc isDark={isDark} />;
