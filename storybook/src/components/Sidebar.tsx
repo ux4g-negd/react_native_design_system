@@ -717,6 +717,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Verify with Aadhaar — choose method',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-aadhaar-otp-enter',
+                label: 'Aadhaar OTP — enter code',
+                icon: 'layers',
+              },
             ],
           },
         ],

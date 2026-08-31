@@ -73,6 +73,7 @@ import { AuthAccountLockedDoc } from './pages/AuthAccountLockedDoc';
 import { AuthRetryUnlockedDoc } from './pages/AuthRetryUnlockedDoc';
 import { AuthSuspiciousActivityDoc } from './pages/AuthSuspiciousActivityDoc';
 import { AadhaarVerifyMethodDoc } from './pages/AadhaarVerifyMethodDoc';
+import { AadhaarOtpEnterDoc } from './pages/AadhaarOtpEnterDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -88,6 +89,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-aadhaar-otp-enter' || page.includes('aadhaar-otp-enter') || page.includes('enter-code')) {
+    return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Aadhaar OTP — enter code';
+  }
   if (page === 'pattern-aadhaar-verify-method' || page.includes('aadhaar-verify-method') || page.includes('choose-method')) {
     return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Verify with Aadhaar — choose method';
   }
@@ -379,6 +383,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-aadhaar-otp-enter' || activePage.includes('aadhaar-otp-enter') || activePage.includes('enter-code')) {
+      return <AadhaarOtpEnterDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-aadhaar-verify-method' || activePage.includes('aadhaar-verify-method') || activePage.includes('choose-method')) {
       return <AadhaarVerifyMethodDoc isDark={isDark} />;

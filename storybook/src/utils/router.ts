@@ -308,6 +308,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-aadhaar-verify-method': 'patterns/identity-and-access/aadhaar-authentication-gate/verify-with-aadhaar-choose-method',
   'aadhaar-verify-method': 'patterns/identity-and-access/aadhaar-authentication-gate/verify-with-aadhaar-choose-method',
   'verify-with-aadhaar-choose-method': 'patterns/identity-and-access/aadhaar-authentication-gate/verify-with-aadhaar-choose-method',
+  'pattern-aadhaar-otp-enter': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-otp-enter-code',
+  'aadhaar-otp-enter-code': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-otp-enter-code',
+  'aadhaar-otp-enter': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-otp-enter-code',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -641,6 +644,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('aadhaar-otp-enter-code') || cleanPath.includes('aadhaar-otp-enter') || (cleanPath.includes('aadhaar') && cleanPath.includes('enter-code'))) {
+      return 'pattern-aadhaar-otp-enter';
+    }
     if (cleanPath.includes('verify-with-aadhaar-choose-method') || cleanPath.includes('aadhaar-verify-method') || (cleanPath.includes('aadhaar') && cleanPath.includes('choose-method'))) {
       return 'pattern-aadhaar-verify-method';
     }
