@@ -319,6 +319,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-aadhaar-verification-failed': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-verification-failed',
   'aadhaar-verification-failed': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-verification-failed',
   'aadhaar-failed': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-verification-failed',
+  'pattern-aadhaar-account-locked': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-account-locked',
+  'aadhaar-account-locked': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-account-locked',
+  'aadhaar-locked': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-account-locked',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -652,6 +655,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('aadhaar-account-locked') || (cleanPath.includes('aadhaar') && cleanPath.includes('locked'))) {
+      return 'pattern-aadhaar-account-locked';
+    }
     if (cleanPath.includes('aadhaar-verification-failed') || (cleanPath.includes('aadhaar') && cleanPath.includes('failed'))) {
       return 'pattern-aadhaar-verification-failed';
     }

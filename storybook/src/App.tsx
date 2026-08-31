@@ -77,6 +77,7 @@ import { AadhaarOtpEnterDoc } from './pages/AadhaarOtpEnterDoc';
 import { AadhaarFaceAuthPermissionDoc } from './pages/AadhaarFaceAuthPermissionDoc';
 import { AadhaarVerifiedSuccessDoc } from './pages/AadhaarVerifiedSuccessDoc';
 import { AadhaarVerificationFailedDoc } from './pages/AadhaarVerificationFailedDoc';
+import { AadhaarAccountLockedDoc } from './pages/AadhaarAccountLockedDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -92,6 +93,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-aadhaar-account-locked' || page.includes('aadhaar-account-locked') || page.includes('aadhaar-locked')) {
+    return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Aadhaar account locked';
+  }
   if (page === 'pattern-aadhaar-verification-failed' || page.includes('aadhaar-verification-failed') || page.includes('aadhaar-failed')) {
     return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Aadhaar verification failed';
   }
@@ -395,6 +399,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-aadhaar-account-locked' || activePage.includes('aadhaar-account-locked') || activePage.includes('aadhaar-locked')) {
+      return <AadhaarAccountLockedDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-aadhaar-verification-failed' || activePage.includes('aadhaar-verification-failed') || activePage.includes('aadhaar-failed')) {
       return <AadhaarVerificationFailedDoc isDark={isDark} />;

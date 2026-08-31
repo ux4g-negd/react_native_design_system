@@ -737,6 +737,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Aadhaar verification failed',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-aadhaar-account-locked',
+                label: 'Aadhaar account locked',
+                icon: 'layers',
+              },
             ],
           },
         ],
