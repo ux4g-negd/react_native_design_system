@@ -299,6 +299,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'last-attempt-warning': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-last-attempt-warning',
   'pattern-auth-account-locked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-account-locked',
   'otp-error-account-locked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-error-account-locked',
+  'pattern-auth-retry-unlocked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-retry-unlocked',
+  'otp-retry-unlocked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-retry-unlocked',
+  'retry-unlocked': 'patterns/identity-and-access/auth-errors-and-lockout/otp-retry-unlocked',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -632,6 +635,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('otp-retry-unlocked') || cleanPath.includes('retry-unlocked') || (cleanPath.includes('auth-errors') && cleanPath.includes('unlocked'))) {
+      return 'pattern-auth-retry-unlocked';
+    }
     if (cleanPath.includes('otp-error-account-locked') || (cleanPath.includes('auth-errors') && cleanPath.includes('account-locked')) || (cleanPath.includes('auth-errors') && cleanPath.includes('locked'))) {
       return 'pattern-auth-account-locked';
     }

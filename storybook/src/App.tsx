@@ -70,6 +70,7 @@ import { AuthIncorrectOtpDoc } from './pages/AuthIncorrectOtpDoc';
 import { AuthAttemptWarningDoc } from './pages/AuthAttemptWarningDoc';
 import { AuthLastAttemptDoc } from './pages/AuthLastAttemptDoc';
 import { AuthAccountLockedDoc } from './pages/AuthAccountLockedDoc';
+import { AuthRetryUnlockedDoc } from './pages/AuthRetryUnlockedDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -85,6 +86,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-auth-retry-unlocked' || page.includes('retry-unlocked')) {
+    return 'Patterns / Identity and Access / Auth errors and lockout / OTP retry — unlocked';
+  }
   if (page === 'pattern-auth-account-locked' || (page.includes('auth-errors') && page.includes('account-locked'))) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — account locked';
   }
@@ -367,6 +371,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-auth-retry-unlocked' || activePage.includes('retry-unlocked') || (activePage.includes('auth-errors') && activePage.includes('unlocked'))) {
+      return <AuthRetryUnlockedDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-auth-account-locked' || (activePage.includes('auth-errors') && activePage.includes('account-locked')) || (activePage.includes('auth-errors') && activePage.includes('locked'))) {
       return <AuthAccountLockedDoc isDark={isDark} />;
