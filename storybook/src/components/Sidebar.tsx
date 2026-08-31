@@ -727,6 +727,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Aadhaar Face Auth — camera permission',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-aadhaar-verified-success',
+                label: 'Aadhaar verified — success',
+                icon: 'layers',
+              },
             ],
           },
         ],

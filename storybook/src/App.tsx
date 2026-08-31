@@ -75,6 +75,7 @@ import { AuthSuspiciousActivityDoc } from './pages/AuthSuspiciousActivityDoc';
 import { AadhaarVerifyMethodDoc } from './pages/AadhaarVerifyMethodDoc';
 import { AadhaarOtpEnterDoc } from './pages/AadhaarOtpEnterDoc';
 import { AadhaarFaceAuthPermissionDoc } from './pages/AadhaarFaceAuthPermissionDoc';
+import { AadhaarVerifiedSuccessDoc } from './pages/AadhaarVerifiedSuccessDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -90,6 +91,9 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
+  if (page === 'pattern-aadhaar-verified-success' || page.includes('aadhaar-verified-success')) {
+    return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Aadhaar verified — success';
+  }
   if (page === 'pattern-aadhaar-face-auth-permission' || page.includes('aadhaar-face-auth-permission') || page.includes('camera-permission')) {
     return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Aadhaar Face Auth — camera permission';
   }
@@ -387,6 +391,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-aadhaar-verified-success' || activePage.includes('aadhaar-verified-success')) {
+      return <AadhaarVerifiedSuccessDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-aadhaar-face-auth-permission' || activePage.includes('aadhaar-face-auth-permission') || activePage.includes('camera-permission')) {
       return <AadhaarFaceAuthPermissionDoc isDark={isDark} />;
