@@ -63,13 +63,13 @@ export const SignInAadhaarDoc: React.FC<SignInAadhaarDocProps> = ({ isDark }) =>
     const isValid = validateAadhaar(aadhaar);
     return isValid
       ? {
-          status: 'success' as const,
-          caption: 'Aadhaar number looks valid',
-        }
+        status: 'success' as const,
+        caption: 'Aadhaar number looks valid',
+      }
       : {
-          status: 'error' as const,
-          caption: 'Invalid Aadhaar number. Please check and re-enter.',
-        };
+        status: 'error' as const,
+        caption: 'Invalid Aadhaar number. Please check and re-enter.',
+      };
   }, [aadhaar]);
 
   const handleContinue = () => {
@@ -242,7 +242,7 @@ export const SignInAadhaarCardPattern = () => {
 
         {/* Security Note Outside Card */}
         <View style={styles.secureRow}>
-          <Text style={styles.lockIcon}>🔒</Text>
+          <Text style={styles.lockIcon}>lock</Text>
           <Text style={styles.secureText}>
             Your Aadhaar details are encrypted and secure
           </Text>
@@ -361,7 +361,9 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
   lockIcon: {
+    fontFamily: 'Material Symbols Outlined',
     fontSize: 14,
+    color: UX4GColors.neutral500,
   },
   secureText: {
     fontSize: defaultUx4gTypography.lM_default.fontSize,
@@ -540,7 +542,7 @@ export const SignInAadhaarDefaultPattern = () => {
 
           {/* Security Note */}
           <View style={styles.secureRow}>
-            <Text style={styles.lockIcon}>🔒</Text>
+            <Text style={styles.lockIcon}>lock</Text>
             <Text style={styles.secureText}>
               Your Aadhaar details are encrypted and secure
             </Text>
@@ -652,7 +654,9 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   lockIcon: {
+    fontFamily: 'Material Symbols Outlined',
     fontSize: 14,
+    color: UX4GColors.neutral500,
   },
   secureText: {
     fontSize: defaultUx4gTypography.lM_default.fontSize,

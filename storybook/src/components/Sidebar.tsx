@@ -646,6 +646,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Verify mobile with last-attempt warning',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-otp-verify-account-locked',
+                label: 'Verify mobile — account locked',
+                icon: 'layers',
+              },
             ],
           },
         ],

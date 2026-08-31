@@ -13,7 +13,7 @@ try {
   Path = RNSvg.Path;
   G = RNSvg.G;
 } catch (e) {
-  // react-native-svg not present, fallback to text/emoji representation
+  // react-native-svg not present, fallback to Material Symbols icon representation
 }
 
 export type Ux4gIconName =
@@ -65,11 +65,44 @@ export interface Ux4gIconProps {
   color?: string;
 }
 
+const renderMaterialIcon = (
+  name: string,
+  size: number,
+  color: string,
+  fill = false
+): React.ReactElement => {
+  return (
+    <Text
+      style={
+        {
+          fontFamily: 'Material Symbols Outlined',
+          fontSize: size,
+          color: color,
+          lineHeight: size,
+          width: size,
+          height: size,
+          textAlign: 'center',
+          fontWeight: 'normal',
+          fontStyle: 'normal',
+          userSelect: 'none',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          verticalAlign: 'middle',
+          ...(fill ? { fontVariationSettings: "'FILL' 1" } : {}),
+        } as any
+      }
+    >
+      {name}
+    </Text>
+  );
+};
+
 /**
  * **Ux4gIcons**
  *
  * Exact icon asset definitions matching Flutter `icons.dart` (`verification`, `star`, `shield`, `check`, etc.)
- * for 100% exact visual parity in React Native.
+ * for 100% exact visual parity in React Native. Uses Material Symbols without emojis.
  */
 export const Ux4gIcons = {
   /**
@@ -92,11 +125,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return (
-      <View style={[styles.fallbackBox, { width: size, height: size, backgroundColor: color }]}>
-        <Text style={[styles.fallbackText, { fontSize: size * 0.6 }]}>✓</Text>
-      </View>
-    );
+    return renderMaterialIcon('verified', size, color, true);
   },
 
   /**
@@ -113,11 +142,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return (
-      <View style={[styles.fallbackBox, { width: size, height: size, backgroundColor: color }]}>
-        <Text style={[styles.fallbackText, { fontSize: size * 0.7 }]}>★</Text>
-      </View>
-    );
+    return renderMaterialIcon('star', size, color, true);
   },
 
   /**
@@ -134,7 +159,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🛡️</Text>;
+    return renderMaterialIcon('shield', size, color, true);
   },
 
   /**
@@ -148,7 +173,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✓</Text>;
+    return renderMaterialIcon('check', size, color);
   },
 
   /**
@@ -162,7 +187,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>👍</Text>;
+    return renderMaterialIcon('thumb_up', size, color);
   },
 
   'sentiment-very-dissatisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -173,7 +198,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>😫</Text>;
+    return renderMaterialIcon('sentiment_very_dissatisfied', size, color);
   },
 
   'sentiment-dissatisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -186,7 +211,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>🙁</Text>;
+    return renderMaterialIcon('sentiment_dissatisfied', size, color);
   },
 
   'sentiment-neutral': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -200,7 +225,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>😐</Text>;
+    return renderMaterialIcon('sentiment_neutral', size, color);
   },
 
   'sentiment-satisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -213,7 +238,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>🙂</Text>;
+    return renderMaterialIcon('sentiment_satisfied', size, color);
   },
 
   'sentiment-very-satisfied': ({ size = 24, color = UX4GColors.neutral500 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -224,7 +249,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>😁</Text>;
+    return renderMaterialIcon('sentiment_very_satisfied', size, color);
   },
 
   close: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -238,7 +263,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✕</Text>;
+    return renderMaterialIcon('close', size, color);
   },
 
   add: ({ size = 18, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -249,7 +274,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>+</Text>;
+    return renderMaterialIcon('add', size, color);
   },
 
   arrowDropDown: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -260,7 +285,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>▼</Text>;
+    return renderMaterialIcon('arrow_drop_down', size, color);
   },
 
   arrowUp: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -271,7 +296,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>▲</Text>;
+    return renderMaterialIcon('arrow_drop_up', size, color);
   },
 
   chevronLeft: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -282,7 +307,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>‹</Text>;
+    return renderMaterialIcon('chevron_left', size, color);
   },
 
   chevronRight: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -293,7 +318,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>›</Text>;
+    return renderMaterialIcon('chevron_right', size, color);
   },
 
   chevronDown: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -304,7 +329,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>∨</Text>;
+    return renderMaterialIcon('expand_more', size, color);
   },
 
   chevronUp: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -315,7 +340,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>∧</Text>;
+    return renderMaterialIcon('expand_less', size, color);
   },
 
   search: ({ size = 18, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -329,7 +354,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔍</Text>;
+    return renderMaterialIcon('search', size, color);
   },
 
   calendar: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -343,7 +368,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>📅</Text>;
+    return renderMaterialIcon('calendar_today', size, color);
   },
 
   arrowBack: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -354,7 +379,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>←</Text>;
+    return renderMaterialIcon('arrow_back', size, color);
   },
 
   arrowForward: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -365,7 +390,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>→</Text>;
+    return renderMaterialIcon('arrow_forward', size, color);
   },
 
   time: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -379,7 +404,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>⏰</Text>;
+    return renderMaterialIcon('schedule', size, color);
   },
 
   info: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -393,7 +418,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>ℹ️</Text>;
+    return renderMaterialIcon('info', size, color, true);
   },
 
   error: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -407,7 +432,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
+    return renderMaterialIcon('error', size, color, true);
   },
 
   /**
@@ -424,7 +449,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>ℹ️</Text>;
+    return renderMaterialIcon('info', size, color);
   },
 
   /**
@@ -441,7 +466,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
+    return renderMaterialIcon('warning', size, color);
   },
 
   warning: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -455,7 +480,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
+    return renderMaterialIcon('warning', size, color, true);
   },
 
   success: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -469,7 +494,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✓</Text>;
+    return renderMaterialIcon('check_circle', size, color, true);
   },
 
   visibility: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -483,7 +508,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>👁️</Text>;
+    return renderMaterialIcon('visibility', size, color);
   },
 
   visibilityOff: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -497,7 +522,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🙈</Text>;
+    return renderMaterialIcon('visibility_off', size, color);
   },
 
   lock: ({ size = 16, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -505,13 +530,32 @@ export const Ux4gIcons = {
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
           <Path
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"
             fill={color}
           />
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔒</Text>;
+    return renderMaterialIcon('lock', size, color, true);
+  },
+
+  /**
+   * Reverse filled info / exclamation icon matching Flutter `Ux4gIcons.fillRevInfo`.
+   */
+  fillRevInfo: ({ size = 20, color = UX4GColors.red600 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm1-4h-2V7h2v6z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('error', size, color, true);
   },
 
   mic: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -525,7 +569,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🎤</Text>;
+    return renderMaterialIcon('mic', size, color);
   },
 
   settings: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -539,7 +583,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚙️</Text>;
+    return renderMaterialIcon('settings', size, color);
   },
 
   menu: ({ size = 24, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -550,7 +594,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>☰</Text>;
+    return renderMaterialIcon('menu', size, color);
   },
 
   notifications: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -564,7 +608,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🔔</Text>;
+    return renderMaterialIcon('notifications', size, color);
   },
 
   scan: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -578,7 +622,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⛶</Text>;
+    return renderMaterialIcon('qr_code_scanner', size, color);
   },
 
   location: ({ size = 20, color = 'UX4GColors.white' }: Ux4gIconProps = {}): React.ReactElement => {
@@ -592,7 +636,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⌖</Text>;
+    return renderMaterialIcon('location_on', size, color);
   },
 
   link: ({ size = 20, color = UX4GColors.primary600 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -606,7 +650,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>🔗</Text>;
+    return renderMaterialIcon('link', size, color);
   },
 
   /**
@@ -623,7 +667,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>☁️</Text>;
+    return renderMaterialIcon('cloud_upload', size, color);
   },
 
   /**
@@ -644,7 +688,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>📷</Text>;
+    return renderMaterialIcon('photo_camera', size, color);
   },
 
   /**
@@ -661,7 +705,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>🖼️</Text>;
+    return renderMaterialIcon('image', size, color);
   },
 
   /**
@@ -678,7 +722,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>📄</Text>;
+    return renderMaterialIcon('picture_as_pdf', size, color);
   },
 
   /**
@@ -695,7 +739,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>📝</Text>;
+    return renderMaterialIcon('description', size, color);
   },
 
   /**
@@ -712,7 +756,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>📁</Text>;
+    return renderMaterialIcon('insert_drive_file', size, color);
   },
 
   /**
@@ -729,7 +773,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>⚠️</Text>;
+    return renderMaterialIcon('error_outline', size, color);
   },
 
   /**
@@ -746,7 +790,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color, fontWeight: 'bold' }}>✅</Text>;
+    return renderMaterialIcon('check_circle', size, color, true);
   },
 
   sentimentVeryDissatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -760,7 +804,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>😫</Text>;
+    return renderMaterialIcon('sentiment_very_dissatisfied', size, color);
   },
 
   sentimentDissatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -774,7 +818,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>🙁</Text>;
+    return renderMaterialIcon('sentiment_dissatisfied', size, color);
   },
 
   sentimentNeutral: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -788,7 +832,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>😐</Text>;
+    return renderMaterialIcon('sentiment_neutral', size, color);
   },
 
   sentimentSatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -802,7 +846,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>🙂</Text>;
+    return renderMaterialIcon('sentiment_satisfied', size, color);
   },
 
   sentimentVerySatisfied: ({ size = 20, color = UX4GColors.neutral900 }: Ux4gIconProps = {}): React.ReactElement => {
@@ -816,7 +860,7 @@ export const Ux4gIcons = {
         </Svg>
       );
     }
-    return <Text style={{ fontSize: size, color }}>😁</Text>;
+    return renderMaterialIcon('sentiment_very_satisfied', size, color);
   },
 
   nationalEmblemLogo: ({ size = 26 }: Ux4gIconProps = {}): React.ReactElement => (
@@ -827,7 +871,6 @@ export const Ux4gIcons = {
     <SvgUnion width={size} height={size} />
   ),
 };
-
 
 const styles = StyleSheet.create({
   fallbackBox: {

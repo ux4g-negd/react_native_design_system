@@ -273,6 +273,10 @@ const PAGE_TO_PATH: Record<string, string> = {
   'verify-mobile-with-lats-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
   'verify-last-attempt-warning': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
   'verify-last-attempt': 'patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning',
+  'pattern-otp-verify-account-locked': 'patterns/identity-and-access/otp-verification/verify-mobile-account-locked',
+  'verify-mobile-account-locked': 'patterns/identity-and-access/otp-verification/verify-mobile-account-locked',
+  'verify-account-locked': 'patterns/identity-and-access/otp-verification/verify-mobile-account-locked',
+  'account-locked': 'patterns/identity-and-access/otp-verification/verify-mobile-account-locked',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -606,6 +610,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('verify-mobile-account-locked') || cleanPath.includes('account-locked') || (cleanPath.includes('otp-verification') && cleanPath.includes('locked')) || (cleanPath.includes('locked') && cleanPath.includes('mobile'))) {
+      return 'pattern-otp-verify-account-locked';
+    }
     if (cleanPath.includes('verify-mobile-with-last-attempt-warning') || cleanPath.includes('last-attempt') || cleanPath.includes('lats-attempt') || (cleanPath.includes('otp-verification') && (cleanPath.includes('last') || cleanPath.includes('lats')))) {
       return 'pattern-otp-verify-last-attempt';
     }

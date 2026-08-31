@@ -1203,6 +1203,9 @@ body {
   border-radius: 0 0 12px 12px;
   margin-bottom: 32px;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .code-header {
@@ -1264,6 +1267,8 @@ body {
 .code-body {
   padding: 20px 20px;
   overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .code-body pre {
@@ -1272,6 +1277,8 @@ body {
   font-size: 13px;
   line-height: 1.7;
   color: #E5E5E5;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* Syntax Highlighting */
@@ -2546,6 +2553,10 @@ body {
 }
 
 .wb-code-area {
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background-color: #0F172A;
   border-radius: 12px;
   padding: 16px;
