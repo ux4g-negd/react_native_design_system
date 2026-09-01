@@ -3,7 +3,7 @@ import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gSwitch as Ux4gToggle } from '../../../src/components/switch/Switch';
-import { Ux4gChoiceChip } from '../../../src/components/chips/Chips';
+import { Ux4gChoiceChip, Ux4gChipGroup } from '../../../src/components/chips/Chips';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
@@ -112,10 +112,10 @@ export const NotificationChannelsPattern = () => {
       </View>
 
       {/* 3. Horizontal Filter Chips */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.tabsContainer}
+      <Ux4gChipGroup
+        arrangement="horizontal"
+        spacing={8}
+        containerStyle={styles.tabsContainer}
       >
         <Ux4gChoiceChip text="Notification channels" selected={true} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Update Frequency" selected={false} onClick={() => {}} size="s" borderRadius={6} />
@@ -123,7 +123,7 @@ export const NotificationChannelsPattern = () => {
         <Ux4gChoiceChip text="Mandatory Notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="WhatsApp notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Manage all Subscriptions" selected={false} onClick={() => {}} size="s" borderRadius={6} />
-      </ScrollView>
+      </Ux4gChipGroup>
 
       {/* 4. Notification Channels Card */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
@@ -287,11 +287,34 @@ const styles = StyleSheet.create({
 
             {/* Horizontal Scrollable Filter Chips */}
             <div
+              onMouseDown={(e) => {
+                const el = e.currentTarget;
+                let startX = e.pageX - el.offsetLeft;
+                let scrollLeft = el.scrollLeft;
+                let isDown = true;
+                const onMouseMove = (me: MouseEvent) => {
+                  if (!isDown) return;
+                  me.preventDefault();
+                  const x = me.pageX - el.offsetLeft;
+                  const walk = (x - startX) * 1.5;
+                  el.scrollLeft = scrollLeft - walk;
+                };
+                const onMouseUp = () => {
+                  isDown = false;
+                  window.removeEventListener('mousemove', onMouseMove);
+                  window.removeEventListener('mouseup', onMouseUp);
+                };
+                window.addEventListener('mousemove', onMouseMove);
+                window.addEventListener('mouseup', onMouseUp);
+              }}
               style={{
                 display: 'flex',
                 gap: 8,
                 overflowX: 'auto',
                 padding: '0 16px 16px 16px',
+                cursor: 'grab',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
                 msOverflowStyle: 'none',
                 scrollbarWidth: 'none',
               }}
