@@ -361,6 +361,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-locked-notifications': 'patterns/notification/notification-preferences/locked-notifications',
   'pattern-whatsapp-consent': 'patterns/notification/notification-preferences/whatsapp-consent',
   'pattern-manage-all': 'patterns/notification/notification-preferences/manage-all',
+  'pattern-auto-dismiss-banner': 'patterns/notification/proactive-status-update/auto-dismiss-banner',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -744,6 +745,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
       return 'pattern-fp-account-recovery';
+    }
+    if (cleanPath.includes('auto-dismiss-banner') || cleanPath.includes('auto-dismiss') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('banner'))) {
+      return 'pattern-auto-dismiss-banner';
     }
     if (cleanPath.includes('manage-all') || cleanPath.includes('manage-all-subscriptions') || (cleanPath.includes('notification-preferences') && cleanPath.includes('manage'))) {
       return 'pattern-manage-all';

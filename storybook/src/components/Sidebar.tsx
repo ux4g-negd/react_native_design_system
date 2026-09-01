@@ -867,6 +867,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'proactive-status-update-group',
+            label: 'Proactive Status Update',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-auto-dismiss-banner',
+                label: 'Auto-dismiss Banner',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
