@@ -89,6 +89,7 @@ import { ForgotPasswordEnterOtpDoc } from './pages/ForgotPasswordEnterOtpDoc';
 import { ForgotPasswordCreatePasswordDoc } from './pages/ForgotPasswordCreatePasswordDoc';
 import { ForgotPasswordSuccessDoc } from './pages/ForgotPasswordSuccessDoc';
 import { ForgotPasswordAccountRecoveryDoc } from './pages/ForgotPasswordAccountRecoveryDoc';
+import { NotificationPatternDoc } from './pages/NotificationPatternDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -166,6 +167,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-notification' || page.includes('notification')) {
+    return 'Patterns / Notification / Notification';
   }
   if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
@@ -473,6 +477,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-notification' || activePage.includes('notification')) {
+      return <NotificationPatternDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || activePage.includes('operator')) {
       return <OperatorAssistedAuthDoc isDark={isDark} />;
