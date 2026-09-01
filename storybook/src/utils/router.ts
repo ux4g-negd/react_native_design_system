@@ -336,6 +336,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-signup-password-setup': 'patterns/identity-and-access/signup/password-setup',
   'signup-password-setup': 'patterns/identity-and-access/signup/password-setup',
   'password-setup': 'patterns/identity-and-access/signup/password-setup',
+  'pattern-signup-account-created': 'patterns/identity-and-access/signup/account-created',
+  'signup-account-created': 'patterns/identity-and-access/signup/account-created',
+  'account-created': 'patterns/identity-and-access/signup/account-created',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -690,7 +693,7 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('verify-with-aadhaar-choose-method') || cleanPath.includes('aadhaar-verify-method') || (cleanPath.includes('aadhaar') && cleanPath.includes('choose-method'))) {
       return 'pattern-aadhaar-verify-method';
     }
-    if (cleanPath.includes('signup/create-account') || cleanPath.includes('create-account') || (cleanPath.includes('signup') && cleanPath.includes('account'))) {
+    if (cleanPath.includes('signup/create-account') || cleanPath.includes('create-account') || (cleanPath.includes('signup') && cleanPath.includes('create-account'))) {
       return 'pattern-signup-create-account';
     }
     if (cleanPath.includes('signup/verify-mobile') || cleanPath.includes('signup/verify-your-mobile') || (cleanPath.includes('signup') && cleanPath.includes('verify'))) {
@@ -701,6 +704,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('signup/password-setup') || cleanPath.includes('password-setup') || (cleanPath.includes('signup') && cleanPath.includes('password'))) {
       return 'pattern-signup-password-setup';
+    }
+    if (cleanPath.includes('signup/account-created') || cleanPath.includes('account-created') || (cleanPath.includes('signup') && cleanPath.includes('created'))) {
+      return 'pattern-signup-account-created';
     }
     if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
       return 'pattern-auth-suspicious-activity';

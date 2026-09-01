@@ -83,6 +83,7 @@ import { SignUpCreateAccountDoc } from './pages/SignUpCreateAccountDoc';
 import { SignUpVerifyMobileDoc } from './pages/SignUpVerifyMobileDoc';
 import { SignUpCompleteProfileDoc } from './pages/SignUpCompleteProfileDoc';
 import { SignUpPasswordSetupDoc } from './pages/SignUpPasswordSetupDoc';
+import { SignUpAccountCreatedDoc } from './pages/SignUpAccountCreatedDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -131,7 +132,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page === 'pattern-auth-last-attempt' || page.includes('last-attempt-warning') || page.includes('last-attempt')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — last-attempt warning';
   }
-  if (page === 'pattern-signup-create-account' || (page.includes('signup') && page.includes('account'))) {
+  if (page === 'pattern-signup-create-account' || (page.includes('signup') && page.includes('create-account'))) {
     return 'Patterns / Identity and Access / SignUp / Create your account';
   }
   if (page === 'pattern-signup-verify-mobile' || (page.includes('signup') && page.includes('verify'))) {
@@ -142,6 +143,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-signup-password-setup' || (page.includes('signup') && page.includes('password'))) {
     return 'Patterns / Identity and Access / SignUp / Password setup';
+  }
+  if (page === 'pattern-signup-account-created' || (page.includes('signup') && page.includes('created'))) {
+    return 'Patterns / Identity and Access / SignUp / Account Created';
   }
   if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
@@ -420,7 +424,7 @@ export const App: React.FC = () => {
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
     }
-    if (activePage === 'pattern-signup-create-account' || (activePage.includes('signup') && activePage.includes('account'))) {
+    if (activePage === 'pattern-signup-create-account' || (activePage.includes('signup') && activePage.includes('create-account'))) {
       return <SignUpCreateAccountDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-signup-verify-mobile' || (activePage.includes('signup') && activePage.includes('verify'))) {
@@ -431,6 +435,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-signup-password-setup' || (activePage.includes('signup') && activePage.includes('password'))) {
       return <SignUpPasswordSetupDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-signup-account-created' || (activePage.includes('signup') && activePage.includes('created'))) {
+      return <SignUpAccountCreatedDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || activePage.includes('operator')) {
       return <OperatorAssistedAuthDoc isDark={isDark} />;
