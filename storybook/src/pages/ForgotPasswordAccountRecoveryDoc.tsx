@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
                 {/* Agreement Checkbox */}
                 <Ux4gCheckbox
                   value={agree}
-                  onValueChange={setAgree}
+                  onChanged={(v) => setAgree(!!v)}
                   label="I agree to verify my identity via Aadhaar OTP for the purpose of password recovery."
                 />
 
@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
               {/* Agreement Checkbox */}
               <Ux4gCheckbox
                 value={agree}
-                onValueChange={setAgree}
+                onChanged={(v) => setAgree(!!v)}
                 label="I agree to verify my identity via Aadhaar OTP for the purpose of password recovery."
               />
 
