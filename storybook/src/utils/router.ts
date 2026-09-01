@@ -328,6 +328,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-signup-create-account': 'patterns/identity-and-access/signup/create-account',
   'signup-create-account': 'patterns/identity-and-access/signup/create-account',
   'create-account': 'patterns/identity-and-access/signup/create-account',
+  'pattern-signup-verify-mobile': 'patterns/identity-and-access/signup/verify-your-mobile',
+  'signup-verify-mobile': 'patterns/identity-and-access/signup/verify-your-mobile',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -684,6 +686,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('signup/create-account') || cleanPath.includes('create-account') || (cleanPath.includes('signup') && cleanPath.includes('account'))) {
       return 'pattern-signup-create-account';
+    }
+    if (cleanPath.includes('signup/verify-mobile') || cleanPath.includes('signup/verify-your-mobile') || (cleanPath.includes('signup') && cleanPath.includes('verify'))) {
+      return 'pattern-signup-verify-mobile';
     }
     if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
       return 'pattern-auth-suspicious-activity';

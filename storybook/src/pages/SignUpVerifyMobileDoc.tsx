@@ -2,29 +2,31 @@ import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gInputField } from '../../../src/components/input-field/InputField';
+import { Ux4gOtpInput } from '../../../src/components/otp-input/OtpInput';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
 
-interface SignUpCreateAccountDocProps {
+interface SignUpVerifyMobileDocProps {
   isDark: boolean;
 }
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'default' | 'card';
 
-export const SignUpCreateAccountDoc: React.FC<SignUpCreateAccountDocProps> = ({ isDark }) => {
+export const SignUpVerifyMobileDoc: React.FC<SignUpVerifyMobileDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
-  const [mobile, setMobile] = useState('');
+  const [otp, setOtp] = useState<string>('');
+  const [resendNonce, setResendNonce] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Colors mapping matching Flutter Design System
+  // Exact color tokens from UX4G Flutter Design System (Ux4gColors & Ux4gPalette)
   const colors = useMemo(() => {
     return {
       title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
       subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
       cardBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
@@ -35,7 +37,15 @@ export const SignUpCreateAccountDoc: React.FC<SignUpCreateAccountDocProps> = ({ 
     };
   }, [isDark]);
 
-  // Clean React Native TSX code snippet matching Flutter signUpStep1Component
+  const handleVerify = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      alert(otp.length === 6 ? `OTP Verified: ${otp}` : 'Please enter complete 6-digit OTP.');
+    }, 1200);
+  };
+
+  // Clean React Native TSX code snippet matching Flutter signUpStep2Component
   const codeString = useMemo(() => {
     if (variant === 'card') {
       return `import React, { useState } from 'react';
@@ -45,23 +55,23 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gInputField,
+  Ux4gOtpInput,
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const SignUpCreateAccountCardPattern = () => {
-  const [mobile, setMobile] = useState('');
+export const SignUpVerifyMobileCardPattern = () => {
+  const [otp, setOtp] = useState('');
+  const [resendNonce, setResendNonce] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendOtp = () => {
+  const handleVerify = () => {
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1500);
+    setTimeout(() => setIsLoading(false), 1200);
   };
 
   return (
@@ -94,51 +104,49 @@ export const SignUpCreateAccountCardPattern = () => {
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Primary Layout with Elevated Card */}
+      {/* 2. Elevated Card Layout */}
       <View style={styles.cardContainer}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.card}>
             {/* Title */}
-            <Text style={styles.cardTitle}>Create your account</Text>
+            <Text style={styles.cardTitle}>Verify your mobile</Text>
             {/* Subtitle */}
             <Text style={styles.cardSubtitle}>
-              Enter your mobile number to get started
+              Enter the 6-digit OTP sent to +91 98765 XXXXX
             </Text>
 
-            <View style={{ height: 20 }} />
+            <View style={{ height: 24 }} />
 
-            {/* Mobile Number Input */}
-            <Ux4gInputField
-              label="Mobile Number"
-              placeholder="Enter mobile number"
-              value={mobile}
-              onValueChange={setMobile}
-              prefixText="+91"
-              type="number"
-              maxLength={10}
+            {/* 6-Digit OTP Input with 60s Resend Timer */}
+            <Ux4gOtpInput
+              key={\`su2c_\${resendNonce}\`}
+              length={6}
+              value={otp}
+              onChanged={setOtp}
+              boxSize={44}
+              gap={8}
+              showSeparator={false}
+              captionVariant="resendTimer"
+              captionLeadingText="Didn't receive OTP?"
+              captionTrailingText="Resend OTP"
+              autoCountdownSeconds={60}
+              onCaptionTrailingTap={() => {
+                setOtp('');
+                setResendNonce((prev) => prev + 1);
+              }}
             />
 
-            <View style={{ height: 16 }} />
+            <View style={{ height: 24 }} />
 
             {/* Primary CTA Button */}
             <Ux4gButton
-              text="Send OTP"
+              text="Verify OTP"
               variant="primary"
               size="large"
               isLoading={isLoading}
-              onPress={handleSendOtp}
-              style={styles.sendOtpButton}
+              onPress={handleVerify}
+              style={styles.verifyButton}
             />
-
-            <View style={{ height: 16 }} />
-
-            {/* Sign In Link */}
-            <TouchableOpacity
-              style={styles.signInLinkContainer}
-              onPress={() => console.log('Sign in')}
-            >
-              <Text style={styles.signInText}>Already have an account? Sign in</Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
 
@@ -202,24 +210,15 @@ const styles = StyleSheet.create({
   cardSubtitle: {
     fontSize: 13,
     fontWeight: '400',
-    lineHeight: 16.9,
+    lineHeight: 18.2,
     color: UX4GColors.neutral500,
     marginTop: 6,
   },
-  sendOtpButton: {
+  verifyButton: {
     backgroundColor: UX4GColors.primary,
     height: 48,
     borderRadius: 8,
     width: '100%',
-  },
-  signInLinkContainer: {
-    alignItems: 'center',
-  },
-  signInText: {
-    fontSize: 14,
-    fontWeight: '700',
-    letterSpacing: -0.1,
-    color: UX4GColors.primary,
   },
   footer: {
     paddingVertical: 14,
@@ -246,23 +245,23 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gInputField,
+  Ux4gOtpInput,
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const SignUpCreateAccountDefaultPattern = () => {
-  const [mobile, setMobile] = useState('');
+export const SignUpVerifyMobileDefaultPattern = () => {
+  const [otp, setOtp] = useState('');
+  const [resendNonce, setResendNonce] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendOtp = () => {
+  const handleVerify = () => {
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1500);
+    setTimeout(() => setIsLoading(false), 1200);
   };
 
   return (
@@ -295,50 +294,48 @@ export const SignUpCreateAccountDefaultPattern = () => {
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Main Flat Phone Layout */}
+      {/* 2. Main Flat Layout */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.content}>
           {/* Title */}
-          <Text style={styles.title}>Create your account</Text>
+          <Text style={styles.title}>Verify your mobile</Text>
           {/* Subtitle */}
           <Text style={styles.subtitle}>
-            Enter your mobile number to get started
+            Enter the 6-digit OTP sent to +91 98765 XXXXX
           </Text>
 
-          <View style={{ height: 24 }} />
+          <View style={{ height: 28 }} />
 
-          {/* Mobile Number Input */}
-          <Ux4gInputField
-            label="Mobile Number"
-            placeholder="Enter mobile number"
-            value={mobile}
-            onValueChange={setMobile}
-            prefixText="+91"
-            type="number"
-            maxLength={10}
+          {/* 6-Digit OTP Input with 60s Resend Timer */}
+          <Ux4gOtpInput
+            key={\`su2_\${resendNonce}\`}
+            length={6}
+            value={otp}
+            onChanged={setOtp}
+            boxSize={44}
+            gap={8}
+            showSeparator={false}
+            captionVariant="resendTimer"
+            captionLeadingText="Didn't receive OTP?"
+            captionTrailingText="Resend OTP"
+            autoCountdownSeconds={60}
+            onCaptionTrailingTap={() => {
+              setOtp('');
+              setResendNonce((prev) => prev + 1);
+            }}
           />
 
-          <View style={{ height: 20 }} />
+          <View style={{ height: 28 }} />
 
           {/* Primary CTA Button */}
           <Ux4gButton
-            text="Send OTP"
+            text="Verify OTP"
             variant="primary"
             size="large"
             isLoading={isLoading}
-            onPress={handleSendOtp}
-            style={styles.sendOtpButton}
+            onPress={handleVerify}
+            style={styles.verifyButton}
           />
-
-          <View style={{ height: 20 }} />
-
-          {/* Sign In Link */}
-          <TouchableOpacity
-            style={styles.signInLinkContainer}
-            onPress={() => console.log('Sign in')}
-          >
-            <Text style={styles.signInText}>Already have an account? Sign in</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
 
@@ -382,33 +379,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '800',
-    lineHeight: 28.8,
+    lineHeight: 31.2,
     letterSpacing: -0.3,
     color: '#111827',
   },
   subtitle: {
     fontSize: 14,
     fontWeight: '400',
-    lineHeight: 18.2,
+    lineHeight: 19.6,
     color: UX4GColors.neutral500,
     marginTop: 6,
   },
-  sendOtpButton: {
+  verifyButton: {
     backgroundColor: UX4GColors.primary,
     height: 48,
     borderRadius: 8,
     width: '100%',
-  },
-  signInLinkContainer: {
-    alignItems: 'center',
-  },
-  signInText: {
-    fontSize: 15,
-    fontWeight: '700',
-    letterSpacing: -0.1,
-    color: UX4GColors.primary,
   },
   footer: {
     paddingVertical: 14,
@@ -428,11 +416,6 @@ const styles = StyleSheet.create({
   },
 });`;
   }, [variant]);
-
-  const handleSendOtp = () => {
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1500);
-  };
 
   // Interactive Live Mockup for Web Preview
   const renderLiveMockup = () => {
@@ -545,42 +528,50 @@ const styles = StyleSheet.create({
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
-                  Create your account
+                  Verify your mobile
                 </h2>
                 <p
                   style={{
                     fontSize: 13,
                     fontWeight: 400,
-                    lineHeight: 1.3,
+                    lineHeight: 1.4,
                     color: colors.subtleText,
                     margin: 0,
-                    marginBottom: 20,
+                    marginBottom: 24,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
-                  Enter your mobile number to get started
+                  Enter the 6-digit OTP sent to +91 98765 XXXXX
                 </p>
 
-                {/* Mobile Number Input */}
-                <Ux4gInputField
-                  label="Mobile Number"
-                  placeholder="Enter mobile number"
-                  value={mobile}
-                  onValueChange={setMobile}
-                  prefixText="+91"
-                  type="number"
-                  maxLength={10}
+                {/* OTP Input Component */}
+                <Ux4gOtpInput
+                  key={`su2c_${resendNonce}`}
+                  length={6}
+                  value={otp}
+                  onChanged={setOtp}
+                  boxSize={44}
+                  gap={8}
+                  showSeparator={false}
+                  captionVariant="resendTimer"
+                  captionLeadingText="Didn't receive OTP?"
+                  captionTrailingText="Resend OTP"
+                  autoCountdownSeconds={60}
+                  onCaptionTrailingTap={() => {
+                    setOtp('');
+                    setResendNonce((prev) => prev + 1);
+                  }}
                 />
 
-                <div style={{ height: 16 }} />
+                <div style={{ height: 24 }} />
 
-                {/* Send OTP CTA */}
+                {/* Verify OTP CTA */}
                 <Ux4gButton
-                  text="Send OTP"
+                  text="Verify OTP"
                   variant="primary"
                   size="large"
                   isLoading={isLoading}
-                  onPress={handleSendOtp}
+                  onPress={handleVerify}
                   style={{
                     height: 48,
                     borderRadius: 8,
@@ -588,29 +579,6 @@ const styles = StyleSheet.create({
                     backgroundColor: colors.buttonBg,
                   }}
                 />
-
-                <div style={{ height: 16 }} />
-
-                {/* Sign In Link */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <button
-                    type="button"
-                    onClick={() => alert('Navigate to Sign In')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      padding: '8px 12px',
-                      cursor: 'pointer',
-                      fontSize: 14,
-                      fontWeight: 700,
-                      letterSpacing: '-0.1px',
-                      color: colors.primary,
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
-                    Already have an account? Sign in
-                  </button>
-                </div>
               </div>
             </div>
 
@@ -628,7 +596,7 @@ const styles = StyleSheet.create({
                 style={{
                   fontSize: 11,
                   fontWeight: 400,
-                  color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral400,
+                  color: UX4GColors.neutral400,
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
@@ -658,7 +626,7 @@ const styles = StyleSheet.create({
             <div style={{ padding: '24px 20px 0 20px', flex: 1 }}>
               <h2
                 style={{
-                  fontSize: 24,
+                  fontSize: 26,
                   fontWeight: 800,
                   lineHeight: 1.2,
                   letterSpacing: '-0.3px',
@@ -668,42 +636,50 @@ const styles = StyleSheet.create({
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
-                Create your account
+                Verify your mobile
               </h2>
               <p
                 style={{
                   fontSize: 14,
                   fontWeight: 400,
-                  lineHeight: 1.3,
+                  lineHeight: 1.4,
                   color: colors.subtleText,
                   margin: 0,
-                  marginBottom: 24,
+                  marginBottom: 28,
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
-                Enter your mobile number to get started
+                Enter the 6-digit OTP sent to +91 98765 XXXXX
               </p>
 
-              {/* Mobile Input */}
-              <Ux4gInputField
-                label="Mobile Number"
-                placeholder="Enter mobile number"
-                value={mobile}
-                onValueChange={setMobile}
-                prefixText="+91"
-                type="number"
-                maxLength={10}
+              {/* OTP Input Component */}
+              <Ux4gOtpInput
+                key={`su2_${resendNonce}`}
+                length={6}
+                value={otp}
+                onChanged={setOtp}
+                boxSize={44}
+                gap={8}
+                showSeparator={false}
+                captionVariant="resendTimer"
+                captionLeadingText="Didn't receive OTP?"
+                captionTrailingText="Resend OTP"
+                autoCountdownSeconds={60}
+                onCaptionTrailingTap={() => {
+                  setOtp('');
+                  setResendNonce((prev) => prev + 1);
+                }}
               />
 
-              <div style={{ height: 20 }} />
+              <div style={{ height: 28 }} />
 
-              {/* Send OTP CTA */}
+              {/* Verify OTP CTA */}
               <Ux4gButton
-                text="Send OTP"
+                text="Verify OTP"
                 variant="primary"
                 size="large"
                 isLoading={isLoading}
-                onPress={handleSendOtp}
+                onPress={handleVerify}
                 style={{
                   height: 48,
                   borderRadius: 8,
@@ -711,29 +687,6 @@ const styles = StyleSheet.create({
                   backgroundColor: colors.buttonBg,
                 }}
               />
-
-              <div style={{ height: 20 }} />
-
-              {/* Sign In Link */}
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button
-                  type="button"
-                  onClick={() => alert('Navigate to Sign In')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: '8px 12px',
-                    cursor: 'pointer',
-                    fontSize: 15,
-                    fontWeight: 700,
-                    letterSpacing: '-0.1px',
-                    color: colors.primary,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Already have an account? Sign in
-                </button>
-              </div>
             </div>
 
             {/* Brand Footer */}
@@ -776,11 +729,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Create your account</h1>
+          <h1 className="wb-title">Verify your mobile</h1>
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          First step of the sign-up flow. User enters their +91 mobile number and taps Send OTP. An error banner appears on invalid input.
+          OTP verification screen with 6 single-digit boxes, a built-in 60-second resend countdown, and a Verify OTP action.
         </p>
       </div>
 

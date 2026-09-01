@@ -759,6 +759,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Create your account',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-signup-verify-mobile',
+                label: 'Verify your mobile',
+                icon: 'layers',
+              },
             ],
           },
         ],
