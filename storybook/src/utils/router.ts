@@ -364,6 +364,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-auto-dismiss-banner': 'patterns/notification/proactive-status-update/auto-dismiss-banner',
   'pattern-live-status': 'patterns/notification/proactive-status-update/live-status',
   'pattern-reconnecting-state': 'patterns/notification/proactive-status-update/reconnecting-state',
+  'pattern-manual-refresh-prompt': 'patterns/notification/proactive-status-update/manual-refresh-prompt',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -747,6 +748,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
       return 'pattern-fp-account-recovery';
+    }
+    if (cleanPath.includes('manual-refresh-prompt') || cleanPath.includes('manual-refresh') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('refresh'))) {
+      return 'pattern-manual-refresh-prompt';
     }
     if (cleanPath.includes('reconnecting-state') || cleanPath.includes('reconnecting') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('reconnect'))) {
       return 'pattern-reconnecting-state';

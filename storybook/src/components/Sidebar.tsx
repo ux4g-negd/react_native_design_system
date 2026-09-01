@@ -887,6 +887,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Reconnecting State',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-manual-refresh-prompt',
+                label: 'Manual Refresh Prompt',
+                icon: 'layers',
+              },
             ],
           },
         ],

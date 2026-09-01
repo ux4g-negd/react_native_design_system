@@ -100,6 +100,7 @@ import { ManageAllDoc } from './pages/ManageAllDoc';
 import { AutoDismissBannerDoc } from './pages/AutoDismissBannerDoc';
 import { LiveStatusDoc } from './pages/LiveStatusDoc';
 import { ReconnectingStateDoc } from './pages/ReconnectingStateDoc';
+import { ManualRefreshPromptDoc } from './pages/ManualRefreshPromptDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -177,6 +178,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-manual-refresh-prompt' || (page.includes('proactive') && page.includes('refresh')) || page.includes('manual-refresh')) {
+    return 'Patterns / Notification / Proactive Status Update / Manual Refresh Prompt';
   }
   if (page === 'pattern-reconnecting-state' || (page.includes('proactive') && page.includes('reconnecting')) || page.includes('reconnecting')) {
     return 'Patterns / Notification / Proactive Status Update / Reconnecting State';
@@ -517,6 +521,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-manual-refresh-prompt' || (activePage.includes('proactive') && activePage.includes('refresh')) || activePage.includes('manual-refresh')) {
+      return <ManualRefreshPromptDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-reconnecting-state' || (activePage.includes('proactive') && activePage.includes('reconnecting')) || activePage.includes('reconnecting')) {
       return <ReconnectingStateDoc isDark={isDark} />;
