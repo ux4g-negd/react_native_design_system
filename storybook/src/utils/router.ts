@@ -356,6 +356,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-notification': 'patterns/notification/notification',
   'pattern-reminder-alerts': 'patterns/notification/reminder-alerts',
   'pattern-notification-channels': 'patterns/notification/notification-preferences/notification-channels',
+  'pattern-update-frequency': 'patterns/notification/notification-preferences/update-frequency',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -739,6 +740,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
       return 'pattern-fp-account-recovery';
+    }
+    if (cleanPath.includes('update-frequency') || (cleanPath.includes('notification-preferences') && cleanPath.includes('frequency'))) {
+      return 'pattern-update-frequency';
     }
     if (cleanPath.includes('notification-channels') || (cleanPath.includes('notification-preferences') && cleanPath.includes('channels'))) {
       return 'pattern-notification-channels';

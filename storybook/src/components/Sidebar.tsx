@@ -840,6 +840,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Notification Channels',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-update-frequency',
+                label: 'Update Frequency',
+                icon: 'layers',
+              },
             ],
           },
         ],
