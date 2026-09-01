@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
             {/* Title */}
-            <div style={{ padding: '16px 16px 12px 16px' }}>
+            <div style={{ padding: '16px 16px 12px 16px', flexShrink: 0 }}>
               <h2
                 style={{
                   fontSize: 18,
@@ -360,9 +360,13 @@ const styles = StyleSheet.create({
               }}
               style={{
                 display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexShrink: 0,
+                minHeight: 48,
                 gap: 8,
                 overflowX: 'auto',
-                padding: '0 16px 16px 16px',
+                padding: '4px 16px 16px 16px',
                 cursor: 'grab',
                 userSelect: 'none',
                 WebkitUserSelect: 'none',
