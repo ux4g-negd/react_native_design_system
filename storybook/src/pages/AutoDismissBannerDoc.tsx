@@ -529,6 +529,7 @@ const styles = StyleSheet.create({
                     color: '#FFFFFF',
                     fontSize: 10,
                     fontWeight: 700,
+                    marginTop: 12,
                   }}
                 >
                   ✓
@@ -537,35 +538,44 @@ const styles = StyleSheet.create({
                   style={{
                     width: 2,
                     flex: 1,
-                    minHeight: 24,
+                    minHeight: 20,
                     backgroundColor: colors.primary,
                     margin: '4px 0',
                   }}
                 />
               </div>
-              <div style={{ paddingBottom: 16, flex: 1 }}>
-                <span
+              <div style={{ paddingBottom: 12, flex: 1 }}>
+                <div
                   style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: colors.onSurface,
-                    display: 'block',
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    backgroundColor: isDark ? '#171717' : '#FFFFFF',
+                    borderRadius: 8,
+                    border: `1px solid ${colors.border}`,
+                    padding: '12px 16px',
                   }}
                 >
-                  Application Submitted
-                </span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    color: colors.subtle,
-                    display: 'block',
-                    marginTop: 2,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  07 Apr 2026, 10:24 AM
-                </span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: colors.subtle,
+                      display: 'block',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    07 Apr 2026, 10:24 AM
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: colors.onSurface,
+                      display: 'block',
+                      marginTop: 4,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Application Submitted
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -584,6 +594,7 @@ const styles = StyleSheet.create({
                     color: '#FFFFFF',
                     fontSize: 10,
                     fontWeight: 700,
+                    marginTop: 12,
                   }}
                 >
                   ✓
@@ -592,35 +603,44 @@ const styles = StyleSheet.create({
                   style={{
                     width: 2,
                     flex: 1,
-                    minHeight: 24,
+                    minHeight: 20,
                     backgroundColor: colors.primary,
                     margin: '4px 0',
                   }}
                 />
               </div>
-              <div style={{ paddingBottom: 16, flex: 1 }}>
-                <span
+              <div style={{ paddingBottom: 12, flex: 1 }}>
+                <div
                   style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: colors.onSurface,
-                    display: 'block',
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    backgroundColor: isDark ? '#171717' : '#FFFFFF',
+                    borderRadius: 8,
+                    border: `1px solid ${colors.border}`,
+                    padding: '12px 16px',
                   }}
                 >
-                  Documents Verified
-                </span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    color: colors.subtle,
-                    display: 'block',
-                    marginTop: 2,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  10 Apr 2026, 02:15 PM
-                </span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: colors.subtle,
+                      display: 'block',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    10 Apr 2026, 02:15 PM
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: colors.onSurface,
+                      display: 'block',
+                      marginTop: 4,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Documents Verified
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -637,6 +657,7 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    marginTop: 12,
                   }}
                 >
                   <div
@@ -652,42 +673,42 @@ const styles = StyleSheet.create({
                   style={{
                     width: 2,
                     flex: 1,
-                    minHeight: 24,
+                    minHeight: 20,
                     backgroundColor: isDark ? '#333333' : '#E5E7EB',
                     margin: '4px 0',
                   }}
                 />
               </div>
-              <div style={{ paddingBottom: 16, flex: 1 }}>
+              <div style={{ paddingBottom: 12, flex: 1 }}>
                 <div
                   style={{
                     backgroundColor: colors.currentCardBg,
                     border: `1px solid ${colors.primary}`,
                     borderRadius: 8,
-                    padding: 12,
+                    padding: '12px 16px',
                   }}
                 >
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: colors.primary,
+                      display: 'block',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    11 Apr 2026 (Est)
+                  </span>
                   <span
                     style={{
                       fontSize: 14,
                       fontWeight: 700,
                       color: colors.primary,
                       display: 'block',
+                      marginTop: 4,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
                     Under Review
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: colors.primary,
-                      display: 'block',
-                      marginTop: 2,
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
-                    11 Apr 2026 (Est)
                   </span>
                 </div>
               </div>
@@ -698,76 +719,98 @@ const styles = StyleSheet.create({
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div
                   style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: isDark ? '#404040' : '#D1D5DB',
-                    marginTop: 4,
-                  }}
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: colors.subtle,
-                    display: 'block',
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Decision
-                </span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    color: colors.subtle,
-                    display: 'block',
-                    marginTop: 2,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  22 Apr 2026 (Est)
-                </span>
-
-                <div
-                  style={{
+                    width: 18,
+                    height: 18,
+                    borderRadius: 9,
+                    border: `2px solid ${isDark ? '#404040' : '#D1D5DB'}`,
+                    backgroundColor: colors.cardBg,
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 6,
-                    marginTop: 6,
+                    justifyContent: 'center',
+                    marginTop: 12,
                   }}
                 >
                   <div
                     style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: 3,
-                      backgroundColor: colors.pendingDot,
+                      width: 8,
+                      height: 8,
+                      borderRadius: 4,
+                      backgroundColor: isDark ? '#404040' : '#D1D5DB',
                     }}
                   />
+                </div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    backgroundColor: isDark ? '#171717' : '#FFFFFF',
+                    borderRadius: 8,
+                    border: `1px solid ${colors.border}`,
+                    padding: '12px 16px',
+                  }}
+                >
                   <span
                     style={{
-                      fontSize: 11,
+                      fontSize: 12,
                       color: colors.subtle,
+                      display: 'block',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
-                    2 days remaining
+                    22 Apr 2026 (Est)
                   </span>
                   <span
                     style={{
-                      padding: '2px 6px',
-                      borderRadius: 4,
-                      backgroundColor: colors.pendingBadgeBg,
-                      color: colors.pendingBadgeText,
-                      fontSize: 11,
+                      fontSize: 14,
                       fontWeight: 600,
+                      color: colors.subtle,
+                      display: 'block',
+                      marginTop: 4,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
-                    Pending
+                    Decision
                   </span>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      marginTop: 8,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: 3,
+                        backgroundColor: colors.pendingDot,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: colors.subtle,
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      }}
+                    >
+                      2 days remaining
+                    </span>
+                    <span
+                      style={{
+                        padding: '2px 6px',
+                        borderRadius: 4,
+                        backgroundColor: colors.pendingBadgeBg,
+                        color: colors.pendingBadgeText,
+                        fontSize: 11,
+                        fontWeight: 600,
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      }}
+                    >
+                      Pending
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
