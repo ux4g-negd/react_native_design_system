@@ -478,116 +478,58 @@ const styles = StyleSheet.create({
   };
 
   return (
-    <Ux4gThemeProvider isDark={isDark}>
-      <div style={{ padding: 24, maxWidth: 1000, margin: '0 auto' }}>
-        {/* Title */}
-        <div style={{ marginBottom: 24 }}>
-          <h1
-            style={{
-              fontSize: 28,
-              fontWeight: 700,
-              color: isDark ? '#FFFFFF' : '#111827',
-              marginBottom: 8,
-              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-            }}
-          >
-            Live Status
-          </h1>
-          <p
-            style={{
-              fontSize: 15,
-              color: isDark ? '#9CA3AF' : '#4B5563',
-              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-            }}
-          >
-            Demonstrates the application card view connected to a real-time live status feed (Live green badge).
-          </p>
+    <div className="wb-page">
+      {/* Header */}
+      <div className="wb-header">
+        <div className="wb-header-row">
+          <h1 className="wb-title">Live Status</h1>
+          <span className="wb-badge">Pattern</span>
         </div>
-
-        {/* Tab Controls */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 12,
-            borderBottom: `1px solid ${isDark ? '#333333' : '#E5E7EB'}`,
-            marginBottom: 24,
-          }}
-        >
-          <button
-            onClick={() => setActiveMainTab('preview')}
-            style={{
-              padding: '8px 16px',
-              fontWeight: 600,
-              fontSize: 14,
-              color:
-                activeMainTab === 'preview'
-                  ? colors.primary
-                  : isDark
-                  ? '#9CA3AF'
-                  : '#6B7280',
-              borderBottom: `2px solid ${
-                activeMainTab === 'preview' ? colors.primary : 'transparent'
-              }`,
-              background: 'none',
-              borderTop: 'none',
-              borderLeft: 'none',
-              borderRight: 'none',
-              cursor: 'pointer',
-              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-            }}
-          >
-            Preview
-          </button>
-          <button
-            onClick={() => setActiveMainTab('code')}
-            style={{
-              padding: '8px 16px',
-              fontWeight: 600,
-              fontSize: 14,
-              color:
-                activeMainTab === 'code'
-                  ? colors.primary
-                  : isDark
-                  ? '#9CA3AF'
-                  : '#6B7280',
-              borderBottom: `2px solid ${
-                activeMainTab === 'code' ? colors.primary : 'transparent'
-              }`,
-              background: 'none',
-              borderTop: 'none',
-              borderLeft: 'none',
-              borderRight: 'none',
-              cursor: 'pointer',
-              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-            }}
-          >
-            Code
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        {activeMainTab === 'preview' && (
-          <div
-            style={{
-              padding: '40px 24px',
-              backgroundColor: isDark ? '#1E1E1E' : '#F3F4F6',
-              borderRadius: 12,
-              border: `1px solid ${isDark ? '#333333' : '#E5E7EB'}`,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {renderLiveMockup()}
-          </div>
-        )}
-
-        {activeMainTab === 'code' && (
-          <div>
-            <CodeBlock code={codeString} language="tsx" />
-          </div>
-        )}
+        <p className="wb-subtitle">
+          Demonstrates the application card view connected to a real-time live status feed (Live green badge).
+        </p>
       </div>
-    </Ux4gThemeProvider>
+
+      {/* Main Body */}
+      <div className="wb-body">
+        <div className="wb-main">
+          {/* Main Tabs */}
+          <div className="wb-tab-bar">
+            <button
+              className={`wb-tab ${activeMainTab === 'preview' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('preview')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">visibility</span> Preview
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('code')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">code</span> Code
+            </button>
+          </div>
+
+          <div className="wb-content">
+            {/* 1. Preview Tab */}
+            {activeMainTab === 'preview' && (
+              <Ux4gThemeProvider isDark={isDark}>
+                <div className={`wb-preview-area ${isDark ? 'dark' : ''}`} style={{ flexDirection: 'column', alignItems: 'center' }}>
+                  {renderLiveMockup()}
+                </div>
+              </Ux4gThemeProvider>
+            )}
+
+            {/* 2. Code Tab */}
+            {activeMainTab === 'code' && (
+              <div className="wb-code-area">
+                <CodeBlock code={codeString} language="tsx" />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
