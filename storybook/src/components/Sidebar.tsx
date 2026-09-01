@@ -855,6 +855,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Locked Notifications',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-whatsapp-consent',
+                label: 'WhatsApp Consent',
+                icon: 'layers',
+              },
             ],
           },
         ],

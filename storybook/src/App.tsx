@@ -95,6 +95,7 @@ import { NotificationChannelsDoc } from './pages/NotificationChannelsDoc';
 import { UpdateFrequencyDoc } from './pages/UpdateFrequencyDoc';
 import { PerServiceDoc } from './pages/PerServiceDoc';
 import { LockedNotificationsDoc } from './pages/LockedNotificationsDoc';
+import { WhatsAppConsentDoc } from './pages/WhatsAppConsentDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -172,6 +173,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-whatsapp-consent' || (page.includes('notification') && page.includes('whatsapp'))) {
+    return 'Patterns / Notification / Notification Preferences / WhatsApp Consent';
   }
   if (page === 'pattern-locked-notifications' || (page.includes('notification') && page.includes('locked'))) {
     return 'Patterns / Notification / Notification Preferences / Locked Notifications';
@@ -497,6 +501,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-whatsapp-consent' || (activePage.includes('notification') && activePage.includes('whatsapp'))) {
+      return <WhatsAppConsentDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-locked-notifications' || (activePage.includes('notification') && activePage.includes('locked'))) {
       return <LockedNotificationsDoc isDark={isDark} />;
