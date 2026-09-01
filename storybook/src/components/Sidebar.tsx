@@ -825,6 +825,11 @@ const NAV_ITEMS: NavItem[] = [
             label: 'Notification',
             icon: 'layers',
           },
+          {
+            id: 'pattern-reminder-alerts',
+            label: 'Reminder Alerts',
+            icon: 'layers',
+          },
         ],
       },
     ],

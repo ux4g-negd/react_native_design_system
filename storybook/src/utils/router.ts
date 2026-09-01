@@ -354,6 +354,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'fp-account-recovery': 'patterns/identity-and-access/forgot-password-and-account-recovery/account-recovery',
   'account-recovery': 'patterns/identity-and-access/forgot-password-and-account-recovery/account-recovery',
   'pattern-notification': 'patterns/notification/notification',
+  'pattern-reminder-alerts': 'patterns/notification/reminder-alerts',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -737,6 +738,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
       return 'pattern-fp-account-recovery';
+    }
+    if (cleanPath.includes('reminder-alerts') || (cleanPath.includes('notification') && cleanPath.includes('reminder'))) {
+      return 'pattern-reminder-alerts';
     }
     if (cleanPath.includes('patterns/notification') || cleanPath.endsWith('/notification') || cleanPath === 'pattern-notification') {
       return 'pattern-notification';
