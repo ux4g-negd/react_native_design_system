@@ -3,6 +3,8 @@ import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
+import { Ux4gLinearProgressBar } from '../../../src/components/linear-progress-bar/LinearProgressBar';
+import { Ux4gToast } from '../../../src/components/toast/Toast';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
 
@@ -52,7 +54,7 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gDivider,
-  Ux4gLinearProgress,
+  Ux4gLinearProgressBar,
   Ux4gToast,
   Ux4gToastCategory,
   UX4GColors,
@@ -113,13 +115,12 @@ export const AutoDismissBannerPattern = () => {
 
           <View style={{ height: 14 }} />
 
-          <Ux4gLinearProgress
+          <Ux4gLinearProgressBar
             value={0.38}
             label="8 days left"
             height={6}
-            borderRadius={3}
-            progressColor="#F59E0B"
-            backgroundColor={UX4GColors.neutral200}
+            shape="rounded"
+            gradientColors={['#F59E0B', '#D97706']}
           />
         </View>
 
@@ -441,42 +442,13 @@ const styles = StyleSheet.create({
             </span>
 
             <div style={{ marginTop: 14 }}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  marginBottom: 6,
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    color: colors.subtle,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  8 days left
-                </span>
-              </div>
-              <div
-                style={{
-                  height: 6,
-                  borderRadius: 3,
-                  backgroundColor: isDark ? '#333333' : '#E5E7EB',
-                  overflow: 'hidden',
-                  position: 'relative',
-                }}
-              >
-                <div
-                  style={{
-                    width: '38%',
-                    height: '100%',
-                    borderRadius: 3,
-                    background: 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)',
-                  }}
-                />
-              </div>
+              <Ux4gLinearProgressBar
+                value={0.38}
+                label="8 days left"
+                height={6}
+                shape="rounded"
+                gradientColors={['#F59E0B', '#D97706']}
+              />
             </div>
           </div>
 
