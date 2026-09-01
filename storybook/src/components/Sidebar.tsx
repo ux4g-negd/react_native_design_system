@@ -796,6 +796,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Enter OTP',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-fp-create-password',
+                label: 'Create new password',
+                icon: 'layers',
+              },
             ],
           },
         ],
