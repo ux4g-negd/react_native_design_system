@@ -721,7 +721,7 @@ const styles = StyleSheet.create({
                     fontSize: 13,
                     fontWeight: 400,
                     color: colors.warningBannerText,
-                    lineHeight: 1.4,
+                    lineHeight: 18,
                   } as any}
                   marginStyle={{ margin: 0 }}
                   paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
@@ -945,7 +945,7 @@ const styles = StyleSheet.create({
                   fontSize: 13,
                   fontWeight: 400,
                   color: colors.warningBannerText,
-                  lineHeight: 1.4,
+                  lineHeight: 18,
                 } as any}
                 marginStyle={{ margin: 0 }}
                 paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
