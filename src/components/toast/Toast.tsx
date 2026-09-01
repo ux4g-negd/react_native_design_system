@@ -122,13 +122,13 @@ export const Ux4gToast: React.FC<Ux4gToastProps> = ({
 
     switch (category) {
       case 'info':
-        return { bg: lerpColor(surface, info, 0.12), iconCol: info, actCol: info, icon: Ux4gIcons.infoOutline };
+        return { bg: lerpColor(surface, info, 0.12), iconCol: info, actCol: info, icon: Ux4gIcons.info };
       case 'success':
-        return { bg: lerpColor(surface, success, 0.12), iconCol: success, actCol: success, icon: Ux4gIcons.checkCircle };
+        return { bg: lerpColor(surface, success, 0.12), iconCol: success, actCol: success, icon: Ux4gIcons.success };
       case 'warning':
-        return { bg: lerpColor(surface, warning, 0.12), iconCol: warning, actCol: warning, icon: Ux4gIcons.warningAmber };
+        return { bg: lerpColor(surface, warning, 0.12), iconCol: warning, actCol: warning, icon: Ux4gIcons.warning };
       case 'error':
-        return { bg: lerpColor(surface, error, 0.12), iconCol: error, actCol: error, icon: Ux4gIcons.errorOutline };
+        return { bg: lerpColor(surface, error, 0.12), iconCol: error, actCol: error, icon: Ux4gIcons.error };
       case 'slot':
       default:
         return { bg: lerpColor(surface, primary, 0.12), iconCol: primary, actCol: primary, icon: Ux4gIcons.settings };
