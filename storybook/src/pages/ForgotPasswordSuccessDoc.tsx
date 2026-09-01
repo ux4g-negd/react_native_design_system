@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     color: UX4GColors.green600,
   },
   title: {
-    fontSize: 26, fontWeight: '800',
+    fontSize: 26, fontWeight: '700',
     color: UX4GColors.green800, textAlign: 'center',
     letterSpacing: -0.3, lineHeight: 32.5,
   },
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     color: UX4GColors.green600,
   },
   title: {
-    fontSize: 26, fontWeight: '800',
+    fontSize: 26, fontWeight: '700',
     color: UX4GColors.green800, textAlign: 'center',
     letterSpacing: -0.3, lineHeight: 32.5,
   },
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
                 <h2
                   style={{
                     fontSize: 26,
-                    fontWeight: 800,
+                    fontWeight: 700,
                     lineHeight: 1.25,
                     letterSpacing: '-0.3px',
                     color: colors.title,
@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
               <h2
                 style={{
                   fontSize: 26,
-                  fontWeight: 800,
+                  fontWeight: 700,
                   lineHeight: 1.25,
                   letterSpacing: '-0.3px',
                   color: colors.title,

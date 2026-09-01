@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 22,
-    fontWeight: '800',
+    fontWeight: '700',
     lineHeight: 26.4,
     letterSpacing: -0.3,
     color: '#111827',
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: '800',
+    fontWeight: '700',
     lineHeight: 28.8,
     letterSpacing: -0.3,
     color: '#111827',
@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
                 <h2
                   style={{
                     fontSize: 22,
-                    fontWeight: 800,
+                    fontWeight: 700,
                     lineHeight: 1.2,
                     letterSpacing: '-0.3px',
                     color: colors.title,
@@ -659,7 +659,7 @@ const styles = StyleSheet.create({
               <h2
                 style={{
                   fontSize: 24,
-                  fontWeight: 800,
+                  fontWeight: 700,
                   lineHeight: 1.2,
                   letterSpacing: '-0.3px',
                   color: colors.title,

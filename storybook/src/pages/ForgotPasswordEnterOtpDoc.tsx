@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   title: {
-    fontSize: 22, fontWeight: '800',
+    fontSize: 22, fontWeight: '700',
     color: '#111827', letterSpacing: -0.3,
     lineHeight: 26.4,
   },
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   title: {
-    fontSize: 24, fontWeight: '800',
+    fontSize: 24, fontWeight: '700',
     color: '#111827', letterSpacing: -0.3,
     lineHeight: 28.8,
   },
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
                 <h2
                   style={{
                     fontSize: 22,
-                    fontWeight: 800,
+                    fontWeight: 700,
                     lineHeight: 1.2,
                     letterSpacing: '-0.3px',
                     color: colors.title,
@@ -636,7 +636,7 @@ const styles = StyleSheet.create({
               <h2
                 style={{
                   fontSize: 24,
-                  fontWeight: 800,
+                  fontWeight: 700,
                   lineHeight: 1.2,
                   letterSpacing: '-0.3px',
                   color: colors.title,
