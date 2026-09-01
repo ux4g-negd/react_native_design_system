@@ -749,6 +749,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'signup-group',
+            label: 'SignUp',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-signup-create-account',
+                label: 'Create your account',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],

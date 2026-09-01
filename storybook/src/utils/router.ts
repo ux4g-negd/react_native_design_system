@@ -325,6 +325,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-operator-assisted-auth': 'patterns/identity-and-access/aadhaar-authentication-gate/operator-assisted-authentication',
   'operator-assisted-authentication': 'patterns/identity-and-access/aadhaar-authentication-gate/operator-assisted-authentication',
   'operator-assisted-auth': 'patterns/identity-and-access/aadhaar-authentication-gate/operator-assisted-authentication',
+  'pattern-signup-create-account': 'patterns/identity-and-access/signup/create-account',
+  'signup-create-account': 'patterns/identity-and-access/signup/create-account',
+  'create-account': 'patterns/identity-and-access/signup/create-account',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -678,6 +681,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('verify-with-aadhaar-choose-method') || cleanPath.includes('aadhaar-verify-method') || (cleanPath.includes('aadhaar') && cleanPath.includes('choose-method'))) {
       return 'pattern-aadhaar-verify-method';
+    }
+    if (cleanPath.includes('signup/create-account') || cleanPath.includes('create-account') || (cleanPath.includes('signup') && cleanPath.includes('account'))) {
+      return 'pattern-signup-create-account';
     }
     if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
       return 'pattern-auth-suspicious-activity';

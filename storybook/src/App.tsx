@@ -79,6 +79,7 @@ import { AadhaarVerifiedSuccessDoc } from './pages/AadhaarVerifiedSuccessDoc';
 import { AadhaarVerificationFailedDoc } from './pages/AadhaarVerificationFailedDoc';
 import { AadhaarAccountLockedDoc } from './pages/AadhaarAccountLockedDoc';
 import { OperatorAssistedAuthDoc } from './pages/OperatorAssistedAuthDoc';
+import { SignUpCreateAccountDoc } from './pages/SignUpCreateAccountDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -126,6 +127,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-auth-last-attempt' || page.includes('last-attempt-warning') || page.includes('last-attempt')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — last-attempt warning';
+  }
+  if (page === 'pattern-signup-create-account' || (page.includes('signup') && page.includes('account'))) {
+    return 'Patterns / Identity and Access / SignUp / Create your account';
   }
   if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
@@ -403,6 +407,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage === 'pattern-signup-create-account' || (activePage.includes('signup') && activePage.includes('account'))) {
+      return <SignUpCreateAccountDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || activePage.includes('operator')) {
       return <OperatorAssistedAuthDoc isDark={isDark} />;
