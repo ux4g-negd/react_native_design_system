@@ -801,6 +801,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Create new password',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-fp-success',
+                label: 'Password reset successfully',
+                icon: 'layers',
+              },
             ],
           },
         ],
