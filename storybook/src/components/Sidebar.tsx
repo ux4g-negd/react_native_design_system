@@ -830,6 +830,18 @@ const NAV_ITEMS: NavItem[] = [
             label: 'Reminder Alerts',
             icon: 'layers',
           },
+          {
+            id: 'notification-preferences-group',
+            label: 'Notification Preferences',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-notification-channels',
+                label: 'Notification Channels',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],

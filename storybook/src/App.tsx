@@ -91,6 +91,7 @@ import { ForgotPasswordSuccessDoc } from './pages/ForgotPasswordSuccessDoc';
 import { ForgotPasswordAccountRecoveryDoc } from './pages/ForgotPasswordAccountRecoveryDoc';
 import { NotificationPatternDoc } from './pages/NotificationPatternDoc';
 import { ReminderAlertsDoc } from './pages/ReminderAlertsDoc';
+import { NotificationChannelsDoc } from './pages/NotificationChannelsDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -168,6 +169,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-notification-channels' || (page.includes('notification') && page.includes('channels'))) {
+    return 'Patterns / Notification / Notification Preferences / Notification Channels';
   }
   if (page === 'pattern-reminder-alerts' || (page.includes('reminder') && page.includes('alert'))) {
     return 'Patterns / Notification / Reminder Alerts';
@@ -481,6 +485,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-notification-channels' || (activePage.includes('notification') && activePage.includes('channels'))) {
+      return <NotificationChannelsDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-reminder-alerts' || (activePage.includes('reminder') && activePage.includes('alert'))) {
       return <ReminderAlertsDoc isDark={isDark} />;
