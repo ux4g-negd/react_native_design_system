@@ -33,7 +33,6 @@ export const ForgotPasswordResetDoc: React.FC<ForgotPasswordResetDocProps> = ({ 
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
       buttonBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      // Warning banner colors (matching Flutter _fpWarningBanner)
       warningBannerText: '#92400E',
       warningBannerIcon: '#D97706',
     };
@@ -61,6 +60,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   Ux4gStatusBanner,
+  Ux4gIcons,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
@@ -100,7 +100,7 @@ export const ResetPasswordCardPattern = () => {
       {/* 2. Card Layout Body */}
       <View style={styles.cardContainer}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {/* Back navigation */}
+          {/* Reusable Back Navigation Link */}
           <Ux4gButton
             text="Back to Sign In"
             variant="ghost"
@@ -108,12 +108,12 @@ export const ResetPasswordCardPattern = () => {
             leadingIcon="arrow_back"
             iconSize={18}
             onPress={() => {}}
-            style={{ height: 48, paddingHorizontal: 4 }}
+            style={styles.backButton}
           />
 
           <View style={{ height: 12 }} />
 
-          {/* Card */}
+          {/* Elevated Card Container */}
           <View style={styles.card}>
             <Text style={styles.title}>Reset Password</Text>
             <View style={{ height: 6 }} />
@@ -172,9 +172,11 @@ export const ResetPasswordCardPattern = () => {
 
             <View style={{ height: 14 }} />
 
+            {/* Warning Banner */}
             <Ux4gStatusBanner
               variant="warningLight"
               title="Most services use OTP login so you may not need a password."
+              leadingIcon={Ux4gIcons.fillRevInfo({ size: 18, color: '#D97706' })}
             />
           </View>
         </ScrollView>
@@ -206,6 +208,11 @@ const styles = StyleSheet.create({
     flex: 1, backgroundColor: UX4GColors.primary100,
   },
   scrollContainer: { padding: 16 },
+  backButton: {
+    alignSelf: 'flex-start',
+    height: 36,
+    paddingHorizontal: 0,
+  },
   card: {
     backgroundColor: UX4GColors.neutral0,
     borderRadius: 16,
@@ -267,6 +274,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   Ux4gStatusBanner,
+  Ux4gIcons,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
@@ -303,9 +311,9 @@ export const ResetPasswordDefaultPattern = () => {
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Main Content */}
+      {/* 2. Main Content Body */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Back navigation */}
+        {/* Back navigation link */}
         <Ux4gButton
           text="Back to Sign In"
           variant="ghost"
@@ -313,7 +321,7 @@ export const ResetPasswordDefaultPattern = () => {
           leadingIcon="arrow_back"
           iconSize={18}
           onPress={() => {}}
-          style={{ height: 48, paddingHorizontal: 4 }}
+          style={styles.backButton}
         />
 
         <View style={{ height: 20 }} />
@@ -375,9 +383,11 @@ export const ResetPasswordDefaultPattern = () => {
 
         <View style={{ height: 16 }} />
 
+        {/* Warning Banner */}
         <Ux4gStatusBanner
           variant="warningLight"
           title="Most services use OTP login so you may not need a password."
+          leadingIcon={Ux4gIcons.fillRevInfo({ size: 18, color: '#D97706' })}
         />
       </ScrollView>
 
@@ -405,6 +415,11 @@ const styles = StyleSheet.create({
   unionLogo: { width: 32, height: 32 },
   scrollContainer: {
     paddingHorizontal: 20, paddingTop: 16,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    height: 36,
+    paddingHorizontal: 0,
   },
   title: {
     fontSize: 24, fontWeight: '800',
@@ -447,6 +462,13 @@ const styles = StyleSheet.create({
   const renderLiveMockup = () => {
     const isCard = variant === 'card';
     const bgScreenColor = isCard ? colors.cardScreenBg : colors.defaultScreenBg;
+
+    // SVG for fillRevInfo matching Flutter Ux4gIcons.fillRevInfo
+    const fillRevInfoIcon = (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#D97706" style={{ flexShrink: 0 }}>
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm1-4h-2V7h2v6z" />
+      </svg>
+    );
 
     return (
       <div
@@ -521,16 +543,37 @@ const styles = StyleSheet.create({
             }}
           >
             <div style={{ padding: '16px', flex: 1, overflow: 'auto' }}>
-              {/* Back to Sign In — ghost button */}
-              <Ux4gButton
-                text="Back to Sign In"
-                variant="ghost"
-                size="small"
-                leadingIcon="arrow_back"
-                iconSize={18}
-                onPress={() => {}}
-                style={{ height: 48, paddingLeft: 4, paddingRight: 4 } as any}
-              />
+              {/* Back to Sign In Link */}
+              <div
+                onClick={() => {}}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  cursor: 'pointer',
+                  padding: '2px 0',
+                }}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  style={{
+                    fontSize: 18,
+                    color: colors.primary,
+                  }}
+                >
+                  arrow_back
+                </span>
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: colors.primary,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Back to Sign In
+                </span>
+              </div>
 
               <div style={{ height: 12 }} />
 
@@ -669,15 +712,16 @@ const styles = StyleSheet.create({
 
                 <div style={{ height: 14 }} />
 
-                {/* Warning Banner */}
+                {/* Warning Banner with exact Flutter fillRevInfo icon */}
                 <Ux4gStatusBanner
                   variant="warningLight"
                   title="Most services use OTP login so you may not need a password."
+                  leadingIcon={fillRevInfoIcon}
                   titleStyle={{
                     fontSize: 13,
                     fontWeight: 400,
                     color: colors.warningBannerText,
-                    lineHeight: 18.2,
+                    lineHeight: 1.4,
                   } as any}
                   marginStyle={{ margin: 0 }}
                   paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
@@ -733,16 +777,37 @@ const styles = StyleSheet.create({
                 overflow: 'auto',
               }}
             >
-              {/* Back to Sign In — ghost button */}
-              <Ux4gButton
-                text="Back to Sign In"
-                variant="ghost"
-                size="small"
-                leadingIcon="arrow_back"
-                iconSize={18}
-                onPress={() => {}}
-                style={{ height: 48, paddingLeft: 4, paddingRight: 4 } as any}
-              />
+              {/* Back to Sign In Link */}
+              <div
+                onClick={() => {}}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  cursor: 'pointer',
+                  padding: '2px 0',
+                }}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  style={{
+                    fontSize: 18,
+                    color: colors.primary,
+                  }}
+                >
+                  arrow_back
+                </span>
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: colors.primary,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Back to Sign In
+                </span>
+              </div>
 
               <div style={{ height: 20 }} />
 
@@ -871,15 +936,16 @@ const styles = StyleSheet.create({
 
               <div style={{ height: 16 }} />
 
-              {/* Warning Banner */}
+              {/* Warning Banner with exact Flutter fillRevInfo icon */}
               <Ux4gStatusBanner
                 variant="warningLight"
                 title="Most services use OTP login so you may not need a password."
+                leadingIcon={fillRevInfoIcon}
                 titleStyle={{
                   fontSize: 13,
                   fontWeight: 400,
                   color: colors.warningBannerText,
-                  lineHeight: 18.2,
+                  lineHeight: 1.4,
                 } as any}
                 marginStyle={{ margin: 0 }}
                 paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
