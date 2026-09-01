@@ -322,6 +322,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-aadhaar-account-locked': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-account-locked',
   'aadhaar-account-locked': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-account-locked',
   'aadhaar-locked': 'patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-account-locked',
+  'pattern-operator-assisted-auth': 'patterns/identity-and-access/aadhaar-authentication-gate/operator-assisted-authentication',
+  'operator-assisted-authentication': 'patterns/identity-and-access/aadhaar-authentication-gate/operator-assisted-authentication',
+  'operator-assisted-auth': 'patterns/identity-and-access/aadhaar-authentication-gate/operator-assisted-authentication',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -655,6 +658,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('operator-assisted') || cleanPath.includes('operator')) {
+      return 'pattern-operator-assisted-auth';
+    }
     if (cleanPath.includes('aadhaar-account-locked') || (cleanPath.includes('aadhaar') && cleanPath.includes('locked'))) {
       return 'pattern-aadhaar-account-locked';
     }

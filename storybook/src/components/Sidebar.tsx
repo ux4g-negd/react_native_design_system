@@ -742,6 +742,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Aadhaar account locked',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-operator-assisted-auth',
+                label: 'Operator-assisted authentication',
+                icon: 'layers',
+              },
             ],
           },
         ],
