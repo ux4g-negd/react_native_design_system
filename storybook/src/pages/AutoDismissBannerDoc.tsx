@@ -488,63 +488,18 @@ const styles = StyleSheet.create({
 
             {/* Timeline Step 1 */}
             <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: 9,
-                    backgroundColor: colors.primary,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#FFFFFF',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    marginTop: 12,
-                  }}
-                >
+              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: colors.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', fontSize: 10, fontWeight: 700, flexShrink: 0, zIndex: 2 }}>
                   ✓
                 </div>
-                <div
-                  style={{
-                    width: 2,
-                    flex: 1,
-                    minHeight: 20,
-                    backgroundColor: colors.primary,
-                    margin: '4px 0',
-                  }}
-                />
+                <div style={{ width: 2, flex: 1, backgroundColor: colors.primary }} />
               </div>
               <div style={{ paddingBottom: 12, flex: 1 }}>
-                <div
-                  style={{
-                    backgroundColor: isDark ? '#171717' : '#FFFFFF',
-                    borderRadius: 8,
-                    border: `1px solid ${colors.border}`,
-                    padding: '12px 16px',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: colors.subtle,
-                      display: 'block',
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                <div style={{ backgroundColor: isDark ? '#171717' : '#FFFFFF', borderRadius: 8, border: `1px solid ${colors.border}`, padding: '12px 16px' }}>
+                  <span style={{ fontSize: 12, color: colors.subtle, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     07 Apr 2026, 10:24 AM
                   </span>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: colors.onSurface,
-                      display: 'block',
-                      marginTop: 4,
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.onSurface, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     Application Submitted
                   </span>
                 </div>
@@ -553,63 +508,19 @@ const styles = StyleSheet.create({
 
             {/* Timeline Step 2 */}
             <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: 9,
-                    backgroundColor: colors.primary,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#FFFFFF',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    marginTop: 12,
-                  }}
-                >
+              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ width: 2, height: 12, backgroundColor: colors.primary, flexShrink: 0 }} />
+                <div style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: colors.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', fontSize: 10, fontWeight: 700, flexShrink: 0, zIndex: 2 }}>
                   ✓
                 </div>
-                <div
-                  style={{
-                    width: 2,
-                    flex: 1,
-                    minHeight: 20,
-                    backgroundColor: colors.primary,
-                    margin: '4px 0',
-                  }}
-                />
+                <div style={{ width: 2, flex: 1, backgroundColor: colors.primary }} />
               </div>
               <div style={{ paddingBottom: 12, flex: 1 }}>
-                <div
-                  style={{
-                    backgroundColor: isDark ? '#171717' : '#FFFFFF',
-                    borderRadius: 8,
-                    border: `1px solid ${colors.border}`,
-                    padding: '12px 16px',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: colors.subtle,
-                      display: 'block',
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                <div style={{ backgroundColor: isDark ? '#171717' : '#FFFFFF', borderRadius: 8, border: `1px solid ${colors.border}`, padding: '12px 16px' }}>
+                  <span style={{ fontSize: 12, color: colors.subtle, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     10 Apr 2026, 02:15 PM
                   </span>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: colors.onSurface,
-                      display: 'block',
-                      marginTop: 4,
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.onSurface, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     Documents Verified
                   </span>
                 </div>
@@ -618,68 +529,19 @@ const styles = StyleSheet.create({
 
             {/* Timeline Step 3 (Current) */}
             <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: 9,
-                    border: `2px solid ${colors.primary}`,
-                    backgroundColor: colors.cardBg,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 12,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 4,
-                      backgroundColor: colors.primary,
-                    }}
-                  />
+              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ width: 2, height: 12, backgroundColor: colors.primary, flexShrink: 0 }} />
+                <div style={{ width: 18, height: 18, borderRadius: 9, border: `2px solid ${colors.primary}`, backgroundColor: isDark ? '#171717' : '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 2 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: colors.primary }} />
                 </div>
-                <div
-                  style={{
-                    width: 2,
-                    flex: 1,
-                    minHeight: 20,
-                    backgroundColor: isDark ? '#333333' : '#E5E7EB',
-                    margin: '4px 0',
-                  }}
-                />
+                <div style={{ width: 2, flex: 1, backgroundColor: isDark ? '#333333' : '#E5E7EB' }} />
               </div>
               <div style={{ paddingBottom: 12, flex: 1 }}>
-                <div
-                  style={{
-                    backgroundColor: colors.currentCardBg,
-                    border: `1px solid ${colors.primary}`,
-                    borderRadius: 8,
-                    padding: '12px 16px',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: colors.primary,
-                      display: 'block',
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                <div style={{ backgroundColor: colors.currentCardBg, border: `1px solid ${colors.primary}`, borderRadius: 8, padding: '12px 16px' }}>
+                  <span style={{ fontSize: 12, color: colors.primary, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     11 Apr 2026 (Est)
                   </span>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 700,
-                      color: colors.primary,
-                      display: 'block',
-                      marginTop: 4,
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                  <span style={{ fontSize: 14, fontWeight: 700, color: colors.primary, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     Under Review
                   </span>
                 </div>
@@ -688,98 +550,26 @@ const styles = StyleSheet.create({
 
             {/* Timeline Step 4 (Upcoming) */}
             <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: 9,
-                    border: `2px solid ${isDark ? '#404040' : '#D1D5DB'}`,
-                    backgroundColor: colors.cardBg,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 12,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 4,
-                      backgroundColor: isDark ? '#404040' : '#D1D5DB',
-                    }}
-                  />
+              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ width: 2, height: 12, backgroundColor: isDark ? '#333333' : '#E5E7EB', flexShrink: 0 }} />
+                <div style={{ width: 18, height: 18, borderRadius: 9, border: `2px solid ${isDark ? '#404040' : '#D1D5DB'}`, backgroundColor: isDark ? '#171717' : '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 2 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: isDark ? '#404040' : '#D1D5DB' }} />
                 </div>
               </div>
               <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    backgroundColor: isDark ? '#171717' : '#FFFFFF',
-                    borderRadius: 8,
-                    border: `1px solid ${colors.border}`,
-                    padding: '12px 16px',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: colors.subtle,
-                      display: 'block',
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                <div style={{ backgroundColor: isDark ? '#171717' : '#FFFFFF', borderRadius: 8, border: `1px solid ${colors.border}`, padding: '12px 16px' }}>
+                  <span style={{ fontSize: 12, color: colors.subtle, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     22 Apr 2026 (Est)
                   </span>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: colors.subtle,
-                      display: 'block',
-                      marginTop: 4,
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
+                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.subtle, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                     Decision
                   </span>
-
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 6,
-                      marginTop: 8,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: 3,
-                        backgroundColor: colors.pendingDot,
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: 11,
-                        color: colors.subtle,
-                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                      }}
-                    >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8 }}>
+                    <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: colors.pendingDot }} />
+                    <span style={{ fontSize: 11, color: colors.subtle, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                       2 days remaining
                     </span>
-                    <span
-                      style={{
-                        padding: '2px 6px',
-                        borderRadius: 4,
-                        backgroundColor: colors.pendingBadgeBg,
-                        color: colors.pendingBadgeText,
-                        fontSize: 11,
-                        fontWeight: 600,
-                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                      }}
-                    >
+                    <span style={{ padding: '2px 6px', borderRadius: 4, backgroundColor: colors.pendingBadgeBg, color: colors.pendingBadgeText, fontSize: 11, fontWeight: 600, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                       Pending
                     </span>
                   </div>
