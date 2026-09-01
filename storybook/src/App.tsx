@@ -88,6 +88,7 @@ import { ForgotPasswordResetDoc } from './pages/ForgotPasswordResetDoc';
 import { ForgotPasswordEnterOtpDoc } from './pages/ForgotPasswordEnterOtpDoc';
 import { ForgotPasswordCreatePasswordDoc } from './pages/ForgotPasswordCreatePasswordDoc';
 import { ForgotPasswordSuccessDoc } from './pages/ForgotPasswordSuccessDoc';
+import { ForgotPasswordAccountRecoveryDoc } from './pages/ForgotPasswordAccountRecoveryDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -162,6 +163,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-success' || (page.includes('forgot') && page.includes('success')) || page.includes('password-reset-successfully')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Password reset successfully';
+  }
+  if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
+    return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
   }
   if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
@@ -466,6 +470,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-success' || (activePage.includes('forgot') && activePage.includes('success')) || activePage.includes('password-reset-successfully')) {
       return <ForgotPasswordSuccessDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
+      return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || activePage.includes('operator')) {
       return <OperatorAssistedAuthDoc isDark={isDark} />;

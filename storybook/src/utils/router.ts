@@ -350,6 +350,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-fp-success': 'patterns/identity-and-access/forgot-password-and-account-recovery/password-reset-successfully',
   'fp-success': 'patterns/identity-and-access/forgot-password-and-account-recovery/password-reset-successfully',
   'password-reset-successfully': 'patterns/identity-and-access/forgot-password-and-account-recovery/password-reset-successfully',
+  'pattern-fp-account-recovery': 'patterns/identity-and-access/forgot-password-and-account-recovery/account-recovery',
+  'fp-account-recovery': 'patterns/identity-and-access/forgot-password-and-account-recovery/account-recovery',
+  'account-recovery': 'patterns/identity-and-access/forgot-password-and-account-recovery/account-recovery',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -730,6 +733,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('successfully') || cleanPath.includes('fp-success') || cleanPath.includes('password-reset-successfully')) {
       return 'pattern-fp-success';
+    }
+    if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
+      return 'pattern-fp-account-recovery';
     }
     if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
       return 'pattern-auth-suspicious-activity';

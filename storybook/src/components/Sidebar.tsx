@@ -806,6 +806,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Password reset successfully',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-fp-account-recovery',
+                label: 'Account recovery',
+                icon: 'layers',
+              },
             ],
           },
         ],
