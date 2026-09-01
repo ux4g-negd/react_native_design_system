@@ -877,6 +877,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Auto-dismiss Banner',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-live-status',
+                label: 'Live Status',
+                icon: 'layers',
+              },
             ],
           },
         ],

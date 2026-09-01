@@ -98,6 +98,7 @@ import { LockedNotificationsDoc } from './pages/LockedNotificationsDoc';
 import { WhatsAppConsentDoc } from './pages/WhatsAppConsentDoc';
 import { ManageAllDoc } from './pages/ManageAllDoc';
 import { AutoDismissBannerDoc } from './pages/AutoDismissBannerDoc';
+import { LiveStatusDoc } from './pages/LiveStatusDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -175,6 +176,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-live-status' || (page.includes('proactive') && page.includes('live')) || page.includes('live-status')) {
+    return 'Patterns / Notification / Proactive Status Update / Live Status';
   }
   if (page === 'pattern-auto-dismiss-banner' || (page.includes('proactive') && page.includes('banner')) || page.includes('auto-dismiss')) {
     return 'Patterns / Notification / Proactive Status Update / Auto-dismiss Banner';
@@ -509,6 +513,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-live-status' || (activePage.includes('proactive') && activePage.includes('live')) || activePage.includes('live-status')) {
+      return <LiveStatusDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-auto-dismiss-banner' || (activePage.includes('proactive') && activePage.includes('banner')) || activePage.includes('auto-dismiss')) {
       return <AutoDismissBannerDoc isDark={isDark} />;

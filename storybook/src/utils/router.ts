@@ -362,6 +362,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-whatsapp-consent': 'patterns/notification/notification-preferences/whatsapp-consent',
   'pattern-manage-all': 'patterns/notification/notification-preferences/manage-all',
   'pattern-auto-dismiss-banner': 'patterns/notification/proactive-status-update/auto-dismiss-banner',
+  'pattern-live-status': 'patterns/notification/proactive-status-update/live-status',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -745,6 +746,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
       return 'pattern-fp-account-recovery';
+    }
+    if (cleanPath.includes('live-status') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('live'))) {
+      return 'pattern-live-status';
     }
     if (cleanPath.includes('auto-dismiss-banner') || cleanPath.includes('auto-dismiss') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('banner'))) {
       return 'pattern-auto-dismiss-banner';
