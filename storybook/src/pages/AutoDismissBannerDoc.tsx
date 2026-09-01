@@ -5,6 +5,8 @@ import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { Ux4gLinearProgressBar } from '../../../src/components/linear-progress-bar/LinearProgressBar';
 import { Ux4gToast } from '../../../src/components/toast/Toast';
+import { Ux4gJourneyTimeline } from '../../../src/components/journey-timeline/JourneyTimeline';
+import { Ux4gTag } from '../../../src/components/tag/Tag';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
 
@@ -54,7 +56,9 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gDivider,
+  Ux4gTag,
   Ux4gLinearProgressBar,
+  Ux4gJourneyTimeline,
   Ux4gToast,
   Ux4gToastCategory,
   UX4GColors,
@@ -106,9 +110,11 @@ export const AutoDismissBannerPattern = () => {
         <View style={styles.card}>
           <View style={styles.cardHeaderRow}>
             <Text style={styles.cardTitle}>Income Certificate</Text>
-            <View style={styles.tagBadge}>
-              <Text style={styles.tagBadgeText}>Under Review</Text>
-            </View>
+            <Ux4gTag
+              text="Under Review"
+              style="tonal"
+              size="m"
+            />
           </View>
 
           <Text style={styles.cardSubtitle}>Application ID · INC-2026-MH-04127</Text>
@@ -128,70 +134,47 @@ export const AutoDismissBannerPattern = () => {
 
         {/* Card 2: Application Journey Timeline */}
         <View style={styles.card}>
-          <Text style={styles.timelineHeader}>Application journey</Text>
-          <Text style={styles.timelineDesc}>Every step from submission to issuance</Text>
-
-          <View style={{ height: 16 }} />
-
-          {/* Step 1 - Completed */}
-          <View style={styles.stepRow}>
-            <View style={styles.stepIndicatorCol}>
-              <View style={[styles.stepDot, styles.dotCompleted]}>
-                <Text style={styles.checkMark}>✓</Text>
-              </View>
-              <View style={styles.stepLine} />
-            </View>
-            <View style={styles.stepContent}>
-              <Text style={styles.stepTitle}>Application Submitted</Text>
-              <Text style={styles.stepDate}>07 Apr 2026, 10:24 AM</Text>
-            </View>
-          </View>
-
-          {/* Step 2 - Completed */}
-          <View style={styles.stepRow}>
-            <View style={styles.stepIndicatorCol}>
-              <View style={[styles.stepDot, styles.dotCompleted]}>
-                <Text style={styles.checkMark}>✓</Text>
-              </View>
-              <View style={styles.stepLine} />
-            </View>
-            <View style={styles.stepContent}>
-              <Text style={styles.stepTitle}>Documents Verified</Text>
-              <Text style={styles.stepDate}>10 Apr 2026, 02:15 PM</Text>
-            </View>
-          </View>
-
-          {/* Step 3 - Current */}
-          <View style={styles.stepRow}>
-            <View style={styles.stepIndicatorCol}>
-              <View style={[styles.stepDot, styles.dotCurrent]}>
-                <View style={styles.innerDotCurrent} />
-              </View>
-              <View style={styles.stepLine} />
-            </View>
-            <View style={[styles.stepContent, styles.currentHighlightCard]}>
-              <Text style={styles.currentStepTitle}>Under Review</Text>
-              <Text style={styles.currentStepDate}>11 Apr 2026 (Est)</Text>
-            </View>
-          </View>
-
-          {/* Step 4 - Upcoming */}
-          <View style={styles.stepRow}>
-            <View style={styles.stepIndicatorCol}>
-              <View style={[styles.stepDot, styles.dotUpcoming]} />
-            </View>
-            <View style={styles.stepContent}>
-              <Text style={styles.stepTitleUpcoming}>Decision</Text>
-              <Text style={styles.stepDate}>22 Apr 2026 (Est)</Text>
-              <View style={styles.pendingRow}>
-                <View style={styles.amberDot} />
-                <Text style={styles.pendingDaysText}>2 days remaining</Text>
-                <View style={styles.pendingBadge}>
-                  <Text style={styles.pendingBadgeText}>Pending</Text>
-                </View>
-              </View>
-            </View>
-          </View>
+          <Ux4gJourneyTimeline
+            activeColor={UX4GColors.primary}
+            indicatorSize={18}
+            lineWidth={2}
+            header={{
+              title: 'Application journey',
+              description: 'Every step from submission to issuance',
+            }}
+            steps={[
+              {
+                state: 'completed',
+                date: '07 Apr 2026, 10:24 AM',
+                title: 'Application Submitted',
+              },
+              {
+                state: 'completed',
+                date: '10 Apr 2026, 02:15 PM',
+                title: 'Documents Verified',
+              },
+              {
+                state: 'current',
+                date: '11 Apr 2026 (Est)',
+                title: 'Under Review',
+                dateColor: UX4GColors.primary,
+                cardColor: '#F3F0FF',
+                cardBorderColor: UX4GColors.primary,
+              },
+              {
+                state: 'upcoming',
+                date: '22 Apr 2026 (Est)',
+                title: 'Decision',
+                status: {
+                  text: '2 days remaining',
+                  dotColor: '#D97706',
+                  badgeText: 'Pending',
+                  badgeColor: '#FEF2F2',
+                  badgeTextColor: '#DC2626',
+                },
+              },
+            ]}
+          />
         </View>
 
         <View style={{ height: 32 }} />
@@ -207,7 +190,7 @@ export const AutoDismissBannerPattern = () => {
       {bannerVisible && (
         <View style={styles.floatingToastContainer}>
           <Ux4gToast
-            category={Ux4gToastCategory.info}
+            category="info"
             title="Application Under Review"
             subtitle="Your application moved to Under Review. This banner auto-dismisses in 5 seconds."
             showCloseButton={false}
@@ -233,32 +216,7 @@ const styles = StyleSheet.create({
   card: { backgroundColor: UX4GColors.neutral0, borderRadius: 12, borderWidth: 1, borderColor: UX4GColors.neutral200, padding: 16 },
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#111827' },
-  tagBadge: { backgroundColor: '#E5E7EB', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
-  tagBadgeText: { fontSize: 11, fontWeight: '700', color: '#374151' },
   cardSubtitle: { fontSize: 12, color: '#6B7280', marginTop: 4 },
-  timelineHeader: { fontSize: 16, fontWeight: '700', color: '#111827' },
-  timelineDesc: { fontSize: 12, color: '#6B7280', marginTop: 2 },
-  stepRow: { flexDirection: 'row', gap: 12 },
-  stepIndicatorCol: { alignItems: 'center' },
-  stepDot: { width: 18, height: 18, borderRadius: 9, justifyContent: 'center', alignItems: 'center' },
-  dotCompleted: { backgroundColor: UX4GColors.primary },
-  dotCurrent: { borderWidth: 2, borderColor: UX4GColors.primary, backgroundColor: '#FFFFFF' },
-  innerDotCurrent: { width: 8, height: 8, borderRadius: 4, backgroundColor: UX4GColors.primary },
-  dotUpcoming: { width: 10, height: 10, borderRadius: 5, backgroundColor: UX4GColors.neutral300, marginTop: 4 },
-  checkMark: { color: '#FFFFFF', fontSize: 10, fontWeight: '700' },
-  stepLine: { width: 2, flex: 1, backgroundColor: UX4GColors.neutral200, marginVertical: 4 },
-  stepContent: { flex: 1, paddingBottom: 16 },
-  stepTitle: { fontSize: 14, fontWeight: '600', color: '#111827' },
-  stepTitleUpcoming: { fontSize: 14, fontWeight: '600', color: '#6B7280' },
-  stepDate: { fontSize: 12, color: '#6B7280', marginTop: 2 },
-  currentHighlightCard: { backgroundColor: '#F3F0FF', borderRadius: 8, borderWidth: 1, borderColor: UX4GColors.primary, padding: 12 },
-  currentStepTitle: { fontSize: 14, fontWeight: '700', color: UX4GColors.primary },
-  currentStepDate: { fontSize: 12, color: UX4GColors.primary, marginTop: 2 },
-  pendingRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 },
-  amberDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#D97706' },
-  pendingDaysText: { fontSize: 11, color: '#6B7280' },
-  pendingBadge: { backgroundColor: '#FEF2F2', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
-  pendingBadgeText: { fontSize: 11, fontWeight: '600', color: '#DC2626' },
   footer: { alignItems: 'center' },
   poweredByText: { fontSize: 10, color: UX4GColors.neutral400 },
   digitalIndiaLogo: { height: 18, width: 60, marginTop: 4 },
@@ -415,19 +373,11 @@ const styles = StyleSheet.create({
               >
                 Income Certificate
               </span>
-              <span
-                style={{
-                  padding: '4px 10px',
-                  borderRadius: 6,
-                  backgroundColor: colors.badgeBg,
-                  color: colors.badgeText,
-                  fontSize: 11,
-                  fontWeight: 700,
-                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                }}
-              >
-                Under Review
-              </span>
+              <Ux4gTag
+                text="Under Review"
+                style="tonal"
+                size="m"
+              />
             </div>
 
             <span
@@ -463,119 +413,47 @@ const styles = StyleSheet.create({
               flexDirection: 'column',
             }}
           >
-            <span
-              style={{
-                fontSize: 16,
-                fontWeight: 700,
-                color: colors.onSurface,
-                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+            <Ux4gJourneyTimeline
+              activeColor={colors.primary}
+              indicatorSize={18}
+              lineWidth={2}
+              header={{
+                title: 'Application journey',
+                description: 'Every step from submission to issuance',
               }}
-            >
-              Application journey
-            </span>
-            <span
-              style={{
-                fontSize: 12,
-                color: colors.subtle,
-                marginTop: 2,
-                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-              }}
-            >
-              Every step from submission to issuance
-            </span>
-
-            <div style={{ height: 16 }} />
-
-            {/* Timeline Step 1 */}
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: colors.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', fontSize: 10, fontWeight: 700, flexShrink: 0, zIndex: 2 }}>
-                  ✓
-                </div>
-                <div style={{ width: 2, flex: 1, backgroundColor: colors.primary }} />
-              </div>
-              <div style={{ paddingBottom: 12, flex: 1 }}>
-                <div style={{ backgroundColor: isDark ? '#171717' : '#FFFFFF', borderRadius: 8, border: `1px solid ${colors.border}`, padding: '12px 16px' }}>
-                  <span style={{ fontSize: 12, color: colors.subtle, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    07 Apr 2026, 10:24 AM
-                  </span>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.onSurface, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    Application Submitted
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Timeline Step 2 */}
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ width: 2, height: 12, backgroundColor: colors.primary, flexShrink: 0 }} />
-                <div style={{ width: 18, height: 18, borderRadius: 9, backgroundColor: colors.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', fontSize: 10, fontWeight: 700, flexShrink: 0, zIndex: 2 }}>
-                  ✓
-                </div>
-                <div style={{ width: 2, flex: 1, backgroundColor: colors.primary }} />
-              </div>
-              <div style={{ paddingBottom: 12, flex: 1 }}>
-                <div style={{ backgroundColor: isDark ? '#171717' : '#FFFFFF', borderRadius: 8, border: `1px solid ${colors.border}`, padding: '12px 16px' }}>
-                  <span style={{ fontSize: 12, color: colors.subtle, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    10 Apr 2026, 02:15 PM
-                  </span>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.onSurface, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    Documents Verified
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Timeline Step 3 (Current) */}
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ width: 2, height: 12, backgroundColor: colors.primary, flexShrink: 0 }} />
-                <div style={{ width: 18, height: 18, borderRadius: 9, border: `2px solid ${colors.primary}`, backgroundColor: isDark ? '#171717' : '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 2 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: colors.primary }} />
-                </div>
-                <div style={{ width: 2, flex: 1, backgroundColor: isDark ? '#333333' : '#E5E7EB' }} />
-              </div>
-              <div style={{ paddingBottom: 12, flex: 1 }}>
-                <div style={{ backgroundColor: colors.currentCardBg, border: `1px solid ${colors.primary}`, borderRadius: 8, padding: '12px 16px' }}>
-                  <span style={{ fontSize: 12, color: colors.primary, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    11 Apr 2026 (Est)
-                  </span>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: colors.primary, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    Under Review
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Timeline Step 4 (Upcoming) */}
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ width: 18, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ width: 2, height: 12, backgroundColor: isDark ? '#333333' : '#E5E7EB', flexShrink: 0 }} />
-                <div style={{ width: 18, height: 18, borderRadius: 9, border: `2px solid ${isDark ? '#404040' : '#D1D5DB'}`, backgroundColor: isDark ? '#171717' : '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 2 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: isDark ? '#404040' : '#D1D5DB' }} />
-                </div>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ backgroundColor: isDark ? '#171717' : '#FFFFFF', borderRadius: 8, border: `1px solid ${colors.border}`, padding: '12px 16px' }}>
-                  <span style={{ fontSize: 12, color: colors.subtle, display: 'block', fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    22 Apr 2026 (Est)
-                  </span>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.subtle, display: 'block', marginTop: 4, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                    Decision
-                  </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8 }}>
-                    <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: colors.pendingDot }} />
-                    <span style={{ fontSize: 11, color: colors.subtle, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                      2 days remaining
-                    </span>
-                    <span style={{ padding: '2px 6px', borderRadius: 4, backgroundColor: colors.pendingBadgeBg, color: colors.pendingBadgeText, fontSize: 11, fontWeight: 600, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                      Pending
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              steps={[
+                {
+                  state: 'completed',
+                  date: '07 Apr 2026, 10:24 AM',
+                  title: 'Application Submitted',
+                },
+                {
+                  state: 'completed',
+                  date: '10 Apr 2026, 02:15 PM',
+                  title: 'Documents Verified',
+                },
+                {
+                  state: 'current',
+                  date: '11 Apr 2026 (Est)',
+                  title: 'Under Review',
+                  dateColor: colors.primary,
+                  cardColor: colors.currentCardBg,
+                  cardBorderColor: colors.primary,
+                },
+                {
+                  state: 'upcoming',
+                  date: '22 Apr 2026 (Est)',
+                  title: 'Decision',
+                  status: {
+                    text: '2 days remaining',
+                    dotColor: colors.pendingDot,
+                    badgeText: 'Pending',
+                    badgeColor: colors.pendingBadgeBg,
+                    badgeTextColor: colors.pendingBadgeText,
+                  },
+                },
+              ]}
+            />
           </div>
 
           {/* Footer */}
