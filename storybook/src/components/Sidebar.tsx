@@ -813,17 +813,17 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+        ],
+      },
+      {
+        id: 'notification-group',
+        label: 'Notification',
+        icon: 'folder',
+        children: [
           {
-            id: 'notification-group',
+            id: 'pattern-notification',
             label: 'Notification',
-            icon: 'folder',
-            children: [
-              {
-                id: 'pattern-notification',
-                label: 'Notification',
-                icon: 'layers',
-              },
-            ],
+            icon: 'layers',
           },
         ],
       },
