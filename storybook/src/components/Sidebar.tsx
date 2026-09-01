@@ -781,6 +781,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'forgot-password-group',
+            label: 'Forgot Password and Account Recovery',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-fp-reset-password',
+                label: 'Reset Password',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],

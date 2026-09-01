@@ -84,6 +84,7 @@ import { SignUpVerifyMobileDoc } from './pages/SignUpVerifyMobileDoc';
 import { SignUpCompleteProfileDoc } from './pages/SignUpCompleteProfileDoc';
 import { SignUpPasswordSetupDoc } from './pages/SignUpPasswordSetupDoc';
 import { SignUpAccountCreatedDoc } from './pages/SignUpAccountCreatedDoc';
+import { ForgotPasswordResetDoc } from './pages/ForgotPasswordResetDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -146,6 +147,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-signup-account-created' || (page.includes('signup') && page.includes('created'))) {
     return 'Patterns / Identity and Access / SignUp / Account Created';
+  }
+  if (page === 'pattern-fp-reset-password' || (page.includes('forgot') && page.includes('reset'))) {
+    return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Reset Password';
   }
   if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
@@ -438,6 +442,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-signup-account-created' || (activePage.includes('signup') && activePage.includes('created'))) {
       return <SignUpAccountCreatedDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-fp-reset-password' || (activePage.includes('forgot') && activePage.includes('reset'))) {
+      return <ForgotPasswordResetDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || activePage.includes('operator')) {
       return <OperatorAssistedAuthDoc isDark={isDark} />;
