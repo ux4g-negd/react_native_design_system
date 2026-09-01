@@ -882,6 +882,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Live Status',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-reconnecting-state',
+                label: 'Reconnecting State',
+                icon: 'layers',
+              },
             ],
           },
         ],

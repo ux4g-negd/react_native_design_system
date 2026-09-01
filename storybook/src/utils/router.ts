@@ -363,6 +363,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-manage-all': 'patterns/notification/notification-preferences/manage-all',
   'pattern-auto-dismiss-banner': 'patterns/notification/proactive-status-update/auto-dismiss-banner',
   'pattern-live-status': 'patterns/notification/proactive-status-update/live-status',
+  'pattern-reconnecting-state': 'patterns/notification/proactive-status-update/reconnecting-state',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -746,6 +747,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
       return 'pattern-fp-account-recovery';
+    }
+    if (cleanPath.includes('reconnecting-state') || cleanPath.includes('reconnecting') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('reconnect'))) {
+      return 'pattern-reconnecting-state';
     }
     if (cleanPath.includes('live-status') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('live'))) {
       return 'pattern-live-status';
