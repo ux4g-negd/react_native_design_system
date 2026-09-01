@@ -764,6 +764,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Verify your mobile',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-signup-complete-profile',
+                label: 'Complete your profile',
+                icon: 'layers',
+              },
             ],
           },
         ],

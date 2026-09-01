@@ -81,6 +81,7 @@ import { AadhaarAccountLockedDoc } from './pages/AadhaarAccountLockedDoc';
 import { OperatorAssistedAuthDoc } from './pages/OperatorAssistedAuthDoc';
 import { SignUpCreateAccountDoc } from './pages/SignUpCreateAccountDoc';
 import { SignUpVerifyMobileDoc } from './pages/SignUpVerifyMobileDoc';
+import { SignUpCompleteProfileDoc } from './pages/SignUpCompleteProfileDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -134,6 +135,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-signup-verify-mobile' || (page.includes('signup') && page.includes('verify'))) {
     return 'Patterns / Identity and Access / SignUp / Verify your mobile';
+  }
+  if (page === 'pattern-signup-complete-profile' || (page.includes('signup') && page.includes('profile'))) {
+    return 'Patterns / Identity and Access / SignUp / Complete your profile';
   }
   if (page === 'pattern-auth-attempt-warning' || page.includes('attempt-warning')) {
     return 'Patterns / Identity and Access / Auth errors and lockout / OTP error — attempt warning';
@@ -417,6 +421,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-signup-verify-mobile' || (activePage.includes('signup') && activePage.includes('verify'))) {
       return <SignUpVerifyMobileDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-signup-complete-profile' || (activePage.includes('signup') && activePage.includes('profile'))) {
+      return <SignUpCompleteProfileDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || activePage.includes('operator')) {
       return <OperatorAssistedAuthDoc isDark={isDark} />;

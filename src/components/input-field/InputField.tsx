@@ -526,7 +526,8 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     includeFontPadding: false,
     textAlignVertical: 'center',
-  },
+    outlineStyle: 'none',
+  } as any,
   trailingBox: {
     marginLeft: 8,
     alignItems: 'center',

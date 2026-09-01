@@ -330,6 +330,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'create-account': 'patterns/identity-and-access/signup/create-account',
   'pattern-signup-verify-mobile': 'patterns/identity-and-access/signup/verify-your-mobile',
   'signup-verify-mobile': 'patterns/identity-and-access/signup/verify-your-mobile',
+  'pattern-signup-complete-profile': 'patterns/identity-and-access/signup/complete-your-profile',
+  'signup-complete-profile': 'patterns/identity-and-access/signup/complete-your-profile',
+  'complete-your-profile': 'patterns/identity-and-access/signup/complete-your-profile',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -689,6 +692,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('signup/verify-mobile') || cleanPath.includes('signup/verify-your-mobile') || (cleanPath.includes('signup') && cleanPath.includes('verify'))) {
       return 'pattern-signup-verify-mobile';
+    }
+    if (cleanPath.includes('signup/complete-profile') || cleanPath.includes('complete-your-profile') || (cleanPath.includes('signup') && cleanPath.includes('profile'))) {
+      return 'pattern-signup-complete-profile';
     }
     if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
       return 'pattern-auth-suspicious-activity';
