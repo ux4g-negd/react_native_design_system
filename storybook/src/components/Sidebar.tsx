@@ -845,6 +845,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Update Frequency',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-per-service',
+                label: 'Per Service',
+                icon: 'layers',
+              },
             ],
           },
         ],
