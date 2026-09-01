@@ -413,16 +413,34 @@ const styles = StyleSheet.create({
                 scrollbarWidth: 'none',
               }}
             >
-              {TAB_CHIPS.map((chip, idx) => (
-                <Ux4gChoiceChip
-                  key={chip}
-                  text={chip}
-                  selected={activeTabIdx === idx}
-                  onClick={() => setActiveTabIdx(idx)}
-                  size="s"
-                  borderRadius={6}
-                />
-              ))}
+              {TAB_CHIPS.map((chip, idx) => {
+                const isSelected = activeTabIdx === idx;
+                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+                const activeText = isDark ? UX4GColors.gray900 : UX4GColors.neutral0;
+                const inactiveBg = isDark ? '#1E1E1E' : UX4GColors.neutral0;
+                const inactiveBorder = isDark ? '#333333' : '#E5E7EB';
+                const inactiveText = isDark ? '#D1D5DB' : '#1F2937';
+
+                return (
+                  <Ux4gChoiceChip
+                    key={chip}
+                    text={chip}
+                    selected={isSelected}
+                    onClick={() => setActiveTabIdx(idx)}
+                    size="s"
+                    borderRadius={6}
+                    containerStyle={{
+                      backgroundColor: isSelected ? activeBg : inactiveBg,
+                      borderColor: isSelected ? activeBg : inactiveBorder,
+                      borderWidth: 1,
+                    }}
+                    textStyle={{
+                      color: isSelected ? activeText : inactiveText,
+                      fontWeight: isSelected ? '600' : '500',
+                    }}
+                  />
+                );
+              })}
             </div>
 
             {/* Per Service Accordions Card */}
