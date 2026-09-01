@@ -850,6 +850,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Per Service',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-locked-notifications',
+                label: 'Locked Notifications',
+                icon: 'layers',
+              },
             ],
           },
         ],

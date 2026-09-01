@@ -94,6 +94,7 @@ import { ReminderAlertsDoc } from './pages/ReminderAlertsDoc';
 import { NotificationChannelsDoc } from './pages/NotificationChannelsDoc';
 import { UpdateFrequencyDoc } from './pages/UpdateFrequencyDoc';
 import { PerServiceDoc } from './pages/PerServiceDoc';
+import { LockedNotificationsDoc } from './pages/LockedNotificationsDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -171,6 +172,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-locked-notifications' || (page.includes('notification') && page.includes('locked'))) {
+    return 'Patterns / Notification / Notification Preferences / Locked Notifications';
   }
   if (page === 'pattern-per-service' || (page.includes('notification') && page.includes('service'))) {
     return 'Patterns / Notification / Notification Preferences / Per Service';
@@ -493,6 +497,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-locked-notifications' || (activePage.includes('notification') && activePage.includes('locked'))) {
+      return <LockedNotificationsDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-per-service' || (activePage.includes('notification') && activePage.includes('service'))) {
       return <PerServiceDoc isDark={isDark} />;
