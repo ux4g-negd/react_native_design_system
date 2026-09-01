@@ -240,12 +240,12 @@ const styles = StyleSheet.create({
   headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
   unionLogo: { width: 32, height: 32 },
   titleContainer: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12 },
-  titleText: { fontSize: 18, fontWeight: '700', color: '#111827', letterSpacing: -0.2 },
+  titleText: { fontSize: 18, fontWeight: '600', color: '#111827', letterSpacing: -0.2 },
   tabsContainer: { paddingHorizontal: 16 },
   card: { backgroundColor: UX4GColors.neutral0, borderRadius: 12, borderWidth: 1, borderColor: UX4GColors.neutral300, padding: 16 },
-  sectionHeader: { fontSize: 11, fontWeight: '700', color: '#4B5563', letterSpacing: 0.5, marginBottom: 8, marginLeft: 4 },
+  sectionHeader: { fontSize: 11, fontWeight: '600', color: '#4B5563', letterSpacing: 0.5, marginBottom: 8, marginLeft: 4 },
   row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 4 },
-  itemTitle: { fontSize: 13, fontWeight: '700', color: '#111827' },
+  itemTitle: { fontSize: 13, fontWeight: '600', color: '#111827' },
   itemSubtitle: { fontSize: 11, color: '#6B7280', marginTop: 3 },
   alwaysOnBadge: { backgroundColor: '#E5E7EB', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
   alwaysOnText: { fontSize: 11, fontWeight: '600', color: '#111827' },
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
                 <span
                   style={{
                     fontSize: 11,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     color: colors.sectionHeader,
                     letterSpacing: '0.5px',
                     marginBottom: 8,
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
                         <span
                           style={{
                             fontSize: 13,
-                            fontWeight: 700,
+                            fontWeight: 600,
                             color: colors.title,
                             fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                           }}
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
                 <span
                   style={{
                     fontSize: 11,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     color: colors.sectionHeader,
                     letterSpacing: '0.5px',
                     marginBottom: 8,
@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
                     <span
                       style={{
                         fontSize: 13,
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: colors.title,
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
@@ -556,7 +556,7 @@ const styles = StyleSheet.create({
                     <span
                       style={{
                         fontSize: 13,
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: colors.title,
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
@@ -604,6 +604,7 @@ const styles = StyleSheet.create({
                   contentColor={colors.btnContent}
                   backgroundColor={colors.btnBg}
                   borderRadius={8}
+                  textStyle={{ fontSize: 13, fontWeight: '500' }}
                 />
               </div>
             </div>
