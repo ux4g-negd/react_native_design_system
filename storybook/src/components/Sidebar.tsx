@@ -860,6 +860,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'WhatsApp Consent',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-manage-all',
+                label: 'Manage All',
+                icon: 'layers',
+              },
             ],
           },
         ],
