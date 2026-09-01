@@ -769,6 +769,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Complete your profile',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-signup-password-setup',
+                label: 'Password setup',
+                icon: 'layers',
+              },
             ],
           },
         ],
