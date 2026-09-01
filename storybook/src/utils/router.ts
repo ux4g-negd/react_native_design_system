@@ -342,6 +342,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-fp-reset-password': 'patterns/identity-and-access/forgot-password-and-account-recovery/reset-password',
   'fp-reset-password': 'patterns/identity-and-access/forgot-password-and-account-recovery/reset-password',
   'reset-password': 'patterns/identity-and-access/forgot-password-and-account-recovery/reset-password',
+  'pattern-fp-enter-otp': 'patterns/identity-and-access/forgot-password-and-account-recovery/enter-otp',
+  'fp-enter-otp': 'patterns/identity-and-access/forgot-password-and-account-recovery/enter-otp',
   'signin-account': 'patterns/identity-and-access/signin/sign-in-to-your-account',
   'signin-otp': 'patterns/identity-and-access/signin/enter-otp',
   'enter-otp': 'patterns/identity-and-access/signin/enter-otp',
@@ -713,6 +715,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('reset-password') || cleanPath.includes('fp-reset-password') || (cleanPath.includes('forgot-password') && cleanPath.includes('reset'))) {
       return 'pattern-fp-reset-password';
+    }
+    if (cleanPath.includes('forgot-password') && cleanPath.includes('enter-otp') || cleanPath.includes('fp-enter-otp')) {
+      return 'pattern-fp-enter-otp';
     }
     if (cleanPath.includes('otp-step-up-suspicious-activity') || cleanPath.includes('suspicious-activity') || (cleanPath.includes('auth-errors') && cleanPath.includes('suspicious'))) {
       return 'pattern-auth-suspicious-activity';
