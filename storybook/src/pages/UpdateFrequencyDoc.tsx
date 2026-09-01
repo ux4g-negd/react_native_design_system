@@ -161,8 +161,8 @@ export const UpdateFrequencyPattern = () => {
               >
                 <Ux4gRadioButton
                   value={item.title}
-                  selected={isSelected}
-                  onPress={() => setFrequency(item.title)}
+                  groupValue={frequency}
+                  onChanged={(v) => setFrequency(v)}
                   color={UX4GColors.primary}
                 />
                 <View style={styles.textContainer}>
@@ -374,8 +374,8 @@ const styles = StyleSheet.create({
                     >
                       <Ux4gRadioButton
                         value={item.title}
-                        selected={isSelected}
-                        onPress={() => setFrequency(item.title)}
+                        groupValue={frequency}
+                        onChanged={(v) => setFrequency(v)}
                         color={colors.primary}
                       />
 
