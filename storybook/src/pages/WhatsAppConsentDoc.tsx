@@ -161,8 +161,8 @@ export const WhatsAppConsentPattern = () => {
           <Ux4gButton
             text="Enable WhatsApp notifications"
             onPress={() => {}}
-            disabled={!consented}
-            fullWidth={true}
+            enabled={consented}
+            width="100%"
             height={48}
             backgroundColor={UX4GColors.primary}
             borderRadius={8}
@@ -422,8 +422,8 @@ const styles = StyleSheet.create({
                       setEnabledSuccess(true);
                     }
                   }}
-                  disabled={!consented}
-                  fullWidth={true}
+                  enabled={consented}
+                  width="100%"
                   height={48}
                   backgroundColor={colors.primary}
                   borderRadius={8}
