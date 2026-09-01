@@ -3,6 +3,7 @@ import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gSwitch as Ux4gToggle } from '../../../src/components/switch/Switch';
+import { Ux4gChoiceChip } from '../../../src/components/chips/Chips';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
@@ -110,30 +111,18 @@ export const NotificationChannelsPattern = () => {
         <Text style={styles.titleText}>Notification Preferences</Text>
       </View>
 
-      {/* 3. Horizontal Filter Tabs */}
+      {/* 3. Horizontal Filter Chips */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.tabsContainer}
       >
-        <TouchableOpacity style={[styles.tabButton, styles.tabActive]}>
-          <Text style={styles.tabActiveText}>Notification channels</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabButton}>
-          <Text style={styles.tabInactiveText}>Update Frequency</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabButton}>
-          <Text style={styles.tabInactiveText}>Per Service Preferences</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabButton}>
-          <Text style={styles.tabInactiveText}>Mandatory Notification</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabButton}>
-          <Text style={styles.tabInactiveText}>WhatsApp notification</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabButton}>
-          <Text style={styles.tabInactiveText}>Manage all Subscriptions</Text>
-        </TouchableOpacity>
+        <Ux4gChoiceChip text="Notification channels" selected={true} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Update Frequency" selected={false} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Per Service Preferences" selected={false} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Mandatory Notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="WhatsApp notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Manage all Subscriptions" selected={false} onClick={() => {}} size="s" borderRadius={6} />
       </ScrollView>
 
       {/* 4. Notification Channels Card */}
@@ -302,37 +291,21 @@ const styles = StyleSheet.create({
                 display: 'flex',
                 gap: 8,
                 overflowX: 'auto',
-                padding: '0 16px',
-                paddingBottom: 16,
+                padding: '0 16px 16px 16px',
                 msOverflowStyle: 'none',
                 scrollbarWidth: 'none',
               }}
             >
-              {TAB_CHIPS.map((chip, idx) => {
-                const isActive = activeTabIdx === idx;
-                return (
-                  <button
-                    key={chip}
-                    type="button"
-                    onClick={() => setActiveTabIdx(idx)}
-                    style={{
-                      padding: '8px 12px',
-                      borderRadius: 6,
-                      border: isActive ? 'none' : `1px solid ${colors.tabBorder}`,
-                      backgroundColor: isActive ? colors.tabActiveBg : colors.tabInactiveBg,
-                      color: isActive ? colors.tabActiveText : colors.tabInactiveText,
-                      fontSize: 12,
-                      fontWeight: isActive ? 600 : 500,
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                      transition: 'all 0.15s ease',
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
-                    {chip}
-                  </button>
-                );
-              })}
+              {TAB_CHIPS.map((chip, idx) => (
+                <Ux4gChoiceChip
+                  key={chip}
+                  text={chip}
+                  selected={activeTabIdx === idx}
+                  onClick={() => setActiveTabIdx(idx)}
+                  size="s"
+                  borderRadius={6}
+                />
+              ))}
             </div>
 
             {/* Channel Preferences Rounded Card */}
