@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
 
         {activeMainTab === 'code' && (
           <div>
-            <CodeBlock code={codeString} language="tsx" isDark={isDark} />
+            <CodeBlock code={codeString} language="tsx" />
           </div>
         )}
       </div>
