@@ -383,6 +383,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-consent-capture-not-given': 'patterns/consent-and-declaration/consent-capture/consent-capture-consent-not-given',
   'pattern-consent-management': 'patterns/consent-and-declaration/consent-capture/consent-management',
   'pattern-data-sharing-consent': 'patterns/consent-and-declaration/data-sharing-consent/data-sharing-consent',
+  'pattern-manage-data-sharing-consents': 'patterns/consent-and-declaration/data-sharing-consent/manage-data-sharing-consents',
   feedback: 'patterns/feedback',
 };
 
