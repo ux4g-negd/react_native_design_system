@@ -105,6 +105,7 @@ import { PaymentDoc } from './pages/PaymentDoc';
 import { ChoosePaymentMethodDoc } from './pages/ChoosePaymentMethodDoc';
 import { PaymentProcessingDoc } from './pages/PaymentProcessingDoc';
 import { PaymentSuccessDoc } from './pages/PaymentSuccessDoc';
+import { PaymentFailedDoc } from './pages/PaymentFailedDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -182,6 +183,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-payment-failed' || page.includes('payment-failed') || page.includes('failed')) {
+    return 'Patterns / Payment and Confirmation / Payment Failed';
   }
   if (page === 'pattern-payment-success' || page.includes('payment-success') || page.includes('payment-successful')) {
     return 'Patterns / Payment and Confirmation / Payment Successful';
@@ -537,6 +541,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-payment-failed' || activePage.includes('payment-failed') || activePage.includes('failed')) {
+      return <PaymentFailedDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-payment-success' || activePage.includes('payment-success') || activePage.includes('payment-successful')) {
       return <PaymentSuccessDoc isDark={isDark} />;

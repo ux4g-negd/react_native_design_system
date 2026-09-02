@@ -921,6 +921,11 @@ const NAV_ITEMS: NavItem[] = [
             label: 'Payment Successful',
             icon: 'layers',
           },
+          {
+            id: 'pattern-payment-failed',
+            label: 'Payment Failed',
+            icon: 'layers',
+          },
         ],
       },
     ],
