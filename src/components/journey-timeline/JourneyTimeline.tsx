@@ -264,7 +264,7 @@ const JourneyStepCard: React.FC<{
 
     const onSurface = colors.onSurface ?? UX4GColors.neutral900;
     const primary = colors.primary ?? UX4GColors.primary600;
-    const secondaryColor = colors.secondary ?? (isDark ? UX4GColors.orange500 : UX4GColors.orange600);
+    const secondaryColor = colors.secondary ?? (isDark ? UX4GColors.secondary300 : UX4GColors.secondary600);
 
     const defaultBg = step.cardColor ?? cardColor ?? (isDark ? UX4GColors.neutral950 : UX4GColors.neutral0);
     const defaultBorder = step.cardBorderColor ?? cardBorderColor ?? `${onSurface}1A`;

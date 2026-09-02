@@ -933,6 +933,18 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'status-and-tracking-group',
+        label: 'Status and Tracking',
+        icon: 'folder',
+        children: [
+          {
+            id: 'pattern-application-status-tracker',
+            label: 'Application Status Tracker',
+            icon: 'layers',
+          },
+        ],
+      },
     ],
   },
 ];

@@ -377,6 +377,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   headers: 'patterns/headers',
   auth: 'patterns/authentication',
   cards: 'patterns/cards',
+  'pattern-application-status-tracker': 'patterns/status-and-tracking/application-status-tracker',
   feedback: 'patterns/feedback',
 };
 
@@ -698,6 +699,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('application-status-tracker') || cleanPath.includes('status-and-tracking') || cleanPath.includes('status-tracker') || (cleanPath.includes('status') && cleanPath.includes('application'))) {
+      return 'pattern-application-status-tracker';
+    }
     if (cleanPath.includes('payment-waived') || cleanPath.includes('fee-waived') || cleanPath.includes('waived')) {
       return 'pattern-payment-waived';
     }
