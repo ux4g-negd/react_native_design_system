@@ -1004,6 +1004,23 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'declaration-before-submission-group',
+            label: 'Declaration Before Submission',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-declaration-before-submission',
+                label: 'Declaration Before Submission',
+                icon: 'layers',
+              },
+              {
+                id: 'pattern-declaration-with-digital-sign',
+                label: 'Declaration with Digital Sign',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],

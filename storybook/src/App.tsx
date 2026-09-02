@@ -116,6 +116,8 @@ import { DataSharingConsentDoc } from './pages/DataSharingConsentDoc';
 import { ManageDataSharingConsentsDoc } from './pages/ManageDataSharingConsentsDoc';
 import { WithdrawConsentDialogDoc } from './pages/WithdrawConsentDialogDoc';
 import { ConsentHistoryDoc } from './pages/ConsentHistoryDoc';
+import { DeclarationBeforeSubmissionDoc } from './pages/DeclarationBeforeSubmissionDoc';
+import { DeclarationWithDigitalSignDoc } from './pages/DeclarationWithDigitalSignDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -193,6 +195,12 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-declaration-with-digital-sign' || page.includes('declaration-with-digital-sign') || page.includes('digital-sign')) {
+    return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration with Digital Sign';
+  }
+  if (page === 'pattern-declaration-before-submission' || page.includes('declaration-before-submission') || page.includes('declaration')) {
+    return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration Before Submission';
   }
   if (page === 'pattern-consent-history' || page.includes('consent-history') || page.includes('history')) {
     return 'Patterns / Consent and Declaration / Data Sharing Consent / Consent History';
@@ -581,6 +589,12 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-declaration-with-digital-sign' || activePage.includes('declaration-with-digital-sign') || activePage.includes('digital-sign')) {
+      return <DeclarationWithDigitalSignDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-declaration-before-submission' || activePage.includes('declaration-before-submission') || activePage.includes('declaration')) {
+      return <DeclarationBeforeSubmissionDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-consent-history' || activePage.includes('consent-history') || activePage.includes('history')) {
       return <ConsentHistoryDoc isDark={isDark} />;

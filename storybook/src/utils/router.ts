@@ -386,6 +386,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-manage-data-sharing-consents': 'patterns/consent-and-declaration/data-sharing-consent/manage-data-sharing-consents',
   'pattern-withdraw-consent-dialog': 'patterns/consent-and-declaration/data-sharing-consent/withdraw-consent-dialog',
   'pattern-consent-history': 'patterns/consent-and-declaration/data-sharing-consent/consent-history',
+  'pattern-declaration-before-submission': 'patterns/consent-and-declaration/declaration-before-submission/declaration-before-submission',
+  'pattern-declaration-with-digital-sign': 'patterns/consent-and-declaration/declaration-before-submission/declaration-with-digital-sign',
   feedback: 'patterns/feedback',
 };
 
@@ -778,6 +780,33 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('forgot-password') && cleanPath.includes('recovery') || cleanPath.includes('fp-account-recovery') || cleanPath.includes('account-recovery')) {
       return 'pattern-fp-account-recovery';
+    }
+    if (cleanPath.includes('declaration-with-digital-sign') || cleanPath.includes('digital-sign')) {
+      return 'pattern-declaration-with-digital-sign';
+    }
+    if (cleanPath.includes('declaration-before-submission') || cleanPath.includes('declaration')) {
+      return 'pattern-declaration-before-submission';
+    }
+    if (cleanPath.includes('consent-history') || (cleanPath.includes('data-sharing') && cleanPath.includes('history'))) {
+      return 'pattern-consent-history';
+    }
+    if (cleanPath.includes('withdraw-consent') || (cleanPath.includes('data-sharing') && cleanPath.includes('withdraw'))) {
+      return 'pattern-withdraw-consent-dialog';
+    }
+    if (cleanPath.includes('manage-data-sharing') || (cleanPath.includes('data-sharing') && cleanPath.includes('manage'))) {
+      return 'pattern-manage-data-sharing-consents';
+    }
+    if (cleanPath.includes('data-sharing-consent') || cleanPath.includes('data-sharing')) {
+      return 'pattern-data-sharing-consent';
+    }
+    if (cleanPath.includes('consent-management') || (cleanPath.includes('consent') && cleanPath.includes('management'))) {
+      return 'pattern-consent-management';
+    }
+    if (cleanPath.includes('consent-capture-not-given') || cleanPath.includes('consent-not-given') || (cleanPath.includes('consent') && cleanPath.includes('not-given'))) {
+      return 'pattern-consent-capture-not-given';
+    }
+    if (cleanPath.includes('consent-capture') || cleanPath.includes('consent')) {
+      return 'pattern-consent-capture';
     }
     if (cleanPath.includes('manual-refresh-prompt') || cleanPath.includes('manual-refresh') || (cleanPath.includes('proactive-status-update') && cleanPath.includes('refresh'))) {
       return 'pattern-manual-refresh-prompt';
