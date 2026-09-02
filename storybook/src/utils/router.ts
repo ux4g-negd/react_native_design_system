@@ -385,6 +385,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-data-sharing-consent': 'patterns/consent-and-declaration/data-sharing-consent/data-sharing-consent',
   'pattern-manage-data-sharing-consents': 'patterns/consent-and-declaration/data-sharing-consent/manage-data-sharing-consents',
   'pattern-withdraw-consent-dialog': 'patterns/consent-and-declaration/data-sharing-consent/withdraw-consent-dialog',
+  'pattern-consent-history': 'patterns/consent-and-declaration/data-sharing-consent/consent-history',
   feedback: 'patterns/feedback',
 };
 

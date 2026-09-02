@@ -55,6 +55,10 @@ body {
   background: #A1A1A1;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ===== Layout ===== */
 .app-layout {
   display: flex;

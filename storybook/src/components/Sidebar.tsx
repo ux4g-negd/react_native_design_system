@@ -997,6 +997,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Withdraw Consent Dialog',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-consent-history',
+                label: 'Consent History',
+                icon: 'layers',
+              },
             ],
           },
         ],

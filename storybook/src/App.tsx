@@ -115,6 +115,7 @@ import { ConsentManagementDoc } from './pages/ConsentManagementDoc';
 import { DataSharingConsentDoc } from './pages/DataSharingConsentDoc';
 import { ManageDataSharingConsentsDoc } from './pages/ManageDataSharingConsentsDoc';
 import { WithdrawConsentDialogDoc } from './pages/WithdrawConsentDialogDoc';
+import { ConsentHistoryDoc } from './pages/ConsentHistoryDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -192,6 +193,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-consent-history' || page.includes('consent-history') || page.includes('history')) {
+    return 'Patterns / Consent and Declaration / Data Sharing Consent / Consent History';
   }
   if (page === 'pattern-withdraw-consent-dialog' || page.includes('withdraw-consent') || page.includes('withdraw')) {
     return 'Patterns / Consent and Declaration / Data Sharing Consent / Withdraw Consent Dialog';
@@ -577,6 +581,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-consent-history' || activePage.includes('consent-history') || activePage.includes('history')) {
+      return <ConsentHistoryDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-withdraw-consent-dialog' || activePage.includes('withdraw-consent') || activePage.includes('withdraw')) {
       return <WithdrawConsentDialogDoc isDark={isDark} />;
