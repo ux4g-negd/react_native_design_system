@@ -896,6 +896,18 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'payment-and-confirmation-group',
+        label: 'Payment and Confirmation',
+        icon: 'folder',
+        children: [
+          {
+            id: 'pattern-payment',
+            label: 'Payment',
+            icon: 'layers',
+          },
+        ],
+      },
     ],
   },
 ];
@@ -931,6 +943,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
+    if (page === 'pattern-payment' || page.includes('payment')) {
+      return ['patterns', 'payment-and-confirmation-group'];
+    }
     if (page === 'pattern-otp-verify-mobile' || page.startsWith('pattern-otp') || page.includes('verify-mobile')) {
       return ['patterns', 'identity-and-access-group', 'otp-verification-group'];
     }

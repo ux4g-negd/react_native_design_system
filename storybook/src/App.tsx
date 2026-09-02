@@ -101,6 +101,7 @@ import { AutoDismissBannerDoc } from './pages/AutoDismissBannerDoc';
 import { LiveStatusDoc } from './pages/LiveStatusDoc';
 import { ReconnectingStateDoc } from './pages/ReconnectingStateDoc';
 import { ManualRefreshPromptDoc } from './pages/ManualRefreshPromptDoc';
+import { PaymentDoc } from './pages/PaymentDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -178,6 +179,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-payment' || page.includes('payment')) {
+    return 'Patterns / Payment and Confirmation / Payment';
   }
   if (page === 'pattern-manual-refresh-prompt' || (page.includes('proactive') && page.includes('refresh')) || page.includes('manual-refresh')) {
     return 'Patterns / Notification / Proactive Status Update / Manual Refresh Prompt';
@@ -522,7 +526,10 @@ export const App: React.FC = () => {
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
     }
-    if (activePage === 'pattern-manual-refresh-prompt' || (activePage.includes('proactive') && activePage.includes('refresh')) || activePage.includes('manual-refresh')) {
+    if (activePage === 'pattern-payment' || activePage.includes('payment')) {
+      return <PaymentDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-manual-refresh-prompt' || activePage.includes('manual-refresh-prompt') || (activePage.includes('proactive') && activePage.includes('refresh'))) {
       return <ManualRefreshPromptDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-reconnecting-state' || (activePage.includes('proactive') && activePage.includes('reconnecting')) || activePage.includes('reconnecting')) {

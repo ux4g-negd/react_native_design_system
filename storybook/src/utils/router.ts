@@ -698,6 +698,9 @@ export function getPageFromPath(path: string): string {
   }
 
   if (cleanPath.startsWith('patterns/') || cleanPath.startsWith('patterns') || cleanPath.startsWith('pattern')) {
+    if (cleanPath.includes('payment') || cleanPath.includes('payment-and-confirmation')) {
+      return 'pattern-payment';
+    }
     if (cleanPath.includes('operator-assisted') || cleanPath.includes('operator')) {
       return 'pattern-operator-assisted-auth';
     }
