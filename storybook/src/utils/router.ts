@@ -378,6 +378,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   auth: 'patterns/authentication',
   cards: 'patterns/cards',
   'pattern-application-status-tracker': 'patterns/status-and-tracking/application-status-tracker',
+  'pattern-grievance-status-tracker': 'patterns/status-and-tracking/grievance-status-tracker',
   feedback: 'patterns/feedback',
 };
 

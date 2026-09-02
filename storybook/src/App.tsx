@@ -108,6 +108,7 @@ import { PaymentSuccessDoc } from './pages/PaymentSuccessDoc';
 import { PaymentFailedDoc } from './pages/PaymentFailedDoc';
 import { PaymentWaivedDoc } from './pages/PaymentWaivedDoc';
 import { ApplicationStatusTrackerDoc } from './pages/ApplicationStatusTrackerDoc';
+import { GrievanceStatusTrackerDoc } from './pages/GrievanceStatusTrackerDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -186,7 +187,10 @@ const getMobileBreadcrumb = (page: string) => {
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
   }
-  if (page === 'pattern-application-status-tracker' || page.includes('application-status-tracker') || page.includes('status-tracker')) {
+  if (page === 'pattern-grievance-status-tracker' || page.includes('grievance-status-tracker') || page.includes('grievance')) {
+    return 'Patterns / Status and Tracking / Grievance Status Tracker';
+  }
+  if (page === 'pattern-application-status-tracker' || page.includes('application-status-tracker')) {
     return 'Patterns / Status and Tracking / Application Status Tracker';
   }
   if (page === 'pattern-payment-waived' || page.includes('payment-waived') || page.includes('waived')) {
@@ -550,7 +554,10 @@ export const App: React.FC = () => {
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
     }
-    if (activePage === 'pattern-application-status-tracker' || activePage.includes('application-status-tracker') || activePage.includes('status-tracker')) {
+    if (activePage === 'pattern-grievance-status-tracker' || activePage.includes('grievance-status-tracker') || activePage.includes('grievance')) {
+      return <GrievanceStatusTrackerDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-application-status-tracker' || activePage.includes('application-status-tracker')) {
       return <ApplicationStatusTrackerDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-payment-waived' || activePage.includes('payment-waived') || activePage.includes('waived')) {

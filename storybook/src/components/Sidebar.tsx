@@ -943,6 +943,11 @@ const NAV_ITEMS: NavItem[] = [
             label: 'Application Status Tracker',
             icon: 'layers',
           },
+          {
+            id: 'pattern-grievance-status-tracker',
+            label: 'Grievance Status Tracker',
+            icon: 'layers',
+          },
         ],
       },
     ],
