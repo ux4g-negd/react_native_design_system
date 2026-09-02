@@ -110,6 +110,7 @@ import { PaymentWaivedDoc } from './pages/PaymentWaivedDoc';
 import { ApplicationStatusTrackerDoc } from './pages/ApplicationStatusTrackerDoc';
 import { GrievanceStatusTrackerDoc } from './pages/GrievanceStatusTrackerDoc';
 import { ConsentCaptureDoc } from './pages/ConsentCaptureDoc';
+import { ConsentCaptureNotGivenDoc } from './pages/ConsentCaptureNotGivenDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -188,7 +189,10 @@ const getMobileBreadcrumb = (page: string) => {
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
   }
-  if (page === 'pattern-consent-capture' || page.includes('consent-capture') || page.includes('consent')) {
+  if (page === 'pattern-consent-capture-not-given' || page.includes('consent-not-given') || page.includes('not-given')) {
+    return 'Patterns / Consent and Declaration / Consent Capture / Consent Capture (Consent Not Given)';
+  }
+  if (page === 'pattern-consent-capture' || page.includes('consent-capture')) {
     return 'Patterns / Consent and Declaration / Consent Capture / Consent Capture';
   }
   if (page === 'pattern-grievance-status-tracker' || page.includes('grievance-status-tracker') || page.includes('grievance')) {
@@ -558,7 +562,10 @@ export const App: React.FC = () => {
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
     }
-    if (activePage === 'pattern-consent-capture' || activePage.includes('consent-capture') || activePage.includes('consent')) {
+    if (activePage === 'pattern-consent-capture-not-given' || activePage.includes('consent-not-given') || activePage.includes('not-given')) {
+      return <ConsentCaptureNotGivenDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-consent-capture' || activePage.includes('consent-capture')) {
       return <ConsentCaptureDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-grievance-status-tracker' || activePage.includes('grievance-status-tracker') || activePage.includes('grievance')) {

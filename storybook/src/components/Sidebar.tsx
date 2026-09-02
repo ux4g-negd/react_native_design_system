@@ -965,6 +965,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Consent Capture',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-consent-capture-not-given',
+                label: 'Consent Capture (Consent Not Given)',
+                icon: 'layers',
+              },
             ],
           },
         ],

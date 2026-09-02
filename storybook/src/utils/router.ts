@@ -380,6 +380,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-application-status-tracker': 'patterns/status-and-tracking/application-status-tracker',
   'pattern-grievance-status-tracker': 'patterns/status-and-tracking/grievance-status-tracker',
   'pattern-consent-capture': 'patterns/consent-and-declaration/consent-capture/consent-capture',
+  'pattern-consent-capture-not-given': 'patterns/consent-and-declaration/consent-capture/consent-capture-consent-not-given',
   feedback: 'patterns/feedback',
 };
 
