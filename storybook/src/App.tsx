@@ -109,6 +109,7 @@ import { PaymentFailedDoc } from './pages/PaymentFailedDoc';
 import { PaymentWaivedDoc } from './pages/PaymentWaivedDoc';
 import { ApplicationStatusTrackerDoc } from './pages/ApplicationStatusTrackerDoc';
 import { GrievanceStatusTrackerDoc } from './pages/GrievanceStatusTrackerDoc';
+import { ConsentCaptureDoc } from './pages/ConsentCaptureDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -186,6 +187,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-consent-capture' || page.includes('consent-capture') || page.includes('consent')) {
+    return 'Patterns / Consent and Declaration / Consent Capture / Consent Capture';
   }
   if (page === 'pattern-grievance-status-tracker' || page.includes('grievance-status-tracker') || page.includes('grievance')) {
     return 'Patterns / Status and Tracking / Grievance Status Tracker';
@@ -553,6 +557,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-consent-capture' || activePage.includes('consent-capture') || activePage.includes('consent')) {
+      return <ConsentCaptureDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-grievance-status-tracker' || activePage.includes('grievance-status-tracker') || activePage.includes('grievance')) {
       return <GrievanceStatusTrackerDoc isDark={isDark} />;

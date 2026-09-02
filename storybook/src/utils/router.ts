@@ -379,6 +379,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   cards: 'patterns/cards',
   'pattern-application-status-tracker': 'patterns/status-and-tracking/application-status-tracker',
   'pattern-grievance-status-tracker': 'patterns/status-and-tracking/grievance-status-tracker',
+  'pattern-consent-capture': 'patterns/consent-and-declaration/consent-capture/consent-capture',
   feedback: 'patterns/feedback',
 };
 

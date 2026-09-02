@@ -950,6 +950,25 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'consent-and-declaration-group',
+        label: 'Consent and Declaration',
+        icon: 'folder',
+        children: [
+          {
+            id: 'consent-capture-group',
+            label: 'Consent Capture',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-consent-capture',
+                label: 'Consent Capture',
+                icon: 'layers',
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
@@ -985,6 +1004,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
+    if (page === 'pattern-consent-capture' || page.includes('consent')) {
+      return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];
+    }
     if (page === 'pattern-payment' || page.includes('payment')) {
       return ['patterns', 'payment-and-confirmation-group'];
     }
