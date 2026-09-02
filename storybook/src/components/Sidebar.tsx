@@ -916,6 +916,11 @@ const NAV_ITEMS: NavItem[] = [
             label: 'Payment Processing',
             icon: 'layers',
           },
+          {
+            id: 'pattern-payment-success',
+            label: 'Payment Successful',
+            icon: 'layers',
+          },
         ],
       },
     ],
