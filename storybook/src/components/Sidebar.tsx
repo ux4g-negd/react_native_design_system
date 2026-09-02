@@ -977,6 +977,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'data-sharing-consent-group',
+            label: 'Data Sharing Consent',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-data-sharing-consent',
+                label: 'Data Sharing Consent',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
