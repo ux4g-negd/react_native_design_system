@@ -992,6 +992,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Manage Data Sharing Consents',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-withdraw-consent-dialog',
+                label: 'Withdraw Consent Dialog',
+                icon: 'layers',
+              },
             ],
           },
         ],
