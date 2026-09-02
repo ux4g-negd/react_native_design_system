@@ -911,6 +911,11 @@ const NAV_ITEMS: NavItem[] = [
             label: 'Choose Payment Method',
             icon: 'layers',
           },
+          {
+            id: 'pattern-payment-processing',
+            label: 'Payment Processing',
+            icon: 'layers',
+          },
         ],
       },
     ],
