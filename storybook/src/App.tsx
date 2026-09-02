@@ -111,6 +111,7 @@ import { ApplicationStatusTrackerDoc } from './pages/ApplicationStatusTrackerDoc
 import { GrievanceStatusTrackerDoc } from './pages/GrievanceStatusTrackerDoc';
 import { ConsentCaptureDoc } from './pages/ConsentCaptureDoc';
 import { ConsentCaptureNotGivenDoc } from './pages/ConsentCaptureNotGivenDoc';
+import { ConsentManagementDoc } from './pages/ConsentManagementDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -188,6 +189,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-fp-account-recovery' || (page.includes('forgot') && page.includes('recovery')) || page.includes('account-recovery')) {
     return 'Patterns / Identity and Access / Forgot Password and Account Recovery / Account recovery';
+  }
+  if (page === 'pattern-consent-management' || page.includes('consent-management')) {
+    return 'Patterns / Consent and Declaration / Consent Capture / Consent Management';
   }
   if (page === 'pattern-consent-capture-not-given' || page.includes('consent-not-given') || page.includes('not-given')) {
     return 'Patterns / Consent and Declaration / Consent Capture / Consent Capture (Consent Not Given)';
@@ -561,6 +565,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-fp-account-recovery' || (activePage.includes('forgot') && activePage.includes('recovery')) || activePage.includes('account-recovery')) {
       return <ForgotPasswordAccountRecoveryDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-consent-management' || activePage.includes('consent-management')) {
+      return <ConsentManagementDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-consent-capture-not-given' || activePage.includes('consent-not-given') || activePage.includes('not-given')) {
       return <ConsentCaptureNotGivenDoc isDark={isDark} />;
