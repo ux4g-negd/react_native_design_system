@@ -926,6 +926,11 @@ const NAV_ITEMS: NavItem[] = [
             label: 'Payment Failed',
             icon: 'layers',
           },
+          {
+            id: 'pattern-payment-waived',
+            label: 'Payment Waived',
+            icon: 'layers',
+          },
         ],
       },
     ],
