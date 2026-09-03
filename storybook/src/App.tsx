@@ -127,6 +127,7 @@ import { UnsavedChangesDialogDoc } from './pages/UnsavedChangesDialogDoc';
 import { DiscardDraftDialogDoc } from './pages/DiscardDraftDialogDoc';
 import { ApplicationSubmittedDoc } from './pages/ApplicationSubmittedDoc';
 import { ApplicationQueuedDoc } from './pages/ApplicationQueuedDoc';
+import { CouldNotSubmitDoc } from './pages/CouldNotSubmitDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -231,6 +232,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-application-queued' || page.includes('application-queued')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Application Queued';
+  }
+  if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
+    return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
   }
   if (page === 'pattern-declaration-with-digital-sign' || page.includes('declaration-with-digital-sign') || page.includes('digital-sign')) {
     return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration with Digital Sign';
@@ -652,6 +656,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-application-queued' || activePage.includes('application-queued')) {
       return <ApplicationQueuedDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
+      return <CouldNotSubmitDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-declaration-with-digital-sign' || activePage.includes('declaration-with-digital-sign') || activePage.includes('digital-sign')) {
       return <DeclarationWithDigitalSignDoc isDark={isDark} />;

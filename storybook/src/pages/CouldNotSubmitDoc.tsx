@@ -8,14 +8,14 @@ import { Ux4gJourneyTimeline } from '../../../src/components/journey-timeline/Jo
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
-interface ApplicationQueuedDocProps {
+interface CouldNotSubmitDocProps {
   isDark: boolean;
 }
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'Default' | 'Card style';
 
-export const ApplicationQueuedDoc: React.FC<ApplicationQueuedDocProps> = ({ isDark }) => {
+export const CouldNotSubmitDoc: React.FC<CouldNotSubmitDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('Default');
   const [showToast, setShowToast] = useState(false);
@@ -34,9 +34,10 @@ export const ApplicationQueuedDoc: React.FC<ApplicationQueuedDocProps> = ({ isDa
       cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
       titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      subtleText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      iconBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
+      errorIconBg: isDark ? UX4GColors.red900 : UX4GColors.red50,
+      errorIconColor: isDark ? UX4GColors.red500 : UX4GColors.red600,
       btn1Bg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
       btn1Text: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
       btn2Border: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
@@ -59,7 +60,6 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
-  Modal,
 } from 'react-native';
 import {
   Ux4gAppHeader,
@@ -69,20 +69,23 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const ApplicationQueuedCardScreen = ({
+export const CouldNotSubmitCardScreen = ({
   isDark = ${isDark},
   onReturn = () => {},
   onSaveDraft = () => {},
+  onContactSupport = () => {},
 }: {
   isDark?: boolean;
   onReturn?: () => void;
   onSaveDraft?: () => void;
+  onContactSupport?: () => void;
 }) => {
   const [showToast, setShowToast] = useState(false);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
+  const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
+  const errorColor = isDark ? UX4GColors.red500 : UX4GColors.red600;
 
   return (
     <SafeAreaView
@@ -177,23 +180,23 @@ export const ApplicationQueuedCardScreen = ({
               </Text>
             </TouchableOpacity>
 
-            {/* Queued icon */}
+            {/* Error icon */}
             <View style={styles.centerContainer}>
               <View
                 style={[
-                  styles.queuedIconCircle,
+                  styles.errorIconCircle,
                   {
                     backgroundColor: isDark
-                      ? UX4GColors.primary800
-                      : UX4GColors.primary100,
+                      ? UX4GColors.red900
+                      : UX4GColors.red50,
                   },
                 ]}
               >
                 <Image
-                  source={require('./assets/hourglass_bottom.png')}
+                  source={require('./assets/error.png')}
                   style={[
-                    styles.hourglassIcon,
-                    { tintColor: primaryColor },
+                    styles.errorIcon,
+                    { tintColor: errorColor },
                   ]}
                 />
               </View>
@@ -206,7 +209,7 @@ export const ApplicationQueuedCardScreen = ({
                 { color: titleColor },
               ]}
             >
-              Application Queued
+              {'Could Not Submit\\nApplication'}
             </Text>
 
             {/* Subtitle */}
@@ -216,7 +219,7 @@ export const ApplicationQueuedCardScreen = ({
                 { color: subtleText },
               ]}
             >
-              {"We'll submit your application automatically\\nwhen your connection is restored. Your data is\\nsaved."}
+              {"We could not submit your application due to\\na network or server error. Your data is saved —\\ntry again."}
             </Text>
 
             {/* Journey Timeline */}
@@ -252,7 +255,7 @@ export const ApplicationQueuedCardScreen = ({
         {/* Actions */}
         <View style={styles.actionsContainer}>
           <Ux4gButton
-            text="Try submitting now"
+            text="Retry submission"
             onPress={() => setShowToast(true)}
             size="large"
             width="100%"
@@ -266,7 +269,7 @@ export const ApplicationQueuedCardScreen = ({
           />
           <View style={{ height: 12 }} />
           <Ux4gButton
-            text="Save draft and exit"
+            text="Save draft"
             onPress={onSaveDraft}
             variant="outline"
             size="large"
@@ -279,6 +282,21 @@ export const ApplicationQueuedCardScreen = ({
               isDark ? UX4GColors.primary600 : UX4GColors.primary300
             }
           />
+          <View style={{ height: 12 }} />
+          <TouchableOpacity
+            onPress={onContactSupport}
+            style={styles.contactSupportWrapper}
+            activeOpacity={0.7}
+          >
+            <Text
+              style={[
+                styles.contactSupportText,
+                { color: titleColor },
+              ]}
+            >
+              Contact support
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Footer */}
@@ -301,7 +319,7 @@ export const ApplicationQueuedCardScreen = ({
           />
         </View>
 
-        {/* Toast Notification */}
+        {/* Error Toast Notification */}
         {showToast && (
           <View
             style={[
@@ -314,8 +332,8 @@ export const ApplicationQueuedCardScreen = ({
             ]}
           >
             <Image
-              source={require('./assets/warning_amber.png')}
-              style={styles.warningIcon}
+              source={require('./assets/error.png')}
+              style={[styles.toastErrorIcon, { tintColor: errorColor }]}
             />
             <View style={styles.toastContent}>
               <Text
@@ -324,7 +342,7 @@ export const ApplicationQueuedCardScreen = ({
                   { color: titleColor },
                 ]}
               >
-                Application queued
+                Could not submit
               </Text>
               <Text
                 style={[
@@ -332,21 +350,8 @@ export const ApplicationQueuedCardScreen = ({
                   { color: subtleText },
                 ]}
               >
-                Will submit when connection is restored.
+                Network or server issue
               </Text>
-              <TouchableOpacity
-                onPress={() => setShowToast(false)}
-                style={{ marginTop: 8 }}
-              >
-                <Text
-                  style={[
-                    styles.understoodText,
-                    { color: primaryColor },
-                  ]}
-                >
-                  Understood
-                </Text>
-              </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={() => setShowToast(false)}>
               <Image
@@ -412,14 +417,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  queuedIconCircle: {
+  errorIconCircle: {
     width: 56,
     height: 56,
     borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  hourglassIcon: {
+  errorIcon: {
     width: 30,
     height: 30,
   },
@@ -439,6 +444,14 @@ const styles = StyleSheet.create({
   actionsContainer: {
     paddingHorizontal: 24,
     paddingVertical: 16,
+  },
+  contactSupportWrapper: {
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  contactSupportText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   footerContainer: {
     alignItems: 'center',
@@ -467,10 +480,9 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     elevation: 5,
   },
-  warningIcon: {
+  toastErrorIcon: {
     width: 20,
     height: 20,
-    tintColor: '#F59E0B',
     marginRight: 10,
   },
   toastContent: {
@@ -483,10 +495,6 @@ const styles = StyleSheet.create({
   toastMessage: {
     fontSize: 13,
     marginTop: 4,
-  },
-  understoodText: {
-    fontSize: 13,
-    fontWeight: '600',
   },
   closeIcon: {
     width: 18,
@@ -513,20 +521,23 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const ApplicationQueuedScreen = ({
+export const CouldNotSubmitScreen = ({
   isDark = ${isDark},
   onReturn = () => {},
   onSaveDraft = () => {},
+  onContactSupport = () => {},
 }: {
   isDark?: boolean;
   onReturn?: () => void;
   onSaveDraft?: () => void;
+  onContactSupport?: () => void;
 }) => {
   const [showToast, setShowToast] = useState(false);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
+  const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
+  const errorColor = isDark ? UX4GColors.red500 : UX4GColors.red600;
 
   return (
     <SafeAreaView
@@ -564,7 +575,7 @@ export const ApplicationQueuedScreen = ({
                 {
                   backgroundColor: isDark
                     ? UX4GColors.neutral700
-                    : UX4GColors.neutral200,
+                    : '#D1D5DB',
                 },
               ]}
             />,
@@ -606,23 +617,23 @@ export const ApplicationQueuedScreen = ({
             </Text>
           </TouchableOpacity>
 
-          {/* Queued icon */}
+          {/* Error icon */}
           <View style={styles.centerContainer}>
             <View
               style={[
-                styles.queuedIconCircle,
+                styles.errorIconCircle,
                 {
                   backgroundColor: isDark
-                    ? UX4GColors.primary800
-                    : UX4GColors.primary100,
+                    ? UX4GColors.red900
+                    : UX4GColors.red50,
                 },
               ]}
             >
               <Image
-                source={require('./assets/hourglass_bottom.png')}
+                source={require('./assets/error.png')}
                 style={[
-                  styles.hourglassIcon,
-                  { tintColor: primaryColor },
+                  styles.errorIcon,
+                  { tintColor: errorColor },
                 ]}
               />
             </View>
@@ -635,7 +646,7 @@ export const ApplicationQueuedScreen = ({
               { color: titleColor },
             ]}
           >
-            Application Queued
+            {'Could Not Submit\\nApplication'}
           </Text>
 
           {/* Subtitle */}
@@ -645,7 +656,7 @@ export const ApplicationQueuedScreen = ({
               { color: subtleText },
             ]}
           >
-            {"We'll submit your application automatically\\nwhen your connection is restored. Your data is\\nsaved."}
+            {"We could not submit your application due to\\na network or server error. Your data is saved —\\ntry again."}
           </Text>
 
           {/* What happens next - Journey Timeline */}
@@ -680,7 +691,7 @@ export const ApplicationQueuedScreen = ({
         {/* Actions */}
         <View style={styles.actionsContainer}>
           <Ux4gButton
-            text="Try submitting now"
+            text="Retry submission"
             onPress={() => setShowToast(true)}
             size="large"
             width="100%"
@@ -694,7 +705,7 @@ export const ApplicationQueuedScreen = ({
           />
           <View style={{ height: 12 }} />
           <Ux4gButton
-            text="Save draft and exit"
+            text="Save draft"
             onPress={onSaveDraft}
             variant="outline"
             size="large"
@@ -707,6 +718,21 @@ export const ApplicationQueuedScreen = ({
               isDark ? UX4GColors.primary600 : UX4GColors.primary300
             }
           />
+          <View style={{ height: 12 }} />
+          <TouchableOpacity
+            onPress={onContactSupport}
+            style={styles.contactSupportWrapper}
+            activeOpacity={0.7}
+          >
+            <Text
+              style={[
+                styles.contactSupportText,
+                { color: titleColor },
+              ]}
+            >
+              Contact support
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Footer */}
@@ -729,7 +755,7 @@ export const ApplicationQueuedScreen = ({
           />
         </View>
 
-        {/* Toast Notification */}
+        {/* Error Toast Notification */}
         {showToast && (
           <View
             style={[
@@ -742,8 +768,8 @@ export const ApplicationQueuedScreen = ({
             ]}
           >
             <Image
-              source={require('./assets/warning_amber.png')}
-              style={styles.warningIcon}
+              source={require('./assets/error.png')}
+              style={[styles.toastErrorIcon, { tintColor: errorColor }]}
             />
             <View style={styles.toastContent}>
               <Text
@@ -752,7 +778,7 @@ export const ApplicationQueuedScreen = ({
                   { color: titleColor },
                 ]}
               >
-                Application queued
+                Could not submit
               </Text>
               <Text
                 style={[
@@ -760,21 +786,8 @@ export const ApplicationQueuedScreen = ({
                   { color: subtleText },
                 ]}
               >
-                Will submit when connection is restored.
+                Network or server issue
               </Text>
-              <TouchableOpacity
-                onPress={() => setShowToast(false)}
-                style={{ marginTop: 8 }}
-              >
-                <Text
-                  style={[
-                    styles.understoodText,
-                    { color: primaryColor },
-                  ]}
-                >
-                  Understood
-                </Text>
-              </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={() => setShowToast(false)}>
               <Image
@@ -831,14 +844,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  queuedIconCircle: {
+  errorIconCircle: {
     width: 56,
     height: 56,
     borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  hourglassIcon: {
+  errorIcon: {
     width: 30,
     height: 30,
   },
@@ -858,6 +871,14 @@ const styles = StyleSheet.create({
   actionsContainer: {
     paddingHorizontal: 24,
     paddingVertical: 16,
+  },
+  contactSupportWrapper: {
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  contactSupportText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   footerContainer: {
     alignItems: 'center',
@@ -886,10 +907,9 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     elevation: 5,
   },
-  warningIcon: {
+  toastErrorIcon: {
     width: 20,
     height: 20,
-    tintColor: '#F59E0B',
     marginRight: 10,
   },
   toastContent: {
@@ -902,10 +922,6 @@ const styles = StyleSheet.create({
   toastMessage: {
     fontSize: 13,
     marginTop: 4,
-  },
-  understoodText: {
-    fontSize: 13,
-    fontWeight: '600',
   },
   closeIcon: {
     width: 18,
@@ -950,7 +966,7 @@ const styles = StyleSheet.create({
           </span>
         </div>
 
-        {/* Queued Icon */}
+        {/* Error Icon */}
         <div
           style={{
             display: 'flex',
@@ -963,7 +979,7 @@ const styles = StyleSheet.create({
               width: 56,
               height: 56,
               borderRadius: '50%',
-              backgroundColor: colors.iconBg,
+              backgroundColor: colors.errorIconBg,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -973,11 +989,11 @@ const styles = StyleSheet.create({
               className="material-symbols-outlined"
               style={{
                 fontSize: 30,
-                color: colors.primaryColor,
+                color: colors.errorIconColor,
                 fontVariationSettings: "'FILL' 1",
               }}
             >
-              hourglass_bottom
+              error
             </span>
           </div>
         </div>
@@ -991,9 +1007,10 @@ const styles = StyleSheet.create({
             textAlign: 'center',
             lineHeight: 1.2,
             marginBottom: 12,
+            whiteSpace: 'pre-line',
           }}
         >
-          Application Queued
+          {'Could Not Submit\nApplication'}
         </div>
 
         {/* Subtitle */}
@@ -1007,7 +1024,7 @@ const styles = StyleSheet.create({
             whiteSpace: 'pre-line',
           }}
         >
-          {"We'll submit your application automatically\nwhen your connection is restored. Your data is\nsaved."}
+          {"We could not submit your application due to\na network or server error. Your data is saved —\ntry again."}
         </div>
 
         {/* What happens next - Journey Timeline */}
@@ -1138,7 +1155,7 @@ const styles = StyleSheet.create({
           }}
         >
           <Ux4gButton
-            text="Try submitting now"
+            text="Retry submission"
             onPress={() => setShowToast(true)}
             size="large"
             width="100%"
@@ -1148,7 +1165,7 @@ const styles = StyleSheet.create({
           />
 
           <Ux4gButton
-            text="Save draft and exit"
+            text="Save draft"
             onPress={() => {}}
             variant="outline"
             size="large"
@@ -1157,6 +1174,20 @@ const styles = StyleSheet.create({
             borderColor={colors.btn2Border}
             contentColor={colors.btn2Text}
           />
+
+          <div
+            onClick={() => {}}
+            style={{
+              textAlign: 'center',
+              fontSize: 14,
+              fontWeight: 600,
+              color: colors.titleColor,
+              cursor: 'pointer',
+              paddingTop: 4,
+            }}
+          >
+            Contact support
+          </div>
         </div>
 
         {/* Powered by Footer */}
@@ -1188,7 +1219,7 @@ const styles = StyleSheet.create({
           />
         </div>
 
-        {/* Toast Notification overlay */}
+        {/* Error Toast Notification overlay */}
         {showToast && (
           <div
             style={{
@@ -1212,13 +1243,13 @@ const styles = StyleSheet.create({
               className="material-symbols-outlined"
               style={{
                 fontSize: 20,
-                color: '#F59E0B',
+                color: colors.errorIconColor,
                 fontVariationSettings: "'FILL' 1",
                 flexShrink: 0,
                 marginTop: 1,
               }}
             >
-              warning
+              error
             </span>
 
             <div style={{ flex: 1 }}>
@@ -1230,7 +1261,7 @@ const styles = StyleSheet.create({
                   lineHeight: 1.3,
                 }}
               >
-                Application queued
+                Could not submit
               </div>
               <div
                 style={{
@@ -1240,20 +1271,7 @@ const styles = StyleSheet.create({
                   lineHeight: 1.3,
                 }}
               >
-                Will submit when connection is restored.
-              </div>
-              <div
-                onClick={() => setShowToast(false)}
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: colors.primaryColor,
-                  marginTop: 8,
-                  cursor: 'pointer',
-                  display: 'inline-block',
-                }}
-              >
-                Understood
+                Network or server issue
               </div>
             </div>
 
@@ -1286,11 +1304,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Application Queued</h1>
+          <h1 className="wb-title">Could Not Submit</h1>
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A pattern shown when the application is queued for submission due to connectivity issues, with a toast notification and options to retry or save draft.
+          An error screen shown when the application could not be submitted due to a network or server error, with options to retry, save draft, or contact support.
         </p>
       </div>
 
@@ -1422,4 +1440,4 @@ const styles = StyleSheet.create({
   );
 };
 
-export default ApplicationQueuedDoc;
+export default CouldNotSubmitDoc;

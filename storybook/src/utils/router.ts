@@ -399,6 +399,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'application-submitted': 'patterns/application-and-submission/submission-acknowledgement/application-submitted',
   'pattern-application-queued': 'patterns/application-and-submission/submission-acknowledgement/application-queued',
   'application-queued': 'patterns/application-and-submission/submission-acknowledgement/application-queued',
+  'pattern-could-not-submit': 'patterns/application-and-submission/submission-acknowledgement/could-not-submit',
+  'could-not-submit': 'patterns/application-and-submission/submission-acknowledgement/could-not-submit',
   feedback: 'patterns/feedback',
 };
 
@@ -842,6 +844,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('could-not-submit') || (cleanPath.includes('submission-acknowledgement') && cleanPath.includes('could-not-submit'))) {
+      return 'pattern-could-not-submit';
     }
     if (cleanPath.includes('application-queued') || (cleanPath.includes('submission-acknowledgement') && cleanPath.includes('queued'))) {
       return 'pattern-application-queued';
