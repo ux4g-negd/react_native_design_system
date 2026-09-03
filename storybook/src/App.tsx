@@ -140,6 +140,7 @@ import { EligibilityFailureStepDoc } from './pages/EligibilityFailureStepDoc';
 import { EligibilityWarningStepDoc } from './pages/EligibilityWarningStepDoc';
 import { JourneyProgressIndicatorDoc } from './pages/JourneyProgressIndicatorDoc';
 import { ResumeJourneyDoc } from './pages/ResumeJourneyDoc';
+import { ValidationErrorDoc } from './pages/ValidationErrorDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -247,6 +248,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
+  }
+  if (page === 'pattern-validation-error' || page.includes('validation-error')) {
+    return 'Patterns / Application and Submission / Journey Progress Indicator / Validation Error';
   }
   if (page === 'pattern-resume-journey' || page.includes('resume-journey')) {
     return 'Patterns / Application and Submission / Journey Progress Indicator / Resume Journey';
@@ -707,6 +711,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
       return <CouldNotSubmitDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-validation-error' || activePage.includes('validation-error')) {
+      return <ValidationErrorDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-resume-journey' || activePage.includes('resume-journey')) {
       return <ResumeJourneyDoc isDark={isDark} />;

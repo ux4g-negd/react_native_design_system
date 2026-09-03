@@ -1171,6 +1171,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Resume Journey',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-validation-error',
+                label: 'Validation Error',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1272,8 +1277,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (
       page === 'pattern-journey-progress-indicator' ||
       page === 'pattern-resume-journey' ||
+      page === 'pattern-validation-error' ||
       page.includes('journey-progress-indicator') ||
       page.includes('resume-journey') ||
+      page.includes('validation-error') ||
       page.includes('journey-progress')
     ) {
       return ['patterns', 'application-and-submission-group', 'journey-progress-indicator-group'];

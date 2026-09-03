@@ -425,6 +425,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'journey-progress-indicator': 'patterns/application-and-submission/journey-progress-indicator/journey-progress-indicator',
   'pattern-resume-journey': 'patterns/application-and-submission/journey-progress-indicator/resume-journey',
   'resume-journey': 'patterns/application-and-submission/journey-progress-indicator/resume-journey',
+  'pattern-validation-error': 'patterns/application-and-submission/journey-progress-indicator/validation-error',
+  'validation-error': 'patterns/application-and-submission/journey-progress-indicator/validation-error',
   feedback: 'patterns/feedback',
 };
 
@@ -868,6 +870,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('validation-error')) {
+      return 'pattern-validation-error';
     }
     if (cleanPath.includes('resume-journey')) {
       return 'pattern-resume-journey';
