@@ -1102,6 +1102,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Document scan and upload',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-document-upload-progress',
+                label: 'Document upload with progress',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1172,7 +1177,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
     if (
       page === 'pattern-document-scan-upload' ||
+      page === 'pattern-document-upload-progress' ||
       page.includes('document-scan-upload') ||
+      page.includes('document-upload-progress') ||
       page.includes('document-scan-and-upload')
     ) {
       return ['patterns', 'application-and-submission-group', 'document-scan-and-upload-group'];

@@ -129,6 +129,7 @@ import { ApplicationSubmittedDoc } from './pages/ApplicationSubmittedDoc';
 import { ApplicationQueuedDoc } from './pages/ApplicationQueuedDoc';
 import { CouldNotSubmitDoc } from './pages/CouldNotSubmitDoc';
 import { DocumentScanUploadDoc } from './pages/DocumentScanUploadDoc';
+import { DocumentUploadProgressDoc } from './pages/DocumentUploadProgressDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -236,6 +237,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
+  }
+  if (page === 'pattern-document-upload-progress' || page.includes('document-upload-progress') || page.includes('document-upload-with-progress')) {
+    return 'Patterns / Application and Submission / Document scan and upload / Document upload with progress';
   }
   if (page === 'pattern-document-scan-upload' || page.includes('document-scan-upload') || page.includes('document-scan-and-upload')) {
     return 'Patterns / Application and Submission / Document scan and upload / Document scan and upload';
@@ -663,6 +667,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
       return <CouldNotSubmitDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
+      return <DocumentUploadProgressDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-document-scan-upload' || activePage.includes('document-scan-upload') || activePage.includes('document-scan-and-upload')) {
       return <DocumentScanUploadDoc isDark={isDark} />;
