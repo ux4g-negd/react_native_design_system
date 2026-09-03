@@ -1080,6 +1080,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Application Submitted',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-application-queued',
+                label: 'Application Queued',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1139,7 +1144,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
     if (
       page === 'pattern-application-submitted' ||
+      page === 'pattern-application-queued' ||
       page.includes('application-submitted') ||
+      page.includes('application-queued') ||
       page.includes('submission-acknowledgement')
     ) {
       return ['patterns', 'application-and-submission-group', 'submission-acknowledgement-group'];

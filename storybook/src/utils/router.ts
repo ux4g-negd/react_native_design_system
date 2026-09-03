@@ -397,6 +397,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-discard-draft-dialog': 'patterns/application-and-submission/save-and-resume/discard-draft-dialog',
   'pattern-application-submitted': 'patterns/application-and-submission/submission-acknowledgement/application-submitted',
   'application-submitted': 'patterns/application-and-submission/submission-acknowledgement/application-submitted',
+  'pattern-application-queued': 'patterns/application-and-submission/submission-acknowledgement/application-queued',
+  'application-queued': 'patterns/application-and-submission/submission-acknowledgement/application-queued',
   feedback: 'patterns/feedback',
 };
 
@@ -841,7 +843,10 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
     }
-    if (cleanPath.includes('application-submitted') || (cleanPath.includes('submission-acknowledgement') && cleanPath.includes('application'))) {
+    if (cleanPath.includes('application-queued') || (cleanPath.includes('submission-acknowledgement') && cleanPath.includes('queued'))) {
+      return 'pattern-application-queued';
+    }
+    if (cleanPath.includes('application-submitted') || (cleanPath.includes('submission-acknowledgement') && cleanPath.includes('submitted')) || (cleanPath.includes('submission-acknowledgement') && cleanPath.includes('application'))) {
       return 'pattern-application-submitted';
     }
     if (cleanPath.includes('discard-draft')) {
