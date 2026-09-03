@@ -122,6 +122,7 @@ import { SaveAndResumeDoc } from './pages/SaveAndResumeDoc';
 import { ContinueApplicationDoc } from './pages/ContinueApplicationDoc';
 import { ResumeApplicationMissingInfoDoc } from './pages/ResumeApplicationMissingInfoDoc';
 import { AutoSaveFormDoc } from './pages/AutoSaveFormDoc';
+import { DraftExpiryFormDoc } from './pages/DraftExpiryFormDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -211,6 +212,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-auto-save-form' || page.includes('auto-save')) {
     return 'Patterns / Application and Submission / Save and Resume / Auto-save Form';
+  }
+  if (page === 'pattern-draft-expiry-form' || page.includes('draft-expiry')) {
+    return 'Patterns / Application and Submission / Save and Resume / Draft Expiry Form';
   }
   if (page === 'pattern-declaration-with-digital-sign' || page.includes('declaration-with-digital-sign') || page.includes('digital-sign')) {
     return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration with Digital Sign';
@@ -617,6 +621,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-auto-save-form' || activePage.includes('auto-save')) {
       return <AutoSaveFormDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-draft-expiry-form' || activePage.includes('draft-expiry')) {
+      return <DraftExpiryFormDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-declaration-with-digital-sign' || activePage.includes('declaration-with-digital-sign') || activePage.includes('digital-sign')) {
       return <DeclarationWithDigitalSignDoc isDark={isDark} />;

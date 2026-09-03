@@ -1053,6 +1053,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Auto-save Form',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-draft-expiry-form',
+                label: 'Draft Expiry Form',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1097,10 +1102,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page === 'pattern-continue-application' ||
       page === 'pattern-resume-application-missing-info' ||
       page === 'pattern-auto-save-form' ||
+      page === 'pattern-draft-expiry-form' ||
       page.includes('save-and-resume') ||
       page.includes('continue-application') ||
       page.includes('missing-info') ||
-      page.includes('auto-save')
+      page.includes('auto-save') ||
+      page.includes('draft-expiry')
     ) {
       return ['patterns', 'application-and-submission-group', 'save-and-resume-group'];
     }
