@@ -1144,6 +1144,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Eligibility Success Step',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-eligibility-failure-step',
+                label: 'Eligibility Failure Step',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1230,10 +1235,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page === 'pattern-eligibility-question-step' ||
       page === 'pattern-eligibility-final-question-step' ||
       page === 'pattern-eligibility-success-step' ||
+      page === 'pattern-eligibility-failure-step' ||
       page.includes('eligibility-check-landing') ||
       page.includes('eligibility-question-step') ||
       page.includes('eligibility-final-question-step') ||
       page.includes('eligibility-success-step') ||
+      page.includes('eligibility-failure-step') ||
       page.includes('eligibility-check-wizard')
     ) {
       return ['patterns', 'application-and-submission-group', 'eligibility-check-wizard-group'];
