@@ -1063,6 +1063,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Unsaved Changes Dialog',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-discard-draft-dialog',
+                label: 'Discard Draft Dialog',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1109,12 +1114,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page === 'pattern-auto-save-form' ||
       page === 'pattern-draft-expiry-form' ||
       page === 'pattern-unsaved-changes-dialog' ||
+      page === 'pattern-discard-draft-dialog' ||
       page.includes('save-and-resume') ||
       page.includes('continue-application') ||
       page.includes('missing-info') ||
       page.includes('auto-save') ||
       page.includes('draft-expiry') ||
-      page.includes('unsaved-changes')
+      page.includes('unsaved-changes') ||
+      page.includes('discard-draft')
     ) {
       return ['patterns', 'application-and-submission-group', 'save-and-resume-group'];
     }

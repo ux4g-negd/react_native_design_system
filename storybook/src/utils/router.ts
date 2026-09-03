@@ -394,6 +394,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-auto-save-form': 'patterns/application-and-submission/save-and-resume/auto-save-form',
   'pattern-draft-expiry-form': 'patterns/application-and-submission/save-and-resume/draft-expiry-form',
   'pattern-unsaved-changes-dialog': 'patterns/application-and-submission/save-and-resume/unsaved-changes-dialog',
+  'pattern-discard-draft-dialog': 'patterns/application-and-submission/save-and-resume/discard-draft-dialog',
   feedback: 'patterns/feedback',
 };
 
@@ -837,6 +838,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('discard-draft')) {
+      return 'pattern-discard-draft-dialog';
     }
     if (cleanPath.includes('unsaved-changes')) {
       return 'pattern-unsaved-changes-dialog';
