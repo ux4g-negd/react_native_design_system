@@ -1043,6 +1043,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Continue Application',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-resume-application-missing-info',
+                label: 'Resume Application Missing Info',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1082,7 +1087,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
-    if (page === 'pattern-save-and-resume' || page === 'pattern-continue-application' || page.includes('save-and-resume') || page.includes('continue-application')) {
+    if (
+      page === 'pattern-save-and-resume' ||
+      page === 'pattern-continue-application' ||
+      page === 'pattern-resume-application-missing-info' ||
+      page.includes('save-and-resume') ||
+      page.includes('continue-application') ||
+      page.includes('missing-info')
+    ) {
       return ['patterns', 'application-and-submission-group', 'save-and-resume-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {

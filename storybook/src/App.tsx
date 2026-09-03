@@ -120,6 +120,7 @@ import { DeclarationBeforeSubmissionDoc } from './pages/DeclarationBeforeSubmiss
 import { DeclarationWithDigitalSignDoc } from './pages/DeclarationWithDigitalSignDoc';
 import { SaveAndResumeDoc } from './pages/SaveAndResumeDoc';
 import { ContinueApplicationDoc } from './pages/ContinueApplicationDoc';
+import { ResumeApplicationMissingInfoDoc } from './pages/ResumeApplicationMissingInfoDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -203,6 +204,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-continue-application' || page.includes('continue-application')) {
     return 'Patterns / Application and Submission / Save and Resume / Continue Application';
+  }
+  if (page === 'pattern-resume-application-missing-info' || page.includes('missing-info')) {
+    return 'Patterns / Application and Submission / Save and Resume / Resume Application Missing Info';
   }
   if (page === 'pattern-declaration-with-digital-sign' || page.includes('declaration-with-digital-sign') || page.includes('digital-sign')) {
     return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration with Digital Sign';
@@ -603,6 +607,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-continue-application' || activePage.includes('continue-application')) {
       return <ContinueApplicationDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-resume-application-missing-info' || activePage.includes('missing-info')) {
+      return <ResumeApplicationMissingInfoDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-declaration-with-digital-sign' || activePage.includes('declaration-with-digital-sign') || activePage.includes('digital-sign')) {
       return <DeclarationWithDigitalSignDoc isDark={isDark} />;
