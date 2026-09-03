@@ -131,6 +131,7 @@ import { CouldNotSubmitDoc } from './pages/CouldNotSubmitDoc';
 import { DocumentScanUploadDoc } from './pages/DocumentScanUploadDoc';
 import { DocumentUploadProgressDoc } from './pages/DocumentUploadProgressDoc';
 import { DocumentUploadReviewDoc } from './pages/DocumentUploadReviewDoc';
+import { DocumentUploadSuccessDoc } from './pages/DocumentUploadSuccessDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -238,6 +239,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
+  }
+  if (page === 'pattern-document-upload-success' || page.includes('document-upload-success')) {
+    return 'Patterns / Application and Submission / Document scan and upload / Document upload success';
   }
   if (page === 'pattern-document-upload-review' || page.includes('document-upload-review') || page.includes('document-upload-with-review')) {
     return 'Patterns / Application and Submission / Document scan and upload / Document upload with review';
@@ -671,6 +675,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
       return <CouldNotSubmitDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-document-upload-success' || activePage.includes('document-upload-success')) {
+      return <DocumentUploadSuccessDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-document-upload-review' || activePage.includes('document-upload-review') || activePage.includes('document-upload-with-review')) {
       return <DocumentUploadReviewDoc isDark={isDark} />;
