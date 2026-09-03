@@ -137,6 +137,7 @@ import { EligibilityQuestionStepDoc } from './pages/EligibilityQuestionStepDoc';
 import { EligibilityFinalQuestionStepDoc } from './pages/EligibilityFinalQuestionStepDoc';
 import { EligibilitySuccessStepDoc } from './pages/EligibilitySuccessStepDoc';
 import { EligibilityFailureStepDoc } from './pages/EligibilityFailureStepDoc';
+import { EligibilityWarningStepDoc } from './pages/EligibilityWarningStepDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -244,6 +245,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
+  }
+  if (page === 'pattern-eligibility-warning-step' || page.includes('eligibility-warning-step')) {
+    return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Warning Step';
   }
   if (page === 'pattern-eligibility-failure-step' || page.includes('eligibility-failure-step')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Failure Step';
@@ -695,6 +699,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
       return <CouldNotSubmitDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-eligibility-warning-step' || activePage.includes('eligibility-warning-step')) {
+      return <EligibilityWarningStepDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-eligibility-failure-step' || activePage.includes('eligibility-failure-step')) {
       return <EligibilityFailureStepDoc isDark={isDark} />;
