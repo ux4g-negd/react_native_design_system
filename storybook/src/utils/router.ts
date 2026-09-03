@@ -415,6 +415,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'eligibility-question-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-question-step',
   'pattern-eligibility-final-question-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-final-question-step',
   'eligibility-final-question-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-final-question-step',
+  'pattern-eligibility-success-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-success-step',
+  'eligibility-success-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-success-step',
   feedback: 'patterns/feedback',
 };
 
@@ -858,6 +860,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('eligibility-success-step') || (cleanPath.includes('eligibility') && cleanPath.includes('success'))) {
+      return 'pattern-eligibility-success-step';
     }
     if (cleanPath.includes('eligibility-final-question-step') || (cleanPath.includes('eligibility') && cleanPath.includes('final'))) {
       return 'pattern-eligibility-final-question-step';

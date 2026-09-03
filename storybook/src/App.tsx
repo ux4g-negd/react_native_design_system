@@ -135,6 +135,7 @@ import { DocumentUploadSuccessDoc } from './pages/DocumentUploadSuccessDoc';
 import { EligibilityCheckLandingDoc } from './pages/EligibilityCheckLandingDoc';
 import { EligibilityQuestionStepDoc } from './pages/EligibilityQuestionStepDoc';
 import { EligibilityFinalQuestionStepDoc } from './pages/EligibilityFinalQuestionStepDoc';
+import { EligibilitySuccessStepDoc } from './pages/EligibilitySuccessStepDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -242,6 +243,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
+  }
+  if (page === 'pattern-eligibility-success-step' || page.includes('eligibility-success-step')) {
+    return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Success Step';
   }
   if (page === 'pattern-eligibility-final-question-step' || page.includes('eligibility-final-question-step')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Final Question Step';
@@ -687,6 +691,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
       return <CouldNotSubmitDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-eligibility-success-step' || activePage.includes('eligibility-success-step')) {
+      return <EligibilitySuccessStepDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-eligibility-final-question-step' || activePage.includes('eligibility-final-question-step')) {
       return <EligibilityFinalQuestionStepDoc isDark={isDark} />;
