@@ -139,6 +139,7 @@ import { EligibilitySuccessStepDoc } from './pages/EligibilitySuccessStepDoc';
 import { EligibilityFailureStepDoc } from './pages/EligibilityFailureStepDoc';
 import { EligibilityWarningStepDoc } from './pages/EligibilityWarningStepDoc';
 import { JourneyProgressIndicatorDoc } from './pages/JourneyProgressIndicatorDoc';
+import { ResumeJourneyDoc } from './pages/ResumeJourneyDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -246,6 +247,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
+  }
+  if (page === 'pattern-resume-journey' || page.includes('resume-journey')) {
+    return 'Patterns / Application and Submission / Journey Progress Indicator / Resume Journey';
   }
   if (page === 'pattern-journey-progress-indicator' || page.includes('journey-progress-indicator') || page.includes('journey-progress')) {
     return 'Patterns / Application and Submission / Journey Progress Indicator / Journey Progress Indicator';
@@ -703,6 +707,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
       return <CouldNotSubmitDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-resume-journey' || activePage.includes('resume-journey')) {
+      return <ResumeJourneyDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-journey-progress-indicator' || activePage.includes('journey-progress-indicator') || activePage.includes('journey-progress')) {
       return <JourneyProgressIndicatorDoc isDark={isDark} />;

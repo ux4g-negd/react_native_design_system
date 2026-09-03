@@ -423,6 +423,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'eligibility-warning-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-warning-step',
   'pattern-journey-progress-indicator': 'patterns/application-and-submission/journey-progress-indicator/journey-progress-indicator',
   'journey-progress-indicator': 'patterns/application-and-submission/journey-progress-indicator/journey-progress-indicator',
+  'pattern-resume-journey': 'patterns/application-and-submission/journey-progress-indicator/resume-journey',
+  'resume-journey': 'patterns/application-and-submission/journey-progress-indicator/resume-journey',
   feedback: 'patterns/feedback',
 };
 
@@ -866,6 +868,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('resume-journey')) {
+      return 'pattern-resume-journey';
     }
     if (cleanPath.includes('journey-progress-indicator') || cleanPath.includes('journey-progress')) {
       return 'pattern-journey-progress-indicator';

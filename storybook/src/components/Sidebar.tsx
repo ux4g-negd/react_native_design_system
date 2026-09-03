@@ -1166,6 +1166,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Journey Progress Indicator',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-resume-journey',
+                label: 'Resume Journey',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1266,7 +1271,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
     if (
       page === 'pattern-journey-progress-indicator' ||
+      page === 'pattern-resume-journey' ||
       page.includes('journey-progress-indicator') ||
+      page.includes('resume-journey') ||
       page.includes('journey-progress')
     ) {
       return ['patterns', 'application-and-submission-group', 'journey-progress-indicator-group'];
