@@ -1023,6 +1023,25 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'application-and-submission-group',
+        label: 'Application and Submission',
+        icon: 'folder',
+        children: [
+          {
+            id: 'save-and-resume-group',
+            label: 'Save and Resume',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-save-and-resume',
+                label: 'Save and Resume',
+                icon: 'layers',
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
@@ -1058,6 +1077,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
+    if (page === 'pattern-save-and-resume' || page.includes('save-and-resume')) {
+      return ['patterns', 'application-and-submission-group', 'save-and-resume-group'];
+    }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {
       return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];
     }

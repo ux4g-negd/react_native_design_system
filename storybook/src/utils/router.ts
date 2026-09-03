@@ -2,6 +2,7 @@
 const PAGE_TO_PATH: Record<string, string> = {
   introduction: 'introduction',
   quickstart: 'quickstart',
+  'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
   'colors-tertiary': 'token/colors/tertiary',
@@ -831,6 +832,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('save-and-resume')) {
+      return 'pattern-save-and-resume';
     }
     if (cleanPath.includes('update-frequency') || (cleanPath.includes('notification-preferences') && cleanPath.includes('frequency'))) {
       return 'pattern-update-frequency';
