@@ -405,6 +405,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'document-scan-and-upload': 'patterns/application-and-submission/document-scan-and-upload/document-scan-and-upload',
   'pattern-document-upload-progress': 'patterns/application-and-submission/document-scan-and-upload/document-upload-with-progress',
   'document-upload-with-progress': 'patterns/application-and-submission/document-scan-and-upload/document-upload-with-progress',
+  'pattern-document-upload-review': 'patterns/application-and-submission/document-scan-and-upload/document-upload-with-review',
+  'document-upload-with-review': 'patterns/application-and-submission/document-scan-and-upload/document-upload-with-review',
   feedback: 'patterns/feedback',
 };
 
@@ -848,6 +850,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('document-upload-review') || cleanPath.includes('document-upload-with-review') || (cleanPath.includes('upload') && cleanPath.includes('review'))) {
+      return 'pattern-document-upload-review';
     }
     if (cleanPath.includes('document-upload-progress') || cleanPath.includes('document-upload-with-progress') || (cleanPath.includes('upload') && cleanPath.includes('progress'))) {
       return 'pattern-document-upload-progress';
