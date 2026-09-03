@@ -1156,6 +1156,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'journey-progress-indicator-group',
+            label: 'Journey Progress Indicator',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-journey-progress-indicator',
+                label: 'Journey Progress Indicator',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1251,6 +1263,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('eligibility-check-wizard')
     ) {
       return ['patterns', 'application-and-submission-group', 'eligibility-check-wizard-group'];
+    }
+    if (
+      page === 'pattern-journey-progress-indicator' ||
+      page.includes('journey-progress-indicator') ||
+      page.includes('journey-progress')
+    ) {
+      return ['patterns', 'application-and-submission-group', 'journey-progress-indicator-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {
       return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];

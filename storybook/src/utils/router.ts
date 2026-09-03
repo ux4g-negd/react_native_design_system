@@ -421,6 +421,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'eligibility-failure-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-failure-step',
   'pattern-eligibility-warning-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-warning-step',
   'eligibility-warning-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-warning-step',
+  'pattern-journey-progress-indicator': 'patterns/application-and-submission/journey-progress-indicator/journey-progress-indicator',
+  'journey-progress-indicator': 'patterns/application-and-submission/journey-progress-indicator/journey-progress-indicator',
   feedback: 'patterns/feedback',
 };
 
@@ -864,6 +866,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('journey-progress-indicator') || cleanPath.includes('journey-progress')) {
+      return 'pattern-journey-progress-indicator';
     }
     if (cleanPath.includes('eligibility-warning-step') || (cleanPath.includes('eligibility') && cleanPath.includes('warning'))) {
       return 'pattern-eligibility-warning-step';
