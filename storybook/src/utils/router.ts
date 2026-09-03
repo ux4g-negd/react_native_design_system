@@ -411,6 +411,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'document-upload-success': 'patterns/application-and-submission/document-scan-and-upload/document-upload-success',
   'pattern-eligibility-check-landing': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-check-landing',
   'eligibility-check-landing': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-check-landing',
+  'pattern-eligibility-question-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-question-step',
+  'eligibility-question-step': 'patterns/application-and-submission/eligibility-check-wizard/eligibility-question-step',
   feedback: 'patterns/feedback',
 };
 
@@ -854,6 +856,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('eligibility-question-step') || (cleanPath.includes('eligibility') && cleanPath.includes('question'))) {
+      return 'pattern-eligibility-question-step';
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
