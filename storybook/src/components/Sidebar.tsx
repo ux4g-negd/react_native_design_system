@@ -1092,6 +1092,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'document-scan-and-upload-group',
+            label: 'Document scan and upload',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-document-scan-upload',
+                label: 'Document scan and upload',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1157,6 +1169,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('submission-acknowledgement')
     ) {
       return ['patterns', 'application-and-submission-group', 'submission-acknowledgement-group'];
+    }
+    if (
+      page === 'pattern-document-scan-upload' ||
+      page.includes('document-scan-upload') ||
+      page.includes('document-scan-and-upload')
+    ) {
+      return ['patterns', 'application-and-submission-group', 'document-scan-and-upload-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {
       return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];

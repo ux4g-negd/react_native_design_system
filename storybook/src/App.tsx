@@ -128,6 +128,7 @@ import { DiscardDraftDialogDoc } from './pages/DiscardDraftDialogDoc';
 import { ApplicationSubmittedDoc } from './pages/ApplicationSubmittedDoc';
 import { ApplicationQueuedDoc } from './pages/ApplicationQueuedDoc';
 import { CouldNotSubmitDoc } from './pages/CouldNotSubmitDoc';
+import { DocumentScanUploadDoc } from './pages/DocumentScanUploadDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -235,6 +236,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-could-not-submit' || page.includes('could-not-submit')) {
     return 'Patterns / Application and Submission / Submission Acknowledgement / Could Not Submit';
+  }
+  if (page === 'pattern-document-scan-upload' || page.includes('document-scan-upload') || page.includes('document-scan-and-upload')) {
+    return 'Patterns / Application and Submission / Document scan and upload / Document scan and upload';
   }
   if (page === 'pattern-declaration-with-digital-sign' || page.includes('declaration-with-digital-sign') || page.includes('digital-sign')) {
     return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration with Digital Sign';
@@ -659,6 +663,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-could-not-submit' || activePage.includes('could-not-submit')) {
       return <CouldNotSubmitDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-document-scan-upload' || activePage.includes('document-scan-upload') || activePage.includes('document-scan-and-upload')) {
+      return <DocumentScanUploadDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-declaration-with-digital-sign' || activePage.includes('declaration-with-digital-sign') || activePage.includes('digital-sign')) {
       return <DeclarationWithDigitalSignDoc isDark={isDark} />;
