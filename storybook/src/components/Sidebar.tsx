@@ -1070,6 +1070,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'submission-acknowledgement-group',
+            label: 'Submission Acknowledgement',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-application-submitted',
+                label: 'Application Submitted',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1124,6 +1136,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('discard-draft')
     ) {
       return ['patterns', 'application-and-submission-group', 'save-and-resume-group'];
+    }
+    if (
+      page === 'pattern-application-submitted' ||
+      page.includes('application-submitted') ||
+      page.includes('submission-acknowledgement')
+    ) {
+      return ['patterns', 'application-and-submission-group', 'submission-acknowledgement-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {
       return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];

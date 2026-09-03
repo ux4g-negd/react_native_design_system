@@ -125,6 +125,7 @@ import { AutoSaveFormDoc } from './pages/AutoSaveFormDoc';
 import { DraftExpiryFormDoc } from './pages/DraftExpiryFormDoc';
 import { UnsavedChangesDialogDoc } from './pages/UnsavedChangesDialogDoc';
 import { DiscardDraftDialogDoc } from './pages/DiscardDraftDialogDoc';
+import { ApplicationSubmittedDoc } from './pages/ApplicationSubmittedDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -223,6 +224,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-discard-draft-dialog' || page.includes('discard-draft')) {
     return 'Patterns / Application and Submission / Save and Resume / Discard Draft Dialog';
+  }
+  if (page === 'pattern-application-submitted' || page.includes('application-submitted')) {
+    return 'Patterns / Application and Submission / Submission Acknowledgement / Application Submitted';
   }
   if (page === 'pattern-declaration-with-digital-sign' || page.includes('declaration-with-digital-sign') || page.includes('digital-sign')) {
     return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration with Digital Sign';
@@ -638,6 +642,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-discard-draft-dialog' || activePage.includes('discard-draft')) {
       return <DiscardDraftDialogDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-application-submitted' || activePage.includes('application-submitted')) {
+      return <ApplicationSubmittedDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-declaration-with-digital-sign' || activePage.includes('declaration-with-digital-sign') || activePage.includes('digital-sign')) {
       return <DeclarationWithDigitalSignDoc isDark={isDark} />;
