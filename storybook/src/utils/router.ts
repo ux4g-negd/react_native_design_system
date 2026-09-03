@@ -393,6 +393,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-resume-application-missing-info': 'patterns/application-and-submission/save-and-resume/resume-application-missing-info',
   'pattern-auto-save-form': 'patterns/application-and-submission/save-and-resume/auto-save-form',
   'pattern-draft-expiry-form': 'patterns/application-and-submission/save-and-resume/draft-expiry-form',
+  'pattern-unsaved-changes-dialog': 'patterns/application-and-submission/save-and-resume/unsaved-changes-dialog',
   feedback: 'patterns/feedback',
 };
 
@@ -836,6 +837,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('unsaved-changes')) {
+      return 'pattern-unsaved-changes-dialog';
     }
     if (cleanPath.includes('draft-expiry')) {
       return 'pattern-draft-expiry-form';
