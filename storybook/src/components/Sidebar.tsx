@@ -1038,6 +1038,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Save and Resume',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-continue-application',
+                label: 'Continue Application',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1077,7 +1082,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
-    if (page === 'pattern-save-and-resume' || page.includes('save-and-resume')) {
+    if (page === 'pattern-save-and-resume' || page === 'pattern-continue-application' || page.includes('save-and-resume') || page.includes('continue-application')) {
       return ['patterns', 'application-and-submission-group', 'save-and-resume-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {

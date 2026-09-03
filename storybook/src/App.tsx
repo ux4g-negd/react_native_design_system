@@ -119,6 +119,7 @@ import { ConsentHistoryDoc } from './pages/ConsentHistoryDoc';
 import { DeclarationBeforeSubmissionDoc } from './pages/DeclarationBeforeSubmissionDoc';
 import { DeclarationWithDigitalSignDoc } from './pages/DeclarationWithDigitalSignDoc';
 import { SaveAndResumeDoc } from './pages/SaveAndResumeDoc';
+import { ContinueApplicationDoc } from './pages/ContinueApplicationDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -199,6 +200,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-save-and-resume' || page.includes('save-and-resume')) {
     return 'Patterns / Application and Submission / Save and Resume / Save and Resume';
+  }
+  if (page === 'pattern-continue-application' || page.includes('continue-application')) {
+    return 'Patterns / Application and Submission / Save and Resume / Continue Application';
   }
   if (page === 'pattern-declaration-with-digital-sign' || page.includes('declaration-with-digital-sign') || page.includes('digital-sign')) {
     return 'Patterns / Consent and Declaration / Declaration Before Submission / Declaration with Digital Sign';
@@ -596,6 +600,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-save-and-resume' || activePage.includes('save-and-resume')) {
       return <SaveAndResumeDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-continue-application' || activePage.includes('continue-application')) {
+      return <ContinueApplicationDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-declaration-with-digital-sign' || activePage.includes('declaration-with-digital-sign') || activePage.includes('digital-sign')) {
       return <DeclarationWithDigitalSignDoc isDark={isDark} />;

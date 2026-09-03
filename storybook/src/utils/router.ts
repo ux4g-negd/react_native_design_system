@@ -389,6 +389,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-consent-history': 'patterns/consent-and-declaration/data-sharing-consent/consent-history',
   'pattern-declaration-before-submission': 'patterns/consent-and-declaration/declaration-before-submission/declaration-before-submission',
   'pattern-declaration-with-digital-sign': 'patterns/consent-and-declaration/declaration-before-submission/declaration-with-digital-sign',
+  'pattern-continue-application': 'patterns/application-and-submission/save-and-resume/continue-application',
   feedback: 'patterns/feedback',
 };
 
@@ -832,6 +833,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('continue-application')) {
+      return 'pattern-continue-application';
     }
     if (cleanPath.includes('save-and-resume')) {
       return 'pattern-save-and-resume';
