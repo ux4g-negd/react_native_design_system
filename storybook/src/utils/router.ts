@@ -391,6 +391,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-declaration-with-digital-sign': 'patterns/consent-and-declaration/declaration-before-submission/declaration-with-digital-sign',
   'pattern-continue-application': 'patterns/application-and-submission/save-and-resume/continue-application',
   'pattern-resume-application-missing-info': 'patterns/application-and-submission/save-and-resume/resume-application-missing-info',
+  'pattern-auto-save-form': 'patterns/application-and-submission/save-and-resume/auto-save-form',
   feedback: 'patterns/feedback',
 };
 
@@ -834,6 +835,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('per-service') || (cleanPath.includes('notification-preferences') && cleanPath.includes('service'))) {
       return 'pattern-per-service';
+    }
+    if (cleanPath.includes('auto-save')) {
+      return 'pattern-auto-save-form';
     }
     if (cleanPath.includes('resume-application-missing-info') || cleanPath.includes('missing-info')) {
       return 'pattern-resume-application-missing-info';

@@ -1048,6 +1048,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Resume Application Missing Info',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-auto-save-form',
+                label: 'Auto-save Form',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1091,9 +1096,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page === 'pattern-save-and-resume' ||
       page === 'pattern-continue-application' ||
       page === 'pattern-resume-application-missing-info' ||
+      page === 'pattern-auto-save-form' ||
       page.includes('save-and-resume') ||
       page.includes('continue-application') ||
-      page.includes('missing-info')
+      page.includes('missing-info') ||
+      page.includes('auto-save')
     ) {
       return ['patterns', 'application-and-submission-group', 'save-and-resume-group'];
     }
