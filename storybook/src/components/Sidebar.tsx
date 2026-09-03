@@ -1119,6 +1119,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'eligibility-check-wizard-group',
+            label: 'Eligibility Check Wizard',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-eligibility-check-landing',
+                label: 'Eligibility Check Landing',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1197,6 +1209,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('document-scan-and-upload')
     ) {
       return ['patterns', 'application-and-submission-group', 'document-scan-and-upload-group'];
+    }
+    if (
+      page === 'pattern-eligibility-check-landing' ||
+      page.includes('eligibility-check-landing') ||
+      page.includes('eligibility-check-wizard')
+    ) {
+      return ['patterns', 'application-and-submission-group', 'eligibility-check-wizard-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {
       return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];
