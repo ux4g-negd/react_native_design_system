@@ -7,17 +7,42 @@ import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
-interface EligibilityQuestionStepDocProps {
+interface EligibilityFinalQuestionStepDocProps {
   isDark: boolean;
 }
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'Default' | 'Card style';
+type OptionKey = 'first_time' | 'expired_rejected' | 'currently_valid';
 
-export const EligibilityQuestionStepDoc: React.FC<EligibilityQuestionStepDocProps> = ({ isDark }) => {
+interface RadioOption {
+  key: OptionKey;
+  title: string;
+  subtitle: string;
+}
+
+const OPTIONS: RadioOption[] = [
+  {
+    key: 'first_time',
+    title: "No, I haven't applied before",
+    subtitle: 'First-time applicant for this certificate',
+  },
+  {
+    key: 'expired_rejected',
+    title: 'Yes, but it expired or was rejected',
+    subtitle: 'Previously held certificate has expired or was rejected',
+  },
+  {
+    key: 'currently_valid',
+    title: 'Yes, I currently have a valid certificate',
+    subtitle: 'Currently holding a valid certificate',
+  },
+];
+
+export const EligibilityFinalQuestionStepDoc: React.FC<EligibilityFinalQuestionStepDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('Default');
-  const [selectedOption, setSelectedOption] = useState<'yes' | 'no' | null>('yes');
+  const [selectedOption, setSelectedOption] = useState<OptionKey | null>('first_time');
 
   const colors = useMemo(() => {
     const isCard = variant === 'Card style';
@@ -66,16 +91,38 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const EligibilityQuestionCardScreen = ({
+interface RadioOption {
+  key: string;
+  title: string;
+  subtitle: string;
+}
+
+const OPTIONS: RadioOption[] = [
+  {
+    key: 'first_time',
+    title: "No, I haven't applied before",
+    subtitle: 'First-time applicant for this certificate',
+  },
+  {
+    key: 'expired_rejected',
+    title: 'Yes, but it expired or was rejected',
+    subtitle: 'Previously held certificate has expired or was rejected',
+  },
+  {
+    key: 'currently_valid',
+    title: 'Yes, I currently have a valid certificate',
+    subtitle: 'Currently holding a valid certificate',
+  },
+];
+
+export const EligibilityFinalQuestionCardScreen = ({
   isDark = false,
-  onContinue = () => {},
-  onBack = () => {},
+  onCheckEligibility = () => {},
 }: {
   isDark?: boolean;
-  onContinue?: (answer: string) => void;
-  onBack?: () => void;
+  onCheckEligibility?: (answer: string) => void;
 }) => {
-  const [selected, setSelected] = useState<'yes' | 'no' | null>('yes');
+  const [selected, setSelected] = useState<string | null>('first_time');
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
   const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
@@ -122,7 +169,7 @@ export const EligibilityQuestionCardScreen = ({
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         </View>
 
-        {/* Scrollable Area */}
+        {/* Scrollable Content */}
         <ScrollView
           contentContainerStyle={styles.cardScrollContainer}
           showsVerticalScrollIndicator={false}
@@ -136,7 +183,7 @@ export const EligibilityQuestionCardScreen = ({
           >
             {/* Progress indicator */}
             <Text style={[styles.progressText, { color: subtleText }]}>
-              Question 1 of 5
+              Question 5 of 5
             </Text>
             <View style={{ height: 8 }} />
             <View
@@ -149,7 +196,7 @@ export const EligibilityQuestionCardScreen = ({
                 style={[
                   styles.progressBarFill,
                   {
-                    width: '20%',
+                    width: '90%',
                     backgroundColor: primaryColor,
                   },
                 ]}
@@ -159,121 +206,65 @@ export const EligibilityQuestionCardScreen = ({
 
             {/* Question */}
             <Text style={[styles.questionTitle, { color: titleColor }]}>
-              Are you a resident of Maharashtra?
-            </Text>
-            <View style={{ height: 10 }} />
-            <Text style={[styles.questionHelper, { color: subtleText }]}>
-              You must be a resident to apply for a state-issued income certificate.
+              Have you applied for this certificate before in the last 1 year?
             </Text>
             <View style={{ height: 24 }} />
 
-            {/* Option: Yes */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => setSelected('yes')}
-              style={[
-                styles.optionContainer,
-                {
-                  backgroundColor:
-                    selected === 'yes'
-                      ? isDark
-                        ? UX4GColors.primary900
-                        : UX4GColors.primary50
-                      : isDark
-                      ? UX4GColors.neutral800
-                      : UX4GColors.neutral100,
-                },
-              ]}
-            >
-              <View
-                style={[
-                  styles.radioCircle,
-                  {
-                    borderColor:
-                      selected === 'yes'
-                        ? primaryColor
-                        : isDark
-                        ? UX4GColors.neutral700
-                        : UX4GColors.neutral200,
-                    borderWidth: selected === 'yes' ? 6 : 2,
-                    backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                  },
-                ]}
-              />
-              <View style={styles.optionTextCol}>
-                <Text
-                  style={[
-                    styles.optionTitle,
-                    {
-                      color:
-                        selected === 'yes'
-                          ? primaryColor
-                          : titleColor,
-                    },
-                  ]}
-                >
-                  Yes
-                </Text>
-                <Text style={[styles.optionSubtitle, { color: subtleText }]}>
-                  I am a resident of Maharashtra
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            <View style={{ height: 12 }} />
-
-            {/* Option: No */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => setSelected('no')}
-              style={[
-                styles.optionContainer,
-                {
-                  backgroundColor:
-                    selected === 'no'
-                      ? isDark
-                        ? UX4GColors.primary900
-                        : UX4GColors.primary50
-                      : isDark
-                      ? UX4GColors.neutral800
-                      : UX4GColors.neutral100,
-                },
-              ]}
-            >
-              <View
-                style={[
-                  styles.radioCircle,
-                  {
-                    borderColor:
-                      selected === 'no'
-                        ? primaryColor
-                        : isDark
-                        ? UX4GColors.neutral700
-                        : UX4GColors.neutral200,
-                    borderWidth: selected === 'no' ? 6 : 2,
-                    backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                  },
-                ]}
-              />
-              <View style={styles.optionTextCol}>
-                <Text
-                  style={[
-                    styles.optionTitle,
-                    {
-                      color:
-                        selected === 'no'
-                          ? primaryColor
-                          : titleColor,
-                    },
-                  ]}
-                >
-                  No
-                </Text>
-                <Text style={[styles.optionSubtitle, { color: subtleText }]}>
-                  I reside in a different state
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {/* Radio options */}
+            {OPTIONS.map((opt, idx) => {
+              const isSelected = selected === opt.key;
+              return (
+                <View key={opt.key}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => setSelected(opt.key)}
+                    style={[
+                      styles.optionContainer,
+                      {
+                        backgroundColor: isSelected
+                          ? isDark
+                            ? UX4GColors.primary900
+                            : UX4GColors.primary50
+                          : isDark
+                          ? UX4GColors.neutral800
+                          : UX4GColors.neutral100,
+                      },
+                    ]}
+                  >
+                    <View
+                      style={[
+                        styles.radioCircle,
+                        {
+                          borderColor: isSelected
+                            ? primaryColor
+                            : isDark
+                            ? UX4GColors.neutral700
+                            : UX4GColors.neutral200,
+                          borderWidth: isSelected ? 6 : 2,
+                          backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+                        },
+                      ]}
+                    />
+                    <View style={styles.optionTextCol}>
+                      <Text
+                        style={[
+                          styles.optionTitle,
+                          {
+                            color: isSelected ? primaryColor : titleColor,
+                          },
+                        ]}
+                      >
+                        {opt.title}
+                      </Text>
+                      <Text style={[styles.optionSubtitle, { color: subtleText }]}>
+                        {opt.subtitle}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  {idx < OPTIONS.length - 1 && <View style={{ height: 12 }} />}
+                </View>
+              );
+            })}
           </View>
         </ScrollView>
 
@@ -281,24 +272,14 @@ export const EligibilityQuestionCardScreen = ({
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         <View style={styles.actionsContainer}>
           <Ux4gButton
-            text="Continue"
-            onPress={() => selected && onContinue(selected)}
+            text="Check Eligibility"
+            onPress={() => selected && onCheckEligibility(selected)}
             enabled={selected !== null}
             size="large"
             width="100%"
             height={48}
             backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
             contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-          <View style={{ height: 4 }} />
-          <Ux4gButton
-            text="Back"
-            onPress={onBack}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={primaryColor}
           />
         </View>
 
@@ -326,7 +307,8 @@ const styles = StyleSheet.create({
   unionIcon: { height: 32, width: 44 },
   cardScrollContainer: { padding: 16 },
   cardContainer: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     borderRadius: 16,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
@@ -349,14 +331,10 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   questionTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '800',
-    lineHeight: 28,
+    lineHeight: 26,
     letterSpacing: -0.3,
-  },
-  questionHelper: {
-    fontSize: 14,
-    lineHeight: 21,
   },
   optionContainer: {
     flexDirection: 'row',
@@ -390,7 +368,7 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     alignItems: 'center',
-    paddingTop: 12,
+    paddingTop: 16,
     paddingBottom: 20,
   },
   poweredByText: {
@@ -423,16 +401,38 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const EligibilityQuestionScreen = ({
+interface RadioOption {
+  key: string;
+  title: string;
+  subtitle: string;
+}
+
+const OPTIONS: RadioOption[] = [
+  {
+    key: 'first_time',
+    title: "No, I haven't applied before",
+    subtitle: 'First-time applicant for this certificate',
+  },
+  {
+    key: 'expired_rejected',
+    title: 'Yes, but it expired or was rejected',
+    subtitle: 'Previously held certificate has expired or was rejected',
+  },
+  {
+    key: 'currently_valid',
+    title: 'Yes, I currently have a valid certificate',
+    subtitle: 'Currently holding a valid certificate',
+  },
+];
+
+export const EligibilityFinalQuestionScreen = ({
   isDark = false,
-  onContinue = () => {},
-  onBack = () => {},
+  onCheckEligibility = () => {},
 }: {
   isDark?: boolean;
-  onContinue?: (answer: string) => void;
-  onBack?: () => void;
+  onCheckEligibility?: (answer: string) => void;
 }) => {
-  const [selected, setSelected] = useState<'yes' | 'no' | null>('yes');
+  const [selected, setSelected] = useState<string | null>('first_time');
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
   const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
@@ -481,7 +481,7 @@ export const EligibilityQuestionScreen = ({
         >
           {/* Progress indicator */}
           <Text style={[styles.progressText, { color: subtleText }]}>
-            Question 1 of 5
+            Question 5 of 5
           </Text>
           <View style={{ height: 8 }} />
           <View
@@ -494,7 +494,7 @@ export const EligibilityQuestionScreen = ({
               style={[
                 styles.progressBarFill,
                 {
-                  width: '20%',
+                  width: '90%',
                   backgroundColor: primaryColor,
                 },
               ]}
@@ -504,145 +504,79 @@ export const EligibilityQuestionScreen = ({
 
           {/* Question */}
           <Text style={[styles.questionTitle, { color: titleColor }]}>
-            Are you a resident of Maharashtra?
-          </Text>
-          <View style={{ height: 10 }} />
-          <Text style={[styles.questionHelper, { color: subtleText }]}>
-            You must be a resident to apply for a state-issued income certificate.
+            Have you applied for this certificate before in the last 1 year?
           </Text>
           <View style={{ height: 24 }} />
 
-          {/* Option: Yes */}
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => setSelected('yes')}
-            style={[
-              styles.optionContainer,
-              {
-                backgroundColor:
-                  selected === 'yes'
-                    ? isDark
-                      ? UX4GColors.primary900
-                      : UX4GColors.primary50
-                    : isDark
-                    ? UX4GColors.neutral800
-                    : UX4GColors.neutral100,
-              },
-            ]}
-          >
-            <View
-              style={[
-                styles.radioCircle,
-                {
-                  borderColor:
-                    selected === 'yes'
-                      ? primaryColor
-                      : isDark
-                      ? UX4GColors.neutral700
-                      : UX4GColors.neutral200,
-                  borderWidth: selected === 'yes' ? 6 : 2,
-                  backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                },
-              ]}
-            />
-            <View style={styles.optionTextCol}>
-              <Text
-                style={[
-                  styles.optionTitle,
-                  {
-                    color:
-                      selected === 'yes'
-                        ? primaryColor
-                        : titleColor,
-                  },
-                ]}
-              >
-                Yes
-              </Text>
-              <Text style={[styles.optionSubtitle, { color: subtleText }]}>
-                I am a resident of Maharashtra
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <View style={{ height: 12 }} />
-
-          {/* Option: No */}
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => setSelected('no')}
-            style={[
-              styles.optionContainer,
-              {
-                backgroundColor:
-                  selected === 'no'
-                    ? isDark
-                      ? UX4GColors.primary900
-                      : UX4GColors.primary50
-                    : isDark
-                    ? UX4GColors.neutral800
-                    : UX4GColors.neutral100,
-              },
-            ]}
-          >
-            <View
-              style={[
-                styles.radioCircle,
-                {
-                  borderColor:
-                    selected === 'no'
-                      ? primaryColor
-                      : isDark
-                      ? UX4GColors.neutral700
-                      : UX4GColors.neutral200,
-                  borderWidth: selected === 'no' ? 6 : 2,
-                  backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                },
-              ]}
-            />
-            <View style={styles.optionTextCol}>
-              <Text
-                style={[
-                  styles.optionTitle,
-                  {
-                    color:
-                      selected === 'no'
-                        ? primaryColor
-                        : titleColor,
-                  },
-                ]}
-              >
-                No
-              </Text>
-              <Text style={[styles.optionSubtitle, { color: subtleText }]}>
-                I reside in a different state
-              </Text>
-            </View>
-          </TouchableOpacity>
+          {/* Radio options */}
+          {OPTIONS.map((opt, idx) => {
+            const isSelected = selected === opt.key;
+            return (
+              <View key={opt.key}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => setSelected(opt.key)}
+                  style={[
+                    styles.optionContainer,
+                    {
+                      backgroundColor: isSelected
+                        ? isDark
+                          ? UX4GColors.primary900
+                          : UX4GColors.primary50
+                        : isDark
+                        ? UX4GColors.neutral800
+                        : UX4GColors.neutral100,
+                    },
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.radioCircle,
+                      {
+                        borderColor: isSelected
+                          ? primaryColor
+                          : isDark
+                          ? UX4GColors.neutral700
+                          : UX4GColors.neutral200,
+                        borderWidth: isSelected ? 6 : 2,
+                        backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+                      },
+                    ]}
+                  />
+                  <View style={styles.optionTextCol}>
+                    <Text
+                      style={[
+                        styles.optionTitle,
+                        {
+                          color: isSelected ? primaryColor : titleColor,
+                        },
+                      ]}
+                    >
+                      {opt.title}
+                    </Text>
+                    <Text style={[styles.optionSubtitle, { color: subtleText }]}>
+                      {opt.subtitle}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                {idx < OPTIONS.length - 1 && <View style={{ height: 12 }} />}
+              </View>
+            );
+          })}
         </ScrollView>
 
         {/* Actions */}
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         <View style={styles.actionsContainer}>
           <Ux4gButton
-            text="Continue"
-            onPress={() => selected && onContinue(selected)}
+            text="Check Eligibility"
+            onPress={() => selected && onCheckEligibility(selected)}
             enabled={selected !== null}
             size="large"
             width="100%"
             height={48}
             backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
             contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-          <View style={{ height: 4 }} />
-          <Ux4gButton
-            text="Back"
-            onPress={onBack}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={primaryColor}
           />
         </View>
 
@@ -690,10 +624,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '800',
     lineHeight: 26,
-  },
-  questionHelper: {
-    fontSize: 14,
-    lineHeight: 20,
+    letterSpacing: -0.3,
   },
   optionContainer: {
     flexDirection: 'row',
@@ -721,13 +652,13 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   actionsContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingHorizontal: 24,
+    paddingTop: 16,
     alignItems: 'center',
   },
   footerContainer: {
     alignItems: 'center',
-    paddingTop: 12,
+    paddingTop: 16,
     paddingBottom: 20,
   },
   poweredByText: {
@@ -757,10 +688,10 @@ const styles = StyleSheet.create({
             marginBottom: 8,
           }}
         >
-          Question 1 of 5
+          Question 5 of 5
         </div>
 
-        {/* Progress bar (20% with purple gradient) */}
+        {/* Progress bar (90% with purple gradient) */}
         <div
           style={{
             height: 6,
@@ -775,7 +706,7 @@ const styles = StyleSheet.create({
             style={{
               height: '100%',
               borderRadius: 9999,
-              width: '20%',
+              width: '90%',
               background: isDark
                 ? 'linear-gradient(90deg, rgba(163, 145, 255, 0.35) 0%, #A391FF 100%)'
                 : 'linear-gradient(90deg, #D4CBFD 0%, #432CBB 100%)',
@@ -786,141 +717,76 @@ const styles = StyleSheet.create({
         {/* Question Title */}
         <div
           style={{
-            fontSize: isCard ? 22 : 20,
+            fontSize: 20,
             fontWeight: 800,
             color: colors.titleColor,
             lineHeight: 1.3,
             letterSpacing: '-0.3px',
-            marginBottom: 10,
-          }}
-        >
-          Are you a resident of Maharashtra?
-        </div>
-
-        {/* Question Helper */}
-        <div
-          style={{
-            fontSize: 14,
-            color: colors.subtleText,
-            lineHeight: 1.4,
             marginBottom: 24,
           }}
         >
-          You must be a resident to apply for a state-issued income certificate.
+          Have you applied for this certificate before in the last 1 year?
         </div>
 
-        {/* Option 1: Yes */}
-        <div
-          onClick={() => setSelectedOption('yes')}
-          style={{
-            padding: '14px 16px',
-            borderRadius: 12,
-            backgroundColor:
-              selectedOption === 'yes'
-                ? colors.optionSelectedBg
-                : colors.optionUnselectedBg,
-            display: 'flex',
-            alignItems: 'center',
-            cursor: 'pointer',
-            marginBottom: 12,
-            transition: 'all 0.15s ease',
-          }}
-        >
-          <div
-            style={{
-              width: 22,
-              height: 22,
-              borderRadius: '50%',
-              backgroundColor: colors.radioBg,
-              border:
-                selectedOption === 'yes'
-                  ? `6px solid ${colors.radioBorderSelected}`
-                  : `2px solid ${colors.radioBorderUnselected}`,
-              boxSizing: 'border-box',
-              flexShrink: 0,
-            }}
-          />
-          <div style={{ marginLeft: 14, display: 'flex', flexDirection: 'column' }}>
+        {/* Radio options */}
+        {OPTIONS.map((opt, idx) => {
+          const isSelected = selectedOption === opt.key;
+          return (
             <div
+              key={opt.key}
+              onClick={() => setSelectedOption(opt.key)}
               style={{
-                fontSize: 16,
-                fontWeight: 700,
-                color:
-                  selectedOption === 'yes'
-                    ? colors.primaryColor
-                    : colors.titleColor,
+                padding: '14px 16px',
+                borderRadius: 12,
+                backgroundColor: isSelected
+                  ? colors.optionSelectedBg
+                  : colors.optionUnselectedBg,
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                marginBottom: idx === OPTIONS.length - 1 ? 0 : 12,
+                transition: 'all 0.15s ease',
               }}
             >
-              Yes
+              <div
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: '50%',
+                  backgroundColor: colors.radioBg,
+                  border: isSelected
+                    ? `6px solid ${colors.radioBorderSelected}`
+                    : `2px solid ${colors.radioBorderUnselected}`,
+                  boxSizing: 'border-box',
+                  flexShrink: 0,
+                }}
+              />
+              <div style={{ marginLeft: 14, display: 'flex', flexDirection: 'column' }}>
+                <div
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: isSelected
+                      ? colors.primaryColor
+                      : colors.titleColor,
+                  }}
+                >
+                  {opt.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: colors.subtleText,
+                    marginTop: 2,
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {opt.subtitle}
+                </div>
+              </div>
             </div>
-            <div
-              style={{
-                fontSize: 13,
-                color: colors.subtleText,
-                marginTop: 2,
-                lineHeight: 1.3,
-              }}
-            >
-              I am a resident of Maharashtra
-            </div>
-          </div>
-        </div>
-
-        {/* Option 2: No */}
-        <div
-          onClick={() => setSelectedOption('no')}
-          style={{
-            padding: '14px 16px',
-            borderRadius: 12,
-            backgroundColor:
-              selectedOption === 'no'
-                ? colors.optionSelectedBg
-                : colors.optionUnselectedBg,
-            display: 'flex',
-            alignItems: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-          }}
-        >
-          <div
-            style={{
-              width: 22,
-              height: 22,
-              borderRadius: '50%',
-              backgroundColor: colors.radioBg,
-              border:
-                selectedOption === 'no'
-                  ? `6px solid ${colors.radioBorderSelected}`
-                  : `2px solid ${colors.radioBorderUnselected}`,
-              boxSizing: 'border-box',
-              flexShrink: 0,
-            }}
-          />
-          <div style={{ marginLeft: 14, display: 'flex', flexDirection: 'column' }}>
-            <div
-              style={{
-                fontSize: 16,
-                fontWeight: 700,
-                color:
-                  selectedOption === 'no'
-                    ? colors.primaryColor
-                    : colors.titleColor,
-              }}
-            >
-              No
-            </div>
-            <div
-              style={{
-                fontSize: 13,
-                color: colors.subtleText,
-                marginTop: 2,
-                lineHeight: 1.3,
-              }}
-            >
-              I reside in a different state
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </>
     );
 
@@ -989,7 +855,7 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 20,
+                  padding: '24px 20px',
                   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
                   display: 'flex',
                   flexDirection: 'column',
@@ -1015,7 +881,7 @@ const styles = StyleSheet.create({
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         <div
           style={{
-            padding: '12px 20px 0 20px',
+            padding: '16px 24px 0 24px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -1024,7 +890,7 @@ const styles = StyleSheet.create({
           }}
         >
           <Ux4gButton
-            text="Continue"
+            text="Check Eligibility"
             onPress={() => {}}
             enabled={selectedOption !== null}
             size="large"
@@ -1033,22 +899,12 @@ const styles = StyleSheet.create({
             backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
             contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
           />
-          <div style={{ height: 4 }} />
-          <Ux4gButton
-            text="Back"
-            onPress={() => {}}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={colors.primaryColor}
-          />
         </div>
 
         {/* Powered by Footer */}
         <div
           style={{
-            padding: '12px 0 20px 0',
+            padding: '16px 0 20px 0',
             textAlign: 'center',
             backgroundColor: colors.screenBg,
             flexShrink: 0,
@@ -1082,11 +938,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Eligibility Question Step</h1>
+          <h1 className="wb-title">Eligibility Final Question Step</h1>
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A single question step in the eligibility wizard flow. Shows a progress indicator, question with helper text, and radio options for the user to answer.
+          The final question step in the eligibility wizard flow before checking eligibility. Shows a near-complete progress indicator, a question, multiple radio options, and a Check Eligibility call-to-action.
         </p>
       </div>
 
@@ -1218,4 +1074,4 @@ const styles = StyleSheet.create({
   );
 };
 
-export default EligibilityQuestionStepDoc;
+export default EligibilityFinalQuestionStepDoc;

@@ -1134,6 +1134,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Eligibility Question Step',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-eligibility-final-question-step',
+                label: 'Eligibility Final Question Step',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1218,8 +1223,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (
       page === 'pattern-eligibility-check-landing' ||
       page === 'pattern-eligibility-question-step' ||
+      page === 'pattern-eligibility-final-question-step' ||
       page.includes('eligibility-check-landing') ||
       page.includes('eligibility-question-step') ||
+      page.includes('eligibility-final-question-step') ||
       page.includes('eligibility-check-wizard')
     ) {
       return ['patterns', 'application-and-submission-group', 'eligibility-check-wizard-group'];
