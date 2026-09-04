@@ -163,6 +163,7 @@ import { CategoryServiceListDoc } from './pages/CategoryServiceListDoc';
 import { ServiceDetailDoc } from './pages/ServiceDetailDoc';
 import { SelectAdvocateDoc } from './pages/SelectAdvocateDoc';
 import { SelectAppointmentTimeDoc } from './pages/SelectAppointmentTimeDoc';
+import { ConfirmAppointmentV2Doc } from './pages/ConfirmAppointmentV2Doc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -297,6 +298,13 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (
+    page === 'pattern-confirm-appointment-v2' ||
+    page.includes('confirm-appointment-v2') ||
+    page.includes('confirm-appointment')
+  ) {
+    return 'Patterns / Search and Discovery / Consultation Slot Booking / Confirm Appointment V2';
   }
   if (
     page === 'pattern-select-appointment-time' ||
@@ -868,6 +876,13 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-confirm-appointment-v2' ||
+      activePage.includes('confirm-appointment-v2') ||
+      activePage.includes('confirm-appointment')
+    ) {
+      return <ConfirmAppointmentV2Doc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-select-appointment-time' ||

@@ -39,6 +39,12 @@ const PAGE_TO_PATH: Record<string, string> = {
   'no-result': 'patterns/search-and-discovery/search-and-browse/no-results',
   'pattern-global-service-discovery': 'patterns/search-and-discovery/global-service-discovery/global-service-discovery',
   'global-service-discovery': 'patterns/search-and-discovery/global-service-discovery/global-service-discovery',
+  'pattern-select-advocate': 'patterns/search-and-discovery/consultation-slot-booking/select-advocate',
+  'select-advocate': 'patterns/search-and-discovery/consultation-slot-booking/select-advocate',
+  'pattern-select-appointment-time': 'patterns/search-and-discovery/consultation-slot-booking/select-appointment-time',
+  'select-appointment-time': 'patterns/search-and-discovery/consultation-slot-booking/select-appointment-time',
+  'pattern-confirm-appointment-v2': 'patterns/search-and-discovery/consultation-slot-booking/confirm-appointment-v2',
+  'confirm-appointment-v2': 'patterns/search-and-discovery/consultation-slot-booking/confirm-appointment-v2',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -938,6 +944,15 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('confirm-appointment-v2') || cleanPath.includes('confirm-appointment')) {
+      return 'pattern-confirm-appointment-v2';
+    }
+    if (cleanPath.includes('select-appointment-time') || cleanPath.includes('appointment-time')) {
+      return 'pattern-select-appointment-time';
+    }
+    if (cleanPath.includes('select-advocate')) {
+      return 'pattern-select-advocate';
     }
     if (cleanPath.includes('global-service-discovery') || cleanPath.includes('global-service')) {
       return 'pattern-global-service-discovery';
