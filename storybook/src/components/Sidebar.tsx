@@ -1363,6 +1363,25 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'feedback-and-communication-group',
+        label: 'Feedback and Communication',
+        icon: 'folder',
+        children: [
+          {
+            id: 'inline-feedback-and-status-communication-group',
+            label: 'Inline Feedback and Status Communication',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-inline-feedback',
+                label: 'Inline Feedback',
+                icon: 'layers',
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
@@ -1477,6 +1496,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('application-sent')
     ) {
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
+    }
+    if (
+      page === 'pattern-inline-feedback' ||
+      page.includes('inline-feedback') ||
+      page.includes('feedback-and-communication')
+    ) {
+      return ['patterns', 'feedback-and-communication-group', 'inline-feedback-and-status-communication-group'];
+    }
+    if (
+      page === 'pattern-appointment-confirmed' ||
+      page === 'pattern-confirm-appointment-v2' ||
+      page === 'pattern-select-appointment-time' ||
+      page === 'pattern-select-advocate' ||
+      page.includes('appointment-confirmed') ||
+      page.includes('confirm-appointment') ||
+      page.includes('select-appointment-time') ||
+      page.includes('select-advocate') ||
+      page.includes('consultation-slot-booking')
+    ) {
+      return ['patterns', 'search-and-discovery-group', 'consultation-slot-booking-group'];
     }
     if (
       page === 'pattern-global-service-discovery' ||

@@ -165,6 +165,7 @@ import { SelectAdvocateDoc } from './pages/SelectAdvocateDoc';
 import { SelectAppointmentTimeDoc } from './pages/SelectAppointmentTimeDoc';
 import { ConfirmAppointmentV2Doc } from './pages/ConfirmAppointmentV2Doc';
 import { AppointmentConfirmedDoc } from './pages/AppointmentConfirmedDoc';
+import { InlineFeedbackDoc } from './pages/InlineFeedbackDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -299,6 +300,12 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (
+    page === 'pattern-inline-feedback' ||
+    page.includes('inline-feedback')
+  ) {
+    return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback';
   }
   if (
     page === 'pattern-appointment-confirmed' ||
@@ -883,6 +890,12 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-inline-feedback' ||
+      activePage.includes('inline-feedback')
+    ) {
+      return <InlineFeedbackDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-appointment-confirmed' ||
