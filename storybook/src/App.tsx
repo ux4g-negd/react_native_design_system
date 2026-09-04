@@ -183,6 +183,7 @@ import { FindServiceCenterDoc } from './pages/FindServiceCenterDoc';
 import { WasThisHelpfulDoc } from './pages/WasThisHelpfulDoc';
 import { LanguageSwitcherDoc } from './pages/LanguageSwitcherDoc';
 import { InlineLanguageToggleDoc } from './pages/InlineLanguageToggleDoc';
+import { TranslationUnavailableDoc } from './pages/TranslationUnavailableDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -1044,6 +1045,12 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-translation-unavailable' ||
+      activePage.includes('translation-unavailable')
+    ) {
+      return <TranslationUnavailableDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-inline-language-toggle' ||

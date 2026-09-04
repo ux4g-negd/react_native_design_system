@@ -1484,6 +1484,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Inline Language Toggle',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-translation-unavailable',
+                label: 'Translation Unavailable',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1609,6 +1614,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('feedback-and-communication')
     ) {
       return ['patterns', 'feedback-and-communication-group', 'inline-feedback-and-status-communication-group'];
+    }
+    if (
+      page === 'pattern-translation-unavailable' ||
+      page === 'pattern-inline-language-toggle' ||
+      page === 'pattern-language-switcher' ||
+      page.includes('translation-unavailable') ||
+      page.includes('inline-language') ||
+      page.includes('language-switcher')
+    ) {
+      return ['patterns', 'feedback-and-communication-group', 'language-switcher-group'];
     }
     if (
       page === 'pattern-appointment-confirmed' ||
