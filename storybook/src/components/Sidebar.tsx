@@ -1198,6 +1198,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Government form with multiple errors',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-application-sent-success',
+                label: 'Application sent success',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1308,10 +1313,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'journey-progress-indicator-group'];
     }
     if (
+      page === 'pattern-application-sent-success' ||
       page === 'pattern-government-form-with-multiple-errors' ||
       page === 'pattern-government-form-with-errors' ||
       page === 'pattern-government-form-with-validation' ||
-      page.includes('government-form')
+      page.includes('government-form') ||
+      page.includes('application-sent')
     ) {
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }

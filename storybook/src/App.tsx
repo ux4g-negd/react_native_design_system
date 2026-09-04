@@ -144,6 +144,7 @@ import { ValidationErrorDoc } from './pages/ValidationErrorDoc';
 import { GovernmentFormWithValidationDoc } from './pages/GovernmentFormWithValidationDoc';
 import { GovernmentFormWithErrorsDoc } from './pages/GovernmentFormWithErrorsDoc';
 import { GovernmentFormWithMultipleErrorsDoc } from './pages/GovernmentFormWithMultipleErrorsDoc';
+import { ApplicationSentSuccessDoc } from './pages/ApplicationSentSuccessDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -278,6 +279,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (page === 'pattern-application-sent-success' || page.includes('application-sent-success') || page.includes('application-sent')) {
+    return 'Patterns / Application and Submission / Government form with validation / Application sent success';
   }
   if (page === 'pattern-government-form-with-multiple-errors' || page.includes('government-form-with-multiple-errors') || page.includes('multiple-errors')) {
     return 'Patterns / Application and Submission / Government form with validation / Government form with multiple errors';
@@ -759,6 +763,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-application-sent-success' || activePage.includes('application-sent-success') || activePage.includes('application-sent')) {
+      return <ApplicationSentSuccessDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-government-form-with-multiple-errors' || activePage.includes('government-form-with-multiple-errors') || activePage.includes('multiple-errors')) {
       return <GovernmentFormWithMultipleErrorsDoc isDark={isDark} />;
