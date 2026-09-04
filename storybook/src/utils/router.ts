@@ -16,6 +16,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'search-applications': 'patterns/dashboard-and-my-application/my-applications/search-applications',
   'pattern-bulk-actions': 'patterns/dashboard-and-my-application/my-applications/bulk-actions',
   'bulk-actions': 'patterns/dashboard-and-my-application/my-applications/bulk-actions',
+  'pattern-pending-tasks': 'patterns/dashboard-and-my-application/pending-tasks/pending-tasks',
+  'pending-tasks': 'patterns/dashboard-and-my-application/pending-tasks/pending-tasks',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -914,6 +916,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('pending-tasks') || cleanPath.includes('pending-task')) {
+      return 'pattern-pending-tasks';
     }
     if (cleanPath.includes('bulk-actions') || cleanPath.includes('bulk-action')) {
       return 'pattern-bulk-actions';

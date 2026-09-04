@@ -1239,6 +1239,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'pending-tasks-group',
+            label: 'Pending Tasks',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-pending-tasks',
+                label: 'Pending Tasks',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1355,6 +1367,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('application-sent')
     ) {
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
+    }
+    if (
+      page === 'pattern-pending-tasks' ||
+      page.includes('pending-tasks')
+    ) {
+      return ['patterns', 'dashboard-and-my-application-group', 'pending-tasks-group'];
     }
     if (
       page === 'pattern-bulk-actions' ||
