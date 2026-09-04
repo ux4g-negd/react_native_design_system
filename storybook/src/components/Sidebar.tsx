@@ -1222,6 +1222,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'My Applications',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-no-applications',
+                label: 'No Applications',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1343,6 +1348,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
     if (
       page === 'pattern-my-applications' ||
+      page === 'pattern-no-applications' ||
+      page.includes('no-applications') ||
       page.includes('my-applications') ||
       page.includes('dashboard-and-my-application')
     ) {

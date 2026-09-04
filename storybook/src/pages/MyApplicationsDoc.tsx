@@ -684,178 +684,47 @@ const styles = StyleSheet.create({
 `;
   }, []);
 
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(codeString);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <div style={{ padding: '24px 32px', maxWidth: 1200, margin: '0 auto' }}>
+    <div className="wb-page">
       {/* Header */}
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-          <h1
-            style={{
-              fontSize: 28,
-              fontWeight: 700,
-              color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-              margin: 0,
-            }}
-          >
-            My Applications
-          </h1>
-          <span
-            style={{
-              fontSize: 12,
-              fontWeight: 600,
-              backgroundColor: isDark ? 'rgba(99, 102, 241, 0.2)' : '#EEF2FF',
-              color: isDark ? '#A5B4FC' : '#432CBB',
-              padding: '4px 10px',
-              borderRadius: 12,
-            }}
-          >
-            Pattern
-          </span>
+      <div className="wb-header">
+        <div className="wb-header-row">
+          <h1 className="wb-title">My Applications</h1>
+          <span className="wb-badge">Pattern</span>
         </div>
-        <p
-          style={{
-            fontSize: 14,
-            color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral600,
-            margin: 0,
-          }}
-        >
+        <p className="wb-subtitle">
           A dashboard pattern showing an overview of user applications with summary stats, tab filters, and detailed application cards with tracking.
         </p>
       </div>
 
-      {/* Main Tabs (Preview / Code) */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 16,
-          borderBottom: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
-          marginBottom: 24,
-        }}
-      >
-        <button
-          onClick={() => setActiveMainTab('preview')}
-          style={{
-            padding: '8px 16px',
-            fontSize: 14,
-            fontWeight: 600,
-            background: 'none',
-            border: 'none',
-            borderBottom: `2px solid ${
-              activeMainTab === 'preview'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : 'transparent'
-            }`,
-            color:
-              activeMainTab === 'preview'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : isDark
-                ? UX4GColors.neutral400
-                : UX4GColors.neutral500,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-            visibility
-          </span>
-          Preview
-        </button>
-        <button
-          onClick={() => setActiveMainTab('code')}
-          style={{
-            padding: '8px 16px',
-            fontSize: 14,
-            fontWeight: 600,
-            background: 'none',
-            border: 'none',
-            borderBottom: `2px solid ${
-              activeMainTab === 'code'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : 'transparent'
-            }`,
-            color:
-              activeMainTab === 'code'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : isDark
-                ? UX4GColors.neutral400
-                : UX4GColors.neutral500,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-            code
-          </span>
-          Code
-        </button>
-      </div>
+      {/* Main Body */}
+      <div className="wb-body">
+        <div className="wb-main">
+          {/* Main Tabs */}
+          <div className="wb-tab-bar">
+            <button
+              className={`wb-tab ${activeMainTab === 'preview' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('preview')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">visibility</span> Preview
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('code')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">code</span> Code
+            </button>
+          </div>
 
-      {/* Toolbar Controls */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          marginBottom: 24,
-          flexWrap: 'wrap',
-          gap: 12,
-        }}
-      >
-        <button
-          onClick={handleCopyCode}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '7px 14px',
-            fontSize: 13,
-            fontWeight: 500,
-            borderRadius: 6,
-            border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
-            backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-            color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-            cursor: 'pointer',
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
-            {copied ? 'check' : 'content_copy'}
-          </span>
-          {copied ? 'Copied!' : 'Copy React Native Code'}
-        </button>
-      </div>
-
-      {activeMainTab === 'preview' ? (
-        /* Preview Canvas */
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '40px 16px',
-            backgroundColor: isDark ? '#0B0F19' : '#F9FAFB',
-            borderRadius: 16,
-            border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
-            minHeight: 840,
-          }}
-        >
+          <div className="wb-content">
+            {/* 1. Preview Tab */}
+            {activeMainTab === 'preview' && (
+              <div
+                className={`wb-preview-area ${isDark ? 'dark' : ''}`}
+                style={{ flexDirection: 'column', alignItems: 'center' }}
+              >
           {/* Phone Frame Mockup */}
           <div
             style={{
@@ -1867,12 +1736,17 @@ const styles = StyleSheet.create({
             </div>
           </div>
         </div>
-      ) : (
-        /* Code Tab */
-        <div style={{ marginTop: 16 }}>
-          <CodeBlock code={codeString} language="tsx" />
-        </div>
       )}
+
+            {/* 2. Code Tab */}
+            {activeMainTab === 'code' && (
+              <div className="wb-code-area">
+                <CodeBlock code={codeString} language="tsx" />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -13,7 +13,6 @@ type VariantType = 'Default' | 'Card style';
 export const ApplicationSentSuccessDoc: React.FC<ApplicationSentSuccessDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('Default');
-  const [copied, setCopied] = useState(false);
 
   const colors = useMemo(() => {
     const isCard = variant === 'Card style';
@@ -106,31 +105,24 @@ export const ApplicationSentScreen = ({
           </View>
         }
       />
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} />
+      <Ux4gDivider color="#E5E7EB" thickness={1} />
 
-      {/* Content */}
-      <View style={styles.contentContainer}>
-        {/* Success Circle Icon */}
+      {/* Main Content */}
+      <View style={styles.content}>
+        {/* Success Icon */}
         <View
           style={[
             styles.iconCircle,
-            {
-              backgroundColor: isDark
-                ? UX4GColors.green800
-                : UX4GColors.green100,
-            },
+            { backgroundColor: isDark ? UX4GColors.green800 : UX4GColors.green100 },
           ]}
         >
           <Image
             source={require('./assets/check_circle.png')}
             style={[
               styles.checkIcon,
-              {
-                tintColor: isDark
-                  ? UX4GColors.green500
-                  : UX4GColors.green600,
-              },
+              { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
             ]}
+            resizeMode="contain"
           />
         </View>
 
@@ -145,37 +137,19 @@ export const ApplicationSentScreen = ({
         </Text>
       </View>
 
-      {/* Actions */}
+      {/* Bottom Actions */}
       <View style={styles.actionsContainer}>
         <Ux4gButton
           text="View application status"
           onPress={onViewStatus}
-          size="large"
           variant="primary"
-          style={[
-            styles.actionButton,
-            {
-              backgroundColor: isDark
-                ? UX4GColors.primary300
-                : UX4GColors.primary600,
-            },
-          ]}
-          textColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+          style={styles.actionButton}
         />
         <Ux4gButton
           text="Back to dashboard"
           onPress={onBackToDashboard}
-          size="large"
           variant="outline"
-          style={[
-            styles.actionButton,
-            {
-              borderColor: isDark
-                ? UX4GColors.primary600
-                : UX4GColors.primary300,
-            },
-          ]}
-          textColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+          style={styles.actionButton}
         />
       </View>
 
@@ -219,7 +193,7 @@ const styles = StyleSheet.create({
     height: 32,
     width: 44,
   },
-  contentContainer: {
+  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -250,7 +224,7 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingBottom: 16,
     gap: 12,
   },
   actionButton: {
@@ -307,81 +281,60 @@ export const ApplicationSentCardScreen = ({
     <SafeAreaView
       style={[
         styles.safeArea,
-        {
-          backgroundColor: isDark
-            ? UX4GColors.primary900
-            : UX4GColors.primary50,
-        },
+        { backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary50 },
       ]}
     >
-      {/* Header with White Background */}
-      <View
-        style={{
-          backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-        }}
-      >
-        <Ux4gAppHeader
-          variant="light"
-          title=""
-          leadingWidgets={
-            <View style={styles.headerLeading}>
-              <Image
-                source={require('./assets/national_emblem.png')}
-                style={[
-                  styles.emblem,
-                  isDark && { tintColor: '#FFFFFF' },
-                ]}
-                resizeMode="contain"
-              />
-              <Ux4gDivider
-                orientation="vertical"
-                color="#D1D5DB"
-                style={{ height: 32 }}
-              />
-              <Image
-                source={require('./assets/union_logo.png')}
-                style={[styles.unionLogo, { tintColor: primaryColor }]}
-                resizeMode="contain"
-              />
-            </View>
-          }
-        />
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} />
-      </View>
+      {/* Header */}
+      <Ux4gAppHeader
+        variant="light"
+        title=""
+        leadingWidgets={
+          <View style={styles.headerLeading}>
+            <Image
+              source={require('./assets/national_emblem.png')}
+              style={[
+                styles.emblem,
+                isDark && { tintColor: '#FFFFFF' },
+              ]}
+              resizeMode="contain"
+            />
+            <Ux4gDivider
+              orientation="vertical"
+              color="#D1D5DB"
+              style={{ height: 32 }}
+            />
+            <Image
+              source={require('./assets/union_logo.png')}
+              style={[styles.unionLogo, { tintColor: primaryColor }]}
+              resizeMode="contain"
+            />
+          </View>
+        }
+      />
+      <Ux4gDivider color="#E5E7EB" thickness={1} />
 
-      {/* Card Content */}
+      {/* Card Container */}
       <View style={styles.cardWrapper}>
         <View
           style={[
             styles.card,
-            {
-              backgroundColor: isDark
-                ? UX4GColors.neutral800
-                : UX4GColors.neutral0,
-            },
+            { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral0 },
           ]}
         >
-          {/* Success Circle Icon */}
+          {/* Success Icon */}
           <View
             style={[
               styles.iconCircle,
-              {
-                backgroundColor: isDark
-                  ? UX4GColors.green800
-                  : UX4GColors.green100,
-              },
+              { backgroundColor: isDark ? UX4GColors.green800 : UX4GColors.green100 },
             ]}
           >
             <Image
               source={require('./assets/check_circle.png')}
               style={[
                 styles.checkIcon,
-                {
-                  tintColor: isDark
-                    ? UX4GColors.green500
-                    : UX4GColors.green600,
-                },
+                { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
               ]}
+              resizeMode="contain"
             />
           </View>
 
@@ -397,37 +350,19 @@ export const ApplicationSentCardScreen = ({
         </View>
       </View>
 
-      {/* Actions */}
+      {/* Bottom Actions */}
       <View style={styles.actionsContainer}>
         <Ux4gButton
           text="View application status"
           onPress={onViewStatus}
-          size="large"
           variant="primary"
-          style={[
-            styles.actionButton,
-            {
-              backgroundColor: isDark
-                ? UX4GColors.primary300
-                : UX4GColors.primary600,
-            },
-          ]}
-          textColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+          style={styles.actionButton}
         />
         <Ux4gButton
           text="Back to dashboard"
           onPress={onBackToDashboard}
-          size="large"
           variant="outline"
-          style={[
-            styles.actionButton,
-            {
-              borderColor: isDark
-                ? UX4GColors.primary600
-                : UX4GColors.primary300,
-            },
-          ]}
-          textColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+          style={styles.actionButton}
         />
       </View>
 
@@ -474,7 +409,6 @@ const styles = StyleSheet.create({
   cardWrapper: {
     flex: 1,
     padding: 24,
-    justifyContent: 'center',
   },
   card: {
     flex: 1,
@@ -537,522 +471,414 @@ const styles = StyleSheet.create({
 `;
   }, []);
 
-  const handleCopyCode = () => {
-    const code = variant === 'Card style' ? cardCodeString : defaultCodeString;
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const isCard = variant === 'Card style';
 
   return (
-    <div style={{ padding: '24px 32px', maxWidth: 1200, margin: '0 auto' }}>
-      {/* Title & Pattern Header */}
-      <div style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-          <h1
-            style={{
-              fontSize: 28,
-              fontWeight: 700,
-              color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-              margin: 0,
-            }}
-          >
-            Application sent success
-          </h1>
-          <span
-            style={{
-              fontSize: 12,
-              fontWeight: 600,
-              backgroundColor: isDark ? 'rgba(99, 102, 241, 0.2)' : '#EEF2FF',
-              color: isDark ? '#A5B4FC' : '#432CBB',
-              padding: '4px 10px',
-              borderRadius: 12,
-            }}
-          >
-            Pattern
-          </span>
+    <div className="wb-page">
+      {/* Header */}
+      <div className="wb-header">
+        <div className="wb-header-row">
+          <h1 className="wb-title">Application sent success</h1>
+          <span className="wb-badge">Pattern</span>
         </div>
-        <p
-          style={{
-            fontSize: 14,
-            color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral600,
-            margin: 0,
-          }}
-        >
+        <p className="wb-subtitle">
           A success screen pattern shown after an application is submitted.
         </p>
       </div>
 
-      {/* Main Tabs (Preview / Code) */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 16,
-          borderBottom: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
-          marginBottom: 24,
-        }}
-      >
-        <button
-          onClick={() => setActiveMainTab('preview')}
-          style={{
-            padding: '8px 16px',
-            fontSize: 14,
-            fontWeight: 600,
-            background: 'none',
-            border: 'none',
-            borderBottom: `2px solid ${
-              activeMainTab === 'preview'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : 'transparent'
-            }`,
-            color:
-              activeMainTab === 'preview'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : isDark
-                ? UX4GColors.neutral400
-                : UX4GColors.neutral500,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-            visibility
-          </span>
-          Preview
-        </button>
-        <button
-          onClick={() => setActiveMainTab('code')}
-          style={{
-            padding: '8px 16px',
-            fontSize: 14,
-            fontWeight: 600,
-            background: 'none',
-            border: 'none',
-            borderBottom: `2px solid ${
-              activeMainTab === 'code'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : 'transparent'
-            }`,
-            color:
-              activeMainTab === 'code'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : isDark
-                ? UX4GColors.neutral400
-                : UX4GColors.neutral500,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-            code
-          </span>
-          Code
-        </button>
-      </div>
-
-      {/* Toolbar Controls */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 24,
-          flexWrap: 'wrap',
-          gap: 12,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <label
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
-            }}
-          >
-            Layout Variant:
-          </label>
-          <div
-            style={{
-              display: 'inline-flex',
-              backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral100,
-              borderRadius: 8,
-              padding: 3,
-            }}
-          >
-            {(['Default', 'Card style'] as VariantType[]).map((v) => (
-              <button
-                key={v}
-                onClick={() => setVariant(v)}
-                style={{
-                  padding: '6px 14px',
-                  fontSize: 13,
-                  fontWeight: 500,
-                  border: 'none',
-                  borderRadius: 6,
-                  cursor: 'pointer',
-                  backgroundColor:
-                    variant === v
-                      ? isDark
-                        ? UX4GColors.neutral700
-                        : '#FFFFFF'
-                      : 'transparent',
-                  color:
-                    variant === v
-                      ? isDark
-                        ? UX4GColors.neutral50
-                        : UX4GColors.neutral900
-                      : isDark
-                      ? UX4GColors.neutral400
-                      : UX4GColors.neutral600,
-                  boxShadow:
-                    variant === v ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                {v}
-              </button>
-            ))}
+      {/* Main Body */}
+      <div className="wb-body">
+        <div className="wb-main">
+          {/* Main Tabs */}
+          <div className="wb-tab-bar">
+            <button
+              className={`wb-tab ${activeMainTab === 'preview' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('preview')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">visibility</span> Preview
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('code')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">code</span> Code
+            </button>
           </div>
-        </div>
 
-        <button
-          onClick={handleCopyCode}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '7px 14px',
-            fontSize: 13,
-            fontWeight: 500,
-            borderRadius: 6,
-            border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
-            backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-            color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-            cursor: 'pointer',
-          }}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
-            {copied ? 'check' : 'content_copy'}
-          </span>
-          {copied ? 'Copied!' : 'Copy React Native Code'}
-        </button>
-      </div>
-
-      {activeMainTab === 'preview' ? (
-        /* Preview Canvas */
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '40px 16px',
-            backgroundColor: isDark ? '#0B0F19' : '#F9FAFB',
-            borderRadius: 16,
-            border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
-            minHeight: 820,
-          }}
-        >
-          {/* Phone Frame Mockup */}
-          <div
-            style={{
-              width: 360,
-              height: 760,
-              borderRadius: 20,
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: colors.screenBg,
-              border: isDark ? 'none' : '1px solid #E5E7EB',
-              boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
-              position: 'relative',
-              boxSizing: 'border-box',
-            }}
-          >
-            {/* Header (Top) */}
-            <div
-              style={{
-                backgroundColor: colors.headerBg,
-                padding: '12px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexShrink: 0,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <img
-                  src="/national_emblem_logo.svg"
-                  alt="National Emblem"
-                  style={{
-                    height: 40,
-                    width: 'auto',
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
+          <div className="wb-content">
+            {/* 1. Preview Tab */}
+            {activeMainTab === 'preview' && (
+              <div
+                className={`wb-preview-area ${isDark ? 'dark' : ''}`}
+                style={{ flexDirection: 'column', alignItems: 'center' }}
+              >
+                {/* Knob Controls Toolbar */}
                 <div
                   style={{
-                    width: 1,
-                    height: 32,
-                    backgroundColor: '#D1D5DB',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 16,
+                    marginBottom: 24,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
-                />
-                <UnionLogo color={colors.primaryColor} size={32} />
-              </div>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: colors.dividerColor,
-                width: '100%',
-                flexShrink: 0,
-              }}
-            />
+                >
+                  {/* Variant Knob */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
+                      }}
+                    >
+                      Layout Variant:
+                    </span>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: 4,
+                        backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral100,
+                        padding: 4,
+                        borderRadius: 10,
+                        border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral200}`,
+                      }}
+                    >
+                      {(['Default', 'Card style'] as VariantType[]).map((v) => (
+                        <button
+                          key={v}
+                          type="button"
+                          onClick={() => setVariant(v)}
+                          style={{
+                            padding: '6px 14px',
+                            borderRadius: 6,
+                            border: 'none',
+                            fontSize: 12,
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            backgroundColor: variant === v ? UX4GColors.primary : 'transparent',
+                            color:
+                              variant === v
+                                ? UX4GColors.neutral0
+                                : isDark
+                                ? UX4GColors.neutral400
+                                : UX4GColors.neutral600,
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          {v}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-            {/* Content (Middle - Centered) */}
-            <div
-              style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: isCard ? '24px' : '0 24px',
-                boxSizing: 'border-box',
-              }}
-            >
-              {isCard ? (
-                /* Card Container */
+                {/* Render Live Mobile Mockup */}
                 <div
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: 16,
-                    backgroundColor: colors.cardBg,
-                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
+                    width: 360,
+                    height: 760,
+                    borderRadius: 20,
+                    overflow: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: 24,
+                    backgroundColor: colors.screenBg,
+                    border: isDark ? 'none' : '1px solid #E5E7EB',
+                    boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+                    position: 'relative',
                     boxSizing: 'border-box',
                   }}
                 >
-                  {/* Circle Icon */}
+                  {/* Top UX4G AppHeader */}
                   <div
                     style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      backgroundColor: colors.iconBg,
+                      backgroundColor: colors.headerBg,
+                      padding: '12px 16px',
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexShrink: 0,
+                      borderBottom: `1px solid ${colors.dividerColor}`,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <img
+                        src="/national_emblem_logo.svg"
+                        alt="National Emblem"
+                        style={{
+                          height: 36,
+                          width: 'auto',
+                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        }}
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: 1,
+                          height: 24,
+                          backgroundColor: colors.verticalDividerColor,
+                        }}
+                      />
+                      <UnionLogo color={colors.primaryColor} size={28} />
+                    </div>
+                  </div>
+
+                  {/* Main Success Content Body */}
+                  <div
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
                       justifyContent: 'center',
-                      marginBottom: 32,
+                      alignItems: 'center',
+                      padding: isCard ? '24px' : '0 24px',
+                      boxSizing: 'border-box',
+                    }}
+                  >
+                    {isCard ? (
+                      /* Card Container */
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          borderRadius: 16,
+                          backgroundColor: colors.cardBg,
+                          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: 24,
+                          boxSizing: 'border-box',
+                        }}
+                      >
+                        {/* Circle Icon */}
+                        <div
+                          style={{
+                            width: 80,
+                            height: 80,
+                            borderRadius: '50%',
+                            backgroundColor: colors.iconBg,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: 32,
+                          }}
+                        >
+                          <span
+                            className="material-symbols-outlined"
+                            style={{
+                              fontSize: 48,
+                              color: colors.iconColor,
+                              fontVariationSettings: "'FILL' 1",
+                            }}
+                          >
+                            check_circle
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <div
+                          style={{
+                            fontSize: 28,
+                            fontWeight: 800,
+                            color: colors.titleColor,
+                            textAlign: 'center',
+                            marginBottom: 16,
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          Application sent!
+                        </div>
+
+                        {/* Subtitle */}
+                        <div
+                          style={{
+                            fontSize: 16,
+                            lineHeight: 1.5,
+                            color: colors.subtleText,
+                            textAlign: 'center',
+                          }}
+                        >
+                          We will review and contact you within 3 working days.
+                        </div>
+                      </div>
+                    ) : (
+                      /* Default View (Direct Centered Content) */
+                      <>
+                        {/* Circle Icon */}
+                        <div
+                          style={{
+                            width: 80,
+                            height: 80,
+                            borderRadius: '50%',
+                            backgroundColor: colors.iconBg,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: 32,
+                          }}
+                        >
+                          <span
+                            className="material-symbols-outlined"
+                            style={{
+                              fontSize: 48,
+                              color: colors.iconColor,
+                              fontVariationSettings: "'FILL' 1",
+                            }}
+                          >
+                            check_circle
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <div
+                          style={{
+                            fontSize: 28,
+                            fontWeight: 800,
+                            color: colors.titleColor,
+                            textAlign: 'center',
+                            marginBottom: 16,
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          Application sent!
+                        </div>
+
+                        {/* Subtitle */}
+                        <div
+                          style={{
+                            fontSize: 16,
+                            lineHeight: 1.5,
+                            color: colors.subtleText,
+                            textAlign: 'center',
+                          }}
+                        >
+                          We will review and contact you within 3 working days.
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Actions (Bottom) */}
+                  <div
+                    style={{
+                      padding: isCard ? '0 24px 16px 24px' : '16px 24px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 12,
+                      flexShrink: 0,
+                    }}
+                  >
+                    <button
+                      style={{
+                        width: '100%',
+                        height: 48,
+                        borderRadius: 8,
+                        backgroundColor: colors.primaryBtnBg,
+                        color: colors.primaryBtnText,
+                        border: 'none',
+                        fontSize: 16,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'opacity 0.2s ease',
+                      }}
+                    >
+                      View application status
+                    </button>
+
+                    <button
+                      style={{
+                        width: '100%',
+                        height: 48,
+                        borderRadius: 8,
+                        backgroundColor: 'transparent',
+                        color: colors.outlineBtnText,
+                        border: `1.5px solid ${colors.outlineBtnBorder}`,
+                        fontSize: 16,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'background-color 0.2s ease',
+                      }}
+                    >
+                      Back to dashboard
+                    </button>
+                  </div>
+
+                  {/* Footer (Bottom) */}
+                  <div
+                    style={{
+                      paddingBottom: 24,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      flexShrink: 0,
                     }}
                   >
                     <span
-                      className="material-symbols-outlined"
                       style={{
-                        fontSize: 48,
-                        color: colors.iconColor,
-                        fontVariationSettings: "'FILL' 1",
+                        fontSize: 11,
+                        color: colors.footerText,
+                        marginBottom: 6,
                       }}
                     >
-                      check_circle
+                      Powered by -
                     </span>
-                  </div>
-
-                  {/* Title */}
-                  <div
-                    style={{
-                      fontSize: 28,
-                      fontWeight: 800,
-                      color: colors.titleColor,
-                      textAlign: 'center',
-                      marginBottom: 16,
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    Application sent!
-                  </div>
-
-                  {/* Subtitle */}
-                  <div
-                    style={{
-                      fontSize: 16,
-                      lineHeight: 1.5,
-                      color: colors.subtleText,
-                      textAlign: 'center',
-                    }}
-                  >
-                    We will review and contact you within 3 working days.
+                    <img
+                      src="/digital_india_logo.png"
+                      alt="Digital India"
+                      style={{
+                        height: 24,
+                        width: 'auto',
+                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                      }}
+                    />
                   </div>
                 </div>
-              ) : (
-                /* Default View (Direct Centered Content) */
-                <>
-                  {/* Circle Icon */}
-                  <div
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
-                      backgroundColor: colors.iconBg,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: 32,
-                    }}
+              </div>
+            )}
+
+            {/* 2. Code Tab */}
+            {activeMainTab === 'code' && (
+              <div className="wb-code-area">
+                <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+                  <button
+                    type="button"
+                    onClick={() => setVariant('Default')}
+                    className={`wb-tab ${variant === 'Default' ? 'active' : ''}`}
+                    style={{ padding: '4px 12px', fontSize: 12 }}
                   >
-                    <span
-                      className="material-symbols-outlined"
-                      style={{
-                        fontSize: 48,
-                        color: colors.iconColor,
-                        fontVariationSettings: "'FILL' 1",
-                      }}
-                    >
-                      check_circle
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <div
-                    style={{
-                      fontSize: 28,
-                      fontWeight: 800,
-                      color: colors.titleColor,
-                      textAlign: 'center',
-                      marginBottom: 16,
-                      lineHeight: 1.2,
-                    }}
+                    Default
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setVariant('Card style')}
+                    className={`wb-tab ${variant === 'Card style' ? 'active' : ''}`}
+                    style={{ padding: '4px 12px', fontSize: 12 }}
                   >
-                    Application sent!
-                  </div>
+                    Card style
+                  </button>
+                </div>
 
-                  {/* Subtitle */}
-                  <div
-                    style={{
-                      fontSize: 16,
-                      lineHeight: 1.5,
-                      color: colors.subtleText,
-                      textAlign: 'center',
-                    }}
-                  >
-                    We will review and contact you within 3 working days.
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Actions (Bottom) */}
-            <div
-              style={{
-                padding: isCard ? '0 24px 16px 24px' : '16px 24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-                flexShrink: 0,
-              }}
-            >
-              <button
-                style={{
-                  width: '100%',
-                  height: 48,
-                  borderRadius: 8,
-                  backgroundColor: colors.primaryBtnBg,
-                  color: colors.primaryBtnText,
-                  border: 'none',
-                  fontSize: 16,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'opacity 0.2s ease',
-                }}
-              >
-                View application status
-              </button>
-
-              <button
-                style={{
-                  width: '100%',
-                  height: 48,
-                  borderRadius: 8,
-                  backgroundColor: 'transparent',
-                  color: colors.outlineBtnText,
-                  border: `1.5px solid ${colors.outlineBtnBorder}`,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'background-color 0.2s ease',
-                }}
-              >
-                Back to dashboard
-              </button>
-            </div>
-
-            {/* Footer (Bottom) */}
-            <div
-              style={{
-                paddingBottom: 24,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                flexShrink: 0,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 11,
-                  color: colors.footerText,
-                  marginBottom: 6,
-                }}
-              >
-                Powered by -
-              </span>
-              <img
-                src="/digital_india_logo.png"
-                alt="Digital India"
-                style={{
-                  height: 24,
-                  width: 'auto',
-                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                }}
-              />
-            </div>
+                <CodeBlock
+                  code={variant === 'Card style' ? cardCodeString : defaultCodeString}
+                  language="tsx"
+                />
+              </div>
+            )}
           </div>
         </div>
-      ) : (
-        /* Code Tab */
-        <div style={{ marginTop: 16 }}>
-          <CodeBlock
-            code={variant === 'Card style' ? cardCodeString : defaultCodeString}
-            language="tsx"
-          />
-        </div>
-      )}
+      </div>
     </div>
   );
 };
