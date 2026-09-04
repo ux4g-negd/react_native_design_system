@@ -98,6 +98,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'inline-language': 'patterns/feedback-and-communication/language-switcher/inline-language-toggle',
   'pattern-translation-unavailable': 'patterns/feedback-and-communication/language-switcher/translation-unavailable',
   'translation-unavailable': 'patterns/feedback-and-communication/language-switcher/translation-unavailable',
+  'pattern-all-scheduled-languages': 'patterns/feedback-and-communication/language-switcher/all-scheduled-languages',
+  'all-scheduled-languages': 'patterns/feedback-and-communication/language-switcher/all-scheduled-languages',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -997,6 +999,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('all-scheduled-languages') || (cleanPath.includes('all') && cleanPath.includes('scheduled') && cleanPath.includes('languages'))) {
+      return 'pattern-all-scheduled-languages';
     }
     if (cleanPath.includes('translation-unavailable') || (cleanPath.includes('translation') && cleanPath.includes('unavailable'))) {
       return 'pattern-translation-unavailable';

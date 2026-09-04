@@ -1489,6 +1489,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Translation Unavailable',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-all-scheduled-languages',
+                label: 'All Scheduled Languages',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1619,9 +1624,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page === 'pattern-translation-unavailable' ||
       page === 'pattern-inline-language-toggle' ||
       page === 'pattern-language-switcher' ||
+      page === 'pattern-all-scheduled-languages' ||
       page.includes('translation-unavailable') ||
       page.includes('inline-language') ||
-      page.includes('language-switcher')
+      page.includes('language-switcher') ||
+      page.includes('all-scheduled-languages')
     ) {
       return ['patterns', 'feedback-and-communication-group', 'language-switcher-group'];
     }

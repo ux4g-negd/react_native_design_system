@@ -184,6 +184,7 @@ import { WasThisHelpfulDoc } from './pages/WasThisHelpfulDoc';
 import { LanguageSwitcherDoc } from './pages/LanguageSwitcherDoc';
 import { InlineLanguageToggleDoc } from './pages/InlineLanguageToggleDoc';
 import { TranslationUnavailableDoc } from './pages/TranslationUnavailableDoc';
+import { AllScheduledLanguagesDoc } from './pages/AllScheduledLanguagesDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -1045,6 +1046,12 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-all-scheduled-languages' ||
+      activePage.includes('all-scheduled-languages')
+    ) {
+      return <AllScheduledLanguagesDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-translation-unavailable' ||
