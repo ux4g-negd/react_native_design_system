@@ -159,6 +159,7 @@ import { SearchWithResultsDoc } from './pages/SearchWithResultsDoc';
 import { SearchResultsListDoc } from './pages/SearchResultsListDoc';
 import { NoResultsDoc } from './pages/NoResultsDoc';
 import { GlobalServiceDiscoveryDoc } from './pages/GlobalServiceDiscoveryDoc';
+import { CategoryServiceListDoc } from './pages/CategoryServiceListDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -293,6 +294,13 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (
+    page === 'pattern-category-service-list' ||
+    page.includes('category-service-list') ||
+    page.includes('category-service')
+  ) {
+    return 'Patterns / Search and Discovery / Global Service Discovery / Category Service List';
   }
   if (
     page === 'pattern-global-service-discovery' ||
@@ -837,6 +845,13 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-category-service-list' ||
+      activePage.includes('category-service-list') ||
+      activePage.includes('category-service')
+    ) {
+      return <CategoryServiceListDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-global-service-discovery' ||

@@ -466,7 +466,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'validation-error': 'patterns/application-and-submission/journey-progress-indicator/validation-error',
   'government-form-with-multiple-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-multiple-errors',
   'government-form-with-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-errors',
-  'government-form-with-validation': 'patterns/application-and-submission/government-form-with-validation/government-form-with-validation',
+  'pattern-category-service-list': 'patterns/search-and-discovery/global-service-discovery/category-service-list',
+  'category-service-list': 'patterns/search-and-discovery/global-service-discovery/category-service-list',
   feedback: 'patterns/feedback',
 };
 
