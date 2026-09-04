@@ -1447,6 +1447,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Contact Support',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-live-chat-support',
+                label: 'Live Chat Support',
+                icon: 'layers',
+              },
             ],
           },
         ],

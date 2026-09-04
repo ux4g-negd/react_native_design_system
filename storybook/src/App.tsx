@@ -177,6 +177,7 @@ import { RateExperienceCardDoc } from './pages/RateExperienceCardDoc';
 import { HelpCenterDoc } from './pages/HelpCenterDoc';
 import { FaqDetailDoc } from './pages/FaqDetailDoc';
 import { ContactSupportDoc } from './pages/ContactSupportDoc';
+import { LiveChatSupportDoc } from './pages/LiveChatSupportDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -335,6 +336,13 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-live-chat-support' ||
+    page.includes('live-chat-support') ||
+    page.includes('live-chat')
+  ) {
+    return 'Patterns / Feedback and Communication / Contact and Support / Live Chat Support';
   }
   if (
     page === 'pattern-contact-support' ||
@@ -995,6 +1003,13 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-live-chat-support' ||
+      activePage.includes('live-chat-support') ||
+      activePage.includes('live-chat')
+    ) {
+      return <LiveChatSupportDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-contact-support' ||
