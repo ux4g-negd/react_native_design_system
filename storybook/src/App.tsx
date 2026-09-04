@@ -182,6 +182,7 @@ import { FileComplaintDoc } from './pages/FileComplaintDoc';
 import { FindServiceCenterDoc } from './pages/FindServiceCenterDoc';
 import { WasThisHelpfulDoc } from './pages/WasThisHelpfulDoc';
 import { LanguageSwitcherDoc } from './pages/LanguageSwitcherDoc';
+import { InlineLanguageToggleDoc } from './pages/InlineLanguageToggleDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -340,6 +341,13 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-inline-language-toggle' ||
+    page.includes('inline-language-toggle') ||
+    page.includes('inline-language')
+  ) {
+    return 'Patterns / Feedback and Communication / Language Switcher / Inline Language Toggle';
   }
   if (
     page === 'pattern-language-switcher' ||
@@ -1036,6 +1044,13 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-inline-language-toggle' ||
+      activePage.includes('inline-language-toggle') ||
+      activePage.includes('inline-language')
+    ) {
+      return <InlineLanguageToggleDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-language-switcher' ||

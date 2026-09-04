@@ -93,6 +93,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'was-this-helpful-alert': 'patterns/feedback-and-communication/contact-and-support/was-this-helpful',
   'pattern-language-switcher': 'patterns/feedback-and-communication/language-switcher/language-switcher',
   'language-switcher': 'patterns/feedback-and-communication/language-switcher/language-switcher',
+  'pattern-inline-language-toggle': 'patterns/feedback-and-communication/language-switcher/inline-language-toggle',
+  'inline-language-toggle': 'patterns/feedback-and-communication/language-switcher/inline-language-toggle',
+  'inline-language': 'patterns/feedback-and-communication/language-switcher/inline-language-toggle',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -992,6 +995,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('inline-language-toggle') || cleanPath.includes('inline-language')) {
+      return 'pattern-inline-language-toggle';
     }
     if (cleanPath.includes('language-switcher') || cleanPath.includes('language')) {
       return 'pattern-language-switcher';

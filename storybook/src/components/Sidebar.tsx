@@ -1479,6 +1479,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Language Switcher',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-inline-language-toggle',
+                label: 'Inline Language Toggle',
+                icon: 'layers',
+              },
             ],
           },
         ],
