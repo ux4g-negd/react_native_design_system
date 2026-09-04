@@ -49,6 +49,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'appointment-confirmed': 'patterns/search-and-discovery/consultation-slot-booking/appointment-confirmed',
   'pattern-inline-feedback': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback',
   'inline-feedback': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback',
+  'pattern-inline-feedback-error': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-error',
+  'inline-feedback-error': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-error',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -948,6 +950,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('inline-feedback-error')) {
+      return 'pattern-inline-feedback-error';
     }
     if (cleanPath.includes('inline-feedback')) {
       return 'pattern-inline-feedback';
