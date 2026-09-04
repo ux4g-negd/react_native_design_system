@@ -1327,6 +1327,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Category Service List',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-service-detail',
+                label: 'Service Details',
+                icon: 'layers',
+              },
             ],
           },
         ],
