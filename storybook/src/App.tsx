@@ -156,6 +156,7 @@ import { EditProfileDoc } from './pages/EditProfileDoc';
 import { DeleteAccountDialogDoc } from './pages/DeleteAccountDialogDoc';
 import { SearchAndBrowseServicesDoc } from './pages/SearchAndBrowseServicesDoc';
 import { SearchWithResultsDoc } from './pages/SearchWithResultsDoc';
+import { SearchResultsListDoc } from './pages/SearchResultsListDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -290,6 +291,13 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (
+    page === 'pattern-search-results-list' ||
+    page.includes('search-results-list') ||
+    page.includes('search-results')
+  ) {
+    return 'Patterns / Search and Discovery / Search and Browse / Search Results List';
   }
   if (
     page === 'pattern-search-with-results' ||
@@ -814,6 +822,13 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-search-results-list' ||
+      activePage.includes('search-results-list') ||
+      activePage.includes('search-results')
+    ) {
+      return <SearchResultsListDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-search-with-results' ||

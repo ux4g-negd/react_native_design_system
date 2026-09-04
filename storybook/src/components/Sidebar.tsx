@@ -1300,6 +1300,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Search with Results',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-search-results-list',
+                label: 'Search Results List',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1420,8 +1425,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-search-results-list' ||
       page === 'pattern-search-with-results' ||
       page === 'pattern-search-and-browse-services' ||
+      page.includes('search-results-list') ||
+      page.includes('search-results') ||
       page.includes('search-with-results') ||
       page.includes('search-and-browse-services') ||
       page.includes('search-and-browse') ||
