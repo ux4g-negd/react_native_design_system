@@ -66,6 +66,10 @@ const PAGE_TO_PATH: Record<string, string> = {
   'rate-your-experience': 'patterns/feedback-and-communication/service-completion-and-feedback/rate-your-experience',
   'pattern-rate-experience-card': 'patterns/feedback-and-communication/service-completion-and-feedback/rate-experience-card',
   'rate-experience-card': 'patterns/feedback-and-communication/service-completion-and-feedback/rate-experience-card',
+  'pattern-help-center': 'patterns/feedback-and-communication/contact-and-support/help-center',
+  'help-center': 'patterns/feedback-and-communication/contact-and-support/help-center',
+  'pattern-help-centre': 'patterns/feedback-and-communication/contact-and-support/help-center',
+  'help-centre': 'patterns/feedback-and-communication/contact-and-support/help-center',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -965,6 +969,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('help-center') || cleanPath.includes('help-centre')) {
+      return 'pattern-help-center';
     }
     if (cleanPath.includes('rate-experience-card')) {
       return 'pattern-rate-experience-card';

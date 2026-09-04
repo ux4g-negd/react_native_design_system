@@ -1427,6 +1427,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'contact-and-support-group',
+            label: 'Contact and Support',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-help-center',
+                label: 'Help Center',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
