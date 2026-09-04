@@ -1469,6 +1469,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'language-switcher-group',
+            label: 'Language Switcher',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-language-switcher',
+                label: 'Language Switcher',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],

@@ -181,6 +181,7 @@ import { LiveChatSupportDoc } from './pages/LiveChatSupportDoc';
 import { FileComplaintDoc } from './pages/FileComplaintDoc';
 import { FindServiceCenterDoc } from './pages/FindServiceCenterDoc';
 import { WasThisHelpfulDoc } from './pages/WasThisHelpfulDoc';
+import { LanguageSwitcherDoc } from './pages/LanguageSwitcherDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -339,6 +340,13 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-language-switcher' ||
+    page.includes('language-switcher') ||
+    page.includes('language')
+  ) {
+    return 'Patterns / Feedback and Communication / Language Switcher / Language Switcher';
   }
   if (
     page === 'pattern-was-this-helpful' ||
@@ -1028,6 +1036,13 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-language-switcher' ||
+      activePage.includes('language-switcher') ||
+      activePage.includes('language')
+    ) {
+      return <LanguageSwitcherDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-was-this-helpful' ||
