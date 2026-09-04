@@ -143,6 +143,7 @@ import { ResumeJourneyDoc } from './pages/ResumeJourneyDoc';
 import { ValidationErrorDoc } from './pages/ValidationErrorDoc';
 import { GovernmentFormWithValidationDoc } from './pages/GovernmentFormWithValidationDoc';
 import { GovernmentFormWithErrorsDoc } from './pages/GovernmentFormWithErrorsDoc';
+import { GovernmentFormWithMultipleErrorsDoc } from './pages/GovernmentFormWithMultipleErrorsDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -277,6 +278,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (page === 'pattern-government-form-with-multiple-errors' || page.includes('government-form-with-multiple-errors') || page.includes('multiple-errors')) {
+    return 'Patterns / Application and Submission / Government form with validation / Government form with multiple errors';
   }
   if (page === 'pattern-government-form-with-errors' || page.includes('government-form-with-errors') || page.includes('form-errors') || page.includes('form-with-errors')) {
     return 'Patterns / Application and Submission / Government form with validation / Government form with errors';
@@ -755,6 +759,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-government-form-with-multiple-errors' || activePage.includes('government-form-with-multiple-errors') || activePage.includes('multiple-errors')) {
+      return <GovernmentFormWithMultipleErrorsDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-government-form-with-errors' || activePage.includes('government-form-with-errors') || activePage.includes('form-errors') || activePage.includes('form-with-errors')) {
       return <GovernmentFormWithErrorsDoc isDark={isDark} />;

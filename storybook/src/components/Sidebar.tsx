@@ -1193,6 +1193,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Government form with errors',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-government-form-with-multiple-errors',
+                label: 'Government form with multiple errors',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1301,6 +1306,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('journey-progress')
     ) {
       return ['patterns', 'application-and-submission-group', 'journey-progress-indicator-group'];
+    }
+    if (
+      page === 'pattern-government-form-with-multiple-errors' ||
+      page === 'pattern-government-form-with-errors' ||
+      page === 'pattern-government-form-with-validation' ||
+      page.includes('government-form')
+    ) {
+      return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {
       return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];

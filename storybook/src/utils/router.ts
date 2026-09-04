@@ -4,6 +4,7 @@ const PAGE_TO_PATH: Record<string, string> = {
   quickstart: 'quickstart',
   'pattern-government-form-with-validation': 'patterns/application-and-submission/government-form-with-validation/government-form-with-validation',
   'pattern-government-form-with-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-errors',
+  'pattern-government-form-with-multiple-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-multiple-errors',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -429,6 +430,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'resume-journey': 'patterns/application-and-submission/journey-progress-indicator/resume-journey',
   'pattern-validation-error': 'patterns/application-and-submission/journey-progress-indicator/validation-error',
   'validation-error': 'patterns/application-and-submission/journey-progress-indicator/validation-error',
+  'government-form-with-multiple-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-multiple-errors',
+  'government-form-with-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-errors',
+  'government-form-with-validation': 'patterns/application-and-submission/government-form-with-validation/government-form-with-validation',
   feedback: 'patterns/feedback',
 };
 
@@ -899,6 +903,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('government-form-with-multiple-errors') || cleanPath.includes('multiple-errors')) {
+      return 'pattern-government-form-with-multiple-errors';
     }
     if (cleanPath.includes('government-form-with-errors') || cleanPath.includes('form-errors') || cleanPath.includes('form-with-errors')) {
       return 'pattern-government-form-with-errors';
