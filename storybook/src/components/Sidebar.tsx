@@ -1398,6 +1398,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Inline Feedback Verification',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-inline-feedback-note',
+                label: 'Inline Feedback Note',
+                icon: 'layers',
+              },
             ],
           },
         ],

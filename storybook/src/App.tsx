@@ -170,6 +170,7 @@ import { InlineFeedbackErrorDoc } from './pages/InlineFeedbackErrorDoc';
 import { InlineFeedbackHintDoc } from './pages/InlineFeedbackHintDoc';
 import { InlineFeedbackGuidanceDoc } from './pages/InlineFeedbackGuidanceDoc';
 import { InlineFeedbackVerificationDoc } from './pages/InlineFeedbackVerificationDoc';
+import { InlineFeedbackNoteDoc } from './pages/InlineFeedbackNoteDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -328,6 +329,12 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-inline-feedback-note' ||
+    page.includes('inline-feedback-note')
+  ) {
+    return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Note';
   }
   if (
     page === 'pattern-inline-feedback' ||
@@ -942,6 +949,12 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-inline-feedback-note' ||
+      activePage.includes('inline-feedback-note')
+    ) {
+      return <InlineFeedbackNoteDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-inline-feedback' ||
