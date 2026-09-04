@@ -1312,6 +1312,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'global-service-discovery-group',
+            label: 'Global Service Discovery',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-global-service-discovery',
+                label: 'Global Service Discovery',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1428,6 +1440,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('application-sent')
     ) {
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
+    }
+    if (
+      page === 'pattern-global-service-discovery' ||
+      page.includes('global-service-discovery') ||
+      page.includes('global-service')
+    ) {
+      return ['patterns', 'search-and-discovery-group', 'global-service-discovery-group'];
     }
     if (
       page === 'pattern-no-results' ||

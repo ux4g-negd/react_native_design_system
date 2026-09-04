@@ -351,108 +351,58 @@ const styles = StyleSheet.create({
   }, []);
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px 20px 48px' }}>
-      {/* Title & Description */}
-      <div style={{ marginBottom: '24px' }}>
-        <h1
-          style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-            margin: '0 0 8px',
-          }}
-        >
-          No Results
-        </h1>
-        <p
-          style={{
-            fontSize: '15px',
-            color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral600,
-            margin: 0,
-            lineHeight: 1.5,
-          }}
-        >
+    <div className="wb-page">
+      {/* Header */}
+      <div className="wb-header">
+        <div className="wb-header-row">
+          <h1 className="wb-title">No Results</h1>
+          <span className="wb-badge">Pattern</span>
+        </div>
+        <p className="wb-subtitle">
           Empty state pattern when search returns no results. Shows suggestions, a browse all link, and popular services to help users continue.
         </p>
       </div>
 
-      {/* Tabs */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '8px',
-          borderBottom: `1px solid ${colors.border}`,
-          marginBottom: '24px',
-        }}
-      >
-        <button
-          onClick={() => setActiveMainTab('preview')}
-          style={{
-            padding: '10px 18px',
-            border: 'none',
-            borderBottom:
-              activeMainTab === 'preview'
-                ? `2px solid ${isDark ? UX4GColors.primary300 : UX4GColors.primary600}`
-                : '2px solid transparent',
-            background: 'none',
-            fontSize: '14px',
-            fontWeight: activeMainTab === 'preview' ? 600 : 500,
-            color:
-              activeMainTab === 'preview'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : isDark
-                ? UX4GColors.neutral400
-                : UX4GColors.neutral600,
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-          }}
-        >
-          Preview
-        </button>
-        <button
-          onClick={() => setActiveMainTab('code')}
-          style={{
-            padding: '10px 18px',
-            border: 'none',
-            borderBottom:
-              activeMainTab === 'code'
-                ? `2px solid ${isDark ? UX4GColors.primary300 : UX4GColors.primary600}`
-                : '2px solid transparent',
-            background: 'none',
-            fontSize: '14px',
-            fontWeight: activeMainTab === 'code' ? 600 : 500,
-            color:
-              activeMainTab === 'code'
-                ? isDark
-                  ? UX4GColors.primary300
-                  : UX4GColors.primary600
-                : isDark
-                ? UX4GColors.neutral400
-                : UX4GColors.neutral600,
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-          }}
-        >
-          React Native Code
-        </button>
-      </div>
+      {/* Main Body */}
+      <div className="wb-body">
+        <div className="wb-main">
+          {/* Main Tabs */}
+          <div className="wb-tab-bar">
+            <button
+              className={`wb-tab ${activeMainTab === 'preview' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('preview')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">visibility</span> Preview
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('code')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">code</span> Code
+            </button>
+          </div>
 
-      {/* Tab Content */}
-      {activeMainTab === 'preview' ? (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          {/* Mobile Phone Mockup */}
-          <div
+          {/* Content Area */}
+          <div className="wb-content">
+            {/* 1. Preview Tab */}
+            {activeMainTab === 'preview' && (
+              <div
+                className={`wb-preview-area ${isDark ? 'dark' : ''}`}
+                style={{ flexDirection: 'column', alignItems: 'center' }}
+              >
+                {/* Mobile Phone Mockup */}
+                <div
             style={{
-              width: '390px',
-              minHeight: '740px',
+              width: 360,
+              height: 760,
               backgroundColor: colors.screenBg,
-              borderRadius: '28px',
+              borderRadius: 24,
               border: `1px solid ${colors.phoneBorder}`,
               boxShadow: isDark
-                ? '0 12px 40px rgba(0,0,0,0.5)'
-                : '0 12px 40px rgba(0,0,0,0.08)',
+                ? '0 12px 36px rgba(0, 0, 0, 0.6)'
+                : '0 12px 36px rgba(0, 0, 0, 0.1)',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
@@ -860,13 +810,19 @@ const styles = StyleSheet.create({
                 </div>
               </div>
             </div>
+                </div>
+              </div>
+            )}
+
+            {/* 2. Code Tab */}
+            {activeMainTab === 'code' && (
+              <div className="wb-code-area">
+                <CodeBlock code={codeString} language="tsx" />
+              </div>
+            )}
           </div>
         </div>
-      ) : (
-        <div style={{ width: '100%' }}>
-          <CodeBlock code={codeString} language="typescript" />
-        </div>
-      )}
+      </div>
     </div>
   );
 };
