@@ -148,6 +148,7 @@ import { ApplicationSentSuccessDoc } from './pages/ApplicationSentSuccessDoc';
 import { MyApplicationsDoc } from './pages/MyApplicationsDoc';
 import { NoApplicationsDoc } from './pages/NoApplicationsDoc';
 import { SearchApplicationsDoc } from './pages/SearchApplicationsDoc';
+import { BulkActionsDoc } from './pages/BulkActionsDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -282,6 +283,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (page === 'pattern-bulk-actions' || page.includes('bulk-actions')) {
+    return 'Patterns / Dashboard and My Application / My Applications / Bulk Actions';
   }
   if (page === 'pattern-search-applications' || page.includes('search-applications')) {
     return 'Patterns / Dashboard and My Application / My Applications / Search Applications';
@@ -775,6 +779,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-bulk-actions' || activePage.includes('bulk-actions')) {
+      return <BulkActionsDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-search-applications' || activePage.includes('search-applications')) {
       return <SearchApplicationsDoc isDark={isDark} />;

@@ -1232,6 +1232,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Search Applications',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-bulk-actions',
+                label: 'Bulk Actions',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1352,9 +1357,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-bulk-actions' ||
       page === 'pattern-search-applications' ||
       page === 'pattern-my-applications' ||
       page === 'pattern-no-applications' ||
+      page.includes('bulk-actions') ||
       page.includes('search-applications') ||
       page.includes('no-applications') ||
       page.includes('my-applications') ||
