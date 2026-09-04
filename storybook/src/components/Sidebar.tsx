@@ -1305,6 +1305,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Search Results List',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-no-results',
+                label: 'No Results',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1425,9 +1430,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-no-results' ||
       page === 'pattern-search-results-list' ||
       page === 'pattern-search-with-results' ||
       page === 'pattern-search-and-browse-services' ||
+      page.includes('no-results') ||
+      page.includes('no-result') ||
       page.includes('search-results-list') ||
       page.includes('search-results') ||
       page.includes('search-with-results') ||

@@ -34,6 +34,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-search-results-list': 'patterns/search-and-discovery/search-and-browse/search-results-list',
   'search-results-list': 'patterns/search-and-discovery/search-and-browse/search-results-list',
   'search-results': 'patterns/search-and-discovery/search-and-browse/search-results-list',
+  'pattern-no-results': 'patterns/search-and-discovery/search-and-browse/no-results',
+  'no-results': 'patterns/search-and-discovery/search-and-browse/no-results',
+  'no-result': 'patterns/search-and-discovery/search-and-browse/no-results',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -932,6 +935,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('no-results') || cleanPath.includes('no-result')) {
+      return 'pattern-no-results';
     }
     if (cleanPath.includes('search-results-list') || cleanPath.includes('search-results')) {
       return 'pattern-search-results-list';
