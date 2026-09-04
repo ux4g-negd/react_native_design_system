@@ -1295,6 +1295,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Search and Browse Services',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-search-with-results',
+                label: 'Search with Results',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1415,7 +1420,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-search-with-results' ||
       page === 'pattern-search-and-browse-services' ||
+      page.includes('search-with-results') ||
       page.includes('search-and-browse-services') ||
       page.includes('search-and-browse') ||
       page.includes('search-and-discovery')

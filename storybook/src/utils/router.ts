@@ -29,6 +29,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-search-and-browse-services': 'patterns/search-and-discovery/search-and-browse/search-and-browse-services',
   'search-and-browse-services': 'patterns/search-and-discovery/search-and-browse/search-and-browse-services',
   'search-and-browse': 'patterns/search-and-discovery/search-and-browse/search-and-browse-services',
+  'pattern-search-with-results': 'patterns/search-and-discovery/search-and-browse/search-with-results',
+  'search-with-results': 'patterns/search-and-discovery/search-and-browse/search-with-results',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -927,6 +929,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('search-with-results')) {
+      return 'pattern-search-with-results';
     }
     if (
       cleanPath.includes('search-and-browse-services') ||
