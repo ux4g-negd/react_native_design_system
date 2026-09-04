@@ -1383,6 +1383,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Inline Feedback Error',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-inline-feedback-hint',
+                label: 'Inline Feedback Hint',
+                icon: 'layers',
+              },
             ],
           },
         ],
