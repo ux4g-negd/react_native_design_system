@@ -53,6 +53,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'inline-feedback-error': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-error',
   'pattern-inline-feedback-hint': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-hint',
   'inline-feedback-hint': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-hint',
+  'pattern-inline-feedback-guidance': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-guidance',
+  'inline-feedback-guidance': 'patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-guidance',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -958,6 +960,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('inline-feedback-hint')) {
       return 'pattern-inline-feedback-hint';
+    }
+    if (cleanPath.includes('inline-feedback-guidance')) {
+      return 'pattern-inline-feedback-guidance';
     }
     if (cleanPath.includes('inline-feedback')) {
       return 'pattern-inline-feedback';
