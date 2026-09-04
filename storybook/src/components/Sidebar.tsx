@@ -1420,6 +1420,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Rate Your Experience',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-rate-experience-card',
+                label: 'Rate Experience Card',
+                icon: 'layers',
+              },
             ],
           },
         ],

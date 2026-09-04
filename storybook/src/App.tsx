@@ -173,6 +173,7 @@ import { InlineFeedbackVerificationDoc } from './pages/InlineFeedbackVerificatio
 import { InlineFeedbackNoteDoc } from './pages/InlineFeedbackNoteDoc';
 import { ServiceCompletionDoc } from './pages/ServiceCompletionDoc';
 import { RateExperienceDoc } from './pages/RateExperienceDoc';
+import { RateExperienceCardDoc } from './pages/RateExperienceCardDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -331,6 +332,12 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-rate-experience-card' ||
+    page.includes('rate-experience-card')
+  ) {
+    return 'Patterns / Feedback and Communication / Service Completion and Feedback / Rate Experience Card';
   }
   if (
     page === 'pattern-rate-your-experience' ||
@@ -965,6 +972,12 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-rate-experience-card' ||
+      activePage.includes('rate-experience-card')
+    ) {
+      return <RateExperienceCardDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-rate-your-experience' ||
