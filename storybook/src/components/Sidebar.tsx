@@ -1207,6 +1207,25 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'dashboard-and-my-application-group',
+        label: 'Dashboard and My Application',
+        icon: 'folder',
+        children: [
+          {
+            id: 'my-applications-group',
+            label: 'My Applications',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-my-applications',
+                label: 'My Applications',
+                icon: 'layers',
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
@@ -1321,6 +1340,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('application-sent')
     ) {
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
+    }
+    if (
+      page === 'pattern-my-applications' ||
+      page.includes('my-applications') ||
+      page.includes('dashboard-and-my-application')
+    ) {
+      return ['patterns', 'dashboard-and-my-application-group', 'my-applications-group'];
     }
     if (page === 'pattern-consent-capture' || page.includes('consent')) {
       return ['patterns', 'consent-and-declaration-group', 'consent-capture-group'];

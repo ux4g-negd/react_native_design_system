@@ -8,6 +8,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-application-sent-success': 'patterns/application-and-submission/government-form-with-validation/application-sent-success',
   'application-sent-success': 'patterns/application-and-submission/government-form-with-validation/application-sent-success',
   'application-sent': 'patterns/application-and-submission/government-form-with-validation/application-sent-success',
+  'pattern-my-applications': 'patterns/dashboard-and-my-application/my-applications/my-applications',
+  'my-applications': 'patterns/dashboard-and-my-application/my-applications/my-applications',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -906,6 +908,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('my-applications') || cleanPath.includes('my-application') || cleanPath.includes('dashboard-and-my-application')) {
+      return 'pattern-my-applications';
     }
     if (cleanPath.includes('application-sent-success') || cleanPath.includes('application-sent')) {
       return 'pattern-application-sent-success';

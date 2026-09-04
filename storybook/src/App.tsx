@@ -145,6 +145,7 @@ import { GovernmentFormWithValidationDoc } from './pages/GovernmentFormWithValid
 import { GovernmentFormWithErrorsDoc } from './pages/GovernmentFormWithErrorsDoc';
 import { GovernmentFormWithMultipleErrorsDoc } from './pages/GovernmentFormWithMultipleErrorsDoc';
 import { ApplicationSentSuccessDoc } from './pages/ApplicationSentSuccessDoc';
+import { MyApplicationsDoc } from './pages/MyApplicationsDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -279,6 +280,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (page === 'pattern-my-applications' || page.includes('my-applications')) {
+    return 'Patterns / Dashboard and My Application / My Applications / My Applications';
   }
   if (page === 'pattern-application-sent-success' || page.includes('application-sent-success') || page.includes('application-sent')) {
     return 'Patterns / Application and Submission / Government form with validation / Application sent success';
@@ -763,6 +767,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-my-applications' || activePage.includes('my-applications')) {
+      return <MyApplicationsDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-application-sent-success' || activePage.includes('application-sent-success') || activePage.includes('application-sent')) {
       return <ApplicationSentSuccessDoc isDark={isDark} />;
