@@ -1334,6 +1334,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'consultation-slot-booking-group',
+            label: 'Consultation Slot Booking',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-select-advocate',
+                label: 'Select Advocate',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
