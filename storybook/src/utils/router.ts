@@ -45,6 +45,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'select-appointment-time': 'patterns/search-and-discovery/consultation-slot-booking/select-appointment-time',
   'pattern-confirm-appointment-v2': 'patterns/search-and-discovery/consultation-slot-booking/confirm-appointment-v2',
   'confirm-appointment-v2': 'patterns/search-and-discovery/consultation-slot-booking/confirm-appointment-v2',
+  'pattern-appointment-confirmed': 'patterns/search-and-discovery/consultation-slot-booking/appointment-confirmed',
+  'appointment-confirmed': 'patterns/search-and-discovery/consultation-slot-booking/appointment-confirmed',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -944,6 +946,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('appointment-confirmed')) {
+      return 'pattern-appointment-confirmed';
     }
     if (cleanPath.includes('confirm-appointment-v2') || cleanPath.includes('confirm-appointment')) {
       return 'pattern-confirm-appointment-v2';

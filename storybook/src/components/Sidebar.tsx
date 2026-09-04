@@ -1354,6 +1354,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Confirm Appointment V2',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-appointment-confirmed',
+                label: 'Appointment Confirmed',
+                icon: 'layers',
+              },
             ],
           },
         ],
