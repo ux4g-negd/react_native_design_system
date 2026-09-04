@@ -175,6 +175,7 @@ import { ServiceCompletionDoc } from './pages/ServiceCompletionDoc';
 import { RateExperienceDoc } from './pages/RateExperienceDoc';
 import { RateExperienceCardDoc } from './pages/RateExperienceCardDoc';
 import { HelpCenterDoc } from './pages/HelpCenterDoc';
+import { FaqDetailDoc } from './pages/FaqDetailDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -333,6 +334,13 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-faq-detail' ||
+    page.includes('faq-detail') ||
+    page.includes('faq-details')
+  ) {
+    return 'Patterns / Feedback and Communication / Contact and Support / FAQ Details';
   }
   if (
     page === 'pattern-help-center' ||
@@ -980,6 +988,13 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-faq-detail' ||
+      activePage.includes('faq-detail') ||
+      activePage.includes('faq-details')
+    ) {
+      return <FaqDetailDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-help-center' ||

@@ -1437,6 +1437,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Help Center',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-faq-detail',
+                label: 'FAQ Details',
+                icon: 'layers',
+              },
             ],
           },
         ],

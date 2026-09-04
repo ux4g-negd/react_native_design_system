@@ -70,6 +70,10 @@ const PAGE_TO_PATH: Record<string, string> = {
   'help-center': 'patterns/feedback-and-communication/contact-and-support/help-center',
   'pattern-help-centre': 'patterns/feedback-and-communication/contact-and-support/help-center',
   'help-centre': 'patterns/feedback-and-communication/contact-and-support/help-center',
+  'pattern-faq-detail': 'patterns/feedback-and-communication/contact-and-support/faq-details',
+  'faq-detail': 'patterns/feedback-and-communication/contact-and-support/faq-details',
+  'pattern-faq-details': 'patterns/feedback-and-communication/contact-and-support/faq-details',
+  'faq-details': 'patterns/feedback-and-communication/contact-and-support/faq-details',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -969,6 +973,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('faq-detail') || cleanPath.includes('faq-details') || cleanPath.includes('faq')) {
+      return 'pattern-faq-detail';
     }
     if (cleanPath.includes('help-center') || cleanPath.includes('help-centre')) {
       return 'pattern-help-center';
