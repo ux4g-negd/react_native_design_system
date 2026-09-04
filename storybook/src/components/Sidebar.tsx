@@ -1457,6 +1457,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'File a Complaint',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-find-service-center',
+                label: 'Find Service Center',
+                icon: 'layers',
+              },
             ],
           },
         ],
