@@ -1188,6 +1188,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Government form with validation',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-government-form-with-errors',
+                label: 'Government form with errors',
+                icon: 'layers',
+              },
             ],
           },
         ],

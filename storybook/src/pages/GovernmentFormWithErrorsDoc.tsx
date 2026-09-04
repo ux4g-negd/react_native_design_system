@@ -3,41 +3,30 @@ import { UX4GColors } from '../../../src/foundation/colors';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
-interface GovernmentFormWithValidationDocProps {
+interface GovernmentFormWithErrorsDocProps {
   isDark: boolean;
 }
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'Default' | 'Card style';
 
-export const GovernmentFormWithValidationDoc: React.FC<GovernmentFormWithValidationDocProps> = ({ isDark }) => {
+export const GovernmentFormWithErrorsDoc: React.FC<GovernmentFormWithErrorsDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('Default');
 
-  // Form interactive states
+  // Form interactive states matching Flutter GovernmentFormErrorsScreen
   const [fullName] = useState('Ramesh Kumar');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [aadhaarNumber, setAadhaarNumber] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('+91 98765 43210');
+  const [emailAddress, setEmailAddress] = useState('ramesh@example');
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [maritalStatus, setMaritalStatus] = useState<string | null>(null);
+  const [maritalStatus, setMaritalStatus] = useState<string | null>('Married');
   const [reason, setReason] = useState('');
-  const [income, setIncome] = useState(0);
-  const [acceptTerms, setAcceptTerms] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
+  const [income, setIncome] = useState(40);
+  const [smsUpdates, setSmsUpdates] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(true);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (showBanner) {
-      timer = setTimeout(() => {
-        setShowBanner(false);
-      }, 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [showBanner]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -57,8 +46,8 @@ export const GovernmentFormWithValidationDoc: React.FC<GovernmentFormWithValidat
           ? UX4GColors.primary900
           : UX4GColors.primary50
         : isDark
-          ? UX4GColors.neutral900
-          : UX4GColors.neutral0,
+        ? UX4GColors.neutral900
+        : UX4GColors.neutral0,
       headerBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
@@ -88,11 +77,13 @@ export const GovernmentFormWithValidationDoc: React.FC<GovernmentFormWithValidat
       bannerBg: isDark ? '#064E3B' : '#F0FDF4',
       bannerBorder: isDark ? '#065F46' : 'transparent',
       bannerText: isDark ? '#34D399' : '#065F46',
+      errorColor: '#EF4444',
+      errorBorder: '#EF4444',
     };
   }, [isDark, variant]);
 
   const defaultCodeString = useMemo(() => {
-    return `import React, { useState, useEffect } from 'react';
+    return `import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -111,46 +102,35 @@ import {
   Ux4gRadioButton,
   Ux4gTextArea,
   Ux4gSlider,
+  Ux4gToggle,
   Ux4gCheckbox,
   Ux4gStepper,
   Ux4gStatusBanner,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const GovernmentFormScreen = ({
+export const GovernmentFormErrorsScreen = ({
   isDark = false,
   onBack = () => {},
   onContinue = () => {},
-  onSaveDraft = () => {},
 }: {
   isDark?: boolean;
   onBack?: () => void;
   onContinue?: () => void;
-  onSaveDraft?: () => void;
 }) => {
+  const [acceptTerms, setAcceptTerms] = useState(true);
+  const [smsUpdates, setSmsUpdates] = useState(false);
   const [fullName, setFullName] = useState('Ramesh Kumar');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [aadhaarNumber, setAadhaarNumber] = useState('');
-  const [selectedState, setSelectedState] = useState<string | null>(null);
-  const [maritalStatus, setMaritalStatus] = useState<string | null>(null);
+  const [mobileNumber, setMobileNumber] = useState('+91 98765 43210');
+  const [emailAddress, setEmailAddress] = useState('ramesh@example');
+  const [maritalStatus, setMaritalStatus] = useState<string | null>('Married');
   const [reason, setReason] = useState('');
-  const [income, setIncome] = useState(0);
-  const [acceptTerms, setAcceptTerms] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
+  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [income, setIncome] = useState(40);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
   const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral600;
-
-  const handleContinue = () => {
-    if (!acceptTerms) return;
-    setShowBanner(true);
-    setTimeout(() => {
-      setShowBanner(false);
-    }, 3000);
-    onContinue();
-  };
 
   return (
     <SafeAreaView
@@ -159,291 +139,220 @@ export const GovernmentFormScreen = ({
         { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 },
       ]}
     >
-      <View style={styles.container}>
-        {/* Top Header */}
-        <Ux4gAppHeader
-          variant="light"
-          showBackButton={false}
-          leadingWidgets={[
+      {/* App Header */}
+      <Ux4gAppHeader
+        variant="light"
+        title=""
+        leadingWidgets={
+          <View style={styles.headerLeading}>
             <Image
-              key="emblem"
               source={require('./assets/national_emblem.png')}
-              style={[styles.emblemIcon, isDark && { tintColor: '#FFFFFF' }]}
+              style={styles.emblem}
               resizeMode="contain"
-            />,
-            <View
-              key="divider"
-              style={[
-                styles.verticalDivider,
-                { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 },
-              ]}
-            />,
-            <Image
-              key="union"
-              source={require('./assets/union_logo.png')}
-              style={[styles.unionIcon, { tintColor: primaryColor }]}
-              resizeMode="contain"
-            />,
-          ]}
-        />
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
-
-        {/* Back Button */}
-        <View style={styles.backButtonContainer}>
-          <Ux4gButton
-            text="Back"
-            variant="ghost"
-            onPress={onBack}
-            leadingIcon="arrow_back"
-            contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary900}
-          />
-        </View>
-
-        {/* Form Content */}
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Progress Stepper */}
-          <Ux4gStepper
-            totalSteps={4}
-            currentStep={2}
-            stepSize={20}
-            steps={[
-              { title: 'Eligibility', titleStyle: { fontSize: 10, fontWeight: '600' } },
-              { title: 'Personal', titleStyle: { fontSize: 10, fontWeight: '600' } },
-              { title: 'Documents', titleStyle: { fontSize: 10, fontWeight: '600' } },
-              { title: '' },
-            ]}
-          />
-
-          <View style={{ height: 32 }} />
-
-          {/* Heading */}
-          <Text style={[styles.heading, { color: titleColor }]}>
-            Personal information
-          </Text>
-          <View style={{ height: 8 }} />
-          <Text style={[styles.subheading, { color: subtleText }]}>
-            Please enter your details.
-          </Text>
-
-          <View style={{ height: 32 }} />
-
-          {/* Full Name (Disabled / Pre-filled) */}
-          <Ux4gInputField
-            label="Full name"
-            value={fullName}
-            enabled={false}
-            onValueChange={setFullName}
-            size="medium"
-          />
-          <View style={{ height: 8 }} />
-          <TouchableOpacity
-            style={styles.uidaiLinkRow}
-            onPress={() => {}}
-            activeOpacity={0.7}
-          >
-            <Text style={[styles.uidaiLinkText, { color: primaryColor }]}>
-              From Aadhaar · Update via UIDAI
-            </Text>
-            <Image
-              source={require('./assets/open_in_new.png')}
-              style={[styles.externalIcon, { tintColor: primaryColor }]}
             />
-          </TouchableOpacity>
-
-          <View style={{ height: 24 }} />
-
-          {/* Mobile Number */}
-          <Ux4gInputField
-            label="Mobile number"
-            value={mobileNumber}
-            onValueChange={setMobileNumber}
-            size="medium"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Email Address */}
-          <Ux4gInputField
-            label="Email address"
-            value={emailAddress}
-            onValueChange={setEmailAddress}
-            size="medium"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Aadhaar Number */}
-          <Ux4gInputField
-            label="Aadhaar number"
-            value={aadhaarNumber}
-            onValueChange={setAadhaarNumber}
-            size="medium"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* State of Residence */}
-          <Ux4gSelectionDropdown
-            label="State of residence"
-            placeholder="Please select.."
-            options={[
-              { id: 'dl', label: 'Delhi' },
-              { id: 'mh', label: 'Maharashtra' },
-              { id: 'up', label: 'Uttar Pradesh' },
-            ]}
-            selectedOptionIds={selectedState ? [selectedState] : []}
-            onSelectionChange={(ids: string[]) => setSelectedState(ids[0] || null)}
-            size="m"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Marital Status */}
-          <Text
-            style={[
-              styles.radioGroupLabel,
-              { color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700 },
-            ]}
-          >
-            Your marital status
-          </Text>
-          <View style={{ height: 8 }} />
-          <Ux4gRadioButton
-            label="Single"
-            value="Single"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-          <Ux4gRadioButton
-            label="Married"
-            value="Married"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-          <Ux4gRadioButton
-            label="Divorced or widowed"
-            value="Divorced"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-          <Ux4gRadioButton
-            label="Option 4"
-            value="Option4"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Application Reason */}
-          <Ux4gTextArea
-            label="Brief reason for application (optional)"
-            value={reason}
-            onValueChange={setReason}
-            placeholder="Placeholder"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Annual Income Slider */}
-          <Ux4gSlider
-            label="Annual Income (Lakh ₹)"
-            isRequired
-            value={income}
-            min={0}
-            max={10}
-            steps={9}
-            showMarksAndValues
-            valueFormatter={(val: number) => (val === 10 ? '10+' : val.toString())}
-            onValueChange={setIncome}
-          />
-
-          <View style={{ height: 32 }} />
-
-          {/* SMS Updates Label */}
-          <Text
-            style={[
-              styles.smsUpdatesTitle,
-              { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
-            ]}
-          >
-            Receive application status updates via SMS
-          </Text>
-
-          <View style={{ height: 16 }} />
-
-          {/* Terms Checkbox */}
-          <Ux4gCheckbox
-            label="Accept terms and conditions"
-            isRequired
-            value={acceptTerms}
-            onChanged={(val) => setAcceptTerms(val ?? false)}
-          />
-
-          <View style={{ height: 32 }} />
-        </ScrollView>
-
-        {/* Floating Saved Banner */}
-        {showBanner && (
-          <View style={styles.bannerPosition}>
-            <Ux4gStatusBanner
-              variant="successLight"
-              title=""
-              backgroundColor="#F0FDF4"
-              trailingIcon={
-                <View style={styles.bannerRow}>
-                  <Image
-                    source={require('./assets/check_circle.png')}
-                    style={{ width: 14, height: 14, tintColor: '#065F46' }}
-                  />
-                  <Text style={styles.bannerText}>Saved 3:14 PM</Text>
-                </View>
-              }
+            <Ux4gDivider
+              orientation="vertical"
+              color={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
+              style={{ height: 32 }}
+            />
+            <Image
+              source={require('./assets/union_logo.png')}
+              style={[styles.unionLogo, { tintColor: primaryColor }]}
+              resizeMode="contain"
             />
           </View>
-        )}
+        }
+      />
+      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
-        {/* Bottom Actions */}
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Continue"
-            onPress={handleContinue}
-            size="large"
-            width="100%"
-            height={48}
-            enabled={acceptTerms}
-          />
-          <View style={{ height: 12 }} />
-          <Ux4gButton
-            text="Save as Draft"
-            onPress={onSaveDraft}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor="#432CBB"
-          />
-        </View>
+      {/* Top Success Banner */}
+      <Ux4gStatusBanner
+        variant="successLight"
+        height={44}
+        backgroundColor="#F0FDF4"
+        borderColor="transparent"
+        trailingIcon={
+          <View style={styles.bannerContent}>
+            <Text style={styles.bannerIcon}>✓</Text>
+            <Text style={styles.bannerText}>Saved 3:14 PM</Text>
+          </View>
+        }
+      />
 
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Text
-            style={[
-              styles.poweredByText,
-              { color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 },
-            ]}
-          >
-            Powered by -
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Stepper */}
+        <Ux4gStepper
+          totalSteps={4}
+          currentStep={2}
+          stepSize={20}
+          steps={[
+            { title: 'Eligibility' },
+            { title: 'Personal' },
+            { title: 'Documents' },
+            { title: '' },
+          ]}
+        />
+
+        {/* Section Heading */}
+        <Text style={[styles.title, { color: titleColor }]}>Personal information</Text>
+        <Text style={[styles.subtitle, { color: subtleText }]}>
+          Please enter your details.
+        </Text>
+
+        {/* Full Name (Disabled) */}
+        <Ux4gInputField
+          label="Full name"
+          value={fullName}
+          enabled={false}
+          size="medium"
+          onValueChange={setFullName}
+        />
+        <TouchableOpacity style={styles.helperRow} activeOpacity={0.7}>
+          <Text style={[styles.helperLink, { color: primaryColor }]}>
+            From Aadhaar · Update via UIDAI
           </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
+        </TouchableOpacity>
+
+        {/* Mobile Number */}
+        <Ux4gInputField
+          label="Mobile number"
+          value={mobileNumber}
+          size="medium"
+          onValueChange={setMobileNumber}
+        />
+
+        {/* Email Address with Error State */}
+        <Ux4gInputField
+          label="Email address"
+          value={emailAddress}
+          size="medium"
+          status="error"
+          caption="Enter a valid email."
+          onValueChange={setEmailAddress}
+        />
+
+        {/* State Selection Dropdown */}
+        <Ux4gSelectionDropdown
+          label="State of residence"
+          placeholder="Please select.."
+          options={[
+            { id: 'dl', label: 'Delhi' },
+            { id: 'mh', label: 'Maharashtra' },
+          ]}
+          selectedOptionIds={selectedState ? [selectedState] : []}
+          onSelectionChange={(ids) => setSelectedState(ids[0] || null)}
+          size="medium"
+        />
+
+        {/* Marital Status */}
+        <Text style={[styles.fieldLabel, { color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700 }]}>
+          Your marital status
+        </Text>
+        <Ux4gRadioButton
+          label="Single"
+          value="Single"
+          groupValue={maritalStatus}
+          onChanged={setMaritalStatus}
+        />
+        <Ux4gRadioButton
+          label="Married"
+          value="Married"
+          groupValue={maritalStatus}
+          onChanged={setMaritalStatus}
+        />
+        <Ux4gRadioButton
+          label="Divorced or widowed"
+          value="Divorced"
+          groupValue={maritalStatus}
+          onChanged={setMaritalStatus}
+        />
+        <Ux4gRadioButton
+          label="Option 4"
+          value="Option4"
+          groupValue={maritalStatus}
+          onChanged={setMaritalStatus}
+        />
+
+        {/* Reason */}
+        <Ux4gTextArea
+          label="Brief reason (optional)"
+          value={reason}
+          placeholder="Placeholder"
+          onValueChange={setReason}
+        />
+
+        {/* Income Slider */}
+        <Ux4gSlider
+          label="Annual Income (Lakh ₹)"
+          isRequired
+          value={income}
+          min={0}
+          max={100}
+          steps={9}
+          showMarksAndValues
+          rightLabelWidget={
+            <Text style={styles.sliderValue}>₹3.2 Lakh</Text>
+          }
+          onValueChange={setIncome}
+        />
+
+        {/* Toggle SMS Updates */}
+        <View style={styles.toggleRow}>
+          <Text style={[styles.toggleLabel, { color: titleColor }]}>
+            Receive SMS updates
+          </Text>
+          <Ux4gToggle
+            checked={smsUpdates}
+            onCheckedChange={setSmsUpdates}
+            size="small"
           />
         </View>
+
+        {/* Accept Terms Checkbox */}
+        <Ux4gCheckbox
+          label="Accept terms and conditions"
+          isRequired
+          value={acceptTerms}
+          onChanged={(val) => setAcceptTerms(Boolean(val))}
+        />
+      </ScrollView>
+
+      {/* Action Buttons */}
+      <View style={styles.buttonContainer}>
+        <Ux4gButton
+          text="Continue"
+          size="large"
+          height={48}
+          width="100%"
+          onPressed={onContinue}
+        />
+        <Ux4gButton
+          text="Back"
+          size="large"
+          height={48}
+          width="100%"
+          variant="outline"
+          contentColor={primaryColor}
+          borderColor={primaryColor}
+          onPressed={onBack}
+        />
+      </View>
+
+      {/* Powered by Footer */}
+      <View style={styles.footer}>
+        <Text
+          style={[
+            styles.footerText,
+            { color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 },
+          ]}
+        >
+          Powered by -
+        </Text>
+        <Image
+          source={require('./assets/digital_india_logo.png')}
+          style={styles.digitalIndiaLogo}
+          resizeMode="contain"
+        />
       </View>
     </SafeAreaView>
   );
@@ -451,89 +360,35 @@ export const GovernmentFormScreen = ({
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
-  container: { flex: 1, position: 'relative' },
-  emblemIcon: { height: 40, width: 26 },
-  verticalDivider: { height: 32, width: 1 },
-  unionIcon: { height: 32, width: 44 },
-  backButtonContainer: {
-    paddingLeft: 8,
-    paddingTop: 8,
-    alignItems: 'flex-start',
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingVertical: 24,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: '800',
-    lineHeight: 30,
-  },
-  subheading: {
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  uidaiLinkRow: {
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  emblem: { height: 40, width: 30 },
+  unionLogo: { height: 32, width: 48 },
+  bannerContent: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  bannerIcon: { color: '#065F46', fontSize: 14, fontWeight: '700' },
+  bannerText: { color: '#065F46', fontSize: 12, fontWeight: '500' },
+  scrollContent: { paddingHorizontal: 24, paddingVertical: 24, gap: 24 },
+  title: { fontSize: 24, fontWeight: '800' },
+  subtitle: { fontSize: 15 },
+  helperRow: { marginTop: -16, marginBottom: 8 },
+  helperLink: { fontSize: 12, fontWeight: '500' },
+  fieldLabel: { fontSize: 14, fontWeight: '500', marginBottom: 8 },
+  sliderValue: { fontSize: 13, fontWeight: '800' },
+  toggleRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 4,
+    marginVertical: 8,
   },
-  uidaiLinkText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  externalIcon: {
-    width: 12,
-    height: 12,
-  },
-  radioGroupLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 4,
-  },
-  smsUpdatesTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    lineHeight: 22,
-  },
-  bannerPosition: {
-    position: 'absolute',
-    top: 74,
-    left: 16,
-    right: 16,
-    zIndex: 100,
-  },
-  bannerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  bannerText: {
-    color: '#065F46',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  footerContainer: {
-    alignItems: 'center',
-    paddingBottom: 24,
-  },
-  poweredByText: {
-    fontSize: 11,
-    marginBottom: 6,
-  },
-  digitalIndiaLogo: {
-    height: 24,
-    width: 88,
-  },
+  toggleLabel: { fontSize: 15, fontWeight: '600' },
+  buttonContainer: { paddingHorizontal: 24, paddingVertical: 16, gap: 12 },
+  footer: { alignItems: 'center', paddingBottom: 24, gap: 6 },
+  footerText: { fontSize: 11 },
+  digitalIndiaLogo: { height: 24, width: 120 },
 });`;
   }, []);
 
   const cardCodeString = useMemo(() => {
-    return `import React, { useState, useEffect } from 'react';
+    return `import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -549,276 +404,276 @@ import {
   Ux4gButton,
   Ux4gInputField,
   Ux4gSelectionDropdown,
+  Ux4gRadioButton,
+  Ux4gTextArea,
   Ux4gSlider,
+  Ux4gToggle,
   Ux4gCheckbox,
   Ux4gStepper,
   Ux4gStatusBanner,
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const GovernmentFormCardScreen = ({
+export const GovernmentFormErrorsCardScreen = ({
   isDark = false,
   onBack = () => {},
   onContinue = () => {},
-  onSaveDraft = () => {},
 }: {
   isDark?: boolean;
   onBack?: () => void;
   onContinue?: () => void;
-  onSaveDraft?: () => void;
 }) => {
+  const [acceptTerms, setAcceptTerms] = useState(true);
+  const [smsUpdates, setSmsUpdates] = useState(false);
   const [fullName, setFullName] = useState('Ramesh Kumar');
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [emailAddress, setEmailAddress] = useState('ramesh@example');
+  const [maritalStatus, setMaritalStatus] = useState<string | null>('Married');
+  const [reason, setReason] = useState('');
   const [selectedState, setSelectedState] = useState<string | null>(null);
-  const [income, setIncome] = useState(0);
-  const [acceptTerms, setAcceptTerms] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
+  const [income, setIncome] = useState(40);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
   const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral600;
-
-  const handleContinue = () => {
-    if (!acceptTerms) return;
-    setShowBanner(true);
-    setTimeout(() => {
-      setShowBanner(false);
-    }, 3000);
-    onContinue();
-  };
 
   return (
     <SafeAreaView
       style={[
         styles.safeArea,
         {
-          backgroundColor: isDark
-            ? UX4GColors.primary900
-            : UX4GColors.primary50,
+          backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
         },
       ]}
     >
-      <View style={styles.container}>
-        {/* Top Header Card Bar */}
-        <View
-          style={{
-            backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-          }}
-        >
-          <Ux4gAppHeader
-            variant="light"
-            showBackButton={false}
-            leadingWidgets={[
+      {/* Top Header */}
+      <View
+        style={{
+          backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
+        }}
+      >
+        <Ux4gAppHeader
+          variant="light"
+          title=""
+          leadingWidgets={
+            <View style={styles.headerLeading}>
               <Image
-                key="emblem"
                 source={require('./assets/national_emblem.png')}
-                style={[styles.emblemIcon, isDark && { tintColor: '#FFFFFF' }]}
+                style={styles.emblem}
                 resizeMode="contain"
-              />,
-              <View
-                key="divider"
-                style={[
-                  styles.verticalDivider,
-                  { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 },
-                ]}
-              />,
+              />
+              <Ux4gDivider
+                orientation="vertical"
+                color={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
+                style={{ height: 32 }}
+              />
               <Image
-                key="union"
                 source={require('./assets/union_logo.png')}
-                style={[styles.unionIcon, { tintColor: primaryColor }]}
+                style={[styles.unionLogo, { tintColor: primaryColor }]}
                 resizeMode="contain"
-              />,
-            ]}
-          />
-          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
-          <View style={styles.backButtonContainer}>
-            <Ux4gButton
-              text="Back"
-              variant="ghost"
-              onPress={onBack}
-              leadingIcon="arrow_back"
-              contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary900}
-            />
-          </View>
-        </View>
-
-        {/* Scrollable Area */}
-        <ScrollView
-          contentContainerStyle={styles.cardScrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Elevated Card */}
-          <View
-            style={[
-              styles.cardContainer,
-              {
-                backgroundColor: isDark
-                  ? UX4GColors.neutral900
-                  : UX4GColors.neutral0,
-              },
-            ]}
-          >
-            {/* Stepper */}
-            <View style={{ marginTop: 8 }}>
-              <Ux4gStepper
-                totalSteps={4}
-                currentStep={2}
-                stepSize={20}
-                steps={[
-                  { title: 'Eligibility', titleStyle: { fontSize: 10, fontWeight: '600' } },
-                  { title: 'Personal', titleStyle: { fontSize: 10, fontWeight: '600' } },
-                  { title: 'Documents', titleStyle: { fontSize: 10, fontWeight: '600' } },
-                  { title: '' },
-                ]}
               />
             </View>
+          }
+        />
+        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
+      </View>
 
-            <View style={{ height: 32 }} />
-
-            {/* Heading */}
-            <Text style={[styles.heading, { color: titleColor }]}>
-              Personal information
-            </Text>
-            <View style={{ height: 8 }} />
-            <Text style={[styles.subheading, { color: subtleText }]}>
-              Please enter your details.
-            </Text>
-
-            <View style={{ height: 32 }} />
-
-            {/* Full Name */}
-            <Ux4gInputField
-              label="Full name"
-              value={fullName}
-              enabled={false}
-              onValueChange={setFullName}
-              size="medium"
-            />
-            <View style={{ height: 8 }} />
-            <TouchableOpacity
-              style={styles.uidaiLinkRow}
-              onPress={() => {}}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.uidaiLinkText, { color: primaryColor }]}>
-                From Aadhaar · Update via UIDAI
-              </Text>
-              <Image
-                source={require('./assets/open_in_new.png')}
-                style={[styles.externalIcon, { tintColor: primaryColor }]}
-              />
-            </TouchableOpacity>
-
-            <View style={{ height: 24 }} />
-
-            {/* Mobile Number */}
-            <Ux4gInputField
-              label="Mobile number"
-              value={mobileNumber}
-              onValueChange={setMobileNumber}
-              size="medium"
-            />
-
-            <View style={{ height: 24 }} />
-
-            {/* State of Residence */}
-            <Ux4gSelectionDropdown
-              label="State of residence"
-              placeholder="Please select.."
-              options={[
-                { id: 'dl', label: 'Delhi' },
-                { id: 'mh', label: 'Maharashtra' },
-              ]}
-              selectedOptionIds={selectedState ? [selectedState] : []}
-              onSelectionChange={(ids: string[]) => setSelectedState(ids[0] || null)}
-              size="m"
-            />
-
-            <View style={{ height: 24 }} />
-
-            {/* Annual Income */}
-            <Ux4gSlider
-              label="Annual Income (Lakh ₹)"
-              isRequired
-              value={income}
-              min={0}
-              max={10}
-              steps={9}
-              showMarksAndValues
-              valueFormatter={(val: number) => (val === 10 ? '10+' : val.toString())}
-              onValueChange={setIncome}
-            />
-
-            <View style={{ height: 32 }} />
-
-            {/* Terms Checkbox */}
-            <Ux4gCheckbox
-              label="Accept terms and conditions"
-              isRequired
-              value={acceptTerms}
-              onChanged={(val) => setAcceptTerms(val ?? false)}
-            />
-          </View>
-        </ScrollView>
-
-        {/* Floating Saved Banner */}
-        {showBanner && (
-          <View style={styles.bannerPosition}>
-            <Ux4gStatusBanner
-              variant="successLight"
-              title=""
-              backgroundColor="#F0FDF4"
-              trailingIcon={
-                <View style={styles.bannerRow}>
-                  <Image
-                    source={require('./assets/check_circle.png')}
-                    style={{ width: 14, height: 14, tintColor: '#065F46' }}
-                  />
-                  <Text style={styles.bannerText}>Saved 3:14 PM</Text>
-                </View>
-              }
-            />
-          </View>
-        )}
-
-        {/* Bottom Actions */}
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Continue"
-            onPress={handleContinue}
-            size="large"
-            width="100%"
-            height={48}
-            enabled={acceptTerms}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Elevated Form Card */}
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
+            },
+          ]}
+        >
+          {/* Status Banner Inside Card */}
+          <Ux4gStatusBanner
+            variant="successLight"
+            height={44}
+            backgroundColor="#F0FDF4"
+            borderColor="transparent"
+            trailingIcon={
+              <View style={styles.bannerContent}>
+                <Text style={styles.bannerIcon}>✓</Text>
+                <Text style={styles.bannerText}>Saved 3:14 PM</Text>
+              </View>
+            }
           />
-          <View style={{ height: 12 }} />
-          <Ux4gButton
-            text="Save as Draft"
-            onPress={onSaveDraft}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor="#432CBB"
-          />
-        </View>
 
-        {/* Footer */}
-        <View style={styles.footerContainer}>
+          {/* Stepper */}
+          <Ux4gStepper
+            totalSteps={4}
+            currentStep={2}
+            stepSize={20}
+            steps={[
+              { title: 'Eligibility' },
+              { title: 'Personal' },
+              { title: 'Documents' },
+              { title: '' },
+            ]}
+          />
+
+          {/* Section Heading */}
+          <Text style={[styles.title, { color: titleColor }]}>
+            Personal information
+          </Text>
+          <Text style={[styles.subtitle, { color: subtleText }]}>
+            Please enter your details.
+          </Text>
+
+          {/* Full Name (Disabled) */}
+          <Ux4gInputField
+            label="Full name"
+            value={fullName}
+            enabled={false}
+            size="medium"
+            onValueChange={setFullName}
+          />
+          <TouchableOpacity style={styles.helperRow} activeOpacity={0.7}>
+            <Text style={[styles.helperLink, { color: primaryColor }]}>
+              From Aadhaar · Update via UIDAI
+            </Text>
+          </TouchableOpacity>
+
+          {/* Email Address with Error State */}
+          <Ux4gInputField
+            label="Email address"
+            value={emailAddress}
+            size="medium"
+            status="error"
+            caption="Enter a valid email."
+            onValueChange={setEmailAddress}
+          />
+
+          {/* State Selection Dropdown */}
+          <Ux4gSelectionDropdown
+            label="State of residence"
+            placeholder="Please select.."
+            options={[
+              { id: 'dl', label: 'Delhi' },
+              { id: 'mh', label: 'Maharashtra' },
+            ]}
+            selectedOptionIds={selectedState ? [selectedState] : []}
+            onSelectionChange={(ids) => setSelectedState(ids[0] || null)}
+            size="medium"
+          />
+
+          {/* Marital Status */}
           <Text
             style={[
-              styles.poweredByText,
-              { color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 },
+              styles.fieldLabel,
+              { color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700 },
             ]}
           >
-            Powered by -
+            Your marital status
           </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
+          <Ux4gRadioButton
+            label="Single"
+            value="Single"
+            groupValue={maritalStatus}
+            onChanged={setMaritalStatus}
+          />
+          <Ux4gRadioButton
+            label="Married"
+            value="Married"
+            groupValue={maritalStatus}
+            onChanged={setMaritalStatus}
+          />
+          <Ux4gRadioButton
+            label="Divorced or widowed"
+            value="Divorced"
+            groupValue={maritalStatus}
+            onChanged={setMaritalStatus}
+          />
+          <Ux4gRadioButton
+            label="Option 4"
+            value="Option4"
+            groupValue={maritalStatus}
+            onChanged={setMaritalStatus}
+          />
+
+          {/* Reason */}
+          <Ux4gTextArea
+            label="Brief reason (optional)"
+            value={reason}
+            placeholder="Placeholder"
+            onValueChange={setReason}
+          />
+
+          {/* Income Slider */}
+          <Ux4gSlider
+            label="Annual Income (Lakh ₹)"
+            isRequired
+            value={income}
+            min={0}
+            max={100}
+            steps={9}
+            showMarksAndValues
+            rightLabelWidget={
+              <Text style={styles.sliderValue}>₹3.2 Lakh</Text>
+            }
+            onValueChange={setIncome}
+          />
+
+          {/* Toggle SMS Updates */}
+          <View style={styles.toggleRow}>
+            <Text style={[styles.toggleLabel, { color: titleColor }]}>
+              Receive SMS updates
+            </Text>
+            <Ux4gToggle
+              checked={smsUpdates}
+              onCheckedChange={setSmsUpdates}
+              size="small"
+            />
+          </View>
+
+          {/* Accept Terms Checkbox */}
+          <Ux4gCheckbox
+            label="Accept terms and conditions"
+            isRequired
+            value={acceptTerms}
+            onChanged={(val) => setAcceptTerms(Boolean(val))}
           />
         </View>
+      </ScrollView>
+
+      {/* Action Buttons */}
+      <View style={styles.buttonContainer}>
+        <Ux4gButton
+          text="Continue"
+          size="large"
+          height={48}
+          width="100%"
+          onPressed={onContinue}
+        />
+        <Ux4gButton
+          text="Back"
+          size="large"
+          height={48}
+          width="100%"
+          variant="outline"
+          contentColor={primaryColor}
+          borderColor={primaryColor}
+          onPressed={onBack}
+        />
+      </View>
+
+      {/* Powered by Footer */}
+      <View style={styles.footer}>
+        <Text
+          style={[
+            styles.footerText,
+            { color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 },
+          ]}
+        >
+          Powered by -
+        </Text>
+        <Image
+          source={require('./assets/digital_india_logo.png')}
+          style={styles.digitalIndiaLogo}
+          resizeMode="contain"
+        />
       </View>
     </SafeAreaView>
   );
@@ -826,86 +681,84 @@ export const GovernmentFormCardScreen = ({
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
-  container: { flex: 1, position: 'relative' },
-  emblemIcon: { height: 40, width: 26 },
-  verticalDivider: { height: 32, width: 1 },
-  unionIcon: { height: 32, width: 44 },
-  backButtonContainer: {
-    paddingLeft: 8,
-    paddingTop: 8,
-    paddingBottom: 8,
-    alignItems: 'flex-start',
-  },
-  cardScrollContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-  },
-  cardContainer: {
-    padding: 24,
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  emblem: { height: 40, width: 30 },
+  unionLogo: { height: 32, width: 48 },
+  bannerContent: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  bannerIcon: { color: '#065F46', fontSize: 14, fontWeight: '700' },
+  bannerText: { color: '#065F46', fontSize: 12, fontWeight: '500' },
+  scrollContent: { paddingHorizontal: 24, paddingVertical: 32 },
+  card: {
     borderRadius: 16,
+    padding: 24,
+    gap: 24,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: '800',
-    lineHeight: 30,
-  },
-  subheading: {
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  uidaiLinkRow: {
+  title: { fontSize: 24, fontWeight: '800' },
+  subtitle: { fontSize: 15 },
+  helperRow: { marginTop: -16, marginBottom: 8 },
+  helperLink: { fontSize: 12, fontWeight: '500' },
+  fieldLabel: { fontSize: 14, fontWeight: '500', marginBottom: 8 },
+  sliderValue: { fontSize: 13, fontWeight: '800' },
+  toggleRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 4,
+    marginVertical: 8,
   },
-  uidaiLinkText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  externalIcon: {
-    width: 12,
-    height: 12,
-  },
-  bannerPosition: {
-    position: 'absolute',
-    top: 74,
-    left: 16,
-    right: 16,
-    zIndex: 100,
-  },
-  bannerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  bannerText: {
-    color: '#065F46',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  footerContainer: {
-    alignItems: 'center',
-    paddingBottom: 24,
-  },
-  poweredByText: {
-    fontSize: 11,
-    marginBottom: 6,
-  },
-  digitalIndiaLogo: {
-    height: 24,
-    width: 88,
-  },
+  toggleLabel: { fontSize: 15, fontWeight: '600' },
+  buttonContainer: { paddingHorizontal: 24, paddingVertical: 16, gap: 12 },
+  footer: { alignItems: 'center', paddingBottom: 24, gap: 6 },
+  footerText: { fontSize: 11 },
+  digitalIndiaLogo: { height: 24, width: 120 },
 });`;
   }, []);
+
+  // Render Status Banner matching Ux4gStatusBanner successLight
+  const renderStatusBanner = (isInsideCard: boolean = false) => (
+    <div
+      style={{
+        height: 48,
+        backgroundColor: colors.bannerBg,
+        border: `1px solid ${colors.bannerBorder}`,
+        borderRadius: isInsideCard ? 12 : 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0 16px',
+        width: '100%',
+        boxSizing: 'border-box',
+        marginBottom: isInsideCard ? 24 : 0,
+        flexShrink: 0,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="12" r="10" stroke={colors.bannerText} strokeWidth="2" fill="none" />
+          <path d="M8 12L11 15L16 9" stroke={colors.bannerText} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span
+          style={{
+            fontSize: 13,
+            fontWeight: 500,
+            color: colors.bannerText,
+          }}
+        >
+          Saved 3:14 PM
+        </span>
+      </div>
+    </div>
+  );
 
   // Stepper matching actual Ux4gStepper component architecture
   const renderStepper = () => {
@@ -1088,21 +941,18 @@ const styles = StyleSheet.create({
     );
   };
 
-  // Form Fields Component matching Flutter implementation exactly
+  // Form Fields Content
   const renderFormContent = (isCard: boolean) => {
-    const stateOptions = isCard
-      ? [
-        { id: 'dl', label: 'Delhi' },
-        { id: 'mh', label: 'Maharashtra' },
-      ]
-      : [
-        { id: 'dl', label: 'Delhi' },
-        { id: 'mh', label: 'Maharashtra' },
-        { id: 'up', label: 'Uttar Pradesh' },
-      ];
+    const stateOptions = [
+      { id: 'dl', label: 'Delhi' },
+      { id: 'mh', label: 'Maharashtra' },
+    ];
 
     return (
       <>
+        {/* Top banner if inside card */}
+        {isCard && renderStatusBanner(true)}
+
         {/* Stepper */}
         <div style={{ width: '100%', marginBottom: 32 }}>{renderStepper()}</div>
 
@@ -1172,7 +1022,7 @@ const styles = StyleSheet.create({
             marginBottom: 24,
             cursor: 'pointer',
           }}
-          onClick={() => { }}
+          onClick={() => {}}
         >
           <span
             style={{
@@ -1194,7 +1044,42 @@ const styles = StyleSheet.create({
           </span>
         </div>
 
-        {/* Field 2: Mobile number */}
+        {/* Field 2: Mobile number (Present in Default variant) */}
+        {!isCard && (
+          <div style={{ width: '100%', marginBottom: 24 }}>
+            <label
+              style={{
+                display: 'block',
+                fontSize: 14,
+                fontWeight: 500,
+                color: colors.labelColor,
+                marginBottom: 6,
+              }}
+            >
+              Mobile number
+            </label>
+            <input
+              type="tel"
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
+              placeholder=""
+              style={{
+                width: '100%',
+                height: 40,
+                borderRadius: 8,
+                border: `1px solid ${colors.inputBorder}`,
+                backgroundColor: colors.inputBg,
+                color: colors.inputText,
+                padding: '0 12px',
+                fontSize: 14,
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+        )}
+
+        {/* Field 3: Email address with Error State */}
         <div style={{ width: '100%', marginBottom: 24 }}>
           <label
             style={{
@@ -1205,101 +1090,64 @@ const styles = StyleSheet.create({
               marginBottom: 6,
             }}
           >
-            Mobile number
+            Email address
           </label>
-          <input
-            type="tel"
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            placeholder=""
+          <div style={{ position: 'relative' }}>
+            <input
+              type="email"
+              value={emailAddress}
+              onChange={(e) => setEmailAddress(e.target.value)}
+              placeholder=""
+              style={{
+                width: '100%',
+                height: 40,
+                borderRadius: 8,
+                border: `1.5px solid ${colors.errorBorder}`,
+                backgroundColor: colors.inputBg,
+                color: colors.inputText,
+                padding: '0 36px 0 12px',
+                fontSize: 14,
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
+            <span
+              className="material-symbols-outlined"
+              style={{
+                position: 'absolute',
+                right: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                fontSize: 18,
+                color: colors.errorColor,
+                pointerEvents: 'none',
+              }}
+            >
+              error
+            </span>
+          </div>
+          {/* Validation Error Caption */}
+          <div
             style={{
-              width: '100%',
-              height: 40,
-              borderRadius: 8,
-              border: `1px solid ${colors.inputBorder}`,
-              backgroundColor: colors.inputBg,
-              color: colors.inputText,
-              padding: '0 12px',
-              fontSize: 14,
-              outline: 'none',
-              boxSizing: 'border-box',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              marginTop: 6,
             }}
-          />
+          >
+            <span
+              style={{
+                fontSize: 12,
+                color: colors.errorColor,
+                fontWeight: 500,
+              }}
+            >
+              Enter a valid email.
+            </span>
+          </div>
         </div>
 
-        {/* Default Variant Fields */}
-        {!isCard && (
-          <>
-            {/* Field 3: Email address */}
-            <div style={{ width: '100%', marginBottom: 24 }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: colors.labelColor,
-                  marginBottom: 6,
-                }}
-              >
-                Email address
-              </label>
-              <input
-                type="email"
-                value={emailAddress}
-                onChange={(e) => setEmailAddress(e.target.value)}
-                placeholder=""
-                style={{
-                  width: '100%',
-                  height: 40,
-                  borderRadius: 8,
-                  border: `1px solid ${colors.inputBorder}`,
-                  backgroundColor: colors.inputBg,
-                  color: colors.inputText,
-                  padding: '0 12px',
-                  fontSize: 14,
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-
-            {/* Field 4: Aadhaar number */}
-            <div style={{ width: '100%', marginBottom: 24 }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: colors.labelColor,
-                  marginBottom: 6,
-                }}
-              >
-                Aadhaar number
-              </label>
-              <input
-                type="text"
-                value={aadhaarNumber}
-                onChange={(e) => setAadhaarNumber(e.target.value)}
-                placeholder=""
-                maxLength={14}
-                style={{
-                  width: '100%',
-                  height: 40,
-                  borderRadius: 8,
-                  border: `1px solid ${colors.inputBorder}`,
-                  backgroundColor: colors.inputBg,
-                  color: colors.inputText,
-                  padding: '0 12px',
-                  fontSize: 14,
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-          </>
-        )}
-
-        {/* Field 5: State of residence Dropdown */}
+        {/* Field 4: State of residence Dropdown */}
         <div style={{ width: '100%', marginBottom: 24, position: 'relative' }} ref={dropdownRef}>
           <label
             style={{
@@ -1323,8 +1171,8 @@ const styles = StyleSheet.create({
               color: selectedState
                 ? colors.inputText
                 : isDark
-                  ? UX4GColors.neutral500
-                  : UX4GColors.neutral400,
+                ? UX4GColors.neutral500
+                : UX4GColors.neutral400,
               padding: '0 12px',
               fontSize: 14,
               display: 'flex',
@@ -1409,113 +1257,110 @@ const styles = StyleSheet.create({
           )}
         </div>
 
-        {/* Marital Status (Default variant) */}
-        {!isCard && (
-          <div style={{ width: '100%', marginBottom: 24 }}>
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: colors.labelColor,
-                marginBottom: 8,
-              }}
-            >
-              Your marital status
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {[
-                { label: 'Single', value: 'Single' },
-                { label: 'Married', value: 'Married' },
-                { label: 'Divorced or widowed', value: 'Divorced' },
-                { label: 'Option 4', value: 'Option4' },
-              ].map((item) => {
-                const isSelected = maritalStatus === item.value;
-                return (
+        {/* Marital Status */}
+        <div style={{ width: '100%', marginBottom: 24 }}>
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 500,
+              color: colors.labelColor,
+              marginBottom: 8,
+            }}
+          >
+            Your marital status
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[
+              { label: 'Single', value: 'Single' },
+              { label: 'Married', value: 'Married' },
+              { label: 'Divorced or widowed', value: 'Divorced' },
+              { label: 'Option 4', value: 'Option4' },
+            ].map((item) => {
+              const isSelected = maritalStatus === item.value;
+              return (
+                <div
+                  key={item.value}
+                  onClick={() => setMaritalStatus(item.value)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                  }}
+                >
                   <div
-                    key={item.value}
-                    onClick={() => setMaritalStatus(item.value)}
                     style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      border: `1.5px solid ${
+                        isSelected ? colors.primaryColor : colors.inputBorder
+                      }`,
                       display: 'flex',
                       alignItems: 'center',
-                      cursor: 'pointer',
-                      userSelect: 'none',
+                      justifyContent: 'center',
+                      marginRight: 10,
+                      backgroundColor: 'transparent',
                     }}
                   >
-                    <div
-                      style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: '50%',
-                        border: `1.5px solid ${isSelected ? colors.primaryColor : colors.inputBorder
-                          }`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: 10,
-                        backgroundColor: 'transparent',
-                      }}
-                    >
-                      {isSelected && (
-                        <div
-                          style={{
-                            width: 10,
-                            height: 10,
-                            borderRadius: '50%',
-                            backgroundColor: colors.primaryColor,
-                          }}
-                        />
-                      )}
-                    </div>
-                    <span
-                      style={{
-                        fontSize: 14,
-                        color: colors.inputText,
-                      }}
-                    >
-                      {item.label}
-                    </span>
+                    {isSelected && (
+                      <div
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: '50%',
+                          backgroundColor: colors.primaryColor,
+                        }}
+                      />
+                    )}
                   </div>
-                );
-              })}
-            </div>
+                  <span
+                    style={{
+                      fontSize: 14,
+                      color: colors.inputText,
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        )}
+        </div>
 
-        {/* Brief reason (Default variant) */}
-        {!isCard && (
-          <div style={{ width: '100%', marginBottom: 24 }}>
-            <label
-              style={{
-                display: 'block',
-                fontSize: 14,
-                fontWeight: 500,
-                color: colors.labelColor,
-                marginBottom: 6,
-              }}
-            >
-              Brief reason for application (optional)
-            </label>
-            <textarea
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="Placeholder"
-              rows={3}
-              style={{
-                width: '100%',
-                borderRadius: 8,
-                border: `1px solid ${colors.inputBorder}`,
-                backgroundColor: colors.inputBg,
-                color: colors.inputText,
-                padding: '10px 12px',
-                fontSize: 14,
-                outline: 'none',
-                boxSizing: 'border-box',
-                resize: 'none',
-                fontFamily: 'inherit',
-              }}
-            />
-          </div>
-        )}
+        {/* Brief reason (optional) */}
+        <div style={{ width: '100%', marginBottom: 24 }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 14,
+              fontWeight: 500,
+              color: colors.labelColor,
+              marginBottom: 6,
+            }}
+          >
+            Brief reason (optional)
+          </label>
+          <textarea
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="Placeholder"
+            rows={3}
+            style={{
+              width: '100%',
+              borderRadius: 8,
+              border: `1px solid ${colors.inputBorder}`,
+              backgroundColor: colors.inputBg,
+              color: colors.inputText,
+              padding: '10px 12px',
+              fontSize: 14,
+              outline: 'none',
+              boxSizing: 'border-box',
+              resize: 'none',
+              fontFamily: 'inherit',
+            }}
+          />
+        </div>
 
         {/* Annual Income Slider matching exact screenshot UI */}
         <div style={{ width: '100%', marginBottom: 32 }}>
@@ -1533,12 +1378,12 @@ const styles = StyleSheet.create({
             </div>
             <div
               style={{
-                fontSize: 16,
-                fontWeight: 700,
+                fontSize: 13,
+                fontWeight: 800,
                 color: colors.titleColor,
               }}
             >
-              ₹{income}
+              ₹3.2 Lakh
             </div>
           </div>
 
@@ -1568,7 +1413,7 @@ const styles = StyleSheet.create({
                   left: 0,
                   top: 0,
                   bottom: 0,
-                  width: `${(income / 10) * 100}%`,
+                  width: `${(income / 100) * 100}%`,
                   backgroundColor: isDark ? UX4GColors.primary300 : colors.primaryBrand,
                   borderRadius: 2,
                   transition: 'width 0.08s ease',
@@ -1576,12 +1421,12 @@ const styles = StyleSheet.create({
               />
             </div>
 
-            {/* Custom White Thumb matching user screenshot */}
+            {/* Custom White Thumb */}
             <div
               style={{
                 position: 'absolute',
                 top: '50%',
-                left: `calc(${(income / 10) * 100}% - ${(income / 10) * 20}px)`,
+                left: `calc(${(income / 100) * 100}% - ${(income / 100) * 20}px)`,
                 transform: 'translateY(-50%)',
                 width: 20,
                 height: 20,
@@ -1595,12 +1440,12 @@ const styles = StyleSheet.create({
               }}
             />
 
-            {/* Invisible native range input on top for smooth dragging */}
+            {/* Invisible native range input on top */}
             <input
               type="range"
               min={0}
-              max={10}
-              step={1}
+              max={100}
+              step={10}
               value={income}
               onChange={(e) => setIncome(Number(e.target.value))}
               style={{
@@ -1617,7 +1462,7 @@ const styles = StyleSheet.create({
             />
           </div>
 
-          {/* Marks & Values Row below track */}
+          {/* Marks & Values Row below track (9 steps / 0 to 100) */}
           <div
             style={{
               position: 'relative',
@@ -1626,9 +1471,9 @@ const styles = StyleSheet.create({
               marginTop: 2,
             }}
           >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((val) => {
+            {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((val) => {
               const isSelected = income === val;
-              const leftPercent = (val / 10) * 100;
+              const leftPercent = (val / 100) * 100;
               return (
                 <div
                   key={val}
@@ -1653,8 +1498,8 @@ const styles = StyleSheet.create({
                           ? UX4GColors.primary300
                           : colors.primaryBrand
                         : isDark
-                          ? UX4GColors.neutral600
-                          : '#9CA3AF',
+                        ? UX4GColors.neutral600
+                        : '#9CA3AF',
                       borderRadius: 1,
                       marginBottom: 4,
                       transition: 'background-color 0.15s ease',
@@ -1663,19 +1508,19 @@ const styles = StyleSheet.create({
                   {/* Number label */}
                   <span
                     style={{
-                      fontSize: 12,
+                      fontSize: 11,
                       fontWeight: isSelected ? 600 : 400,
                       color: isSelected
                         ? isDark
                           ? UX4GColors.primary300
                           : colors.primaryBrand
                         : isDark
-                          ? UX4GColors.neutral400
-                          : '#6B7280',
+                        ? UX4GColors.neutral400
+                        : '#6B7280',
                       transition: 'color 0.15s ease',
                     }}
                   >
-                    {val === 10 ? '10+' : val}
+                    {val}
                   </span>
                 </div>
               );
@@ -1683,20 +1528,56 @@ const styles = StyleSheet.create({
           </div>
         </div>
 
-        {/* SMS status updates text (Default variant) */}
-        {!isCard && (
-          <div
+        {/* Toggle SMS Updates */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 20,
+          }}
+        >
+          <span
             style={{
               fontSize: 15,
               fontWeight: 600,
               color: colors.titleColor,
-              lineHeight: 1.4,
-              marginBottom: 16,
             }}
           >
-            Receive application status updates via SMS
+            Receive SMS updates
+          </span>
+          {/* Toggle Switch */}
+          <div
+            onClick={() => setSmsUpdates(!smsUpdates)}
+            style={{
+              width: 38,
+              height: 22,
+              borderRadius: 12,
+              backgroundColor: smsUpdates
+                ? colors.primaryColor
+                : isDark
+                ? UX4GColors.neutral700
+                : UX4GColors.neutral300,
+              position: 'relative',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s ease',
+            }}
+          >
+            <div
+              style={{
+                width: 16,
+                height: 16,
+                borderRadius: '50%',
+                backgroundColor: '#FFFFFF',
+                position: 'absolute',
+                top: 3,
+                left: smsUpdates ? 19 : 3,
+                transition: 'left 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+              }}
+            />
           </div>
-        )}
+        </div>
 
         {/* Accept terms checkbox */}
         <div
@@ -1714,8 +1595,9 @@ const styles = StyleSheet.create({
               width: 18,
               height: 18,
               borderRadius: 4,
-              border: `1.5px solid ${acceptTerms ? colors.primaryColor : colors.inputBorder
-                }`,
+              border: `1.5px solid ${
+                acceptTerms ? colors.primaryColor : colors.inputBorder
+              }`,
               backgroundColor: acceptTerms ? colors.primaryColor : 'transparent',
               display: 'flex',
               alignItems: 'center',
@@ -1806,95 +1688,10 @@ const styles = StyleSheet.create({
             </div>
           </div>
           <div style={{ height: 1, backgroundColor: colors.dividerColor }} />
-
-          {/* Back Button */}
-          <div
-            style={{
-              paddingLeft: 8,
-              paddingTop: 8,
-              paddingBottom: isCard ? 8 : 0,
-              display: 'flex',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => { }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-                background: 'transparent',
-                border: 'none',
-                padding: '6px 12px',
-                borderRadius: 6,
-                color: colors.ghostButtonColor,
-                fontSize: 14,
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 18, color: colors.ghostButtonColor }}
-              >
-                arrow_back
-              </span>
-              Back
-            </button>
-          </div>
         </div>
 
-        {/* Floating Top Saved Banner */}
-        {showBanner && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 74,
-              left: 16,
-              right: 16,
-              zIndex: 100,
-              animation: 'fadeIn 0.25s ease-in-out',
-            }}
-          >
-            <div
-              style={{
-                height: 44,
-                width: '100%',
-                backgroundColor: colors.bannerBg,
-                borderRadius: 8,
-                border: `1px solid ${colors.bannerBorder}`,
-                padding: '0 16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-                boxSizing: 'border-box',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span
-                  className="material-symbols-outlined"
-                  style={{
-                    fontSize: 16,
-                    color: colors.bannerText,
-                  }}
-                >
-                  check_circle
-                </span>
-                <span
-                  style={{
-                    color: colors.bannerText,
-                    fontSize: 12,
-                    fontWeight: 500,
-                  }}
-                >
-                  Saved 3:14 PM
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Top Banner (For Default Variant) */}
+        {!isCard && renderStatusBanner(false)}
 
         {/* Scrollable Center Content */}
         <div
@@ -1938,52 +1735,44 @@ const styles = StyleSheet.create({
             flexShrink: 0,
           }}
         >
+          {/* Continue Button */}
           <button
             type="button"
-            disabled={!acceptTerms}
-            onClick={() => {
-              if (!acceptTerms) return;
-              setShowBanner(true);
-            }}
+            onClick={() => {}}
             style={{
               height: 48,
               width: '100%',
               borderRadius: 8,
               border: 'none',
-              backgroundColor: acceptTerms
-                ? isDark
-                  ? UX4GColors.primary300
-                  : colors.primaryBrand
-                : colors.buttonDisabledBg,
-              color: acceptTerms
-                ? isDark
-                  ? UX4GColors.neutral900
-                  : '#FFFFFF'
-                : colors.buttonDisabledText,
+              backgroundColor: colors.primaryBrand,
+              color: '#FFFFFF',
               fontSize: 15,
               fontWeight: 600,
-              cursor: acceptTerms ? 'pointer' : 'not-allowed',
+              cursor: 'pointer',
               transition: 'all 0.2s ease',
             }}
           >
             Continue
           </button>
+
+          {/* Back Outline Button */}
           <button
             type="button"
-            onClick={() => { }}
+            onClick={() => {}}
             style={{
               height: 48,
               width: '100%',
               borderRadius: 8,
-              border: 'none',
+              border: `1.5px solid ${colors.primaryBrand}`,
               backgroundColor: 'transparent',
               color: isDark ? UX4GColors.primary300 : colors.primaryBrand,
               fontSize: 15,
               fontWeight: 600,
               cursor: 'pointer',
+              transition: 'all 0.2s ease',
             }}
           >
-            Save as Draft
+            Back
           </button>
         </div>
 
@@ -2024,11 +1813,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Government form with validation</h1>
+          <h1 className="wb-title">Government form with errors</h1>
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A comprehensive government form pattern featuring validation, pre-filled data, status banners, and various input types.
+          A government form pattern demonstrating field-level validation errors, toggle switches, and customized sliders.
         </p>
       </div>
 
@@ -2109,8 +1898,8 @@ const styles = StyleSheet.create({
                               variant === v
                                 ? UX4GColors.neutral0
                                 : isDark
-                                  ? UX4GColors.neutral400
-                                  : UX4GColors.neutral600,
+                                ? UX4GColors.neutral400
+                                : UX4GColors.neutral600,
                             transition: 'all 0.2s ease',
                           }}
                         >
@@ -2161,4 +1950,4 @@ const styles = StyleSheet.create({
   );
 };
 
-export default GovernmentFormWithValidationDoc;
+export default GovernmentFormWithErrorsDoc;
