@@ -1256,6 +1256,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'citizen-profile-and-preferences-group',
+            label: 'Citizen Profile and Preferences',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-citizen-profile',
+                label: 'Citizen Profile',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
@@ -1372,6 +1384,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('application-sent')
     ) {
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
+    }
+    if (
+      page === 'pattern-citizen-profile' ||
+      page.includes('citizen-profile')
+    ) {
+      return ['patterns', 'dashboard-and-my-application-group', 'citizen-profile-and-preferences-group'];
     }
     if (
       page === 'pattern-no-pending-tasks' ||

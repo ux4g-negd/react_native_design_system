@@ -151,6 +151,7 @@ import { SearchApplicationsDoc } from './pages/SearchApplicationsDoc';
 import { BulkActionsDoc } from './pages/BulkActionsDoc';
 import { PendingTasksDoc } from './pages/PendingTasksDoc';
 import { NoPendingTasksDoc } from './pages/NoPendingTasksDoc';
+import { CitizenProfileDoc } from './pages/CitizenProfileDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -285,6 +286,9 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (page === 'pattern-citizen-profile' || page.includes('citizen-profile')) {
+    return 'Patterns / Dashboard and My Application / Citizen Profile and Preferences / Citizen Profile';
   }
   if (page === 'pattern-no-pending-tasks' || page.includes('no-pending-tasks')) {
     return 'Patterns / Dashboard and My Application / Pending Tasks / No Pending Tasks';
@@ -787,6 +791,9 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (activePage === 'pattern-citizen-profile' || activePage.includes('citizen-profile')) {
+      return <CitizenProfileDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-no-pending-tasks' || activePage.includes('no-pending-tasks')) {
       return <NoPendingTasksDoc isDark={isDark} />;
