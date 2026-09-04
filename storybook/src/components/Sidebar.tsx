@@ -1452,6 +1452,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Live Chat Support',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-file-complaint',
+                label: 'File a Complaint',
+                icon: 'layers',
+              },
             ],
           },
         ],

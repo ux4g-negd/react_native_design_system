@@ -178,6 +178,7 @@ import { HelpCenterDoc } from './pages/HelpCenterDoc';
 import { FaqDetailDoc } from './pages/FaqDetailDoc';
 import { ContactSupportDoc } from './pages/ContactSupportDoc';
 import { LiveChatSupportDoc } from './pages/LiveChatSupportDoc';
+import { FileComplaintDoc } from './pages/FileComplaintDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -336,6 +337,13 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-file-complaint' ||
+    page.includes('file-complaint') ||
+    page.includes('file-a-complaint')
+  ) {
+    return 'Patterns / Feedback and Communication / Contact and Support / File a Complaint';
   }
   if (
     page === 'pattern-live-chat-support' ||
@@ -1003,6 +1011,13 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-file-complaint' ||
+      activePage.includes('file-complaint') ||
+      activePage.includes('file-a-complaint')
+    ) {
+      return <FileComplaintDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-live-chat-support' ||
