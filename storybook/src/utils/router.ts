@@ -2,6 +2,7 @@
 const PAGE_TO_PATH: Record<string, string> = {
   introduction: 'introduction',
   quickstart: 'quickstart',
+  'pattern-government-form-with-validation': 'patterns/application-and-submission/government-form-with-validation/government-form-with-validation',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -897,6 +898,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('government-form-with-validation') || cleanPath.includes('government-form')) {
+      return 'pattern-government-form-with-validation';
     }
     if (cleanPath.includes('document-upload-success') || (cleanPath.includes('upload') && cleanPath.includes('success'))) {
       return 'pattern-document-upload-success';

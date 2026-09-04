@@ -1178,6 +1178,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'government-form-with-validation-group',
+            label: 'Government form with validation',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-government-form-with-validation',
+                label: 'Government form with validation',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
