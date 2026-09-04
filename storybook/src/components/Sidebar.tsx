@@ -1415,6 +1415,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Service Completed',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-rate-your-experience',
+                label: 'Rate Your Experience',
+                icon: 'layers',
+              },
             ],
           },
         ],

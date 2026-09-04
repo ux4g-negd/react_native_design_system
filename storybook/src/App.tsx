@@ -172,6 +172,7 @@ import { InlineFeedbackGuidanceDoc } from './pages/InlineFeedbackGuidanceDoc';
 import { InlineFeedbackVerificationDoc } from './pages/InlineFeedbackVerificationDoc';
 import { InlineFeedbackNoteDoc } from './pages/InlineFeedbackNoteDoc';
 import { ServiceCompletionDoc } from './pages/ServiceCompletionDoc';
+import { RateExperienceDoc } from './pages/RateExperienceDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -330,6 +331,13 @@ const getMobileBreadcrumb = (page: string) => {
     page.includes('inline-feedback-verification')
   ) {
     return 'Patterns / Feedback and Communication / Inline Feedback and Status Communication / Inline Feedback Verification';
+  }
+  if (
+    page === 'pattern-rate-your-experience' ||
+    page.includes('rate-your-experience') ||
+    page.includes('rate-experience')
+  ) {
+    return 'Patterns / Feedback and Communication / Service Completion and Feedback / Rate Your Experience';
   }
   if (
     page === 'pattern-service-completed' ||
@@ -957,6 +965,13 @@ export const App: React.FC = () => {
       activePage.includes('inline-feedback-verification')
     ) {
       return <InlineFeedbackVerificationDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-rate-your-experience' ||
+      activePage.includes('rate-your-experience') ||
+      activePage.includes('rate-experience')
+    ) {
+      return <RateExperienceDoc isDark={isDark} />;
     }
     if (
       activePage === 'pattern-service-completed' ||

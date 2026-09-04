@@ -62,6 +62,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'pattern-service-completed': 'patterns/feedback-and-communication/service-completion-and-feedback/service-completed',
   'service-completed': 'patterns/feedback-and-communication/service-completion-and-feedback/service-completed',
   'service-completion': 'patterns/feedback-and-communication/service-completion-and-feedback/service-completed',
+  'pattern-rate-your-experience': 'patterns/feedback-and-communication/service-completion-and-feedback/rate-your-experience',
+  'rate-your-experience': 'patterns/feedback-and-communication/service-completion-and-feedback/rate-your-experience',
+  'rate-experience': 'patterns/feedback-and-communication/service-completion-and-feedback/rate-your-experience',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -961,6 +964,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('rate-your-experience') || cleanPath.includes('rate-experience')) {
+      return 'pattern-rate-your-experience';
     }
     if (cleanPath.includes('service-completed') || cleanPath.includes('service-completion')) {
       return 'pattern-service-completed';
