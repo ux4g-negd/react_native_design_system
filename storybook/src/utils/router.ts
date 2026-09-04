@@ -24,6 +24,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'citizen-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/citizen-profile',
   'pattern-edit-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/edit-profile',
   'edit-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/edit-profile',
+  'pattern-delete-account-dialog': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/delete-account-dialog',
+  'delete-account-dialog': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/delete-account-dialog',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -922,6 +924,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('delete-account-dialog') || cleanPath.includes('delete-account')) {
+      return 'pattern-delete-account-dialog';
     }
     if (cleanPath.includes('edit-profile')) {
       return 'pattern-edit-profile';

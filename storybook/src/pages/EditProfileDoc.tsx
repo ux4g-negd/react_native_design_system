@@ -563,37 +563,35 @@ const styles = StyleSheet.create({
         </p>
       </div>
 
-      {/* Tabs */}
-      <div className="wb-tab-bar">
-        <button
-          className={`wb-tab-btn ${activeMainTab === 'preview' ? 'active' : ''}`}
-          onClick={() => setActiveMainTab('preview')}
-        >
-          <span className="material-symbols-outlined wb-tab-icon">visibility</span>
-          Preview
-        </button>
-        <button
-          className={`wb-tab-btn ${activeMainTab === 'code' ? 'active' : ''}`}
-          onClick={() => setActiveMainTab('code')}
-        >
-          <span className="material-symbols-outlined wb-tab-icon">code</span>
-          Code
-        </button>
-      </div>
+      {/* Main Body */}
+      <div className="wb-body">
+        <div className="wb-main">
+          {/* Tabs */}
+          <div className="wb-tab-bar">
+            <button
+              className={`wb-tab ${activeMainTab === 'preview' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('preview')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">visibility</span> Preview
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('code')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">code</span> Code
+            </button>
+          </div>
 
-      {/* Content Area */}
-      <div className="wb-content">
-        {activeMainTab === 'preview' ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              padding: '32px 16px',
-              width: '100%',
-              boxSizing: 'border-box',
-            }}
-          >
+          {/* Content Area */}
+          <div className="wb-content">
+            {/* 1. Preview Tab */}
+            {activeMainTab === 'preview' && (
+              <div
+                className={`wb-preview-area ${isDark ? 'dark' : ''}`}
+                style={{ flexDirection: 'column', alignItems: 'center' }}
+              >
             {/* Phone Frame */}
             <div
               style={{
@@ -626,14 +624,18 @@ const styles = StyleSheet.create({
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <img
-                    src="/national_emblem.svg"
-                    alt="Emblem"
+                    src="/national_emblem_logo.svg"
+                    alt="National Emblem"
                     style={{
                       height: 28,
+                      width: 'auto',
                       filter: isDark ? 'brightness(0) invert(1)' : undefined,
                     }}
                     onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
+                      const target = e.target as HTMLImageElement;
+                      if (!target.src.includes('national_amblam_logo.svg')) {
+                        target.src = '/national_amblam_logo.svg';
+                      }
                     }}
                   />
                   <div
@@ -1536,13 +1538,18 @@ const styles = StyleSheet.create({
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="wb-code-area">
-            <CodeBlock code={codeString} language="tsx" />
-          </div>
-        )}
+            </div>
+          )}
+
+          {/* 2. Code Tab */}
+          {activeMainTab === 'code' && (
+            <div className="wb-code-area">
+              <CodeBlock code={codeString} language="tsx" />
+            </div>
+          )}
+        </div>
       </div>
     </div>
+  </div>
   );
 };

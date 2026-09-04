@@ -1271,6 +1271,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Edit Profile',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-delete-account-dialog',
+                label: 'Delete Account Dialog',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1391,8 +1396,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-delete-account-dialog' ||
       page === 'pattern-edit-profile' ||
       page === 'pattern-citizen-profile' ||
+      page.includes('delete-account-dialog') ||
+      page.includes('delete-account') ||
       page.includes('edit-profile') ||
       page.includes('citizen-profile')
     ) {
