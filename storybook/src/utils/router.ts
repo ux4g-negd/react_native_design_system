@@ -22,6 +22,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'no-pending-tasks': 'patterns/dashboard-and-my-application/pending-tasks/no-pending-tasks',
   'pattern-citizen-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/citizen-profile',
   'citizen-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/citizen-profile',
+  'pattern-edit-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/edit-profile',
+  'edit-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/edit-profile',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -920,6 +922,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('edit-profile')) {
+      return 'pattern-edit-profile';
     }
     if (cleanPath.includes('citizen-profile') || cleanPath.includes('citizen-profile-and-preferences')) {
       return 'pattern-citizen-profile';

@@ -3,13 +3,13 @@ import { UX4GColors } from '../../../src/foundation/colors';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
-interface CitizenProfileDocProps {
+interface EditProfileDocProps {
   isDark: boolean;
 }
 
 type MainTab = 'preview' | 'code';
 
-export const CitizenProfileDoc: React.FC<CitizenProfileDocProps> = ({ isDark }) => {
+export const EditProfileDoc: React.FC<EditProfileDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   
   // Interactive state
@@ -34,8 +34,10 @@ export const CitizenProfileDoc: React.FC<CitizenProfileDocProps> = ({ isDark }) 
       readOnlyBorder: isDark ? UX4GColors.neutral800 : UX4GColors.neutral300,
       readOnlyText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
       readOnlyLabel: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      outlineBtnBorder: isDark ? UX4GColors.primary400 : UX4GColors.primary300,
-      outlineBtnText: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      cancelBtnBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
+      cancelBtnText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
+      saveBtnBg: UX4GColors.primary600,
+      saveBtnText: '#FFFFFF',
       avatarBg: isDark ? 'rgba(99, 102, 241, 0.2)' : '#EDE9FE',
       avatarText: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
       greenTagBg: isDark ? 'rgba(22, 163, 74, 0.15)' : '#DCFCE7',
@@ -46,6 +48,8 @@ export const CitizenProfileDoc: React.FC<CitizenProfileDocProps> = ({ isDark }) 
       deleteCardBorder: isDark ? UX4GColors.red800 : '#DB372D',
       deleteBtnBorder: isDark ? UX4GColors.red700 : UX4GColors.red600,
       deleteBtnText: isDark ? UX4GColors.red300 : UX4GColors.red600,
+      outlineBtnBorder: isDark ? UX4GColors.primary400 : UX4GColors.primary300,
+      outlineBtnText: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
       toggleTrackActive: isDark ? UX4GColors.primary500 : UX4GColors.primary600,
       toggleTrackInactive: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
     };
@@ -71,9 +75,10 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-design-system';
 
-export const CitizenProfileScreen = ({
+export const EditProfileScreen = ({
   isDark = false,
-  onEditProfile = () => {},
+  onCancel = () => {},
+  onSaveChanges = () => {},
   onUpdateViaUidai = () => {},
   onViewDigiLocker = () => {},
   onConnectUmang = () => {},
@@ -81,7 +86,8 @@ export const CitizenProfileScreen = ({
   onDeleteAccount = () => {},
 }: {
   isDark?: boolean;
-  onEditProfile?: () => void;
+  onCancel?: () => void;
+  onSaveChanges?: () => void;
   onUpdateViaUidai?: () => void;
   onViewDigiLocker?: () => void;
   onConnectUmang?: () => void;
@@ -102,6 +108,8 @@ export const CitizenProfileScreen = ({
   const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const readOnlyBg = isDark ? UX4GColors.neutral800 : UX4GColors.neutral300;
+  const cancelBtnBorder = isDark ? UX4GColors.neutral600 : UX4GColors.neutral300;
+  const cancelBtnText = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
   const deleteBorder = isDark ? UX4GColors.red800 : '#DB372D';
   const deleteBtnText = isDark ? UX4GColors.red300 : UX4GColors.red600;
 
@@ -148,7 +156,7 @@ export const CitizenProfileScreen = ({
           Profile & Preferences
         </Text>
 
-        {/* 1. Profile Card */}
+        {/* 1. Profile Card with Cancel and Save Changes */}
         <View style={[styles.card, { backgroundColor: cardBg, borderColor }]}>
           <View style={styles.avatarWrapper}>
             <View style={styles.avatarCircle}>
@@ -171,12 +179,21 @@ export const CitizenProfileScreen = ({
               <Text style={styles.greenTagText}>Aadhaar linked</Text>
             </View>
           </View>
-          <Ux4gButton
-            text="Edit profile"
-            variant="outline"
-            onPress={onEditProfile}
-            style={styles.fullWidthBtn}
-          />
+          <View style={styles.actionButtonsRow}>
+            <Ux4gButton
+              text="Cancel"
+              variant="outline"
+              onPress={onCancel}
+              style={[styles.actionBtn, { borderColor: cancelBtnBorder }]}
+              textStyle={{ color: cancelBtnText }}
+            />
+            <Ux4gButton
+              text="Save changes"
+              variant="primary"
+              onPress={onSaveChanges}
+              style={styles.actionBtn}
+            />
+          </View>
         </View>
 
         {/* 2. Aadhaar-linked Information Card */}
@@ -474,6 +491,8 @@ const styles = StyleSheet.create({
   },
   greenCheckIcon: { color: '#16A34A', fontSize: 12, fontWeight: 'bold' },
   greenTagText: { color: '#16A34A', fontSize: 11, fontWeight: '500' },
+  actionButtonsRow: { flexDirection: 'row', gap: 12, width: '100%', marginTop: 4 },
+  actionBtn: { flex: 1, height: 40 },
   fullWidthBtn: { width: '100%', marginTop: 4 },
   sectionTitle: { fontSize: 15, fontWeight: '700', marginBottom: 4 },
   sectionSubtitle: { fontSize: 13, marginBottom: 16 },
@@ -536,11 +555,11 @@ const styles = StyleSheet.create({
       {/* Header */}
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Citizen Profile</h1>
+          <h1 className="wb-title">Edit Profile</h1>
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A comprehensive profile pattern showing user identity, Aadhaar-linked info, personal details, linked accounts, notification preferences, and account deletion.
+          Edit profile pattern — same layout as Citizen Profile but with Cancel and Save changes buttons instead of Edit profile.
         </p>
       </div>
 
@@ -709,7 +728,7 @@ const styles = StyleSheet.create({
                   Profile & Preferences
                 </div>
 
-                {/* 1. Profile Card */}
+                {/* 1. Profile Card with Cancel and Save changes */}
                 <div
                   style={{
                     backgroundColor: colors.cardBg,
@@ -833,22 +852,42 @@ const styles = StyleSheet.create({
                     </div>
                   </div>
 
-                  <button
-                    style={{
-                      width: '100%',
-                      padding: '8px 16px',
-                      borderRadius: 8,
-                      border: `1px solid ${colors.outlineBtnBorder}`,
-                      backgroundColor: 'transparent',
-                      color: colors.outlineBtnText,
-                      fontSize: 13,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      transition: 'background-color 0.2s',
-                    }}
-                  >
-                    Edit profile
-                  </button>
+                  <div style={{ display: 'flex', gap: 12, width: '100%' }}>
+                    <button
+                      style={{
+                        flex: 1,
+                        padding: '10px 4px',
+                        borderRadius: 8,
+                        border: `1px solid ${colors.cancelBtnBorder}`,
+                        backgroundColor: 'transparent',
+                        color: colors.cancelBtnText,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s',
+                        height: 40,
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      style={{
+                        flex: 1,
+                        padding: '10px 4px',
+                        borderRadius: 8,
+                        border: 'none',
+                        backgroundColor: colors.saveBtnBg,
+                        color: colors.saveBtnText,
+                        fontSize: 13,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'opacity 0.2s',
+                        height: 40,
+                      }}
+                    >
+                      Save changes
+                    </button>
+                  </div>
                 </div>
 
                 {/* 2. Aadhaar-linked Information */}

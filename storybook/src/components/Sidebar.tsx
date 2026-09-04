@@ -1266,6 +1266,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Citizen Profile',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-edit-profile',
+                label: 'Edit Profile',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1386,7 +1391,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-edit-profile' ||
       page === 'pattern-citizen-profile' ||
+      page.includes('edit-profile') ||
       page.includes('citizen-profile')
     ) {
       return ['patterns', 'dashboard-and-my-application-group', 'citizen-profile-and-preferences-group'];
