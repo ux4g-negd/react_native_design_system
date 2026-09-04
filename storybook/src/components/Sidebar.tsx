@@ -1405,6 +1405,18 @@ const NAV_ITEMS: NavItem[] = [
               },
             ],
           },
+          {
+            id: 'service-completion-and-feedback-group',
+            label: 'Service Completion and Feedback',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-service-completed',
+                label: 'Service Completed',
+                icon: 'layers',
+              },
+            ],
+          },
         ],
       },
     ],
