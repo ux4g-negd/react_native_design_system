@@ -1344,6 +1344,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Select Advocate',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-select-appointment-time',
+                label: 'Select Appointment Time',
+                icon: 'layers',
+              },
             ],
           },
         ],
