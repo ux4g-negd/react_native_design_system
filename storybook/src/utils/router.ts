@@ -18,6 +18,8 @@ const PAGE_TO_PATH: Record<string, string> = {
   'bulk-actions': 'patterns/dashboard-and-my-application/my-applications/bulk-actions',
   'pattern-pending-tasks': 'patterns/dashboard-and-my-application/pending-tasks/pending-tasks',
   'pending-tasks': 'patterns/dashboard-and-my-application/pending-tasks/pending-tasks',
+  'pattern-no-pending-tasks': 'patterns/dashboard-and-my-application/pending-tasks/no-pending-tasks',
+  'no-pending-tasks': 'patterns/dashboard-and-my-application/pending-tasks/no-pending-tasks',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -916,6 +918,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('no-pending-tasks') || cleanPath.includes('no-pending-task')) {
+      return 'pattern-no-pending-tasks';
     }
     if (cleanPath.includes('pending-tasks') || cleanPath.includes('pending-task')) {
       return 'pattern-pending-tasks';

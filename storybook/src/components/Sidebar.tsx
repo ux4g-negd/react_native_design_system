@@ -1249,6 +1249,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'Pending Tasks',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-no-pending-tasks',
+                label: 'No Pending Tasks',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1369,7 +1374,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-no-pending-tasks' ||
       page === 'pattern-pending-tasks' ||
+      page.includes('no-pending-tasks') ||
       page.includes('pending-tasks')
     ) {
       return ['patterns', 'dashboard-and-my-application-group', 'pending-tasks-group'];
