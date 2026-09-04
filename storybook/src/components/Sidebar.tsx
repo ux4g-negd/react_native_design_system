@@ -1227,6 +1227,11 @@ const NAV_ITEMS: NavItem[] = [
                 label: 'No Applications',
                 icon: 'layers',
               },
+              {
+                id: 'pattern-search-applications',
+                label: 'Search Applications',
+                icon: 'layers',
+              },
             ],
           },
         ],
@@ -1347,8 +1352,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
     }
     if (
+      page === 'pattern-search-applications' ||
       page === 'pattern-my-applications' ||
       page === 'pattern-no-applications' ||
+      page.includes('search-applications') ||
       page.includes('no-applications') ||
       page.includes('my-applications') ||
       page.includes('dashboard-and-my-application')
