@@ -154,6 +154,7 @@ import { NoPendingTasksDoc } from './pages/NoPendingTasksDoc';
 import { CitizenProfileDoc } from './pages/CitizenProfileDoc';
 import { EditProfileDoc } from './pages/EditProfileDoc';
 import { DeleteAccountDialogDoc } from './pages/DeleteAccountDialogDoc';
+import { SearchAndBrowseServicesDoc } from './pages/SearchAndBrowseServicesDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
@@ -288,6 +289,13 @@ const getMobileBreadcrumb = (page: string) => {
   }
   if (page === 'pattern-eligibility-check-landing' || page.includes('eligibility-check-landing') || page.includes('eligibility-check-wizard')) {
     return 'Patterns / Application and Submission / Eligibility Check Wizard / Eligibility Check Landing';
+  }
+  if (
+    page === 'pattern-search-and-browse-services' ||
+    page.includes('search-and-browse-services') ||
+    page.includes('search-and-browse')
+  ) {
+    return 'Patterns / Search and Discovery / Search and Browse / Search and Browse Services';
   }
   if (page === 'pattern-delete-account-dialog' || page.includes('delete-account-dialog') || page.includes('delete-account')) {
     return 'Patterns / Dashboard and My Application / Citizen Profile and Preferences / Delete Account Dialog';
@@ -799,6 +807,13 @@ export const App: React.FC = () => {
     }
     if (activePage === 'pattern-document-upload-progress' || activePage.includes('document-upload-progress') || activePage.includes('document-upload-with-progress')) {
       return <DocumentUploadProgressDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'pattern-search-and-browse-services' ||
+      activePage.includes('search-and-browse-services') ||
+      activePage.includes('search-and-browse')
+    ) {
+      return <SearchAndBrowseServicesDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-delete-account-dialog' || activePage.includes('delete-account-dialog') || activePage.includes('delete-account')) {
       return <DeleteAccountDialogDoc isDark={isDark} />;

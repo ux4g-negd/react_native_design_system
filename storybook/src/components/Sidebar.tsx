@@ -1280,6 +1280,25 @@ const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
+      {
+        id: 'search-and-discovery-group',
+        label: 'Search and Discovery',
+        icon: 'folder',
+        children: [
+          {
+            id: 'search-and-browse-group',
+            label: 'Search and Browse',
+            icon: 'folder',
+            children: [
+              {
+                id: 'pattern-search-and-browse-services',
+                label: 'Search and Browse Services',
+                icon: 'layers',
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
@@ -1394,6 +1413,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       page.includes('application-sent')
     ) {
       return ['patterns', 'application-and-submission-group', 'government-form-with-validation-group'];
+    }
+    if (
+      page === 'pattern-search-and-browse-services' ||
+      page.includes('search-and-browse-services') ||
+      page.includes('search-and-browse') ||
+      page.includes('search-and-discovery')
+    ) {
+      return ['patterns', 'search-and-discovery-group', 'search-and-browse-group'];
     }
     if (
       page === 'pattern-delete-account-dialog' ||

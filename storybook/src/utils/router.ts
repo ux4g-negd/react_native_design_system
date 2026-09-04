@@ -26,6 +26,9 @@ const PAGE_TO_PATH: Record<string, string> = {
   'edit-profile': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/edit-profile',
   'pattern-delete-account-dialog': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/delete-account-dialog',
   'delete-account-dialog': 'patterns/dashboard-and-my-application/citizen-profile-and-preferences/delete-account-dialog',
+  'pattern-search-and-browse-services': 'patterns/search-and-discovery/search-and-browse/search-and-browse-services',
+  'search-and-browse-services': 'patterns/search-and-discovery/search-and-browse/search-and-browse-services',
+  'search-and-browse': 'patterns/search-and-discovery/search-and-browse/search-and-browse-services',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -924,6 +927,13 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (
+      cleanPath.includes('search-and-browse-services') ||
+      cleanPath.includes('search-and-browse') ||
+      cleanPath.includes('search-and-discovery')
+    ) {
+      return 'pattern-search-and-browse-services';
     }
     if (cleanPath.includes('delete-account-dialog') || cleanPath.includes('delete-account')) {
       return 'pattern-delete-account-dialog';
