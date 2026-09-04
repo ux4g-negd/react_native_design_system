@@ -87,6 +87,10 @@ const PAGE_TO_PATH: Record<string, string> = {
   'find-service-center': 'patterns/feedback-and-communication/contact-and-support/find-service-centre',
   'find-service-centre': 'patterns/feedback-and-communication/contact-and-support/find-service-centre',
   'pattern-find-service-centre': 'patterns/feedback-and-communication/contact-and-support/find-service-centre',
+  'pattern-was-this-helpful': 'patterns/feedback-and-communication/contact-and-support/was-this-helpful',
+  'was-this-helpful': 'patterns/feedback-and-communication/contact-and-support/was-this-helpful',
+  'pattern-was-this-helpful-alert': 'patterns/feedback-and-communication/contact-and-support/was-this-helpful',
+  'was-this-helpful-alert': 'patterns/feedback-and-communication/contact-and-support/was-this-helpful',
   'pattern-save-and-resume': 'patterns/application-and-submission/save-and-resume/save-and-resume',
   'colors-primary': 'token/colors/primary',
   'colors-secondary': 'token/colors/secondary',
@@ -986,6 +990,9 @@ export function getPageFromPath(path: string): string {
     }
     if (cleanPath.includes('eligibility-check-landing') || (cleanPath.includes('eligibility') && cleanPath.includes('landing'))) {
       return 'pattern-eligibility-check-landing';
+    }
+    if (cleanPath.includes('was-this-helpful') || (cleanPath.includes('helpful') && cleanPath.includes('alert')) || cleanPath.includes('helpful')) {
+      return 'pattern-was-this-helpful';
     }
     if (cleanPath.includes('find-service-center') || cleanPath.includes('find-service-centre') || (cleanPath.includes('find') && cleanPath.includes('service'))) {
       return 'pattern-find-service-center';
