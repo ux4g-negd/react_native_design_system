@@ -2,6 +2,9 @@
 const PAGE_TO_PATH: Record<string, string> = {
   introduction: 'introduction',
   quickstart: 'quickstart',
+  'component-mapping': 'component-mapping',
+  migration: 'component-mapping',
+  'getting-started-migration': 'component-mapping',
   'pattern-government-form-with-validation': 'patterns/application-and-submission/government-form-with-validation/government-form-with-validation',
   'pattern-government-form-with-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-errors',
   'pattern-government-form-with-multiple-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-multiple-errors',

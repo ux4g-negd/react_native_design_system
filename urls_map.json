@@ -10,6 +10,11 @@
     "url": "https://react-native.ux4g.gov.in/#/?path=quickstart"
   },
   {
+    "var_name": "componentMappingComponent",
+    "comp_name": "Component Mapping",
+    "url": "https://react-native.ux4g.gov.in/#/?path=component-mapping"
+  },
+  {
     "var_name": "themeColorComponent",
     "comp_name": "Colors",
     "url": "https://react-native.ux4g.gov.in/#/?path=token/colors/primary"

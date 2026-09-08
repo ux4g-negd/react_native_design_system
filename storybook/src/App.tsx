@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Introduction } from './pages/Introduction';
 import { QuickStart } from './pages/QuickStart';
+import { ComponentMappingDoc } from './pages/ComponentMappingDoc';
 import { ButtonDoc } from './pages/ButtonDoc';
 import { ButtonShowcaseDoc } from './pages/ButtonShowcaseDoc';
 import { IconButtonDoc } from './pages/IconButtonDoc';
@@ -193,6 +194,7 @@ import {
 const getMobileBreadcrumb = (page: string) => {
   if (page === 'introduction') return 'Introduction';
   if (page === 'quickstart') return 'Quick Start Guide';
+  if (page === 'component-mapping' || page === 'migration') return 'Component Mapping';
   if (page.startsWith('colors-')) {
     const s = page.replace('colors-', '');
     return `Token / Colors / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
@@ -1458,6 +1460,9 @@ export const App: React.FC = () => {
         return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
       case 'quickstart':
         return <QuickStart isDark={isDark} onNavigate={handleNavigate} />;
+      case 'component-mapping':
+      case 'migration':
+        return <ComponentMappingDoc isDark={isDark} onNavigate={handleNavigate} />;
       default:
         return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
     }

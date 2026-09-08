@@ -1,0 +1,800 @@
+{
+  "name": "UX4G React Native Design System Storybook",
+  "description": "Comprehensive Storybook catalog detailing all components, tokens, and patterns for the UX4G React Native Design System.",
+  "version": "1.0.0",
+  "base_url": "https://react-native.ux4g.gov.in/",
+  "categories": [
+    {
+      "name": "Overview",
+      "items": [
+        {
+          "name": "Introduction",
+          "url": "https://react-native.ux4g.gov.in/#/?path=introduction"
+        },
+        {
+          "name": "Quick Start Guide",
+          "url": "https://react-native.ux4g.gov.in/#/?path=quickstart"
+        },
+        {
+          "name": "Component Mapping",
+          "url": "https://react-native.ux4g.gov.in/#/?path=component-mapping"
+        }
+      ]
+    },
+    {
+      "name": "Tokens",
+      "items": [
+        {
+          "name": "Colors",
+          "url": "https://react-native.ux4g.gov.in/#/?path=token/colors/primary"
+        },
+        {
+          "name": "Typography",
+          "url": "https://react-native.ux4g.gov.in/#/?path=token/typography/header"
+        },
+        {
+          "name": "Spacing",
+          "url": "https://react-native.ux4g.gov.in/#/?path=token/dimensions/spacing"
+        },
+        {
+          "name": "Border Radius",
+          "url": "https://react-native.ux4g.gov.in/#/?path=token/dimensions/radius"
+        },
+        {
+          "name": "Border Width",
+          "url": "https://react-native.ux4g.gov.in/#/?path=token/dimensions/border"
+        },
+        {
+          "name": "Shadow",
+          "url": "https://react-native.ux4g.gov.in/#/?path=token/shadow/scale"
+        }
+      ]
+    },
+    {
+      "name": "Components",
+      "items": [
+        {
+          "name": "Accordion",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/accordion/basic"
+        },
+        {
+          "name": "AccordionGroup",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/accordion/group"
+        },
+        {
+          "name": "App Header",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/app-header/introduction"
+        },
+        {
+          "name": "Avatar",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/avatar/basic"
+        },
+        {
+          "name": "AvatarGroup",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/avatar/group"
+        },
+        {
+          "name": "ProfileAvatar",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/avatar/profile"
+        },
+        {
+          "name": "StatusAvatar",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/avatar/status"
+        },
+        {
+          "name": "Badge",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/badge/basic"
+        },
+        {
+          "name": "Buttons",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/button/introduction"
+        },
+        {
+          "name": "Button Showcase",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/button/showcase"
+        },
+        {
+          "name": "Icon Button",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/button/icon-button"
+        },
+        {
+          "name": "Cards",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/card/basic"
+        },
+        {
+          "name": "Carousel",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/carousel/introduction"
+        },
+        {
+          "name": "Checkbox",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/checkbox/basic"
+        },
+        {
+          "name": "Chips",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/chips/basic"
+        },
+        {
+          "name": "Chip Group",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/chip-group/wrap"
+        },
+        {
+          "name": "Date Picker",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/date-picker/single"
+        },
+        {
+          "name": "Divider",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/divider/basic"
+        },
+        {
+          "name": "Status Banner",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/status-banner/basic"
+        },
+        {
+          "name": "Dropdown",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/dropdown/basic"
+        },
+        {
+          "name": "Empty State",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/empty-state/basic"
+        },
+        {
+          "name": "FeedbackFormStar",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/feedback/feedbackformstar"
+        },
+        {
+          "name": "FeedbackFormCsat",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/feedback/feedbackformcsat"
+        },
+        {
+          "name": "FeedbackFormNps",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/feedback/feedbackformnps"
+        },
+        {
+          "name": "File Upload",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/fileupload/basic"
+        },
+        {
+          "name": "Input",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/input-field/basic"
+        },
+        {
+          "name": "Input Aadhaar",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/input-aadhaar/basic"
+        },
+        {
+          "name": "Input Pan-Card",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/input-pan/basic"
+        },
+        {
+          "name": "Input-OTP",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/input-otp/basic"
+        },
+        {
+          "name": "Journey Timeline",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/journey-timeline/basic"
+        },
+        {
+          "name": "Link",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/link/basic"
+        },
+        {
+          "name": "Modal",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/modal/full-preview"
+        },
+        {
+          "name": "Pagination",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/pagination/default-arrows"
+        },
+        {
+          "name": "Popover",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/popover/basic"
+        },
+        {
+          "name": "Progress Indicator",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/progress-indicator/linear"
+        },
+        {
+          "name": "Progress SLA Indicator",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/progress-sla-indicator/circular"
+        },
+        {
+          "name": "Radio",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/radio-button/basic"
+        },
+        {
+          "name": "Result List",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/result-list/basic"
+        },
+        {
+          "name": "Search Field",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/search-field/basic"
+        },
+        {
+          "name": "Slider",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/slider/basic"
+        },
+        {
+          "name": "Spinner (Loader)",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/spinner/basic"
+        },
+        {
+          "name": "Status Pipeline",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/status-pipeline/vertical/basic"
+        },
+        {
+          "name": "Stepper",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/stepper/horizontal"
+        },
+        {
+          "name": "CompactStepper",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/compact-stepper/linear"
+        },
+        {
+          "name": "Tags",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/tag/basic"
+        },
+        {
+          "name": "TextArea",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/text-area/basic"
+        },
+        {
+          "name": "TimePicker",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/time-picker/basic"
+        },
+        {
+          "name": "Toasts",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/toast/basic"
+        },
+        {
+          "name": "Switch (Toggle)",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/switch/basic"
+        },
+        {
+          "name": "Time Slot",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/time-slot/introduction"
+        },
+        {
+          "name": "Tooltip",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/tooltip/introduction"
+        }
+      ]
+    },
+    {
+      "name": "Patterns",
+      "items": [
+        {
+          "name": "Sign in to your account",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/sign-in-to-your-account"
+        },
+        {
+          "name": "Sign in account with Mobile No",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/sign-in-account-with-mobile-no"
+        },
+        {
+          "name": "Enter OTP",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/enter-otp"
+        },
+        {
+          "name": "Sign in with Aadhaar",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/sign-in-with-aadhaar"
+        },
+        {
+          "name": "Signed in success",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/signed-in-success"
+        },
+        {
+          "name": "Verify your mobile number",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/otp-verification/verify-your-mobile-number"
+        },
+        {
+          "name": "Verify mobile with voice fallback",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/otp-verification/verify-mobile-with-voice-fallback"
+        },
+        {
+          "name": "Verify mobile with attempt warning",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/otp-verification/verify-mobile-with-attempt-warning"
+        },
+        {
+          "name": "Verify mobile with last-attempt warning",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/otp-verification/verify-mobile-with-last-attempt-warning"
+        },
+        {
+          "name": "Verify mobile — account locked",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/otp-verification/verify-mobile-account-locked"
+        },
+        {
+          "name": "OTP verified — success",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/otp-verification/otp-verified-success"
+        },
+        {
+          "name": "Your session is expiring",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring"
+        },
+        {
+          "name": "Your session is expiring soon",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/session-timeout-dialog/your-session-is-expiring-soon"
+        },
+        {
+          "name": "Session ended",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/session-timeout-dialog/session-ended"
+        },
+        {
+          "name": "OTP error — incorrect entry",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/auth-errors-and-lockout/otp-error-incorrect-entry"
+        },
+        {
+          "name": "OTP error — attempt warning",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/auth-errors-and-lockout/otp-error-attempt-warning"
+        },
+        {
+          "name": "OTP error — last-attempt warning",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/auth-errors-and-lockout/otp-error-last-attempt-warning"
+        },
+        {
+          "name": "OTP error — account locked",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/auth-errors-and-lockout/otp-error-account-locked"
+        },
+        {
+          "name": "OTP retry — unlocked",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/auth-errors-and-lockout/otp-retry-unlocked"
+        },
+        {
+          "name": "OTP step-up — suspicious activity",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/auth-errors-and-lockout/otp-step-up-suspicious-activity"
+        },
+        {
+          "name": "Verify with Aadhaar — choose method",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/aadhaar-authentication-gate/verify-with-aadhaar-choose-method"
+        },
+        {
+          "name": "Aadhaar OTP — enter code",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-otp-enter-code"
+        },
+        {
+          "name": "Aadhaar Face Auth — camera permission",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-face-auth-camera-permission"
+        },
+        {
+          "name": "Aadhaar verified — success",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-verified-success"
+        },
+        {
+          "name": "Aadhaar verification failed",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-verification-failed"
+        },
+        {
+          "name": "Aadhaar account locked",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/aadhaar-authentication-gate/aadhaar-account-locked"
+        },
+        {
+          "name": "Operator-assisted authentication",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/aadhaar-authentication-gate/operator-assisted-authentication"
+        },
+        {
+          "name": "Create your account",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signup/create-account"
+        },
+        {
+          "name": "Verify your mobile",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signup/verify-your-mobile"
+        },
+        {
+          "name": "Complete your profile",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signup/complete-your-profile"
+        },
+        {
+          "name": "Password setup",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signup/password-setup"
+        },
+        {
+          "name": "Account Created",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signup/account-created"
+        },
+        {
+          "name": "Reset Password",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/forgot-password-and-account-recovery/reset-password"
+        },
+        {
+          "name": "Enter OTP",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/forgot-password-and-account-recovery/enter-otp"
+        },
+        {
+          "name": "Create new password",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/forgot-password-and-account-recovery/create-new-password"
+        },
+        {
+          "name": "Password reset successfully",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/forgot-password-and-account-recovery/password-reset-successfully"
+        },
+        {
+          "name": "Account recovery",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/forgot-password-and-account-recovery/account-recovery"
+        },
+        {
+          "name": "Notification",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/notification"
+        },
+        {
+          "name": "Reminder Alerts",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/reminder-alerts"
+        },
+        {
+          "name": "Notification Channels",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/notification-preferences/notification-channels"
+        },
+        {
+          "name": "Update Frequency",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/notification-preferences/update-frequency"
+        },
+        {
+          "name": "Per Service",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/notification-preferences/per-service"
+        },
+        {
+          "name": "Locked Notifications",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/notification-preferences/locked-notifications"
+        },
+        {
+          "name": "WhatsApp Consent",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/notification-preferences/whatsapp-consent"
+        },
+        {
+          "name": "Manage All",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/notification-preferences/manage-all"
+        },
+        {
+          "name": "Auto-dismiss Banner",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/proactive-status-update/auto-dismiss-banner"
+        },
+        {
+          "name": "Live Status",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/proactive-status-update/live-status"
+        },
+        {
+          "name": "Reconnecting State",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/proactive-status-update/reconnecting-state"
+        },
+        {
+          "name": "Manual Refresh Prompt",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/notification/proactive-status-update/manual-refresh-prompt"
+        },
+        {
+          "name": "Payment",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/payment-and-confirmation/payment"
+        },
+        {
+          "name": "Choose Payment Method",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/payment-and-confirmation/choose-payment-method"
+        },
+        {
+          "name": "Payment Processing",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/payment-and-confirmation/payment-processing"
+        },
+        {
+          "name": "Payment Successful",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/payment-and-confirmation/payment-successful"
+        },
+        {
+          "name": "Payment Failed",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/payment-and-confirmation/payment-failed"
+        },
+        {
+          "name": "Fee Waived",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/payment-and-confirmation/fee-waived"
+        },
+        {
+          "name": "Application Status Tracker",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/status-and-tracking/application-status-tracker"
+        },
+        {
+          "name": "Grievance Status Tracker",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/status-and-tracking/grievance-status-tracker"
+        },
+        {
+          "name": "Consent Capture",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/consent-capture/consent-capture"
+        },
+        {
+          "name": "Consent Capture (Consent Not Given)",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/consent-capture/consent-capture-consent-not-given"
+        },
+        {
+          "name": "Consent Management",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/consent-capture/consent-management"
+        },
+        {
+          "name": "Data Sharing Consent",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/data-sharing-consent/data-sharing-consent"
+        },
+        {
+          "name": "Manage Data Sharing Consents",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/data-sharing-consent/manage-data-sharing-consents"
+        },
+        {
+          "name": "Withdraw Consent Dialog",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/data-sharing-consent/withdraw-consent-dialog"
+        },
+        {
+          "name": "Consent History",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/data-sharing-consent/consent-history"
+        },
+        {
+          "name": "Declaration Before Submission",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/declaration-before-submission/declaration-before-submission"
+        },
+        {
+          "name": "Declaration with Digital Sign",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/consent-and-declaration/declaration-before-submission/declaration-with-digital-sign"
+        },
+        {
+          "name": "Save and Resume",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/save-and-resume/save-and-resume"
+        },
+        {
+          "name": "Continue Application",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/save-and-resume/continue-application"
+        },
+        {
+          "name": "Resume Application Missing Info",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/save-and-resume/resume-application-missing-info"
+        },
+        {
+          "name": "Auto-save Form",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/save-and-resume/auto-save-form"
+        },
+        {
+          "name": "Draft Expiry Form",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/save-and-resume/draft-expiry-form"
+        },
+        {
+          "name": "Unsaved Changes Dialog",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/save-and-resume/unsaved-changes-dialog"
+        },
+        {
+          "name": "Discard Draft Dialog",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/save-and-resume/discard-draft-dialog"
+        },
+        {
+          "name": "Application Submitted",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/submission-acknowledgement/application-submitted"
+        },
+        {
+          "name": "Application Queued",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/submission-acknowledgement/application-queued"
+        },
+        {
+          "name": "Could Not Submit",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/submission-acknowledgement/could-not-submit"
+        },
+        {
+          "name": "Document scan and upload",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/document-scan-and-upload/document-scan-and-upload"
+        },
+        {
+          "name": "Document upload with progress",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/document-scan-and-upload/document-upload-with-progress"
+        },
+        {
+          "name": "Document upload with review",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/document-scan-and-upload/document-upload-with-review"
+        },
+        {
+          "name": "Document upload success",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/document-scan-and-upload/document-upload-success"
+        },
+        {
+          "name": "Eligibility Check Landing",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/eligibility-check-wizard/eligibility-check-landing"
+        },
+        {
+          "name": "Eligibility Question Step",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/eligibility-check-wizard/eligibility-question-step"
+        },
+        {
+          "name": "Eligibility Final Question Step",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/eligibility-check-wizard/eligibility-final-question-step"
+        },
+        {
+          "name": "Eligibility Success Step",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/eligibility-check-wizard/eligibility-success-step"
+        },
+        {
+          "name": "Eligibility Failure Step",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/eligibility-check-wizard/eligibility-failure-step"
+        },
+        {
+          "name": "Eligibility Warning Step",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/eligibility-check-wizard/eligibility-warning-step"
+        },
+        {
+          "name": "Journey Progress Indicator",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/journey-progress-indicator/journey-progress-indicator"
+        },
+        {
+          "name": "Resume Journey",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/journey-progress-indicator/resume-journey"
+        },
+        {
+          "name": "Validation Error",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/journey-progress-indicator/validation-error"
+        },
+        {
+          "name": "Government form with validation",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/government-form-with-validation/government-form-with-validation"
+        },
+        {
+          "name": "Government form with errors",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/government-form-with-validation/government-form-with-errors"
+        },
+        {
+          "name": "Government form with multiple errors",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/government-form-with-validation/government-form-with-multiple-errors"
+        },
+        {
+          "name": "Application sent success",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/application-and-submission/government-form-with-validation/application-sent-success"
+        },
+        {
+          "name": "My Applications",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/my-applications/my-applications"
+        },
+        {
+          "name": "No Applications",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/my-applications/no-applications"
+        },
+        {
+          "name": "Search Applications",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/my-applications/search-applications"
+        },
+        {
+          "name": "Bulk Actions",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/my-applications/bulk-actions"
+        },
+        {
+          "name": "Pending Tasks",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/pending-tasks/pending-tasks"
+        },
+        {
+          "name": "No Pending Tasks",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/pending-tasks/no-pending-tasks"
+        },
+        {
+          "name": "Citizen Profile",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/citizen-profile-and-preferences/citizen-profile"
+        },
+        {
+          "name": "Edit Profile",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/citizen-profile-and-preferences/edit-profile"
+        },
+        {
+          "name": "Delete Account Dialog",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/dashboard-and-my-application/citizen-profile-and-preferences/delete-account-dialog"
+        },
+        {
+          "name": "Search and Browse Services",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/search-and-browse/search-and-browse-services"
+        },
+        {
+          "name": "Search with Results",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/search-and-browse/search-with-results"
+        },
+        {
+          "name": "Search Results List",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/search-and-browse/search-results-list"
+        },
+        {
+          "name": "No Results",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/search-and-browse/no-results"
+        },
+        {
+          "name": "Global Service Discovery",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/global-service-discovery/global-service-discovery"
+        },
+        {
+          "name": "Category Service List",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/global-service-discovery/category-service-list"
+        },
+        {
+          "name": "Service Detail",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/global-service-discovery/service-detail"
+        },
+        {
+          "name": "Select Advocate",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/consultation-slot-booking/select-advocate"
+        },
+        {
+          "name": "Select Appointment Time",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/consultation-slot-booking/select-appointment-time"
+        },
+        {
+          "name": "Confirm Appointment V2",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/consultation-slot-booking/confirm-appointment-v2"
+        },
+        {
+          "name": "Appointment Confirmed",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/search-and-discovery/consultation-slot-booking/appointment-confirmed"
+        },
+        {
+          "name": "Inline Feedback",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback"
+        },
+        {
+          "name": "Inline Feedback Error",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-error"
+        },
+        {
+          "name": "Inline Feedback Hint",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-hint"
+        },
+        {
+          "name": "Inline Feedback Guidance",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-guidance"
+        },
+        {
+          "name": "Inline Feedback Verification",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-verification"
+        },
+        {
+          "name": "Inline Feedback Note",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/inline-feedback-and-status-communication/inline-feedback-note"
+        },
+        {
+          "name": "Service Completed",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/service-completion-and-feedback/service-completed"
+        },
+        {
+          "name": "Rate Your Experience",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/service-completion-and-feedback/rate-your-experience"
+        },
+        {
+          "name": "Rate Experience Card",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/service-completion-and-feedback/rate-experience-card"
+        },
+        {
+          "name": "Help Centre",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/contact-and-support/help-center"
+        },
+        {
+          "name": "FAQ Detail",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/contact-and-support/faq-details"
+        },
+        {
+          "name": "Contact Support",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/contact-and-support/contact-support"
+        },
+        {
+          "name": "Live Chat Support",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/contact-and-support/live-chat-support"
+        },
+        {
+          "name": "File a Complaint",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/contact-and-support/file-a-complaint"
+        },
+        {
+          "name": "Find Service Centre",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/contact-and-support/find-service-centre"
+        },
+        {
+          "name": "Was This Helpful Alert",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/contact-and-support/was-this-helpful"
+        },
+        {
+          "name": "Language Switcher",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/language-switcher/language-switcher"
+        },
+        {
+          "name": "Inline Language Toggle",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/language-switcher/inline-language-toggle"
+        },
+        {
+          "name": "Translation Unavailable",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/language-switcher/translation-unavailable"
+        },
+        {
+          "name": "All Scheduled Languages",
+          "url": "https://react-native.ux4g.gov.in/#/?path=patterns/feedback-and-communication/language-switcher/all-scheduled-languages"
+        }
+      ]
+    }
+  ]
+}
