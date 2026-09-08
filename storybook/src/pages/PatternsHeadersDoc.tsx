@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
 
     const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${
       isDark ? 'dark' : 'light'
-    }&name=UX4G%20Header%20Pattern&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.5,react-native-svg@*&code=${encodeURIComponent(
+    }&name=UX4G%20Header%20Pattern&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(
       snackCodeString
     )}`;
 

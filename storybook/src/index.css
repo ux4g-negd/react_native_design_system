@@ -510,6 +510,27 @@ body {
   color: #C4B5FD;
 }
 
+.beta-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: 100px;
+  background: #EDE9FE;
+  border: 1px solid #DDD6FE;
+  color: #6D28D9;
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 24px;
+  margin-left: 8px;
+  letter-spacing: 1px;
+}
+
+.welcome-wrapper.dark .beta-badge {
+  background: rgba(49, 46, 129, 0.5);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #C4B5FD;
+}
+
 .hero-tagline {
   font-size: 22px;
   font-weight: 700;

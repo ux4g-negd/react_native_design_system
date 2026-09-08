@@ -21,6 +21,7 @@ export const Introduction: React.FC<IntroductionProps> = ({ isDark, onNavigate }
               UX4G Design System
             </h1>
             <div className="version-badge">3.0</div>
+            <div className="beta-badge">BETA</div>
 
             <h2 className="hero-tagline">
               Government-grade UI foundations for trusted public digital experiences.
