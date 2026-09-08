@@ -19,7 +19,7 @@ interface SidebarProps {
 const NAV_ITEMS: NavItem[] = [
   { id: 'introduction', label: 'Introduction', icon: 'bookmark' },
   { id: 'quickstart', label: 'Quick Start Guide', icon: 'bookmark' },
-  { id: 'component-mapping', label: 'Component Mapping', icon: 'bookmark' },
+  { id: 'component-mapping', label: 'Migration', icon: 'bookmark' },
   {
     id: 'tokens',
     label: 'Token',

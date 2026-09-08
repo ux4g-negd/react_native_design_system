@@ -194,7 +194,7 @@ import {
 const getMobileBreadcrumb = (page: string) => {
   if (page === 'introduction') return 'Introduction';
   if (page === 'quickstart') return 'Quick Start Guide';
-  if (page === 'component-mapping' || page === 'migration') return 'Component Mapping';
+  if (page === 'component-mapping' || page === 'migration') return 'Migration';
   if (page.startsWith('colors-')) {
     const s = page.replace('colors-', '');
     return `Token / Colors / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
