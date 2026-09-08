@@ -58,9 +58,9 @@ interface TabDef {
 
 const TABS: TabDef[] = [
   { id: 'components', label: 'Components', badge: `${RN_COMPONENTS_DATA.length}` },
-  { id: 'props-mapping', label: 'Props & API Mapping', badge: '12 APIs' },
+  { id: 'props-mapping', label: 'Props & API Mapping', badge: `${RN_PROPS_MAPPING_DATA.length} APIs` },
   { id: 'tokens', label: 'Tokens & Theming', badge: 'Parity' },
-  { id: 'gov-exclusive', label: 'Gov-Exclusive Modules', badge: '12+' },
+  { id: 'gov-exclusive', label: 'Gov-Exclusive Modules', badge: '8+' },
 ];
 
 export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
@@ -119,7 +119,9 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
   }, [selectedCompFilter, propSearch]);
 
   const uniquePropComponents = useMemo(() => {
-    return Array.from(new Set(RN_PROPS_MAPPING_DATA.map((p) => p.component)));
+    return Array.from(new Set(RN_PROPS_MAPPING_DATA.map((p) => p.component))).sort((a, b) =>
+      a.localeCompare(b)
+    );
   }, []);
 
   return (
@@ -153,7 +155,7 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                   (e.target as HTMLElement).style.display = 'none';
                 }}
               />
-              <span className="mg-framework-text-logo">UX4G</span>
+              {/* <span className="mg-framework-text-logo">UX4G</span> */}
             </span>
 
             <span className="mg-framework-arrow">↔</span>
@@ -301,7 +303,7 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                 <div className="mg-section-title-row">
                   <h2 className="mg-section-heading">Props & API Migration Mapping</h2>
                   <span className="mg-count-pill">
-                    {filteredProps.length} Props Mappings
+                    {filteredProps.length} of {RN_PROPS_MAPPING_DATA.length} Props ({uniquePropComponents.length} Components)
                   </span>
                 </div>
                 <p className="mg-section-desc">
@@ -317,18 +319,21 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                 onClick={() => setSelectedCompFilter('all')}
                 className={`mg-pill-btn ${selectedCompFilter === 'all' ? 'is-active' : ''}`}
               >
-                All Components
+                All Components ({RN_PROPS_MAPPING_DATA.length})
               </button>
-              {uniquePropComponents.map((comp) => (
-                <button
-                  key={comp}
-                  type="button"
-                  onClick={() => setSelectedCompFilter(comp)}
-                  className={`mg-pill-btn ${selectedCompFilter === comp ? 'is-active' : ''}`}
-                >
-                  {comp}
-                </button>
-              ))}
+              {uniquePropComponents.map((comp) => {
+                const count = RN_PROPS_MAPPING_DATA.filter((p) => p.component === comp).length;
+                return (
+                  <button
+                    key={comp}
+                    type="button"
+                    onClick={() => setSelectedCompFilter(comp)}
+                    className={`mg-pill-btn ${selectedCompFilter === comp ? 'is-active' : ''}`}
+                  >
+                    {comp} ({count})
+                  </button>
+                );
+              })}
             </div>
 
             {/* Filter Bar */}
@@ -350,11 +355,12 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
               <table className="mg-table">
                 <thead>
                   <tr>
-                    <th style={{ width: '14%' }}>Component</th>
-                    <th style={{ width: '16%' }}>Prop Area</th>
-                    <th className="mg-th-ux4g" style={{ width: '25%' }}>UX4G React Native Prop</th>
-                    <th className="mg-th-bs" style={{ width: '22%' }}>RN Paper Equivalent</th>
-                    <th className="mg-th-m3" style={{ width: '23%' }}>Description & Migration</th>
+                    <th style={{ width: '13%' }}>Component</th>
+                    <th style={{ width: '13%' }}>Prop Area</th>
+                    <th className="mg-th-ux4g" style={{ width: '22%' }}>UX4G React Native Prop</th>
+                    <th className="mg-th-bs" style={{ width: '18%' }}>RN Paper Equivalent</th>
+                    <th className="mg-th-m3" style={{ width: '18%' }}>RN Elements Equivalent</th>
+                    <th style={{ width: '16%' }}>Description & Migration</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -372,6 +378,11 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                       <td>
                         <code className="mg-css-code" style={{ color: '#7952b3' }}>
                           {item.paperProp}
+                        </code>
+                      </td>
+                      <td>
+                        <code className="mg-css-code" style={{ color: '#0284c7' }}>
+                          {item.rneProp}
                         </code>
                       </td>
                       <td style={{ fontSize: 13, color: isDark ? '#cbd5e1' : '#475569' }}>
