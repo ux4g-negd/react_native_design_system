@@ -925,3 +925,119 @@
   background-color: #5b3ae6;
   transition: width 0.5s ease-in-out;
 }
+
+/* Matrix Cards & Headers in Tokens Tab */
+.mg-matrix-card {
+  margin-bottom: 2.5rem;
+}
+
+.mg-matrix-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.mg-matrix-header h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.mg-page.dark .mg-matrix-header h3 {
+  color: #f8fafc;
+}
+
+/* Header Actions & Download Button */
+.mg-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mg-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: #ffffff;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 150ms ease-in-out;
+  white-space: nowrap;
+}
+
+.mg-download-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.mg-download-btn:active {
+  background-color: #f1f5f9;
+}
+
+.mg-download-btn.is-success {
+  background-color: #f0fdf4;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+.mg-download-icon {
+  font-size: 17px !important;
+  color: #64748b;
+  line-height: 1;
+  transition: color 150ms ease;
+}
+
+.mg-download-btn:hover .mg-download-icon {
+  color: #0f172a;
+}
+
+.mg-download-btn.is-success .mg-download-icon {
+  color: #15803d;
+}
+
+/* Dark Mode */
+.mg-page.dark .mg-download-btn {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+  box-shadow: none;
+}
+
+.mg-page.dark .mg-download-btn:hover {
+  background-color: #334155;
+  border-color: #475569;
+  color: #ffffff;
+}
+
+.mg-page.dark .mg-download-icon {
+  color: #94a3b8;
+}
+
+.mg-page.dark .mg-download-btn:hover .mg-download-icon {
+  color: #ffffff;
+}
+
+.mg-page.dark .mg-download-btn.is-success {
+  background-color: rgba(22, 101, 52, 0.2);
+  border-color: #166534;
+  color: #86efac;
+}
+
+.mg-page.dark .mg-download-btn.is-success .mg-download-icon {
+  color: #86efac;
+}
+
+
+

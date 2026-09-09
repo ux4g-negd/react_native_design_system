@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { RN_COMPONENTS_DATA, type RNComponentItem } from '../data/migration/rnComponentsData';
 import { RN_PROPS_MAPPING_DATA } from '../data/migration/rnPropsMappingData';
 import { RN_TOKENS_DATA } from '../data/migration/rnTokensData';
+import { MIGRATION_MD_CONTENT } from '../data/migration/migrationMarkdown';
 import './ComponentMappingDoc.css';
 
 interface ComponentMappingDocProps {
@@ -97,9 +98,17 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
 
       if (compFilter === 'all') return true;
       if (compFilter === 'all-three') return item.match === 'all-three';
-      if (compFilter === 'ux4g-only') return item.match === 'ux4g-only';
-      if (compFilter === 'partial') return item.match === 'partial';
       if (compFilter === 'has-ux4g') return item.ux4gText.includes('Yes');
+      if (compFilter === 'ux4g-only') return item.match === 'ux4g-only';
+      if (compFilter === 'has-paper') return item.paperText.includes('Yes');
+      if (compFilter === 'only-paper') {
+        return item.paperText.includes('Yes') && !item.ux4gText.includes('Yes');
+      }
+      if (compFilter === 'has-rne') return item.rneText.includes('Yes');
+      if (compFilter === 'only-rne') {
+        return item.rneText.includes('Yes') && !item.ux4gText.includes('Yes');
+      }
+      if (compFilter === 'partial') return item.match === 'partial';
       return true;
     });
   }, [compSearch, compFilter]);
@@ -123,6 +132,26 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
       a.localeCompare(b)
     );
   }, []);
+
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+
+  const handleDownloadMigrationDoc = () => {
+    try {
+      const blob = new Blob([MIGRATION_MD_CONTENT], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'MIGRATION.md';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      setDownloadSuccess(true);
+      setTimeout(() => setDownloadSuccess(false), 3000);
+    } catch (err) {
+      console.error('Failed to download MIGRATION.md:', err);
+    }
+  };
 
   return (
     <div className={`mg-page ${isDark ? 'dark' : ''}`}>
@@ -209,7 +238,7 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
         {activeTab === 'components' && (
           <section>
             <div className="mg-section-header">
-              <div>
+              <div style={{ flex: 1, minWidth: 260 }}>
                 <div className="mg-section-title-row">
                   <h2 className="mg-section-heading">Component Mapping</h2>
                   <span className="mg-count-pill">
@@ -219,6 +248,20 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                 <p className="mg-section-desc">
                   Side-by-side component availability across UX4G React Native, React Native Paper (MD3), and React Native Elements.
                 </p>
+              </div>
+
+              <div className="mg-header-actions" style={{ marginLeft: 'auto' }}>
+                <button
+                  type="button"
+                  onClick={handleDownloadMigrationDoc}
+                  className={`mg-download-btn ${downloadSuccess ? 'is-success' : ''}`}
+                  title="Download MIGRATION.md guide"
+                >
+                  <span className="material-symbols-outlined mg-download-icon">
+                    {downloadSuccess ? 'check' : 'download'}
+                  </span>
+                  <span>migration.md</span>
+                </button>
               </div>
             </div>
 
@@ -242,9 +285,13 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
               >
                 <option value="all">All Components</option>
                 <option value="all-three">In All 3 Libraries</option>
-                <option value="ux4g-only">UX4G Exclusive</option>
-                <option value="partial">Partial / Alternative</option>
                 <option value="has-ux4g">Has UX4G</option>
+                <option value="ux4g-only">UX4G Exclusive</option>
+                <option value="has-paper">Has RN Paper</option>
+                <option value="only-paper">Only RN Paper</option>
+                <option value="has-rne">Has NativeBase / RN Elements</option>
+                <option value="only-rne">Only NativeBase / RN Elements</option>
+                <option value="partial">Partial / Alternative</option>
               </select>
             </div>
 
