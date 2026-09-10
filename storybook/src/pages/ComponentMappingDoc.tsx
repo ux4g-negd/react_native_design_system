@@ -3,6 +3,7 @@ import { RN_COMPONENTS_DATA, type RNComponentItem } from '../data/migration/rnCo
 import { RN_PROPS_MAPPING_DATA } from '../data/migration/rnPropsMappingData';
 import { RN_TOKENS_DATA } from '../data/migration/rnTokensData';
 import { MIGRATION_MD_CONTENT } from '../data/migration/migrationMarkdown';
+import { MIGRATION_PROMPT_MD_CONTENT } from '../data/migration/migrationPromptMarkdown';
 import './ComponentMappingDoc.css';
 
 interface ComponentMappingDocProps {
@@ -134,6 +135,7 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
   }, []);
 
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [downloadPromptSuccess, setDownloadPromptSuccess] = useState(false);
 
   const handleDownloadMigrationDoc = () => {
     try {
@@ -150,6 +152,24 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
       setTimeout(() => setDownloadSuccess(false), 3000);
     } catch (err) {
       console.error('Failed to download MIGRATION.md:', err);
+    }
+  };
+
+  const handleDownloadPromptDoc = () => {
+    try {
+      const blob = new Blob([MIGRATION_PROMPT_MD_CONTENT], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'migration-prompt.md';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      setDownloadPromptSuccess(true);
+      setTimeout(() => setDownloadPromptSuccess(false), 3000);
+    } catch (err) {
+      console.error('Failed to download migration-prompt.md:', err);
     }
   };
 
@@ -206,6 +226,32 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
             Detailed cross-framework component mapping for 42+ UX4G React Native components, React Native Paper
             (Material Design 3) and React Native Elements equivalents, props parity, and migration guidelines.
           </p>
+
+          {/* Download Action Buttons */}
+          <div className="mg-hero-actions" style={{ marginTop: '1.25rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={handleDownloadMigrationDoc}
+              className={`mg-download-btn ${downloadSuccess ? 'is-success' : ''}`}
+              title="Download MIGRATION.md guide"
+            >
+              <span className="material-symbols-outlined mg-download-icon">
+                {downloadSuccess ? 'check' : 'download'}
+              </span>
+              <span>migration.md</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleDownloadPromptDoc}
+              className={`mg-download-btn ${downloadPromptSuccess ? 'is-success' : ''}`}
+              title="Download migration-prompt.md for AI coding assistants"
+            >
+              <span className="material-symbols-outlined mg-download-icon">
+                {downloadPromptSuccess ? 'check' : 'terminal'}
+              </span>
+              <span>migration-prompt.md</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -248,20 +294,6 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                 <p className="mg-section-desc">
                   Side-by-side component availability across UX4G React Native, React Native Paper (MD3), and React Native Elements.
                 </p>
-              </div>
-
-              <div className="mg-header-actions" style={{ marginLeft: 'auto' }}>
-                <button
-                  type="button"
-                  onClick={handleDownloadMigrationDoc}
-                  className={`mg-download-btn ${downloadSuccess ? 'is-success' : ''}`}
-                  title="Download MIGRATION.md guide"
-                >
-                  <span className="material-symbols-outlined mg-download-icon">
-                    {downloadSuccess ? 'check' : 'download'}
-                  </span>
-                  <span>migration.md</span>
-                </button>
               </div>
             </div>
 
