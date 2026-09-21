@@ -17,8 +17,8 @@ export const RN_TOKENS_DATA = {
     },
     crossPlatform: {
       pct: "100%",
-      label: "Web & Flutter Parity",
-      text: "Same token design taxonomy across React Native, Flutter, and Web."
+      label: "Android & iOS Parity",
+      text: "Consistent design tokens and touch targets across Android and iOS."
     }
   },
   colorTokens: [

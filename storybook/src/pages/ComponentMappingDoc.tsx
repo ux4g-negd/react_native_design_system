@@ -332,12 +332,11 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
               <table className="mg-table">
                 <thead>
                   <tr>
-                    <th style={{ width: '4%' }}>#</th>
-                    <th style={{ width: '22%' }}>Component Name</th>
-                    <th className="mg-th-ux4g" style={{ width: '24%' }}>UX4G React Native</th>
-                    <th className="mg-th-bs" style={{ width: '22%' }}>RN Paper (MD3)</th>
-                    <th className="mg-th-m3" style={{ width: '20%' }}>RN Elements / NativeBase</th>
-                    <th style={{ width: '8%' }}>Docs</th>
+                    <th style={{ width: '5%' }}>#</th>
+                    <th style={{ width: '25%' }}>Component Name</th>
+                    <th className="mg-th-ux4g" style={{ width: '25%' }}>UX4G React Native</th>
+                    <th className="mg-th-bs" style={{ width: '23%' }}>RN Paper (MD3)</th>
+                    <th className="mg-th-m3" style={{ width: '22%' }}>RN Elements / NativeBase</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -353,19 +352,6 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                       <td dangerouslySetInnerHTML={{ __html: item.ux4gHtml }} />
                       <td dangerouslySetInnerHTML={{ __html: item.paperHtml }} />
                       <td dangerouslySetInnerHTML={{ __html: item.rneHtml }} />
-                      <td>
-                        {onNavigate && (
-                          <button
-                            type="button"
-                            onClick={() => onNavigate(item.storybookId)}
-                            className="mg-page-btn"
-                            style={{ padding: '2px 8px', fontSize: '11px', height: 'auto' }}
-                            title={`View ${item.name} story`}
-                          >
-                            View &rarr;
-                          </button>
-                        )}
-                      </td>
                     </tr>
                   ))}
                 </tbody>
