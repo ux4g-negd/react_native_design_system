@@ -61,7 +61,6 @@ export const Ux4gFeedbackFormCsat: React.FC<Ux4gFeedbackFormCsatProps> = ({
 
   const isFormValid = () => {
     if (rating === null) return false;
-    if (!comment.trim()) return false;
     if (minWords > 0 && getWordCount(comment) < minWords) return false;
     return true;
   };

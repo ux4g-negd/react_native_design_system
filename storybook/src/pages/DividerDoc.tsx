@@ -31,12 +31,12 @@ export const DividerDoc: React.FC<DividerDocProps> = ({ isDark, story = 'divider
     lines.push('/>');
     lines.push('');
     lines.push('// Divider with Center Label');
-    lines.push('<Ux4gDivider label="OR" />');
+    lines.push('<Ux4gDivider label="OR" labelSpacing={16} />');
     lines.push('');
     lines.push('// Vertical Divider');
-    lines.push('<View style={{ flexDirection: "row", height: 40, alignItems: "center" }}>');
+    lines.push('<View style={{ flexDirection: "row", height: 40, alignItems: "center", gap: 16 }}>');
     lines.push('  <Text>Left Item</Text>');
-    lines.push('  <Ux4gDivider orientation="vertical" />');
+    lines.push('  <Ux4gDivider orientation="vertical" startIndent={8} endIndent={8} />');
     lines.push('  <Text>Right Item</Text>');
     lines.push('</View>');
     return lines.join('\n');
@@ -47,49 +47,49 @@ export const DividerDoc: React.FC<DividerDocProps> = ({ isDark, story = 'divider
     let componentsSnippet = '';
 
     if (story === 'divider-styles') {
-      componentsSnippet = `        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 8 }}>Solid Line (Default):</Text>
+      componentsSnippet = `        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 12 }}>Solid Line (Default):</Text>
         <Ux4gDivider style="solid" thickness={1} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 8 }}>Dashed Line:</Text>
+        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 12 }}>Dashed Line:</Text>
         <Ux4gDivider style="dashed" thickness={2} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 8 }}>Dotted Line:</Text>
+        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 12 }}>Dotted Line:</Text>
         <Ux4gDivider style="dotted" thickness={2} />`;
     } else if (story === 'divider-label') {
-      componentsSnippet = `        <Ux4gDivider label="OR" />
+      componentsSnippet = `        <Ux4gDivider label="OR" labelSpacing={16} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Ux4gDivider label="SECTION HEADER" style="dashed" />
+        <Ux4gDivider label="SECTION HEADER" style="dashed" labelSpacing={16} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Ux4gDivider label="CONTINUE" style="dotted" thickness={2} />`;
+        <Ux4gDivider label="CONTINUE" style="dotted" thickness={2} labelSpacing={16} />`;
     } else if (story === 'divider-vertical') {
-      componentsSnippet = `        <View style={{ flexDirection: 'row', alignItems: 'center', height: 48 }}>
-          <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"} }}>Section A</Text>
+      componentsSnippet = `        <View style={{ flexDirection: 'row', alignItems: 'center', height: 48, gap: 16 }}>
+          <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, fontWeight: '500' }}>Section A</Text>
           <Ux4gDivider orientation="vertical" startIndent={8} endIndent={8} />
-          <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"} }}>Section B</Text>
-          <Ux4gDivider orientation="vertical" style="dashed" startIndent={8} endIndent={8} />
-          <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"} }}>Section C</Text>
+          <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, fontWeight: '500' }}>Section B</Text>
+          <Ux4gDivider orientation="vertical" startIndent={8} endIndent={8} />
+          <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, fontWeight: '500' }}>Section C</Text>
         </View>`;
     } else {
-      componentsSnippet = `        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 8 }}>Standard Horizontal Divider:</Text>
+      componentsSnippet = `        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 12 }}>Standard Horizontal Divider:</Text>
         <Ux4gDivider />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 8 }}>Indented Dashed Divider:</Text>
+        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 12 }}>Indented Dashed Divider:</Text>
         <Ux4gDivider style="dashed" startIndent={24} endIndent={24} thickness={1.5} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 8 }}>Divider with Center Label:</Text>
-        <Ux4gDivider label="OR LOG IN WITH" />`;
+        <Text style={{ color: ${isDark ? "'#fff'" : "'#333'"}, marginBottom: 12 }}>Divider with Center Label:</Text>
+        <Ux4gDivider label="OR LOG IN WITH" labelSpacing={16} />`;
     }
 
     const snackCodeString = `import React from 'react';
@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
 

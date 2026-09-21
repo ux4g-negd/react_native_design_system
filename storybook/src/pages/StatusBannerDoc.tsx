@@ -119,7 +119,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
 

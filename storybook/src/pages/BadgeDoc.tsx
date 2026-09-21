@@ -239,7 +239,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
-    padding: 20
+    padding: 20,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
 

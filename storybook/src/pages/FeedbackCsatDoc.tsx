@@ -31,7 +31,7 @@ export default function App() {
     <Ux4gThemeProvider isDark={${isDark}}>
       <View style={styles.container}>
         <Ux4gFeedbackFormCsat
-          onSubmit={(rating, comment) => console.log(rating, comment)}
+          onSubmit={(rating, comment) => console.log('Submitted rating:', rating, comment)}
           onSkip={() => console.log('Skipped')}
         />
       </View>
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
 });`;
 

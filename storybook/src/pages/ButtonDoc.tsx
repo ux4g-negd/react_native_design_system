@@ -71,7 +71,7 @@ import { Ux4gButton, Ux4gThemeProvider, UX4GColors } from 'ux4g-react-native-des
 
 export default function App() {
   return (
-    <Ux4gThemeProvider isDark={false}>
+    <Ux4gThemeProvider isDark={${isDark}}>
       <View style={styles.container}>
 ${componentsSnippet}
       </View>
@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
-    padding: 20
+    padding: 20,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
     const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;

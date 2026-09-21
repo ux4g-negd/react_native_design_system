@@ -134,7 +134,8 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     minHeight: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
 

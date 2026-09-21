@@ -1239,7 +1239,7 @@ import { Ux4gButton, Ux4gThemeProvider, UX4GColors } from 'ux4g-react-native-des
 
 export default function App() {
   return (
-    <Ux4gThemeProvider isDark={false}>
+    <Ux4gThemeProvider isDark={${t}}>
       <View style={styles.container}>
 ${U}
       </View>
@@ -1253,7 +1253,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
-    padding: 20
+    padding: 20,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
 });`,F=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(k)}`;return e.jsx("iframe",{src:F,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Preview"})},T=[{name:"text",type:"string",default:"undefined",desc:"Text label inside the button.",required:!1},{name:"children",type:"ReactNode",default:"undefined",desc:"Custom child content overriding/supplementing text.",required:!1},{name:"variant",type:"'primary' | 'secondary' | 'outline' | 'ghost'",default:"'primary'",desc:"Visual button style variant.",required:!1},{name:"size",type:"'small' | 'medium' | 'large'",default:"'medium'",desc:"Button sizing preset.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether button is interactive and enabled.",required:!1},{name:"isLoading",type:"boolean",default:"false",desc:"Shows spinner and prevents press.",required:!1},{name:"backgroundColor",type:"string",default:"variant-based token",desc:"Background color override.",required:!1},{name:"contentColor",type:"string",default:"variant-based token",desc:"Foreground text/icon color override.",required:!1},{name:"disabledBackgroundColor",type:"string",default:"computed disabled color",desc:"Background color override when disabled.",required:!1},{name:"disabledContentColor",type:"string",default:"computed disabled color",desc:"Foreground color override when disabled.",required:!1},{name:"borderColor",type:"string",default:"variant-based token",desc:"Border color override.",required:!1},{name:"borderWidth",type:"number",default:"variant-based",desc:"Border width override.",required:!1},{name:"borderRadius",type:"number",default:"theme.radius.radius8",desc:"Corner radius override.",required:!1},{name:"paddingHorizontal",type:"number",default:"size-based",desc:"Horizontal padding override.",required:!1},{name:"paddingVertical",type:"number",default:"size-based",desc:"Vertical padding override.",required:!1},{name:"leadingIcon",type:"Ux4gIconProp",default:"undefined",desc:"Icon rendered before text.",required:!1},{name:"trailingIcon",type:"Ux4gIconProp",default:"undefined",desc:"Icon rendered after text.",required:!1},{name:"iconSize",type:"number",default:"size-based",desc:"Explicit icon size override.",required:!1},{name:"width",type:"DimensionValue",default:"undefined",desc:"Explicit width.",required:!1},{name:"height",type:"number",default:"size-based",desc:"Explicit height.",required:!1},{name:"elevation",type:"number",default:"0",desc:"Android elevation / iOS shadow depth.",required:!1},{name:"style",type:"StyleProp<ViewStyle> | (state) => StyleProp<ViewStyle>",default:"undefined",desc:"Style override for button container.",required:!1},{name:"contentContainerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for inner content row.",required:!1},{name:"textStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for label text.",required:!1},{name:"onPress",type:"() => void",default:"required",desc:"Press handler callback.",required:!0},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Button"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Button trigger an action or event, such as submitting a form, opening a dialog or performing a specific task. It provide users with a clear Call to Action (CTA), guiding them through a workflow."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"}),"Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"}),"Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"}),"Props"]})]}),e.jsxs("div",{className:"wb-tab-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:b()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:C,language:"TSX",filename:"ButtonExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:T.map(U=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[U.name,U.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:U.type})}),e.jsx("td",{children:U.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:U.default})})]},U.name))})]})})]})]})})]})},Z3=({isDark:t})=>{const[i,o]=m.useState("preview"),c=`import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
@@ -2624,7 +2625,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
-    padding: 20
+    padding: 20,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
 });`,x=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gBadge%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(y)}`;return e.jsx("iframe",{src:x,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Badge Preview"})},p=[{name:"child",type:"ReactNode",default:"undefined",desc:"Child element around which badge is overlaid.",required:!1},{name:"children",type:"ReactNode",default:"undefined",desc:"Alias for child.",required:!1},{name:"variant",type:"'dot' | 'count' | 'label' | 'icon' | 'readyToUse'",default:"'dot'",desc:"Type of badge indicator (auto-inferred when omitted).",required:!1},{name:"count",type:"number",default:"undefined",desc:"Numeric count value for count variant.",required:!1},{name:"limit",type:"'singleDigit' | 'doubleDigit'",default:"'singleDigit'",desc:"Threshold formatting (9+ or 99+).",required:!1},{name:"label",type:"string",default:"undefined",desc:"Short text for label variant.",required:!1},{name:"icon",type:"ReactNode",default:"undefined",desc:"Custom icon for icon variant.",required:!1},{name:"assetPath",type:"string | ImageSourcePropType | ReactNode | ((props) => ReactElement)",default:"undefined",desc:"Asset source for readyToUse variant.",required:!1},{name:"containerColor",type:"string",default:"theme.colors.primary",desc:"Badge background color.",required:!1},{name:"contentColor",type:"string",default:"UX4GColors.white",desc:"Text/icon color inside badge.",required:!1},{name:"alignment",type:"'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft'",default:"'topRight'",desc:"Overlay placement when wrapping a child.",required:!1},{name:"offset",type:"{ top?: number; right?: number; bottom?: number; left?: number }",default:"undefined",desc:"Precise offset override for overlay placement.",required:!1},{name:"showBorder",type:"boolean",default:"false",desc:"Whether to render a border around badge.",required:!1},{name:"borderColor",type:"string",default:"theme.colors.surface",desc:"Border color when showBorder is true.",required:!1},{name:"style",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for wrapper/standalone container.",required:!1},{name:"badgeStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for badge pill element.",required:!1},{name:"textStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Text style override for count/label.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Badge"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Badges display status indicators, numerical counts, text labels, or custom icons overlayed on UI elements or standalone."}),e.jsx("p",{className:"wb-subtitle",style:{marginTop:6},children:"This component has no required props."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"}),"Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"}),"Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"}),"Props"]})]}),e.jsxs("div",{className:"wb-tab-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"BadgeExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},mT=({isDark:t,story:i="card-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const s=[];s.push("import { Ux4gCard, UX4GColors } from 'ux4g-react-native-design-system';"),s.push("");const h=t?"UX4GColors.neutral900":"UX4GColors.white",u=t?"UX4GColors.neutral700":"UX4GColors.neutral200";return s.push('<View style={{ width: "100%", maxWidth: 360 }}>'),i==="card-actions"?(s.push("  // Card With Footer Actions"),s.push("  <Ux4gCard"),s.push('    title="Card with Actions"'),s.push('    body="This card has primary and secondary action buttons."'),s.push('    footerType="primaryAndSecondary"'),s.push('    primaryButtonText="Confirm"'),s.push('    secondaryButtonText="Cancel"'),s.push("    borderWidth={1}"),s.push(`    borderColor={${u}}`),s.push("    elevation={2}"),s.push(`    backgroundColor={${h}}`),s.push("  />")):i==="card-horizontal"?(s.push("  // Horizontal Card Layout"),s.push("  <Ux4gCard"),s.push('    direction="horizontal"'),s.push('    mediaImageUrl="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400"'),s.push('    title="Horizontal Card"'),s.push('    subtitle="Side-by-side layout"'),s.push('    body="The media thumbnail appears on the left in horizontal mode."'),s.push("    borderWidth={1}"),s.push(`    borderColor={${u}}`),s.push("    elevation={2}"),s.push(`    backgroundColor={${h}}`),s.push("  />")):i==="card-media"?(s.push("  // Media Card Layout"),s.push("  <Ux4gCard"),s.push('    mediaImageUrl="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600"'),s.push('    title="Media Card"'),s.push('    subtitle="Hero image above content"'),s.push('    body="This card displays a hero image at the top."'),s.push("    borderWidth={1}"),s.push(`    borderColor={${u}}`),s.push("    elevation={2}"),s.push(`    backgroundColor={${h}}`),s.push("  />")):i==="card-rich"||i==="card-full-vertical"?(s.push("  // Complex Rich Card (Custom Composition)"),s.push("  <Ux4gCard"),s.push('    mediaImageUrl="https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=600"'),s.push('    mediaLabelText="Label"'),s.push('    title="Title"'),s.push('    subtitle="Subtitle"'),s.push('    statusChips={["Label", "Label", "Label"]}'),s.push('    body="Lorem ipsum is a dummy or placeholder text commonly used in graphic design, publishing, and web development."'),s.push('    bottomChips={["Label", "Label", "Label", "Label"]}'),s.push('    footerType="primaryAndSecondary"'),s.push('    primaryButtonText="+ Button"'),s.push('    secondaryButtonText="+ Button"'),s.push("    borderWidth={1}"),s.push(`    borderColor={${u}}`),s.push("    elevation={2}"),s.push(`    backgroundColor={${h}}`),s.push("  />")):i==="card-rich-horizontal"?(s.push("  // Complex Rich Card (Horizontal)"),s.push("  <Ux4gCard"),s.push('    direction="horizontal"'),s.push('    mediaImageUrl="https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=600"'),s.push('    mediaLabelText="Label"'),s.push('    avatar={<Ux4gAvatar initials="JD" size="m" />}'),s.push('    title="Title"'),s.push('    subtitle="Subtitle"'),s.push('    statusChips={["Label", "Label", "Label"]}'),s.push('    body="Lorem ipsum is a dummy or placeholder text commonly used in graphic design, publishing, and web development."'),s.push('    bottomChips={["Label", "Label", "Label", "Label"]}'),s.push('    footerType="primaryAndSecondary"'),s.push('    primaryButtonText="Button"'),s.push('    secondaryButtonText="Button"'),s.push("    borderWidth={1}"),s.push(`    borderColor={${u}}`),s.push("    elevation={2}"),s.push(`    backgroundColor={${h}}`),s.push("  />")):(s.push("  // Basic Card Layout"),s.push("  <Ux4gCard"),s.push('    title="Card Title"'),s.push('    subtitle="Card subtitle"'),s.push('    body="This is the card body."'),s.push("    borderWidth={1}"),s.push(`    borderColor={${u}}`),s.push("    elevation={2}"),s.push(`    backgroundColor={${h}}`),s.push("  />")),s.push("</View>"),s.join(`
 `)},[i,t]),l=()=>{let s="";const h=t?"UX4GColors.neutral900":"UX4GColors.white",u=t?"UX4GColors.neutral700":"UX4GColors.neutral200";i==="card-actions"?s=`          <Ux4gCard
@@ -4624,7 +4626,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
 });`:i==="checkbox-tristate"?s=`import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -4676,7 +4679,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
 });`:s=`import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -4734,48 +4738,289 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
-});`;const h=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gCheckbox%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(s)}`;return e.jsx("iframe",{src:h,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Preview"})},p=[{name:"value",type:"boolean | null",default:"false",desc:"Checked state (`true` checked, `false` unchecked, `null` indeterminate).",required:!0},{name:"onChanged",type:"(newValue: boolean | null) => void",default:"required",desc:"Callback fired when user presses checkbox or label.",required:!0},{name:"label",type:"string",default:"undefined",desc:"Primary text label next to checkbox.",required:!1},{name:"description",type:"string",default:"undefined",desc:"Secondary helper/description text.",required:!1},{name:"size",type:"'small' | 'medium' | 'large'",default:"'medium'",desc:"Checkbox box size.",required:!1},{name:"isRequired",type:"boolean",default:"false",desc:"Appends red asterisk to the label.",required:!1},{name:"hasError",type:"boolean",default:"false",desc:"Highlights checkbox border in error state.",required:!1},{name:"descriptionVariant",type:"'helper' | 'error' | 'warning' | 'success'",default:"'helper'",desc:"Semantic style for description text.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether checkbox is interactive.",required:!1},{name:"activeColor",type:"string",default:"theme.colors.primary",desc:"Active fill/border color for checked/indeterminate state.",required:!1},{name:"checkColor",type:"string",default:"theme.colors.onPrimary",desc:"Checkmark/dash icon color.",required:!1},{name:"style",type:"StyleProp<ViewStyle> | (state) => StyleProp<ViewStyle>",default:"undefined",desc:"Style override for outer Pressable row.",required:!1},{name:"labelStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for label text.",required:!1},{name:"descriptionStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for description text.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Checkbox"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Selection control for single items, multi-select lists, and parent-child tristate selection with interactive checkmark and indeterminate state animations."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"CheckboxExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},ij=({isDark:t,story:i="chips-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const s=[];return s.push("import { "),s.push("  Ux4gChoiceChip,"),s.push("  Ux4gFilterChip,"),s.push("  Ux4gInputChip,"),s.push("  Ux4gSuggestionChip,"),s.push("  Ux4gActionChip,"),s.push("} from 'ux4g-react-native-design-system';"),s.push("import { useState } from 'react';"),s.push(""),s.push("// Choice Chips"),s.push("const [selected, setSelected] = useState(true);"),s.push("<Ux4gChoiceChip"),s.push('  text="Option 1"'),s.push("  selected={selected}"),s.push("  onClick={() => setSelected(!selected)}"),s.push("/>"),s.push(""),s.push("// Filter Chips"),s.push("<Ux4gFilterChip"),s.push('  text="In Stock"'),s.push("  selected={true}"),s.push("  onClick={() => {}}"),s.push("/>"),s.push(""),s.push("// Input Chips with Delete"),s.push("<Ux4gInputChip"),s.push('  text="React Native"'),s.push(`  onDismiss={() => console.log("Dismissed")}
-/>`),s.push(""),s.push("// Suggestion Chips"),s.push("<Ux4gSuggestionChip"),s.push('  text="Design System"'),s.push(`  onClick={() => {}}
-/>`),s.join(`
-`)},[]),l=()=>{let s="";i==="chips-action"?s=`        <Ux4gSuggestionChip text="React Native" onClick={() => {}} />
-        <View style={{ height: 12 }} />
-        <Ux4gSuggestionChip text="UX4G Design System" onClick={() => {}} />
-        <View style={{ height: 12 }} />
-        <Ux4gActionChip text="Download Report" onClick={() => {}} />
-        <View style={{ height: 12 }} />
-        <Ux4gActionChip text="Share Link" enabled={false} onClick={() => {}} />`:i==="chips-input"?s=`        <Ux4gInputChip text="React Native" onDismiss={() => console.log("Dismissed 1")} />
-        <View style={{ height: 12 }} />
-        <Ux4gInputChip text="TypeScript" onDismiss={() => console.log("Dismissed 2")} />
-        <View style={{ height: 12 }} />
-        <Ux4gInputChip text="Disabled Tag" enabled={false} onDismiss={() => {}} />`:s=`        <Ux4gChoiceChip text="Choice 1 (Selected)" selected={choice1} onClick={() => setChoice1(!choice1)} />
-        <View style={{ height: 12 }} />
-        <Ux4gChoiceChip text="Choice 2 (Unselected)" selected={choice2} onClick={() => setChoice2(!choice2)} />
-        <View style={{ height: 16 }} />
-        <Ux4gFilterChip text="Filter: Active" selected={filter1} onClick={() => setFilter1(!filter1)} />
-        <View style={{ height: 12 }} />
-        <Ux4gFilterChip text="Filter: Inactive" selected={filter2} onClick={() => setFilter2(!filter2)} />`;const h=`import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+});`;const h=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gCheckbox%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(s)}`;return e.jsx("iframe",{src:h,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Preview"})},p=[{name:"value",type:"boolean | null",default:"false",desc:"Checked state (`true` checked, `false` unchecked, `null` indeterminate).",required:!0},{name:"onChanged",type:"(newValue: boolean | null) => void",default:"required",desc:"Callback fired when user presses checkbox or label.",required:!0},{name:"label",type:"string",default:"undefined",desc:"Primary text label next to checkbox.",required:!1},{name:"description",type:"string",default:"undefined",desc:"Secondary helper/description text.",required:!1},{name:"size",type:"'small' | 'medium' | 'large'",default:"'medium'",desc:"Checkbox box size.",required:!1},{name:"isRequired",type:"boolean",default:"false",desc:"Appends red asterisk to the label.",required:!1},{name:"hasError",type:"boolean",default:"false",desc:"Highlights checkbox border in error state.",required:!1},{name:"descriptionVariant",type:"'helper' | 'error' | 'warning' | 'success'",default:"'helper'",desc:"Semantic style for description text.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether checkbox is interactive.",required:!1},{name:"activeColor",type:"string",default:"theme.colors.primary",desc:"Active fill/border color for checked/indeterminate state.",required:!1},{name:"checkColor",type:"string",default:"theme.colors.onPrimary",desc:"Checkmark/dash icon color.",required:!1},{name:"style",type:"StyleProp<ViewStyle> | (state) => StyleProp<ViewStyle>",default:"undefined",desc:"Style override for outer Pressable row.",required:!1},{name:"labelStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for label text.",required:!1},{name:"descriptionStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for description text.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Checkbox"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Selection control for single items, multi-select lists, and parent-child tristate selection with interactive checkmark and indeterminate state animations."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"CheckboxExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},ij=({isDark:t,story:i="chips-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>i==="chips-action"?`import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gChoiceChip,
+  Ux4gChipGroup,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function SuggestionAndActionChipsExample() {
+  const [selectedTag, setSelectedTag] = useState('React Native');
+  const [actionStatus, setActionStatus] = useState('Click a chip');
+
+  return (
+    <Ux4gThemeProvider isDark={false}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Suggestion Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            { text: 'React Native', icon: '⚛️' },
+            { text: 'UX4G Design System', icon: '🎨' },
+            { text: 'TypeScript', icon: '📘' },
+          ].map((item) => (
+            <Ux4gChoiceChip
+              key={item.text}
+              text={item.text}
+              selected={selectedTag === item.text}
+              onClick={() => {
+                setSelectedTag(item.text);
+                setActionStatus(\`Selected: \${item.text}\`);
+              }}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>{item.icon}</Text>}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Action Chips:</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gChoiceChip
+              key="download"
+              text="Download Report"
+              selected={false}
+              onClick={() => setActionStatus('Downloading report...')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>⬇️</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="share"
+              text="Share Link"
+              selected={false}
+              onClick={() => setActionStatus('Link copied to clipboard!')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>🔗</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="disabled"
+              text="Disabled Action"
+              selected={false}
+              enabled={false}
+              onClick={() => {}}
+              size="m"
+            />,
+          ]}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 20 }} />
+        <Text style={styles.statusText}>
+          Action Status: <Text style={styles.statusValue}>{actionStatus}</Text>
+        </Text>
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { padding: 24 },
+  heading: { fontSize: 14, fontWeight: '700', marginBottom: 8, color: '#334155' },
+  statusText: { fontSize: 13, color: '#64748B' },
+  statusValue: { fontWeight: '700', color: '#4F46E5' },
+});`:i==="chips-input"?`import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gInputChip,
+  Ux4gChipGroup,
+  Ux4gInputChipField,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function InputChipsExample() {
+  const [chips, setChips] = useState(['React Native', 'TypeScript', 'Design System', 'Disabled Tag']);
+  const [inputValue, setInputValue] = useState('');
+
+  const handleDismiss = (tag: string) => {
+    setChips((prev) => prev.filter((item) => item !== tag));
+  };
+
+  const handleAddChip = (newTag: string) => {
+    if (newTag.trim() && !chips.includes(newTag.trim())) {
+      setChips((prev) => [...prev, newTag.trim()]);
+    }
+  };
+
+  return (
+    <Ux4gThemeProvider isDark={false}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Interactive Input Chips (Tap ✕ to remove):</Text>
+        <Ux4gChipGroup
+          chips={chips.map((tag) => (
+            <Ux4gInputChip
+              key={tag}
+              text={tag}
+              enabled={tag !== 'Disabled Tag'}
+              onDismiss={() => handleDismiss(tag)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Add Custom Input Tag:</Text>
+        <Ux4gInputChipField
+          value={inputValue}
+          onValueChange={setInputValue}
+          onAddChip={handleAddChip}
+          placeholder="Type tag and press +..."
+          chips={[]}
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { padding: 24 },
+  heading: { fontSize: 14, fontWeight: '700', marginBottom: 8, color: '#334155' },
+});`:`import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import {
   Ux4gChoiceChip,
   Ux4gFilterChip,
-  Ux4gInputChip,
-  Ux4gSuggestionChip,
-  Ux4gActionChip,
+  Ux4gChipGroup,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function ChoiceAndFilterChipsExample() {
+  const [selectedChoice, setSelectedChoice] = useState('Option 1');
+  const [filterActive, setFilterActive] = useState(true);
+  const [filterDraft, setFilterDraft] = useState(false);
+  const [filterReview, setFilterReview] = useState(true);
+
+  return (
+    <Ux4gThemeProvider isDark={false}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Choice Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={['Option 1', 'Option 2', 'Option 3'].map((opt) => (
+            <Ux4gChoiceChip
+              key={opt}
+              text={opt}
+              selected={selectedChoice === opt}
+              onClick={() => setSelectedChoice(opt)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Filter Chips (Multi Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gFilterChip
+              key="active"
+              text="Active (Selected)"
+              selected={filterActive}
+              onClick={() => setFilterActive(!filterActive)}
+            />,
+            <Ux4gFilterChip
+              key="draft"
+              text="Draft"
+              selected={filterDraft}
+              onClick={() => setFilterDraft(!filterDraft)}
+            />,
+            <Ux4gFilterChip
+              key="review"
+              text="Under Review"
+              selected={filterReview}
+              onClick={() => setFilterReview(!filterReview)}
+            />,
+          ]}
+          arrangement="wrap"
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { padding: 24 },
+  heading: { fontSize: 14, fontWeight: '700', marginBottom: 8, color: '#334155' },
+});`,[i]),l=()=>{let s="";i==="chips-action"?s=`import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gChoiceChip,
+  Ux4gChipGroup,
   Ux4gThemeProvider,
 } from 'ux4g-react-native-design-system';
 
 export default function App() {
-  const [choice1, setChoice1] = useState(true);
-  const [choice2, setChoice2] = useState(false);
-  const [filter1, setFilter1] = useState(true);
-  const [filter2, setFilter2] = useState(false);
+  const [selectedTag, setSelectedTag] = useState('React Native');
+  const [actionStatus, setActionStatus] = useState('Click a chip');
 
   return (
     <Ux4gThemeProvider isDark={${t}}>
       <View style={styles.container}>
-${s}
+        <Text style={styles.heading}>Suggestion Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            { text: 'React Native', icon: '⚛️' },
+            { text: 'UX4G Design System', icon: '🎨' },
+            { text: 'TypeScript', icon: '📘' },
+          ].map((item) => (
+            <Ux4gChoiceChip
+              key={item.text}
+              text={item.text}
+              selected={selectedTag === item.text}
+              onClick={() => {
+                setSelectedTag(item.text);
+                setActionStatus(\`Selected: \${item.text}\`);
+              }}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>{item.icon}</Text>}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Action Chips:</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gChoiceChip
+              key="download"
+              text="Download Report"
+              selected={false}
+              onClick={() => setActionStatus('Downloading report...')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>⬇️</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="share"
+              text="Share Link"
+              selected={false}
+              onClick={() => setActionStatus('Link copied to clipboard!')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>🔗</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="disabled"
+              text="Disabled Action"
+              selected={false}
+              enabled={false}
+              onClick={() => {}}
+              size="m"
+            />,
+          ]}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 20 }} />
+        <Text style={styles.statusText}>
+          Action Status: <Text style={styles.statusValue}>{actionStatus}</Text>
+        </Text>
       </View>
     </Ux4gThemeProvider>
   );
@@ -4786,9 +5031,168 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    padding: 24
-  }
-});`,u=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gChips%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(h)}`;return e.jsx("iframe",{src:u,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Chips Preview"})},p=[{name:"text",type:"string",default:"required",desc:"Chip label text (required by ChoiceChip, FilterChip, InputChip).",required:!0},{name:"selected",type:"boolean",default:"required",desc:"Selection state (required by ChoiceChip and FilterChip).",required:!0},{name:"onClick",type:"() => void",default:"required",desc:"Tap callback (required by ChoiceChip and FilterChip).",required:!0},{name:"onPress",type:"() => void",default:"undefined",desc:"Optional press callback alias for ChoiceChip/FilterChip.",required:!1},{name:"onDismiss",type:"() => void",default:"undefined",desc:"Dismiss callback for InputChip trailing close action.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether the chip is interactive.",required:!1},{name:"size",type:"Ux4gChoiceChipSize | Ux4gFilterChipSize | Ux4gInputChipSize",default:"'m'",desc:"Size token (Choice/Filter: s|m, Input: xs|s|m).",required:!1},{name:"leadingContent",type:"ReactNode",default:"undefined",desc:"Optional leading content/icon.",required:!1},{name:"trailingContent",type:"ReactNode",default:"undefined",desc:"Optional trailing content/icon (Choice/Filter).",required:!1},{name:"borderRadius",type:"number",default:"size-based",desc:"Corner radius override (ChoiceChip only).",required:!1},{name:"containerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for chip container.",required:!1},{name:"textStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for chip text.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Chips"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Compact interactive elements representing choices, attributes, actions, or input tags. Includes Choice, Filter, Input, Suggestion, and Action chips."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"ChipsExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},oj=({isDark:t,story:i="chip-group-wrap"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const s=[];return s.push("import { Ux4gChipGroup, Ux4gChoiceChip, Ux4gInputChipField, Ux4gInputChip } from 'ux4g-react-native-design-system';"),s.push("import { useState } from 'react';"),s.push(""),s.push("// Wrap Chip Group"),s.push("const [selectedIdx, setSelectedIdx] = useState(0);"),s.push("<Ux4gChipGroup"),s.push('  arrangement="wrap"'),s.push("  spacing={8}"),s.push("  runSpacing={8}"),s.push('  chips={["React Native", "TypeScript", "Expo", "Storybook", "UX4G"].map((tag, i) => ('),s.push("    <Ux4gChoiceChip"),s.push("      key={tag}"),s.push("      text={tag}"),s.push("      selected={selectedIdx === i}"),s.push("      onClick={() => setSelectedIdx(i)}"),s.push("    />"),s.push("  ))}"),s.push("/>"),s.push(""),s.push("// Input Chip Field"),s.push('const [text, setText] = useState("");'),s.push('const [tags, setTags] = useState(["Frontend", "UI"]);'),s.push("<Ux4gInputChipField"),s.push("  value={text}"),s.push("  onValueChange={setText}"),s.push("  onAddChip={(newTag) => setTags([...tags, newTag])}"),s.push("  chips={tags.map(t => <Ux4gInputChip key={t} text={t} onDismiss={() => setTags(tags.filter(x => x !== t))} />)}"),s.push("/>"),s.join(`
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"},
+  },
+  heading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: ${t?"'#E2E8F0'":"'#334155'"},
+  },
+  statusText: {
+    fontSize: 13,
+    color: ${t?"'#94A3B8'":"'#64748B'"},
+  },
+  statusValue: {
+    fontWeight: '700',
+    color: '#4F46E5',
+  },
+});`:i==="chips-input"?s=`import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gInputChip,
+  Ux4gChipGroup,
+  Ux4gInputChipField,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [chips, setChips] = useState(['React Native', 'TypeScript', 'Design System', 'Disabled Tag']);
+  const [inputValue, setInputValue] = useState('');
+
+  const handleDismiss = (tag) => {
+    setChips((prev) => prev.filter((item) => item !== tag));
+  };
+
+  const handleAddChip = (newTag) => {
+    if (newTag.trim() && !chips.includes(newTag.trim())) {
+      setChips((prev) => [...prev, newTag.trim()]);
+    }
+  };
+
+  return (
+    <Ux4gThemeProvider isDark={${t}}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Interactive Input Chips (Tap ✕ to remove):</Text>
+        <Ux4gChipGroup
+          chips={chips.map((tag) => (
+            <Ux4gInputChip
+              key={tag}
+              text={tag}
+              enabled={tag !== 'Disabled Tag'}
+              onDismiss={() => handleDismiss(tag)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Add Custom Input Tag:</Text>
+        <Ux4gInputChipField
+          value={inputValue}
+          onValueChange={setInputValue}
+          onAddChip={handleAddChip}
+          placeholder="Type tag and press +..."
+          chips={[]}
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"},
+  },
+  heading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: ${t?"'#E2E8F0'":"'#334155'"},
+  },
+});`:s=`import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gChoiceChip,
+  Ux4gFilterChip,
+  Ux4gChipGroup,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selectedChoice, setSelectedChoice] = useState('Option 1');
+  const [filterActive, setFilterActive] = useState(true);
+  const [filterDraft, setFilterDraft] = useState(false);
+  const [filterReview, setFilterReview] = useState(true);
+
+  return (
+    <Ux4gThemeProvider isDark={${t}}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Choice Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={['Option 1', 'Option 2', 'Option 3'].map((opt) => (
+            <Ux4gChoiceChip
+              key={opt}
+              text={opt}
+              selected={selectedChoice === opt}
+              onClick={() => setSelectedChoice(opt)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Filter Chips (Multi Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gFilterChip
+              key="active"
+              text="Active (Selected)"
+              selected={filterActive}
+              onClick={() => setFilterActive(!filterActive)}
+            />,
+            <Ux4gFilterChip
+              key="draft"
+              text="Draft"
+              selected={filterDraft}
+              onClick={() => setFilterDraft(!filterDraft)}
+            />,
+            <Ux4gFilterChip
+              key="review"
+              text="Under Review"
+              selected={filterReview}
+              onClick={() => setFilterReview(!filterReview)}
+            />,
+          ]}
+          arrangement="wrap"
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"},
+  },
+  heading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: ${t?"'#E2E8F0'":"'#334155'"},
+  },
+});`;const h=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gChips%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(s)}`;return e.jsx("iframe",{src:h,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Chips Preview"})},p=[{name:"text",type:"string",default:"required",desc:"Chip label text (required by ChoiceChip, FilterChip, InputChip).",required:!0},{name:"selected",type:"boolean",default:"required",desc:"Selection state (required by ChoiceChip and FilterChip).",required:!0},{name:"onClick",type:"() => void",default:"required",desc:"Tap callback (required by ChoiceChip and FilterChip).",required:!0},{name:"onPress",type:"() => void",default:"undefined",desc:"Optional press callback alias for ChoiceChip/FilterChip.",required:!1},{name:"onDismiss",type:"() => void",default:"undefined",desc:"Dismiss callback for InputChip trailing close action.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether the chip is interactive.",required:!1},{name:"size",type:"Ux4gChoiceChipSize | Ux4gFilterChipSize | Ux4gInputChipSize",default:"'m'",desc:"Size token (Choice/Filter: s|m, Input: xs|s|m).",required:!1},{name:"leadingContent",type:"ReactNode",default:"undefined",desc:"Optional leading content/icon.",required:!1},{name:"trailingContent",type:"ReactNode",default:"undefined",desc:"Optional trailing content/icon (Choice/Filter).",required:!1},{name:"borderRadius",type:"number",default:"size-based",desc:"Corner radius override (ChoiceChip only).",required:!1},{name:"containerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for chip container.",required:!1},{name:"textStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for chip text.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Chips"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Compact interactive elements representing choices, attributes, actions, or input tags. Includes Choice, Filter, Input, Suggestion, and Action chips."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"ChipsExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},oj=({isDark:t,story:i="chip-group-wrap"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const s=[];return s.push("import { Ux4gChipGroup, Ux4gChoiceChip, Ux4gInputChipField, Ux4gInputChip } from 'ux4g-react-native-design-system';"),s.push("import { useState } from 'react';"),s.push(""),s.push("// Wrap Chip Group"),s.push("const [selectedIdx, setSelectedIdx] = useState(0);"),s.push("<Ux4gChipGroup"),s.push('  arrangement="wrap"'),s.push("  spacing={8}"),s.push("  runSpacing={8}"),s.push('  chips={["React Native", "TypeScript", "Expo", "Storybook", "UX4G"].map((tag, i) => ('),s.push("    <Ux4gChoiceChip"),s.push("      key={tag}"),s.push("      text={tag}"),s.push("      selected={selectedIdx === i}"),s.push("      onClick={() => setSelectedIdx(i)}"),s.push("    />"),s.push("  ))}"),s.push("/>"),s.push(""),s.push("// Input Chip Field"),s.push('const [text, setText] = useState("");'),s.push('const [tags, setTags] = useState(["Frontend", "UI"]);'),s.push("<Ux4gInputChipField"),s.push("  value={text}"),s.push("  onValueChange={setText}"),s.push("  onAddChip={(newTag) => setTags([...tags, newTag])}"),s.push("  chips={tags.map(t => <Ux4gInputChip key={t} text={t} onDismiss={() => setTags(tags.filter(x => x !== t))} />)}"),s.push("/>"),s.join(`
 `)},[]),l=()=>{let s="";i==="chip-group-input-field"?s=`        <Ux4gInputChipField
           value={inputValue}
           onValueChange={setInputValue}
@@ -4843,44 +5247,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 24
   }
-});`,u=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gChipGroup%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(h)}`;return e.jsx("iframe",{src:u,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack ChipGroup Preview"})},p=[{name:"chips",type:"ReactNode[]",default:"required in InputChipField / optional in ChipGroup",desc:"Chip elements to render in group/field.",required:!0},{name:"children",type:"ReactNode",default:"undefined",desc:"Alternative to `chips` for Ux4gChipGroup.",required:!1},{name:"arrangement",type:"'horizontal' | 'wrap'",default:"'wrap'",desc:"Layout arrangement for Ux4gChipGroup and InputChipField chips.",required:!1},{name:"spacing",type:"number",default:"8",desc:"Horizontal gap between chips (Ux4gChipGroup).",required:!1},{name:"runSpacing",type:"number",default:"8",desc:"Vertical gap between wrapped rows (Ux4gChipGroup).",required:!1},{name:"value",type:"string",default:"required",desc:"Current input text value (Ux4gInputChipField).",required:!0},{name:"onValueChange",type:"(value: string) => void",default:"required",desc:"Input change callback (Ux4gInputChipField).",required:!0},{name:"onAddChip",type:"(chipText: string) => void",default:"required",desc:"Callback when a new chip is added (Ux4gInputChipField).",required:!0},{name:"isDropdown",type:"boolean",default:"false",desc:"Switches field to dropdown selection mode.",required:!1},{name:"dropdownOptions",type:"string[]",default:"[]",desc:"Dropdown options when `isDropdown` is true.",required:!1},{name:"placeholder",type:"string",default:"'Add chip...'",desc:"Placeholder text for input/dropdown trigger.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether the field/group interaction is enabled.",required:!1},{name:"containerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Container style override.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Chip Group"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Group container for arranging multiple chips horizontally or wrapped across multiple lines, including interactive InputChipField controls."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"ChipGroupExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},nj=({isDark:t,story:i="divider-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const s=[];return s.push("import { Ux4gDivider } from 'ux4g-react-native-design-system';"),s.push("import { View, Text } from 'react-native';"),s.push(""),s.push("// Horizontal Solid Divider"),s.push("<Ux4gDivider />"),s.push(""),s.push("// Dashed Divider with Indents"),s.push("<Ux4gDivider"),s.push('  style="dashed"'),s.push("  thickness={2}"),s.push("  startIndent={16}"),s.push("  endIndent={16}"),s.push("/>"),s.push(""),s.push("// Divider with Center Label"),s.push('<Ux4gDivider label="OR" />'),s.push(""),s.push("// Vertical Divider"),s.push('<View style={{ flexDirection: "row", height: 40, alignItems: "center" }}>'),s.push("  <Text>Left Item</Text>"),s.push('  <Ux4gDivider orientation="vertical" />'),s.push("  <Text>Right Item</Text>"),s.push("</View>"),s.join(`
-`)},[]),l=()=>{let s="";i==="divider-styles"?s=`        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 8 }}>Solid Line (Default):</Text>
+});`,u=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gChipGroup%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(h)}`;return e.jsx("iframe",{src:u,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack ChipGroup Preview"})},p=[{name:"chips",type:"ReactNode[]",default:"required in InputChipField / optional in ChipGroup",desc:"Chip elements to render in group/field.",required:!0},{name:"children",type:"ReactNode",default:"undefined",desc:"Alternative to `chips` for Ux4gChipGroup.",required:!1},{name:"arrangement",type:"'horizontal' | 'wrap'",default:"'wrap'",desc:"Layout arrangement for Ux4gChipGroup and InputChipField chips.",required:!1},{name:"spacing",type:"number",default:"8",desc:"Horizontal gap between chips (Ux4gChipGroup).",required:!1},{name:"runSpacing",type:"number",default:"8",desc:"Vertical gap between wrapped rows (Ux4gChipGroup).",required:!1},{name:"value",type:"string",default:"required",desc:"Current input text value (Ux4gInputChipField).",required:!0},{name:"onValueChange",type:"(value: string) => void",default:"required",desc:"Input change callback (Ux4gInputChipField).",required:!0},{name:"onAddChip",type:"(chipText: string) => void",default:"required",desc:"Callback when a new chip is added (Ux4gInputChipField).",required:!0},{name:"isDropdown",type:"boolean",default:"false",desc:"Switches field to dropdown selection mode.",required:!1},{name:"dropdownOptions",type:"string[]",default:"[]",desc:"Dropdown options when `isDropdown` is true.",required:!1},{name:"placeholder",type:"string",default:"'Add chip...'",desc:"Placeholder text for input/dropdown trigger.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether the field/group interaction is enabled.",required:!1},{name:"containerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Container style override.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Chip Group"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Group container for arranging multiple chips horizontally or wrapped across multiple lines, including interactive InputChipField controls."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"ChipGroupExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},nj=({isDark:t,story:i="divider-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const s=[];return s.push("import { Ux4gDivider } from 'ux4g-react-native-design-system';"),s.push("import { View, Text } from 'react-native';"),s.push(""),s.push("// Horizontal Solid Divider"),s.push("<Ux4gDivider />"),s.push(""),s.push("// Dashed Divider with Indents"),s.push("<Ux4gDivider"),s.push('  style="dashed"'),s.push("  thickness={2}"),s.push("  startIndent={16}"),s.push("  endIndent={16}"),s.push("/>"),s.push(""),s.push("// Divider with Center Label"),s.push('<Ux4gDivider label="OR" labelSpacing={16} />'),s.push(""),s.push("// Vertical Divider"),s.push('<View style={{ flexDirection: "row", height: 40, alignItems: "center", gap: 16 }}>'),s.push("  <Text>Left Item</Text>"),s.push('  <Ux4gDivider orientation="vertical" startIndent={8} endIndent={8} />'),s.push("  <Text>Right Item</Text>"),s.push("</View>"),s.join(`
+`)},[]),l=()=>{let s="";i==="divider-styles"?s=`        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 12 }}>Solid Line (Default):</Text>
         <Ux4gDivider style="solid" thickness={1} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 8 }}>Dashed Line:</Text>
+        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 12 }}>Dashed Line:</Text>
         <Ux4gDivider style="dashed" thickness={2} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 8 }}>Dotted Line:</Text>
-        <Ux4gDivider style="dotted" thickness={2} />`:i==="divider-label"?s=`        <Ux4gDivider label="OR" />
+        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 12 }}>Dotted Line:</Text>
+        <Ux4gDivider style="dotted" thickness={2} />`:i==="divider-label"?s=`        <Ux4gDivider label="OR" labelSpacing={16} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Ux4gDivider label="SECTION HEADER" style="dashed" />
+        <Ux4gDivider label="SECTION HEADER" style="dashed" labelSpacing={16} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Ux4gDivider label="CONTINUE" style="dotted" thickness={2} />`:i==="divider-vertical"?s=`        <View style={{ flexDirection: 'row', alignItems: 'center', height: 48 }}>
-          <Text style={{ color: ${t?"'#fff'":"'#333'"} }}>Section A</Text>
+        <Ux4gDivider label="CONTINUE" style="dotted" thickness={2} labelSpacing={16} />`:i==="divider-vertical"?s=`        <View style={{ flexDirection: 'row', alignItems: 'center', height: 48, gap: 16 }}>
+          <Text style={{ color: ${t?"'#fff'":"'#333'"}, fontWeight: '500' }}>Section A</Text>
           <Ux4gDivider orientation="vertical" startIndent={8} endIndent={8} />
-          <Text style={{ color: ${t?"'#fff'":"'#333'"} }}>Section B</Text>
-          <Ux4gDivider orientation="vertical" style="dashed" startIndent={8} endIndent={8} />
-          <Text style={{ color: ${t?"'#fff'":"'#333'"} }}>Section C</Text>
-        </View>`:s=`        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 8 }}>Standard Horizontal Divider:</Text>
+          <Text style={{ color: ${t?"'#fff'":"'#333'"}, fontWeight: '500' }}>Section B</Text>
+          <Ux4gDivider orientation="vertical" startIndent={8} endIndent={8} />
+          <Text style={{ color: ${t?"'#fff'":"'#333'"}, fontWeight: '500' }}>Section C</Text>
+        </View>`:s=`        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 12 }}>Standard Horizontal Divider:</Text>
         <Ux4gDivider />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 8 }}>Indented Dashed Divider:</Text>
+        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 12 }}>Indented Dashed Divider:</Text>
         <Ux4gDivider style="dashed" startIndent={24} endIndent={24} thickness={1.5} />
         
-        <View style={{ height: 24 }} />
+        <View style={{ height: 28 }} />
         
-        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 8 }}>Divider with Center Label:</Text>
-        <Ux4gDivider label="OR LOG IN WITH" />`;const h=`import React from 'react';
+        <Text style={{ color: ${t?"'#fff'":"'#333'"}, marginBottom: 12 }}>Divider with Center Label:</Text>
+        <Ux4gDivider label="OR LOG IN WITH" labelSpacing={16} />`;const h=`import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Ux4gDivider, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
 
@@ -4898,7 +5302,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
 });`,u=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gDivider%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(h)}`;return e.jsx("iframe",{src:u,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Divider Preview"})},p=[{name:"orientation",type:"'horizontal' | 'vertical'",default:"'horizontal'",desc:"Orientation direction of the divider line.",required:!1},{name:"color",type:"string",default:"theme.colors.onSurface @ 20%",desc:"Line color override.",required:!1},{name:"thickness",type:"number",default:"1.0",desc:"Thickness/stroke width of divider line.",required:!1},{name:"style",type:"'solid' | 'dashed' | 'dotted'",default:"'solid'",desc:"Stroke pattern style of the line.",required:!1},{name:"startIndent",type:"number",default:"0.0",desc:"Leading indentation before divider begins.",required:!1},{name:"endIndent",type:"number",default:"0.0",desc:"Trailing indentation after divider ends.",required:!1},{name:"label",type:"ReactNode | string",default:"undefined",desc:"Center label that splits divider into two segments.",required:!1},{name:"labelSpacing",type:"number",default:"8.0",desc:"Spacing around center label.",required:!1},{name:"width",type:"number | string",default:"undefined",desc:"Explicit width of divider container.",required:!1},{name:"height",type:"number | string",default:"undefined",desc:"Explicit height of divider container.",required:!1},{name:"containerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for root divider container.",required:!1},{name:"labelTextStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for label text when label is string.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Divider"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Visual rule separator used to group and partition content. Supports horizontal/vertical orientation, solid/dashed/dotted styles, indents, and center labels."}),e.jsx("p",{className:"wb-subtitle",style:{marginTop:6},children:"This component has no required props."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"DividerExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},aj=({isDark:t,story:i="status-banner-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const s=[];return s.push("import { Ux4gStatusBanner } from 'ux4g-react-native-design-system';"),s.push(""),s.push("// Warning Solid Banner"),s.push("<Ux4gStatusBanner"),s.push('  variant="warningSolid"'),s.push('  title="Action Needed"'),s.push('  subtitle="Please review your draft submission before the deadline."'),s.push("/>"),s.push(""),s.push("// Success Light Banner"),s.push("<Ux4gStatusBanner"),s.push('  variant="successLight"'),s.push('  title="Draft Saved Successfully"'),s.push('  subtitle="Your changes have been synced to the cloud."'),s.push("/>"),s.push(""),s.push("// Error Light Banner with Dismiss"),s.push("<Ux4gStatusBanner"),s.push('  variant="errorLight"'),s.push('  title="Draft Expired"'),s.push('  subtitle="This application draft expired on 9 April 2026."'),s.push(`  onDismiss={() => console.log("Dismissed")}
 />`),s.join(`
@@ -4968,7 +5373,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
 });`,u=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gStatusBanner%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(h)}`;return e.jsx("iframe",{src:u,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack StatusBanner Preview"})},p=[{name:"variant",type:"Ux4gBannerVariant",default:"required",desc:"Banner visual variant theme.",required:!0},{name:"title",type:"string",default:"required",desc:"Main title text header.",required:!0},{name:"subtitle",type:"string",default:"undefined",desc:"Secondary subtitle text description.",required:!1},{name:"subtitleWidget",type:"ReactNode",default:"undefined",desc:"Custom subtitle widget overriding subtitle text.",required:!1},{name:"titleStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for title text.",required:!1},{name:"subtitleStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Style override for subtitle text.",required:!1},{name:"badge",type:"ReactNode",default:"undefined",desc:"Badge displayed next to title.",required:!1},{name:"leadingIcon",type:"ReactNode",default:"auto by variant",desc:"Custom leading icon (variant icon used by default).",required:!1},{name:"trailingIcon",type:"ReactNode",default:"undefined",desc:"Custom top-right trailing icon.",required:!1},{name:"actions",type:"ReactNode[]",default:"undefined",desc:"Action widgets shown in bottom row.",required:!1},{name:"onDismiss",type:"() => void",default:"undefined",desc:"Dismiss callback when close icon is pressed.",required:!1},{name:"backgroundColor",type:"string",default:"variant-based",desc:"Background color override.",required:!1},{name:"borderColor",type:"string",default:"variant-based",desc:"Border color override.",required:!1},{name:"actionsAlignment",type:"'start' | 'center' | 'end' | 'space-between' | 'space-around'",default:"'start'",desc:"Alignment for bottom actions row.",required:!1},{name:"width",type:"DimensionValue",default:"'100%'",desc:"Explicit banner width.",required:!1},{name:"height",type:"number",default:"undefined",desc:"Explicit banner height.",required:!1},{name:"marginStyle",type:"StyleProp<ViewStyle>",default:"{ marginHorizontal: 16, marginVertical: 8 }",desc:"Outer margin style override.",required:!1},{name:"paddingStyle",type:"StyleProp<ViewStyle>",default:"{ paddingHorizontal: 16, paddingVertical: 12 }",desc:"Inner padding style override.",required:!1},{name:"containerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Additional container style override.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Status Banner"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Prominent alert banner used for draft statuses, system warnings, errors, success notifications, and workflow action prompts."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"StatusBannerExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},sj=["status-pipeline-vertical","status-pipeline-vertical-states","status-pipeline-vertical-sizes","status-pipeline-vertical-colors","status-pipeline-vertical-labels","status-pipeline-vertical-nolabels","status-pipeline-horizontal","status-pipeline-horizontal-states","status-pipeline-horizontal-sizes","status-pipeline-horizontal-colors","status-pipeline-horizontal-labels","status-pipeline-horizontal-nolabels"],lj=t=>t==="status-pipeline-sizes"?"status-pipeline-vertical-sizes":sj.includes(t)?t:"status-pipeline-vertical",ib=t=>t.startsWith("status-pipeline-horizontal"),dj={"status-pipeline-vertical":{title:"Status Pipeline — Vertical",description:"Vertical step-by-step flow with completed, current, and upcoming states."},"status-pipeline-vertical-states":{title:"Vertical — All States",description:"Every step state: completed, current, upcoming, error (red), and warning (orange)."},"status-pipeline-vertical-sizes":{title:"Vertical — Sizes",description:"Small (s), Medium (m), and Large (l) size presets in vertical layout."},"status-pipeline-vertical-colors":{title:"Vertical — Custom Colors",description:"Per-state color overrides and custom active/inactive line colors."},"status-pipeline-vertical-labels":{title:"Vertical — Labels Only",description:"Labels without descriptions, useful for compact vertical lists."},"status-pipeline-vertical-nolabels":{title:"Vertical — Circles Only",description:"Step circles and connecting lines only, with labels and descriptions hidden. No error/warning states."},"status-pipeline-horizontal":{title:"Status Pipeline — Horizontal",description:"Horizontal step-by-step flow for wizards and multi-step forms."},"status-pipeline-horizontal-states":{title:"Horizontal — All States",description:"Every step state laid out horizontally with connecting lines."},"status-pipeline-horizontal-sizes":{title:"Horizontal — Sizes",description:"Small (s), Medium (m), and Large (l) size presets in horizontal layout."},"status-pipeline-horizontal-colors":{title:"Horizontal — Custom Colors",description:"Per-state color overrides and custom active/inactive line colors."},"status-pipeline-horizontal-labels":{title:"Horizontal — Labels Only",description:"Compact header row with labels and no descriptions below."},"status-pipeline-horizontal-nolabels":{title:"Horizontal — Circles Only",description:"Step circles and connecting lines only, with labels and descriptions hidden. No error/warning states."}},cj=t=>{const i=ib(t),o=i?"horizontal":"vertical";if(t.endsWith("-states"))return`import React from 'react';
 import { Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
@@ -6670,7 +7076,8 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     minHeight: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"}
   }
 });`,u=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gEmptyState%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(h)}`;return e.jsx("iframe",{src:u,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack EmptyState Preview"})},p=[{name:"title",type:"string",default:"—",desc:"Primary message.",required:!0},{name:"variant",type:"'noResults' | 'noData' | 'comingSoon' | 'error' | 'custom'",default:"'custom'",desc:"Semantic preset for the empty state.",required:!1},{name:"subtitle",type:"string",default:"undefined",desc:"Secondary message.",required:!1},{name:"description",type:"string",default:"undefined",desc:"Descriptive text.",required:!1},{name:"icon",type:"ReactNode",default:"undefined",desc:"Icon displayed above title.",required:!1},{name:"iconSize",type:"number",default:"48",desc:"Size of the top icon.",required:!1},{name:"iconColor",type:"string",default:"theme.colors.primary",desc:"Color of the top icon.",required:!1},{name:"titleStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Custom style for the title.",required:!1},{name:"bodyStyle",type:"StyleProp<TextStyle>",default:"undefined",desc:"Custom style for subtitle and description.",required:!1},{name:"buttonText",type:"string",default:"undefined",desc:"CTA button label.",required:!1},{name:"onButtonPressed",type:"() => void",default:"undefined",desc:"CTA button callback.",required:!1},{name:"buttonSize",type:"'small' | 'medium' | 'large'",default:"'small'",desc:"Size of the CTA button.",required:!1},{name:"buttonLeadingIcon",type:"Ux4gIconProp",default:"undefined",desc:"Icon shown inside the CTA button.",required:!1},{name:"padding",type:"number",default:"24",desc:"Padding around the whole component.",required:!1},{name:"bodyHorizontalPadding",type:"number",default:"24",desc:"Extra horizontal padding for text.",required:!1},{name:"containerStyle",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for outer container.",required:!1},{name:"testID",type:"string",default:"undefined",desc:"Test identifier for automation.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Empty State"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Empty state layout with semantic variant icons, clear messaging, and optional recovery action."}),e.jsxs("p",{className:"wb-subtitle",style:{marginTop:6},children:[e.jsx("span",{style:{color:"#E11D48",fontWeight:700},children:"*"})," marks required props."]})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:l()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:c,language:"TSX",filename:"EmptyStateExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:p.map(s=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[s.name,s.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:s.type})}),e.jsx("td",{children:s.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:s.default})})]},s.name))})]})})]})]})})]})},n5=({isDark:t})=>{const[i,o]=m.useState("preview"),n=m.useMemo(()=>{const p=[];return p.push("import { Ux4gFeedbackFormStar } from 'ux4g-react-native-design-system';"),p.push(""),p.push("<Ux4gFeedbackFormStar"),p.push("  onSubmit={(rating, selectedOptions, comment) => console.log(rating, selectedOptions, comment)}"),p.push("/>"),p.join(`
 `)},[]),c=()=>{const p=`import React from 'react';
@@ -6696,6 +7103,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"},
   },
 });`,s=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gFeedbackFormStar%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(p)}`;return e.jsx("iframe",{src:s,style:{width:"100%",height:"640px",border:"none",borderRadius:"8px"},title:"Expo Snack Feedback Star Preview"})},l=[{name:"title",type:"string",default:"'Rate your experience'",desc:"Top heading text.",required:!1},{name:"improvementTitle",type:"string",default:"'What can we improve?'",desc:"Heading above improvement chips.",required:!1},{name:"commentPlaceholder",type:"string",default:"'Tell us more about your experience'",desc:"Placeholder for comment box.",required:!1},{name:"submitButtonText",type:"string",default:"'Submit'",desc:"Primary button text.",required:!1},{name:"skipButtonText",type:"string",default:"'Skip'",desc:"Skip button text.",required:!1},{name:"successTitle",type:"string",default:"'Feedback submitted'",desc:"Success view title.",required:!1},{name:"successMessage",type:"string",default:"default success copy",desc:"Success view message.",required:!1},{name:"improvementOptions",type:"string[]",default:"['Speed','Design','Reliability','Features','Other']",desc:"Selectable improvement options.",required:!1},{name:"maxStars",type:"number",default:"5",desc:"Number of stars.",required:!1},{name:"initialRating",type:"number",default:"0",desc:"Initial star rating value.",required:!1},{name:"minWords",type:"number",default:"0",desc:"Minimum words required in comment.",required:!1},{name:"maxLength",type:"number",default:"200",desc:"Max comment length.",required:!1},{name:"onSubmit",type:"(rating: number, selectedOptions: string[], comment: string) => void",default:"undefined",desc:"Submit callback.",required:!1},{name:"onSkip",type:"() => void",default:"undefined",desc:"Skip callback.",required:!1},{name:"onCloseSuccess",type:"() => void",default:"undefined",desc:"Close callback for success state.",required:!1},{name:"activeRatingColor",type:"string",default:"auto by rating",desc:"Active star color override.",required:!1},{name:"lowRatingColor",type:"string",default:"UX4GColors.red600",desc:"Low rating color.",required:!1},{name:"highRatingColor",type:"string",default:"UX4GColors.yellow600",desc:"High rating color.",required:!1},{name:"inactiveRatingColor",type:"string",default:"theme-based muted",desc:"Inactive star color.",required:!1},{name:"successIconColor",type:"string",default:"theme success color",desc:"Success icon color.",required:!1},{name:"successBackgroundColor",type:"string",default:"undefined",desc:"Success background override.",required:!1},{name:"lowRatingThreshold",type:"number",default:"2",desc:"Threshold for low/high color split.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"feedbackformstar"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Star rating feedback form variant."}),e.jsx("p",{className:"wb-subtitle",style:{marginTop:6},children:"This component has no required props."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${i==="preview"?"active":""}`,onClick:()=>o("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${i==="code"?"active":""}`,onClick:()=>o("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${i==="props"?"active":""}`,onClick:()=>o("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-tab-content",children:[i==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:c()})}),i==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:n,language:"TSX",filename:"FeedbackStarExample.tsx"})}),i==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:l.map(p=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[p.name,p.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:p.type})}),e.jsx("td",{children:p.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:p.default})})]},p.name))})]})})]})]})})]})},a5=({isDark:t})=>{const[i,o]=m.useState("preview"),n=m.useMemo(()=>{const p=[];return p.push("import { Ux4gFeedbackFormCsat } from 'ux4g-react-native-design-system';"),p.push(""),p.push("<Ux4gFeedbackFormCsat"),p.push("  onSubmit={(rating, comment) => console.log(rating, comment)}"),p.push("/>"),p.join(`
 `)},[]),c=()=>{const p=`import React from 'react';
@@ -6707,7 +7115,7 @@ export default function App() {
     <Ux4gThemeProvider isDark={${t}}>
       <View style={styles.container}>
         <Ux4gFeedbackFormCsat
-          onSubmit={(rating, comment) => console.log(rating, comment)}
+          onSubmit={(rating, comment) => console.log('Submitted rating:', rating, comment)}
           onSkip={() => console.log('Skipped')}
         />
       </View>
@@ -6721,6 +7129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"},
   },
 });`,s=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gFeedbackFormCsat%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(p)}`;return e.jsx("iframe",{src:s,style:{width:"100%",height:"640px",border:"none",borderRadius:"8px"},title:"Expo Snack Feedback Csat Preview"})},l=[{name:"title",type:"string",default:"'How do you feel about this service?'",desc:"Top heading text.",required:!1},{name:"badLabel",type:"string",default:"'← Bad'",desc:"Left scale label.",required:!1},{name:"goodLabel",type:"string",default:"'Good →'",desc:"Right scale label.",required:!1},{name:"commentPlaceholder",type:"string",default:"'Please tell us how can we improve'",desc:"Placeholder for comment box.",required:!1},{name:"submitButtonText",type:"string",default:"'Submit'",desc:"Primary button text.",required:!1},{name:"skipButtonText",type:"string",default:"'Skip'",desc:"Skip button text.",required:!1},{name:"successTitle",type:"string",default:"'Feedback submitted'",desc:"Success view title.",required:!1},{name:"successMessage",type:"string",default:"default success copy",desc:"Success view message.",required:!1},{name:"minWords",type:"number",default:"0",desc:"Minimum words required in comment.",required:!1},{name:"maxLength",type:"number",default:"200",desc:"Max comment length.",required:!1},{name:"onSubmit",type:"(rating: number, comment: string) => void",default:"undefined",desc:"Submit callback.",required:!1},{name:"onSkip",type:"() => void",default:"undefined",desc:"Skip callback.",required:!1},{name:"onCloseSuccess",type:"() => void",default:"undefined",desc:"Close callback for success state.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"feedbackformcsat"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"CSAT smiley rating feedback form variant."}),e.jsx("p",{className:"wb-subtitle",style:{marginTop:6},children:"This component has no required props."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${i==="preview"?"active":""}`,onClick:()=>o("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${i==="code"?"active":""}`,onClick:()=>o("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${i==="props"?"active":""}`,onClick:()=>o("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-tab-content",children:[i==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:c()})}),i==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:n,language:"TSX",filename:"FeedbackCsatExample.tsx"})}),i==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:l.map(p=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[p.name,p.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:p.type})}),e.jsx("td",{children:p.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:p.default})})]},p.name))})]})})]})]})})]})},s5=({isDark:t})=>{const[i,o]=m.useState("preview"),n=m.useMemo(()=>{const p=[];return p.push("import { Ux4gFeedbackFormNps } from 'ux4g-react-native-design-system';"),p.push(""),p.push("<Ux4gFeedbackFormNps"),p.push("  onSubmit={(score, comment) => console.log(score, comment)}"),p.push("/>"),p.join(`
 `)},[]),c=()=>{const p=`import React from 'react';
@@ -6746,6 +7155,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: ${t?"'#121212'":"'#ffffff'"},
   },
 });`,s=`https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${t?"dark":"light"}&name=Ux4gFeedbackFormNps%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(p)}`;return e.jsx("iframe",{src:s,style:{width:"100%",height:"640px",border:"none",borderRadius:"8px"},title:"Expo Snack Feedback Nps Preview"})},l=[{name:"title",type:"string",default:"'How likely are you to recommend us?'",desc:"Top heading text.",required:!1},{name:"unlikelyLabel",type:"string",default:"'0 - Extremely Unlikely'",desc:"Left scale label.",required:!1},{name:"likelyLabel",type:"string",default:"'10 - Extremely Likely'",desc:"Right scale label.",required:!1},{name:"commentPlaceholder",type:"string",default:"'Please tell us why you gave this score'",desc:"Placeholder for comment box.",required:!1},{name:"submitButtonText",type:"string",default:"'Submit'",desc:"Primary button text.",required:!1},{name:"skipButtonText",type:"string",default:"'Skip'",desc:"Skip button text.",required:!1},{name:"successTitle",type:"string",default:"'Feedback submitted'",desc:"Success view title.",required:!1},{name:"successMessage",type:"string",default:"default success copy",desc:"Success view message.",required:!1},{name:"minWords",type:"number",default:"0",desc:"Minimum words required in comment.",required:!1},{name:"maxLength",type:"number",default:"200",desc:"Max comment length.",required:!1},{name:"onSubmit",type:"(score: number, comment: string) => void",default:"undefined",desc:"Submit callback.",required:!1},{name:"onSkip",type:"() => void",default:"undefined",desc:"Skip callback.",required:!1},{name:"onCloseSuccess",type:"() => void",default:"undefined",desc:"Close callback for success state.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"feedbackformnps"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"NPS 0-10 score feedback form variant."}),e.jsx("p",{className:"wb-subtitle",style:{marginTop:6},children:"This component has no required props."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${i==="preview"?"active":""}`,onClick:()=>o("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${i==="code"?"active":""}`,onClick:()=>o("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]}),e.jsxs("button",{className:`wb-tab ${i==="props"?"active":""}`,onClick:()=>o("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"})," Props"]})]}),e.jsxs("div",{className:"wb-tab-content",children:[i==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:c()})}),i==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:n,language:"TSX",filename:"FeedbackNpsExample.tsx"})}),i==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:l.map(p=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[p.name,p.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:p.type})}),e.jsx("td",{children:p.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:p.default})})]},p.name))})]})})]})]})})]})},l5=t=>t==="search"||t==="search-field"?"search-basic":["search-basic","search-submit","search-autocomplete","search-status"].includes(t)?t:"search-basic",d5={"search-basic":{title:"Search Field",description:"Basic search input with search icon, optional voice/clear actions, and helper caption."},"search-submit":{title:"Search Field",description:"Search field with attached submit button using filled or tonal style variants."},"search-autocomplete":{title:"Search Field",description:"Autocomplete dropdown with filtering modes and option selection behavior."},"search-status":{title:"Search Field",description:"Validation states with semantic status color, icon, and caption feedback."}},c5=t=>t==="search-submit"?`import React, { useState } from 'react';
 import { View } from 'react-native';

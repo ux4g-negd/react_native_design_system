@@ -19,92 +19,302 @@ export const ChipsDoc: React.FC<ChipsDocProps> = ({ isDark, story = 'chips-basic
 
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
-    const lines: string[] = [];
-    lines.push(`import { `);
-    lines.push(`  Ux4gChoiceChip,`);
-    lines.push(`  Ux4gFilterChip,`);
-    lines.push(`  Ux4gInputChip,`);
-    lines.push(`  Ux4gSuggestionChip,`);
-    lines.push(`  Ux4gActionChip,`);
-    lines.push(`} from 'ux4g-react-native-design-system';`);
-    lines.push(`import { useState } from 'react';`);
-    lines.push('');
-    lines.push('// Choice Chips');
-    lines.push('const [selected, setSelected] = useState(true);');
-    lines.push('<Ux4gChoiceChip');
-    lines.push('  text="Option 1"');
-    lines.push('  selected={selected}');
-    lines.push('  onClick={() => setSelected(!selected)}');
-    lines.push('/>');
-    lines.push('');
-    lines.push('// Filter Chips');
-    lines.push('<Ux4gFilterChip');
-    lines.push('  text="In Stock"');
-    lines.push('  selected={true}');
-    lines.push('  onClick={() => {}}');
-    lines.push('/>');
-    lines.push('');
-    lines.push('// Input Chips with Delete');
-    lines.push('<Ux4gInputChip');
-    lines.push('  text="React Native"');
-    lines.push('  onDismiss={() => console.log("Dismissed")}\n/>');
-    lines.push('');
-    lines.push('// Suggestion Chips');
-    lines.push('<Ux4gSuggestionChip');
-    lines.push('  text="Design System"');
-    lines.push('  onClick={() => {}}\n/>');
-    return lines.join('\n');
-  }, []);
-
-  /* ── Live Preview (Expo Snack) ── */
-  const renderStoryPreview = () => {
-    let componentsSnippet = '';
-
     if (story === 'chips-action') {
-      componentsSnippet = `        <Ux4gSuggestionChip text="React Native" onClick={() => {}} />
-        <View style={{ height: 12 }} />
-        <Ux4gSuggestionChip text="UX4G Design System" onClick={() => {}} />
-        <View style={{ height: 12 }} />
-        <Ux4gActionChip text="Download Report" onClick={() => {}} />
-        <View style={{ height: 12 }} />
-        <Ux4gActionChip text="Share Link" enabled={false} onClick={() => {}} />`;
-    } else if (story === 'chips-input') {
-      componentsSnippet = `        <Ux4gInputChip text="React Native" onDismiss={() => console.log("Dismissed 1")} />
-        <View style={{ height: 12 }} />
-        <Ux4gInputChip text="TypeScript" onDismiss={() => console.log("Dismissed 2")} />
-        <View style={{ height: 12 }} />
-        <Ux4gInputChip text="Disabled Tag" enabled={false} onDismiss={() => {}} />`;
-    } else {
-      componentsSnippet = `        <Ux4gChoiceChip text="Choice 1 (Selected)" selected={choice1} onClick={() => setChoice1(!choice1)} />
-        <View style={{ height: 12 }} />
-        <Ux4gChoiceChip text="Choice 2 (Unselected)" selected={choice2} onClick={() => setChoice2(!choice2)} />
-        <View style={{ height: 16 }} />
-        <Ux4gFilterChip text="Filter: Active" selected={filter1} onClick={() => setFilter1(!filter1)} />
-        <View style={{ height: 12 }} />
-        <Ux4gFilterChip text="Filter: Inactive" selected={filter2} onClick={() => setFilter2(!filter2)} />`;
+      return `import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gChoiceChip,
+  Ux4gChipGroup,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function SuggestionAndActionChipsExample() {
+  const [selectedTag, setSelectedTag] = useState('React Native');
+  const [actionStatus, setActionStatus] = useState('Click a chip');
+
+  return (
+    <Ux4gThemeProvider isDark={false}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Suggestion Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            { text: 'React Native', icon: '⚛️' },
+            { text: 'UX4G Design System', icon: '🎨' },
+            { text: 'TypeScript', icon: '📘' },
+          ].map((item) => (
+            <Ux4gChoiceChip
+              key={item.text}
+              text={item.text}
+              selected={selectedTag === item.text}
+              onClick={() => {
+                setSelectedTag(item.text);
+                setActionStatus(\`Selected: \${item.text}\`);
+              }}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>{item.icon}</Text>}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Action Chips:</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gChoiceChip
+              key="download"
+              text="Download Report"
+              selected={false}
+              onClick={() => setActionStatus('Downloading report...')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>⬇️</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="share"
+              text="Share Link"
+              selected={false}
+              onClick={() => setActionStatus('Link copied to clipboard!')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>🔗</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="disabled"
+              text="Disabled Action"
+              selected={false}
+              enabled={false}
+              onClick={() => {}}
+              size="m"
+            />,
+          ]}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 20 }} />
+        <Text style={styles.statusText}>
+          Action Status: <Text style={styles.statusValue}>{actionStatus}</Text>
+        </Text>
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { padding: 24 },
+  heading: { fontSize: 14, fontWeight: '700', marginBottom: 8, color: '#334155' },
+  statusText: { fontSize: 13, color: '#64748B' },
+  statusValue: { fontWeight: '700', color: '#4F46E5' },
+});`;
     }
 
-    const snackCodeString = `import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+    if (story === 'chips-input') {
+      return `import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gInputChip,
+  Ux4gChipGroup,
+  Ux4gInputChipField,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function InputChipsExample() {
+  const [chips, setChips] = useState(['React Native', 'TypeScript', 'Design System', 'Disabled Tag']);
+  const [inputValue, setInputValue] = useState('');
+
+  const handleDismiss = (tag: string) => {
+    setChips((prev) => prev.filter((item) => item !== tag));
+  };
+
+  const handleAddChip = (newTag: string) => {
+    if (newTag.trim() && !chips.includes(newTag.trim())) {
+      setChips((prev) => [...prev, newTag.trim()]);
+    }
+  };
+
+  return (
+    <Ux4gThemeProvider isDark={false}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Interactive Input Chips (Tap ✕ to remove):</Text>
+        <Ux4gChipGroup
+          chips={chips.map((tag) => (
+            <Ux4gInputChip
+              key={tag}
+              text={tag}
+              enabled={tag !== 'Disabled Tag'}
+              onDismiss={() => handleDismiss(tag)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Add Custom Input Tag:</Text>
+        <Ux4gInputChipField
+          value={inputValue}
+          onValueChange={setInputValue}
+          onAddChip={handleAddChip}
+          placeholder="Type tag and press +..."
+          chips={[]}
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { padding: 24 },
+  heading: { fontSize: 14, fontWeight: '700', marginBottom: 8, color: '#334155' },
+});`;
+    }
+
+    return `import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import {
   Ux4gChoiceChip,
   Ux4gFilterChip,
-  Ux4gInputChip,
-  Ux4gSuggestionChip,
-  Ux4gActionChip,
+  Ux4gChipGroup,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function ChoiceAndFilterChipsExample() {
+  const [selectedChoice, setSelectedChoice] = useState('Option 1');
+  const [filterActive, setFilterActive] = useState(true);
+  const [filterDraft, setFilterDraft] = useState(false);
+  const [filterReview, setFilterReview] = useState(true);
+
+  return (
+    <Ux4gThemeProvider isDark={false}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Choice Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={['Option 1', 'Option 2', 'Option 3'].map((opt) => (
+            <Ux4gChoiceChip
+              key={opt}
+              text={opt}
+              selected={selectedChoice === opt}
+              onClick={() => setSelectedChoice(opt)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Filter Chips (Multi Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gFilterChip
+              key="active"
+              text="Active (Selected)"
+              selected={filterActive}
+              onClick={() => setFilterActive(!filterActive)}
+            />,
+            <Ux4gFilterChip
+              key="draft"
+              text="Draft"
+              selected={filterDraft}
+              onClick={() => setFilterDraft(!filterDraft)}
+            />,
+            <Ux4gFilterChip
+              key="review"
+              text="Under Review"
+              selected={filterReview}
+              onClick={() => setFilterReview(!filterReview)}
+            />,
+          ]}
+          arrangement="wrap"
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { padding: 24 },
+  heading: { fontSize: 14, fontWeight: '700', marginBottom: 8, color: '#334155' },
+});`;
+  }, [story]);
+
+  /* ── Live Preview (Expo Snack) ── */
+  const renderStoryPreview = () => {
+    let snackCodeString = '';
+
+    if (story === 'chips-action') {
+      snackCodeString = `import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gChoiceChip,
+  Ux4gChipGroup,
   Ux4gThemeProvider,
 } from 'ux4g-react-native-design-system';
 
 export default function App() {
-  const [choice1, setChoice1] = useState(true);
-  const [choice2, setChoice2] = useState(false);
-  const [filter1, setFilter1] = useState(true);
-  const [filter2, setFilter2] = useState(false);
+  const [selectedTag, setSelectedTag] = useState('React Native');
+  const [actionStatus, setActionStatus] = useState('Click a chip');
 
   return (
     <Ux4gThemeProvider isDark={${isDark}}>
       <View style={styles.container}>
-${componentsSnippet}
+        <Text style={styles.heading}>Suggestion Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            { text: 'React Native', icon: '⚛️' },
+            { text: 'UX4G Design System', icon: '🎨' },
+            { text: 'TypeScript', icon: '📘' },
+          ].map((item) => (
+            <Ux4gChoiceChip
+              key={item.text}
+              text={item.text}
+              selected={selectedTag === item.text}
+              onClick={() => {
+                setSelectedTag(item.text);
+                setActionStatus(\`Selected: \${item.text}\`);
+              }}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>{item.icon}</Text>}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Action Chips:</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gChoiceChip
+              key="download"
+              text="Download Report"
+              selected={false}
+              onClick={() => setActionStatus('Downloading report...')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>⬇️</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="share"
+              text="Share Link"
+              selected={false}
+              onClick={() => setActionStatus('Link copied to clipboard!')}
+              size="m"
+              leadingContent={<Text style={{ fontSize: 13 }}>🔗</Text>}
+            />,
+            <Ux4gChoiceChip
+              key="disabled"
+              text="Disabled Action"
+              selected={false}
+              enabled={false}
+              onClick={() => {}}
+              size="m"
+            />,
+          ]}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 20 }} />
+        <Text style={styles.statusText}>
+          Action Status: <Text style={styles.statusValue}>{actionStatus}</Text>
+        </Text>
       </View>
     </Ux4gThemeProvider>
   );
@@ -115,9 +325,173 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    padding: 24
-  }
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
+  },
+  heading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: ${isDark ? "'#E2E8F0'" : "'#334155'"},
+  },
+  statusText: {
+    fontSize: 13,
+    color: ${isDark ? "'#94A3B8'" : "'#64748B'"},
+  },
+  statusValue: {
+    fontWeight: '700',
+    color: '#4F46E5',
+  },
 });`;
+    } else if (story === 'chips-input') {
+      snackCodeString = `import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gInputChip,
+  Ux4gChipGroup,
+  Ux4gInputChipField,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [chips, setChips] = useState(['React Native', 'TypeScript', 'Design System', 'Disabled Tag']);
+  const [inputValue, setInputValue] = useState('');
+
+  const handleDismiss = (tag) => {
+    setChips((prev) => prev.filter((item) => item !== tag));
+  };
+
+  const handleAddChip = (newTag) => {
+    if (newTag.trim() && !chips.includes(newTag.trim())) {
+      setChips((prev) => [...prev, newTag.trim()]);
+    }
+  };
+
+  return (
+    <Ux4gThemeProvider isDark={${isDark}}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Interactive Input Chips (Tap ✕ to remove):</Text>
+        <Ux4gChipGroup
+          chips={chips.map((tag) => (
+            <Ux4gInputChip
+              key={tag}
+              text={tag}
+              enabled={tag !== 'Disabled Tag'}
+              onDismiss={() => handleDismiss(tag)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Add Custom Input Tag:</Text>
+        <Ux4gInputChipField
+          value={inputValue}
+          onValueChange={setInputValue}
+          onAddChip={handleAddChip}
+          placeholder="Type tag and press +..."
+          chips={[]}
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
+  },
+  heading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: ${isDark ? "'#E2E8F0'" : "'#334155'"},
+  },
+});`;
+    } else {
+      snackCodeString = `import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import {
+  Ux4gChoiceChip,
+  Ux4gFilterChip,
+  Ux4gChipGroup,
+  Ux4gThemeProvider,
+} from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selectedChoice, setSelectedChoice] = useState('Option 1');
+  const [filterActive, setFilterActive] = useState(true);
+  const [filterDraft, setFilterDraft] = useState(false);
+  const [filterReview, setFilterReview] = useState(true);
+
+  return (
+    <Ux4gThemeProvider isDark={${isDark}}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Choice Chips (Single Select):</Text>
+        <Ux4gChipGroup
+          chips={['Option 1', 'Option 2', 'Option 3'].map((opt) => (
+            <Ux4gChoiceChip
+              key={opt}
+              text={opt}
+              selected={selectedChoice === opt}
+              onClick={() => setSelectedChoice(opt)}
+            />
+          ))}
+          arrangement="wrap"
+        />
+
+        <View style={{ height: 24 }} />
+
+        <Text style={styles.heading}>Filter Chips (Multi Select):</Text>
+        <Ux4gChipGroup
+          chips={[
+            <Ux4gFilterChip
+              key="active"
+              text="Active (Selected)"
+              selected={filterActive}
+              onClick={() => setFilterActive(!filterActive)}
+            />,
+            <Ux4gFilterChip
+              key="draft"
+              text="Draft"
+              selected={filterDraft}
+              onClick={() => setFilterDraft(!filterDraft)}
+            />,
+            <Ux4gFilterChip
+              key="review"
+              text="Under Review"
+              selected={filterReview}
+              onClick={() => setFilterReview(!filterReview)}
+            />,
+          ]}
+          arrangement="wrap"
+        />
+      </View>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
+  },
+  heading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: ${isDark ? "'#E2E8F0'" : "'#334155'"},
+  },
+});`;
+    }
 
     const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChips%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
