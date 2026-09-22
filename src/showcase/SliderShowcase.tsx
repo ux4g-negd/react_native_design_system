@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useUx4gTheme } from '../theme/Ux4gThemeContext';
 import { UX4GColors } from '../foundation/colors';
-import { Ux4gSlider } from '../components/slider/Slider';
+import { Ux4gSlider, Ux4gRangeSlider, Ux4gRangeValues } from '../components/slider/Slider';
 
 export const SliderShowcase: React.FC = () => {
   const theme = useUx4gTheme();
@@ -32,6 +32,13 @@ export const SliderShowcase: React.FC = () => {
 
   // Marks and values state
   const [marksValue, setMarksValue] = useState(50);
+
+  // Value indicator state
+  const [indicatorValue, setIndicatorValue] = useState(35);
+
+  // Range slider state
+  const [range, setRange] = useState<Ux4gRangeValues>({ start: 20, end: 80 });
+  const [steppedRange, setSteppedRange] = useState<Ux4gRangeValues>({ start: 20, end: 60 });
 
   return (
     <ScrollView
@@ -344,6 +351,83 @@ export const SliderShowcase: React.FC = () => {
             caption="All features enabled: labels, marks, steps, and caption."
             captionVariant="helper"
             valueFormatter={(val) => `${val}%`}
+          />
+        </View>
+      </View>
+
+      {/* 9. Value Indicator */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>
+          9. Value Indicator (`showIndicator`)
+        </Text>
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: theme.isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
+              borderColor: theme.isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+            },
+          ]}
+        >
+          <Ux4gSlider
+            value={indicatorValue}
+            onValueChange={setIndicatorValue}
+            label="Drag to reveal the value bubble"
+            showIndicator={true}
+            valueFormatter={(val) => `${val}%`}
+          />
+        </View>
+      </View>
+
+      {/* 10. Range Slider */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>
+          10. Range Slider (`Ux4gRangeSlider`)
+        </Text>
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: theme.isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
+              borderColor: theme.isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+            },
+          ]}
+        >
+          <Ux4gRangeSlider
+            values={range}
+            onValueChange={setRange}
+            label="Price Range"
+            showValueLabels={true}
+            showIndicator={true}
+          />
+
+          <View style={styles.spacer} />
+
+          <Ux4gRangeSlider
+            values={steppedRange}
+            onValueChange={setSteppedRange}
+            label="Stepped Range with Marks"
+            size="m"
+            steps={4}
+            showMarksAndValues={true}
+          />
+
+          <View style={styles.spacer} />
+
+          <Ux4gRangeSlider
+            values={range}
+            onValueChange={setRange}
+            label="Range with Input Fields"
+            showInputFields={true}
+          />
+
+          <View style={styles.spacer} />
+
+          <Ux4gRangeSlider
+            values={{ start: 30, end: 70 }}
+            label="Disabled Range"
+            enabled={false}
+            showValueLabels={true}
           />
         </View>
       </View>
