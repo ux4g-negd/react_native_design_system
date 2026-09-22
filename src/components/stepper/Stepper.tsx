@@ -144,19 +144,21 @@ const HorizontalStepper: React.FC<HorizontalStepperProps> = ({
               {showLabels && (
                 <>
                   <View style={{ height: 8 }} />
-                  <StepLabels
-                    title={stepData?.title ?? `Step ${stepIndex}`}
-                    description={stepData?.description}
-                    statusLabel={stepData?.statusLabel}
-                    isCompleted={isCompleted}
-                    isActive={isActive}
-                    isPending={isPending}
-                    isError={stepData?.isError ?? false}
-                    textAlign="center"
-                    titleStyle={stepData?.titleStyle}
-                    descriptionStyle={stepData?.descriptionStyle}
-                    statusStyle={stepData?.statusStyle}
-                  />
+                  <View style={{ paddingHorizontal: 4 }}>
+                    <StepLabels
+                      title={stepData?.title ?? `Step ${stepIndex}`}
+                      description={stepData?.description}
+                      statusLabel={stepData?.statusLabel}
+                      isCompleted={isCompleted}
+                      isActive={isActive}
+                      isPending={isPending}
+                      isError={stepData?.isError ?? false}
+                      textAlign="center"
+                      titleStyle={stepData?.titleStyle}
+                      descriptionStyle={stepData?.descriptionStyle}
+                      statusStyle={stepData?.statusStyle}
+                    />
+                  </View>
                 </>
               )}
               <View style={{ height: 12 }} />
