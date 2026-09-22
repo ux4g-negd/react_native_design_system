@@ -89,16 +89,16 @@ Replace standard React Native / Paper / Elements components with their designate
 - `<Searchbar>` / `<SearchBar>` → `<Ux4gSearchField>`
 - `<View style={cardStyle}>` / `<Card>` → `<Ux4gCard>`
 - `<Modal>` / `<Dialog>` → `<Ux4gModal>`
-- `<Picker>` / `<Menu>` / `<Overlay>` → `<Ux4gDropdown>`
-- `<Checkbox>` / `<CheckBox>` → `<Ux4gCheckbox>` / `<Ux4gCheckboxGroup>`
-- `<RadioButton>` → `<Ux4gRadioButton>` / `<Ux4gRadioGroup>`
+- `<Picker>` / `<Menu>` / `<Overlay>` → `<Ux4gSelectionDropdown>` / `<Ux4gActionDropdown>`
+- `<Checkbox>` / `<CheckBox>` → `<Ux4gCheckbox>`
+- `<RadioButton>` → `<Ux4gRadioButton>`
 - `<Switch>` → `<Ux4gSwitch>`
-- `<Chip>` → `<Ux4gChip>` / `<Ux4gTag>`
+- `<Chip>` → `<Ux4gChoiceChip>` / `<Ux4gFilterChip>` / `<Ux4gTag>`
 - `<Badge>` → `<Ux4gBadge>`
 - `<Avatar>` → `<Ux4gAvatar>` / `<Ux4gAvatarGroup>`
 - `<ProgressBar>` → `<Ux4gLinearProgressBar>`
-- `<ActivityIndicator>` → `<Ux4gCircularProgressIndicator>` / `<Ux4gSpinner>`
-- `<Slider>` → `<Ux4gSlider>`
+- `<ActivityIndicator>` → `<Ux4gCircularProgress>` / `<Ux4gSpinner>`
+- `<Slider>` → `<Ux4gSlider>` / `<Ux4gRangeSlider>`
 - `Alert.alert()` / `<Snackbar>` → `<Ux4gToast>` (via `useUx4gToast()`)
 - Custom App Bar / `<Appbar.Header>` → `<Ux4gAppHeader>`
 

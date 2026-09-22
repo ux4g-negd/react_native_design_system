@@ -12,555 +12,581 @@ export const RN_PROPS_MAPPING_DATA: RNPropMappingItem[] = [
   {
     component: "Ux4gAccordion",
     propGroup: "Header & Toggle",
-    ux4gProp: "title={string} | subtitle={string} | expanded={boolean} | onToggle={(exp) => void}",
+    ux4gProp: "title={string} | expanded={boolean} | onExpandedChange={(exp) => void} | children={ReactNode} | content={ReactNode}",
     paperProp: "title={string} | description={string} | expanded={boolean} | onPress",
     rneProp: "isExpanded={boolean} | content={<ListItem.Content />}",
-    description: "Header title and collapsible state control. UX4G includes accessible status pill support."
+    description: "Header title and collapsible state control. Supports either children or content prop."
   },
   {
     component: "Ux4gAccordion",
-    propGroup: "Group & Icons",
-    ux4gProp: "iconPosition='left' | 'right' | leadingIcon={ReactNode}",
+    propGroup: "Icons & Positioning",
+    ux4gProp: "chevronPosition='leading' | 'trailing' | leadingIcon={ReactNode} | enabled={boolean}",
     paperProp: "left={(props) => <List.Icon {...props} />}",
     rneProp: "expandIcon={ReactNode} | icon={ReactNode}",
-    description: "Customizable chevron arrow direction and optional leading status icons."
+    description: "Configurable chevron position ('leading' or 'trailing') with optional leading icon and enabled state."
   },
   {
     component: "Ux4gAccordionGroup",
-    propGroup: "Multi-expansion & State",
-    ux4gProp: "allowMultiple={boolean} | defaultExpandedIds={string[]}",
+    propGroup: "Group & Item Management",
+    ux4gProp: "items={Ux4gAccordionItem[]} | expandedIndex={number | null} | onExpandedIndexChange={(idx) => void} | itemSpacing={number} | contentBuilder={(idx, item) => ReactNode}",
     paperProp: "<List.AccordionGroup>",
     rneProp: "<ListItem.Accordion>",
-    description: "Container component to manage single-accordion or multi-accordion expansion state."
+    description: "Accordion collection container with controlled expandedIndex and custom itemSpacing."
   },
 
   // 2. Ux4gAppHeader
   {
     component: "Ux4gAppHeader",
     propGroup: "Navigation & Title",
-    ux4gProp: "title={string} | showBackButton={boolean} | onBackPressed={() => void}",
+    ux4gProp: "title={string} | variant='light' | 'filled' | 'outlined' | showBackButton={boolean} | onBackPressed={() => void}",
     paperProp: "<Appbar.Header> | <Appbar.BackAction onPress={...} /> | <Appbar.Content title={...} />",
     rneProp: "leftComponent={<Header.BackButton />} | centerComponent={{ text: string }}",
-    description: "Top screen navigation bar with government logo emblem and accessible back navigation."
+    description: "Top screen navigation bar with government-compliant styling, theme variants, and back button handler."
   },
   {
     component: "Ux4gAppHeader",
     propGroup: "Actions & Avatar",
-    ux4gProp: "actions={Ux4gAppHeaderAction[]} | avatar={ReactNode} | leadingWidgets={ReactNode[]}",
+    ux4gProp: "actions={Ux4gAppHeaderAction[]} | avatar={ReactNode} | showAvatar={boolean} | avatarImageUrl={string} | avatarInitials={string} | onAvatarPressed={() => void} | leadingWidgets={ReactNode[]}",
     paperProp: "<Appbar.Action icon={...} onPress={...} />",
     rneProp: "rightComponent={<Header.RightAction />}",
-    description: "Right-hand actions menu, notifications badge, and citizen profile avatar integration."
+    description: "Action buttons, custom leading widgets, and citizen profile avatar integration."
   },
 
   // 3. Ux4gAvatar
   {
     component: "Ux4gAvatar",
-    propGroup: "Image & Fallback",
-    ux4gProp: "avatarImageUrl={string} | avatarInitials={string} | avatarIcon={ReactNode}",
+    propGroup: "Image, Initials & Icon",
+    ux4gProp: "imageUrl={string} | initials={string} | icon={ReactNode} | shape='circle' | 'rounded' | 'square'",
     paperProp: "<Avatar.Image source={...} /> | <Avatar.Text label={...} /> | <Avatar.Icon icon={...} />",
     rneProp: "source={{ uri: string }} | title={string} | icon={{ name: string }}",
-    description: "Citizen photo rendering with automatic initials fallback calculation."
+    description: "Citizen photo avatar with automatic initials text or icon fallback and shape modes."
   },
   {
     component: "Ux4gAvatar",
-    propGroup: "Sizing & Status",
-    ux4gProp: "size='xs' | 'sm' | 'md' | 'lg' | 'xl' | status='online' | 'offline' | 'busy'",
+    propGroup: "Sizing & Colors",
+    ux4gProp: "size='xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | containerColor={string} | contentColor={string}",
     paperProp: "size={number} (e.g. 48)",
     rneProp: "size='small' | 'medium' | 'large' | 'xlarge'",
-    description: "Standardized sizing scale and presence indicator badge for government caseworkers."
+    description: "Standard 7-tier sizing scale ('xs' to 'xxxl') with theme background and foreground coloring."
   },
   {
     component: "Ux4gAvatarGroup",
-    propGroup: "Group & Max Display",
-    ux4gProp: "max={number} | size='sm' | 'md' | 'lg' | spacing={number}",
+    propGroup: "Cluster & Overflow",
+    ux4gProp: "items={Ux4gAvatarGroupItem[]} | size={Ux4gAvatarSize} | maxLimit={number} | collapsed={boolean} | borderColor={string}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Stacked overlapping citizen avatar cluster with +N overflow indicator pill."
+    description: "Overlapping citizen avatar cluster with maxLimit cutoff pill indicator."
   },
 
   // 4. Ux4gBadge
   {
     component: "Ux4gBadge",
     propGroup: "Count & Variants",
-    ux4gProp: "count={number} | maxCount={99} | variant='primary' | 'success' | 'error' | 'warning'",
+    ux4gProp: "variant='dot' | 'count' | 'label' | 'icon' | 'readyToUse' | count={number} | limit='singleDigit' | 'doubleDigit' | label={string}",
     paperProp: "children={number} | size={number}",
     rneProp: "value={number} | status='primary' | 'success' | 'error' | 'warning'",
-    description: "Notification counter badge with 99+ truncation and semantic color coding."
+    description: "Notification counter badge with 9+ ('singleDigit') or 99+ ('doubleDigit') limit thresholds."
   },
   {
     component: "Ux4gBadge",
-    propGroup: "Dot Mode",
-    ux4gProp: "isDot={boolean} | size='small' | 'medium'",
-    paperProp: "visible={boolean} (empty children)",
+    propGroup: "Overlay & Placement",
+    ux4gProp: "child={ReactNode} | alignment='topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | offset={Ux4gBadgeOffset}",
+    paperProp: "visible={boolean}",
     rneProp: "badgeStyle={{ width: 8, height: 8 }}",
-    description: "Minimal dot status indicator for unread service alerts."
+    description: "Wraps target component with absolute badge alignment and fine-grain coordinate offsets."
   },
 
   // 5. Ux4gButton
   {
     component: "Ux4gButton",
-    propGroup: "Variants & Styling",
-    ux4gProp: "variant='primary' | 'secondary' | 'outline' | 'ghost'",
+    propGroup: "Variants & Sizing",
+    ux4gProp: "text={string} | variant='primary' | 'secondary' | 'outline' | 'ghost' | size='small' | 'medium' | 'large'",
     paperProp: "mode='contained' | 'outlined' | 'text' | 'elevated'",
-    rneProp: "type='solid' | 'outline' | 'clear'",
-    description: "Defines visual style hierarchy. UX4G uses standard semantic variants with built-in AA contrast."
+    rneProp: "type='solid' | 'outline' | 'clear' | size='sm' | 'md' | 'lg'",
+    description: "Visual hierarchy buttons adhering to UX4G AA-contrast tokens with standard sizes."
   },
   {
     component: "Ux4gButton",
-    propGroup: "States & Icons",
-    ux4gProp: "isLoading={boolean} | leadingIcon={ReactNode} | trailingIcon={ReactNode}",
-    paperProp: "loading={boolean} | icon={string}",
-    rneProp: "loading={boolean} | icon={{ name: string }}",
-    description: "Controls activity spinner indicator and leading/trailing icon attachments."
-  },
-  {
-    component: "Ux4gButton",
-    propGroup: "Sizing & Press",
-    ux4gProp: "size='small' | 'medium' | 'large' | enabled={boolean} | onPress={() => void}",
-    paperProp: "disabled={boolean} | onPress={() => void}",
-    rneProp: "size='sm' | 'md' | 'lg' | disabled={boolean} | onPress={() => void}",
-    description: "Standardized touch-target height (36px, 44px, 52px) adhering to mobile accessibility guidelines."
+    propGroup: "States, Icons & Press",
+    ux4gProp: "enabled={boolean} | isLoading={boolean} | leadingIcon={Ux4gIconProp} | trailingIcon={Ux4gIconProp} | onPress={() => void}",
+    paperProp: "disabled={boolean} | loading={boolean} | icon={string} | onPress={...}",
+    rneProp: "disabled={boolean} | loading={boolean} | icon={{ name: string }} | onPress={...}",
+    description: "Interactive button controls with loading spinner toggle, icons, and click handling."
   },
 
   // 6. Ux4gIconButton
   {
     component: "Ux4gIconButton",
-    propGroup: "Icon & Sizing",
-    ux4gProp: "icon={Ux4gIconName | ReactNode} | size='small' | 'medium' | 'large'",
-    paperProp: "icon={string} | size={number}",
-    rneProp: "name={string} | size={number}",
-    description: "Icon-only touch targets with minimum 48px touch bounding box."
-  },
-  {
-    component: "Ux4gIconButton",
-    propGroup: "Variants",
-    ux4gProp: "variant='primary' | 'secondary' | 'outline' | 'ghost' | 'tonal'",
-    paperProp: "mode='contained' | 'outlined' | 'contained-tonal'",
-    rneProp: "type='solid' | 'outline' | 'clear'",
-    description: "Surface background styling for header actions and form controls."
+    propGroup: "Icon, Sizing & Variants",
+    ux4gProp: "icon={Ux4gIconProp} | variant='primary' | 'secondary' | 'outline' | 'ghost' | size={number} | enabled={boolean} | isLoading={boolean} | onPress={() => void}",
+    paperProp: "<IconButton icon={...} mode='contained' size={...} disabled={...} onPress={...} />",
+    rneProp: "<Button icon={{ name: string }} type='clear' onPress={...} />",
+    description: "Icon-only button with variant styling, customizable pixel size, loading state, and 48px touch target."
   },
 
   // 7. Ux4gCard
   {
     component: "Ux4gCard",
-    propGroup: "Content & Header",
-    ux4gProp: "title={string} | subtitle={string} | badge={ReactNode} | actions={ReactNode}",
-    paperProp: "<Card.Title> | <Card.Content> | <Card.Actions>",
-    rneProp: "<Card.Title> | <Card.Divider>",
-    description: "Declarative props or compound composition for citizen dashboard cards."
+    propGroup: "Layout & Content",
+    ux4gProp: "title={string} | subtitle={string} | body={string} | mediaImageUrl={string} | direction='vertical' | 'horizontal' | isClickable={boolean} | onPress={() => void} | elevation={number}",
+    paperProp: "<Card.Title> | <Card.Content> | <Card.Cover>",
+    rneProp: "<Card.Title> | <Card.Image> | <Card.Divider>",
+    description: "Citizen dashboard card with vertical or horizontal media orientation, elevation shadow, and press handler."
   },
   {
     component: "Ux4gCard",
-    propGroup: "Elevation & Layout",
-    ux4gProp: "elevation={0 | 1 | 2 | 3} | orientation='vertical' | 'horizontal'",
-    paperProp: "mode='elevated' | 'outlined' | 'contained'",
-    rneProp: "containerStyle={{ elevation: number }}",
-    description: "Depth elevation shadows and responsive horizontal citizen summary card layouts."
+    propGroup: "Footer Actions",
+    ux4gProp: "footerType='none' | 'primaryOnly' | 'secondaryOnly' | 'primaryAndSecondary' | primaryButtonText={string} | secondaryButtonText={string} | onPrimaryClick={() => void} | onSecondaryClick={() => void}",
+    paperProp: "<Card.Actions>",
+    rneProp: "Custom child buttons",
+    description: "Integrated card action footer supporting primary and secondary buttons."
   },
 
   // 8. Ux4gCarousel
   {
     component: "Ux4gCarousel",
-    propGroup: "Data & AutoPlay",
-    ux4gProp: "data={any[]} | renderItem={({item}) => ReactNode} | autoPlay={boolean} | intervalMs={number}",
+    propGroup: "Items & Autoplay",
+    ux4gProp: "items={ReactNode[]} | autoPlay={boolean} | autoPlayInterval={number} | showPagination={boolean} | showArrows={boolean} | height={number} | viewportFraction={number} | paginationVariant='default' | 'defaultVariant' | 'capsule'",
     paperProp: "Not Available (requires 3rd-party)",
     rneProp: "Not Available (requires 3rd-party)",
-    description: "Touch swipeable banner with automated timer transitions and citizen awareness cards."
+    description: "Smooth swipeable banner slider with auto-play interval timer and integrated dotted pagination."
   },
 
   // 9. Ux4gCheckbox
   {
     component: "Ux4gCheckbox",
-    propGroup: "Checked State",
-    ux4gProp: "checked={boolean} | isIndeterminate={boolean} | onValueChange={(val) => void}",
+    propGroup: "State & Sizing",
+    ux4gProp: "value={boolean | null} | onChanged={(newValue) => void} | size='small' | 'medium' | 'large' | enabled={boolean}",
     paperProp: "status='checked' | 'unchecked' | 'indeterminate' | onPress",
     rneProp: "checked={boolean} | onPress",
-    description: "Supports tri-state indeterminate selection for bulk selecting lists & forms."
+    description: "Tri-state checkbox supporting true (checked), false (unchecked), and null (indeterminate dash)."
   },
   {
     component: "Ux4gCheckbox",
-    propGroup: "Labels & Description",
-    ux4gProp: "label={string} | description={string} | disabled={boolean}",
+    propGroup: "Labels & Validation",
+    ux4gProp: "label={string} | description={string} | isRequired={boolean} | hasError={boolean} | descriptionVariant='helper' | 'error' | 'warning' | 'success'",
     paperProp: "label={string} (inside <Checkbox.Item />)",
     rneProp: "title={string} | subtitle={string}",
-    description: "Direct label and accessibility subtitle text rendering."
-  },
-  {
-    component: "Ux4gCheckboxGroup",
-    propGroup: "Group & Selection",
-    ux4gProp: "options={Array<{ label, value }>} | value={string[]} | onChange={(v) => void}",
-    paperProp: "Custom mapping over <Checkbox.Item />",
-    rneProp: "Custom mapping over <CheckBox />",
-    description: "Manages multi-select checkbox arrays with horizontal or vertical layouts."
+    description: "Integrated primary label with required asterisk mark and semantic status descriptions."
   },
 
-  // 10. Ux4gChip
+  // 10. Ux4gChoiceChip & Ux4gChipGroup
   {
-    component: "Ux4gChip",
-    propGroup: "Selection & Dismiss",
-    ux4gProp: "label={string} | selected={boolean} | onSelect={() => void} | isRemovable={boolean}",
-    paperProp: "selected={boolean} | onClose={() => void} | onPress",
-    rneProp: "type='solid' | 'outline' | onPress",
-    description: "Filter selection chips and removable tag pills."
+    component: "Ux4gChoiceChip",
+    propGroup: "Selection & Content",
+    ux4gProp: "text={string} | selected={boolean} | onClick={() => void} | onPress={() => void} | size='s' | 'm' | enabled={boolean} | leadingContent={ReactNode} | trailingContent={ReactNode}",
+    paperProp: "<Chip selected={boolean} onPress={...}>",
+    rneProp: "<Chip type='solid' | 'outline' onPress={...}>",
+    description: "Filter selection chip with size presets, active state highlighting, and icon slots."
   },
   {
     component: "Ux4gChipGroup",
-    propGroup: "Wrapping & MultiSelect",
-    ux4gProp: "items={Array<{ id, label }>} | selectedIds={string[]} | onSelectionChange={(ids) => void}",
-    paperProp: "Custom Flex wrap container",
-    rneProp: "Custom Flex wrap container",
-    description: "Automatic wrapping chip container for quick category filters and multi-tags."
+    propGroup: "Arrangement & Spacing",
+    ux4gProp: "chips={ReactNode[]} | children={ReactNode} | arrangement='horizontal' | 'wrap' | spacing={number} | runSpacing={number}",
+    paperProp: "Custom flex wrap container",
+    rneProp: "Custom flex wrap container",
+    description: "Wraps multiple chips with horizontal scroll or auto-wrapping grid arrangement."
   },
 
   // 11. Ux4gDatePicker
   {
     component: "Ux4gDatePicker",
-    propGroup: "Date Selection",
-    ux4gProp: "value={Date | string} | onChange={(d) => void} | format='DD/MM/YYYY'",
+    propGroup: "Selection Modes & Dates",
+    ux4gProp: "mode='single' | 'range' | initialDate={Date} | initialDateRange={DateRange} | minDate={Date} | maxDate={Date} | onDateSelected={(d) => void} | onDateRangeSelected={(r) => void}",
     paperProp: "date={Date} | onConfirm={...} (react-native-paper-dates)",
     rneProp: "Not Available",
-    description: "Modal calendar and direct date of birth picker with Indian date format."
+    description: "Modal calendar picker supporting single date and date-range selection with min/max constraints."
+  },
+  {
+    component: "Ux4gDatePicker",
+    propGroup: "Labels & Status",
+    ux4gProp: "label={string} | placeholder={string} | description={string} | required={boolean} | status='defaultStatus' | 'error' | 'warning' | 'success' | enabled={boolean}",
+    paperProp: "label={string} | error={boolean}",
+    rneProp: "Not Available",
+    description: "Field trigger box with floating label, placeholder, and validation status border styling."
   },
 
   // 12. Ux4gDivider
   {
     component: "Ux4gDivider",
-    propGroup: "Style & Orientation",
-    ux4gProp: "orientation='horizontal' | 'vertical' | label={string} | lineStyle='solid' | 'dashed'",
+    propGroup: "Orientation & Styling",
+    ux4gProp: "orientation='horizontal' | 'vertical' | thickness={number} | style='solid' | 'dashed' | 'dotted' | color={string} | startIndent={number} | endIndent={number}",
     paperProp: "horizontal={boolean} | bold={boolean}",
     rneProp: "orientation='horizontal' | 'vertical'",
-    description: "Section separators with center text labels and dashed styling."
+    description: "Section separators supporting solid, dashed, and dotted line styles with start/end indents."
   },
 
-  // 13. Ux4gDropdown
+  // 13. Ux4gSelectionDropdown & Ux4gActionDropdown
   {
-    component: "Ux4gDropdown",
+    component: "Ux4gSelectionDropdown",
     propGroup: "Options & Search",
-    ux4gProp: "options={Array<{ label, value }>} | value={string} | onSelect={(v) => void} | searchable={boolean}",
+    ux4gProp: "options={Ux4gDropdownOption[]} | selectedOptionIds={string[]} | onSelectionChange={(ids) => void} | mode='single' | 'multi' | size='s' | 'm' | 'l' | searchEnabled={boolean} | filterType='contains' | 'startsWith' | 'startsWithPerTerm'",
     paperProp: "<Menu> with <Menu.Item>",
     rneProp: "Custom Overlay / Picker",
-    description: "Single-select, multi-select with tag pills, and searchable filter input."
+    description: "Single-select and multi-select dropdown with modal overlay, search filter, and chip tags."
+  },
+  {
+    component: "Ux4gActionDropdown",
+    propGroup: "Context Menu & Trigger",
+    ux4gProp: "options={Ux4gActionDropdownOption[]} | onOptionClick={(opt) => void} | onOptionPress={(opt) => void} | triggerBuilder={(toggle) => ReactNode} | selectedOptionId={string}",
+    paperProp: "<Menu anchor={...}><Menu.Item /></Menu>",
+    rneProp: "<Overlay><ListItem /></Overlay>",
+    description: "Anchored action menu popup with custom triggerBuilder button and option click handlers."
   },
 
   // 14. Ux4gEmptyState
   {
     component: "Ux4gEmptyState",
-    propGroup: "Content & CTA",
-    ux4gProp: "title={string} | description={string} | icon={ReactNode} | actionButton={ReactNode}",
+    propGroup: "Content & Actions",
+    ux4gProp: "title={string} | subtitle={string} | description={string} | variant='noResults' | 'noData' | 'comingSoon' | 'error' | 'custom' | icon={ReactNode} | buttonText={string} | onButtonPressed={() => void} | buttonSize='small' | 'medium' | 'large'",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Standard empty application list or search zero-state with call-to-action."
+    description: "Zero-state display with semantic presets (noData, noResults, error), custom icon, and CTA action button."
   },
 
-  // 15. Ux4gFeedbackForm
+  // 15. Ux4gFeedbackFormStar
   {
-    component: "Ux4gFeedbackForm",
-    propGroup: "CSAT & NPS",
-    ux4gProp: "type='csat' | 'nps' | 'stars' | onRatingSubmit={(score, comment) => void}",
+    component: "Ux4gFeedbackFormStar",
+    propGroup: "Rating & Feedback",
+    ux4gProp: "title={string} | maxStars={number} | initialRating={number} | improvementOptions={string[]} | submitButtonText={string} | skipButtonText={string} | onSubmit={(rating, options, comment) => void} | onSkip={() => void}",
     paperProp: "Not Available",
     rneProp: "<Rating imageSize={...} /> (Stars only)",
-    description: "Citizen satisfaction rating widgets with 1-5 Star, CSAT faces, and 0-10 NPS scoring."
+    description: "Citizen satisfaction rating widget with 1-5 Star rating, improvement category chips, and comment text area."
   },
 
   // 16. Ux4gFileUpload
   {
     component: "Ux4gFileUpload",
-    propGroup: "File Constraints",
-    ux4gProp: "onFilesSelected={(files) => void} | maxFileSizeMB={number} | acceptedTypes={string[]}",
+    propGroup: "File Upload & Constraints",
+    ux4gProp: "maxFiles={number} | maxFileSize={number} | allowedExtensions={string[]} | borderStyle='solid' | 'dashed' | onFilesChanged={(files) => void} | onUpload={(file) => Promise<boolean>}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Government document upload widget with file validation and progress states."
+    description: "Government document file picker with dashed dropzone, file size limit validation, and progress tracking."
   },
 
   // 17. Ux4gInputField
   {
     component: "Ux4gInputField",
-    propGroup: "Value & Labels",
-    ux4gProp: "label={string} | value={string} | onChangeText={(t) => void}",
-    paperProp: "label={string} | value={string} | onChangeText={(t) => void}",
-    rneProp: "label={string} | value={string} | onChangeText={(t) => void}",
-    description: "Direct drop-in replacement with floating animated label support."
+    propGroup: "Value & Typography",
+    ux4gProp: "value={string} | onValueChange={(val) => void} | label={string} | placeholder={string} | required={boolean} | type='text' | 'password' | 'number' | 'email' | size='small' | 'medium' | 'large' | 'xl'",
+    paperProp: "value={string} | onChangeText={(t) => void} | label={string} | placeholder={string}",
+    rneProp: "value={string} | onChangeText={(t) => void} | label={string} | placeholder={string}",
+    description: "Core text input with floating label, 4 sizing tiers, input types, and required asterisk mark."
   },
   {
     component: "Ux4gInputField",
     propGroup: "Icons & Affixes",
-    ux4gProp: "leadingIcon={ReactNode} | trailingIcon={ReactNode} | prefixText={string}",
-    paperProp: "left={<TextInput.Icon />} | right={<TextInput.Icon />} | prefix={string}",
+    ux4gProp: "leadingIcon={ReactNode} | trailingIcon={ReactNode} | onTrailingIconPressed={() => void} | prefixText={string} | postfixText={string} | trailingIconLabel={ReactNode}",
+    paperProp: "left={<TextInput.Icon />} | right={<TextInput.Icon />} | prefix={string} | affix={string}",
     rneProp: "leftIcon={{ name: string }} | rightIcon={{ name: string }}",
-    description: "Icons and currency/country code affixes rendered cleanly without boilerplate."
+    description: "Leading/trailing icon slots, currency/country code affixes, and label accessory icons."
   },
   {
     component: "Ux4gInputField",
-    propGroup: "Validation & Help",
-    ux4gProp: "errorMessage={string} | helperText={string} | isRequired={boolean}",
+    propGroup: "Status & Validation",
+    ux4gProp: "status='defaultStatus' | 'error' | 'warning' | 'success' | caption={string} | enabled={boolean} | readOnly={boolean} | singleLine={boolean}",
     paperProp: "error={boolean} + <HelperText type='error'>",
-    rneProp: "errorMessage={string}",
-    description: "UX4G encapsulates error message text and asterisk mark directly inside the component."
+    rneProp: "errorMessage={string} | disabled={boolean}",
+    description: "Encapsulates status border coloring, caption text helper, and interactive control states."
   },
 
   // 18. Ux4gAadhaarInputField
   {
     component: "Ux4gAadhaarInputField",
-    propGroup: "Formatting & Checksum",
-    ux4gProp: "value={string} | onChangeText={(aadhaar) => void} | enableVerhoeffCheck={boolean}",
+    propGroup: "Aadhaar Formatting & Checksum",
+    ux4gProp: "value={string} | onValueChange={(val) => void} | label={string} | required={boolean} | placeholder='XXXX XXXX XXXX' | status='defaultStatus' | 'error' | 'warning' | 'success' | caption={string} | size='small' | 'medium' | 'large' | enabled={boolean}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Auto-formatting 12 digits (XXXX XXXX XXXX) with UIDAI-compliant Verhoeff checksum algorithm."
+    description: "Auto-formatting 12-digit Aadhaar number with UIDAI-compliant Verhoeff checksum algorithm validation."
   },
 
   // 19. Ux4gPanInputField
   {
     component: "Ux4gPanInputField",
-    propGroup: "Capitalization & Validation",
-    ux4gProp: "value={string} | onChangeText={(pan) => void} | onValidChange={(valid) => void}",
+    propGroup: "PAN Formatting & Regex",
+    ux4gProp: "value={string} | onValueChange={(val) => void} | label={string} | required={boolean} | placeholder='ABCDE1234F' | status='defaultStatus' | 'error' | 'warning' | 'success' | caption={string} | size='small' | 'medium' | 'large' | enabled={boolean}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Alphanumeric 10-character Income Tax PAN card validator with auto-capitalization."
+    description: "10-character alphanumeric Income Tax PAN field with auto-capitalization and structure validation."
   },
 
   // 20. Ux4gOtpInput
   {
     component: "Ux4gOtpInput",
-    propGroup: "PIN Length & Autofill",
-    ux4gProp: "length={4 | 6} | value={string} | onOtpComplete={(otp) => void} | secureTextEntry={boolean}",
+    propGroup: "Digits & Callbacks",
+    ux4gProp: "value={string} | length={4 | 6} | onChanged={(otp) => void} | onCompleted={(otp) => void} | obscure={boolean} | boxSize={number} | gap={number} | showSeparator={boolean}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Segmented OTP box inputs with auto-focus, SMS auto-fill, and error states."
+    description: "Segmented OTP digit boxes with automatic focus jumping, character masking, and completion trigger."
+  },
+  {
+    component: "Ux4gOtpInput",
+    propGroup: "Timer & Status",
+    ux4gProp: "status='defaultStatus' | 'error' | 'warning' | 'success' | 'locked' | captionVariant='resendTimer' | 'resendAction' | 'attemptWithTimer' | 'locked' | 'success' | 'warning' | 'plain' | autoCountdownSeconds={number} | onCountdownComplete={() => void}",
+    paperProp: "Not Available",
+    rneProp: "Not Available",
+    description: "Built-in SMS resend countdown timer, attempt locking, and validation status indicators."
   },
 
   // 21. Ux4gJourneyTimeline
   {
     component: "Ux4gJourneyTimeline",
-    propGroup: "Stages & Status",
-    ux4gProp: "stages={Array<{ title, subtitle, timestamp, state }>} | activeStageIndex={number}",
+    propGroup: "Stages & Orientation",
+    ux4gProp: "steps={Ux4gJourneyStep[]} | currentStep={number | null} | orientation='vertical' | 'horizontal' | indicatorSize={number} | header={Ux4gJourneyHeader} | activeColor={string} | inactiveColor={string}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Multi-stage citizen application tracker (Submitted -> Verified -> Approved)."
+    description: "Multi-stage citizen journey tracker (Submitted -> Verified -> Approved) with vertical/horizontal layout."
   },
 
   // 22. Ux4gLinearProgressBar
   {
     component: "Ux4gLinearProgressBar",
-    propGroup: "Progress & Style",
-    ux4gProp: "progress={number} (0-1) | indeterminate={boolean} | height={number} | color={string}",
+    propGroup: "Progress & Metrics",
+    ux4gProp: "value={number} (0.0 to 1.0) | label={string} | hint={string} | height={number} | shape='sharp' | 'rounded' | progressColor={string} | trackColor={string} | gradientColors={string[]}",
     paperProp: "progress={number} | indeterminate={boolean} | color={string}",
     rneProp: "value={number} | color={string}",
-    description: "Linear progress bar with smooth transitions and theme color binding."
+    description: "Linear progress bar with top label and hint text, custom height, pill roundness, and gradient colors."
   },
 
-  // 23. Ux4gCircularProgressIndicator
+  // 23. Ux4gCircularProgress
   {
-    component: "Ux4gCircularProgressIndicator",
-    propGroup: "Percentage Ring",
-    ux4gProp: "progress={number} (0-100) | size={number} | strokeWidth={number} | showPercentage={boolean}",
-    paperProp: "Not Available (ActivityIndicator only)",
-    rneProp: "Not Available (ActivityIndicator only)",
-    description: "Determinate circular progress gauge with center text display."
+    component: "Ux4gCircularProgress",
+    propGroup: "Gauge & Scale",
+    ux4gProp: "value={number} (0.0 to 1.0) | size='xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | diameter={number} | strokeWidth={number} | progressColor={string} | trackColor={string} | gradientColors={string[]} | centerValueText={string} | label={string}",
+    paperProp: "<ActivityIndicator size={...} />",
+    rneProp: "<ActivityIndicator size={...} />",
+    description: "Determinate circular progress gauge with 7 size presets, strokeWidth control, and center text."
   },
 
   // 24. Ux4gHalfCircleProgress
   {
     component: "Ux4gHalfCircleProgress",
-    propGroup: "Gauge Metrics",
-    ux4gProp: "progress={number} (0-100) | label={string} | subLabel={string} | size={number}",
+    propGroup: "Speedometer & Values",
+    ux4gProp: "value={number} (0.0 to 1.0) | size='s' | 'm' | 'l' | 'xl' | width={number} | strokeWidth={number} | progressColor={string} | trackColor={string} | valueText={string} | description={string} | showScale={boolean}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Speedometer half-circle meter gauge for citizen service quotas and target metrics."
+    description: "Half-circle speedometer gauge for quota usage and performance score display."
   },
 
   // 25. Ux4gLink
   {
     component: "Ux4gLink",
-    propGroup: "Text & Navigation",
-    ux4gProp: "text={string} | url={string} | onPress={() => void} | isExternal={boolean}",
+    propGroup: "URL & Child",
+    ux4gProp: "child={ReactNode} | url={string} | disabled={boolean} | accessibilityLabel={string} | style={StyleProp<ViewStyle>}",
     paperProp: "<Text onPress={...}>",
     rneProp: "<Text onPress={...}>",
-    description: "Accessible hyperlink with trailing external arrow icon and underline styles."
+    description: "Wraps any child element and launches external or deep links using platform URL handler."
   },
 
   // 26. Ux4gModal
   {
     component: "Ux4gModal",
-    propGroup: "Visibility & Headers",
-    ux4gProp: "visible={boolean} | onDismiss={() => void} | headerTitle={string} | showHeader={boolean}",
-    paperProp: "visible={boolean} | onDismiss={() => void}",
+    propGroup: "Visibility & Layout",
+    ux4gProp: "visible={boolean} | onDismiss={() => void} | headerTitle={string} | showHeader={boolean} | showDescription={boolean} | descriptionText={string} | alignment='leftAligned' | 'centered'",
+    paperProp: "visible={boolean} | onDismiss={() => void} | <Dialog.Title>",
     rneProp: "isVisible={boolean} | onBackdropPress={() => void}",
-    description: "Centered and left-aligned modal dialog with accessible title and backdrop dismiss."
+    description: "Modal dialog overlay with title header, subtitle, description, and left or center alignment."
   },
   {
     component: "Ux4gModal",
-    propGroup: "Footer Actions",
-    ux4gProp: "footerButtons='oneButton' | 'twoButtons' | showFooter={boolean}",
-    paperProp: "<Dialog.Actions>",
-    rneProp: "Custom child buttons",
-    description: "Standardized sticky modal action buttons (Confirm + Cancel)."
+    propGroup: "Body & Footer Actions",
+    ux4gProp: "bodyContent={ReactNode} | bodyText={string} | showFooter={boolean} | footerButtons='oneButton' | 'twoButtons' | 'oneButtonWithIcon' | 'twoButtonsWithIcon' | primaryButtonText={string} | secondaryButtonText={string} | onPrimaryClick={() => void} | onSecondaryClick={() => void}",
+    paperProp: "<Dialog.Content> | <Dialog.Actions>",
+    rneProp: "Custom child content and buttons",
+    description: "Customizable modal body with standardized one-button or two-button action footers."
   },
 
   // 27. Ux4gPagination
   {
     component: "Ux4gPagination",
-    propGroup: "Pages & Arrows",
-    ux4gProp: "currentPage={number} | totalPages={number} | onPageChange={(p) => void}",
+    propGroup: "Pages & Navigation",
+    ux4gProp: "totalPageCount={number} | currentPageIndex={number} | onPageChange={(pageIndex) => void} | showArrows={boolean} | arrowsOnRight={boolean} | variant='default' | 'defaultVariant' | 'capsule' | size='small' | 'medium' | enabled={boolean}",
     paperProp: "<DataTable.Pagination page={...} numberOfPages={...} />",
     rneProp: "Not Available",
-    description: "Numbered page selector with previous/next arrows and capsule layout."
+    description: "Animated pagination dots with navigation arrows, capsule container mode, and right-alignment."
   },
 
   // 28. Ux4gRadioButton
   {
     component: "Ux4gRadioButton",
-    propGroup: "Selected State",
-    ux4gProp: "selected={boolean} | onSelect={() => void} | label={string} | disabled={boolean}",
-    paperProp: "status='checked' | 'unchecked' | onPress",
-    rneProp: "Not Available",
-    description: "Single choice radio selector with accessible radio role."
-  },
-  {
-    component: "Ux4gRadioButtonGroup",
-    propGroup: "Group & Selection",
-    ux4gProp: "options={Array<{ label, value }>} | value={string} | onValueChange={(v) => void}",
-    paperProp: "<RadioButton.Group value={value} onValueChange={...}>",
-    rneProp: "Not Available (Custom implementation)",
-    description: "Manages exclusive single-choice option sets with keyboard navigation."
+    propGroup: "Value & Groups",
+    ux4gProp: "value={T} | groupValue={T | null} | onChanged={(value: T) => void} | label={string} | description={string} | size='small' | 'medium' | 'large' | isRequired={boolean} | hasError={boolean} | status='defaultStatus' | 'error' | 'warning' | 'success' | enabled={boolean}",
+    paperProp: "value={string} | status='checked' | 'unchecked' | onPress",
+    rneProp: "checked={boolean} | onPress",
+    description: "Single-choice radio button with group matching, helper description, and form status borders."
   },
 
   // 29. Ux4gResultList
   {
     component: "Ux4gResultList",
-    propGroup: "Items & Actions",
-    ux4gProp: "data={Array<{ id, title, subtitle, badge }>} | onItemPress={(item) => void}",
+    propGroup: "Card Header & Metadata",
+    ux4gProp: "title={string} | titleTrailing={ReactNode} | statusTag={string} | tagColorScheme={Ux4gTagColor} | metadataSegments={Ux4gPillSegment[]} | customMetadata={ReactNode}",
     paperProp: "<List.Item title={...} description={...} />",
     rneProp: "<ListItem><ListItem.Content /></ListItem>",
-    description: "Structured government service search results with metadata chips and CTAs."
+    description: "Structured government service result card with metadata pill segments and status tags."
+  },
+  {
+    component: "Ux4gResultList",
+    propGroup: "Details & Actions",
+    ux4gProp: "actionButtonText={string} | onActionPressed={() => void} | details={Ux4gResultDetail[]} | initialExpanded={boolean} | onToggle={(expanded) => void} | expandedChild={ReactNode}",
+    paperProp: "<List.Accordion>",
+    rneProp: "<ListItem.Accordion>",
+    description: "Key-value detail grid list with expandable details section and action CTA button."
   },
 
   // 30. Ux4gSearchField
   {
     component: "Ux4gSearchField",
-    propGroup: "Search & Clear",
-    ux4gProp: "value={string} | onChangeText={(t) => void} | onSearch={(q) => void} | showClearButton={boolean}",
-    paperProp: "<Searchbar value={...} onChangeText={...} onIconPress={...} />",
+    propGroup: "Search Value & Types",
+    ux4gProp: "value={string} | onValueChange={(val) => void} | variant='basicSearch' | 'searchWithSubmit' | 'autocomplete' | size='small' | 'medium' | 'large' | 'xl' | placeholder={string} | label={string} | caption={string}",
+    paperProp: "<Searchbar value={...} onChangeText={...} />",
     rneProp: "<SearchBar value={...} onChangeText={...} />",
-    description: "Search input with leading magnifying glass and clear button."
+    description: "Search input box supporting basic search, search button submit, and autocomplete popup list."
+  },
+  {
+    component: "Ux4gSearchField",
+    propGroup: "Actions & Autocomplete",
+    ux4gProp: "options={string[]} | showClearIcon={boolean} | showVoiceIcon={boolean} | onClearClick={() => void} | onSubmitClick={(val) => void} | onOptionSelected={(opt) => void} | status='defaultStatus' | 'error' | 'warning' | 'success' | enabled={boolean}",
+    paperProp: "onIconPress={...} | clearIcon={...}",
+    rneProp: "showLoading={boolean} | onClear={...}",
+    description: "Voice search mic action, clear button, submit button handler, and autocomplete selection callbacks."
   },
 
   // 31. Ux4gSlider
   {
     component: "Ux4gSlider",
-    propGroup: "Range & Values",
-    ux4gProp: "value={number} | onValueChange={(v) => void} | minimumValue={0} | maximumValue={100} | step={1}",
+    propGroup: "Single Slider",
+    ux4gProp: "value={number} | onValueChange={(val) => void} | min={number} | max={number} | steps={number} | size='s' | 'm' | 'small' | 'medium' | enabled={boolean} | label={string} | isRequired={boolean} | caption={string} | captionVariant='helper' | 'error' | 'warning' | 'success'",
     paperProp: "Not Available (@react-native-community/slider)",
     rneProp: "<Slider value={...} onValueChange={...} />",
-    description: "Discrete and continuous range slider with currency/percentage tooltips."
+    description: "Continuous and discrete slider with tick marks, label row, caption, and indicator bubble."
+  },
+  {
+    component: "Ux4gRangeSlider",
+    propGroup: "Dual Range Slider",
+    ux4gProp: "values={Ux4gRangeValues} | onValueChange={(vals) => void} | min={number} | max={number} | steps={number} | size='s' | 'm' | 'small' | 'medium' | enabled={boolean} | label={string} | showMarksAndValues={boolean} | showIndicator={boolean} | showInputFields={boolean}",
+    paperProp: "Not Available",
+    rneProp: "Not Available",
+    description: "Dual-thumb range slider for min-max bounds selection with tick marks and value input fields."
   },
 
   // 32. Ux4gSpinner
   {
     component: "Ux4gSpinner",
-    propGroup: "Size & Color",
-    ux4gProp: "size='small' | 'medium' | 'large' | color={string}",
+    propGroup: "Size & Gradients",
+    ux4gProp: "size={number} | color={string} | gradientColors={string[]} | percentage={number} | strokeWidth={number} | rotationDurationMillis={number}",
     paperProp: "<ActivityIndicator size={...} color={...} />",
     rneProp: "<ActivityIndicator size={...} color={...} />",
-    description: "Activity spinner loader adhering to UX4G brand primary tokens."
+    description: "Smooth rotating activity indicator with customizable diameter, strokeWidth, and multi-color gradients."
   },
 
   // 33. Ux4gStatusBanner
   {
     component: "Ux4gStatusBanner",
-    propGroup: "Status & Actions",
-    ux4gProp: "title={string} | message={string} | status='draft' | 'pending' | 'rejected' | 'approved'",
+    propGroup: "Banner Content & Variants",
+    ux4gProp: "title={string} | subtitle={string} | variant='warningLight' | 'warningSolid' | 'errorLight' | 'successLight' | 'savingLight' | 'infoLight' | 'neutralLight' | 'primaryLight' | leadingIcon={ReactNode} | trailingIcon={ReactNode} | actions={ReactNode[]} | onDismiss={() => void} | actionsAlignment='start' | 'center' | 'end' | 'space-between'",
     paperProp: "<Banner visible={...} actions={...}>",
     rneProp: "Not Available",
-    description: "Application status alert banner with action triggers and icon indicators."
+    description: "Full-width status alert banner with 8 color variants, action buttons, and dismiss callback."
   },
 
   // 34. Ux4gStatusPipeline
   {
     component: "Ux4gStatusPipeline",
     propGroup: "Pipeline Steps",
-    ux4gProp: "steps={Array<{ label, status, date }>} | orientation='horizontal' | 'vertical'",
+    ux4gProp: "steps={Ux4gPipelineStep[]} | currentStep={number} | orientation='vertical' | 'horizontal' | size='s' | 'm' | 'l' | showLabels={boolean} | showDescriptions={boolean} | completedColor={string} | currentColor={string}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Horizontal and vertical citizen workflow pipelines (Pending -> Processing -> Completed)."
+    description: "Citizen process pipeline visualizing workflow steps with completed checkmarks and status lines."
   },
 
   // 35. Ux4gStepper
   {
     component: "Ux4gStepper",
-    propGroup: "Wizard Navigation",
-    ux4gProp: "steps={string[]} | activeStep={number} | onStepPress={(i) => void} | isLinear={boolean}",
+    propGroup: "Wizard Steps & Orientation",
+    ux4gProp: "totalSteps={number} | currentStep={number} | steps={Ux4gStepItem[]} | orientation='horizontal' | 'vertical' | lineStyle='solid' | 'dashed' | linePlacement='center' | 'bottom' | stepSize={number} | showLabels={boolean} | edgeLabelAlignment={boolean}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Multi-step form stepper with numbered step bubbles and completed checkmarks."
+    description: "Multi-step form stepper with numbered circle bubbles, descriptions, solid/dashed lines, and alignment."
   },
 
   // 36. Ux4gSwitch
   {
     component: "Ux4gSwitch",
-    propGroup: "Toggle State",
-    ux4gProp: "value={boolean} | onValueChange={(val) => void} | label={string} | size='small' | 'medium' | 'large'",
+    propGroup: "Toggle & Labels",
+    ux4gProp: "checked={boolean} | value={boolean} | onCheckedChange={(c) => void} | onChanged={(c) => void} | label={string} | description={string} | size='s' | 'm' | 'l' | 'small' | 'medium' | 'large' | labelPosition='noLabel' | 'left' | 'right' | 'bothSides' | enabled={boolean} | isRequired={boolean} | descriptionVariant='helper' | 'error' | 'warning' | 'success'",
     paperProp: "value={boolean} | onValueChange={(val) => void}",
     rneProp: "value={boolean} | onValueChange={(val) => void}",
-    description: "Standard Boolean toggle with integrated left/right label."
+    description: "Boolean toggle switch with size presets, label position options, and required asterisk mark."
   },
 
   // 37. Ux4gTag
   {
     component: "Ux4gTag",
-    propGroup: "Pill & Dismiss",
-    ux4gProp: "label={string} | variant='filled' | 'outlined' | isRemovable={boolean} | onRemove={() => void}",
+    propGroup: "Tag Styling & Dismiss",
+    ux4gProp: "text={string} | size='m' | 'l' | 'medium' | 'large' | shape='circular' | 'rectangular' | style='tonal' | 'filled' | 'outline' | 'text' | colorScheme='neutral' | 'brand' | 'success' | 'warning' | 'error' | 'info' | leadingContent={ReactNode} | onDismiss={() => void}",
     paperProp: "<Chip mode='outlined' onClose={...}>",
     rneProp: "<Badge value={...} />",
-    description: "Pill and rectangular metadata tags with optional dismiss button."
+    description: "Metadata tag pill with 4 style modes (tonal, filled, outline, text), 6 color schemes, and close button."
   },
 
   // 38. Ux4gTextArea
   {
     component: "Ux4gTextArea",
-    propGroup: "Multiline & Limits",
-    ux4gProp: "value={string} | onChangeText={(t) => void} | rows={4} | maxLength={500} | showCharCount={boolean}",
+    propGroup: "Multiline & Character Count",
+    ux4gProp: "value={string} | onValueChange={(val) => void} | label={string} | placeholder={string} | required={boolean} | caption={string} | size='small' | 'large' | minHeight='small' | 'medium' | 'large' | number | status='defaultStatus' | 'error' | 'warning' | 'success' | showCaptionIcon={boolean} | characterCountText={string} | enabled={boolean}",
     paperProp: "<TextInput multiline numberOfLines={4} />",
     rneProp: "<Input multiline numberOfLines={4} />",
-    description: "Multiline textarea with live character counter and maximum limit validation."
+    description: "Multiline textarea with minHeight presets, live character counter, caption helper, and form statuses."
   },
 
   // 39. Ux4gTimePicker
   {
     component: "Ux4gTimePicker",
-    propGroup: "Time Intervals",
-    ux4gProp: "value={string} | onChange={(time) => void} | is24Hour={boolean} | minuteInterval={15}",
+    propGroup: "Time Selection & Steps",
+    ux4gProp: "initialTime={Ux4gTimeOfDay} | onTimeSelected={(time) => void} | placeholder={string} | label={string} | description={string} | required={boolean} | isRequired={boolean} | status='defaultStatus' | 'error' | 'warning' | 'success' | minuteInterval={1 | 5 | 10 | 15 | 30} | enabled={boolean}",
     paperProp: "react-native-paper-dates TimePicker",
     rneProp: "Not Available",
-    description: "12-hour AM/PM and 24-hour clock selector for service appointments."
+    description: "Modal time picker with 12-hour AM/PM and 24-hour modes, minute intervals, and validation status."
   },
 
-  // 40. Ux4gSlotGrid
+  // 40. Ux4gTimeslot
   {
-    component: "Ux4gSlotGrid",
-    propGroup: "Booking Slots",
-    ux4gProp: "slots={Array<{ id, time, status }>} | onSlotSelect={(slot) => void} | selectedSlotId={string}",
+    component: "Ux4gTimeslot",
+    propGroup: "Calendar Grid & Appointments",
+    ux4gProp: "data={Ux4gTimeslotData} | onDateSelected={(date) => void} | onMonthChanged={(year, month) => void} | timeSlotProvider={(date) => SlotTimeEntry[]} | onSlotConfirmed={(date, slot) => void}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Appointment slot grid (Available, Selected, Booked, Inactive) for Seva Kendras."
+    description: "Interactive calendar date and time slot booking grid with capacity counters (Available, Limited, No Slots)."
   },
 
   // 41. Ux4gToast
   {
     component: "Ux4gToast",
-    propGroup: "Imperative Hook",
-    ux4gProp: "useUx4gToast().show({ message, variant: 'success' | 'error' | 'warning' | 'info', duration: 4000 })",
+    propGroup: "Hook & Categories",
+    ux4gProp: "useUx4gToast().showToast({ category: 'info' | 'success' | 'warning' | 'error' | 'slot', title: string, subtitle?: string, actionText?: string, onActionClick?: () => void, durationMs?: number, isBottom?: boolean })",
     paperProp: "<Snackbar visible={visible} onDismiss={...}>",
     rneProp: "Not Available",
-    description: "Imperative hook API for showing stackable snackbars across any screen."
+    description: "Imperative hook API for displaying floating alert snackbars across screens with action buttons."
   },
 
   // 42. Ux4gTooltip
   {
     component: "Ux4gTooltip",
     propGroup: "Placement & Trigger",
-    ux4gProp: "content={ReactNode | string} | position='top' | 'bottom' | 'left' | 'right' | trigger='press' | 'longPress'",
+    ux4gProp: "children={ReactNode} | text={string} | title={string} | icon={ReactNode} | placement='topStart' | 'top' | 'topEnd' | 'bottomStart' | 'bottom' | 'bottomEnd' | 'left' | 'right' | trigger='press' | 'longPress' | action={ReactNode} | customContent={ReactNode} | isPersistent={boolean}",
     paperProp: "<Tooltip title={...}><Button ... /></Tooltip>",
     rneProp: "<Tooltip popover={...}><Text ... /></Tooltip>",
-    description: "Anchored floating popup overlay with directional pointer arrows for contextual help."
+    description: "12-placement directional tooltip popup with arrow notch, rich title/body, actions, and press triggers."
+  },
+
+  // 43. Ux4gSocialLink
+  {
+    component: "Ux4gSocialLink",
+    propGroup: "Social Media Icons",
+    ux4gProp: "icon={SocialMediaIcon} | size='xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | color={string} | onPress={() => void} | tooltip={string} | enableBackground={boolean} | useColoredIcon={boolean}",
+    paperProp: "<IconButton icon={...} onPress={...} />",
+    rneProp: "<SocialIcon type={...} onPress={...} />",
+    description: "Branded or monochrome vector social media icon links with circular background and tooltip support."
   }
 ];

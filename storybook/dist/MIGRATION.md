@@ -167,33 +167,31 @@ If any part of your UI can be represented by a UX4G component, use the correspon
 | **Card / Container**| `<View style={cardStyle}>`| `<Card>` | `<Ux4gCard>` | `title`, `subtitle`, `variant`, `style`, `borderRadius` |
 | **Carousel / Swiper**| Custom `<FlatList horizontal>`| `react-native-snap-carousel`| `<Ux4gCarousel>` | `data`, `renderItem`, `autoPlay`, `pagination`, `height` |
 | **Modal / Dialog** | `<Modal>`, Bottom Sheet | `<Modal>`, `<Dialog>` | `<Ux4gModal>` | `visible`, `onClose`, `title`, `actions`, `animationType` |
-| **Dropdown / Select**| `@react-native-picker/picker`| `<Menu>`, `<Overlay>` | `<Ux4gDropdown>` | `options`, `value`, `onSelect`, `searchable`, `placeholder` |
+| **Dropdown / Select**| `@react-native-picker/picker`| `<Menu>`, `<Overlay>` | `<Ux4gSelectionDropdown>`, `<Ux4gActionDropdown>` | `options`, `value`, `onSelect`, `searchable`, `placeholder` |
 | **Checkbox** | `@react-native-community/checkbox` | `<Checkbox>` | `<Ux4gCheckbox>` | `label`, `checked`, `onChange`, `colorScheme` |
-| **Checkbox Group** | Custom list of checkboxes | Custom view | `<Ux4gCheckboxGroup>` | `options`, `selectedValues`, `onChange` |
 | **Radio Button** | Custom Touchable circles | `<RadioButton>` | `<Ux4gRadioButton>` | `label`, `selected`, `onSelect`, `colorScheme` |
-| **Radio Group** | Custom radio lists | `<RadioButton.Group>` | `<Ux4gRadioGroup>` | `options`, `selectedValue`, `onValueChange` |
 | **Toggle Switch** | `<Switch>` | `<Switch>` | `<Ux4gSwitch>` | `checked`, `onToggle`, `colorScheme`, `disabled` |
-| **Tag / Pill** | `<View style={tagStyle}>` | `<Chip>` | `<Ux4gTag>` | `text`, `size`, `colorScheme`, `shape`, `style` |
-| **Filter Chip** | Custom touchable pill | `<Chip mode="flat">` | `<Ux4gChip>` | `label`, `selected`, `onPress`, `removable` |
+| **Tag / Pill** | `<View style={tagStyle}>` | `<Chip>` | `<Ux4gTag>`, `<Ux4gUnifiedPillTag>` | `text`, `size`, `colorScheme`, `shape`, `style` |
+| **Filter Chip** | Custom touchable pill | `<Chip mode="flat">` | `<Ux4gChoiceChip>`, `<Ux4gFilterChip>`, `<Ux4gInputChip>` | `label`, `selected`, `onPress`, `removable` |
 | **Badge Counter** | `<View style={badgeStyle}>` | `<Badge>` | `<Ux4gBadge>` | `count`, `variant`, `size`, `colorScheme` |
 | **Avatar** | `<Image style={{ borderRadius }}>` | `<Avatar.Image>` | `<Ux4gAvatar>` | `source`, `name`, `size`, `shape`, `badge` |
 | **Avatar Group** | Custom overlapping Images | Custom flex row | `<Ux4gAvatarGroup>` | `avatars`, `max`, `size` |
 | **Accordion** | Custom expandable view | `<List.Accordion>` | `<Ux4gAccordion>` | `title`, `subtitle`, `expanded`, `onToggle` |
 | **Linear Progress**| `<ProgressBarAndroid>` | `<ProgressBar>` | `<Ux4gLinearProgressBar>` | `progress`, `colorScheme`, `height`, `showLabel` |
-| **Circle Progress**| `<ActivityIndicator>` | `<ActivityIndicator>` | `<Ux4gCircularProgressIndicator>` | `progress`, `size`, `strokeWidth`, `colorScheme` |
+| **Circle Progress**| `<ActivityIndicator>` | `<ActivityIndicator>` | `<Ux4gCircularProgress>` | `progress`, `size`, `strokeWidth`, `colorScheme` |
 | **Half Circle Gauge**| Custom SVG Gauge | Custom view | `<Ux4gHalfCircleProgress>` | `progress`, `size`, `thickness`, `colorScheme` |
 | **Spinner Loader** | `<ActivityIndicator>` | `<ActivityIndicator>` | `<Ux4gSpinner>` | `size`, `colorScheme` |
-| **Slider / Range** | `@react-native-community/slider` | `<Slider>` | `<Ux4gSlider>` | `value`, `onValueChange`, `min`, `max`, `step`, `colorScheme` |
+| **Slider / Range** | `@react-native-community/slider` | `<Slider>` | `<Ux4gSlider>`, `<Ux4gRangeSlider>` | `value`, `onValueChange`, `min`, `max`, `step`, `colorScheme` |
 | **Toast / Alert** | `Alert.alert()`, `react-native-toast-message` | `<Snackbar>` | `<Ux4gToast>`, `useUx4gToast()` | `title`, `message`, `variant`, `duration` |
 | **Status Banner** | Custom colored banner view | `<Banner>` | `<Ux4gStatusBanner>` | `type`, `title`, `description`, `actionLabel`, `onAction` |
 | **Step Timeline** | Custom step list | Custom timeline | `<Ux4gJourneyTimeline>` | `stages`, `currentStage`, `orientation` |
 | **Status Pipeline**| Custom stage breadcrumb | Custom pipeline | `<Ux4gStatusPipeline>` | `steps`, `activeStep`, `orientation` |
-| **Stepper Counter**| Custom `-` `+` buttons | Custom counter | `<Ux4gStepper>` | `value`, `onChange`, `min`, `max`, `step` |
+| **Stepper Counter**| Custom `-` `+` buttons | Custom counter | `<Ux4gStepper>`, `<Ux4gCompactStepper>` | `value`, `onChange`, `min`, `max`, `step` |
 | **Aadhaar Input** | Custom masked TextInput | N/A | `<Ux4gAadhaarInputField>` | `value`, `onChangeText`, `maskPeekToggle` (Verhoeff checksum) |
 | **PAN Card Input** | Custom regex TextInput | N/A | `<Ux4gPanInputField>` | `value`, `onChangeText` (Auto uppercase & syntax check) |
 | **OTP Box Input** | 4/6 individual TextInputs | N/A | `<Ux4gOtpInput>` | `length`, `onComplete`, `autoFocus`, `secureTextEntry` |
 | **File Upload** | Custom DocumentPicker View | N/A | `<Ux4gFileUpload>` | `onSelectFiles`, `accept`, `maxFiles`, `maxSizeMB` |
-| **Slot Grid** | Custom time/date grid | Custom grid | `<Ux4gSlotGrid>` | `slots`, `selectedSlot`, `onSelectSlot` |
+| **Slot Grid** | Custom time/date grid | Custom grid | `<Ux4gTimeslot>` | `data`, `timeSlotProvider`, `onSlotConfirmed` |
 | **Date Picker** | `@react-native-community/datetimepicker` | `react-native-paper-dates` | `<Ux4gDatePicker>` | `value`, `onChange`, `minDate`, `maxDate` |
 | **Time Picker** | `@react-native-community/datetimepicker` | `react-native-paper-dates` | `<Ux4gTimePicker>` | `value`, `onChange`, `is24Hour` |
 | **Empty State** | Custom "No Data" View | Custom view | `<Ux4gEmptyState>` | `title`, `description`, `icon`, `actionButton` |
@@ -465,7 +463,7 @@ import { Text } from 'react-native';
 
 #### After (UX4G Searchable Dropdown with Custom Styling):
 ```tsx
-import { Ux4gDropdown } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
 
 const BANK_OPTIONS = [
   { label: 'State Bank of India', value: 'SBI' },
@@ -473,14 +471,11 @@ const BANK_OPTIONS = [
   { label: 'ICICI Bank', value: 'ICICI' },
 ];
 
-<Ux4gDropdown
-  label="Select Bank Account"
-  placeholder="Choose your bank"
+<Ux4gSelectionDropdown
   options={BANK_OPTIONS}
   value={bank}
   onSelect={(option) => setBank(option.value)}
   searchable
-  style={{ marginBottom: 16 }}
 />
 ```
 
@@ -761,7 +756,7 @@ To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
   - [ ] Verify `onPress`, `loading`, `disabled`, and custom background colors.
 - [ ] **Step 3: Form Controls**
   - [ ] Replace `<TextInput>` with `<Ux4gInputField>`, `<Ux4gTextArea>`, and `<Ux4gSearchField>`.
-  - [ ] Replace native pickers with `<Ux4gDropdown>`.
+  - [ ] Replace native pickers with `<Ux4gSelectionDropdown>` or `<Ux4gActionDropdown>`.
   - [ ] Replace native checkboxes/switches with `<Ux4gCheckbox>`, `<Ux4gRadioButton>`, and `<Ux4gSwitch>`.
 - [ ] **Step 4: Surface Containers & Sliders**
   - [ ] Replace custom cards with `<Ux4gCard>`.

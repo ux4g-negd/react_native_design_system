@@ -101,7 +101,7 @@ import {
   Ux4gAppHeader,
   Ux4gInputField,
   Ux4gTextArea,
-  Ux4gDropdown,
+  Ux4gSelectionDropdown,
   Ux4gButton,
   Ux4gButtonVariant,
   Ux4gButtonSize,
@@ -309,7 +309,7 @@ import {
   Ux4gCard,
   Ux4gInputField,
   Ux4gTextArea,
-  Ux4gDropdown,
+  Ux4gSelectionDropdown,
   Ux4gButton,
   Ux4gButtonVariant,
   Ux4gButtonSize,
@@ -392,7 +392,7 @@ export const FileComplaintCardScreen = ({ isDark = false }: { isDark?: boolean }
           <Text style={[styles.label, { color: labelColor, marginTop: 20 }]}>
             Category
           </Text>
-          <Ux4gDropdown
+          <Ux4gSelectionDropdown
             value={category}
             onSelect={setCategory}
             options={CATEGORIES}
