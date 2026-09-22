@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
     minHeight: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   rowGap: {
     flexDirection: 'row',
@@ -292,10 +293,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 8,
-    backgroundColor: '#EEF2FF',
+    backgroundColor: ${isDark ? "'#312E81'" : "'#EEF2FF'"},
   },
   neutralAnchorText: {
-    color: '#312E81',
+    color: ${isDark ? "'#E0E7FF'" : "'#312E81'"},
     fontWeight: '600',
   },
   primaryAnchor: {
@@ -312,10 +313,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: ${isDark ? "'#262626'" : "'#F3F4F6'"},
   },
   grayAnchorText: {
-    color: '#111827',
+    color: ${isDark ? "'#FAFAFA'" : "'#111827'"},
     fontWeight: '600',
   },
 });`;

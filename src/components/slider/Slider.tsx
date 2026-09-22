@@ -255,6 +255,8 @@ export const Ux4gSlider: React.FC<Ux4gSliderProps> = ({
     onValueChange(snappedValue);
   };
 
+  const startLocationXRef = useRef<number>(0);
+
   // Pan responder for thumb dragging
   const panResponder = useRef(
     PanResponder.create({
@@ -262,19 +264,21 @@ export const Ux4gSlider: React.FC<Ux4gSliderProps> = ({
       onMoveShouldSetPanResponder: () => enabled,
       onPanResponderGrant: (evt) => {
         // Handle immediate tap
-        const locationX = evt.nativeEvent.locationX - thumbRadius;
-        const clampedPosition = Math.max(0, Math.min(locationX, trackWidth - sizeConfig.thumbSize));
-        const newValue = min + (clampedPosition / (trackWidth - sizeConfig.thumbSize)) * (max - min);
+        startLocationXRef.current = evt.nativeEvent.locationX;
+        const effectiveTrackWidth = Math.max(1, trackWidth - sizeConfig.thumbSize);
+        const clampedPosition = Math.max(0, Math.min(evt.nativeEvent.locationX - thumbRadius, effectiveTrackWidth));
+        const newValue = min + (clampedPosition / effectiveTrackWidth) * (max - min);
         handleValueChange(newValue);
       },
       onPanResponderMove: (_, gestureState) => {
         if (trackWidth === 0) return;
-        const rawPosition = gestureState.moveX - thumbRadius;
-        const clampedPosition = Math.max(0, Math.min(rawPosition, trackWidth - sizeConfig.thumbSize));
-        const newValue = min + (clampedPosition / (trackWidth - sizeConfig.thumbSize)) * (max - min);
+        const effectiveTrackWidth = Math.max(1, trackWidth - sizeConfig.thumbSize);
+        const currentX = startLocationXRef.current + gestureState.dx - thumbRadius;
+        const clampedPosition = Math.max(0, Math.min(currentX, effectiveTrackWidth));
+        const newValue = min + (clampedPosition / effectiveTrackWidth) * (max - min);
         handleValueChange(newValue);
       },
-      onPanResponderRelease: () => {},
+      onPanResponderRelease: () => { },
     })
   ).current;
 
@@ -303,7 +307,7 @@ export const Ux4gSlider: React.FC<Ux4gSliderProps> = ({
     : isDark
       ? UX4GColors.neutral700
       : UX4GColors.neutral400;
-  
+
   const inactiveColor = isDark
     ? UX4GColors.neutral800
     : UX4GColors.neutral200;

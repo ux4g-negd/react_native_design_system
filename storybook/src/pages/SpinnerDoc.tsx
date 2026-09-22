@@ -45,7 +45,7 @@ import { Ux4gSpinner, Ux4gThemeProvider } from 'ux4g-react-native-design-system'
 
 export default function App() {
   return (
-    <Ux4gThemeProvider isDark={false}>
+    <Ux4gThemeProvider isDark={${isDark}}>
       <View style={styles.container}>
 ${componentsSnippet}
       </View>
@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20
+    padding: 20,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   }
 });`;
     const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gSpinner%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;

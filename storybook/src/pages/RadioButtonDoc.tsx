@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   stackFull: {
     width: '100%',

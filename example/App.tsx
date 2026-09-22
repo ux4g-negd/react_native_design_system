@@ -28,6 +28,7 @@ import { JourneyTimelineShowcase } from '../src/showcase/JourneyTimelineShowcase
 import { DatePickerShowcase } from '../src/showcase/DatePickerShowcase';
 import { TimePickerShowcase } from '../src/showcase/TimePickerShowcase';
 import { FileUploadShowcase } from '../src/showcase/FileUploadShowcase';
+import { SliderShowcase } from '../src/showcase/SliderShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider, SlotGridShowcase, FeedbackFormShowcase, EmptyStateShowcase } from '../src/index';
 
 type ActiveTab =
@@ -71,7 +72,8 @@ type ActiveTab =
   | 'file-upload'
   | 'slot-grid'
   | 'feedback-form'
-  | 'empty-state';
+  | 'empty-state'
+  | 'slider';
 
 const ShowcaseHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('time-picker');
@@ -1187,6 +1189,32 @@ const ShowcaseHub: React.FC = () => {
               📭 Empty State
             </Text>
           </Pressable>
+          <Pressable
+            onPress={() => setActiveTab('slider')}
+            style={[
+              styles.tabItem,
+              activeTab === 'slider' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'slider'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🎚️ Slider
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1272,6 +1300,8 @@ const ShowcaseHub: React.FC = () => {
           <FeedbackFormShowcase />
         ) : activeTab === 'empty-state' ? (
           <EmptyStateShowcase />
+        ) : activeTab === 'slider' ? (
+          <SliderShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

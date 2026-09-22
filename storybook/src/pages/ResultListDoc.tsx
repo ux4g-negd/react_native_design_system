@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   stackFull: {
     width: '100%',
@@ -273,14 +274,14 @@ const styles = StyleSheet.create({
   },
   metadataCard: {
     width: '100%',
-    backgroundColor: '#F8FAFC',
+    backgroundColor: ${isDark ? "'#1E1E1E'" : "'#F8FAFC'"},
     borderRadius: 16,
     padding: 4,
   },
   expandedNote: {
     marginTop: 8,
     fontSize: 13,
-    color: '#6B7280',
+    color: ${isDark ? "'#9CA3AF'" : "'#6B7280'"},
   },
 });`;
 

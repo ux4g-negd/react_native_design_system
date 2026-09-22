@@ -50,6 +50,9 @@ export const FileUploadDoc: React.FC<FileUploadDocProps> = ({ isDark, story = 'f
           allowedExtensions={['jpg', 'png', 'pdf', 'docx']}
           maxFiles={3}
           maxFileSize={10 * 1024 * 1024}
+          initialFiles={[
+            { id: '1', name: 'income-certificate.pdf', fileSize: 420000, status: 'success', progress: 1 },
+          ]}
         />`;
     } else if (story === 'fileupload-preloaded') {
       fileUploadSnippet = `        <Ux4gFileUpload
@@ -64,6 +67,9 @@ export const FileUploadDoc: React.FC<FileUploadDocProps> = ({ isDark, story = 'f
           allowedExtensions={['jpg', 'png', 'pdf']}
           maxFiles={5}
           maxFileSize={5 * 1024 * 1024}
+          initialFiles={[
+            { id: '1', name: 'ration-card.pdf', fileSize: 350000, status: 'success', progress: 1 },
+          ]}
         />`;
     }
 
@@ -86,6 +92,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
 });`;
 

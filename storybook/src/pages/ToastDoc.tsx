@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   }
 };
 
-const getSnackFields = (story: ToastStory): string => {
+const getSnackFields = (story: ToastStory, isDark: boolean): string => {
   const block = toastBlock;
   switch (story) {
     case 'toast-stacked':
@@ -252,13 +252,13 @@ ${block('warning', 'Session Expired', 'Please sign in again to continue', `     
     case 'toast-custom':
       return `${block('slot', 'Custom Icon Toast', 'Star icon with custom background', `        layout='full'
         icon={Ux4gIcons.star({ size: 20, color: '#7B61FF' })}
-        backgroundColor='#EDE9FE'
+        backgroundColor=${isDark ? "'#2E1065'" : "'#EDE9FE'"}
         iconColor='#7B61FF'
         actionColor='#7B61FF'
         actionText='View'
         onActionClick={() => console.log('view pressed')}`)}
 ${block('success', 'Download Complete', 'Report exported successfully', `        layout='full'
-        backgroundColor='#DCFCE7'
+        backgroundColor=${isDark ? "'#064E3B'" : "'#DCFCE7'"}
         iconColor='#16A34A'
         actionColor='#16A34A'
         actionText='Open'
@@ -324,6 +324,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   row: {
     marginBottom: 12,
@@ -339,7 +340,7 @@ export default function App() {
   return (
     <Ux4gThemeProvider isDark={${isDark}}>
       <ScrollView contentContainerStyle={styles.container}>
-${getSnackFields(activeStory)}
+${getSnackFields(activeStory, isDark)}
       </ScrollView>
     </Ux4gThemeProvider>
   );
@@ -350,6 +351,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   card: {
     marginBottom: 16,

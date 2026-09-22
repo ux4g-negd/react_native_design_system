@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   row: {
     marginBottom: 20,

@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   stackFull: {
     width: '100%',

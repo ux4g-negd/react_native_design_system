@@ -311,7 +311,6 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
   const [selected12Hour, setSelected12Hour] = useState<number>(init12Hour);
   const [selectedMinute, setSelectedMinute] = useState<number>(initMinuteVal);
   const [isAm, setIsAm] = useState<boolean>(initIsAm);
-  const [hasInteracted, setHasInteracted] = useState<boolean>(initialTime !== undefined);
 
   const hourScrollRef = useRef<ScrollView>(null);
   const minuteScrollRef = useRef<ScrollView>(null);
@@ -378,17 +377,13 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
                         <TouchableOpacity
                           key={h}
                           activeOpacity={0.7}
-                          onPress={() => {
-                            setSelected12Hour(h);
-                            setHasInteracted(true);
-                          }}
+                          onPress={() => setSelected12Hour(h)}
                           style={[
                             styles.wheelItem,
                             {
-                              backgroundColor:
-                                isSelected && hasInteracted
-                                  ? `${colors.primary}14`
-                                  : 'transparent',
+                              backgroundColor: isSelected
+                                ? `${colors.primary}14`
+                                : 'transparent',
                             },
                           ]}
                         >
@@ -398,7 +393,7 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
                               {
                                 fontSize: typography.bM_default.fontSize,
                                 fontWeight: typography.bM_default.fontWeight,
-                                color: isSelected && hasInteracted ? colors.primary : colors.onSurface,
+                                color: isSelected ? colors.primary : colors.onSurface,
                               },
                             ]}
                           >
@@ -427,17 +422,13 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
                         <TouchableOpacity
                           key={m}
                           activeOpacity={0.7}
-                          onPress={() => {
-                            setSelectedMinute(m);
-                            setHasInteracted(true);
-                          }}
+                          onPress={() => setSelectedMinute(m)}
                           style={[
                             styles.wheelItem,
                             {
-                              backgroundColor:
-                                isSelected && hasInteracted
-                                  ? `${colors.primary}14`
-                                  : 'transparent',
+                              backgroundColor: isSelected
+                                ? `${colors.primary}14`
+                                : 'transparent',
                             },
                           ]}
                         >
@@ -447,7 +438,7 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
                               {
                                 fontSize: typography.bM_default.fontSize,
                                 fontWeight: typography.bM_default.fontWeight,
-                                color: isSelected && hasInteracted ? colors.primary : colors.onSurface,
+                                color: isSelected ? colors.primary : colors.onSurface,
                               },
                             ]}
                           >
@@ -465,10 +456,7 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
                 <View style={styles.columnFlexCenter}>
                   <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={() => {
-                      setIsAm(true);
-                      setHasInteracted(true);
-                    }}
+                    onPress={() => setIsAm(true)}
                     style={[
                       styles.amPmButton,
                       {
@@ -494,10 +482,7 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
 
                   <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={() => {
-                      setIsAm(false);
-                      setHasInteracted(true);
-                    }}
+                    onPress={() => setIsAm(false)}
                     style={[
                       styles.amPmButton,
                       {
@@ -529,7 +514,6 @@ const Ux4gTimePickerDialogModal: React.FC<Ux4gTimePickerDialogModalProps> = ({
                   <Ux4gButton
                     text="Done"
                     variant="primary"
-                    enabled={hasInteracted}
                     onPress={handleConfirm}
                   />
                 </View>

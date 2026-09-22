@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   controls: {
     flexDirection: 'row',
@@ -266,6 +267,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 13,
+    color: ${isDark ? "'#FAFAFA'" : "'#111827'"},
   },
 });`;
 };

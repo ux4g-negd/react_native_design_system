@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import { Ux4gSlider } from '../../../src/components/slider/Slider';
+import React, { useMemo, useState } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { CodeBlock } from '../components/CodeBlock';
 
@@ -10,164 +9,330 @@ interface SliderDocProps {
 
 type MainTab = 'preview' | 'code' | 'props';
 
+const STORY_IDS = [
+  'slider-basic',
+  'slider-sizes',
+  'slider-steps',
+  'slider-custom-range',
+  'slider-formatter',
+  'slider-disabled',
+] as const;
+
+type SliderStory = (typeof STORY_IDS)[number];
+
+const normalizeStory = (story?: string): SliderStory => {
+  return STORY_IDS.includes(story as SliderStory) ? (story as SliderStory) : 'slider-basic';
+};
+
+const storyMeta: Record<SliderStory, { title: string; description: string }> = {
+  'slider-basic': {
+    title: 'Slider — Basic',
+    description: 'Controlled slider with label, error caption variant, and division marks.',
+  },
+  'slider-sizes': {
+    title: 'Slider — Sizes',
+    description: 'Small (thumb: 16px, track: 4px) and medium (thumb: 20px, track: 6px) sizes.',
+  },
+  'slider-steps': {
+    title: 'Slider — Steps',
+    description: 'Discrete stepped sliders snapping to fixed division intervals with tick marks.',
+  },
+  'slider-custom-range': {
+    title: 'Slider — Custom Range',
+    description: 'Slider with custom minimum and maximum range ($0 to $1000) and currency formatting.',
+  },
+  'slider-formatter': {
+    title: 'Slider — Value Formatter & Labels',
+    description: 'Custom value formatters (°C) and min/max value boundary labels.',
+  },
+  'slider-disabled': {
+    title: 'Slider — Disabled',
+    description: 'Non-interactive disabled sliders with muted styling.',
+  },
+};
+
+const getExampleComponents = (story: SliderStory): string => {
+  switch (story) {
+    case 'slider-sizes':
+      return `const SmallExample = () => {
+  const [smallVal, setSmallVal] = React.useState(30);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        size="s"
+        value={smallVal}
+        onValueChange={setSmallVal}
+        label="Small Size (thumb: 16, track: 4)"
+      />
+    </View>
+  );
+};
+
+const MediumExample = () => {
+  const [mediumVal, setMediumVal] = React.useState(60);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        size="m"
+        value={mediumVal}
+        onValueChange={setMediumVal}
+        label="Medium Size (thumb: 20, track: 6)"
+      />
+    </View>
+  );
+};`;
+
+    case 'slider-steps':
+      return `const Step4Example = () => {
+  const [step4, setStep4] = React.useState(50);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={step4}
+        onValueChange={setStep4}
+        label="4 Steps (5 snap positions)"
+        steps={4}
+        showMarksAndValues={true}
+      />
+    </View>
+  );
+};
+
+const Step9Example = () => {
+  const [step9, setStep9] = React.useState(70);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={step9}
+        onValueChange={setStep9}
+        label="9 Steps (10 snap positions)"
+        steps={9}
+        showMarksAndValues={true}
+      />
+    </View>
+  );
+};`;
+
+    case 'slider-custom-range':
+      return `const CustomRangeExample = () => {
+  const [priceVal, setPriceVal] = React.useState(500);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={priceVal}
+        onValueChange={setPriceVal}
+        label="Price Range ($0 - $1000)"
+        min={0}
+        max={1000}
+        steps={9}
+        showMarksAndValues={true}
+        valueFormatter={(v) => \`$\${Math.round(v)}\`}
+      />
+    </View>
+  );
+};`;
+
+    case 'slider-formatter':
+      return `const FormatterTempExample = () => {
+  const [tempVal, setTempVal] = React.useState(22);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={tempVal}
+        onValueChange={setTempVal}
+        label="Temperature"
+        min={0}
+        max={40}
+        steps={8}
+        showMarksAndValues={true}
+        valueFormatter={(v) => \`\${Math.round(v)}°C\`}
+      />
+    </View>
+  );
+};
+
+const FormatterProgressExample = () => {
+  const [percentVal, setPercentVal] = React.useState(65);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={percentVal}
+        onValueChange={setPercentVal}
+        label="Progress"
+        showValueLabels={true}
+        startValueText="0%"
+        endValueText="100%"
+      />
+    </View>
+  );
+};`;
+
+    case 'slider-disabled':
+      return `const DisabledBasicExample = () => {
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={40}
+        label="Disabled Slider"
+        enabled={false}
+      />
+    </View>
+  );
+};
+
+const DisabledCaptionExample = () => {
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={75}
+        label="Disabled with Caption"
+        enabled={false}
+        caption="This slider is locked"
+      />
+    </View>
+  );
+};`;
+
+    default:
+      return `const BasicExample = () => {
+  const [basicVal, setBasicVal] = React.useState(50);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={basicVal}
+        onValueChange={setBasicVal}
+        label="Basic Slider"
+      />
+    </View>
+  );
+};
+
+const ErrorExample = () => {
+  const [errorVal, setErrorVal] = React.useState(20);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={errorVal}
+        onValueChange={setErrorVal}
+        label="Error Caption"
+        isRequired={true}
+        caption="Value must be above 50"
+        captionVariant="error"
+      />
+    </View>
+  );
+};
+
+const MarksExample = () => {
+  const [marksVal, setMarksVal] = React.useState(50);
+  return (
+    <View style={styles.row}>
+      <Ux4gSlider
+        value={marksVal}
+        onValueChange={setMarksVal}
+        label="With Marks & Values"
+        steps={4}
+        showMarksAndValues={true}
+      />
+    </View>
+  );
+};`;
+  }
+};
+
+const getSnackBody = (story: SliderStory): string => {
+  const names: Record<SliderStory, string[]> = {
+    'slider-basic': ['BasicExample', 'ErrorExample', 'MarksExample'],
+    'slider-sizes': ['SmallExample', 'MediumExample'],
+    'slider-steps': ['Step4Example', 'Step9Example'],
+    'slider-custom-range': ['CustomRangeExample'],
+    'slider-formatter': ['FormatterTempExample', 'FormatterProgressExample'],
+    'slider-disabled': ['DisabledBasicExample', 'DisabledCaptionExample'],
+  };
+  return names[story].map((n) => `          <${n} />`).join('\n');
+};
+
+const getStoryCode = (story: SliderStory): string => {
+  return `import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Ux4gSlider } from 'ux4g-react-native-design-system';
+
+${getExampleComponents(story)}
+
+export default function App() {
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+${(() => {
+      const names: Record<SliderStory, string[]> = {
+        'slider-basic': ['BasicExample', 'ErrorExample', 'MarksExample'],
+        'slider-sizes': ['SmallExample', 'MediumExample'],
+        'slider-steps': ['Step4Example', 'Step9Example'],
+        'slider-custom-range': ['CustomRangeExample'],
+        'slider-formatter': ['FormatterTempExample', 'FormatterProgressExample'],
+        'slider-disabled': ['DisabledBasicExample', 'DisabledCaptionExample'],
+      };
+      return names[story].map((n) => `      <${n} />`).join('\n');
+    })()}
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 24,
+    minHeight: '100%',
+    justifyContent: 'center',
+  },
+  row: {
+    marginBottom: 28,
+  },
+});`;
+};
+
 export const SliderDoc: React.FC<SliderDocProps> = ({ isDark, story = 'slider-basic' }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
 
-  /* ── Code Generator ── */
-  const codeString = useMemo(() => {
-    const lines: string[] = [];
-    lines.push(`import { Ux4gSlider } from 'ux4g-react-native-design-system';`);
-    lines.push(`import { useState } from 'react';`);
-    lines.push('');
-    lines.push('// Basic Slider (Controlled)');
-    lines.push('const [value, setValue] = useState(50);');
-    lines.push('<Ux4gSlider');
-    lines.push('  value={value}');
-    lines.push('  onValueChange={setValue}');
-    lines.push('  label="Volume"');
-    lines.push('  min={0}');
-    lines.push('  max={100}');
-    lines.push('/>');
-    lines.push('');
-    lines.push('// With Steps (Divisions)');
-    lines.push('<Ux4gSlider');
-    lines.push('  value={value}');
-    lines.push('  onValueChange={setValue}');
-    lines.push('  label="4 Steps"');
-    lines.push('  steps={4}  // Creates 5 snap positions');
-    lines.push('/>');
-    lines.push('');
-    lines.push('// With Caption Variant');
-    lines.push('<Ux4gSlider');
-    lines.push('  value={value}');
-    lines.push('  onValueChange={setValue}');
-    lines.push('  label="Risk Level"');
-    lines.push('  isRequired={true}');
-    lines.push('  caption="Setting above 80 may trigger alerts"');
-    lines.push('  captionVariant="warning"');
-    lines.push('/>');
-    lines.push('');
-    lines.push('// With Marks and Values');
-    lines.push('<Ux4gSlider');
-    lines.push('  value={value}');
-    lines.push('  onValueChange={setValue}');
-    lines.push('  label="Progress"');
-    lines.push('  steps={4}');
-    lines.push('  showMarksAndValues={true}');
-    lines.push('  valueFormatter={(v) => \`\${v}%\`}');
-    lines.push('/>');
-    return lines.join('\n');
-  }, []);
+  const activeStory = normalizeStory(story);
+  const config = storyMeta[activeStory];
+  const codeString = useMemo(() => getStoryCode(activeStory), [activeStory]);
 
   /* ── Live Preview (Expo Snack) ── */
   const renderStoryPreview = () => {
-    let componentsSnippet = '';
-
-    if (story === 'slider-sizes') {
-      componentsSnippet = `        <Ux4gSlider size="s" value={smallVal} onValueChange={setSmallVal} label="Small Size (thumb: 16, track: 4)" />
-        <View style={{ height: 24 }} />
-        <Ux4gSlider size="m" value={mediumVal} onValueChange={setMediumVal} label="Medium Size (thumb: 20, track: 6)" />`;
-    } else if (story === 'slider-steps') {
-      componentsSnippet = `        <Ux4gSlider value={step4} onValueChange={setStep4} label="4 Steps (5 positions)" steps={4} />
-        <View style={{ height: 24 }} />
-        <Ux4gSlider value={step9} onValueChange={setStep9} label="9 Steps (10 positions)" steps={9} />`;
-    } else if (story === 'slider-custom-range') {
-      componentsSnippet = `        <Ux4gSlider value={priceVal} onValueChange={setPriceVal} label="Price Range" min={0} max={1000} steps={9} valueFormatter={(v) => \`$\${v}\`} />`;
-    } else if (story === 'slider-disabled') {
-      componentsSnippet = `        <Ux4gSlider value={40} label="Disabled Slider" enabled={false} />
-        <View style={{ height: 24 }} />
-        <Ux4gSlider value={75} label="Disabled with Caption" enabled={false} caption="This slider is locked" />`;
-    } else if (story === 'slider-formatter') {
-      componentsSnippet = `        <Ux4gSlider 
-          value={tempVal} 
-          onValueChange={setTempVal} 
-          label="Temperature" 
-          min={0} 
-          max={40} 
-          steps={7}
-          showMarksAndValues={true}
-          valueFormatter={(v) => \`\${v}°C\`} 
-        />
-        <View style={{ height: 32 }} />
-        <Ux4gSlider 
-          value={percentVal} 
-          onValueChange={setPercentVal} 
-          label="Progress" 
-          showValueLabels={true}
-          startValueText="0%"
-          endValueText="100%"
-        />`;
-    } else {
-      componentsSnippet = `        <Ux4gSlider 
-          value={basicVal} 
-          onValueChange={setBasicVal} 
-          label="Basic Slider" 
-        />
-        
-        <View style={{ height: 24 }} />
-        
-        <Ux4gSlider 
-          value={errorVal} 
-          onValueChange={setErrorVal} 
-          label="Error Caption" 
-          isRequired={true}
-          caption="Value must be above 50"
-          captionVariant="error"
-        />
-
-        <View style={{ height: 24 }} />
-        
-        <Ux4gSlider 
-          value={marksVal} 
-          onValueChange={setMarksVal} 
-          label="With Marks & Values" 
-          steps={4}
-          showMarksAndValues={true}
-        />`;
-    }
-
-    const snackCodeString = `import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+    const snackCodeString = `import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Ux4gSlider, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
 
-export default function App() {
-  const [basicVal, setBasicVal] = useState(50);
-  const [errorVal, setErrorVal] = useState(20);
-  const [marksVal, setMarksVal] = useState(50);
-  const [smallVal, setSmallVal] = useState(30);
-  const [mediumVal, setMediumVal] = useState(60);
-  const [step4, setStep4] = useState(50);
-  const [step9, setStep9] = useState(75);
-  const [priceVal, setPriceVal] = useState(500);
-  const [tempVal, setTempVal] = useState(22);
-  const [percentVal, setPercentVal] = useState(65);
+${getExampleComponents(activeStory)}
 
+export default function App() {
   return (
     <Ux4gThemeProvider isDark={${isDark}}>
-      <View style={styles.container}>
-${componentsSnippet}
-      </View>
+      <ScrollView contentContainerStyle={styles.container}>
+${getSnackBody(activeStory)}
+      </ScrollView>
     </Ux4gThemeProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    padding: 24,
+    minHeight: '100%',
     justifyContent: 'center',
-    padding: 24
-  }
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
+  },
+  row: {
+    marginBottom: 28,
+  },
 });`;
 
-    // Note: Slider component is available in v1.0.5+
-    // Using latest version for preview
-    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gSlider%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@latest,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=web&supportedPlatforms=ios,android,web&theme=${isDark ? 'dark' : 'light'}&name=Ux4gSlider%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe
         src={snackUrl}
-        style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
-        title="Expo Snack Preview"
+        style={{ width: '100%', height: '680px', border: 'none', borderRadius: '8px' }}
+        title="Expo Snack Slider Preview"
       />
     );
   };
@@ -189,7 +354,7 @@ const styles = StyleSheet.create({
     { name: 'caption', type: 'string', default: 'undefined', desc: 'Caption text displayed below the slider.', required: false },
     { name: 'captionVariant', type: "'helper' | 'error' | 'warning' | 'success'", default: "'helper'", desc: 'Semantic variant for the caption (affects color and icon).', required: false },
     { name: 'showMarksAndValues', type: 'boolean', default: 'false', desc: 'Whether to show tick marks and value labels at each step.', required: false },
-    { name: 'showIndicator', type: 'boolean', default: 'false', desc: 'Whether to show a value indicator tooltip on drag (Flutter feature).', required: false },
+    { name: 'showIndicator', type: 'boolean', default: 'false', desc: 'Whether to show a value indicator tooltip on drag.', required: false },
     { name: 'showInputFields', type: 'boolean', default: 'false', desc: 'Whether to show editable input fields for current/max values.', required: false },
     { name: 'showValueLabels', type: 'boolean', default: 'false', desc: 'Whether to show formatted value labels (start/end) above the slider.', required: false },
     { name: 'valueFormatter', type: '(value: number) => string', default: '_formatValue', desc: 'Custom formatter for value display (default: integer or 1 decimal).', required: false },
@@ -203,13 +368,10 @@ const styles = StyleSheet.create({
     <div className="wb-page">
       <div className="wb-header">
         <div className="wb-header-row">
-          <h1 className="wb-title">Slider</h1>
+          <h1 className="wb-title">{config.title}</h1>
           <span className="wb-badge">Component</span>
         </div>
-        <p className="wb-subtitle">
-          Complete React Native port of Flutter `slider.dart`, matching all props, visual behavior,
-          and features including caption variants, marks, input fields, and value labels.
-        </p>
+        <p className="wb-subtitle">{config.description}</p>
         <p className="wb-subtitle" style={{ marginTop: 6 }}>
           <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
         </p>
@@ -241,7 +403,7 @@ const styles = StyleSheet.create({
             </button>
           </div>
 
-          <div className="wb-content">
+          <div className="wb-tab-content">
             {activeMainTab === 'preview' && (
               <Ux4gThemeProvider isDark={isDark}>
                 <div className={`wb-preview-area ${isDark ? 'dark' : ''}`}>

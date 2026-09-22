@@ -114,7 +114,7 @@ export default function LinkBasicExample() {
 }`;
 };
 
-const getSnackFields = (story: LinkStory): string => {
+const getSnackFields = (story: LinkStory, isDark: boolean): string => {
   if (story === 'link-text') {
     return `        <View style={styles.stack}>
           <Ux4gLink
@@ -143,7 +143,8 @@ const getSnackFields = (story: LinkStory): string => {
             <View
               style={{
                 borderWidth: 1,
-                borderColor: '#D4D4D8',
+                borderColor: ${isDark ? "'#374151'" : "'#D4D4D8'"},
+                backgroundColor: ${isDark ? "'#1E1E1E'" : "'#FFFFFF'"},
                 borderRadius: 10,
                 padding: 14,
                 flexDirection: 'row',
@@ -152,10 +153,10 @@ const getSnackFields = (story: LinkStory): string => {
               }}
             >
               <View>
-                <Text style={{ fontSize: 16, fontWeight: '600', color: '#111827' }}>
+                <Text style={{ fontSize: 16, fontWeight: '600', color: ${isDark ? "'#F9FAFB'" : "'#111827'"} }}>
                   UX4G Documentation
                 </Text>
-                <Text style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>
+                <Text style={{ fontSize: 12, color: ${isDark ? "'#9CA3AF'" : "'#6B7280'"}, marginTop: 4 }}>
                   Open component guidelines and API docs
                 </Text>
               </View>
@@ -188,7 +189,7 @@ export default function App() {
   return (
     <Ux4gThemeProvider isDark={${isDark}}>
       <ScrollView contentContainerStyle={styles.container}>
-${getSnackFields(activeStory)}
+${getSnackFields(activeStory, isDark)}
       </ScrollView>
     </Ux4gThemeProvider>
   );
@@ -199,6 +200,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   stack: {
     gap: 16,

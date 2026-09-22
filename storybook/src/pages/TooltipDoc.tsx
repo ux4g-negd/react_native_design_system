@@ -387,6 +387,7 @@ const styles = StyleSheet.create({
     padding: 24,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   row: {
     marginBottom: 32,
@@ -394,7 +395,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     fontSize: 12,
-    color: '#6B7280',
+    color: ${isDark ? "'#9CA3AF'" : "'#6B7280'"},
     marginBottom: 8,
   },
   wrap: {
@@ -410,19 +411,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderWidth: 1,
-    borderColor: '#9CA3AF',
-    borderRadius: 4,
-    backgroundColor: '#F3F4F6',
+    borderColor: ${isDark ? "'#4B5563'" : "'#9CA3AF'"},
+    borderRadius: ${activeStory === 'tooltip-rich' ? '24' : '4'},
+    ${activeStory === 'tooltip-rich' ? 'width: 48, height: 48, justifyContent: \'center\',' : ''}
+    backgroundColor: ${isDark ? "'#262626'" : "'#F3F4F6'"},
+    alignItems: 'center',
   },
   anchorText: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: '#374151',
+    fontSize: ${activeStory === 'tooltip-rich' ? '18' : '13'},
+    fontWeight: ${activeStory === 'tooltip-rich' ? "'600'" : "'500'"},
+    color: ${isDark ? "'#FAFAFA'" : "'#374151'"},
   },
   action: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1D4ED8',
+    color: ${isDark ? "'#60A5FA'" : "'#1D4ED8'"},
   },
 });`;
 

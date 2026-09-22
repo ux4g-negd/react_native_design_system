@@ -269,7 +269,11 @@ export const Ux4gUnifiedPillTag: React.FC<Ux4gUnifiedPillTagProps> = ({
             {idx > 0 && <View style={[styles.segmentDivider, { backgroundColor: divCol }]} />}
             <View style={styles.segment}>
               {seg.leading && <View style={styles.leading}>{seg.leading}</View>}
-              <Text style={{ fontSize: typo.fontSize, fontWeight: typo.fontWeight, color: col }}>
+              <Text
+                style={{ fontSize: typo.fontSize, fontWeight: typo.fontWeight, color: col, flexShrink: 1 }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
                 {seg.text}
               </Text>
             </View>
@@ -310,14 +314,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
     overflow: 'hidden',
+    maxWidth: '100%',
   },
   segment: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
+    flexShrink: 1,
+    minWidth: 0,
   },
   segmentDivider: {
     width: 1,
     height: '60%',
+    flexShrink: 0,
   },
 });

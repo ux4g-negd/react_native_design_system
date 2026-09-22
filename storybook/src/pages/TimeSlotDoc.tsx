@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   row: {
     marginBottom: 20,
@@ -249,13 +250,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     marginBottom: 10,
-    color: '#6B7280',
+    color: ${isDark ? "'#9CA3AF'" : "'#6B7280'"},
   },
   result: {
     marginTop: 12,
     fontSize: 14,
     fontWeight: '600',
-    color: '#1D4ED8',
+    color: ${isDark ? "'#60A5FA'" : "'#1D4ED8'"},
   },
 });`;
 

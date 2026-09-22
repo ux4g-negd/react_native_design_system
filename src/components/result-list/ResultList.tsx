@@ -259,23 +259,27 @@ const styles = StyleSheet.create({
   },
   leftContent: {
     flex: 1,
+    minWidth: 0,
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
   },
   metadataWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     marginTop: 8,
+    maxWidth: '100%',
   },
   rightContent: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 8,
+    flexShrink: 0,
   },
   expandedContainer: {
     width: '100%',

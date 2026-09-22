@@ -447,6 +447,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: '100%',
     justifyContent: 'center',
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   },
   stackCentered: {
     gap: 28,
@@ -463,7 +464,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111827',
+    color: ${isDark ? "'#FAFAFA'" : "'#111827'"},
   },
   slaCircularRow: {
     flexDirection: 'row',
@@ -478,7 +479,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   colTitle: {
-    color: '#6B7280',
+    color: ${isDark ? "'#A1A1A1'" : "'#6B7280'"},
   },
 });`;
 
