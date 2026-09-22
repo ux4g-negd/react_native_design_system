@@ -44,9 +44,9 @@ Error generating stack: `+j.message+`
 • Props tab — Parameter reference
 
 `}],o4=[{heading:"Depend on it",body:`Run this command:
-With npm:`}],n4=[{name:"React Native",version:">= 0.72.0",required:!0},{name:"React",version:">= 18.0.0",required:!0}],a4=[{label:"Terminal",code:"npm install ux4g-react-native-design-system@1.0.7-beta.0"},{label:`This will add a line like this to your package's package.json
+With npm:`}],n4=[{name:"React Native",version:">= 0.72.0",required:!0},{name:"React",version:">= 18.0.0",required:!0}],a4=[{label:"Terminal",code:"npm install ux4g-react-native-design-system@1.0.8-beta.0"},{label:`This will add a line like this to your package's package.json
 (and run an implicit npm install):`,code:`"dependencies": {
-  "ux4g-react-native-design-system": "1.0.7-beta.0"
+  "ux4g-react-native-design-system": "1.0.8-beta.0"
 }`}],s4=[{heading:"Import it",body:"Now in your React Native code, you can use:"}],l4=[{label:"",code:"import { Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-design-system';"},{label:"Wrap your app with Ux4gThemeProvider",code:`import React from 'react';
 import { Ux4gThemeProvider, Ux4gButton } from 'ux4g-react-native-design-system';
 
@@ -1406,8 +1406,149 @@ const styles = StyleSheet.create({
     gap: 16,
     padding: 20
   }
-});`,b=`https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${t?"dark":"light"}&name=Ux4gDatePicker%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(C)}`;return e.jsx("iframe",{src:b,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Preview"})},S=[{name:"mode",type:"'single' | 'range'",default:"'single'",desc:"Date selection mode.",required:!1},{name:"initialDate",type:"Date",default:"undefined",desc:"Initial selected date in single mode.",required:!1},{name:"initialDateRange",type:"DateRange",default:"undefined",desc:"Initial selected date range in range mode.",required:!1},{name:"minDate",type:"Date",default:"undefined",desc:"Minimum selectable date.",required:!1},{name:"maxDate",type:"Date",default:"undefined",desc:"Maximum selectable date.",required:!1},{name:"onDateSelected",type:"(date: Date) => void",default:"undefined",desc:"Callback fired when a single date is selected.",required:!1},{name:"onDateRangeSelected",type:"(range: DateRange) => void",default:"undefined",desc:"Callback fired when a date range is selected.",required:!1},{name:"placeholder",type:"string",default:"'Select date'",desc:"Placeholder text shown when no value is selected.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether interaction is enabled.",required:!1},{name:"label",type:"string",default:"undefined",desc:"Label text above the field.",required:!1},{name:"description",type:"string",default:"undefined",desc:"Caption/helper text below the field.",required:!1},{name:"isRequired",type:"boolean",default:"false",desc:"Shows required asterisk next to label.",required:!1},{name:"required",type:"boolean",default:"false",desc:"Alias of `isRequired`.",required:!1},{name:"status",type:"Ux4gInputFieldStatus",default:"'defaultStatus'",desc:"Status variant for border/caption color.",required:!1},{name:"style",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for outer container.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Date Picker"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Date Picker allows users to select a specific date or a range of dates from a calendar interface."}),e.jsx("p",{className:"wb-subtitle",style:{marginTop:6},children:"This component has no required props."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"}),"Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"}),"Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"}),"Props"]})]}),e.jsxs("div",{className:"wb-tab-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:x()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:y,language:"TSX",filename:"DatePickerExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:S.map(v=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[v.name,v.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:v.type})}),e.jsx("td",{children:v.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:v.default})})]},v.name))})]})})]})]})})]})},iT=({isDark:t,story:i="dropdown-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>{const l=[];return l.push("import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';"),l.push("import { useState } from 'react';"),l.push(""),l.push("// Complete Interactive Dropdown"),l.push('const [selected, setSelected] = useState<string[]>(["1"]);'),l.push(""),l.push("<Ux4gSelectionDropdown"),l.push('  label="Select Framework"'),l.push('  placeholder="Choose an option..."'),l.push("  options={["),l.push('    { id: "1", label: "React Native CLI" },'),l.push('    { id: "2", label: "Expo" },'),l.push('    { id: "3", label: "Flutter" }'),l.push("  ]}"),l.push("  selectedOptionIds={selected}"),l.push("  onSelectionChange={setSelected}"),l.push("/>"),l.push(""),l.push("// Multi-Select Searchable Dropdown"),l.push('const [selectedMulti, setSelectedMulti] = useState<string[]>(["1", "2"]);'),l.push("<Ux4gSelectionDropdown"),l.push('  label="Select Technologies"'),l.push('  mode="multi"'),l.push("  searchEnabled={true}"),l.push("  options={["),l.push('    { id: "1", label: "React Native" },'),l.push('    { id: "2", label: "TypeScript" },'),l.push('    { id: "3", label: "Storybook" }'),l.push("  ]}"),l.push("  selectedOptionIds={selectedMulti}"),l.push("  onSelectionChange={setSelectedMulti}"),l.push("/>"),l.join(`
-`)},[]),s=()=>{let l="";i==="dropdown-multi"?l=`import React, { useState } from 'react';
+});`,b=`https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${t?"dark":"light"}&name=Ux4gDatePicker%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.6,react-native-svg@*&code=${encodeURIComponent(C)}`;return e.jsx("iframe",{src:b,style:{width:"100%",height:"600px",border:"none",borderRadius:"8px"},title:"Expo Snack Preview"})},S=[{name:"mode",type:"'single' | 'range'",default:"'single'",desc:"Date selection mode.",required:!1},{name:"initialDate",type:"Date",default:"undefined",desc:"Initial selected date in single mode.",required:!1},{name:"initialDateRange",type:"DateRange",default:"undefined",desc:"Initial selected date range in range mode.",required:!1},{name:"minDate",type:"Date",default:"undefined",desc:"Minimum selectable date.",required:!1},{name:"maxDate",type:"Date",default:"undefined",desc:"Maximum selectable date.",required:!1},{name:"onDateSelected",type:"(date: Date) => void",default:"undefined",desc:"Callback fired when a single date is selected.",required:!1},{name:"onDateRangeSelected",type:"(range: DateRange) => void",default:"undefined",desc:"Callback fired when a date range is selected.",required:!1},{name:"placeholder",type:"string",default:"'Select date'",desc:"Placeholder text shown when no value is selected.",required:!1},{name:"enabled",type:"boolean",default:"true",desc:"Whether interaction is enabled.",required:!1},{name:"label",type:"string",default:"undefined",desc:"Label text above the field.",required:!1},{name:"description",type:"string",default:"undefined",desc:"Caption/helper text below the field.",required:!1},{name:"isRequired",type:"boolean",default:"false",desc:"Shows required asterisk next to label.",required:!1},{name:"required",type:"boolean",default:"false",desc:"Alias of `isRequired`.",required:!1},{name:"status",type:"Ux4gInputFieldStatus",default:"'defaultStatus'",desc:"Status variant for border/caption color.",required:!1},{name:"style",type:"StyleProp<ViewStyle>",default:"undefined",desc:"Style override for outer container.",required:!1}];return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Date Picker"}),e.jsx("span",{className:"wb-badge",children:"Component"})]}),e.jsx("p",{className:"wb-subtitle",children:"Date Picker allows users to select a specific date or a range of dates from a calendar interface."}),e.jsx("p",{className:"wb-subtitle",style:{marginTop:6},children:"This component has no required props."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>n("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"}),"Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>n("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"}),"Code"]}),e.jsxs("button",{className:`wb-tab ${o==="props"?"active":""}`,onClick:()=>n("props"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"tune"}),"Props"]})]}),e.jsxs("div",{className:"wb-tab-content",children:[o==="preview"&&e.jsx(ee,{isDark:t,children:e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,children:x()})}),o==="code"&&e.jsx("div",{className:"wb-code-area",children:e.jsx(O,{code:y,language:"TSX",filename:"DatePickerExample.tsx"})}),o==="props"&&e.jsx("div",{className:"wb-props-area",children:e.jsxs("table",{className:"props-table",children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{children:"Prop"}),e.jsx("th",{children:"Type"}),e.jsx("th",{children:"Description"}),e.jsx("th",{children:"Default"})]})}),e.jsx("tbody",{children:S.map(v=>e.jsxs("tr",{children:[e.jsx("td",{children:e.jsxs("span",{className:"prop-name",children:[v.name,v.required?e.jsx("span",{style:{color:"#E11D48"},children:" *"}):null]})}),e.jsx("td",{children:e.jsx("span",{className:"prop-type",children:v.type})}),e.jsx("td",{children:v.desc}),e.jsx("td",{children:e.jsx("span",{className:"prop-default",children:v.default})})]},v.name))})]})})]})]})})]})},iT=({isDark:t,story:i="dropdown-basic"})=>{const[o,n]=m.useState("preview"),c=m.useMemo(()=>i==="dropdown-multi"?`import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selectedIds, setSelectedIds] = useState(['1', '2']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Multi-Select Dropdown"
+        placeholder="Select multiple items..."
+        mode="multi"
+        options={[
+          { id: '1', label: 'React Native' },
+          { id: '2', label: 'TypeScript' },
+          { id: '3', label: 'Expo' },
+          { id: '4', label: 'Storybook' }
+        ]}
+        selectedOptionIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`:i==="dropdown-search"?`import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selectedIds, setSelectedIds] = useState(['in']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Searchable Dropdown"
+        placeholder="Search and select country..."
+        searchEnabled={true}
+        options={[
+          { id: 'in', label: 'India' },
+          { id: 'us', label: 'United States' },
+          { id: 'uk', label: 'United Kingdom' },
+          { id: 'ca', label: 'Canada' },
+          { id: 'au', label: 'Australia' },
+          { id: 'de', label: 'Germany' },
+          { id: 'jp', label: 'Japan' }
+        ]}
+        selectedOptionIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`:i==="dropdown-status"?`import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [errSelected, setErrSelected] = useState([]);
+  const [succSelected, setSuccSelected] = useState(['1']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Error Status Dropdown"
+        placeholder="Selection required..."
+        status="error"
+        options={[
+          { id: '1', label: 'Option 1' },
+          { id: '2', label: 'Option 2' }
+        ]}
+        selectedOptionIds={errSelected}
+        onSelectionChange={setErrSelected}
+      />
+
+      <View style={{ height: 24 }} />
+
+      <Ux4gSelectionDropdown
+        label="Success Status Dropdown"
+        placeholder="Valid selection..."
+        status="success"
+        options={[
+          { id: '1', label: 'Option 1' },
+          { id: '2', label: 'Option 2' }
+        ]}
+        selectedOptionIds={succSelected}
+        onSelectionChange={setSuccSelected}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`:`import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selected, setSelected] = useState(['1']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Standard Single Selection"
+        placeholder="Please select an option..."
+        options={[
+          { id: '1', label: 'Option 1 - First Choice' },
+          { id: '2', label: 'Option 2 - Second Choice' },
+          { id: '3', label: 'Option 3 - Third Choice' }
+        ]}
+        selectedOptionIds={selected}
+        onSelectionChange={setSelected}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`,[i]),s=()=>{let l="";i==="dropdown-multi"?l=`import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
 
@@ -1531,7 +1672,6 @@ import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-desi
 
 export default function App() {
   const [singleSelected, setSingleSelected] = useState(['1']);
-  const [multiSelected, setMultiSelected] = useState(['1', '2']);
 
   return (
     <Ux4gThemeProvider isDark={${t}}>
@@ -1546,22 +1686,6 @@ export default function App() {
           ]}
           selectedOptionIds={singleSelected}
           onSelectionChange={setSingleSelected}
-        />
-        
-        <View style={{ height: 24 }} />
-        
-        <Ux4gSelectionDropdown
-          label="Searchable Multi-Select"
-          mode="multi"
-          searchEnabled={true}
-          options={[
-            { id: '1', label: 'Frontend Development' },
-            { id: '2', label: 'Mobile Design Tokens' },
-            { id: '3', label: 'Backend Architecture' },
-            { id: '4', label: 'DevOps & Pipeline' }
-          ]}
-          selectedOptionIds={multiSelected}
-          onSelectionChange={setMultiSelected}
         />
       </View>
     </Ux4gThemeProvider>

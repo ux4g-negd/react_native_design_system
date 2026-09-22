@@ -15,41 +15,163 @@ export const DropdownDoc: React.FC<DropdownDocProps> = ({ isDark, story = 'dropd
 
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
-    const lines: string[] = [];
-    lines.push(`import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';`);
-    lines.push(`import { useState } from 'react';`);
-    lines.push('');
-    lines.push('// Complete Interactive Dropdown');
-    lines.push('const [selected, setSelected] = useState<string[]>(["1"]);');
-    lines.push('');
-    lines.push('<Ux4gSelectionDropdown');
-    lines.push('  label="Select Framework"');
-    lines.push('  placeholder="Choose an option..."');
-    lines.push('  options={[');
-    lines.push('    { id: "1", label: "React Native CLI" },');
-    lines.push('    { id: "2", label: "Expo" },');
-    lines.push('    { id: "3", label: "Flutter" }');
-    lines.push('  ]}');
-    lines.push('  selectedOptionIds={selected}');
-    lines.push('  onSelectionChange={setSelected}');
-    lines.push('/>');
-    lines.push('');
-    lines.push('// Multi-Select Searchable Dropdown');
-    lines.push('const [selectedMulti, setSelectedMulti] = useState<string[]>(["1", "2"]);');
-    lines.push('<Ux4gSelectionDropdown');
-    lines.push('  label="Select Technologies"');
-    lines.push('  mode="multi"');
-    lines.push('  searchEnabled={true}');
-    lines.push('  options={[');
-    lines.push('    { id: "1", label: "React Native" },');
-    lines.push('    { id: "2", label: "TypeScript" },');
-    lines.push('    { id: "3", label: "Storybook" }');
-    lines.push('  ]}');
-    lines.push('  selectedOptionIds={selectedMulti}');
-    lines.push('  onSelectionChange={setSelectedMulti}');
-    lines.push('/>');
-    return lines.join('\n');
-  }, []);
+    if (story === 'dropdown-multi') {
+      return `import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selectedIds, setSelectedIds] = useState(['1', '2']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Multi-Select Dropdown"
+        placeholder="Select multiple items..."
+        mode="multi"
+        options={[
+          { id: '1', label: 'React Native' },
+          { id: '2', label: 'TypeScript' },
+          { id: '3', label: 'Expo' },
+          { id: '4', label: 'Storybook' }
+        ]}
+        selectedOptionIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`;
+    }
+
+    if (story === 'dropdown-search') {
+      return `import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selectedIds, setSelectedIds] = useState(['in']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Searchable Dropdown"
+        placeholder="Search and select country..."
+        searchEnabled={true}
+        options={[
+          { id: 'in', label: 'India' },
+          { id: 'us', label: 'United States' },
+          { id: 'uk', label: 'United Kingdom' },
+          { id: 'ca', label: 'Canada' },
+          { id: 'au', label: 'Australia' },
+          { id: 'de', label: 'Germany' },
+          { id: 'jp', label: 'Japan' }
+        ]}
+        selectedOptionIds={selectedIds}
+        onSelectionChange={setSelectedIds}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`;
+    }
+
+    if (story === 'dropdown-status') {
+      return `import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [errSelected, setErrSelected] = useState([]);
+  const [succSelected, setSuccSelected] = useState(['1']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Error Status Dropdown"
+        placeholder="Selection required..."
+        status="error"
+        options={[
+          { id: '1', label: 'Option 1' },
+          { id: '2', label: 'Option 2' }
+        ]}
+        selectedOptionIds={errSelected}
+        onSelectionChange={setErrSelected}
+      />
+
+      <View style={{ height: 24 }} />
+
+      <Ux4gSelectionDropdown
+        label="Success Status Dropdown"
+        placeholder="Valid selection..."
+        status="success"
+        options={[
+          { id: '1', label: 'Option 1' },
+          { id: '2', label: 'Option 2' }
+        ]}
+        selectedOptionIds={succSelected}
+        onSelectionChange={setSuccSelected}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`;
+    }
+
+    // Default / Basic Single Select Story
+    return `import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+
+export default function App() {
+  const [selected, setSelected] = useState(['1']);
+
+  return (
+    <View style={styles.container}>
+      <Ux4gSelectionDropdown
+        label="Standard Single Selection"
+        placeholder="Please select an option..."
+        options={[
+          { id: '1', label: 'Option 1 - First Choice' },
+          { id: '2', label: 'Option 2 - Second Choice' },
+          { id: '3', label: 'Option 3 - Third Choice' }
+        ]}
+        selectedOptionIds={selected}
+        onSelectionChange={setSelected}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24
+  }
+});`;
+  }, [story]);
 
   /* ── Live Preview (Expo Snack) ── */
   const renderStoryPreview = () => {
@@ -186,7 +308,6 @@ import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-desi
 
 export default function App() {
   const [singleSelected, setSingleSelected] = useState(['1']);
-  const [multiSelected, setMultiSelected] = useState(['1', '2']);
 
   return (
     <Ux4gThemeProvider isDark={${isDark}}>
@@ -201,22 +322,6 @@ export default function App() {
           ]}
           selectedOptionIds={singleSelected}
           onSelectionChange={setSingleSelected}
-        />
-        
-        <View style={{ height: 24 }} />
-        
-        <Ux4gSelectionDropdown
-          label="Searchable Multi-Select"
-          mode="multi"
-          searchEnabled={true}
-          options={[
-            { id: '1', label: 'Frontend Development' },
-            { id: '2', label: 'Mobile Design Tokens' },
-            { id: '3', label: 'Backend Architecture' },
-            { id: '4', label: 'DevOps & Pipeline' }
-          ]}
-          selectedOptionIds={multiSelected}
-          onSelectionChange={setMultiSelected}
         />
       </View>
     </Ux4gThemeProvider>
