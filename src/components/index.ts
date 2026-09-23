@@ -42,3 +42,4 @@ export * from './slot-grid';
 export * from './feedback-form';
 export * from './empty-state';
 export * from './slider';
+export * from './bottom-sheet';
