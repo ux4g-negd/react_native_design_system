@@ -43,3 +43,5 @@ export * from './FeedbackFormShowcase';
 export * from './EmptyStateShowcase';
 export * from './SliderShowcase';
 export * from './BottomSheetShowcase';
+export * from './FabShowcase';
+

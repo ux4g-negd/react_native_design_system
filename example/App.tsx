@@ -30,6 +30,7 @@ import { TimePickerShowcase } from '../src/showcase/TimePickerShowcase';
 import { FileUploadShowcase } from '../src/showcase/FileUploadShowcase';
 import { SliderShowcase } from '../src/showcase/SliderShowcase';
 import { BottomSheetShowcase } from '../src/showcase/BottomSheetShowcase';
+import { FabShowcase } from '../src/showcase/FabShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider, SlotGridShowcase, FeedbackFormShowcase, EmptyStateShowcase } from '../src/index';
 
 type ActiveTab =
@@ -75,10 +76,12 @@ type ActiveTab =
   | 'feedback-form'
   | 'empty-state'
   | 'slider'
-  | 'bottom-sheet';
+  | 'bottom-sheet'
+  | 'fab';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('bottom-sheet');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('fab');
+
   const theme = useUx4gTheme();
 
   return (
@@ -1243,6 +1246,33 @@ const ShowcaseHub: React.FC = () => {
               📑 Bottom Sheet
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('fab')}
+            style={[
+              styles.tabItem,
+              activeTab === 'fab' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'fab'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🔘 Floating Action Button (FAB)
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1332,9 +1362,12 @@ const ShowcaseHub: React.FC = () => {
           <SliderShowcase />
         ) : activeTab === 'bottom-sheet' ? (
           <BottomSheetShowcase />
+        ) : activeTab === 'fab' ? (
+          <FabShowcase />
         ) : (
           <SocialLinksShowcase />
         )}
+
       </View>
     </SafeAreaView>
   );
