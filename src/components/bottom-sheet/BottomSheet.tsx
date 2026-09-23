@@ -44,6 +44,8 @@ const SIZE_RATIO: Record<Ux4gBottomSheetSize, number> = {
   full: 0.94,
 };
 
+const ALL_SIZES: Ux4gBottomSheetSize[] = ['peek', 'half', 'expanded', 'full'];
+
 /* ── UX4G Design System Tokens ─────────────────────────────────────────── */
 const DEFAULT_CORNER_RADIUS = 16; // 16dp top-left and top-right radius as per UX4G spec
 const GRIP_WIDTH = 32;
@@ -59,10 +61,10 @@ const SCRIM_OPACITY = 0.5;
 
 const OPEN_DURATION = 260;
 const CLOSE_DURATION = 200;
-/** Fraction of sheet height a swipe must cover to dismiss. */
-const DISMISS_THRESHOLD = 0.28;
-/** Downward velocity (px/ms) that dismisses regardless of distance. */
+/** Downward velocity (px/ms) that triggers dismiss at bottom-most snap point. */
 const DISMISS_VELOCITY = 0.5;
+/** Velocity threshold to jump to next snap point. */
+const SNAP_VELOCITY_THRESHOLD = 0.35;
 
 export interface Ux4gBottomSheetProps {
   /** Whether the sheet is shown. The component is fully controlled. */
@@ -128,13 +130,19 @@ export interface Ux4gBottomSheetProps {
   /** Replaces the standard buttons with custom footer content. */
   footerContent?: React.ReactNode;
 
-  /* ── Gesture & Backdrop Behaviour ── */
-  /** Whether to show the top drag handle pill. @default true */
-  showDragHandle?: boolean;
-  /** Whether swipe-down-to-dismiss gesture is enabled. @default true */
+  /* ── Draggable & Gesture Behaviour ── */
+  /** Whether swipe / drag gestures are enabled on the bottom sheet. @default true */
   draggable?: boolean;
   /** Alias for `draggable`. @default true */
   isDraggable?: boolean;
+  /** Whether dragging up/down expands and collapses between multiple snap points. @default true */
+  enableDragToExpand?: boolean;
+  /** Allowed snap points for draggable transitions. Defaults to all 4 UX4G sizes: `['peek', 'half', 'expanded', 'full']`. */
+  snapPoints?: Ux4gBottomSheetSize[];
+  /** Callback fired when the bottom sheet snaps to a new size during drag. */
+  onSnapChange?: (size: Ux4gBottomSheetSize) => void;
+  /** Whether to show the top drag handle pill. @default true */
+  showDragHandle?: boolean;
   /** Whether to render the darkened background backdrop scrim. @default true */
   showBackdrop?: boolean;
   /** Dismiss when the backdrop scrim is tapped. @default true */
@@ -164,13 +172,14 @@ export interface Ux4gBottomSheetProps {
 /**
  * **Ux4gBottomSheet**
  *
- * Developer-friendly, accessible Modal Bottom Sheet built strictly to UX4G Design System guidelines:
- * - 4 standard snap point sizes: `'peek'`, `'half'`, `'expanded'`, `'full'`
+ * Fully draggable, developer-friendly, accessible Modal Bottom Sheet built strictly to UX4G Design System guidelines:
+ * - Full **draggable** gesture support: swipe down to dismiss or drag between snap points (`peek` <-> `half` <-> `expanded` <-> `full`)
+ * - **Fixed Bottom Action Buttons**: Buttons remain anchored at the bottom of the screen at all heights and throughout dragging
  * - 16dp top-left and top-right rounded corners (`cornerRadius: 16`)
- * - Top drag handle indicator
+ * - Top drag handle indicator pill
  * - Header row with icon, title, description, and close button
  * - Native UX4G Button components for primary and secondary actions
- * - Smooth gesture-driven swipe down to dismiss and spring animations
+ * - Smooth physics with spring animations and velocity detection
  * - Full Dark Mode & Light Mode support via UX4G Theme Context
  * - Hardware Back button integration on Android
  */
@@ -205,9 +214,12 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
   footerAlign = 'split',
   footerContent,
 
-  showDragHandle = true,
   draggable = true,
   isDraggable = true,
+  enableDragToExpand = true,
+  snapPoints,
+  onSnapChange,
+  showDragHandle = true,
   showBackdrop = true,
   dismissOnBackdropPress = true,
   bottomInset = 0,
@@ -226,15 +238,42 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
   const { height: windowHeight } = useWindowDimensions();
 
   const effectiveSize: Ux4gBottomSheetSize = snapPoint ?? size ?? 'half';
-  const sheetHeight = height ?? Math.round(windowHeight * SIZE_RATIO[effectiveSize]);
   const canDrag = draggable && isDraggable;
+
+  // Compute allowed snap points
+  const activeSnapPoints: Ux4gBottomSheetSize[] = useMemo(() => {
+    if (snapPoints && snapPoints.length > 0) return snapPoints;
+    if (enableDragToExpand && height == null) return ALL_SIZES;
+    return [effectiveSize];
+  }, [snapPoints, enableDragToExpand, height, effectiveSize]);
+
+  // Map snap points to pixel heights
+  const snapHeights = useMemo(() => {
+    return activeSnapPoints.map((s) => Math.round(windowHeight * SIZE_RATIO[s]));
+  }, [activeSnapPoints, windowHeight]);
+
+  const minSheetHeight = useMemo(() => Math.min(...snapHeights), [snapHeights]);
+  const maxSheetHeight = useMemo(() => {
+    if (height != null) return height;
+    return Math.max(...snapHeights);
+  }, [height, snapHeights]);
+
+  const targetInitialHeight = useMemo(() => {
+    if (height != null) return height;
+    return Math.round(windowHeight * SIZE_RATIO[effectiveSize]);
+  }, [height, windowHeight, effectiveSize]);
+
+  // Current active snap size state
+  const [currentSize, setCurrentSize] = useState<Ux4gBottomSheetSize>(effectiveSize);
 
   // `mounted` keeps the native Modal alive through the closing animation.
   const [mounted, setMounted] = useState(visible);
 
-  const translateY = useRef(new Animated.Value(sheetHeight)).current;
+  const animatedHeight = useRef(new Animated.Value(targetInitialHeight)).current;
+  const translateY = useRef(new Animated.Value(targetInitialHeight + 50)).current;
   const scrimOpacity = useRef(new Animated.Value(0)).current;
-  const dragOffset = useRef(0);
+  const currentHeightRef = useRef(targetInitialHeight);
+  const dragStartHeight = useRef(targetInitialHeight);
 
   const surfaceColor = backgroundColor ?? colors.surface;
   const resolvedScrim = scrimColor ?? UX4GColors.neutral950;
@@ -250,44 +289,62 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
     }
   }, [onCloseClick, onDismiss]);
 
+  const springToHeight = useCallback(
+    (targetH: number, onFinish?: () => void) => {
+      currentHeightRef.current = targetH;
+      Animated.spring(animatedHeight, {
+        toValue: targetH,
+        useNativeDriver: false,
+        bounciness: 3,
+        speed: 16,
+      }).start(({ finished }) => {
+        if (finished) onFinish?.();
+      });
+    },
+    [animatedHeight]
+  );
+
   const animateIn = useCallback(() => {
-    translateY.setValue(sheetHeight);
+    animatedHeight.setValue(targetInitialHeight);
+    translateY.setValue(targetInitialHeight + 50);
+    currentHeightRef.current = targetInitialHeight;
+
     Animated.parallel([
       Animated.timing(translateY, {
         toValue: 0,
         duration: OPEN_DURATION,
         easing: Easing.out(Easing.cubic),
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
       Animated.timing(scrimOpacity, {
         toValue: 1,
         duration: OPEN_DURATION,
         easing: Easing.out(Easing.cubic),
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
-  }, [sheetHeight, translateY, scrimOpacity]);
+  }, [animatedHeight, translateY, scrimOpacity, targetInitialHeight]);
 
   const animateOut = useCallback(
     (done?: () => void) => {
       Animated.parallel([
         Animated.timing(translateY, {
-          toValue: sheetHeight,
+          toValue: currentHeightRef.current + 60,
           duration: CLOSE_DURATION,
           easing: Easing.in(Easing.cubic),
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
         Animated.timing(scrimOpacity, {
           toValue: 0,
           duration: CLOSE_DURATION,
           easing: Easing.in(Easing.cubic),
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ]).start(({ finished }) => {
         if (finished) done?.();
       });
     },
-    [sheetHeight, translateY, scrimOpacity]
+    [translateY, scrimOpacity]
   );
 
   useEffect(() => {
@@ -300,9 +357,20 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
   }, [visible]);
 
   useEffect(() => {
-    if (mounted && visible) animateIn();
+    if (mounted && visible) {
+      animateIn();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted, visible]);
+
+  // Respond to prop size changes smoothly
+  useEffect(() => {
+    if (mounted && visible && height == null) {
+      const nextH = Math.round(windowHeight * SIZE_RATIO[effectiveSize]);
+      setCurrentSize(effectiveSize);
+      springToHeight(nextH);
+    }
+  }, [effectiveSize, height, windowHeight, mounted, visible, springToHeight]);
 
   // Android hardware back button handler
   useEffect(() => {
@@ -314,45 +382,107 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
     return () => sub.remove();
   }, [visible, onDismiss]);
 
-  /* ── Swipe-down to dismiss gesture ── */
+  /* ── Interactive Draggable PanResponder with Fixed Bottom Buttons ── */
   const panResponder = useMemo(
     () =>
       PanResponder.create({
-        onStartShouldSetPanResponder: () => false,
+        onStartShouldSetPanResponder: () => canDrag,
         onMoveShouldSetPanResponder: (_evt, g) =>
-          canDrag && g.dy > 4 && Math.abs(g.dy) > Math.abs(g.dx),
+          canDrag && Math.abs(g.dy) > 3 && Math.abs(g.dy) > Math.abs(g.dx),
         onPanResponderGrant: () => {
-          dragOffset.current = 0;
+          dragStartHeight.current = currentHeightRef.current;
         },
         onPanResponderMove: (_evt, g) => {
-          if (g.dy < 0) return; // do not drag upward past resting height
-          dragOffset.current = g.dy;
-          translateY.setValue(g.dy);
+          // Dragging UP (g.dy < 0) increases height; dragging DOWN (g.dy > 0) decreases height
+          let newH = dragStartHeight.current - g.dy;
+
+          // Apply rubber-band resistance when dragging above highest point
+          if (newH > maxSheetHeight) {
+            newH = maxSheetHeight + (newH - maxSheetHeight) * 0.25;
+          }
+
+          animatedHeight.setValue(Math.max(40, newH));
         },
         onPanResponderRelease: (_evt, g) => {
-          const farEnough = g.dy > sheetHeight * DISMISS_THRESHOLD;
-          const fastEnough = g.vy > DISMISS_VELOCITY;
-          if (farEnough || fastEnough) {
+          const finalH = dragStartHeight.current - g.dy;
+          const vy = g.vy; // < 0 is upward flick, > 0 is downward flick
+
+          // Check if dragged down sufficiently below min snap point to dismiss
+          const isAtOrBelowLowest = finalH < minSheetHeight * 0.72;
+          const isFastDown = vy > DISMISS_VELOCITY && g.dy > 30;
+
+          if (isAtOrBelowLowest || (isFastDown && finalH <= minSheetHeight + 20)) {
             onDismiss();
-          } else {
-            Animated.spring(translateY, {
-              toValue: 0,
-              useNativeDriver: true,
-              bounciness: 2,
-              speed: 14,
-            }).start();
+            return;
           }
+
+          // If dragged with fast upward velocity, go to next higher snap point
+          if (vy < -SNAP_VELOCITY_THRESHOLD) {
+            const higherSizes = activeSnapPoints.filter((s) => {
+              const h = Math.round(windowHeight * SIZE_RATIO[s]);
+              return h > finalH + 10;
+            });
+            if (higherSizes.length > 0) {
+              const nextSize = higherSizes[0];
+              const nextH = Math.round(windowHeight * SIZE_RATIO[nextSize]);
+              setCurrentSize(nextSize);
+              onSnapChange?.(nextSize);
+              springToHeight(nextH);
+              return;
+            }
+          }
+
+          // If dragged with fast downward velocity, go to next lower snap point
+          if (vy > SNAP_VELOCITY_THRESHOLD) {
+            const lowerSizes = [...activeSnapPoints].reverse().filter((s) => {
+              const h = Math.round(windowHeight * SIZE_RATIO[s]);
+              return h < finalH - 10;
+            });
+            if (lowerSizes.length > 0) {
+              const nextSize = lowerSizes[0];
+              const nextH = Math.round(windowHeight * SIZE_RATIO[nextSize]);
+              setCurrentSize(nextSize);
+              onSnapChange?.(nextSize);
+              springToHeight(nextH);
+              return;
+            }
+          }
+
+          // Snap to closest height preset
+          let closestSize = activeSnapPoints[0];
+          let minDiff = Infinity;
+
+          activeSnapPoints.forEach((s) => {
+            const h = Math.round(windowHeight * SIZE_RATIO[s]);
+            const diff = Math.abs(finalH - h);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestSize = s;
+            }
+          });
+
+          const targetH = Math.round(windowHeight * SIZE_RATIO[closestSize]);
+          setCurrentSize(closestSize);
+          onSnapChange?.(closestSize);
+          springToHeight(targetH);
         },
         onPanResponderTerminate: () => {
-          Animated.spring(translateY, {
-            toValue: 0,
-            useNativeDriver: true,
-            bounciness: 2,
-            speed: 14,
-          }).start();
+          const targetH = Math.round(windowHeight * SIZE_RATIO[currentSize]);
+          springToHeight(targetH);
         },
       }),
-    [canDrag, sheetHeight, translateY, onDismiss]
+    [
+      canDrag,
+      maxSheetHeight,
+      minSheetHeight,
+      activeSnapPoints,
+      windowHeight,
+      currentSize,
+      onSnapChange,
+      springToHeight,
+      animatedHeight,
+      onDismiss,
+    ]
   );
 
   const hasHeader =
@@ -399,7 +529,7 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
           style={[
             styles.sheet,
             {
-              height: sheetHeight + bottomInset,
+              height: Animated.add(animatedHeight, bottomInset),
               paddingBottom: bottomInset,
               backgroundColor: surfaceColor,
               borderTopLeftRadius: cornerRadius,
@@ -409,78 +539,82 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
             style,
           ]}
         >
-          {/* Top Drag Handle Grip */}
-          {showDragHandle && (
-            <View style={styles.handleArea} {...panResponder.panHandlers}>
-              <View style={[styles.grip, { backgroundColor: gripColor }]} />
-            </View>
-          )}
+          {/* Draggable Top Region (Drag Handle + Header) */}
+          <View {...(canDrag ? panResponder.panHandlers : {})}>
+            {/* Top Drag Handle Grip */}
+            {showDragHandle && (
+              <View style={styles.handleArea}>
+                <View style={[styles.grip, { backgroundColor: gripColor }]} />
+              </View>
+            )}
 
-          {/* Header */}
-          {hasHeader && (
-            <View style={!showDragHandle ? { paddingTop: EDGE } : undefined}>
-              <View style={styles.headerRow}>
-                {icon != null && <View style={styles.headerIcon}>{icon}</View>}
-                <View style={styles.headerTitlesBlock}>
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      typography.hS_strong ?? typography.hS_default,
-                      styles.headerTitle,
-                      { color: colors.onSurface },
-                      titleStyle,
-                    ]}
-                  >
-                    {title ?? 'Header'}
-                  </Text>
-                  {description != null && (
+            {/* Header Row */}
+            {hasHeader && (
+              <View style={!showDragHandle ? { paddingTop: EDGE } : undefined}>
+                <View style={styles.headerRow}>
+                  {icon != null && <View style={styles.headerIcon}>{icon}</View>}
+                  <View style={styles.headerTitlesBlock}>
                     <Text
-                      numberOfLines={2}
+                      numberOfLines={1}
                       style={[
-                        typography.bS_default ?? typography.tM_default,
-                        styles.descriptionText,
-                        { color: mutedColor },
-                        descriptionStyle,
+                        typography.hS_strong ?? typography.hS_default,
+                        styles.headerTitle,
+                        { color: colors.onSurface },
+                        titleStyle,
                       ]}
                     >
-                      {description}
+                      {title ?? 'Header'}
+                    </Text>
+                    {description != null && (
+                      <Text
+                        numberOfLines={2}
+                        style={[
+                          typography.bS_default ?? typography.tM_default,
+                          styles.descriptionText,
+                          { color: mutedColor },
+                          descriptionStyle,
+                        ]}
+                      >
+                        {description}
+                      </Text>
+                    )}
+                  </View>
+                  {subtleText != null && (
+                    <Text style={[typography.lM_default, styles.subtle, { color: mutedColor }]}>
+                      {subtleText}
                     </Text>
                   )}
+                  {showCloseButton && (
+                    <Pressable
+                      onPress={handleClose}
+                      hitSlop={8}
+                      accessibilityRole="button"
+                      accessibilityLabel="Close"
+                      style={styles.closeButton}
+                      testID={testID ? `${testID}-close` : undefined}
+                    >
+                      {Ux4gIcons.close({ size: 18, color: colors.onSurface })}
+                    </Pressable>
+                  )}
                 </View>
-                {subtleText != null && (
-                  <Text style={[typography.lM_default, styles.subtle, { color: mutedColor }]}>
-                    {subtleText}
-                  </Text>
-                )}
-                {showCloseButton && (
-                  <Pressable
-                    onPress={handleClose}
-                    hitSlop={8}
-                    accessibilityRole="button"
-                    accessibilityLabel="Close"
-                    style={styles.closeButton}
-                    testID={testID ? `${testID}-close` : undefined}
-                  >
-                    {Ux4gIcons.close({ size: 18, color: colors.onSurface })}
-                  </Pressable>
+
+                {showHeaderDivider && (
+                  <View style={styles.dividerInset}>
+                    <Ux4gDivider color={dividerColor} />
+                  </View>
                 )}
               </View>
+            )}
+          </View>
 
-              {showHeaderDivider && (
-                <View style={styles.dividerInset}>
-                  <Ux4gDivider color={dividerColor} />
-                </View>
-              )}
-            </View>
-          )}
-
-          {/* Body Content */}
+          {/* Body Content - Dynamically Resizes between Header and Fixed Footer */}
           {scrollable ? (
             <ScrollView
               style={styles.contentFlex}
               contentContainerStyle={[styles.contentPad, contentContainerStyle]}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
+              nestedScrollEnabled
             >
               {children}
             </ScrollView>
@@ -497,7 +631,7 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
             </View>
           )}
 
-          {/* Footer Actions (Primary Left, Secondary Right as per UX4G UI spec) */}
+          {/* Fixed Footer Actions (Always anchored at the bottom of the visible sheet) */}
           {hasFooter && (
             <View style={styles.footerContainer}>
               {footerContent ?? (

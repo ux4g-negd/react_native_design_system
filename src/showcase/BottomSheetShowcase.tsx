@@ -180,6 +180,26 @@ export const BottomSheetShowcase: React.FC = () => {
         </View>
       </View>
 
+      {/* 5. Draggable & Snap Points */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>
+          5. Draggable & Snap Points (`draggable`, `enableDragToExpand`)
+        </Text>
+        <View style={cardStyle}>
+          <Text style={[styles.note, { color: muted }]}>
+            Drag the handle or header UP to expand through snap points (peek 26% → half 50% → expanded 75% → full 94%), or drag DOWN to collapse and dismiss.
+          </Text>
+          <View style={styles.buttonRow}>
+            <Ux4gButton
+              variant="primary"
+              size="small"
+              text="Open Draggable Multi-Snap Sheet"
+              onPress={() => setBasicOpen(true)}
+            />
+          </View>
+        </View>
+      </View>
+
       {/* ── Sheets ── */}
 
       <Ux4gBottomSheet
