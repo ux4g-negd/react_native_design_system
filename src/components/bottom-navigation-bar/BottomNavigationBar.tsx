@@ -268,7 +268,7 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
       const activeIconToUse = isActive && item.activeIcon ? item.activeIcon : item.icon;
 
       if (typeof activeIconToUse === 'function') {
-        return activeIconToUse(isActive, itemFgColor);
+        return (activeIconToUse as (isActive: boolean, color: string) => React.ReactNode)(isActive, itemFgColor);
       }
 
       if (typeof activeIconToUse === 'string') {

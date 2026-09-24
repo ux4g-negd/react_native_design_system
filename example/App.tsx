@@ -32,6 +32,7 @@ import { SliderShowcase } from '../src/showcase/SliderShowcase';
 import { BottomSheetShowcase } from '../src/showcase/BottomSheetShowcase';
 import { FabShowcase } from '../src/showcase/FabShowcase';
 import { BottomNavigationBarShowcase } from '../src/showcase/BottomNavigationBarShowcase';
+import { SideMenuShowcase } from '../src/showcase/SideMenuShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider, SlotGridShowcase, FeedbackFormShowcase, EmptyStateShowcase } from '../src/index';
 
 type ActiveTab =
@@ -79,10 +80,11 @@ type ActiveTab =
   | 'slider'
   | 'bottom-sheet'
   | 'fab'
-  | 'bottom-nav';
+  | 'bottom-nav'
+  | 'side-menu';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('bottom-nav');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('side-menu');
 
   const theme = useUx4gTheme();
 
@@ -1302,6 +1304,33 @@ const ShowcaseHub: React.FC = () => {
               📱 Bottom Navigation Bar
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('side-menu')}
+            style={[
+              styles.tabItem,
+              activeTab === 'side-menu' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'side-menu'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              🚪 Side Menu (Drawer)
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1395,6 +1424,8 @@ const ShowcaseHub: React.FC = () => {
           <FabShowcase />
         ) : activeTab === 'bottom-nav' ? (
           <BottomNavigationBarShowcase />
+        ) : activeTab === 'side-menu' ? (
+          <SideMenuShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

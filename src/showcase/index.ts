@@ -45,4 +45,5 @@ export * from './SliderShowcase';
 export * from './BottomSheetShowcase';
 export * from './FabShowcase';
 export * from './BottomNavigationBarShowcase';
+export * from './SideMenuShowcase';
 

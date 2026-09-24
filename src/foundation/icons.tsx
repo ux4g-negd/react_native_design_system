@@ -58,6 +58,12 @@ export type Ux4gIconName =
   | 'alerts'
   | 'profile'
   | 'add'
+  | 'dashboard'
+  | 'applications'
+  | 'help'
+  | 'sign-out'
+  | 'logout'
+  | 'account-circle'
   | string;
 
 export interface Ux4gIconData {
@@ -976,6 +982,140 @@ export const Ux4gIcons = {
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
           <Path
             d="M12 11a4 4 0 100-8 4 4 0 000 8zM6 20a6 6 0 0112 0H6z"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('account_circle', size, color);
+  },
+
+  /**
+   * Dashboard icon (4 squares grid)
+   */
+  dashboard: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('grid_view', size, color);
+  },
+
+  /**
+   * Applications / Clipboard icon
+   */
+  applications: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M9 2h6a1 1 0 011 1v1h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2V3a1 1 0 011-1z"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <Path
+            d="M9 11h6M9 15h6"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('assignment', size, color);
+  },
+
+  /**
+   * Help & Support outline icon
+   */
+  help: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <Path
+            d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('help_outline', size, color);
+  },
+
+  /**
+   * Sign out / Exit door icon
+   */
+  signOut: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('logout', size, color);
+  },
+  logout: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('logout', size, color);
+  },
+
+  /**
+   * Account / User circle icon
+   */
+  accountCircle: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88a9.947 9.947 0 0112.28 0C16.43 19.18 14.03 20 12 20z"
             fill="none"
             stroke={color}
             strokeWidth="1.8"

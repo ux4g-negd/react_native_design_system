@@ -45,4 +45,5 @@ export * from './slider';
 export * from './bottom-sheet';
 export * from './fab';
 export * from './bottom-navigation-bar';
+export * from './side-menu';
 
