@@ -16,6 +16,7 @@ import {
   SafeAreaView,
   StatusBar,
   TouchableWithoutFeedback,
+  Easing,
 } from 'react-native';
 import { UX4GColors } from '../../foundation/colors';
 import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
@@ -237,35 +238,51 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
   const resolvedBorderColor = theme.isDark ? UX4GColors.neutral700 : `${UX4GColors.neutral400}33`;
   const resolvedSectionHeaderColor = theme.isDark ? UX4GColors.neutral500 : UX4GColors.neutral600;
 
-  // Manage drawer slide animation on isOpen changes
+  // Modal mount lifecycle state so closing slide animation can finish before unmounting
+  const [isModalMounted, setIsModalMounted] = useState<boolean>(isOpen);
+
+  // Manage buttery smooth drawer slide animation on isOpen changes
   useEffect(() => {
+    const offScreenPosition = position === 'left' ? -resolvedDrawerWidth : resolvedDrawerWidth;
+
     if (isOpen) {
+      setIsModalMounted(true);
+      slideAnim.setValue(offScreenPosition);
+      fadeAnim.setValue(0);
+
       Animated.parallel([
-        Animated.spring(slideAnim, {
+        Animated.timing(slideAnim, {
           toValue: 0,
+          duration: 280,
+          easing: Easing.bezier(0.16, 1, 0.3, 1),
           useNativeDriver: true,
-          bounciness: 0,
-          speed: 16,
         }),
         Animated.timing(fadeAnim, {
           toValue: backdropOpacity,
-          duration: 200,
+          duration: 250,
+          easing: Easing.out(Easing.ease),
           useNativeDriver: true,
         }),
       ]).start();
-    } else {
+    } else if (isModalMounted) {
       Animated.parallel([
         Animated.timing(slideAnim, {
-          toValue: position === 'left' ? -resolvedDrawerWidth : resolvedDrawerWidth,
-          duration: 200,
+          toValue: offScreenPosition,
+          duration: 220,
+          easing: Easing.in(Easing.ease),
           useNativeDriver: true,
         }),
         Animated.timing(fadeAnim, {
           toValue: 0,
           duration: 200,
+          easing: Easing.linear,
           useNativeDriver: true,
         }),
-      ]).start();
+      ]).start(({ finished }) => {
+        if (finished) {
+          setIsModalMounted(false);
+        }
+      });
     }
   }, [isOpen, position, resolvedDrawerWidth, backdropOpacity]);
 
@@ -772,11 +789,15 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
     </Animated.View>
   );
 
+  if (!isModalMounted && !isOpen) {
+    return null;
+  }
+
   // Return full Modal with Backdrop Scrim
   return (
     <Modal
       transparent
-      visible={isOpen}
+      visible={isModalMounted}
       animationType="none"
       onRequestClose={onClose}
       statusBarTranslucent

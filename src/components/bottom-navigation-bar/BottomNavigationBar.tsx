@@ -213,8 +213,8 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
     (variant === 'top-rounded'
       ? 'top-rounded'
       : variant === 'floating-pill'
-      ? 'floating-pill'
-      : 'rectangular');
+        ? 'floating-pill'
+        : 'rectangular');
 
   const isIconOnly = variant === 'icon-only' || customShowLabels === false;
   const hasCenterAction =
@@ -364,8 +364,8 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
               isIconOnly
                 ? styles.pillContainerIconOnly
                 : isFloatingPill
-                ? styles.pillContainerFloating
-                : styles.pillContainer,
+                  ? styles.pillContainerFloating
+                  : styles.pillContainer,
               { backgroundColor: resolvedPillBg },
             ],
           ]}
