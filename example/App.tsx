@@ -31,6 +31,7 @@ import { FileUploadShowcase } from '../src/showcase/FileUploadShowcase';
 import { SliderShowcase } from '../src/showcase/SliderShowcase';
 import { BottomSheetShowcase } from '../src/showcase/BottomSheetShowcase';
 import { FabShowcase } from '../src/showcase/FabShowcase';
+import { BottomNavigationBarShowcase } from '../src/showcase/BottomNavigationBarShowcase';
 import { AvatarShowcase, ChipsShowcase, DropdownShowcase, InputFieldShowcase, SearchFieldShowcase, TextAreaShowcase, AccordionShowcase, AadhaarInputFieldShowcase, PanInputFieldShowcase, ToastShowcase, ModalShowcase, CardShowcase, PaginationShowcase, StatusBannerShowcase, OtpInputShowcase, AppHeaderShowcase, ResultListShowcase, LinearProgressBarShowcase, CircularProgressShowcase, HalfCircleProgressShowcase, SlaProgressShowcase, TooltipShowcase, Ux4gThemeProvider, useUx4gTheme, Ux4gToastProvider, SlotGridShowcase, FeedbackFormShowcase, EmptyStateShowcase } from '../src/index';
 
 type ActiveTab =
@@ -77,10 +78,11 @@ type ActiveTab =
   | 'empty-state'
   | 'slider'
   | 'bottom-sheet'
-  | 'fab';
+  | 'fab'
+  | 'bottom-nav';
 
 const ShowcaseHub: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('fab');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('bottom-nav');
 
   const theme = useUx4gTheme();
 
@@ -1273,6 +1275,33 @@ const ShowcaseHub: React.FC = () => {
               🔘 Floating Action Button (FAB)
             </Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('bottom-nav')}
+            style={[
+              styles.tabItem,
+              activeTab === 'bottom-nav' && [
+                styles.activeTabItem,
+                { backgroundColor: theme.colors.primary },
+              ],
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                {
+                  color:
+                    activeTab === 'bottom-nav'
+                      ? theme.colors.onPrimary
+                      : theme.isDark
+                        ? '#A1A1AA'
+                        : '#52525B',
+                },
+              ]}
+            >
+              📱 Bottom Navigation Bar
+            </Text>
+          </Pressable>
         </ScrollView>
       </View>
 
@@ -1364,6 +1393,8 @@ const ShowcaseHub: React.FC = () => {
           <BottomSheetShowcase />
         ) : activeTab === 'fab' ? (
           <FabShowcase />
+        ) : activeTab === 'bottom-nav' ? (
+          <BottomNavigationBarShowcase />
         ) : (
           <SocialLinksShowcase />
         )}

@@ -44,4 +44,5 @@ export * from './EmptyStateShowcase';
 export * from './SliderShowcase';
 export * from './BottomSheetShowcase';
 export * from './FabShowcase';
+export * from './BottomNavigationBarShowcase';
 

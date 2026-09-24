@@ -52,6 +52,12 @@ export type Ux4gIconName =
   | 'thumb-up'
   | 'national-emblem-logo'
   | 'union'
+  | 'home'
+  | 'services'
+  | 'status'
+  | 'alerts'
+  | 'profile'
+  | 'add'
   | string;
 
 export interface Ux4gIconData {
@@ -870,6 +876,117 @@ export const Ux4gIcons = {
   union: ({ size = 20 }: Ux4gIconProps = {}): React.ReactElement => (
     <SvgUnion width={size} height={size} />
   ),
+
+  /**
+   * Home outline/filled navigation icon
+   */
+  home: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('home', size, color);
+  },
+
+  /**
+   * Services / Grid 4-square icon
+   */
+  services: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('grid_view', size, color);
+  },
+
+  /**
+   * Status / Clipboard checklist icon
+   */
+  status: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M9 2h6a1 1 0 011 1v1h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2V3a1 1 0 011-1z"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <Path
+            d="M9 11h6M9 15h6"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('assignment', size, color);
+  },
+
+  /**
+   * Alerts / Notifications Bell icon
+   */
+  alerts: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('notifications', size, color);
+  },
+
+  /**
+   * Profile / User outline icon
+   */
+  profile: ({ size = 22, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 11a4 4 0 100-8 4 4 0 000 8zM6 20a6 6 0 0112 0H6z"
+            fill="none"
+            stroke={color}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('account_circle', size, color);
+  },
 };
 
 const styles = StyleSheet.create({
