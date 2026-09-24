@@ -339,7 +339,7 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
           itemStyle,
         ]}
       >
-        {/* Top bar indicator directly attached to the top border */}
+        {/* Top bar indicator with exactly 1dp gap from the container border across all variants */}
         {isBarIndicator && (
           <View
             style={[
@@ -347,8 +347,9 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
               {
                 backgroundColor: resolvedBarColor,
                 height: barIndicatorHeight,
-                width: barIndicatorWidth,
-                top: -resolvedPaddingTop,
+                width: isFloatingPill ? Math.min(barIndicatorWidth, 28) : barIndicatorWidth,
+                top: -resolvedPaddingTop + 1,
+                borderRadius: barIndicatorHeight / 2,
               },
             ]}
           />
