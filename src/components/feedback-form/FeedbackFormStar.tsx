@@ -73,6 +73,7 @@ export const Ux4gFeedbackFormStar: React.FC<Ux4gFeedbackFormStarProps> = ({
 
   const isFormValid = () => {
     if (rating === 0) return false;
+    if (!comment.trim()) return false;
     if (minWords > 0 && getWordCount(comment) < minWords) return false;
     return true;
   };

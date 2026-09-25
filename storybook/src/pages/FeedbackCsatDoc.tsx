@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
 
     return (
       <iframe
+        key={`snack-feedback-csat-${isDark ? 'dark' : 'light'}`}
         src={snackUrl}
         style={{ width: '100%', height: '640px', border: 'none', borderRadius: '8px' }}
         title="Expo Snack Feedback Csat Preview"

@@ -220,7 +220,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
-    padding: 20
+    padding: 20,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
 
@@ -228,6 +229,7 @@ const styles = StyleSheet.create({
 
     return (
       <iframe
+        key={`snack-avatar-${story}-${isDark ? 'dark' : 'light'}`}
         src={snackUrl}
         style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
         title="Expo Snack Avatar Preview"

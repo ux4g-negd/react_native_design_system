@@ -210,7 +210,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
     } else if (story === 'dropdown-search') {
@@ -249,7 +250,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
     } else if (story === 'dropdown-status') {
@@ -298,7 +300,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
     } else {
@@ -332,7 +335,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24
+    padding: 24,
+    backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"}
   }
 });`;
     }
@@ -341,6 +345,7 @@ const styles = StyleSheet.create({
 
     return (
       <iframe
+        key={`snack-dropdown-${story}-${isDark ? 'dark' : 'light'}`}
         src={snackUrl}
         style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
         title="Expo Snack Dropdown Interactive Preview"

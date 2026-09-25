@@ -53,6 +53,7 @@ export const Ux4gFeedbackFormNps: React.FC<Ux4gFeedbackFormNpsProps> = ({
 
   const isFormValid = () => {
     if (score === null) return false;
+    if (!comment.trim()) return false;
     if (minWords > 0 && getWordCount(comment) < minWords) return false;
     return true;
   };
