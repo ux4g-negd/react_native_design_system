@@ -55,11 +55,11 @@ const REQUIREMENTS: Requirement[] = [
 const INSTALL_CODES: DocCode[] = [
   {
     label: 'Terminal',
-    code: 'npm install ux4g-react-native-design-system@1.0.8-beta.0',
+    code: 'npm install ux4g-react-native-design-system@1.0.9-beta.0',
   },
   {
     label: "This will add a line like this to your package's package.json\n(and run an implicit npm install):",
-    code: '"dependencies": {\n  "ux4g-react-native-design-system": "1.0.8-beta.0"\n}',
+    code: '"dependencies": {\n  "ux4g-react-native-design-system": "1.0.9-beta.0"\n}',
   },
 ];
 
