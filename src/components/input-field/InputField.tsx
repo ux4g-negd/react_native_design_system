@@ -78,6 +78,11 @@ export interface Ux4gInputFieldProps {
    */
   status?: Ux4gInputFieldStatus;
   /**
+   * Explicit override for secure text entry / password obscuring.
+   * If omitted, defaults to `type === 'password' && obscureText`.
+   */
+  secureTextEntry?: boolean;
+  /**
    * Optional label displayed above the input box.
    */
   label?: string;
@@ -207,6 +212,7 @@ export const Ux4gInputField: React.FC<Ux4gInputFieldProps> = ({
   size = 'medium',
   type = 'text',
   status = 'defaultStatus',
+  secureTextEntry,
   label,
   required = false,
   placeholder,
@@ -333,8 +339,8 @@ export const Ux4gInputField: React.FC<Ux4gInputFieldProps> = ({
   const computedBorderWidth = !enabled
     ? disabledBorderWidth
     : isFocused
-    ? 2.0
-    : borderWidth;
+      ? 2.0
+      : borderWidth;
 
   const defaultBgColor = isDark ? UX4GColors.neutral950 : UX4GColors.neutral0;
   const bgColor =
@@ -410,7 +416,11 @@ export const Ux4gInputField: React.FC<Ux4gInputFieldProps> = ({
           value={value}
           onChangeText={onValueChange}
           editable={enabled && !readOnly}
-          secureTextEntry={type === 'password' && obscureText}
+          secureTextEntry={
+            secureTextEntry !== undefined
+              ? secureTextEntry
+              : type === 'password' && obscureText
+          }
           multiline={!singleLine}
           numberOfLines={singleLine ? 1 : maxLines}
           maxLength={maxLength}
@@ -459,13 +469,13 @@ export const Ux4gInputField: React.FC<Ux4gInputFieldProps> = ({
           >
             {obscureText
               ? Ux4gIcons.visibilityOff({
-                  size: 20,
-                  color: addOpacityToHex(onSurfaceColor, 0.5),
-                })
+                size: 20,
+                color: addOpacityToHex(onSurfaceColor, 0.5),
+              })
               : Ux4gIcons.visibility({
-                  size: 20,
-                  color: addOpacityToHex(onSurfaceColor, 0.5),
-                })}
+                size: 20,
+                color: addOpacityToHex(onSurfaceColor, 0.5),
+              })}
           </TouchableOpacity>
         ) : trailingIcon !== undefined && trailingIcon !== null ? (
           <TouchableOpacity

@@ -9,15 +9,21 @@ import { Ux4gIcons } from '../foundation/icons';
  *
  * Comprehensive, exhaustive demonstration of `Ux4gAadhaarInputField`, exhibiting every single
  * configuration and validation state: live auto-formatting (`XXXX XXXX XXXX`), Verhoeff checksum validation,
- * explicit validation statuses (`defaultStatus`, `success`, `error`, `warning`), required states,
- * custom icons, sizes (`small`, `medium`, `large`), and read-only/disabled locked states.
+ * eye toggle for masking (`showMaskToggle`), explicit validation statuses (`defaultStatus`, `success`, `error`, `warning`),
+ * required states, custom icons, sizes (`small`, `medium`, `large`), and read-only/disabled locked states.
  */
 export const AadhaarInputFieldShowcase: React.FC = () => {
   const { colors, typography, isDark } = useUx4gTheme();
 
-  // Interactive state
+  // Interactive live validation state
   const [aadhaarValue, setAadhaarValue] = useState('');
   const [iconValue, setIconValue] = useState('3675 9834 6015');
+
+  // Eye toggle masking showcase states
+  const [maskedValue1, setMaskedValue1] = useState('3675 9834 6015');
+  const [maskedValue2, setMaskedValue2] = useState('');
+  const [controlledMaskedValue, setControlledMaskedValue] = useState('4982 1735 9012');
+  const [isCustomMasked, setIsCustomMasked] = useState(true);
 
   // Sizing variants state
   const [smallValue, setSmallValue] = useState('3675 9834 6015');
@@ -59,7 +65,7 @@ export const AadhaarInputFieldShowcase: React.FC = () => {
           🆔 Aadhaar Input Field All States (`Ux4gAadhaarInputField`)
         </Text>
         <Text style={subtitleStyle}>
-          Exhaustive showcase exhibiting all possible states: Verhoeff validation, explicit statuses (`defaultStatus`, `success`, `error`, `warning`), sizes, icons, and disabled/read-only locks.
+          Exhaustive showcase exhibiting all possible states: Verhoeff validation, eye toggle for masking (`showMaskToggle`), explicit statuses (`defaultStatus`, `success`, `error`, `warning`), sizes, icons, and disabled/read-only locks.
         </Text>
       </View>
 
@@ -107,9 +113,81 @@ export const AadhaarInputFieldShowcase: React.FC = () => {
         </View>
       </View>
 
-      {/* ── SECTION 2: All Validation States (`status` prop) ──────────────── */}
+      {/* ── SECTION 2: Masking & Eye Toggle (`showMaskToggle`) ────────────── */}
       <View style={cardStyle}>
-        <Text style={titleStyle}>2. All Validation Status States (`status` prop)</Text>
+        <Text style={titleStyle}>2. Eye Toggle for Masking with 'X' Cross (`showMaskToggle`)</Text>
+        <Text style={subtitleStyle}>
+          Enabling `showMaskToggle = true` renders an interactive eye toggle icon (`visibility` / `visibility_off`) on the right side of the field. When masked, digits are replaced with 'X' cross characters (`XXXX XXXX XXXX`) instead of bullets/stars.
+        </Text>
+
+        {/* 2.1 Full X Masked */}
+        <View style={styles.sectionRow}>
+          <Ux4gAadhaarInputField
+            label="Full 'X' Masked Aadhaar (`showMaskToggle = true`)"
+            value={maskedValue1}
+            onValueChange={setMaskedValue1}
+            showMaskToggle={true}
+            defaultMasked={true}
+            maskAll={true}
+            caption="Shows 'XXXX XXXX XXXX' when masked. Click the eye icon to reveal full digits."
+          />
+        </View>
+
+        {/* 2.2 UIDAI Standard First-8 Digits Masked */}
+        <View style={styles.sectionRow}>
+          <Ux4gAadhaarInputField
+            label="UIDAI Standard Masked Aadhaar (`maskAll = false`)"
+            value={maskedValue1}
+            onValueChange={setMaskedValue1}
+            showMaskToggle={true}
+            defaultMasked={true}
+            maskAll={false}
+            caption="First 8 digits masked with 'X' while last 4 remain visible: 'XXXX XXXX 6015'"
+          />
+        </View>
+
+        {/* 2.3 Empty field matching design placeholder */}
+        <View style={styles.sectionRow}>
+          <Ux4gAadhaarInputField
+            label="Empty Field with Eye Toggle Placeholder"
+            value={maskedValue2}
+            onValueChange={setMaskedValue2}
+            showMaskToggle={true}
+            defaultMasked={true}
+            placeholder="XXXX XXXX XXXX"
+            caption="Type 12 digits and toggle visibility with 'X' crosses at any time"
+          />
+        </View>
+
+        {/* 2.4 Controlled Masking State */}
+        <View style={styles.sectionRow}>
+          <View style={styles.controlledHeaderRow}>
+            <Text style={[typography.bS_default, { color: colors.onSurface, fontWeight: '600' }]}>
+              External Mask State: <Text style={{ color: isCustomMasked ? colors.primary : colors.success }}>{isCustomMasked ? '🔒 Masked (X)' : '👁️ Visible'}</Text>
+            </Text>
+            <TouchableOpacity
+              style={[styles.smallActionBtn, { backgroundColor: colors.primary }]}
+              onPress={() => setIsCustomMasked((prev) => !prev)}
+            >
+              <Text style={styles.smallActionBtnText}>Toggle from External Button</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Ux4gAadhaarInputField
+            label="Controlled Masking (`isMasked` & `onMaskToggle`)"
+            value={controlledMaskedValue}
+            onValueChange={setControlledMaskedValue}
+            showMaskToggle={true}
+            isMasked={isCustomMasked}
+            onMaskToggle={setIsCustomMasked}
+            caption="Synchronized with external app state"
+          />
+        </View>
+      </View>
+
+      {/* ── SECTION 3: All Validation States (`status` prop) ──────────────── */}
+      <View style={cardStyle}>
+        <Text style={titleStyle}>3. All Validation Status States (`status` prop)</Text>
         <Text style={subtitleStyle}>
           Illustrating all four semantic validation states (`defaultStatus`, `success`, `error`, and `warning`) along with their respective border colors and automatic status icons.
         </Text>
@@ -156,9 +234,9 @@ export const AadhaarInputFieldShowcase: React.FC = () => {
         </View>
       </View>
 
-      {/* ── SECTION 3: Field Configurations (`required`, `icons`) ─────────── */}
+      {/* ── SECTION 4: Field Configurations (`required`, `icons`) ─────────── */}
       <View style={cardStyle}>
-        <Text style={titleStyle}>3. Required & Icon Configurations</Text>
+        <Text style={titleStyle}>4. Required & Icon Configurations</Text>
         <Text style={subtitleStyle}>
           Demonstrating required red asterisks (`*`) alongside leading (`leadingIcon`) and trailing interactive icons (`trailingIcon`).
         </Text>
@@ -185,9 +263,9 @@ export const AadhaarInputFieldShowcase: React.FC = () => {
         </View>
       </View>
 
-      {/* ── SECTION 4: All Sizing Variants (`size` prop) ──────────────────── */}
+      {/* ── SECTION 5: All Sizing Variants (`size` prop) ──────────────────── */}
       <View style={cardStyle}>
-        <Text style={titleStyle}>4. All Sizing Variants (`size` prop)</Text>
+        <Text style={titleStyle}>5. All Sizing Variants (`size` prop)</Text>
         <Text style={subtitleStyle}>
           Supporting exact heights: `small` (`32px`), `medium` (`40px`), and `large` (`48px`).
         </Text>
@@ -220,9 +298,9 @@ export const AadhaarInputFieldShowcase: React.FC = () => {
         </View>
       </View>
 
-      {/* ── SECTION 5: Read-Only & Disabled States ─────────────────────────── */}
+      {/* ── SECTION 6: Read-Only & Disabled States ─────────────────────────── */}
       <View style={cardStyle}>
-        <Text style={titleStyle}>5. Read-Only & Disabled States</Text>
+        <Text style={titleStyle}>6. Read-Only & Disabled States</Text>
         <Text style={subtitleStyle}>
           Locked non-editable states (`readOnly = true` and `enabled = false`).
         </Text>
@@ -300,6 +378,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '700',
   },
+  controlledHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  smallActionBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  smallActionBtnText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
   statusBanner: {
     marginTop: 14,
     padding: 12,
@@ -309,3 +405,4 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 });
+

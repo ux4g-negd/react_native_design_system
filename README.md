@@ -1,20 +1,27 @@
 # UX4G React Native Design System
 
-Official React Native implementation of the **UX4G Design System**. Built with TypeScript, comprehensive design tokens, accessible components, and full light/dark mode theming support.
+[![npm version](https://img.shields.io/npm/v/ux4g-react-native-design-system.svg?style=flat-square)](https://www.npmjs.com/package/ux4g-react-native-design-system)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![React Native](https://img.shields.io/badge/React%20Native-0.70+-61DAFB.svg?style=flat-square&logo=react)](https://reactnative.dev/)
+
+Official React Native implementation of the **UX4G (Unified Experience for Government)** Design System. Designed to create consistent, accessible, modern, and high-performance digital experiences across iOS, Android, and mobile platforms.
 
 ---
 
-## 🚀 Features
+## 🌟 Highlights & Features
 
-- **🌓 Built-in Light & Dark Theming:** Effortless theme switching with `Ux4gThemeProvider` and `useUx4gTheme`.
-- **🧩 40+ Production-Ready Components:** Buttons, Form Controls, Navigation Drawers, Dialogs, Sliders, Feedback Forms, and more.
-- **🎨 Design Tokens Architecture:** Strict compliance with UX4G color palettes, typography scales, border radii, shadows, and spacing rules.
-- **♿ Accessible & Standardized:** Standard UX guidelines tailored for public digital services and modern mobile apps.
-- **⚡ Native TypeScript:** Full type definitions and auto-completion out of the box.
+- 🌓 **Comprehensive Theming:** Seamless Dark & Light mode support powered by `Ux4gThemeProvider` and the `useUx4gTheme` hook.
+- 🎨 **Design Tokens Architecture:** Strict compliance with UX4G palettes, typography scales, elevation shadows, borders, and spacing tokens.
+- 🧩 **45+ Production-Ready Components:** Rich suite of accessible UI controls, specialized Indian identity inputs (Aadhaar, PAN, OTP), navigation drawers, and feedback mechanisms.
+- ♿ **Accessibility First:** Follows universal design principles and screen reader support out of the box.
+- ⚡ **Native TypeScript:** First-class TypeScript declarations with full autocompletion and type safety.
+- 📱 **Cross-Platform:** Optimized for both Android and iOS with fluid native-like interactions.
 
 ---
 
 ## 📦 Installation
+
+Install the package and required peer dependencies:
 
 ```bash
 # Using npm
@@ -22,46 +29,63 @@ npm install ux4g-react-native-design-system react-native-svg
 
 # Using yarn
 yarn add ux4g-react-native-design-system react-native-svg
+
+# Using pnpm
+pnpm add ux4g-react-native-design-system react-native-svg
 ```
 
 ### Peer Dependencies
 
-Ensure `react-native-svg` is installed in your project:
-```bash
-npm install react-native-svg@>=15.0.0
-```
-
-*Optional peer dependencies for specialized components:*
-- `react-native-document-picker` (for file upload)
-- `react-native-image-picker` (for media pickers)
+| Dependency | Version | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `react` | `>=18.0.0` | **Yes** | Core React library |
+| `react-native` | `>=0.70.0` | **Yes** | React Native framework |
+| `react-native-svg` | `>=15.0.0` | **Yes** | Required for vector icons & illustrations |
+| `react-native-document-picker` | `*` | Optional | Required only if using `Ux4gFileUpload` |
 
 ---
 
-## 🏁 Quick Start
+## 🚀 Quick Start
 
-Wrap your application root with `Ux4gThemeProvider`:
+### 1. Wrap your Root Application with `Ux4gThemeProvider`
 
 ```tsx
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, View, StyleSheet } from 'react-native';
 import {
   Ux4gThemeProvider,
   Ux4gButton,
-  Ux4gFeedbackFormStar,
+  Ux4gAppHeader,
+  Ux4gCard,
+  Ux4gSwitch,
 } from 'ux4g-react-native-design-system';
 
 export default function App() {
-  const [isDark, setIsDark] = React.useState(false);
+  const [isDark, setIsDark] = useState(false);
 
   return (
     <Ux4gThemeProvider isDark={isDark}>
-      <View style={[styles.container, { backgroundColor: isDark ? '#121212' : '#FFFFFF' }]}>
-        <Ux4gButton
-          text="Toggle Theme"
-          variant="primary"
-          onPress={() => setIsDark(!isDark)}
+      <SafeAreaView style={styles.container}>
+        <Ux4gAppHeader
+          title="UX4G Mobile App"
+          showBackButton={false}
         />
-      </View>
+
+        <View style={styles.content}>
+          <Ux4gCard style={styles.card}>
+            <Ux4gSwitch
+              label="Dark Theme"
+              value={isDark}
+              onValueChange={setIsDark}
+            />
+            <Ux4gButton
+              text="Primary Action"
+              variant="primary"
+              onPress={() => alert('Button Clicked!')}
+            />
+          </Ux4gCard>
+        </View>
+      </SafeAreaView>
     </Ux4gThemeProvider>
   );
 }
@@ -69,113 +93,117 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  content: {
     padding: 16,
+    gap: 16,
+  },
+  card: {
+    padding: 16,
+    gap: 16,
   },
 });
 ```
 
 ---
 
-## 📚 Component Catalog
+## 🧩 Component Library
 
-### 1. Actions & Inputs
-- `Ux4gButton` / `Ux4gIconButton` / `Ux4gFab`
-- `Ux4gInputField` / `Ux4gSearchField` / `Ux4gTextArea`
-- `Ux4gAadhaarInputField` / `Ux4gPanInputField` / `Ux4gOtpInput`
-- `Ux4gFileUpload`
+### 1. Core Inputs & Forms
+- **`Ux4gInputField`** - Standard text input with prefix/suffix icons, helper text, and validation states.
+- **`Ux4gAadhaarInputField`** - Auto-formatting 12-digit Aadhaar input with built-in validation & masking.
+- **`Ux4gPanInputField`** - Auto-uppercase formatting for 10-character Indian PAN cards with regex verification.
+- **`Ux4gOtpInput`** - Multi-box PIN/OTP entry with auto-focus shifting and clipboard paste support.
+- **`Ux4gSearchField`** - Search bar with clear button, loading spinner, and search callbacks.
+- **`Ux4gTextArea`** - Multiline text area with character counters and max-length constraints.
+- **`Ux4gFileUpload`** - Mobile file attachment picker with progress feedback and mime-type filters.
 
-### 2. Selection & Form Controls
-- `Ux4gCheckbox` / `Ux4gRadioButton` / `Ux4gSwitch`
-- `Ux4gSelectionDropdown` / `Ux4gActionDropdown`
-- `Ux4gChoiceChip` / `Ux4gFilterChip` / `Ux4gInputChip`
-- `Ux4gSlider` / `Ux4gDatePicker` / `Ux4gTimePicker`
+### 2. Actions & Buttons
+- **`Ux4gButton`** - Standard buttons with `primary`, `secondary`, `outline`, and `ghost` variants.
+- **`Ux4gIconButton`** - Accessible icon-only buttons with hover and active states.
+- **`Ux4gFab`** - Floating Action Button for prominent primary screen actions.
+- **`Ux4gLink`** - Accessible hyperlink component for in-app or external navigation.
 
-### 3. Feedback & Indicators
-- `Ux4gFeedbackFormStar` (Star ratings + category chips + required comment validation)
-- `Ux4gFeedbackFormNps` (0-10 Net Promoter Score + comment validation)
-- `Ux4gFeedbackFormCsat` (Emoji sentiment ratings + comment validation)
-- `Ux4gToast` / `Ux4gStatusBanner` / `Ux4gStatusPipeline`
-- `Ux4gSpinner` / `Ux4gLinearProgressBar` / `Ux4gCircularProgressIndicator`
+### 3. Selection & Controls
+- **`Ux4gCheckbox`** & **`Ux4gRadioButton`** - Standardized selection controls with labels and helper text.
+- **`Ux4gSwitch`** - Smooth animated toggle switches.
+- **`Ux4gSelectionDropdown`** / **`Ux4gActionDropdown`** - Mobile-optimized select dropdowns and actions.
+- **`Ux4gChips`** (`Ux4gChoiceChip`, `Ux4gFilterChip`, `Ux4gInputChip`) - Interactive filter and tag chips.
+- **`Ux4gSlider`** - Continuous and stepped range sliders.
+- **`Ux4gDatePicker`** & **`Ux4gTimePicker`** - Standard date and time selection modals.
+- **`Ux4gSlotGrid`** - Appointment / time-slot grid selector.
 
-### 4. Navigation & Layout
-- `Ux4gSideMenu` (Responsive Drawer with Left/Right open direction & smooth transitions)
-- `Ux4gBottomNavigationBar` (Floating Pill, Extended, Standard variants)
-- `Ux4gAppHeader` / `Ux4gStepper` / `Ux4gPagination` / `Ux4gJourneyTimeline`
-- `Ux4gBottomSheet` / `Ux4gModal` / `Ux4gAccordion` / `Ux4gCard`
-- `Ux4gAvatar` / `Ux4gAvatarGroup` / `Ux4gStatusAvatar` / `Ux4gProfileAvatar`
-- `Ux4gBadge` / `Ux4gTag` / `Ux4gTooltip` / `Ux4gDivider` / `Ux4gEmptyState`
+### 4. Navigation & Structure
+- **`Ux4gSideMenu`** - Animated drawer navigation with left/right opening directions and backdrop dimming.
+- **`Ux4gBottomNavigationBar`** - Modern bottom bar supporting standard, floating pill, and extended variants.
+- **`Ux4gAppHeader`** - Top app bar with titles, back buttons, and action icons.
+- **`Ux4gStepper`** - Multi-step process indicator (horizontal and vertical).
+- **`Ux4gPagination`** - Page navigation controls with numeric and arrow indicators.
+- **`Ux4gJourneyTimeline`** - Vertical step-by-step milestone timeline.
+
+### 5. Feedback, Dialogs & Modals
+- **`Ux4gModal`** & **`Ux4gBottomSheet`** - Smooth bottom sheets and center dialogs with backdrop dismissal.
+- **`Ux4gToast`** - Notification toasts with severity styles (`success`, `info`, `warning`, `danger`).
+- **`Ux4gStatusBanner`** - Prominent banner alerts for inline messaging.
+- **`Ux4gStatusPipeline`** - Status tracking bar for service lifecycle monitoring.
+- **`Ux4gFeedbackForm`** (`Ux4gFeedbackFormStar`, `Ux4gFeedbackFormNps`, `Ux4gFeedbackFormCsat`) - Built-in feedback rating forms with comment validation.
+
+### 6. Indicators, Progress & Data Display
+- **`Ux4gSpinner`** - Animated circular loading indicators.
+- **`Ux4gLinearProgressBar`** & **`Ux4gCircularProgressIndicator`** - Deterministic and indeterminate progress meters.
+- **`Ux4gHalfCircleProgress`** - Semi-circular gauge and score indicators.
+- **`Ux4gAvatar`** & **`Ux4gAvatarGroup`** - User profile pictures, fallback initials, and stacked avatar groups.
+- **`Ux4gBadge`** & **`Ux4gTag`** - Contextual tags, status badges, and counters.
+- **`Ux4gTooltip`** - Informational popovers.
+- **`Ux4gCard`** & **`Ux4gAccordion`** - Content containers and collapsible panels.
+- **`Ux4gEmptyState`** - Visual placeholders for empty views and 404/no-data states.
+- **`Ux4gCarousel`** - Touch-friendly image and card carousel with pagination dots.
 
 ---
 
-## 💡 Example: Feedback Forms
+## 🎨 Design Tokens & Custom Theming
 
-All feedback components enforce validation where the submit button activates once both rating and feedback comment are provided:
+You can consume tokens or access the active theme dynamically using the `useUx4gTheme` hook:
 
 ```tsx
 import React from 'react';
-import { View } from 'react-native';
-import {
-  Ux4gFeedbackFormStar,
-  Ux4gFeedbackFormNps,
-  Ux4gFeedbackFormCsat,
-} from 'ux4g-react-native-design-system';
+import { Text, View, StyleSheet } from 'react-native';
+import { useUx4gTheme, UX4G_COLORS, UX4G_SPACING } from 'ux4g-react-native-design-system';
 
-export function FeedbackExample() {
+export const ThemedProfile = () => {
+  const { colors, typography, isDark } = useUx4gTheme();
+
   return (
-    <View style={{ gap: 24, padding: 16 }}>
-      {/* 5-Star Feedback Form */}
-      <Ux4gFeedbackFormStar
-        title="Rate your experience"
-        improvementTitle="What can we improve?"
-        onSubmit={(rating, options, comment) => {
-          console.log('Star submitted:', { rating, options, comment });
-        }}
-      />
-
-      {/* NPS Feedback Form (0-10) */}
-      <Ux4gFeedbackFormNps
-        title="How likely are you to recommend us?"
-        onSubmit={(score, comment) => {
-          console.log('NPS submitted:', { score, comment });
-        }}
-      />
-
-      {/* CSAT Smiley Sentiment Form */}
-      <Ux4gFeedbackFormCsat
-        title="How do you feel about this service?"
-        onSubmit={(rating, comment) => {
-          console.log('CSAT submitted:', { rating, comment });
-        }}
-      />
+    <View style={[styles.box, { backgroundColor: colors.backgroundSurface }]}>
+      <Text style={[typography.hM_strong, { color: colors.textPrimary }]}>
+        Welcome to UX4G
+      </Text>
+      <Text style={[typography.bodyM_regular, { color: colors.textSecondary }]}>
+        Active Mode: {isDark ? 'Dark Mode 🌙' : 'Light Mode ☀️'}
+      </Text>
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  box: {
+    padding: UX4G_SPACING.spacing_16,
+    borderRadius: 8,
+  },
+});
 ```
 
 ---
 
-## 🎨 Theme & Tokens Customization
+## 🤝 Contributing & Guidelines
 
-Access active theme properties anywhere using the `useUx4gTheme` hook:
-
-```tsx
-import { useUx4gTheme } from 'ux4g-react-native-design-system';
-
-const MyComponent = () => {
-  const { colors, typography, isDark } = useUx4gTheme();
-
-  return (
-    <Text style={[typography.hM_strong, { color: colors.primary }]}>
-      Theme is {isDark ? 'Dark' : 'Light'}
-    </Text>
-  );
-};
-```
+We welcome contributions to help expand and improve the UX4G React Native Design System. Please ensure your components adhere to:
+1. UX4G Design Guidelines and accessibility specifications.
+2. Complete TypeScript definitions.
+3. Light & Dark mode theme token usage.
 
 ---
 
 ## 📄 License
 
-MIT © [UX4G Team](https://ux4g.gov.in)
+This project is licensed under the **MIT License** - see the [LICENSE](file:///c:/Users/Monu/Desktop/prac/openforge/react_native_design_system/LICENSE) file for details.

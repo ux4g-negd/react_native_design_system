@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
+import { UX4GColors } from '../../foundation/colors';
+import { Ux4gIcons } from '../../foundation/icons';
 import {
   Ux4gInputField,
   Ux4gInputFieldSize,
@@ -31,6 +34,31 @@ const _p: number[][] = [
 ];
 
 /**
+ * Helper to compute hex with alpha or rgba color string.
+ */
+const addOpacityToHex = (color: string, opacity: number): string => {
+  if (color && color.startsWith('#')) {
+    let hex = color.replace('#', '');
+    if (hex.length === 3) {
+      hex = hex.split('').map((c) => c + c).join('');
+    }
+    if (hex.length === 6) {
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+    if (hex.length === 8) {
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+  }
+  return color;
+};
+
+/**
  * Verhoeff algorithm for Aadhaar validation.
  */
 class VerhoeffAlgorithm {
@@ -42,7 +70,7 @@ class VerhoeffAlgorithm {
       .reverse();
 
     for (let i = 0; i < myArray.length; i++) {
-       if (isNaN(myArray[i])) return false;
+      if (isNaN(myArray[i])) return false;
       c = _d[c][_p[i % 8][myArray[i]]];
     }
 
@@ -58,6 +86,33 @@ export const validateAadhaar = (aadhaar: string): boolean => {
   if (cleanAadhaar.length !== 12) return false;
   if (/^[01]/.test(cleanAadhaar)) return false; // Aadhaar doesn't start with 0 or 1
   return VerhoeffAlgorithm.validate(cleanAadhaar);
+};
+
+/**
+ * Utility to format Aadhaar digits with 4-4-4 spacing and optional 'X' masking.
+ */
+export const formatAadhaar = (
+  digits: string,
+  masked = false,
+  maskAll = true
+): string => {
+  const clean = digits.replace(/[^0-9X]/gi, '').slice(0, 12);
+  let formatted = '';
+  for (let i = 0; i < clean.length; i++) {
+    if (i > 0 && i % 4 === 0) {
+      formatted += ' ';
+    }
+    if (masked) {
+      if (maskAll || i < 8) {
+        formatted += 'X';
+      } else {
+        formatted += clean[i];
+      }
+    } else {
+      formatted += clean[i];
+    }
+  }
+  return formatted;
 };
 
 export interface Ux4gAadhaarInputFieldProps {
@@ -123,6 +178,34 @@ export interface Ux4gAadhaarInputFieldProps {
   onTrailingIconPressed?: () => void;
 
   /**
+   * Whether to display the eye toggle icon for masking / unmasking the Aadhaar number with 'X'.
+   * @default false
+   */
+  showMaskToggle?: boolean;
+
+  /**
+   * Whether the Aadhaar number is currently masked (controlled mode).
+   */
+  isMasked?: boolean;
+
+  /**
+   * Initial masked state when uncontrolled and `showMaskToggle` is enabled.
+   * @default true
+   */
+  defaultMasked?: boolean;
+
+  /**
+   * Callback triggered when the mask eye toggle is pressed.
+   */
+  onMaskToggle?: (isMasked: boolean) => void;
+
+  /**
+   * Whether to mask all digits (`XXXX XXXX XXXX`) instead of only first 8 digits.
+   * @default true
+   */
+  maskAll?: boolean;
+
+  /**
    * Whether the input field is interactive (`true`) or disabled (`false`).
    * @default true
    */
@@ -173,12 +256,14 @@ export interface Ux4gAadhaarInputFieldProps {
  *
  * Features:
  * - Auto-formatting (`XXXX XXXX XXXX`) up to 12 digits (14 characters with spaces).
- * - Numeric-only input restriction.
+ * - Numeric-only input restriction with 'X' cross character masking support.
  * - Built-in verification against UIDAI rules (no `0` or `1` leading digit) and Verhoeff checksum algorithm.
  * - Automatically transitions to `success` ("Valid Aadhaar number") or `error` ("Please enter a valid Aadhaar number") when 12 digits are completed if `status === 'defaultStatus'`.
+ * - Optional eye toggle for masking/unmasking (`showMaskToggle`) with cross 'X' display.
  */
 export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
   validateAadhaar: (aadhaar: string) => boolean;
+  formatAadhaar: (digits: string, masked?: boolean, maskAll?: boolean) => string;
 } = ({
   value,
   onValueChange,
@@ -191,6 +276,11 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
   leadingIcon,
   trailingIcon,
   onTrailingIconPressed,
+  showMaskToggle = false,
+  isMasked,
+  defaultMasked = true,
+  onMaskToggle,
+  maskAll = true,
   enabled = true,
   readOnly = false,
   style,
@@ -200,13 +290,29 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
   containerStyle,
   testID,
 }) => {
+  const theme = useUx4gTheme();
+  const colors = theme.colors;
+  const isDark = theme.isDark;
+
+  const [internalMasked, setInternalMasked] = useState<boolean>(defaultMasked);
+  const effectiveMasked = isMasked !== undefined ? isMasked : internalMasked;
+
+  const handleToggleMask = () => {
+    const nextMasked = !effectiveMasked;
+    if (isMasked === undefined) {
+      setInternalMasked(nextMasked);
+    }
+    onMaskToggle?.(nextMasked);
+  };
+
+  const currentRawDigits = value.replace(/[^0-9]/g, '').slice(0, 12);
+
   let currentStatus: Ux4gInputFieldStatus = status;
   let currentCaption: string | undefined = caption;
 
-  const cleanValue = value.replace(/\s+/g, '');
-  if (cleanValue.length === 12) {
+  if (currentRawDigits.length === 12) {
     if (status === 'defaultStatus') {
-      if (validateAadhaar(value)) {
+      if (validateAadhaar(currentRawDigits)) {
         currentStatus = 'success';
         currentCaption = caption !== undefined ? caption : 'Valid Aadhaar number';
       } else {
@@ -216,33 +322,78 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
     }
   }
 
-  const handleValueChange = (text: string) => {
-    // Strip non-digits and cap at 12 digits
-    const digitsOnly = text.replace(/\D/g, '').slice(0, 12);
+  const handleValueChange = (newText: string) => {
+    if (!showMaskToggle || !effectiveMasked) {
+      // Normal unmasked digit entry
+      const digitsOnly = newText.replace(/\D/g, '').slice(0, 12);
+      let formatted = '';
+      for (let i = 0; i < digitsOnly.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+          formatted += ' ';
+        }
+        formatted += digitsOnly[i];
+      }
+      onValueChange(formatted);
+      return;
+    }
+
+    // Masked mode with 'X' cross characters
+    const newTextClean = newText.replace(/\s+/g, '');
+    let nextRaw = '';
+    for (let i = 0; i < newTextClean.length && i < 12; i++) {
+      const char = newTextClean[i];
+      if (char === 'X' || char === 'x') {
+        if (i < currentRawDigits.length) {
+          nextRaw += currentRawDigits[i];
+        }
+      } else if (/\d/.test(char)) {
+        nextRaw += char;
+      }
+    }
+
     let formatted = '';
-    for (let i = 0; i < digitsOnly.length; i++) {
+    for (let i = 0; i < nextRaw.length; i++) {
       if (i > 0 && i % 4 === 0) {
         formatted += ' ';
       }
-      formatted += digitsOnly[i];
+      formatted += nextRaw[i];
     }
     onValueChange(formatted);
   };
 
+  const onSurfaceColor =
+    colors.onSurface ?? (isDark ? UX4GColors.neutral0 : UX4GColors.neutral1000black);
+  const iconColor = addOpacityToHex(onSurfaceColor, 0.5);
+
+  let resolvedTrailingIcon = trailingIcon;
+  let resolvedOnTrailingIconPressed = onTrailingIconPressed;
+
+  if (showMaskToggle && trailingIcon === undefined) {
+    resolvedTrailingIcon = effectiveMasked
+      ? Ux4gIcons.visibilityOff({ size: 20, color: iconColor })
+      : Ux4gIcons.visibility({ size: 20, color: iconColor });
+    resolvedOnTrailingIconPressed = handleToggleMask;
+  }
+
+  const isCurrentlyMasked = showMaskToggle && effectiveMasked;
+  const displayedValue = isCurrentlyMasked
+    ? formatAadhaar(currentRawDigits, true, maskAll)
+    : value;
+
   return (
     <Ux4gInputField
-      value={value}
+      value={displayedValue}
       onValueChange={handleValueChange}
       size={size}
-      type="number"
+      type={isCurrentlyMasked ? 'text' : 'number'}
       status={currentStatus}
       label={label}
       required={required}
       placeholder={placeholder}
       caption={currentCaption}
       leadingIcon={leadingIcon}
-      trailingIcon={trailingIcon}
-      onTrailingIconPressed={onTrailingIconPressed}
+      trailingIcon={resolvedTrailingIcon}
+      onTrailingIconPressed={resolvedOnTrailingIconPressed}
       enabled={enabled}
       readOnly={readOnly}
       maxLength={14} // 12 digits + 2 spaces
@@ -257,3 +408,6 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
 };
 
 Ux4gAadhaarInputField.validateAadhaar = validateAadhaar;
+Ux4gAadhaarInputField.formatAadhaar = formatAadhaar;
+
+
