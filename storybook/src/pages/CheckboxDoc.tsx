@@ -18,7 +18,7 @@ export const CheckboxDoc: React.FC<CheckboxDocProps> = ({ isDark, story = 'check
     if (story === 'checkbox-sizes') {
       return `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function CheckboxSizesExample() {
   const [small, setSmall] = useState(true);
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     if (story === 'checkbox-tristate') {
       return `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function CheckboxTristateExample() {
   const [opt1, setOpt1] = useState(true);
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
 
     return `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function CheckboxBasicExample() {
   const [checked1, setChecked1] = useState(true);
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     if (story === 'checkbox-sizes') {
       snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [smallChecked, setSmallChecked] = useState(true);
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     } else if (story === 'checkbox-tristate') {
       snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [opt1, setOpt1] = useState(true);
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     } else {
       snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCheckbox, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [checked1, setChecked1] = useState(true);
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
 });`;
     }
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gCheckbox%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gCheckbox%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

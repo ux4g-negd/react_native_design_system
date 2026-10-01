@@ -1,6 +1,6 @@
 # UX4G React Native Design System
 
-[![npm version](https://img.shields.io/npm/v/ux4g-react-native-design-system.svg?style=flat-square)](https://www.npmjs.com/package/ux4g-react-native-design-system)
+[![npm version](https://img.shields.io/npm/v/ux4g-react-native-components.svg?style=flat-square)](https://www.npmjs.com/package/ux4g-react-native-components)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![React Native](https://img.shields.io/badge/React%20Native-0.70+-61DAFB.svg?style=flat-square&logo=react)](https://reactnative.dev/)
 
@@ -25,13 +25,13 @@ Install the package and required peer dependencies:
 
 ```bash
 # Using npm
-npm install ux4g-react-native-design-system react-native-svg
+npm install ux4g-react-native-components react-native-svg
 
 # Using yarn
-yarn add ux4g-react-native-design-system react-native-svg
+yarn add ux4g-react-native-components react-native-svg
 
 # Using pnpm
-pnpm add ux4g-react-native-design-system react-native-svg
+pnpm add ux4g-react-native-components react-native-svg
 ```
 
 ### Peer Dependencies
@@ -58,7 +58,7 @@ import {
   Ux4gAppHeader,
   Ux4gCard,
   Ux4gSwitch,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function App() {
   const [isDark, setIsDark] = useState(false);
@@ -168,7 +168,7 @@ You can consume tokens or access the active theme dynamically using the `useUx4g
 ```tsx
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { useUx4gTheme, UX4G_COLORS, UX4G_SPACING } from 'ux4g-react-native-design-system';
+import { useUx4gTheme, UX4G_COLORS, UX4G_SPACING } from 'ux4g-react-native-components';
 
 export const ThemedProfile = () => {
   const { colors, typography, isDark } = useUx4gTheme();

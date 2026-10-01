@@ -13,7 +13,7 @@ export const FeedbackStarDoc: React.FC<FeedbackStarDocProps> = ({ isDark }) => {
 
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push("import { Ux4gFeedbackFormStar } from 'ux4g-react-native-design-system';");
+    lines.push("import { Ux4gFeedbackFormStar } from 'ux4g-react-native-components';");
     lines.push('');
     lines.push('<Ux4gFeedbackFormStar');
     lines.push('  onSubmit={(rating, selectedOptions, comment) => console.log(rating, selectedOptions, comment)}');
@@ -24,7 +24,7 @@ export const FeedbackStarDoc: React.FC<FeedbackStarDocProps> = ({ isDark }) => {
   const renderStoryPreview = () => {
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gFeedbackFormStar, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gFeedbackFormStar, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gFeedbackFormStar%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gFeedbackFormStar%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

@@ -121,7 +121,7 @@ export const SessionTimeoutDialogDoc: React.FC<SessionTimeoutDialogDocProps> = (
     if (subTab === 'expiring-soon') {
       return `import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ux4gModal, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gModal, UX4GColors } from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 const WarningIcon = ({ size = 28, color = UX4GColors.orange600 }: { size?: number; color?: string }) => (
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     if (subTab === 'session-ended') {
       return `import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ux4gModal, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gModal, UX4GColors } from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 const ClockIcon = ({ size = 28, color = UX4GColors.neutral700 }: { size?: number; color?: string }) => (
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
 
     return `import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ux4gModal, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gModal, UX4GColors } from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 const LockIcon = ({ size = 28, color = UX4GColors.primary600 }: { size?: number; color?: string }) => (

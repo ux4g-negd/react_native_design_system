@@ -73,7 +73,7 @@ import {
   Ux4gThemeProvider,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const EnterOtpCardPattern = () => {
   const [otp, setOtp] = useState('');
@@ -298,7 +298,7 @@ import {
   Ux4gThemeProvider,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const EnterOtpDefaultPattern = () => {
   const [otp, setOtp] = useState('');

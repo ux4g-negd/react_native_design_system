@@ -15,7 +15,7 @@ export const CarouselDoc: React.FC<CarouselDocProps> = ({ isDark, story = 'carou
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push(`import { Ux4gCarousel, View, Text, StyleSheet } from 'ux4g-react-native-design-system';`);
+    lines.push(`import { Ux4gCarousel, View, Text, StyleSheet } from 'ux4g-react-native-components';`);
     lines.push('');
 
     if (story === 'carousel-rich-hero') {
@@ -89,7 +89,7 @@ export const CarouselDoc: React.FC<CarouselDocProps> = ({ isDark, story = 'carou
     if (story === 'carousel-rich-hero') {
       snackCodeString = `import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ux4gCarousel, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCarousel, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 const heroSlides = [
   {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     } else if (story === 'carousel-image') {
       snackCodeString = `import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { Ux4gCarousel, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCarousel, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 const images = [
   'https://picsum.photos/seed/carousel1/400/200',
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
       // Introduction - both demos
       snackCodeString = `import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
-import { Ux4gCarousel, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gCarousel, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 const heroSlides = [
   { id: '1', title: 'Featured', desc: 'Discover our latest collection.', gradient: ['#667eea', '#764ba2'], badge: 'FEATURED' },
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
 });`;
     }
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gCarousel%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gCarousel%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

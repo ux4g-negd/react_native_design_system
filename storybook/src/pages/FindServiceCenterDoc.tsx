@@ -143,7 +143,7 @@ import {
   Ux4gButtonVariant,
   Ux4gButtonSize,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const FindServiceCentreScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [search, setSearch] = useState('');
@@ -405,7 +405,7 @@ import {
   Ux4gButtonVariant,
   Ux4gButtonSize,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 /// Card Style variant — find service centre inside a white card on purple background.
 export const FindServiceCentreCardScreen = ({ isDark = false }: { isDark?: boolean }) => {

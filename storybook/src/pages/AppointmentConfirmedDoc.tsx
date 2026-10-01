@@ -45,7 +45,7 @@ import {
   Ux4gButtonSize,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AppointmentConfirmedScreen = ({
   isDark = false,

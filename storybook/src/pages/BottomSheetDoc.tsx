@@ -63,7 +63,7 @@ const getStoryCode = (story: BottomSheetStory): string => {
   if (story === 'bottom-sheet-peek') {
     return `import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-components';
 
 export default function BottomSheetPeekExample() {
   const [open, setOpen] = useState(false);
@@ -96,7 +96,7 @@ export default function BottomSheetPeekExample() {
   if (story === 'bottom-sheet-expanded') {
     return `import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-components';
 
 export default function BottomSheetExpandedExample() {
   const [open, setOpen] = useState(false);
@@ -131,7 +131,7 @@ export default function BottomSheetExpandedExample() {
   if (story === 'bottom-sheet-full') {
     return `import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-components';
 
 export default function BottomSheetFullExample() {
   const [open, setOpen] = useState(false);
@@ -166,7 +166,7 @@ export default function BottomSheetFullExample() {
   // Default: Half (50%)
   return `import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gBottomSheet } from 'ux4g-react-native-components';
 
 export default function BottomSheetHalfExample() {
   const [open, setOpen] = useState(false);
@@ -298,7 +298,7 @@ export const BottomSheetDoc: React.FC<BottomSheetDocProps> = ({
   const renderStoryPreview = () => {
     const snackCodeString = `import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gButton, Ux4gBottomSheet, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gBottomSheet, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [open, setOpen] = useState(true);
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
 
     const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${
       isDark ? 'dark' : 'light'
-    }&name=Ux4gBottomSheet%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(
+    }&name=Ux4gBottomSheet%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(
       snackCodeString
     )}`;
 

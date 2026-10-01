@@ -134,7 +134,7 @@ import {
   Ux4gTag,
   Ux4gChoiceChip,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ConsentHistoryPattern = ({
   isDark = ${isDark},

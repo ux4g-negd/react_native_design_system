@@ -58,7 +58,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarAccountLockedCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
@@ -211,7 +211,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarAccountLockedDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (

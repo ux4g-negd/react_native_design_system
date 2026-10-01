@@ -65,7 +65,7 @@ import {
   Ux4gTag,
   UX4GColors,
   Ux4gIcons,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SaveAndResumeCardScreen = ({
   isDark = ${isDark},
@@ -327,7 +327,7 @@ import {
   Ux4gTag,
   UX4GColors,
   Ux4gIcons,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SaveAndResumeScreen = ({
   isDark = ${isDark},

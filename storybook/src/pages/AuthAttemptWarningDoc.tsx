@@ -57,7 +57,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthOtpAttemptWarningCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('555555');
@@ -282,7 +282,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthOtpAttemptWarningDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('555555');

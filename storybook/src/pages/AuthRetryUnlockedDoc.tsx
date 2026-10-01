@@ -55,7 +55,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthOtpRetryUnlockedCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('');
@@ -257,7 +257,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthOtpRetryUnlockedDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('');

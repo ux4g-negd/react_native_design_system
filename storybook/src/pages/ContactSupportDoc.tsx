@@ -120,7 +120,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 interface SupportChannel {
   icon: any;
@@ -419,7 +419,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 interface SupportChannel {
   icon: any;

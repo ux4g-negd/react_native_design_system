@@ -62,7 +62,7 @@ import {
   Ux4gStatusBanner,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ResetPasswordCardPattern = () => {
   const [mobile, setMobile] = useState('');
@@ -276,7 +276,7 @@ import {
   Ux4gStatusBanner,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ResetPasswordDefaultPattern = () => {
   const [mobile, setMobile] = useState('');

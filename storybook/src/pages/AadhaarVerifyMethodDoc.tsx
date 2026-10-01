@@ -58,7 +58,7 @@ import {
   Ux4gRadioButton,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarVerifyMethodCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [method, setMethod] = useState<'otp' | 'face' | 'totp'>('otp');
@@ -355,7 +355,7 @@ import {
   Ux4gRadioButton,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [method, setMethod] = useState<'otp' | 'face' | 'totp'>('otp');

@@ -57,7 +57,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SignUpPasswordSetupCardPattern = () => {
   const [password, setPassword] = useState('');
@@ -245,7 +245,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SignUpPasswordSetupDefaultPattern = () => {
   const [password, setPassword] = useState('');

@@ -75,7 +75,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const RateExperienceScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [rating, setRating] = useState<number>(0);
@@ -319,7 +319,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const RateExperienceCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [rating, setRating] = useState<number>(0);

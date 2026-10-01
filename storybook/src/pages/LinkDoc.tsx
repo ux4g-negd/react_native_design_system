@@ -36,7 +36,7 @@ const getStoryCode = (story: LinkStory): string => {
   if (story === 'link-text') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gLink } from 'ux4g-react-native-design-system';
+import { Ux4gLink } from 'ux4g-react-native-components';
 
 export default function LinkTextExample() {
   return (
@@ -66,7 +66,7 @@ export default function LinkTextExample() {
   if (story === 'link-custom-child') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gLink, Ux4gIcons } from 'ux4g-react-native-design-system';
+import { Ux4gLink, Ux4gIcons } from 'ux4g-react-native-components';
 
 export default function LinkCustomChildExample() {
   return (
@@ -102,7 +102,7 @@ export default function LinkCustomChildExample() {
 
   return `import React from 'react';
 import { Text } from 'react-native';
-import { Ux4gLink } from 'ux4g-react-native-design-system';
+import { Ux4gLink } from 'ux4g-react-native-components';
 
 export default function LinkBasicExample() {
   return (
@@ -183,7 +183,7 @@ export const LinkDoc: React.FC<LinkDocProps> = ({ isDark, story = 'link-basic' }
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text } from 'react-native';
-import { Ux4gLink, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gLink, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gLink%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gLink%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

@@ -35,7 +35,7 @@ const getStoryCode = (story: RadioStory): string => {
   if (story === 'radio-sizes') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gRadioButton } from 'ux4g-react-native-design-system';
+import { Ux4gRadioButton } from 'ux4g-react-native-components';
 
 export default function RadioButtonSizesExample() {
   const [sizeChoice, setSizeChoice] = useState('medium');
@@ -53,7 +53,7 @@ export default function RadioButtonSizesExample() {
   if (story === 'radio-status') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gRadioButton } from 'ux4g-react-native-design-system';
+import { Ux4gRadioButton } from 'ux4g-react-native-components';
 
 export default function RadioButtonStatusExample() {
   const [statusChoice, setStatusChoice] = useState('defaultStatus');
@@ -71,7 +71,7 @@ export default function RadioButtonStatusExample() {
 
   return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gRadioButton } from 'ux4g-react-native-design-system';
+import { Ux4gRadioButton } from 'ux4g-react-native-components';
 
 export default function RadioButtonBasicExample() {
   const [groupValue, setGroupValue] = useState('option-a');
@@ -122,7 +122,7 @@ export const RadioButtonDoc: React.FC<RadioButtonDocProps> = ({ isDark, story = 
   const renderStoryPreview = () => {
     const snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gRadioButton, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gRadioButton, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [groupValue, setGroupValue] = useState('option-a');
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gRadioButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gRadioButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

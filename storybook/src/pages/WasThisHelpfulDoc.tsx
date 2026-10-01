@@ -70,7 +70,7 @@ import {
   Ux4gButtonVariant,
   Ux4gButtonSize,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const WasThisHelpfulScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [feedback, setFeedback] = useState<'idle' | 'yes' | 'no'>('idle');

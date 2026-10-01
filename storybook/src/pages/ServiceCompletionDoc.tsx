@@ -70,7 +70,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ServiceCompletionScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
@@ -340,7 +340,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ServiceCompletionCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;

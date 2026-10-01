@@ -63,7 +63,7 @@ const getStoryCode = (story: ProgressStory): string => {
   if (story === 'progress-sla-circular') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gCircularProgress } from 'ux4g-react-native-design-system';
+import { Ux4gCircularProgress } from 'ux4g-react-native-components';
 
 const SlaBadge = ({ text, fg, bg }: { text: string; fg: string; bg: string }) => (
   <View style={{ backgroundColor: bg, borderRadius: 6, paddingHorizontal: 10, paddingVertical: 4 }}>
@@ -90,7 +90,7 @@ export default function ProgressSlaCircularExample() {
   if (story === 'progress-sla-linear') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gIcons, Ux4gLinearProgressBar } from 'ux4g-react-native-design-system';
+import { Ux4gIcons, Ux4gLinearProgressBar } from 'ux4g-react-native-components';
 
 export default function ProgressSlaLinearExample() {
   return (
@@ -122,7 +122,7 @@ export default function ProgressSlaLinearExample() {
   if (story === 'progress-circular') {
     return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gCircularProgress } from 'ux4g-react-native-design-system';
+import { Ux4gCircularProgress } from 'ux4g-react-native-components';
 
 export default function ProgressCircularExample() {
   return (
@@ -158,7 +158,7 @@ export default function ProgressCircularExample() {
   if (story === 'progress-half-circle') {
     return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gHalfCircleProgress } from 'ux4g-react-native-design-system';
+import { Ux4gHalfCircleProgress } from 'ux4g-react-native-components';
 
 export default function ProgressHalfCircleExample() {
   return (
@@ -194,7 +194,7 @@ export default function ProgressHalfCircleExample() {
   if (story === 'progress-animated') {
     return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gAnimatedCircularProgress, Ux4gAnimatedHalfCircleProgress } from 'ux4g-react-native-design-system';
+import { Ux4gAnimatedCircularProgress, Ux4gAnimatedHalfCircleProgress } from 'ux4g-react-native-components';
 
 export default function ProgressAnimatedExample() {
   return (
@@ -222,7 +222,7 @@ export default function ProgressAnimatedExample() {
 
   return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gLinearProgressBar, Ux4gIcons } from 'ux4g-react-native-design-system';
+import { Ux4gLinearProgressBar, Ux4gIcons } from 'ux4g-react-native-components';
 
 export default function ProgressLinearExample() {
   return (
@@ -430,7 +430,7 @@ import {
   Ux4gIcons,
   Ux4gLinearProgressBar,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gProgress%20Indicator%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gProgress%20Indicator%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

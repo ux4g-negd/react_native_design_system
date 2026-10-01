@@ -95,7 +95,7 @@ import {
   Ux4gButton,
   Ux4gCard,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 interface StepItem {
   title: string;
@@ -442,7 +442,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 interface StepItem {
   title: string;

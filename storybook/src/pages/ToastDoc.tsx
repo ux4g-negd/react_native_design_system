@@ -62,7 +62,7 @@ const getStoryCode = (story: ToastStory): string => {
     case 'toast-stacked':
       return `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gToast } from 'ux4g-react-native-design-system';
+import { Ux4gToast } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     case 'toast-actions':
       return `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gToast } from 'ux4g-react-native-design-system';
+import { Ux4gToast } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     case 'toast-custom':
       return `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gToast, Ux4gIcons } from 'ux4g-react-native-design-system';
+import { Ux4gToast, Ux4gIcons } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     case 'toast-provider':
       return `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gToastProvider, useUx4gToast, Ux4gButton } from 'ux4g-react-native-design-system';
+import { Ux4gToastProvider, useUx4gToast, Ux4gButton } from 'ux4g-react-native-components';
 
 const Demo = () => {
   const { showToast } = useUx4gToast();
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     default:
       return `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gToast } from 'ux4g-react-native-design-system';
+import { Ux4gToast } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -285,7 +285,7 @@ export const ToastDoc: React.FC<ToastDocProps> = ({ isDark, story = 'toast-basic
     if (isProvider) {
       snackCodeString = `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gToastProvider, useUx4gToast, Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gToastProvider, useUx4gToast, Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 const Demo = () => {
   const { showToast } = useUx4gToast();
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
       const needsIcons = activeStory === 'toast-custom';
       snackCodeString = `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gToast${needsIcons ? ', Ux4gIcons' : ''}, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gToast${needsIcons ? ', Ux4gIcons' : ''}, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
 });`;
     }
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gToast%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gToast%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

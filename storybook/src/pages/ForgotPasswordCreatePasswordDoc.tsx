@@ -183,7 +183,7 @@ import {
   Ux4gDivider,
   Ux4gLinearProgressBar,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const CreateNewPasswordCardPattern = () => {
   const [password, setPassword] = useState('');
@@ -366,7 +366,7 @@ import {
   Ux4gDivider,
   Ux4gLinearProgressBar,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const CreateNewPasswordDefaultPattern = () => {
   const [password, setPassword] = useState('');

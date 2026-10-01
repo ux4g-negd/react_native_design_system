@@ -56,7 +56,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthOtpSuspiciousActivityCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('');
@@ -264,7 +264,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthOtpSuspiciousActivityDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('');

@@ -87,7 +87,7 @@ import {
   Ux4gChipGroup,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const UpdateFrequencyPattern = () => {
   const [frequency, setFrequency] = useState('Immediately');

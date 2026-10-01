@@ -21,7 +21,7 @@ export const SpinnerDoc: React.FC<SpinnerDocProps> = ({ isDark, story = 'spinner
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push(`import { Ux4gSpinner } from 'ux4g-react-native-design-system';`);
+    lines.push(`import { Ux4gSpinner } from 'ux4g-react-native-components';`);
     lines.push('');
     lines.push('<Ux4gSpinner');
     lines.push(`  size={${size}}`);
@@ -41,7 +41,7 @@ export const SpinnerDoc: React.FC<SpinnerDocProps> = ({ isDark, story = 'spinner
 
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSpinner, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gSpinner, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: ${isDark ? "'#121212'" : "'#ffffff'"},
   }
 });`;
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gSpinner%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gSpinner%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
     return (
       <iframe
         src={snackUrl}

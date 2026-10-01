@@ -17,7 +17,7 @@ export const IconButtonDoc: React.FC<IconButtonDocProps> = ({ isDark }) => {
 
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push(`import { Ux4gIconButton } from 'ux4g-react-native-design-system';`);
+    lines.push(`import { Ux4gIconButton } from 'ux4g-react-native-components';`);
     lines.push(`import Svg, { Path } from 'react-native-svg';`);
     lines.push('');
     lines.push('const HeartIcon = ({ color, size }: any) => (');
@@ -82,7 +82,7 @@ export const IconButtonDoc: React.FC<IconButtonDocProps> = ({ isDark }) => {
 
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gIconButton, Ux4gThemeProvider, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gIconButton, Ux4gThemeProvider, UX4GColors } from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 const HeartIcon = ({ color, size }: any) => (
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     gap: 32
   }
 });`;
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gIconButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gIconButton%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
     return (
       <iframe
         src={snackUrl}

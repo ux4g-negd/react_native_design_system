@@ -62,7 +62,7 @@ import {
   Ux4gToast,
   Ux4gToastCategory,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ManualRefreshPromptPattern = () => {
   const [bannerVisible, setBannerVisible] = useState(true);

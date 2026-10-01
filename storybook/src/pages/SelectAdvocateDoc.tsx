@@ -81,7 +81,7 @@ import {
   Ux4gAppHeader,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 interface AdvocateItem {
   id: string;

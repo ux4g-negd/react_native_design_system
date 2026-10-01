@@ -82,7 +82,7 @@ import {
   Ux4gStepper,
   Ux4gStatusBanner,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ValidationErrorCardScreen = ({
   isDark = false,
@@ -446,7 +446,7 @@ import {
   Ux4gStepper,
   Ux4gStatusBanner,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ValidationErrorScreen = ({
   isDark = false,

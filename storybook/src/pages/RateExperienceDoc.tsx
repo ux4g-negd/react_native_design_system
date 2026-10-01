@@ -110,7 +110,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gFeedbackFormStar,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const FeedbackRatingScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const screenBg = isDark ? UX4GColors.neutral900 : '#FFFFFF';
@@ -238,7 +238,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gFeedbackFormStar,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 /// Card Style variant — feedback form inside a white card on purple background.
 export const FeedbackRatingCardScreen = ({ isDark = false }: { isDark?: boolean }) => {

@@ -1068,7 +1068,7 @@ export const BottomNavigationBarShowcase: React.FC = () => {
   Ux4gPlainBottomNavBar,
   Ux4gFloatingBottomNavBar,
   Ux4gCenterActionBottomNavBar
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 // 1. Standard Pill Navigation Bar
 <Ux4gBottomNavigationBar

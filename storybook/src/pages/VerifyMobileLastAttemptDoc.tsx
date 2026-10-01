@@ -82,7 +82,7 @@ import {
   Ux4gStatusBanner,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 const ErrorIcon = ({ size = 20, color = UX4GColors.red600 }: { size?: number; color?: string }) => (
@@ -338,7 +338,7 @@ import {
   Ux4gStatusBanner,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 const ErrorIcon = ({ size = 20, color = UX4GColors.red600 }: { size?: number; color?: string }) => (

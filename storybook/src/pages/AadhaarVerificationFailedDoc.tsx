@@ -59,7 +59,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarVerificationFailedCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
@@ -230,7 +230,7 @@ import {
   Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarVerificationFailedDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (

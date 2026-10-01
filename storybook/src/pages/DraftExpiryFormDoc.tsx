@@ -71,7 +71,7 @@ import {
   Ux4gStatusBanner,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const DraftExpiryFormCardScreen = ({
   isDark = ${isDark},
@@ -431,7 +431,7 @@ import {
   Ux4gStatusBanner,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const DraftExpiryFormScreen = ({
   isDark = ${isDark},

@@ -22,7 +22,7 @@ import {
   Ux4gLink,
   Ux4gStatusBanner,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarOtpVerificationPattern = () => {
   const [step, setStep] = useState<'enter-aadhaar' | 'verify-otp'>('enter-aadhaar');
@@ -172,7 +172,7 @@ import {
   Ux4gButton,
   Ux4gLink,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function App() {
   const [step, setStep] = useState('verify-otp');
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
 
     const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${
       isDark ? 'dark' : 'light'
-    }&name=UX4G%20Auth%20Pattern&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(
+    }&name=UX4G%20Auth%20Pattern&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(
       snackCodeString
     )}`;
 

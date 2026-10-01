@@ -1,6 +1,6 @@
 # UX4G React Native Design System — Complete Migration & Adoption Guide (MIGRATION.md)
 
-This comprehensive guide outlines how to migrate an existing React Native application (whether built with **Vanilla React Native**, **React Native Paper**, **React Native Elements**, **NativeBase**, or **custom UI components**) to the **UX4G React Native Design System (`ux4g-react-native-design-system`)** seamlessly — **preserving 100% of your original project colors, typography styles, exact component sizes, user flows, and business logic**.
+This comprehensive guide outlines how to migrate an existing React Native application (whether built with **Vanilla React Native**, **React Native Paper**, **React Native Elements**, **NativeBase**, or **custom UI components**) to the **UX4G React Native Design System (`ux4g-react-native-components`)** seamlessly — **preserving 100% of your original project colors, typography styles, exact component sizes, user flows, and business logic**.
 
 ---
 
@@ -65,13 +65,13 @@ Install the UX4G React Native Design System and required peer dependencies:
 
 ```bash
 # Using npm
-npm install ux4g-react-native-design-system react-native-svg react-native-safe-area-context
+npm install ux4g-react-native-components react-native-svg react-native-safe-area-context
 
 # Using yarn
-yarn add ux4g-react-native-design-system react-native-svg react-native-safe-area-context
+yarn add ux4g-react-native-components react-native-svg react-native-safe-area-context
 
 # Using pnpm
-pnpm add ux4g-react-native-design-system react-native-svg react-native-safe-area-context
+pnpm add ux4g-react-native-components react-native-svg react-native-safe-area-context
 ```
 
 > **For iOS (Bare React Native)**: Run `npx pod-install` or `cd ios && pod install`.  
@@ -90,7 +90,7 @@ Map your existing app theme directly into `<Ux4gThemeProvider>` at your root `Ap
 // App.tsx
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Ux4gThemeProvider, Ux4gToastProvider } from 'ux4g-react-native-design-system';
+import { Ux4gThemeProvider, Ux4gToastProvider } from 'ux4g-react-native-components';
 import AppNavigator from './src/navigation/AppNavigator';
 
 // Your existing project theme tokens
@@ -223,7 +223,7 @@ import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
 #### After (UX4G — Preserving Exact Dimensions & Brand Color):
 ```tsx
-import { Ux4gButton } from 'ux4g-react-native-design-system';
+import { Ux4gButton } from 'ux4g-react-native-components';
 
 <Ux4gButton
   variant="primary"
@@ -270,7 +270,7 @@ import { Ux4gButton } from 'ux4g-react-native-design-system';
 
 #### After (UX4G — Preserves Layout, Adds Accessibility & Clear Error Handling):
 ```tsx
-import { Ux4gInputField } from 'ux4g-react-native-design-system';
+import { Ux4gInputField } from 'ux4g-react-native-components';
 
 <Ux4gInputField
   label="Mobile Number"
@@ -313,7 +313,7 @@ import { Ux4gInputField } from 'ux4g-react-native-design-system';
 
 #### After (UX4G Card — Preserving Exact Background, Padding & Flow):
 ```tsx
-import { Ux4gCard, Ux4gButton } from 'ux4g-react-native-design-system';
+import { Ux4gCard, Ux4gButton } from 'ux4g-react-native-components';
 import { View, Text } from 'react-native';
 
 <Ux4gCard
@@ -348,7 +348,7 @@ import { View, Text } from 'react-native';
 If your app contains a promo banner or image carousel created with a custom `ScrollView` or `FlatList`, replace it with `<Ux4gCarousel>` to preserve slide dimensions, auto-play, and indicator dots:
 
 ```tsx
-import { Ux4gCarousel } from 'ux4g-react-native-design-system';
+import { Ux4gCarousel } from 'ux4g-react-native-components';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 const PROMO_SLIDES = [
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
 
 #### After (UX4G Modal — Preserves Sheet Layout, Back-drop, & Action Flow):
 ```tsx
-import { Ux4gModal, Ux4gButton } from 'ux4g-react-native-design-system';
+import { Ux4gModal, Ux4gButton } from 'ux4g-react-native-components';
 import { Text } from 'react-native';
 
 <Ux4gModal
@@ -463,7 +463,7 @@ import { Text } from 'react-native';
 
 #### After (UX4G Searchable Dropdown with Custom Styling):
 ```tsx
-import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-components';
 
 const BANK_OPTIONS = [
   { label: 'State Bank of India', value: 'SBI' },
@@ -489,7 +489,7 @@ import {
   Ux4gRadioButton,
   Ux4gRadioGroup,
   Ux4gSwitch
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 // 1. Single Checkbox (Preserves original label & active brand color)
 <Ux4gCheckbox
@@ -524,7 +524,7 @@ import {
 
 #### Replacing custom status indicators and pill chips:
 ```tsx
-import { Ux4gTag, Ux4gBadge, Ux4gChip } from 'ux4g-react-native-design-system';
+import { Ux4gTag, Ux4gBadge, Ux4gChip } from 'ux4g-react-native-components';
 
 // Status Tag (e.g. Success, Pending, Failed)
 <Ux4gTag
@@ -557,7 +557,7 @@ import { Ux4gTag, Ux4gBadge, Ux4gChip } from 'ux4g-react-native-design-system';
 Replace custom multi-step status tracks with `<Ux4gJourneyTimeline>` or `<Ux4gStatusPipeline>`:
 
 ```tsx
-import { Ux4gJourneyTimeline, Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
+import { Ux4gJourneyTimeline, Ux4gStatusPipeline } from 'ux4g-react-native-components';
 
 // Multi-step Application / Delivery Journey
 <Ux4gJourneyTimeline
@@ -580,7 +580,7 @@ import {
   Ux4gCircularProgressIndicator,
   Ux4gHalfCircleProgress,
   Ux4gSpinner,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 // 1. Linear Progress Bar
 <Ux4gLinearProgressBar
@@ -619,7 +619,7 @@ import {
   Ux4gPanInputField,
   Ux4gOtpInput,
   Ux4gFileUpload,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 // 1. Aadhaar Input (Auto 4-4-4 spacing & Verhoeff checksum calculation)
 <Ux4gAadhaarInputField
@@ -659,7 +659,7 @@ import {
 ### 12. App Headers & Navigation Bars
 
 ```tsx
-import { Ux4gAppHeader } from 'ux4g-react-native-design-system';
+import { Ux4gAppHeader } from 'ux4g-react-native-components';
 
 <Ux4gAppHeader
   title="Payments Dashboard"
@@ -678,7 +678,7 @@ import { Ux4gAppHeader } from 'ux4g-react-native-design-system';
 ### 13. Empty States, Result Lists & Pagination
 
 ```tsx
-import { Ux4gEmptyState, Ux4gPagination } from 'ux4g-react-native-design-system';
+import { Ux4gEmptyState, Ux4gPagination } from 'ux4g-react-native-components';
 
 // When a search returns no items:
 <Ux4gEmptyState

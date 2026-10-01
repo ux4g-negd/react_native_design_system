@@ -147,7 +147,7 @@ import {
   Ux4gSearchFieldVariant,
   Ux4gSearchFieldSize,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const LANGUAGES = [
   { name: 'English', sub: 'United States' },
@@ -360,7 +360,7 @@ import {
   Ux4gSearchFieldSize,
   Ux4gCard,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const LANGUAGES = [
   { name: 'English', sub: 'United States' },

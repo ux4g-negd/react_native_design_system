@@ -433,7 +433,7 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                     <tr key={idx}>
                       <td style={{ fontWeight: 600 }}>{item.component}</td>
                       <td>
-                        <span className="mg-count-pill" style={{ fontSize: '11px' }}>
+                        <span className="mg-prop-group-pill">
                           {item.propGroup}
                         </span>
                       </td>

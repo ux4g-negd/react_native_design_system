@@ -18,7 +18,7 @@ export const AvatarDoc: React.FC<AvatarDocProps> = ({ isDark, story = 'avatar-ba
     lines.push(`import { View } from 'react-native';`);
 
     if (story === 'avatar-status') {
-      lines.push(`import { Ux4gStatusAvatar } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gStatusAvatar } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// Status Avatars (Initials)');
       lines.push('<Ux4gStatusAvatar variant="online" initials="JD" size="l" />');
@@ -34,7 +34,7 @@ export const AvatarDoc: React.FC<AvatarDocProps> = ({ isDark, story = 'avatar-ba
       lines.push('<Ux4gStatusAvatar variant="warning" imageUrl="https://i.pravatar.cc/150?u=user4" size="l" />');
       lines.push('<Ux4gStatusAvatar variant="error" imageUrl="https://i.pravatar.cc/150?u=user5" size="l" />');
     } else if (story === 'avatar-profile') {
-      lines.push(`import { Ux4gProfileAvatar } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gProfileAvatar } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// Profile Badges & Actions (Initials)');
       lines.push('<Ux4gProfileAvatar variant="verified" initials="JD" size="l" />');
@@ -52,7 +52,7 @@ export const AvatarDoc: React.FC<AvatarDocProps> = ({ isDark, story = 'avatar-ba
       lines.push('<Ux4gProfileAvatar variant="camera" imageUrl="https://i.pravatar.cc/150?u=user5" size="l" />');
       lines.push('<Ux4gProfileAvatar variant="remove" imageUrl="https://i.pravatar.cc/150?u=user6" size="l" />');
     } else if (story === 'avatar-group') {
-      lines.push(`import { Ux4gAvatarGroup } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gAvatarGroup } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// Group with Images (Collapsed Overlapping)');
       lines.push('<Ux4gAvatarGroup');
@@ -78,7 +78,7 @@ export const AvatarDoc: React.FC<AvatarDocProps> = ({ isDark, story = 'avatar-ba
       lines.push('  collapsed={false}');
       lines.push('/>');
     } else {
-      lines.push(`import { Ux4gAvatar } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gAvatar } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// Initials Avatar (Sizes xs to xxl)');
       lines.push('<Ux4gAvatar initials="XS" size="xs" />');
@@ -202,7 +202,7 @@ export const AvatarDoc: React.FC<AvatarDocProps> = ({ isDark, story = 'avatar-ba
 
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { ${importsUsed.join(', ')} } from 'ux4g-react-native-design-system';
+import { ${importsUsed.join(', ')} } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   }
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gAvatar%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gAvatar%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

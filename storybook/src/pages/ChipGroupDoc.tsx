@@ -21,7 +21,7 @@ export const ChipGroupDoc: React.FC<ChipGroupDocProps> = ({ isDark, story = 'chi
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push(`import { Ux4gChipGroup, Ux4gChoiceChip, Ux4gInputChipField, Ux4gInputChip } from 'ux4g-react-native-design-system';`);
+    lines.push(`import { Ux4gChipGroup, Ux4gChoiceChip, Ux4gInputChipField, Ux4gInputChip } from 'ux4g-react-native-components';`);
     lines.push(`import { useState } from 'react';`);
     lines.push('');
     lines.push('// Wrap Chip Group');
@@ -94,7 +94,7 @@ import {
   Ux4gInputChip,
   Ux4gInputChipField,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   }
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChipGroup%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChipGroup%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

@@ -70,7 +70,7 @@ import {
   Ux4gDivider,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SignedInSuccessCardPattern = () => {
   const [secondsLeft, setSecondsLeft] = useState(3);
@@ -285,7 +285,7 @@ import {
   Ux4gDivider,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SignedInSuccessDefaultPattern = () => {
   const [secondsLeft, setSecondsLeft] = useState(3);

@@ -18,7 +18,7 @@ export const DropdownDoc: React.FC<DropdownDocProps> = ({ isDark, story = 'dropd
     if (story === 'dropdown-multi') {
       return `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-components';
 
 export default function App() {
   const [selectedIds, setSelectedIds] = useState(['1', '2']);
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     if (story === 'dropdown-search') {
       return `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-components';
 
 export default function App() {
   const [selectedIds, setSelectedIds] = useState(['in']);
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     if (story === 'dropdown-status') {
       return `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-components';
 
 export default function App() {
   const [errSelected, setErrSelected] = useState([]);
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     // Default / Basic Single Select Story
     return `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown } from 'ux4g-react-native-components';
 
 export default function App() {
   const [selected, setSelected] = useState(['1']);
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     if (story === 'dropdown-multi') {
       snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [selectedIds, setSelectedIds] = useState(['1', '2']);
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     } else if (story === 'dropdown-search') {
       snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [selectedIds, setSelectedIds] = useState(['in']);
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     } else if (story === 'dropdown-status') {
       snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [errSelected, setErrSelected] = useState([]);
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     } else {
       snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gSelectionDropdown, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [singleSelected, setSingleSelected] = useState(['1']);
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
 });`;
     }
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gDropdown%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gDropdown%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

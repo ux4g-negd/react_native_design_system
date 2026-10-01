@@ -67,7 +67,7 @@ const getStoryCode = (story: TagStory): string => {
     case 'tag-shapes':
       return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gTag } from 'ux4g-react-native-design-system';
+import { Ux4gTag } from 'ux4g-react-native-components';
 
 export default function TagShapesExample() {
   return (
@@ -80,7 +80,7 @@ ${renderTag('Rectangular', " shape='rectangular' colorScheme='brand'")}
     case 'tag-styles':
       return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gTag } from 'ux4g-react-native-design-system';
+import { Ux4gTag } from 'ux4g-react-native-components';
 
 export default function TagStylesExample() {
   return (
@@ -95,7 +95,7 @@ ${renderTag('Text', " style='text' colorScheme='brand'")}
     case 'tag-colors':
       return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gTag } from 'ux4g-react-native-design-system';
+import { Ux4gTag } from 'ux4g-react-native-components';
 
 export default function TagColorsExample() {
   return (
@@ -112,7 +112,7 @@ ${renderTag('Info', " colorScheme='info'")}
     case 'tag-leading':
       return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gTag, Ux4gIcons } from 'ux4g-react-native-design-system';
+import { Ux4gTag, Ux4gIcons } from 'ux4g-react-native-components';
 
 export default function TagLeadingExample() {
   return (
@@ -125,7 +125,7 @@ ${renderTag('With Check', " colorScheme='success' leadingContent={Ux4gIcons.chec
     case 'tag-dismissable':
       return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gTag } from 'ux4g-react-native-design-system';
+import { Ux4gTag } from 'ux4g-react-native-components';
 
 export default function TagDismissableExample() {
   return (
@@ -138,7 +138,7 @@ ${renderTag('Dismissible Success', " colorScheme='success' onDismiss={() => cons
     case 'tag-pill':
       return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gUnifiedPillTag } from 'ux4g-react-native-design-system';
+import { Ux4gUnifiedPillTag } from 'ux4g-react-native-components';
 
 export default function TagPillExample() {
   return (
@@ -156,7 +156,7 @@ export default function TagPillExample() {
     default:
       return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gTag } from 'ux4g-react-native-design-system';
+import { Ux4gTag } from 'ux4g-react-native-components';
 
 export default function TagBasicExample() {
   return (
@@ -237,7 +237,7 @@ export const TagDoc: React.FC<TagDocProps> = ({ isDark, story = 'tag-basic' }) =
     const needsIcons = activeStory === 'tag-leading';
     const snackCodeString = `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gTag, Ux4gUnifiedPillTag${needsIcons ? ', Ux4gIcons' : ''}, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gTag, Ux4gUnifiedPillTag${needsIcons ? ', Ux4gIcons' : ''}, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gTag%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gTag%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

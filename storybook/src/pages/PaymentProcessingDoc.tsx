@@ -57,7 +57,7 @@ import {
   Ux4gModal,
   Ux4gSpinner,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const PaymentProcessingCardPattern = ({ isDark }: { isDark: boolean }) => {
   const [modalVisible, setModalVisible] = useState(true);
@@ -148,7 +148,7 @@ import {
   Ux4gModal,
   Ux4gSpinner,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const PaymentProcessingDefaultPattern = ({ isDark }: { isDark: boolean }) => {
   const [modalVisible, setModalVisible] = useState(true);

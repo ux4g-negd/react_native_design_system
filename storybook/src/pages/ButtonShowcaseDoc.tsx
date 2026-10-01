@@ -30,7 +30,7 @@ export const ButtonShowcaseDoc: React.FC<{ isDark: boolean }> = ({ isDark }) => 
 
   const snackCodeString = `import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Ux4gButton, Ux4gThemeProvider, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gThemeProvider, UX4GColors } from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 const PlusIcon = ({ color, size }: any) => (
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   }
 });`;
 
-  const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Showcase&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+  const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Showcase&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
   return (
     <div className="wb-page">

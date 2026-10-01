@@ -190,7 +190,7 @@ export interface Ux4gAadhaarInputFieldProps {
 
   /**
    * Initial masked state when uncontrolled and `showMaskToggle` is enabled.
-   * @default true
+   * @default false
    */
   defaultMasked?: boolean;
 
@@ -278,7 +278,7 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
   onTrailingIconPressed,
   showMaskToggle = false,
   isMasked,
-  defaultMasked = true,
+  defaultMasked = false,
   onMaskToggle,
   maskAll = true,
   enabled = true,
@@ -290,122 +290,122 @@ export const Ux4gAadhaarInputField: React.FC<Ux4gAadhaarInputFieldProps> & {
   containerStyle,
   testID,
 }) => {
-  const theme = useUx4gTheme();
-  const colors = theme.colors;
-  const isDark = theme.isDark;
+    const theme = useUx4gTheme();
+    const colors = theme.colors;
+    const isDark = theme.isDark;
 
-  const [internalMasked, setInternalMasked] = useState<boolean>(defaultMasked);
-  const effectiveMasked = isMasked !== undefined ? isMasked : internalMasked;
+    const [internalMasked, setInternalMasked] = useState<boolean>(defaultMasked);
+    const effectiveMasked = isMasked !== undefined ? isMasked : internalMasked;
 
-  const handleToggleMask = () => {
-    const nextMasked = !effectiveMasked;
-    if (isMasked === undefined) {
-      setInternalMasked(nextMasked);
-    }
-    onMaskToggle?.(nextMasked);
-  };
+    const handleToggleMask = () => {
+      const nextMasked = !effectiveMasked;
+      if (isMasked === undefined) {
+        setInternalMasked(nextMasked);
+      }
+      onMaskToggle?.(nextMasked);
+    };
 
-  const currentRawDigits = value.replace(/[^0-9]/g, '').slice(0, 12);
+    const currentRawDigits = value.replace(/[^0-9]/g, '').slice(0, 12);
 
-  let currentStatus: Ux4gInputFieldStatus = status;
-  let currentCaption: string | undefined = caption;
+    let currentStatus: Ux4gInputFieldStatus = status;
+    let currentCaption: string | undefined = caption;
 
-  if (currentRawDigits.length === 12) {
-    if (status === 'defaultStatus') {
-      if (validateAadhaar(currentRawDigits)) {
-        currentStatus = 'success';
-        currentCaption = caption !== undefined ? caption : 'Valid Aadhaar number';
-      } else {
-        currentStatus = 'error';
-        currentCaption = caption !== undefined ? caption : 'Please enter a valid Aadhaar number';
+    if (currentRawDigits.length === 12) {
+      if (status === 'defaultStatus') {
+        if (validateAadhaar(currentRawDigits)) {
+          currentStatus = 'success';
+          currentCaption = caption !== undefined ? caption : 'Valid Aadhaar number';
+        } else {
+          currentStatus = 'error';
+          currentCaption = caption !== undefined ? caption : 'Please enter a valid Aadhaar number';
+        }
       }
     }
-  }
 
-  const handleValueChange = (newText: string) => {
-    if (!showMaskToggle || !effectiveMasked) {
-      // Normal unmasked digit entry
-      const digitsOnly = newText.replace(/\D/g, '').slice(0, 12);
+    const handleValueChange = (newText: string) => {
+      if (!showMaskToggle || !effectiveMasked) {
+        // Normal unmasked digit entry
+        const digitsOnly = newText.replace(/\D/g, '').slice(0, 12);
+        let formatted = '';
+        for (let i = 0; i < digitsOnly.length; i++) {
+          if (i > 0 && i % 4 === 0) {
+            formatted += ' ';
+          }
+          formatted += digitsOnly[i];
+        }
+        onValueChange(formatted);
+        return;
+      }
+
+      // Masked mode with 'X' cross characters
+      const newTextClean = newText.replace(/\s+/g, '');
+      let nextRaw = '';
+      for (let i = 0; i < newTextClean.length && i < 12; i++) {
+        const char = newTextClean[i];
+        if (char === 'X' || char === 'x') {
+          if (i < currentRawDigits.length) {
+            nextRaw += currentRawDigits[i];
+          }
+        } else if (/\d/.test(char)) {
+          nextRaw += char;
+        }
+      }
+
       let formatted = '';
-      for (let i = 0; i < digitsOnly.length; i++) {
+      for (let i = 0; i < nextRaw.length; i++) {
         if (i > 0 && i % 4 === 0) {
           formatted += ' ';
         }
-        formatted += digitsOnly[i];
+        formatted += nextRaw[i];
       }
       onValueChange(formatted);
-      return;
+    };
+
+    const onSurfaceColor =
+      colors.onSurface ?? (isDark ? UX4GColors.neutral0 : UX4GColors.neutral1000black);
+    const iconColor = addOpacityToHex(onSurfaceColor, 0.5);
+
+    let resolvedTrailingIcon = trailingIcon;
+    let resolvedOnTrailingIconPressed = onTrailingIconPressed;
+
+    if (showMaskToggle && trailingIcon === undefined) {
+      resolvedTrailingIcon = effectiveMasked
+        ? Ux4gIcons.visibilityOff({ size: 20, color: iconColor })
+        : Ux4gIcons.visibility({ size: 20, color: iconColor });
+      resolvedOnTrailingIconPressed = handleToggleMask;
     }
 
-    // Masked mode with 'X' cross characters
-    const newTextClean = newText.replace(/\s+/g, '');
-    let nextRaw = '';
-    for (let i = 0; i < newTextClean.length && i < 12; i++) {
-      const char = newTextClean[i];
-      if (char === 'X' || char === 'x') {
-        if (i < currentRawDigits.length) {
-          nextRaw += currentRawDigits[i];
-        }
-      } else if (/\d/.test(char)) {
-        nextRaw += char;
-      }
-    }
+    const isCurrentlyMasked = showMaskToggle && effectiveMasked;
+    const displayedValue = isCurrentlyMasked
+      ? formatAadhaar(currentRawDigits, true, maskAll)
+      : value;
 
-    let formatted = '';
-    for (let i = 0; i < nextRaw.length; i++) {
-      if (i > 0 && i % 4 === 0) {
-        formatted += ' ';
-      }
-      formatted += nextRaw[i];
-    }
-    onValueChange(formatted);
+    return (
+      <Ux4gInputField
+        value={displayedValue}
+        onValueChange={handleValueChange}
+        size={size}
+        type={isCurrentlyMasked ? 'text' : 'number'}
+        status={currentStatus}
+        label={label}
+        required={required}
+        placeholder={placeholder}
+        caption={currentCaption}
+        leadingIcon={leadingIcon}
+        trailingIcon={resolvedTrailingIcon}
+        onTrailingIconPressed={resolvedOnTrailingIconPressed}
+        enabled={enabled}
+        readOnly={readOnly}
+        maxLength={14} // 12 digits + 2 spaces
+        style={style}
+        labelStyle={labelStyle}
+        placeholderStyle={placeholderStyle}
+        captionStyle={captionStyle}
+        containerStyle={containerStyle}
+        testID={testID}
+      />
+    );
   };
-
-  const onSurfaceColor =
-    colors.onSurface ?? (isDark ? UX4GColors.neutral0 : UX4GColors.neutral1000black);
-  const iconColor = addOpacityToHex(onSurfaceColor, 0.5);
-
-  let resolvedTrailingIcon = trailingIcon;
-  let resolvedOnTrailingIconPressed = onTrailingIconPressed;
-
-  if (showMaskToggle && trailingIcon === undefined) {
-    resolvedTrailingIcon = effectiveMasked
-      ? Ux4gIcons.visibilityOff({ size: 20, color: iconColor })
-      : Ux4gIcons.visibility({ size: 20, color: iconColor });
-    resolvedOnTrailingIconPressed = handleToggleMask;
-  }
-
-  const isCurrentlyMasked = showMaskToggle && effectiveMasked;
-  const displayedValue = isCurrentlyMasked
-    ? formatAadhaar(currentRawDigits, true, maskAll)
-    : value;
-
-  return (
-    <Ux4gInputField
-      value={displayedValue}
-      onValueChange={handleValueChange}
-      size={size}
-      type={isCurrentlyMasked ? 'text' : 'number'}
-      status={currentStatus}
-      label={label}
-      required={required}
-      placeholder={placeholder}
-      caption={currentCaption}
-      leadingIcon={leadingIcon}
-      trailingIcon={resolvedTrailingIcon}
-      onTrailingIconPressed={resolvedOnTrailingIconPressed}
-      enabled={enabled}
-      readOnly={readOnly}
-      maxLength={14} // 12 digits + 2 spaces
-      style={style}
-      labelStyle={labelStyle}
-      placeholderStyle={placeholderStyle}
-      captionStyle={captionStyle}
-      containerStyle={containerStyle}
-      testID={testID}
-    />
-  );
-};
 
 Ux4gAadhaarInputField.validateAadhaar = validateAadhaar;
 Ux4gAadhaarInputField.formatAadhaar = formatAadhaar;

@@ -2,7 +2,7 @@
 
 ## Context
 
-I have an existing React Native application that currently uses [Current UI Library: Vanilla React Native / React Native Paper (MD3) / React Native Elements / NativeBase / Custom UI Components]. I need to migrate it to the **UX4G React Native Design System** (`ux4g-react-native-design-system` package) **without altering my existing application flow, working functionality, custom color combinations, brand theme, exact component sizing, or typography hierarchy**.
+I have an existing React Native application that currently uses [Current UI Library: Vanilla React Native / React Native Paper (MD3) / React Native Elements / NativeBase / Custom UI Components]. I need to migrate it to the **UX4G React Native Design System** (`ux4g-react-native-components` package) **without altering my existing application flow, working functionality, custom color combinations, brand theme, exact component sizing, or typography hierarchy**.
 
 ## Project Details
 
@@ -16,7 +16,7 @@ I have an existing React Native application that currently uses [Current UI Libr
 
 ## What I Need
 
-Migrate my React Native application from [current UI library] to the UX4G React Native Design System (`ux4g-react-native-design-system`) adhering strictly to the **Zero-Disruption Migration Contract** below.
+Migrate my React Native application from [current UI library] to the UX4G React Native Design System (`ux4g-react-native-components`) adhering strictly to the **Zero-Disruption Migration Contract** below.
 
 ---
 
@@ -35,7 +35,7 @@ Migrate my React Native application from [current UI library] to the UX4G React 
 
 ```tsx
 // SAFE: Non-destructive theme integration preserving your exact brand identity
-import { Ux4gThemeProvider, Ux4gToastProvider } from 'ux4g-react-native-design-system';
+import { Ux4gThemeProvider, Ux4gToastProvider } from 'ux4g-react-native-components';
 
 const MY_APP_COLORS = {
   primary: '#4F46E5',         // Your Brand Primary (e.g. Indigo)
@@ -136,7 +136,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 #### After (UX4G React Native — Exact Style & Logic Preserved):
 ```tsx
-import { Ux4gButton } from 'ux4g-react-native-design-system';
+import { Ux4gButton } from 'ux4g-react-native-components';
 
 <Ux4gButton
   variant="primary"
@@ -182,7 +182,7 @@ import { Ux4gButton } from 'ux4g-react-native-design-system';
 
 #### After (UX4G React Native — Exact State, Validation & Style Preserved):
 ```tsx
-import { Ux4gInputField } from 'ux4g-react-native-design-system';
+import { Ux4gInputField } from 'ux4g-react-native-components';
 
 <Ux4gInputField
   label="Applicant Full Name"
@@ -218,7 +218,7 @@ import { Ux4gInputField } from 'ux4g-react-native-design-system';
 
 #### After (UX4G React Native):
 ```tsx
-import { Ux4gAppHeader } from 'ux4g-react-native-design-system';
+import { Ux4gAppHeader } from 'ux4g-react-native-components';
 
 <Ux4gAppHeader
   title="National Scholarship Portal"
@@ -255,7 +255,7 @@ import { Ux4gAppHeader } from 'ux4g-react-native-design-system';
 
 #### After (UX4G React Native):
 ```tsx
-import { Ux4gCard } from 'ux4g-react-native-design-system';
+import { Ux4gCard } from 'ux4g-react-native-components';
 
 <Ux4gCard
   variant="elevated"
@@ -280,7 +280,7 @@ import {
   Ux4gPanInputField,
   Ux4gOtpInput,
   Ux4gFileUpload,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 // 1. Aadhaar Input (Auto 4-4-4 spacing & Verhoeff checksum calculation)
 <Ux4gAadhaarInputField
@@ -321,7 +321,7 @@ import {
 
 1. **Step 1 — Codebase & Dependency Audit**:
    - Inspect `package.json`, dependencies, state management architecture, and navigation setup.
-   - Install `ux4g-react-native-design-system react-native-svg react-native-safe-area-context`.
+   - Install `ux4g-react-native-components react-native-svg react-native-safe-area-context`.
 
 2. **Step 2 — Safe Theme Setup**:
    - Wrap application root with `<Ux4gThemeProvider colors={...}>` and `<Ux4gToastProvider>` without overriding existing styles or fonts.
@@ -356,4 +356,4 @@ Begin by inspecting my React Native project structure. Present a structured scre
 
 ---
 
-*UX4G React Native Design System | ux4g-react-native-design-system | National e-Governance Division (NeGD) | Government of India*
+*UX4G React Native Design System | ux4g-react-native-components | National e-Governance Division (NeGD) | Government of India*

@@ -57,7 +57,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 export const InlineFeedbackScreen = ({ isDark = false }: { isDark?: boolean }) => {
@@ -224,7 +224,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';

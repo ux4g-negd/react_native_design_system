@@ -86,7 +86,7 @@ import {
   Ux4gButtonSize,
   Ux4gCard,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const TranslationUnavailableScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const screenBg = isDark ? UX4GColors.neutral950 : '#FFFFFF';
@@ -270,7 +270,7 @@ import {
   Ux4gButtonSize,
   Ux4gCard,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 /// Card Style variant — translation unavailable inside a white card on purple background.
 export const TranslationUnavailableCardScreen = ({ isDark = false }: { isDark?: boolean }) => {

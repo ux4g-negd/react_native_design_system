@@ -209,7 +209,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const DocumentUploadSuccessCardScreen = ({
   isDark = false,
@@ -534,7 +534,7 @@ import {
   Ux4gButton,
   Ux4gCheckbox,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const DocumentUploadSuccessScreen = ({
   isDark = false,

@@ -73,7 +73,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackVerificationScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
@@ -318,7 +318,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackVerificationCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';

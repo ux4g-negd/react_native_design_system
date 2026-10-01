@@ -14,7 +14,7 @@ export const FileUploadDoc: React.FC<FileUploadDocProps> = ({ isDark, story = 'f
 
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push("import { Ux4gFileUpload } from 'ux4g-react-native-design-system';");
+    lines.push("import { Ux4gFileUpload } from 'ux4g-react-native-components';");
     lines.push('');
 
     if (story === 'fileupload-dashed') {
@@ -75,7 +75,7 @@ export const FileUploadDoc: React.FC<FileUploadDocProps> = ({ isDark, story = 'f
 
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Ux4gFileUpload, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gFileUpload, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gFileUpload%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*,react-native-document-picker@*,react-native-image-picker@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gFileUpload%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*,react-native-document-picker@*,react-native-image-picker@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

@@ -69,7 +69,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const CRITERIA_LIST = [
   'Age requirement met (18 years or above)',
@@ -342,7 +342,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const CRITERIA_LIST = [
   'Age requirement met (18 years or above)',

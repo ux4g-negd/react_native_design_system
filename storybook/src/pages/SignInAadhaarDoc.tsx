@@ -106,7 +106,7 @@ import {
   validateAadhaar,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SignInAadhaarCardPattern = () => {
   const [aadhaar, setAadhaar] = useState('');
@@ -405,7 +405,7 @@ import {
   validateAadhaar,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SignInAadhaarDefaultPattern = () => {
   const [aadhaar, setAadhaar] = useState('');

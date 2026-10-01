@@ -73,7 +73,7 @@ import {
   Ux4gUnifiedPillTag,
   Ux4gStatusAvatar,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const MyApplicationsScreen = ({
   isDark = false,

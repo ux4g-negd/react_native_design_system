@@ -69,7 +69,7 @@ const DimensionsUsage: React.FC = () => {
         filename="React Native — Ux4gSpace & Ux4gRadius"
         code={`import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ux4gSpace, Ux4gRadius, Ux4gBorderWidth, useUx4gTheme } from 'ux4g-react-native-design-system';
+import { Ux4gSpace, Ux4gRadius, Ux4gBorderWidth, useUx4gTheme } from 'ux4g-react-native-components';
 
 export const MyCard = ({ children }: { children: React.ReactNode }) => {
   const { colors } = useUx4gTheme();

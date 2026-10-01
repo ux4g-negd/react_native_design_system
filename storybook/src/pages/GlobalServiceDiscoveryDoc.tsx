@@ -131,7 +131,7 @@ import {
   Ux4gButton,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const CATEGORIES = [
   { icon: 'health_and_safety', label: 'Health', count: '24 services' },

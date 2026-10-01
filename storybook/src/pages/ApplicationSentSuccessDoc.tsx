@@ -56,7 +56,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ApplicationSentScreen = ({
   isDark = false,
@@ -262,7 +262,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ApplicationSentCardScreen = ({
   isDark = false,

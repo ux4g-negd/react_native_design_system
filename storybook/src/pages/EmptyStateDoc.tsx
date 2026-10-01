@@ -17,7 +17,7 @@ export const EmptyStateDoc: React.FC<EmptyStateDocProps> = ({
 
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push(`import { Ux4gEmptyState, Ux4gIcons } from 'ux4g-react-native-design-system';`);
+    lines.push(`import { Ux4gEmptyState, Ux4gIcons } from 'ux4g-react-native-components';`);
     lines.push('');
 
     if (story === 'empty-state-variants') {
@@ -118,7 +118,7 @@ export const EmptyStateDoc: React.FC<EmptyStateDocProps> = ({
 
     const snackCodeString = `import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Ux4gEmptyState, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gEmptyState, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   }
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gEmptyState%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gEmptyState%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

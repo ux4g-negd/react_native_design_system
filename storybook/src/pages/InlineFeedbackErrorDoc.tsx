@@ -62,7 +62,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackErrorScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [mobileNumber, setMobileNumber] = useState('98765432');
@@ -196,7 +196,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackErrorCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [mobileNumber, setMobileNumber] = useState('98765432');

@@ -51,7 +51,7 @@ const getStoryCode = (story: TooltipStory): string => {
     case 'tooltip-basic':
       return `import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip } from 'ux4g-react-native-components';
 
 const PlacementExample = () => {
   return (
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     case 'tooltip-interactive':
       return `import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gTooltip, Ux4gIcons } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip, Ux4gIcons } from 'ux4g-react-native-components';
 
 const InteractiveExample = () => {
   return (
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     case 'tooltip-variants':
       return `import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip } from 'ux4g-react-native-components';
 
 const placements = [
   'topStart', 'top', 'topEnd',
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     case 'tooltip-rich':
       return `import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gRichTooltip, Ux4gIcons } from 'ux4g-react-native-design-system';
+import { Ux4gRichTooltip, Ux4gIcons } from 'ux4g-react-native-components';
 
 const RichExample = () => {
   return (
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     default:
       return `import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip } from 'ux4g-react-native-components';
 
 const rows = [
   ['Top', 'top', 'Above the target, center aligned'],
@@ -354,12 +354,12 @@ export const TooltipDoc: React.FC<TooltipDocProps> = ({ isDark, story = 'tooltip
   const renderStoryPreview = () => {
     const exampleCode = getStoryCode(activeStory)
       .split('\nexport default function App')[0]
-      .replace(/^import React from 'react';\nimport .*?from 'react-native';\nimport .*?from 'ux4g-react-native-design-system';\n\n/, '')
+      .replace(/^import React from 'react';\nimport .*?from 'react-native';\nimport .*?from 'ux4g-react-native-components';\n\n/, '')
       .trim();
 
     const snackCodeString = `import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gTooltip, Ux4gRichTooltip, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip, Ux4gRichTooltip, Ux4gIcons, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 ${exampleCode}
 
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gTooltip%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gTooltip%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

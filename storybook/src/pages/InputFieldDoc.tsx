@@ -101,7 +101,7 @@ const getStoryCode = (story: InputStory): string => {
   if (story === 'input-status') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gInputField } from 'ux4g-react-native-design-system';
+import { Ux4gInputField } from 'ux4g-react-native-components';
 
 export default function InputStatusExample() {
   const [errorValue, setErrorValue] = useState('');
@@ -159,7 +159,7 @@ export default function InputStatusExample() {
 
   if (story === 'input-password') {
     return `import React, { useState } from 'react';
-import { Ux4gInputField } from 'ux4g-react-native-design-system';
+import { Ux4gInputField } from 'ux4g-react-native-components';
 
 export default function InputPasswordExample() {
   const [password, setPassword] = useState('');
@@ -180,7 +180,7 @@ export default function InputPasswordExample() {
     return `import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Ux4gInputField, Ux4gIcons } from 'ux4g-react-native-design-system';
+import { Ux4gInputField, Ux4gIcons } from 'ux4g-react-native-components';
 
 export default function InputIconsExample() {
   const [searchValue, setSearchValue] = useState('');
@@ -220,7 +220,7 @@ export default function InputIconsExample() {
 
   if (story === 'input-prefix-postfix') {
     return `import React, { useState } from 'react';
-import { Ux4gInputField } from 'ux4g-react-native-design-system';
+import { Ux4gInputField } from 'ux4g-react-native-components';
 
 export default function InputPrefixPostfixExample() {
   const [amount, setAmount] = useState('0');
@@ -249,7 +249,7 @@ export default function InputPrefixPostfixExample() {
 
   if (story === 'input-aadhaar-basic') {
     return `import React, { useState } from 'react';
-import { Ux4gAadhaarInputField } from 'ux4g-react-native-design-system';
+import { Ux4gAadhaarInputField } from 'ux4g-react-native-components';
 
 export default function InputAadhaarBasicExample() {
   const [aadhaar, setAadhaar] = useState('');
@@ -260,6 +260,8 @@ export default function InputAadhaarBasicExample() {
       onValueChange={setAadhaar}
       label='Aadhaar Number'
       placeholder='XXXX XXXX XXXX'
+      showMaskToggle={true}
+      maskAll={false}
       required={true}
     />
   );
@@ -269,7 +271,7 @@ export default function InputAadhaarBasicExample() {
   if (story === 'input-aadhaar-varients') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gAadhaarInputField } from 'ux4g-react-native-design-system';
+import { Ux4gAadhaarInputField } from 'ux4g-react-native-components';
 
 export default function InputAadhaarVarientsExample() {
   const [defaultAadhaar, setDefaultAadhaar] = useState('');
@@ -320,7 +322,7 @@ export default function InputAadhaarVarientsExample() {
 
   if (story === 'input-pan-basic') {
     return `import React, { useState } from 'react';
-import { Ux4gPanInputField } from 'ux4g-react-native-design-system';
+import { Ux4gPanInputField } from 'ux4g-react-native-components';
 
 export default function InputPanBasicExample() {
   const [pan, setPan] = useState('');
@@ -340,7 +342,7 @@ export default function InputPanBasicExample() {
   if (story === 'input-pan-varients') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gPanInputField } from 'ux4g-react-native-design-system';
+import { Ux4gPanInputField } from 'ux4g-react-native-components';
 
 export default function InputPanVarientsExample() {
   const [defaultPan, setDefaultPan] = useState('');
@@ -391,7 +393,7 @@ export default function InputPanVarientsExample() {
 
   if (story === 'input-otp-basic') {
     return `import React, { useState } from 'react';
-import { Ux4gOtpInput } from 'ux4g-react-native-design-system';
+import { Ux4gOtpInput } from 'ux4g-react-native-components';
 
 export default function InputOtpBasicExample() {
   const [otp, setOtp] = useState('');
@@ -413,7 +415,7 @@ export default function InputOtpBasicExample() {
   if (story === 'input-otp-varients') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gOtpInput } from 'ux4g-react-native-design-system';
+import { Ux4gOtpInput } from 'ux4g-react-native-components';
 
 export default function InputOtpVarientsExample() {
   const [defaultOtp, setDefaultOtp] = useState('');
@@ -471,7 +473,7 @@ export default function InputOtpVarientsExample() {
   if (story === 'input-required-disabled') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gInputField } from 'ux4g-react-native-design-system';
+import { Ux4gInputField } from 'ux4g-react-native-components';
 
 export default function InputRequiredDisabledExample() {
   const [applicationId, setApplicationId] = useState('GOV/2025/001');
@@ -498,7 +500,7 @@ export default function InputRequiredDisabledExample() {
   }
 
   return `import React, { useState } from 'react';
-import { Ux4gInputField } from 'ux4g-react-native-design-system';
+import { Ux4gInputField } from 'ux4g-react-native-components';
 
 export default function InputBasicExample() {
   const [value, setValue] = useState('');
@@ -591,6 +593,8 @@ const getSnackFields = (story: InputStory): string => {
           onValueChange={setAadhaar}
           label='Aadhaar Number'
           placeholder='XXXX XXXX XXXX'
+          showMaskToggle={true}
+          maskAll={false}
           required={true}
         />`;
   }
@@ -772,7 +776,7 @@ export const InputFieldDoc: React.FC<InputFieldDocProps> = ({ isDark, story = 'i
     const snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
     import { MaterialIcons } from '@expo/vector-icons';
-  import { Ux4gInputField, Ux4gAadhaarInputField, Ux4gPanInputField, Ux4gOtpInput, Ux4gThemeProvider, Ux4gIcons } from 'ux4g-react-native-design-system';
+  import { Ux4gInputField, Ux4gAadhaarInputField, Ux4gPanInputField, Ux4gOtpInput, Ux4gThemeProvider, Ux4gIcons } from 'ux4g-react-native-components';
 
 export default function App() {
   const [basicValue, setBasicValue] = useState('');
@@ -826,7 +830,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gInputField%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gInputField%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe
@@ -837,40 +841,94 @@ const styles = StyleSheet.create({
     );
   };
 
-  const propsData = [
-    { name: 'value', type: 'string', default: 'required', desc: 'Current text string inside the input field.', required: true },
-    { name: 'onValueChange', type: '(value: string) => void', default: 'required', desc: 'Callback triggered when text changes.', required: true },
-    { name: 'size', type: "'small' | 'medium' | 'large' | 'xl'", default: "'medium'", desc: 'Size of the input field.', required: false },
-    { name: 'type', type: "'text' | 'password' | 'number' | 'email'", default: "'text'", desc: 'Type of input field.', required: false },
-    { name: 'status', type: "'defaultStatus' | 'error' | 'warning' | 'success'", default: "'defaultStatus'", desc: 'Validation status controlling border and caption color.', required: false },
-    { name: 'label', type: 'string', default: 'undefined', desc: 'Label displayed above the input box.', required: false },
-    { name: 'required', type: 'boolean', default: 'false', desc: 'Whether field is required (shows red asterisk).', required: false },
-    { name: 'placeholder', type: 'string', default: 'undefined', desc: 'Placeholder hint text.', required: false },
-    { name: 'caption', type: 'string', default: 'undefined', desc: 'Optional caption or validation message.', required: false },
-    { name: 'leadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Leading icon/content inside input box.', required: false },
-    { name: 'trailingIcon', type: 'ReactNode', default: 'undefined', desc: 'Trailing icon/content for non-password input.', required: false },
-    { name: 'onTrailingIconPressed', type: '() => void', default: 'undefined', desc: 'Callback when trailing icon is pressed.', required: false },
-    { name: 'prefixText', type: 'string', default: 'undefined', desc: 'Prefix text shown after leading icon.', required: false },
-    { name: 'postfixText', type: 'string', default: 'undefined', desc: 'Postfix text shown before trailing icon.', required: false },
-    { name: 'trailingIconLabel', type: 'ReactNode', default: 'undefined', desc: 'Trailing icon/content in label row.', required: false },
-    { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the input is interactive.', required: false },
-    { name: 'readOnly', type: 'boolean', default: 'false', desc: 'Whether the input is non-editable.', required: false },
-    { name: 'singleLine', type: 'boolean', default: 'true', desc: 'Single-line or multi-line mode.', required: false },
-    { name: 'maxLines', type: 'number', default: 'undefined', desc: 'Maximum lines for multi-line mode.', required: false },
-    { name: 'maxLength', type: 'number', default: 'undefined', desc: 'Maximum character length.', required: false },
-    { name: 'textAlign', type: "'left' | 'center' | 'right'", default: "'left'", desc: 'Text alignment inside input.', required: false },
-    { name: 'style', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for input text.', required: false },
-    { name: 'placeholderStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for placeholder text color style.', required: false },
-    { name: 'labelStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for label text.', required: false },
-    { name: 'captionStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for caption text.', required: false },
-    { name: 'backgroundColor', type: 'string', default: 'theme-based', desc: 'Background color override.', required: false },
-    { name: 'borderColor', type: 'string', default: 'theme/status-based', desc: 'Border color override for enabled default state.', required: false },
-    { name: 'disabledBorderColor', type: 'string', default: 'onSurface @ 30%', desc: 'Border color override when disabled.', required: false },
-    { name: 'borderWidth', type: 'number', default: '1.0', desc: 'Border width for enabled states.', required: false },
-    { name: 'disabledBorderWidth', type: 'number', default: '0.0', desc: 'Border width when disabled.', required: false },
-    { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Outer container style override.', required: false },
-    { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
-  ];
+  const isAadhaarStory = activeStory.startsWith('input-aadhaar');
+  const isPanStory = activeStory.startsWith('input-pan');
+  const isOtpStory = activeStory.startsWith('input-otp');
+
+  const propsData = isAadhaarStory
+    ? [
+      { name: 'value', type: 'string', default: 'required', desc: 'Current formatted Aadhaar string (XXXX XXXX XXXX).', required: true },
+      { name: 'onValueChange', type: '(value: string) => void', default: 'required', desc: 'Callback triggered when formatted text inside the field changes.', required: true },
+      { name: 'showMaskToggle', type: 'boolean', default: 'false', desc: 'Whether to display the eye toggle icon for masking / unmasking the Aadhaar number with "X".', required: false },
+      { name: 'maskAll', type: 'boolean', default: 'true', desc: 'Whether to mask all digits (XXXX XXXX XXXX) instead of only first 8 digits (XXXX XXXX 1234).', required: false },
+      { name: 'defaultMasked', type: 'boolean', default: 'true', desc: 'Initial masked state when uncontrolled and showMaskToggle is enabled.', required: false },
+      { name: 'isMasked', type: 'boolean', default: 'undefined', desc: 'Whether the Aadhaar number is currently masked (controlled mode).', required: false },
+      { name: 'onMaskToggle', type: '(isMasked: boolean) => void', default: 'undefined', desc: 'Callback triggered when the mask eye toggle is pressed.', required: false },
+      { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", desc: 'Size of the input field.', required: false },
+      { name: 'status', type: "'defaultStatus' | 'error' | 'warning' | 'success'", default: "'defaultStatus'", desc: 'Validation status. Automatically evaluates Verhoeff checksum when 12 digits are complete if defaultStatus.', required: false },
+      { name: 'label', type: 'string', default: "'Aadhaar Number'", desc: 'Optional label displayed above the input box.', required: false },
+      { name: 'required', type: 'boolean', default: 'false', desc: 'Whether the field is required (displays red *).', required: false },
+      { name: 'placeholder', type: 'string', default: "'XXXX XXXX XXXX'", desc: 'Placeholder hint text inside the input box when empty.', required: false },
+      { name: 'caption', type: 'string', default: "'Enter your 12-digit Aadhaar number'", desc: 'Caption or validation helper text displayed below the input box.', required: false },
+      { name: 'leadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Optional leading widget/icon inside the left side of the input box.', required: false },
+      { name: 'trailingIcon', type: 'ReactNode', default: 'undefined', desc: 'Optional trailing widget/icon inside the right side of the input box (overridden when showMaskToggle is true).', required: false },
+      { name: 'onTrailingIconPressed', type: '() => void', default: 'undefined', desc: 'Callback triggered when trailingIcon is pressed.', required: false },
+      { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the input field is interactive or disabled.', required: false },
+      { name: 'readOnly', type: 'boolean', default: 'false', desc: 'Whether the input field is read-only or editable.', required: false },
+      { name: 'style', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Optional override for the input value text style.', required: false },
+      { name: 'labelStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Optional override for the label text style.', required: false },
+      { name: 'placeholderStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Optional override for the placeholder text style.', required: false },
+      { name: 'captionStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Optional override for the caption text style.', required: false },
+      { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Optional style for the outermost container wrapper.', required: false },
+      { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
+    ]
+    : isPanStory
+      ? [
+        { name: 'value', type: 'string', default: 'required', desc: 'Current uppercase PAN string (ABCDE1234F).', required: true },
+        { name: 'onValueChange', type: '(value: string) => void', default: 'required', desc: 'Callback triggered when text changes (auto-capitalized).', required: true },
+        { name: 'size', type: "'small' | 'medium' | 'large'", default: "'medium'", desc: 'Size of the input field.', required: false },
+        { name: 'status', type: "'defaultStatus' | 'error' | 'warning' | 'success'", default: "'defaultStatus'", desc: 'Validation status controlling border and caption.', required: false },
+        { name: 'label', type: 'string', default: "'PAN Card Number'", desc: 'Optional label displayed above the input box.', required: false },
+        { name: 'required', type: 'boolean', default: 'false', desc: 'Whether field is required.', required: false },
+        { name: 'placeholder', type: 'string', default: "'ABCDE1234F'", desc: 'Placeholder hint text.', required: false },
+        { name: 'caption', type: 'string', default: "'Enter your 10-character alphanumeric PAN'", desc: 'Caption text helper.', required: false },
+        { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether interactive.', required: false },
+        { name: 'readOnly', type: 'boolean', default: 'false', desc: 'Whether read-only.', required: false },
+      ]
+      : isOtpStory
+        ? [
+          { name: 'value', type: 'string', default: 'required', desc: 'Current combined OTP string.', required: true },
+          { name: 'length', type: 'number', default: '6', desc: 'Number of individual digit boxes (typically 4 or 6).', required: false },
+          { name: 'onChanged', type: '(otp: string) => void', default: 'undefined', desc: 'Callback triggered on any digit change.', required: false },
+          { name: 'onCompleted', type: '(otp: string) => void', default: 'undefined', desc: 'Callback triggered when all digit boxes are completely filled.', required: false },
+          { name: 'obscure', type: 'boolean', default: 'false', desc: 'Whether to mask entered digits with bullet dots.', required: false },
+          { name: 'status', type: "'defaultStatus' | 'error' | 'success'", default: "'defaultStatus'", desc: 'Validation state for digit borders.', required: false },
+          { name: 'boxSize', type: 'number', default: '48', desc: 'Width and height of each square digit input box.', required: false },
+        ]
+        : [
+          { name: 'value', type: 'string', default: 'required', desc: 'Current text string inside the input field.', required: true },
+          { name: 'onValueChange', type: '(value: string) => void', default: 'required', desc: 'Callback triggered when text changes.', required: true },
+          { name: 'size', type: "'small' | 'medium' | 'large' | 'xl'", default: "'medium'", desc: 'Size of the input field.', required: false },
+          { name: 'type', type: "'text' | 'password' | 'number' | 'email'", default: "'text'", desc: 'Type of input field.', required: false },
+          { name: 'status', type: "'defaultStatus' | 'error' | 'warning' | 'success'", default: "'defaultStatus'", desc: 'Validation status controlling border and caption color.', required: false },
+          { name: 'label', type: 'string', default: 'undefined', desc: 'Label displayed above the input box.', required: false },
+          { name: 'required', type: 'boolean', default: 'false', desc: 'Whether field is required (shows red asterisk).', required: false },
+          { name: 'placeholder', type: 'string', default: 'undefined', desc: 'Placeholder hint text.', required: false },
+          { name: 'caption', type: 'string', default: 'undefined', desc: 'Optional caption or validation message.', required: false },
+          { name: 'leadingIcon', type: 'ReactNode', default: 'undefined', desc: 'Leading icon/content inside input box.', required: false },
+          { name: 'trailingIcon', type: 'ReactNode', default: 'undefined', desc: 'Trailing icon/content for non-password input.', required: false },
+          { name: 'onTrailingIconPressed', type: '() => void', default: 'undefined', desc: 'Callback when trailing icon is pressed.', required: false },
+          { name: 'prefixText', type: 'string', default: 'undefined', desc: 'Prefix text shown after leading icon.', required: false },
+          { name: 'postfixText', type: 'string', default: 'undefined', desc: 'Postfix text shown before trailing icon.', required: false },
+          { name: 'trailingIconLabel', type: 'ReactNode', default: 'undefined', desc: 'Trailing icon/content in label row.', required: false },
+          { name: 'enabled', type: 'boolean', default: 'true', desc: 'Whether the input is interactive.', required: false },
+          { name: 'readOnly', type: 'boolean', default: 'false', desc: 'Whether the input is non-editable.', required: false },
+          { name: 'singleLine', type: 'boolean', default: 'true', desc: 'Single-line or multi-line mode.', required: false },
+          { name: 'maxLines', type: 'number', default: 'undefined', desc: 'Maximum lines for multi-line mode.', required: false },
+          { name: 'maxLength', type: 'number', default: 'undefined', desc: 'Maximum character length.', required: false },
+          { name: 'textAlign', type: "'left' | 'center' | 'right'", default: "'left'", desc: 'Text alignment inside input.', required: false },
+          { name: 'style', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for input text.', required: false },
+          { name: 'placeholderStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for placeholder text color style.', required: false },
+          { name: 'labelStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for label text.', required: false },
+          { name: 'captionStyle', type: 'StyleProp<TextStyle>', default: 'undefined', desc: 'Style override for caption text.', required: false },
+          { name: 'backgroundColor', type: 'string', default: 'theme-based', desc: 'Background color override.', required: false },
+          { name: 'borderColor', type: 'string', default: 'theme/status-based', desc: 'Border color override for enabled default state.', required: false },
+          { name: 'disabledBorderColor', type: 'string', default: 'onSurface @ 30%', desc: 'Border color override when disabled.', required: false },
+          { name: 'borderWidth', type: 'number', default: '1.0', desc: 'Border width for enabled states.', required: false },
+          { name: 'disabledBorderWidth', type: 'number', default: '0.0', desc: 'Border width when disabled.', required: false },
+          { name: 'containerStyle', type: 'StyleProp<ViewStyle>', default: 'undefined', desc: 'Outer container style override.', required: false },
+          { name: 'testID', type: 'string', default: 'undefined', desc: 'Test identifier for automation.', required: false },
+        ];
 
   return (
     <div className='wb-page'>

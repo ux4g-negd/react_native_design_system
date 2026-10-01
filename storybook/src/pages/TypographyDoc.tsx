@@ -182,7 +182,7 @@ const TypographyUsage: React.FC = () => {
         filename="Basic Usage Example"
         code={`import React from 'react';
 import { Text, View } from 'react-native';
-import { useUx4gTheme } from 'ux4g-react-native-design-system';
+import { useUx4gTheme } from 'ux4g-react-native-components';
 
 export const PortalHeader = () => {
   const { typography, colors } = useUx4gTheme();

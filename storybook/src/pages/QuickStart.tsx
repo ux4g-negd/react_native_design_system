@@ -47,19 +47,23 @@ interface Requirement {
 const REQUIREMENTS: Requirement[] = [
   { name: 'React Native', version: '>= 0.72.0', required: true },
   { name: 'React', version: '>= 18.0.0', required: true },
-  // { name: 'react-native-svg', version: '>= 15.0.0', required: true },
-  // { name: 'react-native-document-picker', version: '>= 9.0.0', required: false },
-  // { name: 'react-native-image-picker', version: '>= 7.0.0', required: false },
+  { name: 'react-native-svg', version: '>= 15.0.0', required: true },
+  { name: 'react-native-document-picker', version: '>= 9.0.0', required: false },
+  { name: 'react-native-image-picker', version: '>= 7.0.0', required: false },
 ];
 
 const INSTALL_CODES: DocCode[] = [
   {
-    label: 'Terminal',
-    code: 'npm install ux4g-react-native-design-system@1.0.9-beta.0',
+    label: 'Terminal (npm)',
+    code: 'npm install ux4g-react-native-components react-native-svg',
   },
   {
-    label: "This will add a line like this to your package's package.json\n(and run an implicit npm install):",
-    code: '"dependencies": {\n  "ux4g-react-native-design-system": "1.0.9-beta.0"\n}',
+    label: 'Terminal (yarn)',
+    code: 'yarn add ux4g-react-native-components react-native-svg',
+  },
+  {
+    label: "This will add a line like this to your package's package.json\n(and run an implicit install):",
+    code: '"dependencies": {\n  "ux4g-react-native-components": "^1.0.0",\n  "react-native-svg": ">=15.0.0"\n}',
   },
 ];
 
@@ -73,13 +77,13 @@ const IMPORT_SECTIONS: DocSection[] = [
 const IMPORT_CODES: DocCode[] = [
   {
     label: '',
-    code: "import { Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-design-system';",
+    code: "import { Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-components';",
   },
   {
     label: 'Wrap your app with Ux4gThemeProvider',
     code:
       "import React from 'react';\n" +
-      "import { Ux4gThemeProvider, Ux4gButton } from 'ux4g-react-native-design-system';\n" +
+      "import { Ux4gThemeProvider, Ux4gButton } from 'ux4g-react-native-components';\n" +
       '\n' +
       'export default function App() {\n' +
       '  return (\n' +
@@ -92,7 +96,7 @@ const IMPORT_CODES: DocCode[] = [
   {
     label: 'Use any component',
     code:
-      "import { Ux4gButton } from 'ux4g-react-native-design-system';\n" +
+      "import { Ux4gButton } from 'ux4g-react-native-components';\n" +
       '\n' +
       "const MyScreen = () => (\n" +
       "  <Ux4gButton text='Submit' onPress={() => {}} />\n" +
@@ -206,7 +210,7 @@ const Requirements: React.FC<{ isDark: boolean }> = ({ isDark }) => (
 //       </button>
 //       <a
 //         className={`qg-next-chip ${isDark ? 'dark' : ''}`}
-//         href="https://www.npmjs.com/package/ux4g-react-native-design-system"
+//         href="https://www.npmjs.com/package/ux4g-react-native-components"
 //         target="_blank"
 //         rel="noopener noreferrer"
 //       >

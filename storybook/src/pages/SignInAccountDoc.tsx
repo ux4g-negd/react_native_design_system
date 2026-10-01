@@ -75,7 +75,7 @@ import {
   Ux4gThemeProvider,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Path, Circle } from 'react-native-svg';
 
 const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; color?: string }) => (
@@ -379,7 +379,7 @@ import {
   Ux4gThemeProvider,
   UX4GColors,
   defaultUx4gTypography,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Path, Circle } from 'react-native-svg';
 
 const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; color?: string }) => (

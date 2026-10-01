@@ -78,7 +78,7 @@ import {
   Ux4gButton,
   Ux4gCheckbox,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const DeclarationCardPattern = ({
   isDark = ${isDark},
@@ -204,7 +204,7 @@ import {
   Ux4gButton,
   Ux4gCheckbox,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const DeclarationBeforeSubmissionPattern = ({
   isDark = ${isDark},

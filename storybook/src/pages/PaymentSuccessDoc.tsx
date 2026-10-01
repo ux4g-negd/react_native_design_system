@@ -59,7 +59,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const PaymentSuccessCardPattern = ({ isDark }: { isDark: boolean }) => {
   const details = [
@@ -206,7 +206,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const PaymentSuccessDefaultPattern = ({ isDark }: { isDark: boolean }) => {
   const details = [

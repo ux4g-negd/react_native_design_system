@@ -1,5 +1,5 @@
 /**
- * Internal Test Host App for UX4G React Native Design System (`ux4g-react-native-design-system`).
+ * Internal Test Host App for UX4G React Native Design System (`ux4g-react-native-components`).
  * Renders a Component Showcase Hub with tabs to easily toggle between `<SpinnerShowcase />` and `<ButtonShowcase />`.
  */
 

@@ -98,7 +98,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gSearchField,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const CATEGORIES = [
   'Application Issues',
@@ -285,7 +285,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gSearchField,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const CATEGORIES = [
   'Application Issues',

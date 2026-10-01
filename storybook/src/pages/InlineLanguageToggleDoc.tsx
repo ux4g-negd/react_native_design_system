@@ -78,7 +78,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gChoiceChip,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const LANGUAGES = ['English', 'हिन्दी', 'தமிழ்', 'తెలుగు'];
 
@@ -224,7 +224,7 @@ import {
   Ux4gCard,
   Ux4gChoiceChip,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const LANGUAGES = ['English', 'हिन्दी', 'தமிழ்', 'తెలుగు'];
 

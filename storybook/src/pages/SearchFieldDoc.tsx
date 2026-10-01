@@ -39,7 +39,7 @@ const getStoryCode = (story: SearchStory): string => {
   if (story === 'search-submit') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gSearchField } from 'ux4g-react-native-design-system';
+import { Ux4gSearchField } from 'ux4g-react-native-components';
 
 export default function SearchFieldSubmitExample() {
   const [filledValue, setFilledValue] = useState('Delhi');
@@ -71,7 +71,7 @@ export default function SearchFieldSubmitExample() {
   if (story === 'search-autocomplete') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gSearchField } from 'ux4g-react-native-design-system';
+import { Ux4gSearchField } from 'ux4g-react-native-components';
 
 const options = ['India', 'Indonesia', 'United States', 'United Kingdom', 'Australia', 'Canada'];
 
@@ -107,7 +107,7 @@ export default function SearchFieldAutocompleteExample() {
   if (story === 'search-status') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gSearchField } from 'ux4g-react-native-design-system';
+import { Ux4gSearchField } from 'ux4g-react-native-components';
 
 export default function SearchFieldStatusExample() {
   const [errorValue, setErrorValue] = useState('Invalid @#$');
@@ -144,7 +144,7 @@ export default function SearchFieldStatusExample() {
 
   return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gSearchField } from 'ux4g-react-native-design-system';
+import { Ux4gSearchField } from 'ux4g-react-native-components';
 
 export default function SearchFieldBasicExample() {
   const [value, setValue] = useState('');
@@ -261,7 +261,7 @@ export const SearchFieldDoc: React.FC<SearchFieldDocProps> = ({ isDark, story = 
   const renderStoryPreview = () => {
     const snackCodeString = `import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Ux4gSearchField, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gSearchField, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 const sampleOptions = ['India', 'Indonesia', 'United States', 'United Kingdom', 'Australia', 'Canada'];
 
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gSearchField%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gSearchField%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

@@ -74,7 +74,7 @@ import {
   Ux4gButton,
   Ux4gStepper,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const JourneyProgressIndicatorCardScreen = ({
   isDark = false,
@@ -401,7 +401,7 @@ import {
   Ux4gButton,
   Ux4gStepper,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const JourneyProgressIndicatorScreen = ({
   isDark = false,

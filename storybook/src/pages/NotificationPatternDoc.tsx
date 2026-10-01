@@ -201,7 +201,7 @@ export const NotificationPatternDoc: React.FC<NotificationPatternDocProps> = ({ 
     if (variant === 'emptyState') {
       return `import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { UX4GColors } from 'ux4g-react-native-design-system';
+import { UX4GColors } from 'ux4g-react-native-components';
 
 export const NotificationEmptyPattern = () => {
   return (
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     if (variant === 'notificationTypes') {
       return `import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { UX4GColors } from 'ux4g-react-native-design-system';
+import { UX4GColors } from 'ux4g-react-native-components';
 
 export const NotificationTypesPattern = () => {
   return (
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
 
     return `import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { UX4GColors } from 'ux4g-react-native-design-system';
+import { UX4GColors } from 'ux4g-react-native-components';
 
 export const NotificationPanelDefaultPattern = () => {
   const [items, setItems] = useState([

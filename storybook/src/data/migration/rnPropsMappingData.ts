@@ -293,11 +293,11 @@ export const RN_PROPS_MAPPING_DATA: RNPropMappingItem[] = [
   // 18. Ux4gAadhaarInputField
   {
     component: "Ux4gAadhaarInputField",
-    propGroup: "Aadhaar Formatting & Checksum",
-    ux4gProp: "value={string} | onValueChange={(val) => void} | label={string} | required={boolean} | placeholder='XXXX XXXX XXXX' | status='defaultStatus' | 'error' | 'warning' | 'success' | caption={string} | size='small' | 'medium' | 'large' | enabled={boolean}",
+    propGroup: "Formatting & Masking",
+    ux4gProp: "value={string} | onValueChange={(val) => void} | showMaskToggle={boolean} | maskAll={boolean} | defaultMasked={boolean} | onMaskToggle={(masked) => void} | label={string} | required={boolean} | placeholder='XXXX XXXX XXXX' | status='defaultStatus' | 'error' | 'warning' | 'success' | caption={string} | size='small' | 'medium' | 'large' | enabled={boolean}",
     paperProp: "Not Available",
     rneProp: "Not Available",
-    description: "Auto-formatting 12-digit Aadhaar number with UIDAI-compliant Verhoeff checksum algorithm validation."
+    description: "Auto-formatting 12-digit Aadhaar number with UIDAI-compliant Verhoeff checksum algorithm validation and eye toggle masking ('X')."
   },
 
   // 19. Ux4gPanInputField

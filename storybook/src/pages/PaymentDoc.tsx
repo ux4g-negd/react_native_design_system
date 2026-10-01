@@ -63,7 +63,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 export const PaymentSummaryCardPattern = ({ isDark }: { isDark: boolean }) => {
@@ -180,7 +180,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 export const PaymentSummaryDefaultPattern = ({ isDark }: { isDark: boolean }) => {

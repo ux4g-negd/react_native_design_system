@@ -89,7 +89,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackHintScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [aadhaarValue, setAadhaarValue] = useState('');
@@ -221,7 +221,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackHintCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [aadhaarValue, setAadhaarValue] = useState('');

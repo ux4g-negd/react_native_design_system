@@ -56,7 +56,7 @@ const getStoryCode = (story: PopoverStory): string => {
   if (story === 'popover-rich') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gButton, Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gTooltip } from 'ux4g-react-native-components';
 
 export default function PopoverRichExample() {
   return (
@@ -79,7 +79,7 @@ export default function PopoverRichExample() {
   if (story === 'popover-placements') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip } from 'ux4g-react-native-components';
 
 const Anchor = ({ label }: { label: string }) => (
   <View style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: '#EEF2FF' }}>
@@ -112,7 +112,7 @@ export default function PopoverPlacementsExample() {
   if (story === 'popover-custom-content') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip } from 'ux4g-react-native-components';
 
 export default function PopoverCustomContentExample() {
   return (
@@ -140,7 +140,7 @@ export default function PopoverCustomContentExample() {
   if (story === 'popover-trigger') {
     return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip } from 'ux4g-react-native-components';
 
 const TriggerChip = ({ label }: { label: string }) => (
   <View style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8, backgroundColor: '#F3F4F6' }}>
@@ -164,7 +164,7 @@ export default function PopoverTriggerExample() {
 
   return `import React from 'react';
 import { Text, View } from 'react-native';
-import { Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gTooltip } from 'ux4g-react-native-components';
 
 export default function PopoverBasicExample() {
   return (
@@ -260,7 +260,7 @@ export const PopoverDoc: React.FC<PopoverDocProps> = ({ isDark, story = 'popover
   const renderStoryPreview = () => {
     const snackCodeString = `import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gButton, Ux4gThemeProvider, Ux4gTooltip } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gThemeProvider, Ux4gTooltip } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gPopover%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gPopover%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

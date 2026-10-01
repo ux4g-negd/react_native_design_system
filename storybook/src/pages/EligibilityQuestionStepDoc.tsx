@@ -64,7 +64,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const EligibilityQuestionCardScreen = ({
   isDark = false,
@@ -421,7 +421,7 @@ import {
   Ux4gDivider,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const EligibilityQuestionScreen = ({
   isDark = false,

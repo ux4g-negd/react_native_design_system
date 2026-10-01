@@ -56,7 +56,7 @@ import {
   Ux4gButton,
   Ux4gTag,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const DataSharingConsentPattern = ({
   isDark = ${isDark},

@@ -76,7 +76,7 @@ import {
   Ux4gLinearProgressBar,
   Ux4gUnifiedPillTag,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ApplicationStatusTrackerPattern = ({
   isDark = false,

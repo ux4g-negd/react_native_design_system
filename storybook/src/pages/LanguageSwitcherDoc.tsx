@@ -111,7 +111,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const LANGUAGES = [
   { id: 'en', native: 'English', english: 'United States' },
@@ -438,7 +438,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gCard,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const LANGUAGES = [
   { id: 'en', native: 'English', english: 'United States' },

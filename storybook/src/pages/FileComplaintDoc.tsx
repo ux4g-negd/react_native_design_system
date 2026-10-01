@@ -108,7 +108,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const CATEGORIES = [
   { label: 'Technical Issue', value: 'tech' },
@@ -316,7 +316,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 const CATEGORIES = [
   { label: 'Technical Issue', value: 'tech' },

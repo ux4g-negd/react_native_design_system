@@ -219,7 +219,7 @@ import {
   SlotTimeStatus,
   SlotTimeEntry,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const SelectAppointmentTimeScreen = ({
   isDark = false,
@@ -351,7 +351,7 @@ import {
   SlotTimeStatus,
   SlotTimeEntry,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 /// Same as expanded view but with viewMode set to "compact".
 /// The bottom sheet shows time slots in a 2-column grid layout.

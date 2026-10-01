@@ -26,7 +26,7 @@ import {
   Ux4gChoiceChip,
   Ux4gChipGroup,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function SuggestionAndActionChipsExample() {
   const [selectedTag, setSelectedTag] = useState('React Native');
@@ -115,7 +115,7 @@ import {
   Ux4gChipGroup,
   Ux4gInputChipField,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function InputChipsExample() {
   const [chips, setChips] = useState(['React Native', 'TypeScript', 'Design System', 'Disabled Tag']);
@@ -175,7 +175,7 @@ import {
   Ux4gFilterChip,
   Ux4gChipGroup,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function ChoiceAndFilterChipsExample() {
   const [selectedChoice, setSelectedChoice] = useState('Option 1');
@@ -247,7 +247,7 @@ import {
   Ux4gChoiceChip,
   Ux4gChipGroup,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function App() {
   const [selectedTag, setSelectedTag] = useState('React Native');
@@ -351,7 +351,7 @@ import {
   Ux4gChipGroup,
   Ux4gInputChipField,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function App() {
   const [chips, setChips] = useState(['React Native', 'TypeScript', 'Design System', 'Disabled Tag']);
@@ -421,7 +421,7 @@ import {
   Ux4gFilterChip,
   Ux4gChipGroup,
   Ux4gThemeProvider,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export default function App() {
   const [selectedChoice, setSelectedChoice] = useState('Option 1');
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
 });`;
     }
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChips%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gChips%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

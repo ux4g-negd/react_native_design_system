@@ -16,7 +16,7 @@ export const AccordionDoc: React.FC<AccordionDocProps> = ({ isDark, story = 'acc
   /* ── Code Generator ── */
   const codeString = useMemo(() => {
     const lines: string[] = [];
-    lines.push(`import { Ux4gAccordion } from 'ux4g-react-native-design-system';`);
+    lines.push(`import { Ux4gAccordion } from 'ux4g-react-native-components';`);
     lines.push(`import { Text } from 'react-native';`);
     lines.push(`import { useState } from 'react';`);
     lines.push('');
@@ -55,7 +55,7 @@ export const AccordionDoc: React.FC<AccordionDocProps> = ({ isDark, story = 'acc
   const renderStoryPreview = () => {
     const snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Ux4gAccordion, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gAccordion, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [basicExpanded, setBasicExpanded] = useState(false);
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     padding: 20
   }
 });`;
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gAccordion%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gAccordion%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
     return (
       <iframe
         src={snackUrl}

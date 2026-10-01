@@ -82,7 +82,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const LiveChatSupportScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const screenBg = isDark ? UX4GColors.neutral950 : '#FFFFFF';
@@ -295,7 +295,7 @@ import {
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 /// Card Style variant — live chat support inside a white card on purple background.
 export const LiveChatSupportCardScreen = ({ isDark = false }: { isDark?: boolean }) => {

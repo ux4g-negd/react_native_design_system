@@ -49,7 +49,7 @@ import {
   Ux4gOtpInput,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 const CheckIcon = ({ size = 22, color = '#FFFFFF' }: { size?: number; color?: string }) => (
@@ -230,7 +230,7 @@ import {
   Ux4gOtpInput,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 import Svg, { Path } from 'react-native-svg';
 
 const CheckIcon = ({ size = 22, color = '#FFFFFF' }: { size?: number; color?: string }) => (

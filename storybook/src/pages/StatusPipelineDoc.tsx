@@ -93,7 +93,7 @@ const getStoryCode = (story: PipelineStory): string => {
 
   if (story.endsWith('-states')) {
     return `import React from 'react';
-import { Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
+import { Ux4gStatusPipeline } from 'ux4g-react-native-components';
 
 export default function StatusPipelineStatesExample() {
   return (
@@ -128,7 +128,7 @@ export default function StatusPipelineStatesExample() {
 
     return `import React from 'react';
 import { View } from 'react-native';
-import { Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
+import { Ux4gStatusPipeline } from 'ux4g-react-native-components';
 
 export default function StatusPipelineSizesExample() {
   return (
@@ -153,7 +153,7 @@ ${render('m')}
 
   if (story.endsWith('-colors')) {
     return `import React from 'react';
-import { Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
+import { Ux4gStatusPipeline } from 'ux4g-react-native-components';
 
 export default function StatusPipelineColorsExample() {
   return (
@@ -182,7 +182,7 @@ export default function StatusPipelineColorsExample() {
 
   if (story.endsWith('-labels')) {
     return `import React from 'react';
-import { Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
+import { Ux4gStatusPipeline } from 'ux4g-react-native-components';
 
 export default function StatusPipelineLabelsExample() {
   return (
@@ -204,7 +204,7 @@ export default function StatusPipelineLabelsExample() {
 
   if (story.endsWith('-nolabels')) {
     return `import React from 'react';
-import { Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
+import { Ux4gStatusPipeline } from 'ux4g-react-native-components';
 
 export default function StatusPipelineCirclesOnlyExample() {
   return (
@@ -227,7 +227,7 @@ export default function StatusPipelineCirclesOnlyExample() {
   }
 
   return `import React from 'react';
-import { Ux4gStatusPipeline } from 'ux4g-react-native-design-system';
+import { Ux4gStatusPipeline } from 'ux4g-react-native-components';
 
 export default function StatusPipelineBasicExample() {
   return (
@@ -380,7 +380,7 @@ export const StatusPipelineDoc: React.FC<StatusPipelineDocProps> = ({ isDark, st
   const renderStoryPreview = () => {
     const snackCodeString = `import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gStatusPipeline, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gStatusPipeline, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gStatusPipeline%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gStatusPipeline%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

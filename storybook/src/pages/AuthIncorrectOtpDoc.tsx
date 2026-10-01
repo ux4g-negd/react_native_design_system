@@ -50,7 +50,7 @@ import {
   Ux4gOtpInput,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthIncorrectOtpCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('555555');
@@ -231,7 +231,7 @@ import {
   Ux4gOtpInput,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AuthIncorrectOtpDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [otp, setOtp] = useState('555555');

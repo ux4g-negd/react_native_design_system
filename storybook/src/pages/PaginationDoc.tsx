@@ -49,7 +49,7 @@ const getStoryCode = (story: PaginationStory): string => {
   if (story === 'pagination-capsule-arrows') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gPagination } from 'ux4g-react-native-design-system';
+import { Ux4gPagination } from 'ux4g-react-native-components';
 
 export default function PaginationCapsuleArrowsExample() {
   const [currentPage, setCurrentPage] = useState(3);
@@ -72,7 +72,7 @@ export default function PaginationCapsuleArrowsExample() {
   if (story === 'pagination-capsule-dots') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gPagination } from 'ux4g-react-native-design-system';
+import { Ux4gPagination } from 'ux4g-react-native-components';
 
 export default function PaginationCapsuleDotsExample() {
   const [currentPage, setCurrentPage] = useState(2);
@@ -95,7 +95,7 @@ export default function PaginationCapsuleDotsExample() {
   if (story === 'pagination-arrows-right') {
     return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gPagination } from 'ux4g-react-native-design-system';
+import { Ux4gPagination } from 'ux4g-react-native-components';
 
 export default function PaginationArrowsRightExample() {
   const [currentPage, setCurrentPage] = useState(2);
@@ -119,7 +119,7 @@ export default function PaginationArrowsRightExample() {
 
   return `import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Ux4gPagination } from 'ux4g-react-native-design-system';
+import { Ux4gPagination } from 'ux4g-react-native-components';
 
 export default function PaginationDefaultArrowsExample() {
   const [currentPage, setCurrentPage] = useState(3);
@@ -195,7 +195,7 @@ export const PaginationDoc: React.FC<PaginationDocProps> = ({ isDark, story = 'p
   const renderStoryPreview = () => {
     const snackCodeString = `import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { Ux4gPagination, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gPagination, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(3);
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gPagination%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gPagination%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

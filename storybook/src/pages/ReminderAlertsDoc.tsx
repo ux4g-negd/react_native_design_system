@@ -129,7 +129,7 @@ export const ReminderAlertsDoc: React.FC<ReminderAlertsDocProps> = ({ isDark }) 
       case '30 days before expiry':
         return `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gToast, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gToast, UX4GColors } from 'ux4g-react-native-components';
 
 export const Reminder30DaysAlert = () => {
   return (
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
       case '5 days before expiry':
         return `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gToast, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gToast, UX4GColors } from 'ux4g-react-native-components';
 
 export const Reminder5DaysAlert = () => {
   return (
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
       case '2 days before expiry':
         return `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gToast, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gToast, UX4GColors } from 'ux4g-react-native-components';
 
 export const Reminder2DaysAlert = () => {
   return (
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
       case 'On expiry day':
         return `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gToast, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gToast, UX4GColors } from 'ux4g-react-native-components';
 
 export const ReminderExpiryDayAlert = () => {
   return (
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
       case '1 hour before':
         return `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Ux4gToast, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gToast, UX4GColors } from 'ux4g-react-native-components';
 
 export const Reminder1HourAlert = () => {
   return (
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
       default:
         return `import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Ux4gToast, UX4GColors } from 'ux4g-react-native-design-system';
+import { Ux4gToast, UX4GColors } from 'ux4g-react-native-components';
 
 export const RemindersPanelPattern = () => {
   const [alerts, setAlerts] = useState([

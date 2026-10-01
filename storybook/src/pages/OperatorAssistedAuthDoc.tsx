@@ -57,7 +57,7 @@ import {
   Ux4gButton,
   Ux4gCheckbox,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const OperatorAssistedAuthCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [consent, setConsent] = useState(false);
@@ -235,7 +235,7 @@ import {
   Ux4gButton,
   Ux4gCheckbox,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const OperatorAssistedAuthDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [consent, setConsent] = useState(false);

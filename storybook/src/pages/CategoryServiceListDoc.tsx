@@ -112,7 +112,7 @@ import {
   Ux4gChipGroup,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 interface ServiceItem {
   id: string;

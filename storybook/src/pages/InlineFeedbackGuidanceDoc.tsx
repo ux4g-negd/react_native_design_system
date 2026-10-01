@@ -68,7 +68,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackGuidanceScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [category, setCategory] = useState('SC/ST');
@@ -264,7 +264,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const InlineFeedbackGuidanceCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const [category, setCategory] = useState('SC/ST');

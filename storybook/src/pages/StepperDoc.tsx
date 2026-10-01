@@ -225,7 +225,7 @@ ${statusSteps(2, total)}
 
   return `import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ux4gStepper, Ux4gCompactStepper, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gStepper, Ux4gCompactStepper, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [step, setStep] = useState(2);
@@ -280,7 +280,7 @@ export const StepperDoc: React.FC<StepperDocProps> = ({ isDark, story = 'stepper
   const codeString = useMemo(() => buildFunctionalCode(activeStory, isDark), [activeStory, isDark]);
 
   const renderStoryPreview = () => {
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gStepper%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(codeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gStepper%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(codeString)}`;
 
     return (
       <iframe

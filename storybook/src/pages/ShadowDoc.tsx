@@ -77,7 +77,7 @@ const ShadowUsage: React.FC = () => {
         filename="React Native — Shadow Usage"
         code={`import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ux4gShadow, useUx4gTheme } from 'ux4g-react-native-design-system';
+import { Ux4gShadow, useUx4gTheme } from 'ux4g-react-native-components';
 
 export const FloatingCard = () => {
   const { colors } = useUx4gTheme();

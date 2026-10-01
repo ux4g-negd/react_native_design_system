@@ -36,7 +36,7 @@ const getStoryCode = (story: ModalStory): string => {
   if (story === 'modal-header-left') {
     return `import React, { useState } from 'react';
   import { View } from 'react-native';
-import { Ux4gButton, Ux4gIcons, Ux4gModal } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gIcons, Ux4gModal } from 'ux4g-react-native-components';
 
 export default function ModalHeaderLeftExample() {
   const [open, setOpen] = useState(false);
@@ -69,7 +69,7 @@ export default function ModalHeaderLeftExample() {
 
   if (story === 'modal-header-centered') {
     return `import React, { useState } from 'react';
-import { Ux4gButton, Ux4gIcons, Ux4gModal } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gIcons, Ux4gModal } from 'ux4g-react-native-components';
 
 export default function ModalHeaderCenteredExample() {
   const [open, setOpen] = useState(false);
@@ -105,7 +105,7 @@ export default function ModalHeaderCenteredExample() {
   }
 
   return `import React, { useState } from 'react';
-import { Ux4gButton, Ux4gModal } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gModal } from 'ux4g-react-native-components';
 
 export default function ModalFullPreviewExample() {
   const [open, setOpen] = useState(false);
@@ -205,7 +205,7 @@ export const ModalDoc: React.FC<ModalDocProps> = ({ isDark, story = 'modal-full-
   const renderStoryPreview = () => {
     const snackCodeString = `import React, { useState } from 'react';
   import { ScrollView, StyleSheet, View } from 'react-native';
-import { Ux4gButton, Ux4gIcons, Ux4gModal, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
+import { Ux4gButton, Ux4gIcons, Ux4gModal, Ux4gThemeProvider } from 'ux4g-react-native-components';
 
 export default function App() {
   const [open, setOpen] = useState(false);
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gModal%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gModal%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

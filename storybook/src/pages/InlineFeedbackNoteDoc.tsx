@@ -60,7 +60,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const NoteToCitizenScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
@@ -236,7 +236,7 @@ import {
   Ux4gDividerOrientation,
   Ux4gIcon,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const NoteToCitizenCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';

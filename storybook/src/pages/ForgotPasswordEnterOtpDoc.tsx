@@ -62,7 +62,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ResetPasswordEnterOtpCardPattern = () => {
   const [otp, setOtp] = useState('');
@@ -224,7 +224,7 @@ import {
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const ResetPasswordEnterOtpDefaultPattern = () => {
   const [otp, setOtp] = useState('');

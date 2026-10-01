@@ -18,7 +18,7 @@ export const BadgeDoc: React.FC<BadgeDocProps> = ({ isDark, story = 'badge-basic
     lines.push(`import { View } from 'react-native';`);
 
     if (story === 'badge-count') {
-      lines.push(`import { Ux4gBadge, UX4GColors } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gBadge, UX4GColors } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// Single Digit Threshold (9+)');
       lines.push('<Ux4gBadge count={5} />');
@@ -28,7 +28,7 @@ export const BadgeDoc: React.FC<BadgeDocProps> = ({ isDark, story = 'badge-basic
       lines.push('<Ux4gBadge count={99} limit="doubleDigit" />');
       lines.push('<Ux4gBadge count={150} limit="doubleDigit" containerColor={UX4GColors.red500} />');
     } else if (story === 'badge-standalone' || story === 'badge-label') {
-      lines.push(`import { Ux4gBadge, Ux4gIcons, UX4GColors } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gBadge, Ux4gIcons, UX4GColors } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// All Standalone Badge Variants');
       lines.push('<View style={{ flexDirection: "row", gap: 16, alignItems: "center" }}>');
@@ -60,7 +60,7 @@ export const BadgeDoc: React.FC<BadgeDocProps> = ({ isDark, story = 'badge-basic
       lines.push('  {Ux4gIcons.star({ size: 24, color: UX4GColors.gold500 })}');
       lines.push('</View>');
     } else if (story === 'badge-semantic') {
-      lines.push(`import { Ux4gBadge, Ux4gIcons, UX4GColors } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gBadge, Ux4gIcons, UX4GColors } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// Semantic Colors Matrix (Purple, Green, Orange, Red, Grey, Cyan)');
       lines.push('// Row 1: Dot Badges with White Border');
@@ -94,7 +94,7 @@ export const BadgeDoc: React.FC<BadgeDocProps> = ({ isDark, story = 'badge-basic
       lines.push('<Ux4gBadge variant="readyToUse" assetPath={Ux4gIcons.verification({ size: 18 })} showBorder />');
       lines.push('<Ux4gBadge variant="readyToUse" assetPath={Ux4gIcons.star({ size: 18 })} showBorder />');
     } else if (story === 'badge-overlay') {
-      lines.push(`import { Ux4gBadge, Ux4gIcons, UX4GColors } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gBadge, Ux4gIcons, UX4GColors } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// 1. Star Icon with "NEW" Label Badge');
       lines.push('<Ux4gBadge label="NEW" alignment="topRight" containerColor={UX4GColors.primary600}>');
@@ -111,7 +111,7 @@ export const BadgeDoc: React.FC<BadgeDocProps> = ({ isDark, story = 'badge-basic
       lines.push('  {Ux4gIcons.verification({ size: 28, color: "#1C1B1F" })}');
       lines.push('</Ux4gBadge>');
     } else {
-      lines.push(`import { Ux4gBadge, UX4GColors } from 'ux4g-react-native-design-system';`);
+      lines.push(`import { Ux4gBadge, UX4GColors } from 'ux4g-react-native-components';`);
       lines.push('');
       lines.push('// Standalone Dot Badges');
       lines.push('<Ux4gBadge variant="dot" />');
@@ -221,7 +221,7 @@ export const BadgeDoc: React.FC<BadgeDocProps> = ({ isDark, story = 'badge-basic
 
     const snackCodeString = `import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { ${importsUsed.join(', ')} } from 'ux4g-react-native-design-system';
+import { ${importsUsed.join(', ')} } from 'ux4g-react-native-components';
 
 export default function App() {
   return (
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   }
 });`;
 
-    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gBadge%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-design-system@1.0.9-beta.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gBadge%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.0.0,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
     return (
       <iframe

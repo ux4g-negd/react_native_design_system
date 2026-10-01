@@ -69,7 +69,7 @@ import {
   Ux4gStatusBanner,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AutoSaveFormCardScreen = ({
   isDark = ${isDark},
@@ -377,7 +377,7 @@ import {
   Ux4gStatusBanner,
   Ux4gIcons,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AutoSaveFormScreen = ({
   isDark = ${isDark},

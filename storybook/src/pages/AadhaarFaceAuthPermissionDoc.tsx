@@ -53,7 +53,7 @@ import {
   Ux4gCard,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarFaceAuthPermissionCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
@@ -302,7 +302,7 @@ import {
   Ux4gCard,
   Ux4gButton,
   UX4GColors,
-} from 'ux4g-react-native-design-system';
+} from 'ux4g-react-native-components';
 
 export const AadhaarFaceAuthPermissionDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
