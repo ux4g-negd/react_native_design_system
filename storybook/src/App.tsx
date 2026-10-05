@@ -46,6 +46,7 @@ import { FeedbackCsatDoc } from './pages/FeedbackCsatDoc';
 import { FeedbackNpsDoc } from './pages/FeedbackNpsDoc';
 import { SearchFieldDoc } from './pages/SearchFieldDoc';
 import { SliderDoc } from './pages/SliderDoc';
+import { SideMenuDoc } from './pages/SideMenuDoc';
 import { ColorsDoc, ColorsSection } from './pages/ColorsDoc';
 import { TypographyDoc, TypographySection } from './pages/TypographyDoc';
 import { ShadowDoc, ShadowSection } from './pages/ShadowDoc';
@@ -741,6 +742,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('feedbackform')) return 'Components / Feedback';
   if (page.startsWith('empty-state')) return 'Components / Empty State';
   if (page.startsWith('slider')) return 'Components / Slider';
+  if (page.startsWith('side-menu') || page.startsWith('drawer')) return 'Components / Side Menu (Drawer)';
   if (page.startsWith('date-picker')) return 'Components / Date Picker';
   if (page.startsWith('avatar')) return 'Components / Avatar';
   return 'Documentation';
@@ -928,6 +930,9 @@ export const App: React.FC = () => {
     }
     if (activePage.startsWith('slider')) {
       return <SliderDoc isDark={isDark} story={activePage} />;
+    }
+    if (activePage.startsWith('side-menu') || activePage.startsWith('drawer')) {
+      return <SideMenuDoc isDark={isDark} story={activePage} />;
     }
     if (activePage === 'pattern-signup-create-account' || (activePage.includes('signup') && activePage.includes('create-account'))) {
       return <SignUpCreateAccountDoc isDark={isDark} />;

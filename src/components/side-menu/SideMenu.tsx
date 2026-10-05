@@ -17,6 +17,7 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   Easing,
+  Image,
 } from 'react-native';
 import { UX4GColors } from '../../foundation/colors';
 import { useUx4gTheme } from '../../theme/Ux4gThemeContext';
@@ -24,19 +25,53 @@ import { Ux4gIcons, Ux4gIconName } from '../../foundation/icons';
 
 // ─── INTERFACES & TYPES ──────────────────────────────────────────────────────
 
+export type Ux4gSideMenuVariant =
+  | 'standard'
+  | 'citizen'
+  | 'department-services'
+  | 'department-switcher'
+  | 'mailbox'
+  | 'profile-summary';
+
+export type Ux4gSideMenuHeaderVariant =
+  | 'standard'
+  | 'user'
+  | 'department'
+  | 'centered-profile';
+
 export interface Ux4gSideMenuItem {
   /** Unique key for the item */
   key: string;
   /** Display label */
   label: string;
+  /** Optional secondary subtitle text under label */
+  subtitle?: string;
   /** Icon name from Ux4gIcons, ReactNode, or render function */
   icon?: Ux4gIconName | React.ReactNode | ((isActive: boolean, color: string) => React.ReactNode);
-  /** Badge counter or text tag */
+  /** Badge counter or text tag on the right (e.g. 3, 8, 9) */
   badge?: number | string;
   /** Background color of the badge */
   badgeColor?: string;
   /** Text color of the badge */
   badgeTextColor?: string;
+  /** Status tag/pill text (e.g. '3 applications pending') */
+  statusTag?: string;
+  /** Background color of the status tag pill */
+  statusTagBgColor?: string;
+  /** Text color of the status tag pill */
+  statusTagTextColor?: string;
+  /** Initials or short text avatar box instead of an icon (e.g. 'RD', 'TD') */
+  avatarText?: string;
+  /** Background color of the item avatar box */
+  avatarBgColor?: string;
+  /** Text color of the item avatar box */
+  avatarTextColor?: string;
+  /** Shows a checkmark icon on the right side if true */
+  isCheckmark?: boolean;
+  /** Render this item as a styled colored action text link (e.g. 'Customize inbox') */
+  isActionLink?: boolean;
+  /** Color of the action link text */
+  actionLinkColor?: string;
   /** Whether the item is disabled */
   disabled?: boolean;
   /** Press handler for this specific item */
@@ -54,10 +89,78 @@ export interface Ux4gSideMenuItem {
 export interface Ux4gSideMenuSection {
   /** Optional key for the section */
   key?: string;
-  /** Section title header (e.g. 'SERVICES', 'ACCOUNT') */
+  /** Section title header (e.g. 'SERVICES', 'WORKSPACE', 'MAILBOX', 'FOLDERS', 'ACCOUNT') */
   title?: string;
   /** List of items in this section */
   items: Ux4gSideMenuItem[];
+}
+
+export interface Ux4gSideMenuUser {
+  /** Full user display name (e.g. 'Ramesh Kumar') */
+  name: string;
+  /** Role, email, or secondary subtitle (e.g. 'Citizen' or 'ramesh.kumar@gov.in') */
+  roleOrEmail?: string;
+  /** Alternate subtitle property */
+  subtitle?: string;
+  /** Initials text for avatar circle (e.g. 'RK') */
+  avatarText?: string;
+  /** Remote image URL for avatar */
+  avatarUrl?: string;
+  /** Background color for avatar circle */
+  avatarBgColor?: string;
+  /** Text color for avatar initials */
+  avatarTextColor?: string;
+}
+
+export interface Ux4gSideMenuProfileSummary {
+  /** Full user display name (e.g. 'Ramesh Kumar') */
+  name: string;
+  /** Role designation (e.g. 'Citizen') */
+  role?: string;
+  /** Meta information (e.g. '12 applications · 3 actions required') */
+  metaInfo?: string;
+  /** Initials text for large centered avatar (e.g. 'RK') */
+  avatarText?: string;
+  /** Remote image URL for avatar */
+  avatarUrl?: string;
+  /** Background color for avatar circle */
+  avatarBgColor?: string;
+  /** Text color for avatar initials */
+  avatarTextColor?: string;
+  /** Button label for profile action (default: 'View profile') */
+  actionLabel?: string;
+  /** Press callback for the profile action button */
+  onActionPress?: () => void;
+}
+
+export interface Ux4gSideMenuActionCard {
+  /** Optional section tag or header (default: 'ACTION REQUIRED') */
+  tag?: string;
+  /** Callout title (e.g. 'Verify your Aadhaar') */
+  title: string;
+  /** Description text */
+  description: string;
+  /** Button action label (e.g. 'Verify now') */
+  buttonText: string;
+  /** Button press handler */
+  onButtonPress?: () => void;
+  /** Card background color */
+  backgroundColor?: string;
+  /** Button background color */
+  buttonColor?: string;
+  /** Button text color */
+  buttonTextColor?: string;
+}
+
+export interface Ux4gSideMenuFooterBranding {
+  /** Organization or department title (e.g. 'Revenue Department') */
+  title?: string;
+  /** Subtitle text (e.g. 'Government of India' or 'Kanpur division') */
+  subtitle?: string;
+  /** Emblem logo icon or custom element */
+  logo?: React.ReactNode | Ux4gIconName;
+  /** Press handler for footer branding */
+  onPress?: () => void;
 }
 
 export interface Ux4gSideMenuProps {
@@ -65,12 +168,16 @@ export interface Ux4gSideMenuProps {
   isOpen: boolean;
   /** Callback when drawer requests closing */
   onClose: () => void;
+  /** Pre-configured design system layout variant */
+  variant?: Ux4gSideMenuVariant;
   /** Open direction: 'left' (default, left to right) or 'right' (right to left) */
   position?: 'left' | 'right';
   /** Custom width of the drawer panel (default: responsive 80% up to 340dp) */
   width?: number | string;
 
   // Header Props
+  /** Style variant of the header: 'standard' | 'user' | 'department' | 'centered-profile' */
+  headerVariant?: Ux4gSideMenuHeaderVariant;
   /** Organization or department title (default: 'Revenue Department') */
   title?: string;
   /** Subtitle text (default: 'Government of India') */
@@ -82,8 +189,13 @@ export interface Ux4gSideMenuProps {
   /** Custom header component to replace default header */
   customHeader?: React.ReactNode;
 
+  /** User profile information for 'user' header variant */
+  user?: Ux4gSideMenuUser;
+  /** Centered profile summary header data for 'centered-profile' header variant */
+  profileSummary?: Ux4gSideMenuProfileSummary;
+
   // Search Props
-  /** Whether to display the search input bar (default: true) */
+  /** Whether to display the search input bar (default: true for standard, false for others unless set) */
   showSearch?: boolean;
   /** Placeholder text for the search input (default: 'Search for...') */
   searchPlaceholder?: string;
@@ -106,15 +218,21 @@ export interface Ux4gSideMenuProps {
   /** Callback triggered when any item is pressed */
   onItemPress?: (item: Ux4gSideMenuItem, sectionIndex?: number) => void;
 
+  // Action Callout Card
+  /** Callout banner card (e.g. 'ACTION REQUIRED: Verify your Aadhaar') */
+  actionCard?: Ux4gSideMenuActionCard;
+
   // Footer Props
   /** Footer navigation items */
   footerItems?: Ux4gSideMenuItem[];
-  /** Whether to show the default Sign out item in footer (default: true) */
+  /** Whether to show the default Sign out item in footer */
   showSignOut?: boolean;
   /** Label for the default sign out item (default: 'Sign out') */
   signOutLabel?: string;
   /** Callback when Sign out is pressed */
   onSignOut?: () => void;
+  /** Bottom organization branding block (e.g. National Emblem + Revenue Department) */
+  footerBranding?: Ux4gSideMenuFooterBranding;
   /** Custom footer component */
   customFooter?: React.ReactNode;
 
@@ -155,14 +273,18 @@ export interface Ux4gSideMenuProps {
 export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
   isOpen,
   onClose,
+  variant,
   position = 'left',
   width,
-  title = 'Revenue Department',
-  subtitle = 'Government of India',
-  logo = 'national-emblem-logo',
+  headerVariant: explicitHeaderVariant,
+  title: explicitTitle,
+  subtitle: explicitSubtitle,
+  logo: explicitLogo,
   showCloseButton = true,
   customHeader,
-  showSearch = true,
+  user: explicitUser,
+  profileSummary: explicitProfileSummary,
+  showSearch: explicitShowSearch,
   searchPlaceholder = 'Search for...',
   searchQuery: controlledSearch,
   onSearchChange,
@@ -170,12 +292,14 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
   sections: customSections,
   items: flatItems,
   selectedKey: controlledSelectedKey,
-  defaultSelectedKey = 'dashboard',
+  defaultSelectedKey,
   onItemPress,
-  footerItems,
-  showSignOut = true,
+  actionCard: explicitActionCard,
+  footerItems: explicitFooterItems,
+  showSignOut: explicitShowSignOut,
   signOutLabel = 'Sign out',
   onSignOut,
+  footerBranding: explicitFooterBranding,
   customFooter,
   backgroundColor,
   activeItemBackgroundColor,
@@ -197,6 +321,157 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
   const theme = useUx4gTheme();
   const { colors } = theme;
 
+  // ─── RESOLVE PRESET DEFAULTS ACCORDING TO VARIANT ──────────────────────────
+  const resolvedHeaderVariant: Ux4gSideMenuHeaderVariant = useMemo(() => {
+    if (explicitHeaderVariant) return explicitHeaderVariant;
+    if (explicitProfileSummary || variant === 'profile-summary') return 'centered-profile';
+    if (explicitUser || variant === 'citizen' || variant === 'mailbox') return 'user';
+    if (variant === 'department-switcher') return 'department';
+    return 'standard';
+  }, [explicitHeaderVariant, explicitProfileSummary, explicitUser, variant]);
+
+  const resolvedTitle = useMemo(() => {
+    if (explicitTitle !== undefined) return explicitTitle;
+    if (variant === 'department-switcher') return 'Departments';
+    return 'Revenue Department';
+  }, [explicitTitle, variant]);
+
+  const resolvedSubtitle = useMemo(() => {
+    if (explicitSubtitle !== undefined) return explicitSubtitle;
+    if (variant === 'department-switcher') return 'Choose a department to work in.';
+    if (variant === 'department-services' || variant === 'mailbox') return 'Kanpur division';
+    return 'Government of India';
+  }, [explicitSubtitle, variant]);
+
+  const resolvedLogo = explicitLogo !== undefined ? explicitLogo : 'national-emblem-logo';
+
+  const resolvedUser: Ux4gSideMenuUser | undefined = useMemo(() => {
+    if (explicitUser) return explicitUser;
+    if (variant === 'citizen') {
+      return {
+        name: 'Ramesh Kumar',
+        roleOrEmail: 'Citizen',
+        avatarText: 'RK',
+        avatarBgColor: '#EDE9FE',
+        avatarTextColor: UX4GColors.primary600,
+      };
+    }
+    if (variant === 'mailbox') {
+      return {
+        name: 'Ramesh Kumar',
+        roleOrEmail: 'ramesh.kumar@gov.in',
+        avatarText: 'RK',
+        avatarBgColor: '#EDE9FE',
+        avatarTextColor: UX4GColors.primary600,
+      };
+    }
+    return undefined;
+  }, [explicitUser, variant]);
+
+  const resolvedProfileSummary: Ux4gSideMenuProfileSummary | undefined = useMemo(() => {
+    if (explicitProfileSummary) return explicitProfileSummary;
+    if (variant === 'profile-summary') {
+      return {
+        name: 'Ramesh Kumar',
+        role: 'Citizen',
+        metaInfo: '12 applications · 3 actions required',
+        avatarText: 'RK',
+        avatarBgColor: '#EDE9FE',
+        avatarTextColor: UX4GColors.primary600,
+        actionLabel: 'View profile',
+      };
+    }
+    return undefined;
+  }, [explicitProfileSummary, variant]);
+
+  const resolvedShowSearch = useMemo(() => {
+    if (explicitShowSearch !== undefined) return explicitShowSearch;
+    // Default search bar on standard variant only
+    return !variant || variant === 'standard';
+  }, [explicitShowSearch, variant]);
+
+  const resolvedActionCard = useMemo(() => {
+    if (explicitActionCard) return explicitActionCard;
+    if (variant === 'department-services') {
+      return {
+        tag: 'ACTION REQUIRED',
+        title: 'Verify your Aadhaar',
+        description: 'Complete identity verification to continue.',
+        buttonText: 'Verify now',
+      };
+    }
+    return undefined;
+  }, [explicitActionCard, variant]);
+
+  const resolvedFooterBranding = useMemo(() => {
+    if (explicitFooterBranding !== undefined) return explicitFooterBranding;
+    if (variant === 'citizen') {
+      return {
+        title: 'Revenue Department',
+        subtitle: 'Government of India',
+        logo: 'national-emblem-logo',
+      };
+    }
+    if (variant === 'mailbox') {
+      return {
+        title: 'Revenue Department',
+        subtitle: 'Kanpur division',
+        logo: 'national-emblem-logo',
+      };
+    }
+    return undefined;
+  }, [explicitFooterBranding, variant]);
+
+  const resolvedFooterItems = useMemo(() => {
+    if (explicitFooterItems) return explicitFooterItems;
+    if (variant === 'department-switcher') {
+      return [
+        {
+          key: 'request-access',
+          label: 'Request department access',
+          icon: 'add',
+        },
+        {
+          key: 'settings',
+          label: 'Settings',
+          icon: 'more-vert',
+        },
+        {
+          key: 'help-support',
+          label: 'Help & support',
+          icon: 'help',
+        },
+      ];
+    }
+    if (variant === 'mailbox') {
+      return [
+        {
+          key: 'inbox-settings',
+          label: 'Inbox settings',
+          icon: 'more-vert',
+        },
+      ];
+    }
+    return undefined;
+  }, [explicitFooterItems, variant]);
+
+  const resolvedShowSignOut = useMemo(() => {
+    if (explicitShowSignOut !== undefined) return explicitShowSignOut;
+    if (variant === 'department-switcher' || variant === 'department-services' || variant === 'mailbox') {
+      return false;
+    }
+    return true;
+  }, [explicitShowSignOut, variant]);
+
+  // Default initial key
+  const resolvedDefaultKey = useMemo(() => {
+    if (defaultSelectedKey !== undefined) return defaultSelectedKey;
+    if (variant === 'department-switcher') return 'dept-revenue';
+    if (variant === 'mailbox') return 'inbox';
+    if (variant === 'citizen') return 'my-applications';
+    return 'dashboard';
+  }, [defaultSelectedKey, variant]);
+
   // Screen dimensions
   const screenWidth = Dimensions.get('window').width;
   const resolvedDrawerWidth =
@@ -204,7 +479,7 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
       ? width
       : typeof width === 'string' && width.endsWith('%')
       ? (screenWidth * parseFloat(width)) / 100
-      : Math.min(screenWidth * 0.82, 340);
+      : Math.min(screenWidth * 0.84, 340);
 
   // Animation values
   const slideAnim = useRef(
@@ -212,8 +487,8 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
   ).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  // Internal state for controlled/uncontrolled selection & search
-  const [internalSelectedKey, setInternalSelectedKey] = useState<string>(defaultSelectedKey);
+  // Internal state for selection & search
+  const [internalSelectedKey, setInternalSelectedKey] = useState<string>(resolvedDefaultKey);
   const currentSelectedKey =
     controlledSelectedKey !== undefined ? controlledSelectedKey : internalSelectedKey;
 
@@ -236,9 +511,9 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
   const resolvedInactiveFg =
     inactiveItemColor ?? (theme.isDark ? UX4GColors.neutral400 : UX4GColors.neutral800);
   const resolvedBorderColor = theme.isDark ? UX4GColors.neutral700 : `${UX4GColors.neutral400}33`;
-  const resolvedSectionHeaderColor = theme.isDark ? UX4GColors.neutral500 : UX4GColors.neutral600;
+  const resolvedSectionHeaderColor = theme.isDark ? UX4GColors.neutral400 : UX4GColors.neutral600;
 
-  // Modal mount lifecycle state so closing slide animation can finish before unmounting
+  // Modal mount lifecycle state
   const [isModalMounted, setIsModalMounted] = useState<boolean>(isOpen);
 
   // Manage buttery smooth drawer slide animation on isOpen changes
@@ -304,9 +579,241 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
     }
   };
 
-  // Default menu structure matching the reference image exactly
-  const defaultSections: Ux4gSideMenuSection[] = useMemo(
-    () => [
+  // Preset Sections Mapping
+  const defaultSections: Ux4gSideMenuSection[] = useMemo(() => {
+    if (variant === 'citizen') {
+      return [
+        {
+          key: 'main-links',
+          items: [
+            {
+              key: 'my-applications',
+              label: 'My applications',
+              icon: 'applications',
+            },
+            {
+              key: 'my-documents',
+              label: 'My documents',
+              icon: 'layers',
+            },
+            {
+              key: 'notifications',
+              label: 'Notifications',
+              icon: 'alerts',
+              badge: 3,
+              badgeColor: UX4GColors.primary600,
+              badgeTextColor: UX4GColors.neutral0,
+            },
+            {
+              key: 'profile-settings',
+              label: 'Profile & settings',
+              icon: 'account-circle',
+            },
+            {
+              key: 'help-support',
+              label: 'Help & support',
+              icon: 'help',
+            },
+          ],
+        },
+      ];
+    }
+
+    if (variant === 'department-services') {
+      return [
+        {
+          key: 'services-section',
+          title: 'SERVICES',
+          items: [
+            {
+              key: 'dashboard',
+              label: 'Dashboard',
+              icon: 'dashboard',
+            },
+            {
+              key: 'applications',
+              label: 'Applications',
+              icon: 'applications',
+              children: [
+                {
+                  key: 'applications-new',
+                  label: 'New applications',
+                },
+                {
+                  key: 'applications-under-review',
+                  label: 'Under review',
+                },
+                {
+                  key: 'applications-approved',
+                  label: 'Approved applications',
+                },
+              ],
+            },
+            {
+              key: 'inbox',
+              label: 'Inbox',
+              icon: 'inbox',
+              badge: 8,
+              badgeColor: UX4GColors.primary600,
+              badgeTextColor: UX4GColors.neutral0,
+            },
+          ],
+        },
+        {
+          key: 'workspace-section',
+          title: 'WORKSPACE',
+          items: [
+            {
+              key: 'priority-applications',
+              label: 'Priority applications',
+              icon: 'priority',
+            },
+            {
+              key: 'archive',
+              label: 'Archive',
+              icon: 'archive',
+            },
+          ],
+        },
+      ];
+    }
+
+    if (variant === 'department-switcher') {
+      return [
+        {
+          key: 'departments-list',
+          items: [
+            {
+              key: 'dept-revenue',
+              label: 'Revenue Department',
+              subtitle: 'Current department',
+              avatarText: 'RD',
+              avatarBgColor: '#EDE9FE',
+              avatarTextColor: UX4GColors.primary600,
+              isCheckmark: true,
+            },
+            {
+              key: 'dept-transport',
+              label: 'Transport Department',
+              subtitle: 'transport.up.gov.in',
+              avatarText: 'TD',
+              avatarBgColor: '#EDE9FE',
+              avatarTextColor: UX4GColors.primary600,
+              statusTag: '3 applications pending',
+              statusTagBgColor: '#FFEDD5',
+              statusTagTextColor: '#9A3412',
+            },
+          ],
+        },
+      ];
+    }
+
+    if (variant === 'mailbox') {
+      return [
+        {
+          key: 'mailbox-section',
+          title: 'MAILBOX',
+          items: [
+            {
+              key: 'inbox',
+              label: 'Inbox',
+              icon: 'inbox',
+              badge: 9,
+              badgeColor: UX4GColors.primary600,
+              badgeTextColor: UX4GColors.neutral0,
+            },
+            {
+              key: 'assigned-to-me',
+              label: 'Assigned to me',
+              icon: 'account-circle',
+            },
+          ],
+        },
+        {
+          key: 'folders-section',
+          title: 'FOLDERS',
+          items: [
+            {
+              key: 'sent',
+              label: 'Sent',
+              icon: 'send',
+            },
+            {
+              key: 'drafts',
+              label: 'Drafts',
+              icon: 'drafts',
+            },
+            {
+              key: 'archive',
+              label: 'Archive',
+              icon: 'archive',
+            },
+            {
+              key: 'rejected-applications',
+              label: 'Rejected applications',
+              icon: 'priority',
+            },
+            {
+              key: 'customize-inbox',
+              label: 'Customize inbox',
+              isActionLink: true,
+              actionLinkColor: UX4GColors.primary600,
+            },
+          ],
+        },
+      ];
+    }
+
+    if (variant === 'profile-summary') {
+      return [
+        {
+          key: 'account-section',
+          title: 'ACCOUNT',
+          items: [
+            {
+              key: 'profile-settings',
+              label: 'Profile & settings',
+              icon: 'account-circle',
+            },
+            {
+              key: 'saved-items',
+              label: 'Saved items',
+              icon: 'layers',
+            },
+          ],
+        },
+        {
+          key: 'applications-section',
+          title: 'APPLICATIONS',
+          items: [
+            {
+              key: 'my-applications',
+              label: 'My applications',
+              icon: 'applications',
+            },
+            {
+              key: 'track-application',
+              label: 'Track an application',
+              icon: 'track',
+            },
+          ],
+        },
+        {
+          key: 'support-section',
+          title: 'SUPPORT',
+          items: [
+            {
+              key: 'help-support',
+              label: 'Help & support',
+              icon: 'help',
+            },
+          ],
+        },
+      ];
+    }
+
+    // Default Standard Government Menu
+    return [
       {
         key: 'services-section',
         title: 'SERVICES',
@@ -359,9 +866,8 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
           },
         ],
       },
-    ],
-    []
-  );
+    ];
+  }, [variant]);
 
   // Resolve active sections list
   const activeSections = useMemo(() => {
@@ -385,7 +891,9 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
       .map((section) => {
         const matchingItems = section.items
           .map((item) => {
-            const matchesParent = item.label.toLowerCase().includes(query);
+            const matchesParent =
+              item.label.toLowerCase().includes(query) ||
+              (item.subtitle && item.subtitle.toLowerCase().includes(query));
             const matchingChildren = item.children?.filter((child) =>
               child.label.toLowerCase().includes(query)
             );
@@ -457,24 +965,24 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
   };
 
   // Helper to render logo
-  const renderHeaderLogo = () => {
-    if (!logo) return null;
-    if (React.isValidElement(logo)) {
-      return logo;
+  const renderEmblemLogo = (targetLogo: React.ReactNode | Ux4gIconName | undefined, size = 32) => {
+    if (!targetLogo) return null;
+    if (React.isValidElement(targetLogo)) {
+      return targetLogo;
     }
-    if (typeof logo === 'string') {
-      const camelName = logo.replace(/-([a-z])/g, (g) =>
+    if (typeof targetLogo === 'string') {
+      const camelName = targetLogo.replace(/-([a-z])/g, (g) =>
         g[1].toUpperCase()
       ) as keyof typeof Ux4gIcons;
-      const LogoComp = Ux4gIcons[camelName] || Ux4gIcons[logo as keyof typeof Ux4gIcons];
+      const LogoComp = Ux4gIcons[camelName] || Ux4gIcons[targetLogo as keyof typeof Ux4gIcons];
       if (LogoComp) {
-        return <LogoComp size={34} color={resolvedActiveFg} />;
+        return <LogoComp size={size} color={resolvedActiveFg} />;
       }
     }
-    return <Ux4gIcons.nationalEmblemLogo size={34} />;
+    return <Ux4gIcons.nationalEmblemLogo size={size} />;
   };
 
-  // Render a Single Item (Parent or Standalone)
+  // ─── RENDER A SINGLE MENU ITEM ─────────────────────────────────────────────
   const renderMenuItem = (
     item: Ux4gSideMenuItem,
     sectionIndex: number,
@@ -484,6 +992,36 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
     const hasChildren = !!(item.children && item.children.length > 0);
     const isExpanded = expandedKeys[item.key] || false;
     const fgColor = isSelected ? resolvedActiveFg : resolvedInactiveFg;
+
+    // Action Link rendering (e.g. 'Customize inbox')
+    if (item.isActionLink) {
+      return (
+        <Pressable
+          key={item.key}
+          onPress={() => handleItemPress(item, sectionIndex)}
+          accessibilityRole="button"
+          accessibilityLabel={item.label}
+          testID={item.testID || `${testID}-item-${item.key}`}
+          style={({ pressed }) => [
+            styles.actionLinkPressable,
+            pressed && { opacity: 0.7 },
+            itemStyle,
+          ]}
+        >
+          <Text
+            style={[
+              styles.actionLinkLabel,
+              { color: item.actionLinkColor || UX4GColors.primary600 },
+            ]}
+          >
+            {item.label}
+          </Text>
+        </Pressable>
+      );
+    }
+
+    // Has Avatar or Subtitle or Complex Card layout (e.g. Department item)
+    const isComplexItem = !!item.avatarText || !!item.subtitle || !!item.statusTag;
 
     return (
       <View key={item.key} style={styles.itemWrapper}>
@@ -496,34 +1034,90 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
           testID={item.testID || `${testID}-item-${item.key}`}
           style={({ pressed }) => [
             styles.menuItemPressable,
+            isComplexItem && styles.complexItemPressable,
             isSubItem && styles.subItemPressable,
             isSelected && [
               styles.selectedMenuItem,
               { backgroundColor: resolvedActiveBg },
               activeItemStyle,
             ],
-            pressed && !isSelected && { backgroundColor: `${resolvedBorderColor}` },
+            pressed && !isSelected && { backgroundColor: resolvedBorderColor },
             item.disabled && styles.disabledItem,
             itemStyle,
           ]}
         >
-          {/* Left Icon */}
-          <View style={styles.itemIconSlot}>
-            {renderIcon(item.icon, isSelected, fgColor, isSubItem ? 18 : 20)}
-          </View>
+          {/* Avatar Box (e.g. 'RD', 'TD') */}
+          {item.avatarText ? (
+            <View
+              style={[
+                styles.itemAvatarBox,
+                {
+                  backgroundColor: item.avatarBgColor || '#EDE9FE',
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.itemAvatarText,
+                  { color: item.avatarTextColor || UX4GColors.primary600 },
+                ]}
+              >
+                {item.avatarText}
+              </Text>
+            </View>
+          ) : item.icon ? (
+            /* Left Icon Slot */
+            <View style={styles.itemIconSlot}>
+              {renderIcon(item.icon, isSelected, fgColor, isSubItem ? 18 : 20)}
+            </View>
+          ) : null}
 
-          {/* Item Label */}
-          <Text
-            style={[
-              styles.itemLabel,
-              { color: fgColor },
-              isSelected && styles.selectedItemLabel,
-              isSubItem && styles.subItemLabel,
-            ]}
-            numberOfLines={1}
-          >
-            {item.label}
-          </Text>
+          {/* Item Text & Subtitle Area */}
+          <View style={styles.itemContentArea}>
+            <Text
+              style={[
+                styles.itemLabel,
+                { color: fgColor },
+                isSelected && styles.selectedItemLabel,
+                isSubItem && styles.subItemLabel,
+              ]}
+              numberOfLines={1}
+            >
+              {item.label}
+            </Text>
+            {item.subtitle ? (
+              <Text
+                style={[
+                  styles.itemSubtitle,
+                  { color: theme.isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 },
+                ]}
+                numberOfLines={1}
+              >
+                {item.subtitle}
+              </Text>
+            ) : null}
+
+            {/* Status Tag Pill under text (e.g. '3 applications pending') */}
+            {item.statusTag ? (
+              <View
+                style={[
+                  styles.statusTagPill,
+                  {
+                    backgroundColor: item.statusTagBgColor || '#FFEDD5',
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.statusTagText,
+                    { color: item.statusTagTextColor || '#9A3412' },
+                  ]}
+                >
+                  {item.statusTag}
+                </Text>
+              </View>
+            ) : null}
+          </View>
 
           {/* Right Badge (if present) */}
           {item.badge !== undefined && item.badge !== null && (
@@ -542,6 +1136,13 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
               >
                 {String(item.badge)}
               </Text>
+            </View>
+          )}
+
+          {/* Right Checkmark Icon */}
+          {item.isCheckmark && (
+            <View style={styles.itemCheckmarkSlot}>
+              <Ux4gIcons.check size={18} color={resolvedActiveFg} />
             </View>
           )}
 
@@ -578,7 +1179,251 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
     );
   };
 
-  // Drawer Content Body
+  // Helper to extract initials from full name
+  const getInitials = (name?: string): string => {
+    if (!name) return 'U';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
+
+  // ─── RENDER HEADER ─────────────────────────────────────────────────────────
+  const renderHeader = () => {
+    if (customHeader) {
+      return customHeader;
+    }
+
+    // Close button element
+    const closeBtnElement = showCloseButton ? (
+      <Pressable
+        onPress={onClose}
+        hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        accessibilityRole="button"
+        accessibilityLabel="Close side menu"
+        testID={`${testID}-close-btn`}
+        style={({ pressed }) => [
+          styles.closeButton,
+          pressed && { opacity: 0.6, backgroundColor: resolvedBorderColor },
+        ]}
+      >
+        <Ux4gIcons.close size={20} color={resolvedInactiveFg} />
+      </Pressable>
+    ) : null;
+
+    // 1. User Profile Header Variant (e.g. Ramesh Kumar · Citizen)
+    if (resolvedHeaderVariant === 'user' && resolvedUser) {
+      return (
+        <View
+          style={[
+            styles.headerContainer,
+            { borderBottomColor: resolvedBorderColor },
+            headerStyle,
+          ]}
+        >
+          <View style={styles.headerLeftArea}>
+            <View
+              style={[
+                styles.userAvatarCircle,
+                { backgroundColor: resolvedUser.avatarBgColor || '#EDE9FE' },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.userAvatarText,
+                  { color: resolvedUser.avatarTextColor || UX4GColors.primary600 },
+                ]}
+              >
+                {resolvedUser.avatarText || getInitials(resolvedUser.name)}
+              </Text>
+            </View>
+            <View style={styles.headerTitlesArea}>
+              <Text
+                style={[styles.headerTitle, { color: resolvedActiveFg }]}
+                numberOfLines={1}
+              >
+                {resolvedUser.name}
+              </Text>
+              {resolvedUser.roleOrEmail || resolvedUser.subtitle ? (
+                <Text
+                  style={[
+                    styles.headerSubtitle,
+                    { color: resolvedSectionHeaderColor },
+                  ]}
+                  numberOfLines={1}
+                >
+                  {resolvedUser.roleOrEmail || resolvedUser.subtitle}
+                </Text>
+              ) : null}
+            </View>
+          </View>
+          {closeBtnElement}
+        </View>
+      );
+    }
+
+    // 2. Centered Profile Summary Variant (Large Centered Avatar + Stats + View Profile)
+    if (resolvedHeaderVariant === 'centered-profile' && resolvedProfileSummary) {
+      return (
+        <View
+          style={[
+            styles.centeredProfileHeader,
+            { borderBottomColor: resolvedBorderColor },
+            headerStyle,
+          ]}
+        >
+          {/* Top-Right Close Button */}
+          {showCloseButton && (
+            <View style={styles.centeredProfileCloseWrapper}>
+              {closeBtnElement}
+            </View>
+          )}
+
+          {/* Large Centered Avatar */}
+          <View
+            style={[
+              styles.centeredAvatarCircle,
+              { backgroundColor: resolvedProfileSummary.avatarBgColor || '#EDE9FE' },
+            ]}
+          >
+            <Text
+              style={[
+                styles.centeredAvatarText,
+                { color: resolvedProfileSummary.avatarTextColor || UX4GColors.primary600 },
+              ]}
+            >
+              {resolvedProfileSummary.avatarText || getInitials(resolvedProfileSummary.name)}
+            </Text>
+          </View>
+
+          {/* User Name & Role */}
+          <Text
+            style={[styles.centeredProfileName, { color: resolvedActiveFg }]}
+            numberOfLines={1}
+          >
+            {resolvedProfileSummary.name}
+          </Text>
+          {resolvedProfileSummary.role ? (
+            <Text
+              style={[
+                styles.centeredProfileRole,
+                { color: resolvedSectionHeaderColor },
+              ]}
+              numberOfLines={1}
+            >
+              {resolvedProfileSummary.role}
+            </Text>
+          ) : null}
+
+          {/* Meta Info (e.g. 12 applications · 3 actions required) */}
+          {resolvedProfileSummary.metaInfo ? (
+            <Text
+              style={[
+                styles.centeredProfileMeta,
+                { color: theme.isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 },
+              ]}
+              numberOfLines={1}
+            >
+              {resolvedProfileSummary.metaInfo}
+            </Text>
+          ) : null}
+
+          {/* View Profile Outline Button */}
+          <Pressable
+            onPress={resolvedProfileSummary.onActionPress}
+            style={({ pressed }) => [
+              styles.viewProfileBtn,
+              { borderColor: resolvedBorderColor },
+              pressed && { backgroundColor: resolvedActiveBg },
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel={resolvedProfileSummary.actionLabel || 'View profile'}
+          >
+            <Text
+              style={[
+                styles.viewProfileBtnText,
+                { color: resolvedActiveFg },
+              ]}
+            >
+              {resolvedProfileSummary.actionLabel || 'View profile'}
+            </Text>
+          </Pressable>
+        </View>
+      );
+    }
+
+    // 3. Department Switcher Header Variant (Departments / Choose a department...)
+    if (resolvedHeaderVariant === 'department') {
+      return (
+        <View
+          style={[
+            styles.departmentHeaderContainer,
+            { borderBottomColor: resolvedBorderColor },
+            headerStyle,
+          ]}
+        >
+          <View style={styles.headerTitlesArea}>
+            <Text
+              style={[styles.departmentHeaderTitle, { color: resolvedActiveFg }]}
+              numberOfLines={1}
+            >
+              {resolvedTitle}
+            </Text>
+            {resolvedSubtitle ? (
+              <Text
+                style={[
+                  styles.departmentHeaderSubtitle,
+                  { color: resolvedSectionHeaderColor },
+                ]}
+                numberOfLines={2}
+              >
+                {resolvedSubtitle}
+              </Text>
+            ) : null}
+          </View>
+          {closeBtnElement}
+        </View>
+      );
+    }
+
+    // 4. Default Standard Organization Header (Emblem Logo + Title + Subtitle)
+    return (
+      <View
+        style={[
+          styles.headerContainer,
+          { borderBottomColor: resolvedBorderColor },
+          headerStyle,
+        ]}
+      >
+        <View style={styles.headerLeftArea}>
+          <View style={styles.headerLogoWrapper}>{renderEmblemLogo(resolvedLogo, 32)}</View>
+          <View style={styles.headerTitlesArea}>
+            <Text
+              style={[styles.headerTitle, { color: resolvedActiveFg }]}
+              numberOfLines={1}
+            >
+              {resolvedTitle}
+            </Text>
+            {resolvedSubtitle ? (
+              <Text
+                style={[
+                  styles.headerSubtitle,
+                  { color: resolvedSectionHeaderColor },
+                ]}
+                numberOfLines={1}
+              >
+                {resolvedSubtitle}
+              </Text>
+            ) : null}
+          </View>
+        </View>
+        {closeBtnElement}
+      </View>
+    );
+  };
+
+  // ─── DRAWER CONTENT BODY ───────────────────────────────────────────────────
   const drawerPanel = (
     <Animated.View
       style={[
@@ -607,59 +1452,10 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
       accessibilityRole="menu"
     >
       {/* ─── 1. HEADER ──────────────────────────────────────────────────────── */}
-      {customHeader ? (
-        customHeader
-      ) : (
-        <View
-          style={[
-            styles.headerContainer,
-            { borderBottomColor: resolvedBorderColor },
-            headerStyle,
-          ]}
-        >
-          <View style={styles.headerLeftArea}>
-            <View style={styles.headerLogoWrapper}>{renderHeaderLogo()}</View>
-            <View style={styles.headerTitlesArea}>
-              <Text
-                style={[styles.headerTitle, { color: resolvedActiveFg }]}
-                numberOfLines={1}
-              >
-                {title}
-              </Text>
-              {subtitle ? (
-                <Text
-                  style={[
-                    styles.headerSubtitle,
-                    { color: resolvedSectionHeaderColor },
-                  ]}
-                  numberOfLines={1}
-                >
-                  {subtitle}
-                </Text>
-              ) : null}
-            </View>
-          </View>
-
-          {showCloseButton && (
-            <Pressable
-              onPress={onClose}
-              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-              accessibilityRole="button"
-              accessibilityLabel="Close side menu"
-              testID={`${testID}-close-btn`}
-              style={({ pressed }) => [
-                styles.closeButton,
-                pressed && { opacity: 0.6, backgroundColor: resolvedBorderColor },
-              ]}
-            >
-              <Ux4gIcons.close size={20} color={resolvedInactiveFg} />
-            </Pressable>
-          )}
-        </View>
-      )}
+      {renderHeader()}
 
       {/* ─── 2. SEARCH INPUT BAR ────────────────────────────────────────────── */}
-      {showSearch && (
+      {resolvedShowSearch && (
         <View style={styles.searchSection}>
           <View
             style={[
@@ -744,9 +1540,83 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
             </Text>
           </View>
         )}
+
+        {/* Action Callout Card Banner (e.g. Verify your Aadhaar) */}
+        {resolvedActionCard && (
+          <View
+            style={[
+              styles.actionCardSection,
+              { borderTopColor: resolvedBorderColor },
+            ]}
+          >
+            {resolvedActionCard.tag ? (
+              <Text
+                style={[
+                  styles.sectionTitle,
+                  styles.actionCardTag,
+                  { color: resolvedSectionHeaderColor },
+                ]}
+              >
+                {resolvedActionCard.tag}
+              </Text>
+            ) : null}
+            <View
+              style={[
+                styles.actionCardContainer,
+                {
+                  backgroundColor:
+                    resolvedActionCard.backgroundColor ||
+                    (theme.isDark ? '#3E2723' : '#FEF3C7'),
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.actionCardTitle,
+                  { color: theme.isDark ? '#FDE68A' : '#78350F' },
+                ]}
+              >
+                {resolvedActionCard.title}
+              </Text>
+              <Text
+                style={[
+                  styles.actionCardDescription,
+                  { color: theme.isDark ? '#F3F4F6' : '#92400E' },
+                ]}
+              >
+                {resolvedActionCard.description}
+              </Text>
+              <Pressable
+                onPress={resolvedActionCard.onButtonPress}
+                style={({ pressed }) => [
+                  styles.actionCardButton,
+                  {
+                    backgroundColor:
+                      resolvedActionCard.buttonColor || UX4GColors.primary600,
+                  },
+                  pressed && { opacity: 0.85 },
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel={resolvedActionCard.buttonText}
+              >
+                <Text
+                  style={[
+                    styles.actionCardBtnText,
+                    {
+                      color:
+                        resolvedActionCard.buttonTextColor || UX4GColors.neutral0,
+                    },
+                  ]}
+                >
+                  {resolvedActionCard.buttonText}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        )}
       </ScrollView>
 
-      {/* ─── 4. FOOTER (Sign out & custom actions) ─────────────────────────── */}
+      {/* ─── 4. FOOTER ──────────────────────────────────────────────────────── */}
       {customFooter ? (
         customFooter
       ) : (
@@ -756,11 +1626,17 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
             { borderTopColor: resolvedBorderColor },
           ]}
         >
-          {footerItems && footerItems.length > 0 ? (
-            footerItems.map((fItem, fIndex) =>
-              renderMenuItem(fItem, 999)
-            )
-          ) : showSignOut ? (
+          {/* Footer Navigation Items (e.g. Request access, Settings, Help) */}
+          {resolvedFooterItems && resolvedFooterItems.length > 0 && (
+            <View style={styles.footerItemsWrapper}>
+              {resolvedFooterItems.map((fItem, fIndex) =>
+                renderMenuItem(fItem, 999)
+              )}
+            </View>
+          )}
+
+          {/* Sign out button */}
+          {resolvedShowSignOut && (
             <Pressable
               onPress={onSignOut || onClose}
               accessibilityRole="button"
@@ -783,7 +1659,42 @@ export const Ux4gSideMenu: React.FC<Ux4gSideMenuProps> = ({
                 {signOutLabel}
               </Text>
             </Pressable>
-          ) : null}
+          )}
+
+          {/* Bottom Branding (e.g. National Emblem + Revenue Department) */}
+          {resolvedFooterBranding && (
+            <Pressable
+              onPress={resolvedFooterBranding.onPress}
+              disabled={!resolvedFooterBranding.onPress}
+              style={[
+                styles.footerBrandingContainer,
+                resolvedFooterItems || resolvedShowSignOut ? styles.footerBrandingSpacing : null,
+              ]}
+            >
+              <View style={styles.footerBrandingLogoSlot}>
+                {renderEmblemLogo(resolvedFooterBranding.logo, 28)}
+              </View>
+              <View style={styles.footerBrandingTextSlot}>
+                <Text
+                  style={[styles.footerBrandingTitle, { color: resolvedActiveFg }]}
+                  numberOfLines={1}
+                >
+                  {resolvedFooterBranding.title || 'Revenue Department'}
+                </Text>
+                {resolvedFooterBranding.subtitle ? (
+                  <Text
+                    style={[
+                      styles.footerBrandingSubtitle,
+                      { color: resolvedSectionHeaderColor },
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {resolvedFooterBranding.subtitle}
+                  </Text>
+                ) : null}
+              </View>
+            </Pressable>
+          )}
         </View>
       )}
     </Animated.View>
@@ -861,15 +1772,36 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRightWidth: Platform.OS === 'ios' ? 0.5 : 0,
   },
-  // Header Styles
+
+  // ─── Header Styles ────────────────────────────────────────────────────────
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingTop: Platform.OS === 'android' ? ((StatusBar.currentHeight || 28) + 14) : 14,
+    paddingTop: Platform.OS === 'android' ? ((StatusBar.currentHeight || 28) + 14) : 16,
     paddingBottom: 14,
     borderBottomWidth: 1,
+  },
+  departmentHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: Platform.OS === 'android' ? ((StatusBar.currentHeight || 28) + 14) : 16,
+    paddingBottom: 14,
+    borderBottomWidth: 1,
+  },
+  departmentHeaderTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: -0.3,
+  },
+  departmentHeaderSubtitle: {
+    fontSize: 12,
+    fontWeight: '400',
+    marginTop: 3,
+    lineHeight: 16,
   },
   headerLeftArea: {
     flexDirection: 'row',
@@ -904,11 +1836,85 @@ const styles = StyleSheet.create({
     minWidth: 36,
     minHeight: 36,
   },
-  // Search Bar Styles
+
+  // User Header Avatar Circle
+  userAvatarCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  userAvatarText: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+
+  // Centered Profile Header
+  centeredProfileHeader: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingTop: Platform.OS === 'android' ? ((StatusBar.currentHeight || 28) + 14) : 16,
+    paddingBottom: 18,
+    borderBottomWidth: 1,
+    position: 'relative',
+  },
+  centeredProfileCloseWrapper: {
+    position: 'absolute',
+    top: Platform.OS === 'android' ? ((StatusBar.currentHeight || 28) + 10) : 12,
+    right: 12,
+    zIndex: 10,
+  },
+  centeredAvatarCircle: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  centeredAvatarText: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  centeredProfileName: {
+    fontSize: 16,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 2,
+  },
+  centeredProfileRole: {
+    fontSize: 12,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  centeredProfileMeta: {
+    fontSize: 12,
+    fontWeight: '400',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  viewProfileBtn: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  viewProfileBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+
+  // ─── Search Bar Styles ────────────────────────────────────────────────────
   searchSection: {
     paddingHorizontal: 16,
-    paddingTop: 14,
-    paddingBottom: 6,
+    paddingTop: 12,
+    paddingBottom: 4,
   },
   searchBarContainer: {
     flexDirection: 'row',
@@ -933,8 +1939,10 @@ const styles = StyleSheet.create({
     padding: 4,
     marginLeft: 4,
   },
-  // Scrollable Content
+
+  // ─── Scrollable Content ───────────────────────────────────────────────────
   scrollContent: {
+    flexGrow: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
@@ -952,18 +1960,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   itemWrapper: {
-    marginBottom: 2,
+    marginBottom: 3,
   },
   menuItemPressable: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 44,
+    minHeight: 42,
     borderRadius: 8,
     paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  complexItemPressable: {
+    minHeight: 52,
+    paddingVertical: 8,
   },
   subItemPressable: {
-    height: 38,
+    minHeight: 36,
     paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   selectedMenuItem: {
     borderRadius: 8,
@@ -977,8 +1991,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 8,
   },
-  itemLabel: {
+  itemAvatarBox: {
+    width: 32,
+    height: 32,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  itemAvatarText: {
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  itemContentArea: {
     flex: 1,
+    justifyContent: 'center',
+  },
+  itemLabel: {
     fontSize: 14,
     fontWeight: '500',
   },
@@ -988,6 +2017,22 @@ const styles = StyleSheet.create({
   subItemLabel: {
     fontSize: 13,
     fontWeight: '400',
+  },
+  itemSubtitle: {
+    fontSize: 11,
+    fontWeight: '400',
+    marginTop: 2,
+  },
+  statusTagPill: {
+    alignSelf: 'flex-start',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    marginTop: 4,
+  },
+  statusTagText: {
+    fontSize: 11,
+    fontWeight: '600',
   },
   badgeContainer: {
     minWidth: 20,
@@ -1004,21 +2049,38 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
     textAlign: 'center',
   },
+  itemCheckmarkSlot: {
+    marginLeft: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   accordionChevron: {
     marginLeft: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  // Action Link item
+  actionLinkPressable: {
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    marginTop: 4,
+  },
+  actionLinkLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+
   // Sub-items Tree Structure
   subItemsContainer: {
     flexDirection: 'row',
-    paddingLeft: 22,
+    paddingLeft: 20,
     marginTop: 2,
     position: 'relative',
   },
   subTreeVerticalLine: {
     position: 'absolute',
-    left: 22,
+    left: 20,
     top: 4,
     bottom: 8,
     width: 1.5,
@@ -1028,6 +2090,44 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 14,
   },
+
+  // Action Callout Card
+  actionCardSection: {
+    marginTop: 'auto',
+    paddingTop: 16,
+    borderTopWidth: 1,
+    paddingBottom: 8,
+  },
+  actionCardTag: {
+    marginBottom: 10,
+  },
+  actionCardContainer: {
+    borderRadius: 12,
+    padding: 16,
+  },
+  actionCardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+  actionCardDescription: {
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: 14,
+  },
+  actionCardButton: {
+    borderRadius: 8,
+    paddingVertical: 9,
+    paddingHorizontal: 20,
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionCardBtnText: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+
   // Empty State
   emptyState: {
     paddingVertical: 24,
@@ -1037,16 +2137,20 @@ const styles = StyleSheet.create({
   emptyStateText: {
     fontSize: 13,
   },
-  // Footer
+
+  // ─── Footer ───────────────────────────────────────────────────────────────
   footerContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
   },
+  footerItemsWrapper: {
+    marginBottom: 4,
+  },
   signOutButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 44,
+    height: 42,
     borderRadius: 8,
     paddingHorizontal: 10,
   },
@@ -1059,5 +2163,34 @@ const styles = StyleSheet.create({
   signOutText: {
     fontSize: 14,
     fontWeight: '500',
+  },
+
+  // Footer Branding (Emblem + Department)
+  footerBrandingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+  },
+  footerBrandingSpacing: {
+    marginTop: 8,
+  },
+  footerBrandingLogoSlot: {
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerBrandingTextSlot: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  footerBrandingTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  footerBrandingSubtitle: {
+    fontSize: 11,
+    fontWeight: '400',
+    marginTop: 1,
   },
 });

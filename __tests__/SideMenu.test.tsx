@@ -283,4 +283,142 @@ describe('Ux4gSideMenu / Drawer Component Suite', () => {
       expect(getByTestId('alias-drawer')).toBeTruthy();
     });
   });
+
+  describe('Design Variants Suite', () => {
+    it('renders Variant 1: Citizen profile layout with user avatar and footer branding', () => {
+      const { getByText } = renderWithTheme(
+        <Ux4gSideMenu
+          isOpen={true}
+          onClose={jest.fn()}
+          variant="citizen"
+          testID="citizen-menu"
+        />
+      );
+
+      expect(getByText('Ramesh Kumar')).toBeTruthy();
+      expect(getByText('Citizen')).toBeTruthy();
+      expect(getByText('RK')).toBeTruthy();
+      expect(getByText('My applications')).toBeTruthy();
+      expect(getByText('My documents')).toBeTruthy();
+      expect(getByText('Notifications')).toBeTruthy();
+      expect(getByText('Profile & settings')).toBeTruthy();
+      expect(getByText('Help & support')).toBeTruthy();
+      expect(getByText('Sign out')).toBeTruthy();
+      expect(getByText('Revenue Department')).toBeTruthy();
+      expect(getByText('Government of India')).toBeTruthy();
+    });
+
+    it('renders Variant 2: Department Services layout with action required callout card', () => {
+      const onVerifyMock = jest.fn();
+      const { getByText } = renderWithTheme(
+        <Ux4gSideMenu
+          isOpen={true}
+          onClose={jest.fn()}
+          variant="department-services"
+          actionCard={{
+            tag: 'ACTION REQUIRED',
+            title: 'Verify your Aadhaar',
+            description: 'Complete identity verification to continue.',
+            buttonText: 'Verify now',
+            onButtonPress: onVerifyMock,
+          }}
+          testID="dept-services-menu"
+        />
+      );
+
+      expect(getByText('Revenue Department')).toBeTruthy();
+      expect(getByText('Kanpur division')).toBeTruthy();
+      expect(getByText('SERVICES')).toBeTruthy();
+      expect(getByText('WORKSPACE')).toBeTruthy();
+      expect(getByText('Priority applications')).toBeTruthy();
+      expect(getByText('Archive')).toBeTruthy();
+      expect(getByText('ACTION REQUIRED')).toBeTruthy();
+      expect(getByText('Verify your Aadhaar')).toBeTruthy();
+      expect(getByText('Complete identity verification to continue.')).toBeTruthy();
+
+      const verifyBtn = getByText('Verify now');
+      expect(verifyBtn).toBeTruthy();
+      fireEvent.press(verifyBtn);
+      expect(onVerifyMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('renders Variant 3: Department Switcher with avatar badges and pending status pill', () => {
+      const { getByText } = renderWithTheme(
+        <Ux4gSideMenu
+          isOpen={true}
+          onClose={jest.fn()}
+          variant="department-switcher"
+          testID="dept-switcher-menu"
+        />
+      );
+
+      expect(getByText('Departments')).toBeTruthy();
+      expect(getByText('Choose a department to work in.')).toBeTruthy();
+      expect(getByText('RD')).toBeTruthy();
+      expect(getByText('Revenue Department')).toBeTruthy();
+      expect(getByText('Current department')).toBeTruthy();
+      expect(getByText('TD')).toBeTruthy();
+      expect(getByText('Transport Department')).toBeTruthy();
+      expect(getByText('transport.up.gov.in')).toBeTruthy();
+      expect(getByText('3 applications pending')).toBeTruthy();
+      expect(getByText('Request department access')).toBeTruthy();
+    });
+
+    it('renders Variant 4: User Mailbox layout with folders and action links', () => {
+      const { getByText } = renderWithTheme(
+        <Ux4gSideMenu
+          isOpen={true}
+          onClose={jest.fn()}
+          variant="mailbox"
+          testID="mailbox-menu"
+        />
+      );
+
+      expect(getByText('Ramesh Kumar')).toBeTruthy();
+      expect(getByText('ramesh.kumar@gov.in')).toBeTruthy();
+      expect(getByText('MAILBOX')).toBeTruthy();
+      expect(getByText('Inbox')).toBeTruthy();
+      expect(getByText('Assigned to me')).toBeTruthy();
+      expect(getByText('FOLDERS')).toBeTruthy();
+      expect(getByText('Sent')).toBeTruthy();
+      expect(getByText('Drafts')).toBeTruthy();
+      expect(getByText('Archive')).toBeTruthy();
+      expect(getByText('Rejected applications')).toBeTruthy();
+      expect(getByText('Customize inbox')).toBeTruthy();
+      expect(getByText('Inbox settings')).toBeTruthy();
+    });
+
+    it('renders Variant 5: Centered Profile Summary layout with stats and action button', () => {
+      const onViewProfileMock = jest.fn();
+      const { getByText } = renderWithTheme(
+        <Ux4gSideMenu
+          isOpen={true}
+          onClose={jest.fn()}
+          variant="profile-summary"
+          profileSummary={{
+            name: 'Ramesh Kumar',
+            role: 'Citizen',
+            metaInfo: '12 applications · 3 actions required',
+            actionLabel: 'View profile',
+            onActionPress: onViewProfileMock,
+          }}
+          testID="profile-summary-menu"
+        />
+      );
+
+      expect(getByText('RK')).toBeTruthy();
+      expect(getByText('Ramesh Kumar')).toBeTruthy();
+      expect(getByText('Citizen')).toBeTruthy();
+      expect(getByText('12 applications · 3 actions required')).toBeTruthy();
+      expect(getByText('ACCOUNT')).toBeTruthy();
+      expect(getByText('APPLICATIONS')).toBeTruthy();
+      expect(getByText('Track an application')).toBeTruthy();
+      expect(getByText('SUPPORT')).toBeTruthy();
+
+      const viewProfileBtn = getByText('View profile');
+      expect(viewProfileBtn).toBeTruthy();
+      fireEvent.press(viewProfileBtn);
+      expect(onViewProfileMock).toHaveBeenCalledTimes(1);
+    });
+  });
 });

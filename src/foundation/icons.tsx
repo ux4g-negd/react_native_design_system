@@ -1127,6 +1127,227 @@ export const Ux4gIcons = {
     }
     return renderMaterialIcon('account_circle', size, color);
   },
+
+  /**
+   * Mail / Inbox icon
+   */
+  inbox: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('mail', size, color);
+  },
+  mail: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('mail', size, color);
+  },
+
+  /**
+   * Layers / Documents / Stack icon
+   */
+  layers: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M11.99 18.54L4.22 12.5L2 14.22L11.99 22L22 14.22L19.78 12.5L11.99 18.54ZM12 16L19.77 9.96L22 8.24L12 0.5L2 8.24L4.22 9.96L12 16ZM12 2.82L18.66 8L12 13.18L5.34 8L12 2.82Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('layers', size, color);
+  },
+  documents: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M11.99 18.54L4.22 12.5L2 14.22L11.99 22L22 14.22L19.78 12.5L11.99 18.54ZM12 16L19.77 9.96L22 8.24L12 0.5L2 8.24L4.22 9.96L12 16ZM12 2.82L18.66 8L12 13.18L5.34 8L12 2.82Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('layers', size, color);
+  },
+
+  /**
+   * Sent / Send diagonal arrow icon
+   */
+  send: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M5 19L19 5M19 5H9M19 5V15"
+            stroke={color}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('north_east', size, color);
+  },
+
+  /**
+   * Drafts / Draft document icon
+   */
+  drafts: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M9 2H15C15.55 2 16 2.45 16 3V4H18C19.1 4 20 4.9 20 6V20C20 21.1 19.1 22 18 22H6C4.9 22 4 21.1 4 20V6C4 4.9 4.9 4 6 4H8V3C8 2.45 8.45 2 9 2ZM6 6V20H18V6H16V8H8V6H6ZM8 12H16V14H8V12ZM8 16H13V18H8V16Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('drafts', size, color);
+  },
+
+  /**
+   * Archive / Box icon
+   */
+  archive: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M20.54 5.23L19.15 3.55C18.88 3.21 18.47 3 18 3H6C5.53 3 5.12 3.21 4.84 3.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V6.5C21 6.02 20.83 5.57 20.54 5.23ZM5.12 5L6 4H17.88L18.88 5H5.12ZM19 19H5V7H19V19ZM10.5 11H13.5V14H16L12 18L8 14H10.5V11Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('archive', size, color);
+  },
+
+  /**
+   * Priority / Exclamation icon
+   */
+  priority: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('priority_high', size, color);
+  },
+  priorityApplications: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('priority_high', size, color);
+  },
+
+  /**
+   * Bookmark / Saved items icon
+   */
+  bookmark: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M17 3H7C5.9 3 5 3.9 5 5V21L12 18L19 21V5C19 3.9 18.1 3 17 3ZM17 17.97L12 15.82L7 17.97V5H17V17.97Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('bookmark_border', size, color);
+  },
+  saved: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M17 3H7C5.9 3 5 3.9 5 5V21L12 18L19 21V5C19 3.9 18.1 3 17 3ZM17 17.97L12 15.82L7 17.97V5H17V17.97Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('bookmark_border', size, color);
+  },
+
+  /**
+   * Track / Location pin icon
+   */
+  track: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('location_on', size, color);
+  },
+
+  /**
+   * Vertical 3-dots / More Vert icon
+   */
+  moreVert: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('more_vert', size, color);
+  },
+  inboxSettings: ({ size = 20, color = UX4GColors.neutral700 }: Ux4gIconProps = {}): React.ReactElement => {
+    if (Svg && Path) {
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
+            fill={color}
+          />
+        </Svg>
+      );
+    }
+    return renderMaterialIcon('more_vert', size, color);
+  },
 };
 
 const styles = StyleSheet.create({

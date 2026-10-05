@@ -428,6 +428,19 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'side-menu-group',
+        label: 'Side Menu (Drawer)',
+        icon: 'folder',
+        children: [
+          { id: 'side-menu-variants', label: 'All 5 Variants', icon: 'layers' },
+          { id: 'side-menu-citizen', label: 'Citizen Profile', icon: 'layers' },
+          { id: 'side-menu-services', label: 'Department Services', icon: 'layers' },
+          { id: 'side-menu-switcher', label: 'Department Switcher', icon: 'layers' },
+          { id: 'side-menu-mailbox', label: 'User Mailbox', icon: 'layers' },
+          { id: 'side-menu-profile', label: 'Centered Profile', icon: 'layers' },
+        ],
+      },
+      {
         id: 'progress-indicator-group',
         label: 'Progress Indicator',
         icon: 'folder',
