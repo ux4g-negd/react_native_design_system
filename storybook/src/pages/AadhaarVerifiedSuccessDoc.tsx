@@ -23,17 +23,17 @@ export const AadhaarVerifiedSuccessDoc: React.FC<AadhaarVerifiedSuccessDocProps>
   const colors = useMemo(() => {
     return {
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
-      cardBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
       title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
       subtitle: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
       // Transaction ID Card tokens
-      txnCardBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
-      menuBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      txnCardBg: isDark ? UX4GColors.primary900 : '#F3EFFF',
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
     };
   }, [isDark]);
 
@@ -66,52 +66,56 @@ export const AadhaarVerifiedSuccessCardPattern = ({ isDark = false }: { isDark?:
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Floating Card Container */}
       <View style={styles.cardWrapper}>
-        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }]}>
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }]}>
           {/* Success Status Banner */}
           <Ux4gStatusBanner
-            height={44}
+            height={40}
             variant="successLight"
             title="Aadhaar identity verified successfully"
             marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+            paddingStyle={{ paddingHorizontal: 12, paddingVertical: 8 }}
+            titleStyle={{
+              fontSize: 12.5,
+              fontWeight: '600',
+              color: isDark ? UX4GColors.green300 : UX4GColors.green700,
+            }}
           />
           <View style={styles.gap20} />
 
           <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
-            {'Authentication\nSuccessful'}
+            Authentication\nSuccessful
           </Text>
           <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
             Your Aadhaar identity has been verified. You may now proceed to the service.
@@ -122,7 +126,7 @@ export const AadhaarVerifiedSuccessCardPattern = ({ isDark = false }: { isDark?:
           {/* Transaction ID Info Card */}
           <Ux4gCard
             cornerRadius={12}
-            backgroundColor={isDark ? UX4GColors.primary900 : UX4GColors.primary50}
+            backgroundColor={isDark ? UX4GColors.primary900 : '#F3EFFF'}
             borderColor="transparent"
             borderWidth={0}
           >
@@ -135,33 +139,31 @@ export const AadhaarVerifiedSuccessCardPattern = ({ isDark = false }: { isDark?:
               </Text>
             </View>
           </Ux4gCard>
+
+          {/* Divider inside Card */}
+          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
+
+          {/* Action Button inside Card */}
+          <Ux4gButton
+            text="Continue to Service"
+            onPress={() => alert('Navigating to service...')}
+            size="large"
+            height={48}
+            width="100%"
+          />
         </View>
       </View>
 
-      {/* Spacer to push button & footer to bottom */}
-      <View style={styles.flex1} />
-
-      {/* Full-width Continue CTA Footer (Card style has no top divider) */}
-      <View style={styles.cardFooterRow}>
-        <Ux4gButton
-          text="Continue to Service"
-          onPress={() => alert('Navigating to service...')}
-          size="large"
-          height={48}
+      {/* Digital India Footer outside Card */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
         />
-        <View style={styles.gap8} />
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
       </View>
     </View>
   );
@@ -171,6 +173,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   headerLeading: {
     flexDirection: 'row',
@@ -185,14 +188,14 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -210,12 +213,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 16,
     elevation: 4,
-  },
-  flex1: {
-    flex: 1,
-  },
-  gap8: {
-    height: 8,
   },
   gap20: {
     height: 20,
@@ -252,21 +249,23 @@ const styles = StyleSheet.create({
     lineHeight: 20.8,
     fontFamily: 'Inter',
   },
-  cardFooterRow: {
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 20,
+  divider: {
+    height: 1,
+    width: '100%',
+    marginTop: 24,
+    marginBottom: 16,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 4,
+    marginTop: 'auto',
+    paddingTop: 16,
   },
   footerText: {
     fontSize: 11,
     fontWeight: '400',
-    marginBottom: 4,
     fontFamily: 'Inter',
   },
   digitalIndiaLogo: {
@@ -295,41 +294,39 @@ import {
 
 export const AadhaarVerifiedSuccessDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0 }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
@@ -338,15 +335,21 @@ export const AadhaarVerifiedSuccessDefaultPattern = ({ isDark = false }: { isDar
       <View style={styles.content}>
         {/* Success Status Banner */}
         <Ux4gStatusBanner
-          height={44}
+          height={40}
           variant="successLight"
           title="Aadhaar identity verified successfully"
           marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+          paddingStyle={{ paddingHorizontal: 12, paddingVertical: 8 }}
+          titleStyle={{
+            fontSize: 12.5,
+            fontWeight: '600',
+            color: isDark ? UX4GColors.green300 : UX4GColors.green700,
+          }}
         />
         <View style={styles.gap20} />
 
         <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
-          {'Authentication\nSuccessful'}
+          Authentication\nSuccessful
         </Text>
         <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
           Your Aadhaar identity has been verified. You may now proceed to the service.
@@ -356,7 +359,7 @@ export const AadhaarVerifiedSuccessDefaultPattern = ({ isDark = false }: { isDar
         {/* Transaction ID Info Card */}
         <Ux4gCard
           cornerRadius={12}
-          backgroundColor={isDark ? UX4GColors.primary900 : UX4GColors.primary50}
+          backgroundColor={isDark ? UX4GColors.primary900 : '#F3EFFF'}
           borderColor="transparent"
           borderWidth={0}
         >
@@ -380,6 +383,7 @@ export const AadhaarVerifiedSuccessDefaultPattern = ({ isDark = false }: { isDar
           onPress={() => alert('Navigating to service...')}
           size="large"
           height={48}
+          width="100%"
         />
         <View style={styles.gap8} />
 
@@ -389,7 +393,7 @@ export const AadhaarVerifiedSuccessDefaultPattern = ({ isDark = false }: { isDar
             Powered by -
           </Text>
           <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
@@ -403,6 +407,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   headerLeading: {
     flexDirection: 'row',
@@ -417,14 +422,14 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -477,22 +482,22 @@ const styles = StyleSheet.create({
   },
   footerSection: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 8,
   },
   divider: {
     height: 1,
     width: '100%',
+    marginBottom: 16,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 4,
   },
   footerText: {
     fontSize: 11,
     fontWeight: '400',
-    marginBottom: 4,
     fontFamily: 'Inter',
   },
   digitalIndiaLogo: {
@@ -571,9 +576,9 @@ const styles = StyleSheet.create({
                   <div
                     key="menuAction"
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
                       border: `1.5px solid ${colors.menuBorder}`,
                       backgroundColor: colors.headerBg,
                       display: 'flex',
@@ -583,13 +588,13 @@ const styles = StyleSheet.create({
                     }}
                   >
                     <span
-                      className="material-symbols-outlined"
                       style={{
-                        fontSize: 20,
+                        fontSize: 18,
                         color: colors.menuIcon,
+                        lineHeight: 1,
                       }}
                     >
-                      menu
+                      ☰
                     </span>
                   </div>
                 ),
@@ -615,10 +620,11 @@ const styles = StyleSheet.create({
               flexDirection: 'column',
               backgroundColor: colors.cardScreenBg,
               justifyContent: 'space-between',
+              padding: '0 16px 20px 16px',
             }}
           >
-            <div style={{ padding: '0 16px' }}>
-              {/* Soft purple gap above card */}
+            <div>
+              {/* Soft lavender gap above card */}
               <div style={{ height: 16 }} />
 
               {/* Floating Card Container */}
@@ -626,7 +632,7 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '20px',
+                  padding: '24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -635,30 +641,47 @@ const styles = StyleSheet.create({
                 }}
               >
                 {/* Success Banner */}
-                <Ux4gStatusBanner
-                  height={44}
-                  variant="successLight"
-                  title="Aadhaar identity verified successfully"
-                  marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                  paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
-                  titleStyle={{
-                    fontSize: 14,
-                    fontWeight: '500',
-                    color: isDark ? UX4GColors.green300 : UX4GColors.green700,
-                    lineHeight: 18.2,
+                <div
+                  style={{
+                    backgroundColor: isDark ? 'rgba(34, 197, 94, 0.15)' : '#F0FDF4',
+                    border: `1px solid ${isDark ? '#166534' : '#86EFAC'}`,
+                    borderRadius: 10,
+                    padding: '8px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
                   }}
-                  leadingIcon={
-                    <span
-                      className="material-symbols-outlined"
-                      style={{
-                        fontSize: 20,
-                        color: isDark ? UX4GColors.green400 : UX4GColors.green700,
-                      }}
-                    >
-                      check_circle
-                    </span>
-                  }
-                />
+                >
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: 9,
+                      backgroundColor: isDark ? '#22C55E' : '#16A34A',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#FFFFFF',
+                      fontSize: 11,
+                      fontWeight: 800,
+                      lineHeight: 1,
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✓
+                  </div>
+                  <span
+                    style={{
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      color: isDark ? '#86EFAC' : '#15803D',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Aadhaar identity verified successfully
+                  </span>
+                </div>
                 <div style={{ height: 20 }} />
 
                 <h2
@@ -680,7 +703,7 @@ const styles = StyleSheet.create({
                   style={{
                     fontSize: 14,
                     fontWeight: 400,
-                    lineHeight: 1.3,
+                    lineHeight: 1.4,
                     color: colors.subtitle,
                     margin: 0,
                     marginBottom: 20,
@@ -701,13 +724,13 @@ const styles = StyleSheet.create({
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      padding: '14px 16px 16px 16px',
+                      padding: '16px 20px',
                     }}
                   >
                     <span
                       style={{
                         fontSize: 13,
-                        fontWeight: 400,
+                        fontWeight: 500,
                         lineHeight: '16.9px',
                         color: colors.subtitle,
                         marginBottom: 4,
@@ -729,42 +752,51 @@ const styles = StyleSheet.create({
                     </span>
                   </div>
                 </Ux4gCard>
+
+                {/* Subtle Divider inside Card */}
+                <div
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.border,
+                    width: '100%',
+                    marginTop: 24,
+                    marginBottom: 16,
+                  }}
+                />
+
+                {/* Action Button inside Card */}
+                <Ux4gButton
+                  text="Continue to Service"
+                  onPress={() => alert('Navigating to service...')}
+                  size="large"
+                  height={44}
+                  width="100%"
+                />
               </div>
             </div>
 
-            {/* Footer Section for Card Style: Full-width button with 20px padding, no divider */}
-            <div style={{ padding: '12px 20px 20px 20px' }}>
-              <Ux4gButton
-                text="Continue to Service"
-                onPress={() => alert('Navigating to service...')}
-                size="large"
-                height={48}
-                width="100%"
-              />
-              <div style={{ height: 12 }} />
-
-              {/* Footer */}
-              <div
+            {/* Footer Section outside Card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                paddingTop: 16,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
-              >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
-                  style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                />
-              </div>
+              />
             </div>
           </div>
         ) : (
@@ -775,36 +807,53 @@ const styles = StyleSheet.create({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '20px 20px 20px 20px',
+              padding: '24px 20px 20px 20px',
               backgroundColor: colors.defaultScreenBg,
             }}
           >
             <div>
-              {/* Success Banner */}
-              <Ux4gStatusBanner
-                height={44}
-                variant="successLight"
-                title="Aadhaar identity verified successfully"
-                marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
-                titleStyle={{
-                  fontSize: 14,
-                  fontWeight: '500',
-                  color: isDark ? UX4GColors.green300 : UX4GColors.green700,
-                  lineHeight: 18.2,
-                }}
-                leadingIcon={
-                  <span
-                    className="material-symbols-outlined"
+                {/* Success Banner */}
+                <div
+                  style={{
+                    backgroundColor: isDark ? 'rgba(34, 197, 94, 0.15)' : '#F0FDF4',
+                    border: `1px solid ${isDark ? '#166534' : '#86EFAC'}`,
+                    borderRadius: 10,
+                    padding: '8px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <div
                     style={{
-                      fontSize: 20,
-                      color: isDark ? UX4GColors.green400 : UX4GColors.green700,
+                      width: 18,
+                      height: 18,
+                      borderRadius: 9,
+                      backgroundColor: isDark ? '#22C55E' : '#16A34A',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#FFFFFF',
+                      fontSize: 11,
+                      fontWeight: 800,
+                      lineHeight: 1,
+                      flexShrink: 0,
                     }}
                   >
-                    check_circle
+                    ✓
+                  </div>
+                  <span
+                    style={{
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      color: isDark ? '#86EFAC' : '#15803D',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Aadhaar identity verified successfully
                   </span>
-                }
-              />
+                </div>
               <div style={{ height: 20 }} />
 
               <h2
@@ -826,7 +875,7 @@ const styles = StyleSheet.create({
                 style={{
                   fontSize: 14,
                   fontWeight: 400,
-                  lineHeight: 1.3,
+                  lineHeight: 1.4,
                   color: colors.subtitle,
                   margin: 0,
                   marginBottom: 20,
@@ -847,13 +896,13 @@ const styles = StyleSheet.create({
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    padding: '14px 16px 16px 16px',
+                    padding: '16px 20px',
                   }}
                 >
                   <span
                     style={{
                       fontSize: 13,
-                      fontWeight: 400,
+                      fontWeight: 500,
                       lineHeight: '16.9px',
                       color: colors.subtitle,
                       marginBottom: 4,
@@ -884,7 +933,7 @@ const styles = StyleSheet.create({
                   height: 1,
                   backgroundColor: colors.border,
                   width: '100%',
-                  marginBottom: 12,
+                  marginBottom: 16,
                 }}
               />
               <Ux4gButton
@@ -902,7 +951,7 @@ const styles = StyleSheet.create({
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-              justifyContent: 'center',
+                  justifyContent: 'center',
                   gap: 4,
                 }}
               >
