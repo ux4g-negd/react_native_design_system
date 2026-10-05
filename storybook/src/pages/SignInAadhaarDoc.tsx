@@ -205,6 +205,8 @@ export const SignInAadhaarCardPattern = () => {
             onValueChange={setAadhaar}
             label="Aadhaar Number"
             placeholder="XXXX XXXX XXXX"
+            showMaskToggle={true}
+            defaultMasked={true}
             status={validation.status}
             caption={validation.caption}
           />
@@ -251,14 +253,16 @@ export const SignInAadhaarCardPattern = () => {
             onPress={handleContinue}
             style={styles.continueButton}
           />
-        </View>
 
-        {/* Security Note Outside Card */}
-        <View style={styles.secureRow}>
-          <Text style={styles.lockIcon}>lock</Text>
-          <Text style={styles.secureText}>
-            Your Aadhaar details are encrypted and secure
-          </Text>
+          <View style={{ height: 14 }} />
+
+          {/* Security Note Inside Card */}
+          <View style={styles.secureRow}>
+            <Text style={styles.lockIcon}>lock</Text>
+            <Text style={styles.secureText}>
+              Your Aadhaar details are encrypted and secure
+            </Text>
+          </View>
         </View>
 
         {/* 3. Powered by Digital India Footer */}
@@ -951,6 +955,8 @@ const styles = StyleSheet.create({
                 onValueChange={(val) => setAadhaar(val)}
                 label="Aadhaar Number"
                 placeholder={isCard ? 'XXXX XXXX XXXX' : 'XXXX XXXX 1234'}
+                showMaskToggle={true}
+                defaultMasked={true}
                 status={validation.status}
                 caption={validation.caption}
               />
@@ -1043,51 +1049,19 @@ const styles = StyleSheet.create({
               />
             </div>
 
-            {/* Security Note inside for Default, outside for Card */}
-            {!isCard && (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
-                  marginTop: 12,
-                }}
-              >
-                <span
-                  className="material-symbols-outlined"
-                  style={{ fontSize: 14, color: colors.mutedText }}
-                >
-                  lock
-                </span>
-                <span
-                  style={{
-                    fontSize: defaultUx4gTypography.lM_default.fontSize,
-                    fontWeight: defaultUx4gTypography.lM_default.fontWeight,
-                    lineHeight: `${defaultUx4gTypography.lM_default.lineHeight}px`,
-                    color: colors.subtleText,
-                  }}
-                >
-                  Your Aadhaar details are encrypted and secure
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Security Note Outside Card for Card Variant */}
-          {isCard && (
+            {/* Security Note inside Card */}
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 6,
-                marginTop: 14,
+                marginTop: 16,
               }}
             >
               <span
                 className="material-symbols-outlined"
-                style={{ fontSize: 14, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral600 }}
+                style={{ fontSize: 14, color: colors.mutedText }}
               >
                 lock
               </span>
@@ -1096,19 +1070,18 @@ const styles = StyleSheet.create({
                   fontSize: defaultUx4gTypography.lM_default.fontSize,
                   fontWeight: defaultUx4gTypography.lM_default.fontWeight,
                   lineHeight: `${defaultUx4gTypography.lM_default.lineHeight}px`,
-                  color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
+                  color: colors.subtleText,
                 }}
               >
                 Your Aadhaar details are encrypted and secure
               </span>
             </div>
-          )}
+          </div>
 
           {/* Powered by Digital India Footer */}
           <div
             style={{
-              
-              marginTop: 24,
+              padding: '24px 0 20px 0',
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
