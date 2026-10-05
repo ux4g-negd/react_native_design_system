@@ -817,12 +817,16 @@ const styles = StyleSheet.create({
         <div
           style={{
             padding: '0 0 24px 0',
-            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 6,
             backgroundColor: isCard ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100) : colors.screenBg,
             flexShrink: 0,
           }}
         >
-          <div
+          <span
             style={{
               fontSize: 11,
               fontWeight: 500,
@@ -830,13 +834,12 @@ const styles = StyleSheet.create({
             }}
           >
             Powered by -
-          </div>
+          </span>
           <img
             src="/Digital_India_logo.svg"
             alt="Digital India"
             style={{
               height: 24,
-              marginTop: 6,
               filter: isDark ? 'brightness(0) invert(1)' : 'none',
             }}
           />

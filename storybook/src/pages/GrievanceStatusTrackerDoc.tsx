@@ -705,20 +705,36 @@ const styles = StyleSheet.create({
           </div>
 
           {/* Brand Footer */}
-          <div style={{ padding: '12px 0 16px 0', textAlign: 'center', backgroundColor: colors.screenBg, flexShrink: 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 500, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }}>
-              Powered by -
-            </div>
-            <img
-              src="/Digital_India_logo.svg"
-              alt="Digital India"
-              style={{
-                height: 22,
-                marginTop: 6,
-                filter: isDark ? 'brightness(0) invert(1)' : 'none',
-              }}
-            />
-          </div>
+          <div
+          style={{
+            padding: '12px 0 16px 0',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 6,
+            backgroundColor: colors.screenBg,
+            flexShrink: 0,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 11,
+              fontWeight: 500,
+              color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+            }}
+          >
+            Powered by -
+          </span>
+          <img
+            src="/Digital_India_logo.svg"
+            alt="Digital India"
+            style={{
+              height: 22,
+              filter: isDark ? 'brightness(0) invert(1)' : 'none',
+            }}
+          />
+        </div>
         </div>
       </div>
     );

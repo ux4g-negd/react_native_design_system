@@ -1261,21 +1261,24 @@ const styles = StyleSheet.create({
         <div
           style={{
             padding: '0 0 24px 0',
-            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 6,
             backgroundColor: colors.screenBg,
             flexShrink: 0,
           }}
         >
-          <div
+          <span
             style={{
               fontSize: 11,
               fontWeight: 500,
               color: colors.footerText,
-              marginBottom: 6,
             }}
           >
             Powered by -
-          </div>
+          </span>
           <img
             src="/Digital_India_logo.svg"
             alt="Digital India"

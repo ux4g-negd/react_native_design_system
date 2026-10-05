@@ -1313,25 +1313,28 @@ const styles = StyleSheet.create({
         <div
           style={{
             padding: '16px 0 7px 0',
-            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 6,
             backgroundColor: isCard ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100) : colors.screenBg,
             flexShrink: 0,
           }}
         >
-          <div
+          <span
             style={{
               fontSize: 10,
               color: colors.bodyText,
             }}
           >
             Powered by -
-          </div>
+          </span>
           <img
             src="/Digital_India_logo.svg"
             alt="Digital India"
             style={{
               height: 22,
-              marginTop: 4,
               filter: isDark ? 'brightness(0) invert(1)' : 'none',
             }}
           />

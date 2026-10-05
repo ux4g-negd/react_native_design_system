@@ -250,6 +250,10 @@ const dynamicStyles = (theme: any) =>
       color: theme.isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
     },
     footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
       marginTop: 0,
     },
     successWrapper: {
