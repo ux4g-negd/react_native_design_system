@@ -76,14 +76,6 @@ import {
   UX4GColors,
   defaultUx4gTypography,
 } from 'ux4g-react-native-components';
-import Svg, { Path, Circle } from 'react-native-svg';
-
-const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; color?: string }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <Circle cx="12" cy="12" r="10" fill={color} />
-    <Path d="M12 7v6M12 16v1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
-  </Svg>
-);
 
 export const SignInAccountCardPattern = () => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -166,24 +158,6 @@ export const SignInAccountCardPattern = () => {
             type="number"
             maxLength={10}
           />
-
-          <View style={{ height: 16 }} />
-
-          {/* Status Message Alert Banner */}
-          <View style={styles.statusBanner}>
-            <View style={styles.statusHeaderRow}>
-              <ErrorIcon size={18} color={UX4GColors.red600} />
-              <Text style={styles.statusTitle}>Your status message goes here</Text>
-            </View>
-            <View style={styles.statusActionRow}>
-              <TouchableOpacity onPress={() => console.log('Take action')}>
-                <Text style={styles.actionText}>Take action</Text>
-              </TouchableOpacity>
-              <View style={styles.attemptBadge}>
-                <Text style={styles.attemptText}>Attempt 1 of 5</Text>
-              </View>
-            </View>
-          </View>
 
           <View style={{ height: 20 }} />
 
@@ -304,47 +278,6 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral500, // #737373
     marginTop: 6,
   },
-  statusBanner: {
-    backgroundColor: UX4GColors.red50, // #FFF8F8
-    borderColor: UX4GColors.red300, // #FFB3AE
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-  },
-  statusHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  statusTitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  statusActionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  actionText: {
-    fontSize: 14,
-    fontWeight: '700',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  attemptBadge: {
-    backgroundColor: UX4GColors.red100, // #FFECEE
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  attemptText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: UX4GColors.red800, // #8A1A16
-  },
   sendOtpButton: {
     backgroundColor: UX4GColors.primary, // #4A2BC2
     height: 48,
@@ -409,14 +342,6 @@ import {
   UX4GColors,
   defaultUx4gTypography,
 } from 'ux4g-react-native-components';
-import Svg, { Path, Circle } from 'react-native-svg';
-
-const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; color?: string }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <Circle cx="12" cy="12" r="10" fill={color} />
-    <Path d="M12 7v6M12 16v1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
-  </Svg>
-);
 
 export const SignInAccountDefaultPattern = () => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -499,24 +424,6 @@ export const SignInAccountDefaultPattern = () => {
             type="number"
             maxLength={10}
           />
-
-          <View style={{ height: 16 }} />
-
-          {/* Status Message Alert Banner */}
-          <View style={styles.statusBanner}>
-            <View style={styles.statusHeaderRow}>
-              <ErrorIcon size={18} color={UX4GColors.red600} />
-              <Text style={styles.statusTitle}>Your status message goes here</Text>
-            </View>
-            <View style={styles.statusActionRow}>
-              <TouchableOpacity onPress={() => console.log('Take action')}>
-                <Text style={styles.actionText}>Take action</Text>
-              </TouchableOpacity>
-              <View style={styles.attemptBadge}>
-                <Text style={styles.attemptText}>Attempt 1 of 5</Text>
-              </View>
-            </View>
-          </View>
 
           <View style={{ height: 20 }} />
 
@@ -630,47 +537,6 @@ const styles = StyleSheet.create({
     lineHeight: defaultUx4gTypography.bM_default.lineHeight, // 18px
     color: UX4GColors.neutral500, // #737373
     marginTop: 6,
-  },
-  statusBanner: {
-    backgroundColor: UX4GColors.red50, // #FFF8F8
-    borderColor: UX4GColors.red300, // #FFB3AE
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-  },
-  statusHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  statusTitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  statusActionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  actionText: {
-    fontSize: 14,
-    fontWeight: '700',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  attemptBadge: {
-    backgroundColor: UX4GColors.red100, // #FFECEE
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  attemptText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: UX4GColors.red800, // #8A1A16
   },
   sendOtpButton: {
     backgroundColor: UX4GColors.primary, // #4A2BC2
@@ -921,70 +787,6 @@ const styles = StyleSheet.create({
                     width: '100%',
                   }}
                 />
-              </div>
-            </div>
-
-            {/* Status Message Alert Banner */}
-            <div
-              style={{
-                marginTop: 16,
-                backgroundColor: colors.bannerBg,
-                border: `1px solid ${colors.bannerBorder}`,
-                borderRadius: 8,
-                padding: '12px',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" fill={colors.errorIconColor} />
-                  <path d="M12 7v6M12 16v1" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" />
-                </svg>
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 400,
-                    lineHeight: '18px',
-                    color: colors.bannerTitle,
-                  }}
-                >
-                  Your status message goes here
-                </span>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: 10,
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => alert('Take action clicked')}
-                  style={{
-                    border: 'none',
-                    background: 'transparent',
-                    color: colors.bannerAction,
-                    fontWeight: 700,
-                    fontSize: 14,
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  Take action
-                </button>
-                <span
-                  style={{
-                    backgroundColor: colors.attemptBadgeBg,
-                    color: colors.attemptBadgeText,
-                    fontSize: 12,
-                    fontWeight: 500,
-                    padding: '4px 10px',
-                    borderRadius: 6,
-                  }}
-                >
-                  Attempt 1 of 5
-                </span>
               </div>
             </div>
 

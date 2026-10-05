@@ -9296,14 +9296,6 @@ import {
   UX4GColors,
   defaultUx4gTypography,
 } from 'ux4g-react-native-components';
-import Svg, { Path, Circle } from 'react-native-svg';
-
-const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; color?: string }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <Circle cx="12" cy="12" r="10" fill={color} />
-    <Path d="M12 7v6M12 16v1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
-  </Svg>
-);
 
 export const SignInAccountCardPattern = () => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -9386,24 +9378,6 @@ export const SignInAccountCardPattern = () => {
             type="number"
             maxLength={10}
           />
-
-          <View style={{ height: 16 }} />
-
-          {/* Status Message Alert Banner */}
-          <View style={styles.statusBanner}>
-            <View style={styles.statusHeaderRow}>
-              <ErrorIcon size={18} color={UX4GColors.red600} />
-              <Text style={styles.statusTitle}>Your status message goes here</Text>
-            </View>
-            <View style={styles.statusActionRow}>
-              <TouchableOpacity onPress={() => console.log('Take action')}>
-                <Text style={styles.actionText}>Take action</Text>
-              </TouchableOpacity>
-              <View style={styles.attemptBadge}>
-                <Text style={styles.attemptText}>Attempt 1 of 5</Text>
-              </View>
-            </View>
-          </View>
 
           <View style={{ height: 20 }} />
 
@@ -9524,47 +9498,6 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral500, // #737373
     marginTop: 6,
   },
-  statusBanner: {
-    backgroundColor: UX4GColors.red50, // #FFF8F8
-    borderColor: UX4GColors.red300, // #FFB3AE
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-  },
-  statusHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  statusTitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  statusActionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  actionText: {
-    fontSize: 14,
-    fontWeight: '700',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  attemptBadge: {
-    backgroundColor: UX4GColors.red100, // #FFECEE
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  attemptText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: UX4GColors.red800, // #8A1A16
-  },
   sendOtpButton: {
     backgroundColor: UX4GColors.primary, // #4A2BC2
     height: 48,
@@ -9626,14 +9559,6 @@ import {
   UX4GColors,
   defaultUx4gTypography,
 } from 'ux4g-react-native-components';
-import Svg, { Path, Circle } from 'react-native-svg';
-
-const ErrorIcon = ({ size = 18, color = UX4GColors.red600 }: { size?: number; color?: string }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <Circle cx="12" cy="12" r="10" fill={color} />
-    <Path d="M12 7v6M12 16v1" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
-  </Svg>
-);
 
 export const SignInAccountDefaultPattern = () => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -9716,24 +9641,6 @@ export const SignInAccountDefaultPattern = () => {
             type="number"
             maxLength={10}
           />
-
-          <View style={{ height: 16 }} />
-
-          {/* Status Message Alert Banner */}
-          <View style={styles.statusBanner}>
-            <View style={styles.statusHeaderRow}>
-              <ErrorIcon size={18} color={UX4GColors.red600} />
-              <Text style={styles.statusTitle}>Your status message goes here</Text>
-            </View>
-            <View style={styles.statusActionRow}>
-              <TouchableOpacity onPress={() => console.log('Take action')}>
-                <Text style={styles.actionText}>Take action</Text>
-              </TouchableOpacity>
-              <View style={styles.attemptBadge}>
-                <Text style={styles.attemptText}>Attempt 1 of 5</Text>
-              </View>
-            </View>
-          </View>
 
           <View style={{ height: 20 }} />
 
@@ -9848,47 +9755,6 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral500, // #737373
     marginTop: 6,
   },
-  statusBanner: {
-    backgroundColor: UX4GColors.red50, // #FFF8F8
-    borderColor: UX4GColors.red300, // #FFB3AE
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 12,
-  },
-  statusHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  statusTitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  statusActionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  actionText: {
-    fontSize: 14,
-    fontWeight: '700',
-    lineHeight: 18,
-    color: UX4GColors.red800, // #8A1A16
-  },
-  attemptBadge: {
-    backgroundColor: UX4GColors.red100, // #FFECEE
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  attemptText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: UX4GColors.red800, // #8A1A16
-  },
   sendOtpButton: {
     backgroundColor: UX4GColors.primary, // #4A2BC2
     height: 48,
@@ -9932,7 +9798,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 26,
   },
-});`,[n]),S=()=>{const C=n==="card",v=C?x.cardScreenBg:x.defaultScreenBg;return e.jsxs("div",{style:{width:"100%",maxWidth:380,borderRadius:24,overflow:"hidden",boxShadow:t?"0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px #333333":"0 12px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px #E5E7EB",backgroundColor:v,display:"flex",flexDirection:"column",minHeight:680,margin:"0 auto"},children:[e.jsxs("div",{style:{position:"relative",zIndex:10,boxShadow:t?"0 3px 10px rgba(0, 0, 0, 0.5)":"0 3px 12px rgba(0, 0, 0, 0.08)"},children:[e.jsx(Ge,{title:"",variant:"light",elevation:2,useSafeArea:!1,height:56,horizontalPadding:16,leadingSpacing:8,backgroundColor:x.headerBg,borderColor:x.border,leadingWidgets:[e.jsx("img",{src:"/national_emblem_logo.svg",alt:"National Emblem",style:{height:32,filter:t?"brightness(0) invert(1)":"none"}},"emblem"),e.jsx("div",{style:{width:1,height:24,backgroundColor:t?r.neutral700:r.neutral300,margin:"0 4px"}},"divider"),e.jsx(he,{size:32,isDark:t},"union")],actions:[{customWidget:e.jsx("button",{type:"button",onClick:()=>{},style:{width:36,height:36,borderRadius:8,backgroundColor:t?"transparent":"#FFFFFF",border:`1.5px solid ${t?r.primary400:"#C0B3FF"}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0},children:e.jsx("svg",{width:"20",height:"20",viewBox:"0 0 24 24",fill:"none",children:e.jsx("path",{d:"M4 6h16M4 12h16M4 18h16",stroke:t?r.primary300:r.primary,strokeWidth:"2.5",strokeLinecap:"round"})})},"menu")}]}),e.jsx("div",{style:{height:1,backgroundColor:x.border,width:"100%"}})]}),e.jsxs("div",{style:{flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",padding:C?"16px":"24px 20px"},children:[e.jsxs("div",{style:{backgroundColor:C?x.cardBg:"transparent",borderRadius:C?16:0,padding:C?"22px 20px":"0",boxShadow:C?t?"0 6px 20px rgba(0,0,0,0.4)":"0 6px 20px rgba(74, 43, 194, 0.08)":"none",display:"flex",flexDirection:"column"},children:[e.jsx("h2",{style:{fontSize:ue.hM_strong.fontSize,fontWeight:ue.hM_strong.fontWeight,lineHeight:`${ue.hM_strong.lineHeight}px`,color:x.title,margin:0,letterSpacing:"-0.3px"},children:"Sign in to your account"}),e.jsx("p",{style:{fontSize:ue.bM_default.fontSize,fontWeight:ue.bM_default.fontWeight,lineHeight:`${ue.bM_default.lineHeight}px`,color:x.subtleText,margin:"6px 0 0 0"},children:"Access your government services securely"}),e.jsxs("div",{style:{marginTop:22},children:[e.jsx("label",{style:{display:"block",fontSize:13,fontWeight:500,color:t?r.neutral100:r.neutral800,marginBottom:6},children:"Mobile Number"}),e.jsxs("div",{style:{display:"flex",alignItems:"center",backgroundColor:x.inputBg,border:`1px solid ${x.inputBorder}`,borderRadius:8,padding:"0 12px",height:44},children:[e.jsx("span",{style:{fontSize:14,color:x.mutedText,marginRight:8,fontWeight:500},children:"+91"}),e.jsx("input",{type:"tel",inputMode:"numeric",pattern:"[0-9]*",maxLength:10,placeholder:"Enter mobile number",value:s,onChange:b=>u(b.target.value),style:{border:"none",outline:"none",backgroundColor:"transparent",fontSize:14,color:x.title,width:"100%"}})]})]}),e.jsxs("div",{style:{marginTop:16,backgroundColor:x.bannerBg,border:`1px solid ${x.bannerBorder}`,borderRadius:8,padding:"12px"},children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8},children:[e.jsxs("svg",{width:"18",height:"18",viewBox:"0 0 24 24",fill:"none",children:[e.jsx("circle",{cx:"12",cy:"12",r:"10",fill:x.errorIconColor}),e.jsx("path",{d:"M12 7v6M12 16v1",stroke:"#FFFFFF",strokeWidth:"2.2",strokeLinecap:"round"})]}),e.jsx("span",{style:{fontSize:14,fontWeight:400,lineHeight:"18px",color:x.bannerTitle},children:"Your status message goes here"})]}),e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:10},children:[e.jsx("button",{type:"button",onClick:()=>alert("Take action clicked"),style:{border:"none",background:"transparent",color:x.bannerAction,fontWeight:700,fontSize:14,cursor:"pointer",padding:0},children:"Take action"}),e.jsx("span",{style:{backgroundColor:x.attemptBadgeBg,color:x.attemptBadgeText,fontSize:12,fontWeight:500,padding:"4px 10px",borderRadius:6},children:"Attempt 1 of 5"})]})]}),e.jsx("button",{type:"button",onClick:()=>{alert("Send OTP clicked")},style:{marginTop:20,height:48,backgroundColor:x.buttonBg,color:x.buttonText,border:"none",borderRadius:8,fontWeight:600,fontSize:14,cursor:"pointer",transition:"opacity 0.2s",display:"flex",alignItems:"center",justifyContent:"center"},children:"Send OTP"}),e.jsxs("div",{style:{display:"flex",alignItems:"center",margin:"16px 0",gap:12},children:[e.jsx("div",{style:{flex:1,height:1,backgroundColor:x.border}}),e.jsx("span",{style:{fontSize:ue.lM_default.fontSize,fontWeight:ue.lM_default.fontWeight,color:x.mutedText,letterSpacing:"0.5px"},children:"OR"}),e.jsx("div",{style:{flex:1,height:1,backgroundColor:x.border}})]}),e.jsx("button",{type:"button",onClick:()=>alert("Sign in with Aadhaar"),style:{height:48,backgroundColor:"transparent",border:`1.5px solid ${x.primaryBorder}`,color:t?x.primaryLight:x.primary,borderRadius:8,fontWeight:600,fontSize:14,cursor:"pointer"},children:"Sign in with Aadhaar"}),e.jsx("div",{style:{textAlign:"center",marginTop:24},children:e.jsx("button",{type:"button",onClick:()=>alert("Navigate to Registration"),style:{border:"none",background:"transparent",color:t?x.primaryLight:x.primary,fontWeight:600,fontSize:14,cursor:"pointer"},children:"New user? Register here"})})]}),e.jsxs("div",{style:{marginTop:24,display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",gap:6},children:[e.jsx("span",{style:{fontSize:ue.lS_default.fontSize,fontWeight:ue.lS_default.fontWeight,lineHeight:`${ue.lS_default.lineHeight}px`,color:x.subtleText},children:"Powered by -"}),e.jsx("img",{src:"/Digital_India_logo.svg",alt:"Digital India",style:{height:24,filter:t?"brightness(0) invert(1)":"none"}})]})]})]})};return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Sign in account with Mobile No"}),e.jsx("span",{className:"wb-badge",children:"Pattern"})]}),e.jsx("p",{className:"wb-subtitle",children:"Mobile-number sign-in pattern with a +91 prefix, an OTP send button, Aadhaar alternate sign-in, and status banner. Toggle between the default layout and the card-style layout. Mobile-sized layout (360px)."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>i("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>i("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(oe,{isDark:t,children:e.jsxs("div",{className:`wb-preview-area ${t?"dark":""}`,style:{flexDirection:"column",alignItems:"center"},children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:24,backgroundColor:t?r.neutral800:r.neutral100,padding:4,borderRadius:10,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:[e.jsx("button",{type:"button",onClick:()=>c("default"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:n==="default"?r.primary:"transparent",color:n==="default"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>c("card"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:n==="card"?r.primary:"transparent",color:n==="card"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Card style"})]}),S()]})}),o==="code"&&e.jsxs("div",{className:"wb-code-area",children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:16,padding:"8px 16px",backgroundColor:t?r.neutral900:r.neutral50,borderRadius:8,alignItems:"center",border:`1px solid ${t?r.neutral800:r.neutral200}`},children:[e.jsx("span",{style:{fontSize:13,fontWeight:600,color:t?r.neutral300:r.neutral700},children:"Active Variant:"}),e.jsx("button",{type:"button",onClick:()=>c("default"),className:`wb-tab ${n==="default"?"active":""}`,style:{padding:"4px 12px",fontSize:12},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>c("card"),className:`wb-tab ${n==="card"?"active":""}`,style:{padding:"4px 12px",fontSize:12},children:"Card style"})]}),e.jsx(H,{code:y,language:"TSX",filename:n==="card"?"SignInAccountCardPattern.tsx":"SignInAccountDefaultPattern.tsx"})]})]})]})})]})},C8=({isDark:t})=>{const[o,i]=m.useState("preview"),[n,c]=m.useState("default"),[s,p]=m.useState(""),[l,h]=m.useState(""),[u,x]=m.useState(!1),[y,S]=m.useState(!1),C=m.useMemo(()=>({title:t?r.neutral50:r.gray900,subtleText:t?r.neutral400:r.neutral500,mutedText:t?r.neutral500:r.neutral400,border:t?r.neutral800:r.neutral200,cardBg:t?r.gray900:r.neutral0,cardScreenBg:t?r.primary800:r.primary100,defaultScreenBg:t?r.gray900:r.neutral50,headerBg:t?r.gray900:r.neutral0,primary:r.primary,primaryLight:r.primary300,primaryBorder:t?r.primary300:r.primary200,buttonBg:t?r.primary300:r.primary,buttonText:t?r.neutral900:r.neutral0,inputBg:t?r.neutral900:r.neutral0,inputBorder:t?r.neutral700:r.neutral200,bannerBg:t?r.red900:r.red50,bannerBorder:t?r.red600:r.red300,bannerTitle:t?r.red300:r.red800,bannerAction:t?r.red300:r.red800,attemptBadgeBg:t?r.red800:r.red100,attemptBadgeText:t?r.red300:r.red800,errorIconColor:t?r.red500:r.red600}),[t]),v=m.useMemo(()=>n==="card"?`import React, { useState } from 'react';
+});`,[n]),S=()=>{const C=n==="card",v=C?x.cardScreenBg:x.defaultScreenBg;return e.jsxs("div",{style:{width:"100%",maxWidth:380,borderRadius:24,overflow:"hidden",boxShadow:t?"0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px #333333":"0 12px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px #E5E7EB",backgroundColor:v,display:"flex",flexDirection:"column",minHeight:680,margin:"0 auto"},children:[e.jsxs("div",{style:{position:"relative",zIndex:10,boxShadow:t?"0 3px 10px rgba(0, 0, 0, 0.5)":"0 3px 12px rgba(0, 0, 0, 0.08)"},children:[e.jsx(Ge,{title:"",variant:"light",elevation:2,useSafeArea:!1,height:56,horizontalPadding:16,leadingSpacing:8,backgroundColor:x.headerBg,borderColor:x.border,leadingWidgets:[e.jsx("img",{src:"/national_emblem_logo.svg",alt:"National Emblem",style:{height:32,filter:t?"brightness(0) invert(1)":"none"}},"emblem"),e.jsx("div",{style:{width:1,height:24,backgroundColor:t?r.neutral700:r.neutral300,margin:"0 4px"}},"divider"),e.jsx(he,{size:32,isDark:t},"union")],actions:[{customWidget:e.jsx("button",{type:"button",onClick:()=>{},style:{width:36,height:36,borderRadius:8,backgroundColor:t?"transparent":"#FFFFFF",border:`1.5px solid ${t?r.primary400:"#C0B3FF"}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0},children:e.jsx("svg",{width:"20",height:"20",viewBox:"0 0 24 24",fill:"none",children:e.jsx("path",{d:"M4 6h16M4 12h16M4 18h16",stroke:t?r.primary300:r.primary,strokeWidth:"2.5",strokeLinecap:"round"})})},"menu")}]}),e.jsx("div",{style:{height:1,backgroundColor:x.border,width:"100%"}})]}),e.jsxs("div",{style:{flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",padding:C?"16px":"24px 20px"},children:[e.jsxs("div",{style:{backgroundColor:C?x.cardBg:"transparent",borderRadius:C?16:0,padding:C?"22px 20px":"0",boxShadow:C?t?"0 6px 20px rgba(0,0,0,0.4)":"0 6px 20px rgba(74, 43, 194, 0.08)":"none",display:"flex",flexDirection:"column"},children:[e.jsx("h2",{style:{fontSize:ue.hM_strong.fontSize,fontWeight:ue.hM_strong.fontWeight,lineHeight:`${ue.hM_strong.lineHeight}px`,color:x.title,margin:0,letterSpacing:"-0.3px"},children:"Sign in to your account"}),e.jsx("p",{style:{fontSize:ue.bM_default.fontSize,fontWeight:ue.bM_default.fontWeight,lineHeight:`${ue.bM_default.lineHeight}px`,color:x.subtleText,margin:"6px 0 0 0"},children:"Access your government services securely"}),e.jsxs("div",{style:{marginTop:22},children:[e.jsx("label",{style:{display:"block",fontSize:13,fontWeight:500,color:t?r.neutral100:r.neutral800,marginBottom:6},children:"Mobile Number"}),e.jsxs("div",{style:{display:"flex",alignItems:"center",backgroundColor:x.inputBg,border:`1px solid ${x.inputBorder}`,borderRadius:8,padding:"0 12px",height:44},children:[e.jsx("span",{style:{fontSize:14,color:x.mutedText,marginRight:8,fontWeight:500},children:"+91"}),e.jsx("input",{type:"tel",inputMode:"numeric",pattern:"[0-9]*",maxLength:10,placeholder:"Enter mobile number",value:s,onChange:b=>u(b.target.value),style:{border:"none",outline:"none",backgroundColor:"transparent",fontSize:14,color:x.title,width:"100%"}})]})]}),e.jsx("button",{type:"button",onClick:()=>{alert("Send OTP clicked")},style:{marginTop:20,height:48,backgroundColor:x.buttonBg,color:x.buttonText,border:"none",borderRadius:8,fontWeight:600,fontSize:14,cursor:"pointer",transition:"opacity 0.2s",display:"flex",alignItems:"center",justifyContent:"center"},children:"Send OTP"}),e.jsxs("div",{style:{display:"flex",alignItems:"center",margin:"16px 0",gap:12},children:[e.jsx("div",{style:{flex:1,height:1,backgroundColor:x.border}}),e.jsx("span",{style:{fontSize:ue.lM_default.fontSize,fontWeight:ue.lM_default.fontWeight,color:x.mutedText,letterSpacing:"0.5px"},children:"OR"}),e.jsx("div",{style:{flex:1,height:1,backgroundColor:x.border}})]}),e.jsx("button",{type:"button",onClick:()=>alert("Sign in with Aadhaar"),style:{height:48,backgroundColor:"transparent",border:`1.5px solid ${x.primaryBorder}`,color:t?x.primaryLight:x.primary,borderRadius:8,fontWeight:600,fontSize:14,cursor:"pointer"},children:"Sign in with Aadhaar"}),e.jsx("div",{style:{textAlign:"center",marginTop:24},children:e.jsx("button",{type:"button",onClick:()=>alert("Navigate to Registration"),style:{border:"none",background:"transparent",color:t?x.primaryLight:x.primary,fontWeight:600,fontSize:14,cursor:"pointer"},children:"New user? Register here"})})]}),e.jsxs("div",{style:{marginTop:24,display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"center",gap:6},children:[e.jsx("span",{style:{fontSize:ue.lS_default.fontSize,fontWeight:ue.lS_default.fontWeight,lineHeight:`${ue.lS_default.lineHeight}px`,color:x.subtleText},children:"Powered by -"}),e.jsx("img",{src:"/Digital_India_logo.svg",alt:"Digital India",style:{height:24,filter:t?"brightness(0) invert(1)":"none"}})]})]})]})};return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Sign in account with Mobile No"}),e.jsx("span",{className:"wb-badge",children:"Pattern"})]}),e.jsx("p",{className:"wb-subtitle",children:"Mobile-number sign-in pattern with a +91 prefix, an OTP send button, Aadhaar alternate sign-in, and status banner. Toggle between the default layout and the card-style layout. Mobile-sized layout (360px)."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>i("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>i("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(oe,{isDark:t,children:e.jsxs("div",{className:`wb-preview-area ${t?"dark":""}`,style:{flexDirection:"column",alignItems:"center"},children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:24,backgroundColor:t?r.neutral800:r.neutral100,padding:4,borderRadius:10,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:[e.jsx("button",{type:"button",onClick:()=>c("default"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:n==="default"?r.primary:"transparent",color:n==="default"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>c("card"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:n==="card"?r.primary:"transparent",color:n==="card"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Card style"})]}),S()]})}),o==="code"&&e.jsxs("div",{className:"wb-code-area",children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:16,padding:"8px 16px",backgroundColor:t?r.neutral900:r.neutral50,borderRadius:8,alignItems:"center",border:`1px solid ${t?r.neutral800:r.neutral200}`},children:[e.jsx("span",{style:{fontSize:13,fontWeight:600,color:t?r.neutral300:r.neutral700},children:"Active Variant:"}),e.jsx("button",{type:"button",onClick:()=>c("default"),className:`wb-tab ${n==="default"?"active":""}`,style:{padding:"4px 12px",fontSize:12},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>c("card"),className:`wb-tab ${n==="card"?"active":""}`,style:{padding:"4px 12px",fontSize:12},children:"Card style"})]}),e.jsx(H,{code:y,language:"TSX",filename:n==="card"?"SignInAccountCardPattern.tsx":"SignInAccountDefaultPattern.tsx"})]})]})]})})]})},C8=({isDark:t})=>{const[o,i]=m.useState("preview"),[n,c]=m.useState("default"),[s,p]=m.useState(""),[l,h]=m.useState(""),[u,x]=m.useState(!1),[y,S]=m.useState(!1),C=m.useMemo(()=>({title:t?r.neutral50:r.gray900,subtleText:t?r.neutral400:r.neutral500,mutedText:t?r.neutral500:r.neutral400,border:t?r.neutral800:r.neutral200,cardBg:t?r.gray900:r.neutral0,cardScreenBg:t?r.primary800:r.primary100,defaultScreenBg:t?r.gray900:r.neutral50,headerBg:t?r.gray900:r.neutral0,primary:r.primary,primaryLight:r.primary300,primaryBorder:t?r.primary300:r.primary200,buttonBg:t?r.primary300:r.primary,buttonText:t?r.neutral900:r.neutral0,inputBg:t?r.neutral900:r.neutral0,inputBorder:t?r.neutral700:r.neutral200,bannerBg:t?r.red900:r.red50,bannerBorder:t?r.red600:r.red300,bannerTitle:t?r.red300:r.red800,bannerAction:t?r.red300:r.red800,attemptBadgeBg:t?r.red800:r.red100,attemptBadgeText:t?r.red300:r.red800,errorIconColor:t?r.red500:r.red600}),[t]),v=m.useMemo(()=>n==="card"?`import React, { useState } from 'react';
 import {
   View,
   Text,
