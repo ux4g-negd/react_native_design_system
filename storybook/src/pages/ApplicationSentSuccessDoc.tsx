@@ -104,6 +104,19 @@ export const ApplicationSentScreen = ({
             />
           </View>
         }
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
       <Ux4gDivider color="#E5E7EB" thickness={1} />
 
@@ -177,6 +190,20 @@ export const ApplicationSentScreen = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },
@@ -233,7 +260,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   footer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     paddingBottom: 24,
   },
   footerText: {
@@ -310,6 +340,19 @@ export const ApplicationSentCardScreen = ({
             />
           </View>
         }
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
       <Ux4gDivider color="#E5E7EB" thickness={1} />
 
@@ -390,6 +433,20 @@ export const ApplicationSentCardScreen = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },
@@ -456,7 +513,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   footer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     paddingBottom: 24,
   },
   footerText: {
@@ -820,8 +880,10 @@ const styles = StyleSheet.create({
                     style={{
                       paddingBottom: 24,
                       display: 'flex',
-                      flexDirection: 'column',
+                      flexDirection: 'row',
                       alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
                       flexShrink: 0,
                     }}
                   >

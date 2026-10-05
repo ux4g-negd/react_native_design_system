@@ -143,6 +143,19 @@ export const CouldNotSubmitCardScreen = ({
                 resizeMode="contain"
               />,
             ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={styles.menuBtn}
+                  onPress={() => {}}
+                >
+                  <Text style={styles.menuIcon}>☰</Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
           />
           <Ux4gDivider color="#E5E7EB" thickness={1} />
         </View>
@@ -367,6 +380,20 @@ export const CouldNotSubmitCardScreen = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },
@@ -591,6 +618,19 @@ export const CouldNotSubmitScreen = ({
               resizeMode="contain"
             />,
           ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
         />
         <Ux4gDivider color="#E5E7EB" thickness={1} />
 
@@ -803,6 +843,20 @@ export const CouldNotSubmitScreen = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },

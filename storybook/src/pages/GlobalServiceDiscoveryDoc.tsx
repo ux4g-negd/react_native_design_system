@@ -191,6 +191,19 @@ export const GlobalServiceDiscoveryScreen = ({ isDark = false }: { isDark?: bool
         title="National Services Portal"
         showBackButton={true}
         onBackPressed={() => {}}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -399,6 +412,20 @@ export const GlobalServiceDiscoveryScreen = ({ isDark = false }: { isDark?: bool
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   container: {
     flex: 1,
   },

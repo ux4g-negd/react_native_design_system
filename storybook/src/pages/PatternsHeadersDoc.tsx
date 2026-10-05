@@ -40,6 +40,19 @@ export const SearchHeaderPattern = () => {
             status="online"
           />
         }
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       {/* Integrated Search Row */}
@@ -55,6 +68,20 @@ export const SearchHeaderPattern = () => {
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   container: {
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
@@ -120,12 +147,39 @@ export const ServiceAppHeaderPattern = () => {
             />
           </View>
         }
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   container: {
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
@@ -168,6 +222,19 @@ export default function App() {
               status="online"
             />
           }
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
         />
 
         <View style={styles.body}>
@@ -191,6 +258,20 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: {
     flex: 1,
   },

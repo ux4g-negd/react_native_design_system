@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   appTitle: { fontSize: 16, fontWeight: '700' },
   appId: { fontSize: 12, marginTop: 4 },
-  footer: { alignItems: 'center', marginVertical: 20 },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginVertical: 20 },
   poweredByText: { fontSize: 11, fontWeight: '500' },
   digitalIndiaLogo: { height: 22, width: 80, marginTop: 6 },
 });`;
@@ -924,15 +924,15 @@ const styles = StyleSheet.create({
               paddingTop: 8,
               paddingBottom: 20,
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
+              gap: 6,
             }}
           >
             <span style={{ fontSize: 11, fontWeight: 500, color: colors.subtleText }}>
               Powered by -
             </span>
-            <div style={{ height: 6 }} />
             <img
               src="/Digital_India_logo.svg"
               alt="Digital India"

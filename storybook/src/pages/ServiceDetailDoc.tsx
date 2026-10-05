@@ -124,6 +124,19 @@ export const ServiceDetailScreen = ({
         title="National Services Portal"
         showBackButton
         onBackPress={onBack}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView style={styles.flexOne} contentContainerStyle={styles.scrollContainer}>
@@ -265,6 +278,20 @@ export const ServiceDetailScreen = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: { flex: 1 },
   flexOne: { flex: 1 },
   scrollContainer: { paddingBottom: 32 },

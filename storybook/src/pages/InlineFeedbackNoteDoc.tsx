@@ -95,6 +95,19 @@ export const NoteToCitizenScreen = ({ isDark = false }: { isDark?: boolean }) =>
             color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
           />,
         ]}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
@@ -162,6 +175,20 @@ export const NoteToCitizenScreen = ({ isDark = false }: { isDark?: boolean }) =>
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },
@@ -272,6 +299,19 @@ export const NoteToCitizenCardScreen = ({ isDark = false }: { isDark?: boolean }
             color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
           />,
         ]}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
@@ -342,6 +382,20 @@ export const NoteToCitizenCardScreen = ({ isDark = false }: { isDark?: boolean }
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },

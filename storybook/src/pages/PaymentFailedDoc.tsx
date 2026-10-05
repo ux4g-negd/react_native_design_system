@@ -86,6 +86,19 @@ export const PaymentFailedCardPattern = ({ isDark }: { isDark: boolean }) => {
           <View key="divider" style={styles.headerDivider} />,
           <Image key="union" source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />,
         ]}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
@@ -160,6 +173,20 @@ export const PaymentFailedCardPattern = ({ isDark }: { isDark: boolean }) => {
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: { flex: 1 },
   scrollContainer: { padding: 16 },
   card: { borderRadius: 16, padding: 16, alignItems: 'center' },
@@ -178,7 +205,7 @@ const styles = StyleSheet.create({
   detailValue: { fontSize: 13, fontWeight: '500' },
   linkButton: { marginTop: 12, paddingVertical: 8, alignItems: 'center' },
   linkButtonText: { fontSize: 14, fontWeight: '500' },
-  footer: { alignItems: 'center', marginVertical: 20 },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginVertical: 20 },
   poweredByText: { fontSize: 11, color: '#A3A3A3' },
   digitalIndiaLogo: { height: 22, width: 80, marginTop: 6 },
 });`;
@@ -225,6 +252,19 @@ export const PaymentFailedDefaultPattern = ({ isDark }: { isDark: boolean }) => 
           <View key="divider" style={styles.headerDivider} />,
           <Image key="union" source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />,
         ]}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
@@ -297,6 +337,20 @@ export const PaymentFailedDefaultPattern = ({ isDark }: { isDark: boolean }) => 
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: { flex: 1 },
   scrollContainer: { padding: 16, alignItems: 'center' },
   emblemLogo: { height: 32, width: 32 },
@@ -314,7 +368,7 @@ const styles = StyleSheet.create({
   detailValue: { fontSize: 13, fontWeight: '500' },
   linkButton: { marginTop: 12, paddingVertical: 8, alignItems: 'center' },
   linkButtonText: { fontSize: 14, fontWeight: '500' },
-  footer: { alignItems: 'center', marginVertical: 20 },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginVertical: 20 },
   poweredByText: { fontSize: 11, color: '#A3A3A3' },
   digitalIndiaLogo: { height: 22, width: 80, marginTop: 6 },
 });`;
@@ -474,6 +528,33 @@ const styles = StyleSheet.create({
               />,
               <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
+          actions={[
+            {
+              customWidget: (
+                <button
+                  key="menu"
+                  type="button"
+                  onClick={() => {}}
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 8,
+                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    padding: 0,
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
+                </button>
+              ),
+            },
+          ]}
           />
           <div
             style={{
@@ -693,9 +774,10 @@ const styles = StyleSheet.create({
                 paddingTop: 16,
                 paddingBottom: 12,
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
+              gap: 6,
               }}
             >
               <span
@@ -708,7 +790,6 @@ const styles = StyleSheet.create({
               >
                 Powered by -
               </span>
-              <div style={{ height: 6 }} />
               <img
                 src="/Digital_India_logo.svg"
                 alt="Digital India"

@@ -137,6 +137,19 @@ export const FeedbackRatingScreen = ({ isDark = false }: { isDark?: boolean }) =
             color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
           />,
         ]}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       {/* Feedback form using Ux4gFeedbackForm */}
@@ -187,6 +200,20 @@ export const FeedbackRatingScreen = ({ isDark = false }: { isDark?: boolean }) =
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },
@@ -266,6 +293,19 @@ export const FeedbackRatingCardScreen = ({ isDark = false }: { isDark?: boolean 
             color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
           />,
         ]}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       {/* Card with Ux4gFeedbackForm */}
@@ -320,6 +360,20 @@ export const FeedbackRatingCardScreen = ({ isDark = false }: { isDark?: boolean 
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: {
     flex: 1,
   },
@@ -815,7 +869,8 @@ const styles = StyleSheet.create({
                     {/* Bottom Section: Powered by Digital India */}
                     <div
                       style={{
-                        display: 'flex',
+              display: 'flex',
+              flexDirection: 'row',
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '4px',

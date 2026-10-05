@@ -171,6 +171,19 @@ export const GovernmentFormMultipleErrorsScreen = ({
             />
           </View>
         }
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
@@ -386,6 +399,20 @@ export const GovernmentFormMultipleErrorsScreen = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: { flex: 1 },
   headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   emblem: { height: 40, width: 30 },
@@ -403,7 +430,7 @@ const styles = StyleSheet.create({
   sliderValue: { fontSize: 13, fontWeight: '800' },
   smsNotice: { fontSize: 15, fontWeight: '600', marginVertical: 8 },
   buttonContainer: { paddingHorizontal: 24, paddingVertical: 16, gap: 12 },
-  footer: { alignItems: 'center', paddingBottom: 24, gap: 6 },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingBottom: 24, gap: 6 },
   footerText: { fontSize: 11 },
   digitalIndiaLogo: { height: 24, width: 120 },
 });`;
@@ -495,6 +522,19 @@ export const GovernmentFormMultipleErrorsCardScreen = ({
               />
             </View>
           }
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
         />
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
       </View>
@@ -728,6 +768,20 @@ export const GovernmentFormMultipleErrorsCardScreen = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   safeArea: { flex: 1 },
   headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   emblem: { height: 40, width: 30 },
@@ -755,7 +809,7 @@ const styles = StyleSheet.create({
   sliderValue: { fontSize: 13, fontWeight: '800' },
   smsNotice: { fontSize: 15, fontWeight: '600', marginVertical: 8 },
   buttonContainer: { paddingHorizontal: 24, paddingVertical: 16, gap: 12 },
-  footer: { alignItems: 'center', paddingBottom: 24, gap: 6 },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingBottom: 24, gap: 6 },
   footerText: { fontSize: 11 },
   digitalIndiaLogo: { height: 24, width: 120 },
 });`;

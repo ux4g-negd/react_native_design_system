@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   countdownTimer: { fontSize: 32, fontWeight: '800', letterSpacing: 1, fontFamily: 'Inter' },
   countdownInfoText: { fontSize: 12, fontWeight: '400', textAlign: 'center', lineHeight: 16.8, fontFamily: 'Inter' },
   cardFooterSection: { paddingHorizontal: 20, paddingBottom: 20 },
-  footer: { alignItems: 'center' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
   footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
   digitalIndiaLogo: { height: 22, width: 100 },
 });`;
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   countdownTimer: { fontSize: 32, fontWeight: '800', letterSpacing: 1, fontFamily: 'Inter' },
   countdownInfoText: { fontSize: 12, fontWeight: '400', textAlign: 'center', lineHeight: 16.8, fontFamily: 'Inter' },
   footerSection: { paddingHorizontal: 20, paddingBottom: 20 },
-  footer: { alignItems: 'center' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
   footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
   digitalIndiaLogo: { height: 22, width: 100 },
 });`;
@@ -629,8 +629,9 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
+                  flexDirection: 'row',
                   alignItems: 'center',
+              justifyContent: 'center',
                   gap: 4,
                 }}
               >
@@ -813,8 +814,9 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
+                  flexDirection: 'row',
                   alignItems: 'center',
+              justifyContent: 'center',
                   gap: 4,
                 }}
               >

@@ -273,7 +273,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   footer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
   },
   footerText: {
     fontSize: 11,
@@ -508,7 +511,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   footer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
   },
   footerText: {
     fontSize: 11,
@@ -780,8 +786,9 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
+                  flexDirection: 'row',
                   alignItems: 'center',
+              justifyContent: 'center',
                   gap: 4,
                 }}
               >
@@ -935,8 +942,9 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
+                  flexDirection: 'row',
                   alignItems: 'center',
+              justifyContent: 'center',
                   gap: 4,
                 }}
               >

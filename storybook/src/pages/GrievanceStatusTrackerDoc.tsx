@@ -107,6 +107,19 @@ export const GrievanceStatusTrackerPattern = ({
         backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
         showBackButton={true}
         onBackPressed={() => {}}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -156,6 +169,20 @@ export const GrievanceStatusTrackerPattern = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: { flex: 1 },
   scrollContainer: { padding: 16 },
   card: {
@@ -516,6 +543,33 @@ const styles = StyleSheet.create({
           backgroundColor={colors.headerBg}
           showBackButton={true}
           onBackPressed={() => {}}
+        actions={[
+          {
+            customWidget: (
+              <button
+                key="menu"
+                type="button"
+                onClick={() => {}}
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 8,
+                  backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                  border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
+                </svg>
+              </button>
+            ),
+          },
+        ]}
         />
 
         {/* Scrollable Container */}

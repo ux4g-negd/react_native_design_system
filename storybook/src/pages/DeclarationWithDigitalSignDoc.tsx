@@ -111,6 +111,19 @@ export const DeclarationWithDigitalSignCardPattern = ({
       <Ux4gAppHeader
         variant="light"
         showBackButton={false}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView contentContainerStyle={styles.cardScrollContainer}>
@@ -198,6 +211,20 @@ export const DeclarationWithDigitalSignCardPattern = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: { flex: 1 },
   cardScrollContainer: { padding: 16 },
   card: { padding: 20, borderRadius: 16, elevation: 2 },
@@ -257,6 +284,19 @@ export const DeclarationWithDigitalSignPattern = ({
       <Ux4gAppHeader
         variant="light"
         showBackButton={false}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -342,6 +382,20 @@ export const DeclarationWithDigitalSignPattern = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: { flex: 1 },
   scrollContainer: { padding: 20 },
   title: { fontSize: 24, fontWeight: '800', letterSpacing: -0.5, marginBottom: 12 },

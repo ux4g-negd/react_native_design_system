@@ -146,6 +146,19 @@ export const ManageAllPattern = () => {
           <View key="divider" style={styles.headerDivider} />,
           <Image key="union" source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />,
         ]}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
@@ -235,6 +248,20 @@ export const ManageAllPattern = () => {
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
   emblemLogo: { width: 32, height: 32 },
   headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
@@ -307,6 +334,33 @@ const styles = StyleSheet.create({
               />,
               <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
+          actions={[
+            {
+              customWidget: (
+                <button
+                  key="menu"
+                  type="button"
+                  onClick={() => {}}
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 8,
+                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    padding: 0,
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
+                </button>
+              ),
+            },
+          ]}
           />
           <div
             style={{
@@ -613,8 +667,9 @@ const styles = StyleSheet.create({
           {/* Brand Footer */}
           <div
             style={{
-              padding: '14px 20px',
               display: 'flex',
+              flexDirection: 'row',
+              padding: '14px 20px',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 4,

@@ -792,8 +792,9 @@ const styles = StyleSheet.create({
             {/* Brand Footer */}
             <div
               style={{
+              display: 'flex',
+              flexDirection: 'row',
                 padding: '14px 20px',
-                display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 4,
@@ -989,8 +990,9 @@ const styles = StyleSheet.create({
             {/* Brand Footer */}
             <div
               style={{
+              display: 'flex',
+              flexDirection: 'row',
                 padding: '14px 20px',
-                display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 4,

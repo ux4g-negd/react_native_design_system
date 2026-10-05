@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   cardTitle: { fontSize: 16, fontWeight: '700', color: '#111827' },
   cardSubtitle: { fontSize: 12, color: '#6B7280', marginTop: 4 },
-  footer: { alignItems: 'center' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
   poweredByText: { fontSize: 10, color: UX4GColors.neutral400 },
   digitalIndiaLogo: { height: 18, width: 60, marginTop: 4 },
   floatingToastContainer: { position: 'absolute', bottom: 16, left: 16, right: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 16, elevation: 8 },
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
             style={{
               paddingTop: 16,
               display: 'flex',
-              flexDirection: 'column',
+              flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 4,

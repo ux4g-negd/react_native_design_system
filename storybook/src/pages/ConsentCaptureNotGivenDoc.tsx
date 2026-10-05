@@ -83,6 +83,19 @@ export const ConsentCaptureNotGivenPattern = ({
       <Ux4gAppHeader
         variant="light"
         showBackButton={false}
+      actions={[
+        {
+          customWidget: (
+            <TouchableOpacity
+              key="menu"
+              style={styles.menuBtn}
+              onPress={() => {}}
+            >
+              <Text style={styles.menuIcon}>☰</Text>
+            </TouchableOpacity>
+          ),
+        },
+      ]}
       />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -165,6 +178,20 @@ export const ConsentCaptureNotGivenPattern = ({
 };
 
 const styles = StyleSheet.create({
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.neutral0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    color: UX4GColors.primary,
+  },
   screen: { flex: 1 },
   scrollContainer: { padding: 16 },
   flatContainer: { padding: 4 },
