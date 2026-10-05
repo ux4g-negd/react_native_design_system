@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gCard } from '../../../src/components/card/Card';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
@@ -22,17 +21,21 @@ export const AadhaarFaceAuthPermissionDoc: React.FC<AadhaarFaceAuthPermissionDoc
   const colors = useMemo(() => {
     return {
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
-      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
+      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
       title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
       subtitle: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      // Cream / Peach Privacy Info Card tokens
-      privacyCardBg: isDark ? UX4GColors.secondary900 : UX4GColors.secondary50,
-      menuBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      // Cyan / Aqua Info banner tokens
+      infoBannerBg: isDark ? '#083344' : '#E6F7F8',
+      infoBannerBorder: isDark ? '#155E75' : '#B2EBF2',
+      infoIconColor: isDark ? '#38BDF8' : '#00ACC1',
+      infoTitleColor: isDark ? '#E0F2FE' : '#006064',
+      infoTextColor: isDark ? '#BAE6FD' : '#006064',
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
     };
   }, [isDark]);
 
@@ -50,7 +53,6 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gDivider,
-  Ux4gCard,
   Ux4gButton,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -64,51 +66,45 @@ export const AadhaarFaceAuthPermissionCardPattern = ({ isDark = false }: { isDar
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Floating Card Container */}
       <View style={styles.cardWrapper}>
-        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50 }]}>
-          {/* Change Method Back Button */}
-          <View style={styles.backWrapper}>
-            <Ux4gButton
-              text="Change method"
-              onPress={() => {}}
-              variant="ghost"
-              size="small"
-              height={48}
-            />
-          </View>
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }]}>
+          {/* Back Link */}
+          <TouchableOpacity style={styles.backWrapper} onPress={() => {}}>
+            <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+              ← Back
+            </Text>
+          </TouchableOpacity>
 
           <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
             Face Authentication
@@ -119,55 +115,59 @@ export const AadhaarFaceAuthPermissionCardPattern = ({ isDark = false }: { isDar
 
           <View style={styles.gap20} />
 
-          {/* Privacy Info Card (Cream / Peach Surface) */}
-          <Ux4gCard
-            cornerRadius={12}
-            backgroundColor={isDark ? UX4GColors.secondary900 : UX4GColors.secondary50}
-            borderColor="transparent"
-            borderWidth={0}
+          {/* Camera Access Required Info Box */}
+          <View
+            style={[
+              styles.infoBanner,
+              {
+                backgroundColor: isDark ? '#083344' : '#E6F7F8',
+                borderColor: isDark ? '#155E75' : '#B2EBF2',
+              },
+            ]}
           >
-            <View style={styles.privacyContent}>
-              <Text style={[styles.privacyTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+            <View style={styles.infoTitleRow}>
+              <View style={[styles.infoIconCircle, { backgroundColor: isDark ? '#38BDF8' : '#00ACC1' }]}>
+                <Text style={styles.infoIconLetter}>i</Text>
+              </View>
+              <Text style={[styles.infoTitle, { color: isDark ? '#E0F2FE' : '#006064' }]}>
                 Camera Access Required
               </Text>
-              <Text style={[styles.privacyText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-                Your face scan data is processed locally and never stored on our servers.
-              </Text>
             </View>
-          </Ux4gCard>
+            <Text style={[styles.infoSubtitle, { color: isDark ? '#BAE6FD' : '#006064' }]}>
+              Your face scan data is processed locally and never stored on our servers.
+            </Text>
+          </View>
+
+          {/* Divider inside Card */}
+          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
+
+          {/* Action Buttons inside Card */}
+          <View style={styles.actionBtnRow}>
+            <TouchableOpacity onPress={() => {}} style={styles.cancelBtn}>
+              <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontWeight: '600', fontSize: 15 }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <Ux4gButton
+              text="Allow Camera"
+              onPress={() => alert('Camera permission requested...')}
+              size="medium"
+              height={44}
+            />
+          </View>
         </View>
       </View>
 
-      {/* Cancel + Allow Camera Footer */}
-      <View style={styles.footerRow}>
-        <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
-        <View style={styles.actionBtnRow}>
-          <Ux4gButton
-            text="Cancel"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
-          <Ux4gButton
-            text="Allow Camera"
-            onPress={() => alert('Camera permission requested...')}
-            size="medium"
-            height={48}
-          />
-        </View>
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+      {/* Digital India Footer outside Card */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   headerLeading: {
     flexDirection: 'row',
@@ -191,14 +192,14 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -221,6 +222,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginBottom: 12,
   },
+  backText: {
+    fontSize: 15,
+    fontWeight: '600',
+    fontFamily: 'Inter',
+  },
   gap20: {
     height: 20,
   },
@@ -238,50 +244,68 @@ const styles = StyleSheet.create({
     lineHeight: 18.2,
     fontFamily: 'Inter',
   },
-  privacyContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 18,
+  infoBanner: {
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 16,
+  },
+  infoTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+    gap: 8,
+  },
+  infoIconCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  privacyTitle: {
-    fontSize: 16,
-    fontWeight: '800',
-    lineHeight: 20.8,
-    textAlign: 'center',
-    marginBottom: 8,
-    fontFamily: 'Inter',
+  infoIconLetter: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+    lineHeight: 14,
   },
-  privacyText: {
+  infoTitle: {
     fontSize: 14,
-    fontWeight: '400',
-    lineHeight: 18.2,
-    textAlign: 'center',
+    fontWeight: '700',
     fontFamily: 'Inter',
   },
-  footerRow: {
-    paddingHorizontal: 20,
-    paddingBottom: 16,
+  infoSubtitle: {
+    fontSize: 13,
+    fontWeight: '400',
+    lineHeight: 18,
+    fontFamily: 'Inter',
+    paddingLeft: 26,
   },
   divider: {
     height: 1,
     width: '100%',
-    marginBottom: 6,
+    marginTop: 24,
+    marginBottom: 16,
   },
   actionBtnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    alignItems: 'center',
+  },
+  cancelBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 4,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 4,
+    marginTop: 'auto',
+    paddingTop: 16,
   },
   footerText: {
     fontSize: 11,
     fontWeight: '400',
-    marginBottom: 4,
     fontFamily: 'Inter',
   },
   digitalIndiaLogo: {
@@ -302,63 +326,57 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gDivider,
-  Ux4gCard,
   Ux4gButton,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 export const AadhaarFaceAuthPermissionDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0 }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Main Content */}
       <View style={styles.content}>
-        {/* Change Method Back Button */}
-        <Ux4gButton
-          text="Change method"
-          onPress={() => {}}
-          variant="ghost"
-          size="small"
-          height={48}
-        />
-        <View style={styles.gap16} />
+        {/* Back Link */}
+        <TouchableOpacity style={styles.backWrapper} onPress={() => {}}>
+          <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+            ← Back
+          </Text>
+        </TouchableOpacity>
 
         <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
           Face Authentication
@@ -366,42 +384,47 @@ export const AadhaarFaceAuthPermissionDefaultPattern = ({ isDark = false }: { is
         <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
           Allow camera access to capture your face for Aadhaar biometric verification.
         </Text>
+
         <View style={styles.gap20} />
 
-        {/* Privacy Info Card (Cream / Peach Surface) */}
-        <Ux4gCard
-          cornerRadius={12}
-          backgroundColor={isDark ? UX4GColors.secondary900 : UX4GColors.secondary50}
-          borderColor="transparent"
-          borderWidth={0}
+        {/* Camera Access Required Info Box */}
+        <View
+          style={[
+            styles.infoBanner,
+            {
+              backgroundColor: isDark ? '#083344' : '#E6F7F8',
+              borderColor: isDark ? '#155E75' : '#B2EBF2',
+            },
+          ]}
         >
-          <View style={styles.privacyContent}>
-            <Text style={[styles.privacyTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+          <View style={styles.infoTitleRow}>
+            <View style={[styles.infoIconCircle, { backgroundColor: isDark ? '#38BDF8' : '#00ACC1' }]}>
+              <Text style={styles.infoIconLetter}>i</Text>
+            </View>
+            <Text style={[styles.infoTitle, { color: isDark ? '#E0F2FE' : '#006064' }]}>
               Camera Access Required
             </Text>
-            <Text style={[styles.privacyText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-              Your face scan data is processed locally and never stored on our servers.
-            </Text>
           </View>
-        </Ux4gCard>
+          <Text style={[styles.infoSubtitle, { color: isDark ? '#BAE6FD' : '#006064' }]}>
+            Your face scan data is processed locally and never stored on our servers.
+          </Text>
+        </View>
       </View>
 
       {/* Footer Section */}
       <View style={styles.footerSection}>
         <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
         <View style={styles.actionBtnRow}>
-          <Ux4gButton
-            text="Cancel"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
+          <TouchableOpacity onPress={() => {}} style={styles.cancelBtn}>
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontWeight: '600', fontSize: 15 }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
           <Ux4gButton
             text="Allow Camera"
             onPress={() => alert('Camera permission requested...')}
             size="medium"
-            height={48}
+            height={44}
           />
         </View>
 
@@ -411,7 +434,7 @@ export const AadhaarFaceAuthPermissionDefaultPattern = ({ isDark = false }: { is
             Powered by -
           </Text>
           <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
@@ -425,6 +448,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   headerLeading: {
     flexDirection: 'row',
@@ -439,14 +463,14 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -456,8 +480,14 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     flex: 1,
   },
-  gap16: {
-    height: 16,
+  backWrapper: {
+    alignSelf: 'flex-start',
+    marginBottom: 16,
+  },
+  backText: {
+    fontSize: 15,
+    fontWeight: '600',
+    fontFamily: 'Inter',
   },
   gap20: {
     height: 20,
@@ -476,50 +506,70 @@ const styles = StyleSheet.create({
     lineHeight: 18.2,
     fontFamily: 'Inter',
   },
-  privacyContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 18,
+  infoBanner: {
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 16,
+  },
+  infoTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+    gap: 8,
+  },
+  infoIconCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  privacyTitle: {
-    fontSize: 16,
-    fontWeight: '800',
-    lineHeight: 20.8,
-    textAlign: 'center',
-    marginBottom: 8,
+  infoIconLetter: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+    lineHeight: 14,
+  },
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: '700',
     fontFamily: 'Inter',
   },
-  privacyText: {
-    fontSize: 14,
+  infoSubtitle: {
+    fontSize: 13,
     fontWeight: '400',
-    lineHeight: 18.2,
-    textAlign: 'center',
+    lineHeight: 18,
     fontFamily: 'Inter',
+    paddingLeft: 26,
   },
   footerSection: {
     paddingHorizontal: 20,
-    paddingBottom: 16,
+    paddingBottom: 8,
   },
   divider: {
     height: 1,
     width: '100%',
-    marginBottom: 6,
+    marginBottom: 16,
   },
   actionBtnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 16,
+  },
+  cancelBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 4,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 4,
   },
   footerText: {
     fontSize: 11,
     fontWeight: '400',
-    marginBottom: 4,
     fontFamily: 'Inter',
   },
   digitalIndiaLogo: {
@@ -598,9 +648,9 @@ const styles = StyleSheet.create({
                   <div
                     key="menuAction"
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
                       border: `1.5px solid ${colors.menuBorder}`,
                       backgroundColor: colors.headerBg,
                       display: 'flex',
@@ -610,13 +660,13 @@ const styles = StyleSheet.create({
                     }}
                   >
                     <span
-                      className="material-symbols-outlined"
                       style={{
-                        fontSize: 20,
+                        fontSize: 18,
                         color: colors.menuIcon,
+                        lineHeight: 1,
                       }}
                     >
-                      menu
+                      ☰
                     </span>
                   </div>
                 ),
@@ -646,7 +696,7 @@ const styles = StyleSheet.create({
             }}
           >
             <div>
-              {/* Soft purple gap above card */}
+              {/* Soft lavender gap above card */}
               <div style={{ height: 16 }} />
 
               {/* Floating Card Container */}
@@ -654,7 +704,7 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '20px',
+                  padding: '24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -662,20 +712,27 @@ const styles = StyleSheet.create({
                   flexDirection: 'column',
                 }}
               >
-                {/* Change Method Back Button */}
-                <div style={{ alignSelf: 'flex-start', marginBottom: 12 }}>
-                  <Ux4gButton
-                    text="Change method"
-                    onPress={() => {}}
-                    variant="ghost"
-                    size="small"
-                    height={48}
-                    leadingIcon={
-                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                        arrow_back
-                      </span>
-                    }
-                  />
+                {/* Back Button */}
+                <div style={{ alignSelf: 'flex-start', marginBottom: 16 }}>
+                  <button
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: 0,
+                      color: colors.primary,
+                      fontSize: 15,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    ← Back
+                  </button>
                 </div>
 
                 <h2
@@ -696,7 +753,7 @@ const styles = StyleSheet.create({
                   style={{
                     fontSize: 14,
                     fontWeight: 400,
-                    lineHeight: 1.3,
+                    lineHeight: 1.4,
                     color: colors.subtitle,
                     margin: 0,
                     marginBottom: 20,
@@ -706,104 +763,133 @@ const styles = StyleSheet.create({
                   Allow camera access to capture your face for Aadhaar biometric verification.
                 </p>
 
-                {/* Privacy Info Card (Cream / Peach Surface) */}
-                <Ux4gCard
-                  cornerRadius={12}
-                  backgroundColor={colors.privacyCardBg}
-                  borderColor="transparent"
-                  borderWidth={0}
+                {/* Camera Access Required Info Box */}
+                <div
+                  style={{
+                    backgroundColor: colors.infoBannerBg,
+                    border: `1px solid ${colors.infoBannerBorder}`,
+                    borderRadius: 12,
+                    padding: '16px',
+                  }}
                 >
                   <div
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
                       alignItems: 'center',
-                      padding: '18px 16px',
-                      textAlign: 'center',
+                      gap: 8,
+                      marginBottom: 6,
                     }}
                   >
+                    <div
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: 9,
+                        backgroundColor: colors.infoIconColor,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#FFFFFF',
+                        fontSize: 12,
+                        fontWeight: 700,
+                        lineHeight: 1,
+                        flexShrink: 0,
+                      }}
+                    >
+                      i
+                    </div>
                     <span
                       style={{
-                        fontSize: 16,
-                        fontWeight: 800,
-                        lineHeight: '20.8px',
-                        color: colors.title,
-                        marginBottom: 8,
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: colors.infoTitleColor,
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
                     >
                       Camera Access Required
                     </span>
-                    <span
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 400,
-                        lineHeight: '18.2px',
-                        color: colors.subtitle,
-                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                      }}
-                    >
-                      Your face scan data is processed locally and never stored on our servers.
-                    </span>
                   </div>
-                </Ux4gCard>
+                  <div
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 400,
+                      lineHeight: '18px',
+                      color: colors.infoTextColor,
+                      paddingLeft: 26,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Your face scan data is processed locally and never stored on our servers.
+                  </div>
+                </div>
+
+                {/* Subtle Divider inside Card */}
+                <div
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.border,
+                    width: '100%',
+                    marginTop: 24,
+                    marginBottom: 16,
+                  }}
+                />
+
+                {/* Action Buttons inside Card */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: '8px 4px',
+                      color: colors.primary,
+                      fontSize: 15,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <Ux4gButton
+                    text="Allow Camera"
+                    onPress={() => alert('Camera permission requested...')}
+                    size="medium"
+                    height={44}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Footer Section */}
-            <div style={{ paddingTop: 16 }}>
-              <div
+            {/* Footer Section outside Card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                paddingTop: 16,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
                 style={{
-                  height: 1,
-                  backgroundColor: colors.border,
-                  width: '100%',
-                  marginBottom: 6,
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  marginBottom: 16,
-                }}
-              >
-                <Ux4gButton
-                  text="Cancel"
-                  onPress={() => {}}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
-                <Ux4gButton
-                  text="Allow Camera"
-                  onPress={() => alert('Camera permission requested...')}
-                  size="medium"
-                  height={48}
-                />
-              </div>
-
-              {/* Footer */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
-                }}
-              >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
-                  style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                />
-              </div>
             </div>
           </div>
         ) : (
@@ -819,20 +905,27 @@ const styles = StyleSheet.create({
             }}
           >
             <div>
-              {/* Change Method Back Button */}
+              {/* Back Button */}
               <div style={{ alignSelf: 'flex-start', marginBottom: 16 }}>
-                <Ux4gButton
-                  text="Change method"
-                  onPress={() => {}}
-                  variant="ghost"
-                  size="small"
-                  height={48}
-                  leadingIcon={
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                      arrow_back
-                    </span>
-                  }
-                />
+                <button
+                  type="button"
+                  onClick={() => {}}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    padding: 0,
+                    color: colors.primary,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  ← Back
+                </button>
               </div>
 
               <h2
@@ -853,7 +946,7 @@ const styles = StyleSheet.create({
                 style={{
                   fontSize: 14,
                   fontWeight: 400,
-                  lineHeight: 1.3,
+                  lineHeight: 1.4,
                   color: colors.subtitle,
                   margin: 0,
                   marginBottom: 20,
@@ -863,47 +956,65 @@ const styles = StyleSheet.create({
                 Allow camera access to capture your face for Aadhaar biometric verification.
               </p>
 
-              {/* Privacy Info Card (Cream / Peach Surface) */}
-              <Ux4gCard
-                cornerRadius={12}
-                backgroundColor={colors.privacyCardBg}
-                borderColor="transparent"
-                borderWidth={0}
+              {/* Camera Access Required Info Box */}
+              <div
+                style={{
+                  backgroundColor: colors.infoBannerBg,
+                  border: `1px solid ${colors.infoBannerBorder}`,
+                  borderRadius: 12,
+                  padding: '16px',
+                }}
               >
                 <div
                   style={{
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
-                    padding: '18px 16px',
-                    textAlign: 'center',
+                    gap: 8,
+                    marginBottom: 6,
                   }}
                 >
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: 9,
+                      backgroundColor: colors.infoIconColor,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#FFFFFF',
+                      fontSize: 12,
+                      fontWeight: 700,
+                      lineHeight: 1,
+                      flexShrink: 0,
+                    }}
+                  >
+                    i
+                  </div>
                   <span
                     style={{
-                      fontSize: 16,
-                      fontWeight: 800,
-                      lineHeight: '20.8px',
-                      color: colors.title,
-                      marginBottom: 8,
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: colors.infoTitleColor,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
                     Camera Access Required
                   </span>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 400,
-                      lineHeight: '18.2px',
-                      color: colors.subtitle,
-                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                    }}
-                  >
-                    Your face scan data is processed locally and never stored on our servers.
-                  </span>
                 </div>
-              </Ux4gCard>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 400,
+                    lineHeight: '18px',
+                    color: colors.infoTextColor,
+                    paddingLeft: 26,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Your face scan data is processed locally and never stored on our servers.
+                </div>
+              </div>
             </div>
 
             {/* Bottom Section */}
@@ -913,28 +1024,38 @@ const styles = StyleSheet.create({
                   height: 1,
                   backgroundColor: colors.border,
                   width: '100%',
-                  marginBottom: 6,
+                  marginBottom: 16,
                 }}
               />
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
+                  alignItems: 'center',
                   marginBottom: 16,
                 }}
               >
-                <Ux4gButton
-                  text="Cancel"
-                  onPress={() => {}}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
+                <button
+                  type="button"
+                  onClick={() => {}}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    padding: '8px 4px',
+                    color: colors.primary,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Cancel
+                </button>
                 <Ux4gButton
                   text="Allow Camera"
                   onPress={() => alert('Camera permission requested...')}
                   size="medium"
-                  height={48}
+                  height={44}
                 />
               </div>
 
@@ -944,7 +1065,7 @@ const styles = StyleSheet.create({
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-              justifyContent: 'center',
+                  justifyContent: 'center',
                   gap: 4,
                 }}
               >
@@ -977,7 +1098,7 @@ const styles = StyleSheet.create({
           </div>
           <h1 className="wb-title">Aadhaar Face Auth — camera permission</h1>
           <p className="wb-subtitle">
-            Camera-permission step shown after the user picks "Face Authentication" on the verify-with-Aadhaar method picker. A muted info card explains the privacy guarantee, with a Cancel + Allow Camera footer.
+            Camera-permission step shown after the user picks "Face Authentication" on the verify-with-Aadhaar method picker. A cyan info card explains the privacy guarantee, with a Cancel + Allow Camera footer.
           </p>
         </div>
       </div>

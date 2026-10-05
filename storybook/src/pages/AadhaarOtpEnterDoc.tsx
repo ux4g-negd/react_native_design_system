@@ -26,13 +26,13 @@ export const AadhaarOtpEnterDoc: React.FC<AadhaarOtpEnterDocProps> = ({ isDark }
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
       cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
-      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
+      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
       title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
       subtitle: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      menuBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
     };
   }, [isDark]);
 
@@ -67,51 +67,45 @@ export const AadhaarOtpEnterCardPattern = ({ isDark = false }: { isDark?: boolea
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Floating Card Container */}
       <View style={styles.cardWrapper}>
-        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50 }]}>
-          {/* Change Method Back Button */}
-          <View style={styles.backWrapper}>
-            <Ux4gButton
-              text="Change method"
-              onPress={() => {}}
-              variant="ghost"
-              size="small"
-              height={48}
-            />
-          </View>
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }]}>
+          {/* Back Link */}
+          <TouchableOpacity style={styles.backWrapper} onPress={() => {}}>
+            <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+              ← Back
+            </Text>
+          </TouchableOpacity>
 
           <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
             Enter OTP
@@ -134,46 +128,44 @@ export const AadhaarOtpEnterCardPattern = ({ isDark = false }: { isDark?: boolea
             showSeparator={false}
             captionVariant="resendTimer"
             captionLeadingText="Didn't receive OTP?"
-            captionTrailingText="Resend OTP"
-            autoCountdownSeconds={60}
+            captionTrailingText="Resend in 00:17"
+            autoCountdownSeconds={17}
             onCaptionTrailingTap={() => {
               setOtp('');
               setResendNonce((n) => n + 1);
             }}
           />
+
+          {/* Divider inside Card */}
+          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
+
+          {/* Action Buttons inside Card */}
+          <View style={styles.actionBtnRow}>
+            <TouchableOpacity onPress={() => {}} style={styles.backBtn}>
+              <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontWeight: '600', fontSize: 15 }}>
+                Back
+              </Text>
+            </TouchableOpacity>
+            <Ux4gButton
+              text="Verify OTP"
+              onPress={() => alert('Verifying Aadhaar OTP...')}
+              size="medium"
+              height={44}
+            />
+          </View>
         </View>
       </View>
 
-      {/* Back + Verify OTP Action Footer */}
-      <View style={styles.footerRow}>
-        <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
-        <View style={styles.actionBtnRow}>
-          <Ux4gButton
-            text="Back"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
-          <Ux4gButton
-            text="Verify OTP"
-            onPress={() => alert('Verifying Aadhaar OTP...')}
-            size="medium"
-            height={48}
-          />
-        </View>
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+      {/* Digital India Footer outside Card */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
@@ -183,6 +175,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   headerLeading: {
     flexDirection: 'row',
@@ -197,14 +190,14 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -227,13 +220,18 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginBottom: 12,
   },
+  backText: {
+    fontSize: 15,
+    fontWeight: '600',
+    fontFamily: 'Inter',
+  },
   gap20: {
     height: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '800',
-    lineHeight: 28.8,
+    lineHeight: 31.2,
     letterSpacing: -0.3,
     marginBottom: 8,
     fontFamily: 'Inter',
@@ -244,30 +242,32 @@ const styles = StyleSheet.create({
     lineHeight: 18.2,
     fontFamily: 'Inter',
   },
-  footerRow: {
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-  },
   divider: {
     height: 1,
     width: '100%',
-    marginBottom: 6,
+    marginTop: 20,
+    marginBottom: 16,
   },
   actionBtnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    alignItems: 'center',
+  },
+  backBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 4,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 4,
+    marginTop: 'auto',
+    paddingTop: 16,
   },
   footerText: {
     fontSize: 11,
     fontWeight: '400',
-    marginBottom: 4,
     fontFamily: 'Inter',
   },
   digitalIndiaLogo: {
@@ -305,34 +305,32 @@ export const AadhaarOtpEnterDefaultPattern = ({ isDark = false }: { isDark?: boo
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
@@ -403,7 +401,7 @@ export const AadhaarOtpEnterDefaultPattern = ({ isDark = false }: { isDark?: boo
             Powered by -
           </Text>
           <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
@@ -431,14 +429,14 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -486,7 +484,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 6,
+    gap: 4,
   },
   footerText: {
     fontSize: 11,
@@ -570,9 +568,9 @@ const styles = StyleSheet.create({
                   <div
                     key="menuAction"
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
                       border: `1.5px solid ${colors.menuBorder}`,
                       backgroundColor: colors.headerBg,
                       display: 'flex',
@@ -582,13 +580,13 @@ const styles = StyleSheet.create({
                     }}
                   >
                     <span
-                      className="material-symbols-outlined"
                       style={{
-                        fontSize: 20,
+                        fontSize: 18,
                         color: colors.menuIcon,
+                        lineHeight: 1,
                       }}
                     >
-                      menu
+                      ☰
                     </span>
                   </div>
                 ),
@@ -618,7 +616,7 @@ const styles = StyleSheet.create({
             }}
           >
             <div>
-              {/* Soft purple gap above card */}
+              {/* Soft lavender gap above card */}
               <div style={{ height: 16 }} />
 
               {/* Floating Card Container */}
@@ -626,7 +624,7 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '20px',
+                  padding: '24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -634,25 +632,32 @@ const styles = StyleSheet.create({
                   flexDirection: 'column',
                 }}
               >
-                {/* Change Method Back Button */}
-                <div style={{ alignSelf: 'flex-start', marginBottom: 12 }}>
-                  <Ux4gButton
-                    text="Change method"
-                    onPress={() => {}}
-                    variant="ghost"
-                    size="small"
-                    height={48}
-                    leadingIcon={
-                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                        arrow_back
-                      </span>
-                    }
-                  />
+                {/* Back Button */}
+                <div style={{ alignSelf: 'flex-start', marginBottom: 16 }}>
+                  <button
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: 0,
+                      color: colors.primary,
+                      fontSize: 15,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    ← Back
+                  </button>
                 </div>
 
                 <h2
                   style={{
-                    fontSize: 24,
+                    fontSize: 26,
                     fontWeight: 800,
                     lineHeight: 1.2,
                     letterSpacing: '-0.3px',
@@ -668,7 +673,7 @@ const styles = StyleSheet.create({
                   style={{
                     fontSize: 14,
                     fontWeight: 400,
-                    lineHeight: 1.3,
+                    lineHeight: 1.4,
                     color: colors.subtitle,
                     margin: 0,
                     marginBottom: 20,
@@ -690,70 +695,81 @@ const styles = StyleSheet.create({
                   showSeparator={false}
                   captionVariant="resendTimer"
                   captionLeadingText="Didn't receive OTP?"
-                  captionTrailingText="Resend OTP"
-                  autoCountdownSeconds={60}
+                  captionTrailingText="Resend in 00:17"
+                  autoCountdownSeconds={17}
                   onCaptionTrailingTap={() => {
                     setOtpValue('');
                     setResendNonce((n) => n + 1);
                   }}
                 />
+
+                {/* Subtle Divider inside Card */}
+                <div
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.border,
+                    width: '100%',
+                    marginTop: 24,
+                    marginBottom: 16,
+                  }}
+                />
+
+                {/* Action Buttons inside Card */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: '8px 4px',
+                      color: colors.primary,
+                      fontSize: 15,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Back
+                  </button>
+                  <Ux4gButton
+                    text="Verify OTP"
+                    onPress={() => alert('Verifying Aadhaar OTP...')}
+                    size="medium"
+                    height={44}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Footer Section */}
-            <div style={{ paddingTop: 16 }}>
-              <div
+            {/* Footer Section outside Card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                paddingTop: 16,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
                 style={{
-                  height: 1,
-                  backgroundColor: colors.border,
-                  width: '100%',
-                  marginBottom: 6,
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  marginBottom: 16,
-                }}
-              >
-                <Ux4gButton
-                  text="Back"
-                  onPress={() => {}}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
-                <Ux4gButton
-                  text="Verify OTP"
-                  onPress={() => alert('Verifying Aadhaar OTP...')}
-                  size="medium"
-                  height={48}
-                />
-              </div>
-
-              {/* Footer */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
-                }}
-              >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
-                  style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                />
-              </div>
             </div>
           </div>
         ) : (
@@ -872,7 +888,7 @@ const styles = StyleSheet.create({
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-              justifyContent: 'center',
+                  justifyContent: 'center',
                   gap: 4,
                 }}
               >

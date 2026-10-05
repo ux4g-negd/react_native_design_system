@@ -14,7 +14,7 @@ interface AadhaarVerifyMethodDocProps {
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'default' | 'card';
-type AuthMethod = 'otp' | 'face' | 'totp';
+type AuthMethod = 'otp' | 'face';
 
 export const AadhaarVerifyMethodDoc: React.FC<AadhaarVerifyMethodDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
@@ -25,18 +25,23 @@ export const AadhaarVerifyMethodDoc: React.FC<AadhaarVerifyMethodDocProps> = ({ 
   const colors = useMemo(() => {
     return {
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
-      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
+      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
       title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
       subtitle: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      // Card states
-      cardSelectedBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
-      cardUnselectedBg: isDark ? UX4GColors.neutral800 : UX4GColors.gray100,
-      menuBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      // Card states for Card style (borderless pill cards inside white card)
+      cardOptionSelectedBg: isDark ? UX4GColors.primary900 : '#EDE9FE',
+      cardOptionUnselectedBg: isDark ? UX4GColors.neutral800 : '#F3F4F6',
+      // Card states for Default style (bordered cards)
+      defaultOptionSelectedBg: isDark ? UX4GColors.primary900 : '#F0EBFF',
+      defaultOptionSelectedBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      defaultOptionUnselectedBg: isDark ? UX4GColors.neutral900 : '#FAFAFA',
+      defaultOptionUnselectedBorder: isDark ? UX4GColors.neutral800 : '#E5E7EB',
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
     };
   }, [isDark]);
 
@@ -61,23 +66,18 @@ import {
 } from 'ux4g-react-native-components';
 
 export const AadhaarVerifyMethodCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
-  const [method, setMethod] = useState<'otp' | 'face' | 'totp'>('otp');
+  const [method, setMethod] = useState<'otp' | 'face'>('otp');
 
   const methods = [
     {
       id: 'otp',
       title: 'Aadhaar OTP',
-      subtitle: 'Receive a one-time password on your Aadhaar-linked mobile number.',
+      subtitle: 'Receive a one-time password on your...',
     },
     {
       id: 'face',
       title: 'Face Authentication',
-      subtitle: 'Verify identity using face recognition. Camera access required.',
-    },
-    {
-      id: 'totp',
-      title: 'mAadhaar TOTP',
-      subtitle: 'Use the time-based code from your mAadhaar app.',
+      subtitle: 'Verify identity using face recognition....',
     },
   ];
 
@@ -89,14 +89,16 @@ export const AadhaarVerifyMethodCardPattern = ({ isDark = false }: { isDark?: bo
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
@@ -106,7 +108,7 @@ export const AadhaarVerifyMethodCardPattern = ({ isDark = false }: { isDark?: bo
               styles.menuBtn,
               {
                 backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
               },
             ]}
             onPress={() => {}}
@@ -119,17 +121,13 @@ export const AadhaarVerifyMethodCardPattern = ({ isDark = false }: { isDark?: bo
 
       {/* Floating Card Container */}
       <View style={styles.cardWrapper}>
-        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50 }]}>
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }]}>
           {/* Back Button */}
-          <View style={styles.backWrapper}>
-            <Ux4gButton
-              text="Back"
-              onPress={() => {}}
-              variant="ghost"
-              size="small"
-              height={48}
-            />
-          </View>
+          <TouchableOpacity style={styles.backWrapper} onPress={() => {}}>
+            <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+              ← Back
+            </Text>
+          </TouchableOpacity>
 
           <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
             Verify with Aadhaar
@@ -149,8 +147,8 @@ export const AadhaarVerifyMethodCardPattern = ({ isDark = false }: { isDark?: bo
                   onPressed={() => setMethod(item.id as any)}
                   backgroundColor={
                     isSelected
-                      ? isDark ? UX4GColors.primary900 : UX4GColors.primary50
-                      : isDark ? UX4GColors.neutral800 : UX4GColors.gray100
+                      ? isDark ? UX4GColors.primary900 : '#EDE9FE'
+                      : isDark ? UX4GColors.neutral800 : '#F3F4F6'
                   }
                   borderColor="transparent"
                   borderWidth={0}
@@ -183,39 +181,37 @@ export const AadhaarVerifyMethodCardPattern = ({ isDark = false }: { isDark?: bo
               );
             })}
           </View>
+
+          {/* Divider inside Card */}
+          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
+
+          {/* Cancel + Continue buttons inside Card */}
+          <View style={styles.actionBtnRow}>
+            <TouchableOpacity onPress={() => {}} style={styles.cancelBtn}>
+              <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontWeight: '600', fontSize: 15 }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <Ux4gButton
+              text="Continue"
+              onPress={() => {}}
+              size="medium"
+              height={44}
+            />
+          </View>
         </View>
       </View>
 
-      {/* Cancel + Continue footer */}
-      <View style={styles.footerRow}>
-        <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
-        <View style={styles.actionBtnRow}>
-          <Ux4gButton
-            text="Cancel"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
-          <Ux4gButton
-            text="Continue"
-            onPress={() => {}}
-            size="medium"
-            height={48}
-          />
-        </View>
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+      {/* Digital India Footer outside Card */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
@@ -225,6 +221,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    paddingBottom: 16,
   },
   headerLeading: {
     flexDirection: 'row',
@@ -239,14 +236,14 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -267,7 +264,11 @@ const styles = StyleSheet.create({
   },
   backWrapper: {
     alignSelf: 'flex-start',
-    marginBottom: 12,
+    marginBottom: 16,
+  },
+  backText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     fontSize: 26,
@@ -281,20 +282,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 18.2,
-    marginBottom: 16,
+    marginBottom: 20,
     fontFamily: 'Inter',
   },
   cardList: {
     gap: 12,
+    marginBottom: 20,
   },
   cardRow: {
     flexDirection: 'row',
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     paddingVertical: 14,
     alignItems: 'flex-start',
   },
   cardTextCol: {
-    marginLeft: 8,
+    marginLeft: 10,
     flex: 1,
   },
   cardTitle: {
@@ -310,35 +312,35 @@ const styles = StyleSheet.create({
     lineHeight: 17.55,
     fontFamily: 'Inter',
   },
-  footerRow: {
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-  },
   divider: {
     height: 1,
     width: '100%',
-    marginBottom: 6,
+    marginBottom: 16,
   },
   actionBtnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    alignItems: 'center',
+  },
+  cancelBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
+    paddingTop: 16,
   },
   footerText: {
     fontSize: 11,
     fontWeight: '400',
-    marginBottom: 4,
     fontFamily: 'Inter',
   },
   digitalIndiaLogo: {
     height: 22,
-    width: 100,
+    width: 70,
   },
 });`;
     }
@@ -361,42 +363,39 @@ import {
 } from 'ux4g-react-native-components';
 
 export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
-  const [method, setMethod] = useState<'otp' | 'face' | 'totp'>('otp');
+  const [method, setMethod] = useState<'otp' | 'face'>('otp');
 
   const methods = [
     {
       id: 'otp',
       title: 'Aadhaar OTP',
-      subtitle: 'Receive a one-time password on your Aadhaar-linked mobile number.',
+      subtitle: 'Receive a one-time password on your Aa...',
     },
     {
       id: 'face',
       title: 'Face Authentication',
-      subtitle: 'Verify identity using face recognition. Camera access required.',
-    },
-    {
-      id: 'totp',
-      title: 'mAadhaar TOTP',
-      subtitle: 'Use the time-based code from your mAadhaar app.',
+      subtitle: 'Verify identity using face recognition. C...',
     },
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0 }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
@@ -406,7 +405,7 @@ export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?:
               styles.menuBtn,
               {
                 backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
               },
             ]}
             onPress={() => {}}
@@ -420,14 +419,11 @@ export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?:
       {/* Main Content */}
       <View style={styles.content}>
         {/* Back Button */}
-        <Ux4gButton
-          text="Back"
-          onPress={() => {}}
-          variant="ghost"
-          size="small"
-          height={48}
-        />
-        <View style={styles.gap16} />
+        <TouchableOpacity style={styles.backWrapper} onPress={() => {}}>
+          <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+            ← Back
+          </Text>
+        </TouchableOpacity>
 
         <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
           Verify with Aadhaar
@@ -435,7 +431,6 @@ export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?:
         <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
           Choose how you want to authenticate. Your Aadhaar number is never stored.
         </Text>
-        <View style={styles.gap20} />
 
         {/* Method Option Cards */}
         <View style={styles.cardList}>
@@ -449,11 +444,15 @@ export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?:
                 onPressed={() => setMethod(item.id as any)}
                 backgroundColor={
                   isSelected
-                    ? isDark ? UX4GColors.primary900 : UX4GColors.primary50
-                    : isDark ? UX4GColors.neutral800 : UX4GColors.gray100
+                    ? isDark ? UX4GColors.primary900 : '#F0EBFF'
+                    : isDark ? UX4GColors.neutral900 : '#FAFAFA'
                 }
-                borderColor="transparent"
-                borderWidth={0}
+                borderColor={
+                  isSelected
+                    ? isDark ? UX4GColors.primary400 : '#C0B3FF'
+                    : isDark ? UX4GColors.neutral800 : '#E5E7EB'
+                }
+                borderWidth={isSelected ? 1.5 : 1}
               >
                 <View style={styles.cardRow}>
                   <Ux4gRadioButton
@@ -489,18 +488,16 @@ export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?:
       <View style={styles.footerSection}>
         <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
         <View style={styles.actionBtnRow}>
-          <Ux4gButton
-            text="Cancel"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
+          <TouchableOpacity onPress={() => {}} style={styles.cancelBtn}>
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontWeight: '600', fontSize: 15 }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
           <Ux4gButton
             text="Continue"
             onPress={() => {}}
             size="medium"
-            height={48}
+            height={44}
           />
         </View>
 
@@ -510,7 +507,7 @@ export const AadhaarVerifyMethodDefaultPattern = ({ isDark = false }: { isDark?:
             Powered by -
           </Text>
           <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
@@ -538,28 +535,30 @@ const styles = StyleSheet.create({
     height: 24,
     marginHorizontal: 8,
   },
-  unionText: {
-    fontSize: 16,
-    fontWeight: '700',
+  unionImage: {
+    width: 32,
+    height: 32,
   },
   menuBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   content: {
     paddingHorizontal: 20,
-    paddingTop: 24,
+    paddingTop: 20,
     flex: 1,
   },
-  gap16: {
-    height: 16,
+  backWrapper: {
+    alignSelf: 'flex-start',
+    marginBottom: 16,
   },
-  gap20: {
-    height: 20,
+  backText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     fontSize: 26,
@@ -573,6 +572,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 18.2,
+    marginBottom: 20,
     fontFamily: 'Inter',
   },
   cardList: {
@@ -580,12 +580,12 @@ const styles = StyleSheet.create({
   },
   cardRow: {
     flexDirection: 'row',
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
     paddingVertical: 14,
     alignItems: 'flex-start',
   },
   cardTextCol: {
-    marginLeft: 8,
+    marginLeft: 10,
     flex: 1,
   },
   cardTitle: {
@@ -608,12 +608,17 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     width: '100%',
-    marginBottom: 6,
+    marginBottom: 16,
   },
   actionBtnRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  cancelBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   footer: {
     flexDirection: 'row',
@@ -624,12 +629,11 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 11,
     fontWeight: '400',
-    marginBottom: 4,
     fontFamily: 'Inter',
   },
   digitalIndiaLogo: {
     height: 22,
-    width: 100,
+    width: 70,
   },
 });`;
   }, [variant]);
@@ -639,17 +643,12 @@ const styles = StyleSheet.create({
     {
       id: 'otp',
       title: 'Aadhaar OTP',
-      subtitle: 'Receive a one-time password on your Aadhaar-linked mobile number.',
+      subtitle: 'Receive a one-time password on your...',
     },
     {
       id: 'face',
       title: 'Face Authentication',
-      subtitle: 'Verify identity using face recognition. Camera access required.',
-    },
-    {
-      id: 'totp',
-      title: 'mAadhaar TOTP',
-      subtitle: 'Use the time-based code from your mAadhaar app.',
+      subtitle: 'Verify identity using face recognition....',
     },
   ];
 
@@ -662,7 +661,7 @@ const styles = StyleSheet.create({
       <div
         style={{
           width: 360,
-          minHeight: 760,
+          minHeight: 680,
           borderRadius: 20,
           overflow: 'hidden',
           boxShadow: isDark
@@ -719,30 +718,27 @@ const styles = StyleSheet.create({
             actions={[
               {
                 customWidget: (
-                  <div
-                    key="menuAction"
+                  <button
+                    key="menu"
+                    type="button"
+                    onClick={() => {}}
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
                       border: `1.5px solid ${colors.menuBorder}`,
-                      backgroundColor: colors.headerBg,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       cursor: 'pointer',
+                      padding: 0,
                     }}
                   >
-                    <span
-                      className="material-symbols-outlined"
-                      style={{
-                        fontSize: 20,
-                        color: colors.menuIcon,
-                      }}
-                    >
-                      menu
-                    </span>
-                  </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 6h16M4 12h16M4 18h16" stroke={colors.menuIcon} strokeWidth="2.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
                 ),
               },
             ]}
@@ -758,7 +754,7 @@ const styles = StyleSheet.create({
 
         {/* Main Body */}
         {isCard ? (
-          /* Card Style Variant */
+          /* Card Style Variant (Matching Image) */
           <div
             style={{
               flex: 1,
@@ -766,194 +762,206 @@ const styles = StyleSheet.create({
               flexDirection: 'column',
               backgroundColor: colors.cardScreenBg,
               justifyContent: 'space-between',
-              padding: '0 16px 20px 16px',
+              padding: '16px 16px 20px 16px',
             }}
           >
-            <div>
-              {/* Soft purple gap above card */}
-              <div style={{ height: 16 }} />
-
-              {/* Floating Card Container */}
-              <div
+            {/* Floating Card Container */}
+            <div
+              style={{
+                backgroundColor: colors.cardBg,
+                borderRadius: 16,
+                padding: '20px',
+                boxShadow: isDark
+                  ? '0 4px 16px rgba(0, 0, 0, 0.4)'
+                  : '0 4px 16px rgba(0, 0, 0, 0.04)',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {/* Back Button */}
+              <button
+                type="button"
+                onClick={() => {}}
                 style={{
-                  backgroundColor: colors.cardBg,
-                  borderRadius: 16,
-                  padding: '20px',
-                  boxShadow: isDark
-                    ? '0 4px 16px rgba(0, 0, 0, 0.4)'
-                    : '0 4px 16px rgba(0, 0, 0, 0.04)',
-                  display: 'flex',
-                  flexDirection: 'column',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: 'transparent',
+                  border: 'none',
+                  color: colors.primary,
+                  fontSize: 14,
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  padding: 0,
+                  marginBottom: 16,
+                  alignSelf: 'flex-start',
                 }}
               >
-                {/* Back Button */}
-                <div style={{ alignSelf: 'flex-start', marginBottom: 12 }}>
-                  <Ux4gButton
-                    text="Back"
-                    onPress={() => {}}
-                    variant="ghost"
-                    size="small"
-                    height={48}
-                    leadingIcon={
-                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                        arrow_back
-                      </span>
-                    }
-                  />
-                </div>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                  arrow_back
+                </span>
+                Back
+              </button>
 
-                <h2
-                  style={{
-                    fontSize: 26,
-                    fontWeight: 800,
-                    lineHeight: 1.2,
-                    letterSpacing: '-0.3px',
-                    color: colors.title,
-                    margin: 0,
-                    marginBottom: 8,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Verify with Aadhaar
-                </h2>
-                <p
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 400,
-                    lineHeight: 1.3,
-                    color: colors.subtitle,
-                    margin: 0,
-                    marginBottom: 16,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Choose how you want to authenticate. Your Aadhaar number is never stored.
-                </p>
+              <h2
+                style={{
+                  fontSize: 26,
+                  fontWeight: 800,
+                  lineHeight: 1.2,
+                  letterSpacing: '-0.3px',
+                  color: colors.title,
+                  margin: '0 0 8px 0',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Verify with Aadhaar
+              </h2>
+              <p
+                style={{
+                  fontSize: 14,
+                  fontWeight: 400,
+                  lineHeight: 1.4,
+                  color: colors.subtitle,
+                  margin: '0 0 20px 0',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Choose how you want to authenticate. Your Aadhaar number is never stored.
+              </p>
 
-                {/* Option Cards */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {methodOptions.map((item) => {
-                    const isSelected = selectedMethod === item.id;
-                    const cardBg = isSelected ? colors.cardSelectedBg : colors.cardUnselectedBg;
-                    const textColor = isSelected ? colors.primary : isDark ? UX4GColors.neutral50 : UX4GColors.gray900;
-                    const subTextColor = isSelected ? colors.primary : isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
+              {/* Option Cards */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
+                {methodOptions.map((item) => {
+                  const isSelected = selectedMethod === item.id;
+                  const cardBg = isSelected ? colors.cardOptionSelectedBg : colors.cardOptionUnselectedBg;
+                  const textColor = isSelected ? colors.primary : isDark ? UX4GColors.neutral50 : UX4GColors.gray900;
+                  const subTextColor = isSelected ? (isDark ? UX4GColors.primary300 : UX4GColors.primary) : isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
 
-                    return (
-                      <Ux4gCard
-                        key={item.id}
-                        cornerRadius={12}
-                        isClickable
-                        onPress={() => setSelectedMethod(item.id)}
-                        backgroundColor={cardBg}
-                        borderColor="transparent"
-                        borderWidth={0}
-                      >
-                        <div
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => setSelectedMethod(item.id)}
+                      style={{
+                        backgroundColor: cardBg,
+                        border: 'none',
+                        borderRadius: 12,
+                        padding: '14px 16px 14px 14px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 12,
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <div style={{ paddingTop: 2 }}>
+                        <Ux4gRadioButton
+                          value={item.id}
+                          groupValue={selectedMethod}
+                          onChanged={(v) => setSelectedMethod(v as AuthMethod)}
+                        />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+                        <span
                           style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            padding: '14px 16px 14px 12px',
-                            gap: 8,
-                            width: '100%',
+                            fontSize: 15,
+                            fontWeight: 700,
+                            lineHeight: '20px',
+                            color: textColor,
+                            marginBottom: 2,
+                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                           }}
                         >
-                          <div style={{ paddingTop: 2 }}>
-                            <Ux4gRadioButton
-                              value={item.id}
-                              groupValue={selectedMethod}
-                              onChanged={(v) => setSelectedMethod(v as AuthMethod)}
-                            />
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
-                            <span
-                              style={{
-                                fontSize: 15,
-                                fontWeight: 700,
-                                lineHeight: '19.5px',
-                                color: textColor,
-                                marginBottom: 2,
-                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                              }}
-                            >
-                              {item.title}
-                            </span>
-                            <span
-                              style={{
-                                fontSize: 13,
-                                fontWeight: 400,
-                                lineHeight: '17.55px',
-                                color: subTextColor,
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                              }}
-                            >
-                              {item.subtitle}
-                            </span>
-                          </div>
-                        </div>
-                      </Ux4gCard>
-                    );
-                  })}
-                </div>
+                          {item.title}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 400,
+                            lineHeight: '18px',
+                            color: subTextColor,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                          }}
+                        >
+                          {item.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
 
-            {/* Footer Section */}
-            <div style={{ paddingTop: 16 }}>
+              {/* Divider inside Card */}
               <div
                 style={{
                   height: 1,
-                  backgroundColor: colors.border,
+                  backgroundColor: isDark ? UX4GColors.neutral800 : '#F3F4F6',
                   width: '100%',
-                  marginBottom: 6,
+                  marginBottom: 16,
                 }}
               />
+
+              {/* Action Buttons inside Card */}
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  marginBottom: 16,
+                  alignItems: 'center',
                 }}
               >
-                <Ux4gButton
-                  text="Cancel"
-                  onPress={() => {}}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
+                <button
+                  type="button"
+                  onClick={() => alert('Cancel clicked')}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors.primary,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    padding: '8px 12px',
+                  }}
+                >
+                  Cancel
+                </button>
                 <Ux4gButton
                   text="Continue"
                   onPress={() => alert(`Selected method: ${selectedMethod}`)}
                   size="medium"
-                  height={48}
-                />
-              </div>
-
-              {/* Footer */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
-                }}
-              >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
                   style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                    height: 44,
+                    paddingHorizontal: 24,
+                    backgroundColor: colors.primary,
+                    borderRadius: 8,
                   }}
                 />
               </div>
+            </div>
+
+            {/* Footer outside Card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                paddingTop: 16,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
             </div>
           </div>
         ) : (
@@ -964,26 +972,35 @@ const styles = StyleSheet.create({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '24px 20px 20px 20px',
+              padding: '24px 20px 16px 20px',
               backgroundColor: colors.defaultScreenBg,
             }}
           >
             <div>
               {/* Back Button */}
-              <div style={{ alignSelf: 'flex-start', marginBottom: 16 }}>
-                <Ux4gButton
-                  text="Back"
-                  onPress={() => {}}
-                  variant="ghost"
-                  size="small"
-                  height={48}
-                  leadingIcon={
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                      arrow_back
-                    </span>
-                  }
-                />
-              </div>
+              <button
+                type="button"
+                onClick={() => {}}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  background: 'transparent',
+                  border: 'none',
+                  color: colors.primary,
+                  fontSize: 14,
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  padding: 0,
+                  marginBottom: 16,
+                  alignSelf: 'flex-start',
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                  arrow_back
+                </span>
+                Back
+              </button>
 
               <h2
                 style={{
@@ -992,8 +1009,7 @@ const styles = StyleSheet.create({
                   lineHeight: 1.2,
                   letterSpacing: '-0.3px',
                   color: colors.title,
-                  margin: 0,
-                  marginBottom: 8,
+                  margin: '0 0 8px 0',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
@@ -1003,80 +1019,78 @@ const styles = StyleSheet.create({
                 style={{
                   fontSize: 14,
                   fontWeight: 400,
-                  lineHeight: 1.3,
+                  lineHeight: 1.4,
                   color: colors.subtitle,
-                  margin: 0,
-                  marginBottom: 20,
+                  margin: '0 0 20px 0',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
                 Choose how you want to authenticate. Your Aadhaar number is never stored.
               </p>
 
-              {/* Option Cards */}
+              {/* Option Cards with borders */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {methodOptions.map((item) => {
                   const isSelected = selectedMethod === item.id;
-                  const cardBg = isSelected ? colors.cardSelectedBg : colors.cardUnselectedBg;
+                  const cardBg = isSelected ? colors.defaultOptionSelectedBg : colors.defaultOptionUnselectedBg;
+                  const cardBorder = isSelected
+                    ? `1.5px solid ${colors.defaultOptionSelectedBorder}`
+                    : `1px solid ${colors.defaultOptionUnselectedBorder}`;
                   const textColor = isSelected ? colors.primary : isDark ? UX4GColors.neutral50 : UX4GColors.gray900;
-                  const subTextColor = isSelected ? colors.primary : isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
+                  const subTextColor = isSelected ? (isDark ? UX4GColors.primary300 : UX4GColors.primary) : isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
 
                   return (
-                    <Ux4gCard
+                    <div
                       key={item.id}
-                      cornerRadius={12}
-                      isClickable
-                      onPress={() => setSelectedMethod(item.id)}
-                      backgroundColor={cardBg}
-                      borderColor="transparent"
-                      borderWidth={0}
+                      onClick={() => setSelectedMethod(item.id)}
+                      style={{
+                        backgroundColor: cardBg,
+                        border: cardBorder,
+                        borderRadius: 12,
+                        padding: '14px 16px 14px 14px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 12,
+                        transition: 'all 0.2s ease',
+                      }}
                     >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          padding: '14px 16px 14px 12px',
-                          gap: 8,
-                          width: '100%',
-                        }}
-                      >
-                        <div style={{ paddingTop: 2 }}>
-                          <Ux4gRadioButton
-                            value={item.id}
-                            groupValue={selectedMethod}
-                            onChanged={(v) => setSelectedMethod(v as AuthMethod)}
-                          />
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
-                          <span
-                            style={{
-                              fontSize: 15,
-                              fontWeight: 700,
-                              lineHeight: '19.5px',
-                              color: textColor,
-                              marginBottom: 2,
-                              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                            }}
-                          >
-                            {item.title}
-                          </span>
-                          <span
-                            style={{
-                              fontSize: 13,
-                              fontWeight: 400,
-                              lineHeight: '17.55px',
-                              color: subTextColor,
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                            }}
-                          >
-                            {item.subtitle}
-                          </span>
-                        </div>
+                      <div style={{ paddingTop: 2 }}>
+                        <Ux4gRadioButton
+                          value={item.id}
+                          groupValue={selectedMethod}
+                          onChanged={(v) => setSelectedMethod(v as AuthMethod)}
+                        />
                       </div>
-                    </Ux4gCard>
+                      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+                        <span
+                          style={{
+                            fontSize: 15,
+                            fontWeight: 700,
+                            lineHeight: '20px',
+                            color: textColor,
+                            marginBottom: 2,
+                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                          }}
+                        >
+                          {item.title}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 400,
+                            lineHeight: '18px',
+                            color: subTextColor,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                          }}
+                        >
+                          {item.subtitle}
+                        </span>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -1089,28 +1103,42 @@ const styles = StyleSheet.create({
                   height: 1,
                   backgroundColor: colors.border,
                   width: '100%',
-                  marginBottom: 6,
+                  marginBottom: 16,
                 }}
               />
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  marginBottom: 16,
+                  alignItems: 'center',
+                  marginBottom: 20,
                 }}
               >
-                <Ux4gButton
-                  text="Cancel"
-                  onPress={() => {}}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
+                <button
+                  type="button"
+                  onClick={() => alert('Cancel clicked')}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors.primary,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    padding: '8px 12px',
+                  }}
+                >
+                  Cancel
+                </button>
                 <Ux4gButton
                   text="Continue"
                   onPress={() => alert(`Selected method: ${selectedMethod}`)}
                   size="medium"
-                  height={48}
+                  style={{
+                    height: 44,
+                    paddingHorizontal: 24,
+                    backgroundColor: colors.primary,
+                    borderRadius: 8,
+                  }}
                 />
               </div>
 
@@ -1120,8 +1148,9 @@ const styles = StyleSheet.create({
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
+                  justifyContent: 'center',
+                  gap: 6,
+                  paddingBottom: 8,
                 }}
               >
                 <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
@@ -1153,7 +1182,7 @@ const styles = StyleSheet.create({
           </div>
           <h1 className="wb-title">Verify with Aadhaar — choose method</h1>
           <p className="wb-subtitle">
-            Method-picker shown after the user enters their Aadhaar number. Three selectable option cards (Aadhaar OTP, Face Authentication, mAadhaar TOTP) built with the design system's Ux4gCard and Ux4gRadioButton.
+            Method-picker shown after the user enters their Aadhaar number. Selectable option cards (Aadhaar OTP, Face Authentication) built with the design system's Ux4gCard and Ux4gRadioButton.
           </p>
         </div>
       </div>
