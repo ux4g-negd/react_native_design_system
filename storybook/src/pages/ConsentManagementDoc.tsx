@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
 interface ConsentManagementDocProps {
@@ -90,7 +91,7 @@ export const ConsentManagementPattern = ({
         <View style={styles.headerLeft}>
           <Image source={{ uri: '/national_emblem_logo.svg' }} style={styles.emblemLogo} resizeMode="contain" />
           <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-          <Image source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />
+          <Image source={{ uri: '/Union.svg' }} style={[styles.unionLogo, { tintColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600 }]} resizeMode="contain" />
         </View>
         <TouchableOpacity style={[styles.menuBtn, { borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200 }]}>
           <Text style={[styles.menuIcon, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>☰</Text>
@@ -662,14 +663,7 @@ const styles = StyleSheet.create({
                   backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
                 }}
               />
-              <img
-                src="/Union.svg"
-                alt="Union Logo"
-                style={{
-                  height: 32,
-                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                }}
-              />
+              <UnionLogo size={32} isDark={isDark} />
             </div>
             <div
               style={{

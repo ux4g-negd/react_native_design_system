@@ -20,7 +20,7 @@ export const UnionLogo: React.FC<UnionLogoProps> = ({
   color,
   style,
 }) => {
-  const fillColor = color ?? (isDark ? UX4GColors.primary300 : UX4GColors.primary);
+  const fillColor = color ?? (isDark ? UX4GColors.primary300 : UX4GColors.primary600);
 
   return (
     <svg

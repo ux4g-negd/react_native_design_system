@@ -471,7 +471,6 @@ const styles = StyleSheet.create({
                 alt="Union Logo"
                 style={{
                   height: 32,
-                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
             </div>

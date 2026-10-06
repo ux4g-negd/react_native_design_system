@@ -1,8 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gButton } from '../../../src/components/button/Button';
-import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
@@ -36,11 +34,6 @@ const STEPS: StepData[] = [
     status: 'inProgress',
   },
   {
-    title: 'Review',
-    subtitle: 'Not started',
-    status: 'notStarted',
-  },
-  {
     title: 'Submit',
     subtitle: 'Not started',
     status: 'notStarted',
@@ -52,390 +45,42 @@ export const ContinueApplicationDoc: React.FC<ContinueApplicationDocProps> = ({ 
   const [variant, setVariant] = useState<VariantType>('Default');
 
   const colors = useMemo(() => {
+    const isCard = variant === 'Card style';
     return {
-      screenBg: variant === 'Card style'
-        ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100)
-        : (isDark ? UX4GColors.neutral950 : '#FAFAFA'),
-      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
-      headerBg: isDark ? UX4GColors.neutral950 : '#FFFFFF',
-      titleColor: isDark ? UX4GColors.neutral50 : '#111827',
+      screenBg: isCard
+        ? (isDark ? UX4GColors.primary900 : '#ECE8FF')
+        : (isDark ? UX4GColors.neutral900 : '#FFFFFF'),
+      headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      cardBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+      border: isDark ? UX4GColors.neutral800 : '#F0F0F2',
+      titleColor: isDark ? UX4GColors.neutral0 : '#111827',
       subtleText: isDark ? UX4GColors.neutral400 : '#4B5563',
-      stepTitle: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      stepSubtitle: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-      timestampColor: variant === 'Card style'
-        ? (isDark ? UX4GColors.neutral500 : '#9CA3AF')
-        : (isDark ? UX4GColors.neutral200 : UX4GColors.neutral700),
-      completedIconBg: isDark ? UX4GColors.green500 : UX4GColors.green600,
-      completedBorder: isDark ? UX4GColors.green500 : UX4GColors.green600,
-      inProgressBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-      inProgressBorder: isDark ? UX4GColors.neutral500 : '#D1D5DB',
-      notStartedBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-      notStartedBorder: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-      startFreshColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      footerText: isDark ? UX4GColors.neutral500 : '#9CA3AF',
+      sectionTitle: isDark ? UX4GColors.neutral0 : '#111827',
+      stepTitle: isDark ? UX4GColors.neutral0 : '#111827',
+      stepSubtitle: isDark ? UX4GColors.neutral400 : '#4B5563',
+      timestampColor: isDark ? UX4GColors.neutral400 : '#6B7280',
+      completedGreen: isDark ? '#1AA64A' : '#128937',
+      circleBorder: isDark ? UX4GColors.neutral600 : '#D1D5DB',
+      primaryBtnBg: isDark ? UX4GColors.primary300 : '#432CBB',
+      primaryBtnText: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      outlineBtnBorder: isDark ? UX4GColors.primary300 : '#432CBB',
+      outlineBtnText: isDark ? UX4GColors.primary300 : '#432CBB',
+      footerText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
     };
   }, [isDark, variant]);
 
-  // Clean React Native TSX code snippet using UX4G components
   const codeString = useMemo(() => {
     const isCard = variant === 'Card style';
-    if (isCard) {
-      return `// Continue Application Screen Pattern (Card Style Layout)
-
-import React from 'react';
+    return `import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
   Image,
-  SafeAreaView,
 } from 'react-native';
 import {
-  Ux4gAppHeader,
-  Ux4gDivider,
-  Ux4gButton,
-  Ux4gCard,
-  UX4GColors,
-} from 'ux4g-react-native-components';
-
-interface StepItem {
-  title: string;
-  subtitle: string;
-  status: 'completed' | 'inProgress' | 'notStarted';
-}
-
-const STEPS: StepItem[] = [
-  { title: 'Eligibility check', subtitle: 'Completed', status: 'completed' },
-  { title: 'Personal information', subtitle: 'Completed', status: 'completed' },
-  { title: 'Upload documents', subtitle: 'In progress · 1 of 4 uploaded', status: 'inProgress' },
-  { title: 'Review', subtitle: 'Not started', status: 'notStarted' },
-  { title: 'Submit', subtitle: 'Not started', status: 'notStarted' },
-];
-
-export const ContinueApplicationCardScreen = ({
-  isDark = ${isDark},
-  onContinue = () => {},
-  onStartFresh = () => {},
-}: {
-  isDark?: boolean;
-  onContinue?: () => void;
-  onStartFresh?: () => void;
-}) => {
-  return (
-    <SafeAreaView
-      style={[
-        styles.safeArea,
-        { backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary100 },
-      ]}
-    >
-      {/* Header Container */}
-      <View style={{ backgroundColor: isDark ? UX4GColors.neutral950 : '#FFFFFF' }}>
-        <Ux4gAppHeader
-          variant="light"
-          showBackButton={false}
-          leadingWidgets={[
-            <Image
-              key="emblem"
-              source={require('./assets/national_emblem.png')}
-              style={[
-                styles.emblemIcon,
-                isDark && { tintColor: '#FFFFFF' },
-              ]}
-              resizeMode="contain"
-            />,
-            <View
-              key="divider"
-              style={[
-                styles.verticalDivider,
-                { backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
-              ]}
-            />,
-            <Image
-              key="union"
-              source={require('./assets/union_logo.png')}
-              style={[
-                styles.unionIcon,
-                { tintColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600 },
-              ]}
-              resizeMode="contain"
-            />,
-          ]}
-          actions={[
-            {
-              icon: 'menu',
-              onPressed: () => {},
-              tooltip: 'Menu',
-            },
-          ]}
-        />
-        <Ux4gDivider
-          color={isDark ? UX4GColors.neutral800 : '#E5E7EB'}
-          thickness={1}
-        />
-      </View>
-
-      {/* Main Content inside Ux4gCard */}
-      <ScrollView
-        contentContainerStyle={styles.cardScrollPadding}
-        showsVerticalScrollIndicator={false}
-      >
-        <Ux4gCard
-          cornerRadius={16}
-          backgroundColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
-          borderColor={isDark ? UX4GColors.neutral800 : 'transparent'}
-          borderWidth={isDark ? 1 : 0}
-          elevation={2}
-        >
-          <View style={styles.cardInner}>
-            {/* Title & Subtitle */}
-            <Text
-              style={[
-                styles.headingText,
-                { color: isDark ? UX4GColors.neutral50 : '#111827' },
-              ]}
-            >
-              {'Continue your\\napplication?'}
-            </Text>
-            <Text
-              style={[
-                styles.subheadingText,
-                { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
-              ]}
-            >
-              Income Certificate · Started 10 Apr 2026
-            </Text>
-
-            {/* Section Title */}
-            <Text
-              style={[
-                styles.sectionTitle,
-                { color: isDark ? UX4GColors.neutral50 : '#111827' },
-              ]}
-            >
-              Your progress
-            </Text>
-
-            {/* Step List */}
-            <View style={styles.stepListContainer}>
-              {STEPS.map((step, index) => {
-                const isCompleted = step.status === 'completed';
-                const isInProgress = step.status === 'inProgress';
-
-                return (
-                  <View
-                    key={step.title}
-                    style={[
-                      styles.stepRow,
-                      index < STEPS.length - 1 && { marginBottom: 20 },
-                    ]}
-                  >
-                    {/* Status Circle Indicator */}
-                    <View
-                      style={[
-                        styles.indicatorCircle,
-                        isCompleted && {
-                          backgroundColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
-                          borderColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
-                        },
-                        isInProgress && {
-                          backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                          borderColor: isDark ? UX4GColors.neutral500 : '#D1D5DB',
-                          borderWidth: 2,
-                        },
-                        step.status === 'notStarted' && {
-                          backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                          borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-                          borderWidth: 1.5,
-                        },
-                      ]}
-                    >
-                      {isCompleted && (
-                        <Text style={styles.checkmarkIcon}>✓</Text>
-                      )}
-                    </View>
-
-                    {/* Step Details */}
-                    <View style={styles.stepDetails}>
-                      <Text
-                        style={[
-                          styles.stepTitle,
-                          { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
-                        ]}
-                      >
-                        {step.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.stepSubtitle,
-                          { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 },
-                        ]}
-                      >
-                        {step.subtitle}
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })}
-            </View>
-
-            {/* Timestamp */}
-            <Text
-              style={[
-                styles.timestampText,
-                { color: isDark ? UX4GColors.neutral500 : '#9CA3AF' },
-              ]}
-            >
-              Last saved 10 Apr 2026 at 3:12 PM
-            </Text>
-          </View>
-        </Ux4gCard>
-      </ScrollView>
-
-      {/* Actions */}
-      <View style={styles.actionsContainer}>
-        <Ux4gButton
-          text="Continue from Step 3"
-          onPress={onContinue}
-          size="large"
-          height={48}
-          width="100%"
-        />
-        <View style={{ height: 12 }} />
-        <Ux4gButton
-          text="Start fresh"
-          onPress={onStartFresh}
-          variant="outline"
-          size="large"
-          height={48}
-          width="100%"
-          contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-          borderColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-        />
-      </View>
-
-      {/* Footer */}
-      <View style={styles.footerContainer}>
-        <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral500 : '#9CA3AF' }]}>
-          Powered by -
-        </Text>
-        <Image
-          source={require('./assets/digital_india_logo.png')}
-          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-          resizeMode="contain"
-        />
-      </View>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  emblemIcon: {
-    height: 40,
-    width: 28,
-  },
-  verticalDivider: {
-    height: 32,
-    width: 1,
-  },
-  unionIcon: {
-    height: 32,
-    width: 44,
-  },
-  cardScrollPadding: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-  },
-  cardInner: {
-    padding: 24,
-  },
-  headingText: {
-    fontSize: 26,
-    fontWeight: '800',
-    lineHeight: 31,
-  },
-  subheadingText: {
-    fontSize: 14,
-    marginTop: 8,
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    marginBottom: 20,
-  },
-  stepListContainer: {
-    marginBottom: 20,
-  },
-  stepRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  indicatorCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 14,
-    marginTop: 2,
-  },
-  checkmarkIcon: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
-  },
-  stepDetails: {
-    flex: 1,
-  },
-  stepTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  stepSubtitle: {
-    fontSize: 13,
-    marginTop: 2,
-  },
-  timestampText: {
-    fontSize: 13,
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  footerContainer: {
-    alignItems: 'center',
-    paddingBottom: 24,
-  },
-  poweredByText: {
-    fontSize: 11,
-    marginBottom: 6,
-  },
-  digitalIndiaLogo: {
-    height: 24,
-    width: 90,
-  },
-});`;
-    }
-
-    return `// Continue Application Screen Pattern (Default Layout)
-
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  SafeAreaView,
-} from 'react-native';
-import {
-  Ux4gAppHeader,
-  Ux4gDivider,
   Ux4gButton,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -450,321 +95,297 @@ const STEPS: StepItem[] = [
   { title: 'Eligibility check', subtitle: 'Completed', status: 'completed' },
   { title: 'Personal information', subtitle: 'Completed', status: 'completed' },
   { title: 'Upload documents', subtitle: 'In progress · 1 of 4 uploaded', status: 'inProgress' },
-  { title: 'Review', subtitle: 'Not started', status: 'notStarted' },
   { title: 'Submit', subtitle: 'Not started', status: 'notStarted' },
 ];
 
-export const ContinueApplicationScreen = ({
+export const ContinueApplicationPattern = ({
   isDark = ${isDark},
+  variant = '${variant}',
   onContinue = () => {},
   onStartFresh = () => {},
 }: {
   isDark?: boolean;
+  variant?: 'Default' | 'Card style';
   onContinue?: () => void;
   onStartFresh?: () => void;
 }) => {
-  return (
-    <SafeAreaView
-      style={[
-        styles.safeArea,
-        { backgroundColor: isDark ? UX4GColors.neutral950 : '#FAFAFA' },
-      ]}
-    >
-      {/* Header with UX4G AppHeader & Ux4gDivider */}
-      <Ux4gAppHeader
-        variant="light"
-        showBackButton={false}
-        backgroundColor={isDark ? UX4GColors.neutral950 : '#FFFFFF'}
-        leadingWidgets={[
-          <Image
-            key="emblem"
-            source={require('./assets/national_emblem.png')}
-            style={[
-              styles.emblemIcon,
-              isDark && { tintColor: '#FFFFFF' },
-            ]}
-            resizeMode="contain"
-          />,
-          <View
-            key="divider"
-            style={[
-              styles.verticalDivider,
-              { backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
-            ]}
-          />,
-          <Image
-            key="union"
-            source={require('./assets/union_logo.png')}
-            style={[
-              styles.unionIcon,
-              { tintColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600 },
-            ]}
-            resizeMode="contain"
-          />,
-        ]}
-        actions={[
-          {
-            icon: 'menu',
-            onPressed: () => {},
-            tooltip: 'Menu',
-          },
-        ]}
-      />
-      <Ux4gDivider
-        color={isDark ? UX4GColors.neutral800 : '#E5E7EB'}
-        thickness={1}
-      />
+  const isCard = variant === 'Card style';
 
-      {/* Main Content Area */}
-      <ScrollView
-        contentContainerStyle={styles.scrollPadding}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Title & Subtitle */}
-        <Text
-          style={[
-            styles.headingText,
-            { color: isDark ? UX4GColors.neutral50 : '#111827' },
-          ]}
-        >
-          {'Continue your\\napplication?'}
-        </Text>
-        <Text
-          style={[
-            styles.subheadingText,
-            { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
-          ]}
-        >
-          Income Certificate · Started 10 Apr 2026
-        </Text>
+  const renderContent = () => (
+    <View>
+      {/* Title */}
+      <Text style={[styles.mainTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
+        Continue your application?
+      </Text>
+      <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : '#4B5563' }]}>
+        Income Certificate · Started 10 Apr 2026
+      </Text>
 
-        {/* Section Title */}
-        <Text
-          style={[
-            styles.sectionTitle,
-            { color: isDark ? UX4GColors.neutral50 : '#111827' },
-          ]}
-        >
-          Your progress
-        </Text>
+      {/* Progress Section Heading */}
+      <Text style={[styles.sectionHeading, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
+        Your progress
+      </Text>
 
-        {/* Step List */}
-        <View style={styles.stepListContainer}>
-          {STEPS.map((step, index) => {
-            const isCompleted = step.status === 'completed';
-            const isInProgress = step.status === 'inProgress';
-
-            return (
-              <View
-                key={step.title}
-                style={[
-                  styles.stepRow,
-                  index < STEPS.length - 1 && { marginBottom: 20 },
-                ]}
-              >
-                {/* Status Circle Indicator */}
-                <View
-                  style={[
-                    styles.indicatorCircle,
-                    isCompleted && {
-                      backgroundColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
-                      borderColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
-                    },
-                    isInProgress && {
-                      backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                      borderColor: isDark ? UX4GColors.neutral500 : '#D1D5DB',
-                      borderWidth: 2,
-                    },
-                    step.status === 'notStarted' && {
-                      backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                      borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-                      borderWidth: 1.5,
-                    },
-                  ]}
-                >
-                  {isCompleted && (
-                    <Text style={styles.checkmarkIcon}>✓</Text>
-                  )}
-                </View>
-
-                {/* Step Details */}
-                <View style={styles.stepDetails}>
-                  <Text
-                    style={[
-                      styles.stepTitle,
-                      { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
-                    ]}
-                  >
-                    {step.title}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.stepSubtitle,
-                      { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 },
-                    ]}
-                  >
-                    {step.subtitle}
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-
-        {/* Timestamp */}
-        <Text
-          style={[
-            styles.timestampText,
-            { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 },
-          ]}
-        >
-          Last saved 10 Apr 2026 at 3:12 PM
-        </Text>
-      </ScrollView>
-
-      {/* Actions */}
-      <View style={styles.actionsContainer}>
-        <Ux4gButton
-          text="Continue from Step 3"
-          onPress={onContinue}
-          size="large"
-          height={48}
-          width="100%"
-        />
-        <View style={{ height: 12 }} />
-        <Ux4gButton
-          text="Start fresh"
-          onPress={onStartFresh}
-          variant="outline"
-          size="large"
-          height={48}
-          width="100%"
-          contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-          borderColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-        />
-      </View>
-
-      {/* Footer */}
-      <View style={styles.footerContainer}>
-        <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral500 : '#9CA3AF' }]}>
-          Powered by -
-        </Text>
-        <Image
-          source={require('./assets/digital_india_logo.png')}
-          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-          resizeMode="contain"
-        />
-      </View>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  emblemIcon: {
-    height: 40,
-    width: 28,
-  },
-  verticalDivider: {
-    height: 32,
-    width: 1,
-  },
-  unionIcon: {
-    height: 32,
-    width: 44,
-  },
-  scrollPadding: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-  },
-  headingText: {
-    fontSize: 26,
-    fontWeight: '800',
-    lineHeight: 31,
-  },
-  subheadingText: {
-    fontSize: 14,
-    marginTop: 8,
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    marginBottom: 20,
-  },
-  stepListContainer: {
-    marginBottom: 20,
-  },
-  stepRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  indicatorCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 14,
-    marginTop: 2,
-  },
-  checkmarkIcon: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '700',
-  },
-  stepDetails: {
-    flex: 1,
-  },
-  stepTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  stepSubtitle: {
-    fontSize: 13,
-    marginTop: 2,
-  },
-  timestampText: {
-    fontSize: 13,
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  footerContainer: {
-    alignItems: 'center',
-    paddingBottom: 24,
-  },
-  poweredByText: {
-    fontSize: 11,
-    marginBottom: 6,
-  },
-  digitalIndiaLogo: {
-    height: 24,
-    width: 90,
-  },
-});`;
-  }, [isDark, variant]);
-
-  const renderProgressStepList = () => {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* Steps List */}
+      <View style={styles.stepList}>
         {STEPS.map((step, index) => {
           const isCompleted = step.status === 'completed';
-          const isInProgress = step.status === 'inProgress';
+          return (
+            <View
+              key={step.title}
+              style={[
+                styles.stepRow,
+                index < STEPS.length - 1 && { marginBottom: 18 },
+              ]}
+            >
+              {/* Status Circle Indicator */}
+              <View
+                style={[
+                  styles.indicatorCircle,
+                  isCompleted
+                    ? { backgroundColor: isDark ? '#1AA64A' : '#128937', borderColor: isDark ? '#1AA64A' : '#128937' }
+                    : { backgroundColor: 'transparent', borderColor: isDark ? UX4GColors.neutral600 : '#D1D5DB' },
+                ]}
+              >
+                {isCompleted && <Text style={styles.checkmarkIcon}>✓</Text>}
+              </View>
 
-          let circleBg = colors.notStartedBg;
-          let circleBorder = `1.5px solid ${colors.notStartedBorder}`;
+              {/* Step Info */}
+              <View style={styles.stepInfo}>
+                <Text style={[styles.stepTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
+                  {step.title}
+                </Text>
+                <Text style={[styles.stepSubtitle, { color: isDark ? UX4GColors.neutral400 : '#4B5563' }]}>
+                  {step.subtitle}
+                </Text>
+              </View>
+            </View>
+          );
+        })}
+      </View>
 
-          if (isCompleted) {
-            circleBg = colors.completedIconBg;
-            circleBorder = `1.5px solid ${colors.completedBorder}`;
-          } else if (isInProgress) {
-            circleBg = colors.inProgressBg;
-            circleBorder = `2px solid ${colors.inProgressBorder}`;
-          }
+      {/* Timestamp */}
+      <Text style={[styles.timestamp, { color: isDark ? UX4GColors.neutral400 : '#6B7280' }]}>
+        Last saved 10 Apr 2026 at 3:12 PM
+      </Text>
+
+      {/* Action Buttons */}
+      <View style={styles.buttonGroup}>
+        <Ux4gButton
+          text="Continue from Step 3"
+          variant="filled"
+          onPress={onContinue}
+          size="large"
+          style={{
+            width: '100%',
+            height: 46,
+            backgroundColor: isDark ? UX4GColors.primary300 : '#432CBB',
+          }}
+          contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+        />
+
+        <Ux4gButton
+          text="Start fresh"
+          variant="outline"
+          onPress={onStartFresh}
+          size="large"
+          style={{
+            width: '100%',
+            height: 46,
+            borderColor: isDark ? UX4GColors.primary300 : '#432CBB',
+            marginTop: 10,
+          }}
+          contentColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+        />
+      </View>
+    </View>
+  );
+
+  return (
+    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral900 : (isCard ? '#ECE8FF' : '#FFFFFF') }]}>
+      {/* Header */}
+      <View style={[styles.header, { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF', borderBottomColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }]}>
+        <View style={styles.headerLeft}>
+          <Image source={{ uri: '/national_emblem_logo.svg' }} style={styles.emblemLogo} resizeMode="contain" />
+          <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
+          <Image source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />
+        </View>
+        <TouchableOpacity style={[styles.menuBtn, { borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200 }]}>
+          <Text style={[styles.menuIcon, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>☰</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        {isCard ? (
+          <View style={[styles.cardContainer, { backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF' }]}>
+            {renderContent()}
+          </View>
+        ) : (
+          <View style={styles.flatContainer}>
+            {renderContent()}
+          </View>
+        )}
+
+        {/* Brand Footer */}
+        <View style={styles.footer}>
+          <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+            Powered by -
+          </Text>
+          <Image source={{ uri: '/Digital_India_logo.svg' }} style={styles.digitalIndiaLogo} resizeMode="contain" />
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+  header: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+  },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  emblemLogo: { height: 32, width: 24 },
+  headerDivider: { width: 1, height: 26 },
+  unionLogo: { height: 32, width: 44 },
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuIcon: { fontSize: 18 },
+  scrollContainer: { paddingVertical: 16 },
+  flatContainer: { paddingHorizontal: 16 },
+  cardContainer: {
+    marginHorizontal: 14,
+    padding: 18,
+    borderRadius: 16,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 4 },
+  },
+  mainTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 26,
+    marginBottom: 6,
+  },
+  subtitle: {
+    fontSize: 13,
+    marginBottom: 16,
+  },
+  sectionHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 16,
+  },
+  stepList: {
+    marginBottom: 20,
+  },
+  stepRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  indicatorCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    marginTop: 2,
+  },
+  checkmarkIcon: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  stepInfo: {
+    flex: 1,
+  },
+  stepTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  stepSubtitle: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  timestamp: {
+    fontSize: 12,
+    marginBottom: 20,
+  },
+  buttonGroup: {
+    width: '100%',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    marginVertical: 18,
+  },
+  poweredByText: { fontSize: 11, fontWeight: '500' },
+  digitalIndiaLogo: { height: 22, width: 80 },
+});
+`;
+  }, [isDark, variant]);
+
+  const renderInnerContent = () => (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* Main Title */}
+      <h2
+        style={{
+          fontSize: 20,
+          fontWeight: 800,
+          color: colors.titleColor,
+          margin: '0 0 6px 0',
+          letterSpacing: '-0.01em',
+          lineHeight: 1.3,
+        }}
+      >
+        Continue your application?
+      </h2>
+
+      {/* Subtitle */}
+      <p
+        style={{
+          fontSize: 13,
+          color: colors.subtleText,
+          margin: '0 0 18px 0',
+          lineHeight: 1.4,
+          fontWeight: 400,
+        }}
+      >
+        Income Certificate · Started 10 Apr 2026
+      </p>
+
+      {/* Section Title */}
+      <div
+        style={{
+          fontSize: 14,
+          fontWeight: 700,
+          color: colors.sectionTitle,
+          marginBottom: 16,
+        }}
+      >
+        Your progress
+      </div>
+
+      {/* Step List */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 22 }}>
+        {STEPS.map((step) => {
+          const isCompleted = step.status === 'completed';
 
           return (
             <div
@@ -772,47 +393,44 @@ const styles = StyleSheet.create({
               style={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                marginBottom: index < STEPS.length - 1 ? 20 : 0,
+                gap: 12,
               }}
             >
-              {/* Status Indicator */}
+              {/* Circle Indicator */}
               <div
                 style={{
                   width: 20,
                   height: 20,
                   borderRadius: '50%',
-                  backgroundColor: circleBg,
-                  border: circleBorder,
+                  backgroundColor: isCompleted ? colors.completedGreen : 'transparent',
+                  border: `1.5px solid ${isCompleted ? colors.completedGreen : colors.circleBorder}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginRight: 14,
-                  marginTop: 2,
                   flexShrink: 0,
+                  marginTop: 2,
                   boxSizing: 'border-box',
                 }}
               >
                 {isCompleted && (
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#FFFFFF"
-                    strokeWidth="3.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                  <span
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      userSelect: 'none',
+                    }}
                   >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
+                    ✓
+                  </span>
                 )}
               </div>
 
-              {/* Step Text Details */}
+              {/* Step Info */}
               <div style={{ flex: 1 }}>
                 <div
                   style={{
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: 600,
                     color: colors.stepTitle,
                     lineHeight: 1.3,
@@ -822,7 +440,7 @@ const styles = StyleSheet.create({
                 </div>
                 <div
                   style={{
-                    fontSize: 13,
+                    fontSize: 12,
                     color: colors.stepSubtitle,
                     marginTop: 2,
                     lineHeight: 1.3,
@@ -835,91 +453,85 @@ const styles = StyleSheet.create({
           );
         })}
       </div>
-    );
-  };
 
-  const renderContentBody = () => {
-    return (
-      <div>
-        {/* Title */}
-        <div
-          style={{
-            fontSize: 26,
-            fontWeight: 800,
-            color: colors.titleColor,
-            lineHeight: 1.2,
-            whiteSpace: 'pre-line',
-          }}
-        >
-          {'Continue your\napplication?'}
-        </div>
-
-        {/* Subtitle */}
-        <div
-          style={{
-            fontSize: 14,
-            color: colors.subtleText,
-            marginTop: 8,
-            marginBottom: 20,
-            lineHeight: 1.4,
-          }}
-        >
-          Income Certificate · Started 10 Apr 2026
-        </div>
-
-        {/* Section Title */}
-        <div
-          style={{
-            fontSize: 15,
-            fontWeight: 700,
-            color: colors.titleColor,
-            marginBottom: 20,
-          }}
-        >
-          Your progress
-        </div>
-
-        {/* Progress Step List */}
-        {renderProgressStepList()}
-
-        {/* Timestamp */}
-        <div
-          style={{
-            fontSize: 13,
-            color: colors.timestampColor,
-            marginTop: 20,
-            lineHeight: 1.3,
-          }}
-        >
-          Last saved 10 Apr 2026 at 3:12 PM
-        </div>
+      {/* Timestamp */}
+      <div
+        style={{
+          fontSize: 12,
+          color: colors.timestampColor,
+          marginBottom: 20,
+        }}
+      >
+        Last saved 10 Apr 2026 at 3:12 PM
       </div>
-    );
-  };
+
+      {/* Action Buttons */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {/* Continue Button */}
+        <button
+          type="button"
+          onClick={() => alert('Continuing application from Step 3...')}
+          style={{
+            width: '100%',
+            height: 44,
+            backgroundColor: colors.primaryBtnBg,
+            color: colors.primaryBtnText,
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          Continue from Step 3
+        </button>
+
+        {/* Start Fresh Button */}
+        <button
+          type="button"
+          onClick={() => alert('Starting a fresh application...')}
+          style={{
+            width: '100%',
+            height: 44,
+            backgroundColor: 'transparent',
+            color: colors.outlineBtnText,
+            border: `1.5px solid ${colors.outlineBtnBorder}`,
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          Start fresh
+        </button>
+      </div>
+    </div>
+  );
 
   const renderLiveMockup = () => {
-    const isCard = variant === 'Card style';
-
     return (
       <div
         style={{
           width: 360,
           height: 760,
-          borderRadius: 20,
-          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+          borderRadius: 24,
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden',
           backgroundColor: colors.screenBg,
-          border: `1px solid ${colors.border}`,
+          border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
           display: 'flex',
           flexDirection: 'column',
           fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           WebkitFontSmoothing: 'antialiased',
           MozOsxFontSmoothing: 'grayscale',
-          position: 'relative',
         }}
       >
-        {/* Top UX4G AppHeader */}
-        <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
+        {/* Header */}
+        <div style={{ backgroundColor: colors.headerBg }}>
           <div
             style={{
               padding: '12px 16px',
@@ -928,20 +540,20 @@ const styles = StyleSheet.create({
               justifyContent: 'space-between',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <img
                 src="/national_emblem_logo.svg"
                 alt="National Emblem"
                 style={{
-                  height: 38,
+                  height: 32,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
               <div
                 style={{
                   width: 1,
-                  height: 32,
-                  backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
+                  height: 28,
+                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
                 }}
               />
               <UnionLogo size={32} isDark={isDark} />
@@ -951,7 +563,7 @@ const styles = StyleSheet.create({
                 width: 36,
                 height: 36,
                 borderRadius: 8,
-                border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
+                border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral200}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -961,112 +573,66 @@ const styles = StyleSheet.create({
                 className="material-symbols-outlined"
                 style={{
                   fontSize: 20,
-                  color: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+                  color: isDark ? UX4GColors.primary300 : UX4GColors.primary,
                 }}
               >
                 menu
               </span>
             </div>
           </div>
-          <Ux4gDivider color={colors.border} thickness={1} />
+          <div style={{ height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }} />
         </div>
 
-        {/* Scrollable Center Content */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-              padding: isCard ? '32px 24px' : '32px 24px',
-            }}
-          >
-            {isCard ? (
+        {/* Scrollable Container */}
+        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1, padding: variant === 'Card style' ? '14px 14px' : '20px 16px' }}>
+            {variant === 'Card style' ? (
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 24,
-                  border: isDark ? `1px solid ${UX4GColors.neutral800}` : 'none',
-                  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
+                  padding: '20px 18px',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.03)'}`,
                 }}
               >
-                {renderContentBody()}
+                {renderInnerContent()}
               </div>
             ) : (
-              renderContentBody()
+              renderInnerContent()
             )}
           </div>
-        </div>
 
-        {/* Fixed Bottom Action Buttons */}
-        <div
-          style={{
-            padding: '16px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            backgroundColor: isCard ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100) : colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          {/* Continue Button */}
-          <Ux4gButton
-            text="Continue from Step 3"
-            onPress={() => {}}
-            height={48}
-            size="large"
-            width="100%"
-          />
-
-          {/* Start Fresh Button */}
-          <Ux4gButton
-            text="Start fresh"
-            variant="outline"
-            onPress={() => {}}
-            height={48}
-            size="large"
-            width="100%"
-            contentColor={colors.startFreshColor}
-            borderColor={colors.startFreshColor}
-          />
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '0 0 24px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: isCard ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100) : colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
+          {/* Brand Footer */}
+          <div
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              padding: '8px 0 18px 0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              flexShrink: 0,
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 24,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: colors.footerText,
+              }}
+            >
+              Powered by -
+            </span>
+            <img
+              src="/Digital_India_logo.svg"
+              alt="Digital India"
+              style={{
+                height: 22,
+                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+              }}
+            />
+          </div>
         </div>
       </div>
     );
@@ -1081,7 +647,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A pattern showing the user's saved application progress with step-by-step status, allowing them to continue from where they left off or start fresh.
+          Pattern showing user's saved application progress with step-by-step status, allowing them to resume directly from the last active step or start fresh.
         </p>
       </div>
 
@@ -1163,8 +729,8 @@ const styles = StyleSheet.create({
                                 variant === v
                                   ? UX4GColors.neutral0
                                   : isDark
-                                  ? UX4GColors.neutral400
-                                  : UX4GColors.neutral600,
+                                    ? UX4GColors.neutral400
+                                    : UX4GColors.neutral600,
                               transition: 'all 0.2s ease',
                             }}
                           >
@@ -1184,25 +750,23 @@ const styles = StyleSheet.create({
             {/* 2. Code Tab */}
             {activeMainTab === 'code' && (
               <div className="wb-code-area">
-                <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-                  <button
-                    type="button"
-                    onClick={() => setVariant('Default')}
-                    className={`wb-tab ${variant === 'Default' ? 'active' : ''}`}
-                    style={{ padding: '4px 12px', fontSize: 12 }}
-                  >
-                    Default
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setVariant('Card style')}
-                    className={`wb-tab ${variant === 'Card style' ? 'active' : ''}`}
-                    style={{ padding: '4px 12px', fontSize: 12 }}
-                  >
-                    Card style
-                  </button>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 16,
+                    marginBottom: 16,
+                    padding: '12px 16px',
+                    backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                    border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 600, color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700 }}>
+                    Active Variant: <span style={{ color: UX4GColors.primary }}>{variant}</span>
+                  </span>
                 </div>
-
                 <CodeBlock code={codeString} language="tsx" />
               </div>
             )}
