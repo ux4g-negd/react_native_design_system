@@ -113,8 +113,8 @@ export const ApplicationStatusTrackerPattern = ({
         };
       default:
         return {
-          bg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral100,
-          text: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
+          bg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+          text: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800,
         };
     }
   };
@@ -193,7 +193,7 @@ export const ApplicationStatusTrackerPattern = ({
           <View style={[styles.banner, { backgroundColor: isDark ? '#873800' : '#FFF7E6', borderColor: isDark ? '#FA8C16' : '#FFC973' }, !isCardStyle && { marginHorizontal: 16, marginTop: 12 }]}>
             <Text style={{ fontSize: 18, color: isDark ? '#FFAB27' : '#FA8C16', marginRight: 8 }}>⚠️</Text>
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 12, fontWeight: '500', color: isDark ? '#FFAB27' : '#FA8C16', lineHeight: 17 }}>
+              <Text style={{ fontSize: 12, fontWeight: '500', color: isDark ? '#FFAB27' : '#AD4E00', lineHeight: 17 }}>
                 Action required upload your income proof document
               </Text>
               <TouchableOpacity style={{ marginTop: 6 }}>
@@ -243,11 +243,6 @@ export const ApplicationStatusTrackerPattern = ({
             </View>
           </View>
         )}
-                25 Apr 2026
-              </Text>
-            </View>
-          </View>
-        )}
 
         {/* Application Info Card */}
         <View
@@ -273,20 +268,20 @@ export const ApplicationStatusTrackerPattern = ({
             />
           </View>
           <Text style={[styles.appId, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            {status === 'Under Review' ? 'Application ID - INC-2026-MH-04127' : 'Application ID · INC-2026-MH-04127'}
+            Application ID · INC-2026-MH-04127
           </Text>
 
           {!isApproved && (
             <View style={{ marginTop: 10 }}>
-              <Text style={{ fontSize: 11, fontWeight: '500', color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, marginBottom: 6, alignSelf: 'flex-end' }}>
+              <Text style={{ fontSize: 12, fontWeight: '700', color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900, marginBottom: 6 }}>
                 8 days left
               </Text>
               <Ux4gLinearProgressBar
-                progress={0.6}
+                progress={0.48}
                 height={6}
                 showPercentage={false}
                 trackColor={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}
-                progressColor={isDark ? UX4GColors.primaryLight : UX4GColors.primary}
+                progressColor={isDark ? UX4GColors.secondary400 : UX4GColors.secondary}
               />
             </View>
           )}
@@ -337,8 +332,8 @@ export const ApplicationStatusTrackerPattern = ({
                 status: isApproved
                   ? undefined
                   : {
-                      text: status === 'Under Review' ? '2 days remaining' : '11 days remaining',
-                      dotColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary600,
+                      text: status === 'Under Review' ? (isCardStyle ? '11 days remaining' : '2 days remaining') : '11 days remaining',
+                      dotColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
                       badgeText: 'Pending',
                       badgeColor: isDark ? UX4GColors.secondary900 : UX4GColors.secondary50,
                       badgeTextColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary600,
@@ -350,7 +345,7 @@ export const ApplicationStatusTrackerPattern = ({
 
         {/* Bottom Actions */}
         {status === 'Rejected' && (
-          <View style={[isCardStyle && styles.cardStyleActions, { marginTop: 16, width: '100%', alignItems: 'center' }]}>
+          <View style={[!isCardStyle && { marginHorizontal: 16 }, { marginTop: 16, width: '100%', alignItems: 'center' }]}>
             <Ux4gButton text="Reapply" size="large" style={{ width: '100%', height: 48 }} />
             <TouchableOpacity style={{ marginTop: 12 }}>
               <Text style={{ fontSize: 14, fontWeight: '500', color: isDark ? UX4GColors.primaryLight : UX4GColors.primary }}>
@@ -371,9 +366,21 @@ export const ApplicationStatusTrackerPattern = ({
         )}
 
         {status === 'Approved' && (
-          <View style={[isCardStyle && styles.cardStyleActions, { marginTop: 16, width: '100%', alignItems: 'center' }]}>
+          <View style={[!isCardStyle && { marginHorizontal: 16 }, { marginTop: 16, width: '100%', alignItems: 'center' }]}>
             <Ux4gButton text="Download Certificate (PDF)" size="large" style={{ width: '100%', height: 48 }} />
-            <Ux4gButton text="Save to DigiLocker" variant="outline" size="large" style={{ width: '100%', height: 48, marginTop: 10 }} />
+            <Ux4gButton
+              text="Save to DigiLocker"
+              variant="outline"
+              size="large"
+              style={{
+                width: '100%',
+                height: 48,
+                marginTop: 10,
+                borderColor: isDark ? UX4GColors.primary300 : '#A391FF',
+                backgroundColor: 'transparent',
+              }}
+              contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary}
+            />
           </View>
         )}
 
@@ -440,8 +447,8 @@ const styles = StyleSheet.create({
           };
         default: // Under Review
           return {
-            bg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral100,
-            text: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
+            bg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+            text: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800,
           };
       }
     };
@@ -471,7 +478,7 @@ const styles = StyleSheet.create({
                 style={{
                   fontSize: 12,
                   fontWeight: 500,
-                  color: isDark ? '#FFAB27' : '#FA8C16',
+                  color: isDark ? '#FFAB27' : '#AD4E00',
                   lineHeight: '1.4',
                 }}
               >
@@ -666,7 +673,7 @@ const styles = StyleSheet.create({
                 height: 48,
                 backgroundColor: 'transparent',
                 color: isDark ? colors.primaryLight : colors.primary,
-                border: `1.5px solid ${isDark ? colors.primaryLight : colors.primary}`,
+                border: `1.5px solid ${isDark ? colors.primaryLight : '#A391FF'}`,
                 borderRadius: 8,
                 fontSize: 15,
                 fontWeight: 600,
@@ -799,7 +806,7 @@ const styles = StyleSheet.create({
                 </span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 400, color: colors.subtleText, marginTop: 4, marginBottom: !isApproved ? 14 : 0 }}>
-                {status === 'Under Review' ? 'Application ID - INC-2026-MH-04127' : 'Application ID · INC-2026-MH-04127'}
+                Application ID · INC-2026-MH-04127
               </div>
 
               {!isApproved && (
@@ -807,15 +814,15 @@ const styles = StyleSheet.create({
                   <div
                     style={{
                       display: 'flex',
-                      justifyContent: 'flex-end',
+                      justifyContent: 'flex-start',
                       marginBottom: 6,
                     }}
                   >
                     <span
                       style={{
-                        fontSize: 11,
-                        fontWeight: 500,
-                        color: colors.subtleText,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        color: colors.titleColor,
                       }}
                     >
                       8 days left
@@ -833,11 +840,11 @@ const styles = StyleSheet.create({
                     <div
                       style={{
                         height: '100%',
-                        width: '60%',
+                        width: '48%',
                         borderRadius: 3,
                         background: isDark
-                          ? `linear-gradient(90deg, ${UX4GColors.primary700}, ${UX4GColors.primary300})`
-                          : `linear-gradient(90deg, ${UX4GColors.primary200}, ${UX4GColors.primary600})`,
+                          ? `linear-gradient(90deg, #764A00, #FFBE6F)`
+                          : `linear-gradient(90deg, #FFD9AF, #A46800)`,
                       }}
                     />
                   </div>
@@ -891,8 +898,8 @@ const styles = StyleSheet.create({
                     status: isApproved
                       ? undefined
                       : {
-                          text: status === 'Under Review' ? '2 days remaining' : '11 days remaining',
-                          dotColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary600,
+                          text: status === 'Under Review' ? (isCard ? '11 days remaining' : '2 days remaining') : '11 days remaining',
+                          dotColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
                           badgeText: 'Pending',
                           badgeColor: isDark ? UX4GColors.secondary900 : UX4GColors.secondary50,
                           badgeTextColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary600,
@@ -906,11 +913,11 @@ const styles = StyleSheet.create({
             {renderActions() && (
               <div
                 style={{
-                  margin: isCard && status !== 'Delayed' ? '0 0 16px 0' : isCard ? '0' : '0 16px 16px 16px',
-                  padding: isCard && status !== 'Delayed' ? 16 : 0,
-                  backgroundColor: isCard && status !== 'Delayed' ? colors.cardBg : 'transparent',
-                  borderRadius: isCard ? 16 : 0,
-                  boxShadow: isCard && status !== 'Delayed' ? '0 4px 16px rgba(0, 0, 0, 0.04)' : 'none',
+                  margin: isCard ? '0 0 8px 0' : '0 16px 16px 16px',
+                  padding: 0,
+                  backgroundColor: 'transparent',
+                  borderRadius: 0,
+                  boxShadow: 'none',
                 }}
               >
                 {renderActions()}
