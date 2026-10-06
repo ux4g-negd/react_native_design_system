@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gInputField } from '../../../src/components/input-field/InputField';
+import { Ux4gAadhaarInputField } from '../../../src/components/aadhaar-input-field/AadhaarInputField';
 import { Ux4gCheckbox } from '../../../src/components/checkbox/Checkbox';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { CodeBlock } from '../components/CodeBlock';
@@ -18,22 +18,24 @@ type VariantType = 'default' | 'card';
 export const ForgotPasswordAccountRecoveryDoc: React.FC<ForgotPasswordAccountRecoveryDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
-  const [aadhaar, setAadhaar] = useState<string>('');
+  const [aadhaar, setAadhaar] = useState<string>('5489 7621 1234');
   const [agree, setAgree] = useState<boolean>(false);
 
   // Exact color tokens from UX4G Flutter Design System (1:1 match with Ux4gColors/Ux4gPalette)
   const colors = useMemo(() => {
     return {
-      title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,           // _getTitleColor
-      subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,  // _getSubtleText
-      mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,   // _getMutedText
-      border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,      // _getBorder
-      cardBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100, // _getSuCardBg
-      defaultScreenBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      title: isDark ? UX4GColors.neutral50 : '#0F172A',
+      subtleText: isDark ? UX4GColors.neutral400 : '#475569',
+      mutedText: isDark ? UX4GColors.neutral500 : '#64748B',
+      border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      cardScreenBg: isDark ? '#1C1335' : '#F3F0FF',
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : '#FFFFFF',
+      headerBg: isDark ? UX4GColors.gray900 : '#FFFFFF',
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      buttonBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      buttonBg: isDark ? UX4GColors.primary : '#4F46E5',
     };
   }, [isDark]);
 
@@ -51,26 +53,27 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gInputField,
+  Ux4gAadhaarInputField,
   Ux4gCheckbox,
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
-export const AccountRecoveryCardPattern = () => {
-  const [aadhaar, setAadhaar] = useState('');
+export const AccountRecoveryCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
+  const [aadhaar, setAadhaar] = useState('5489 7621 1234');
   const [agree, setAgree] = useState(false);
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: isDark ? '#1C1335' : '#F3F0FF' }]}>
       {/* 1. Official Government Header */}
       <Ux4gAppHeader
         title=""
-        variant="light"
+        variant={isDark ? 'dark' : 'light'}
         elevation={0}
         useSafeArea={false}
         horizontalPadding={16}
@@ -92,35 +95,51 @@ export const AccountRecoveryCardPattern = () => {
             resizeMode="contain"
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>,
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
       {/* 2. Card Layout Body */}
       <View style={styles.cardContainer}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <View style={styles.card}>
-            <Text style={styles.title}>Account recovery</Text>
+          <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }]}>
+            {/* Back Navigation Link */}
+            <TouchableOpacity style={styles.backBtn} onPress={() => {}}>
+              <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+                ← Back to Sign in
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
+              Account recovery
+            </Text>
 
             <View style={{ height: 20 }} />
 
-            <Ux4gInputField
+            {/* Aadhaar Input Field with Eye Mask Toggle */}
+            <Ux4gAadhaarInputField
               value={aadhaar}
               onValueChange={setAadhaar}
               label="Aadhaar Number"
               placeholder="XXXX XXXX 1234"
+              showMaskToggle={true}
+              defaultMasked={true}
+              maskAll={false}
+              size="large"
             />
 
             <View style={{ height: 16 }} />
@@ -131,7 +150,7 @@ export const AccountRecoveryCardPattern = () => {
               label="I agree to verify my identity via Aadhaar OTP for the purpose of password recovery."
             />
 
-            <View style={{ height: 20 }} />
+            <View style={{ height: 24 }} />
 
             <Ux4gButton
               text="Send OTP"
@@ -145,10 +164,12 @@ export const AccountRecoveryCardPattern = () => {
 
         {/* Powered by Digital India Footer */}
         <View style={styles.footer}>
-          <Text style={styles.poweredByText}>Powered by -</Text>
+          <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : '#64748B' }]}>
+            Powered by -
+          </Text>
           <Image
             source={{ uri: '/Digital_India_logo.svg' }}
-            style={styles.digitalIndiaLogo}
+            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
         </View>
@@ -181,11 +202,10 @@ const styles = StyleSheet.create({
   },
   unionLogo: { width: 32, height: 32 },
   cardContainer: {
-    flex: 1, backgroundColor: UX4GColors.primary100,
+    flex: 1,
   },
   scrollContainer: { padding: 16 },
   card: {
-    backgroundColor: UX4GColors.neutral0,
     borderRadius: 16,
     padding: 20,
     paddingBottom: 24,
@@ -193,22 +213,38 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.04,
     shadowRadius: 16,
-    elevation: 2,
+    elevation: 3,
+  },
+  backBtn: {
+    alignSelf: 'flex-start',
+    marginBottom: 16,
+  },
+  backText: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    fontFamily: 'Inter',
   },
   title: {
-    fontSize: 22, fontWeight: '700',
-    color: '#111827', letterSpacing: -0.3,
-    lineHeight: 26.4,
+    fontSize: 24,
+    fontWeight: '800',
+    letterSpacing: -0.3,
+    lineHeight: 30,
+    fontFamily: 'Inter',
   },
   actionButton: {
-    width: '100%', height: 48, borderRadius: 8,
+    width: '100%',
+    height: 48,
+    borderRadius: 8,
   },
   footer: {
-    paddingVertical: 14, alignItems: 'center',
-    flexDirection: 'row', justifyContent: 'center', gap: 4,
+    paddingVertical: 14,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 4,
   },
-  poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
-  digitalIndiaLogo: { height: 24, width: 80 },
+  poweredByText: { fontSize: 11, fontFamily: 'Inter' },
+  digitalIndiaLogo: { height: 22, width: 90 },
 });`;
     }
 
@@ -219,26 +255,27 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gInputField,
+  Ux4gAadhaarInputField,
   Ux4gCheckbox,
   Ux4gButton,
   Ux4gDivider,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
-export const AccountRecoveryDefaultPattern = () => {
-  const [aadhaar, setAadhaar] = useState('');
+export const AccountRecoveryDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
+  const [aadhaar, setAadhaar] = useState('5489 7621 1234');
   const [agree, setAgree] = useState(false);
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral950 : '#FFFFFF' }]}>
       {/* 1. Official Government Header */}
       <Ux4gAppHeader
         title=""
-        variant="light"
+        variant={isDark ? 'dark' : 'light'}
         elevation={0}
         useSafeArea={false}
         horizontalPadding={16}
@@ -260,47 +297,52 @@ export const AccountRecoveryDefaultPattern = () => {
             resizeMode="contain"
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>,
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
       {/* 2. Main Content Body */}
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {/* Back navigation link */}
-          <Ux4gButton
-            text="Back to Sign in"
-            variant="ghost"
-            size="small"
-            leadingIcon="arrow_back"
-            iconSize={18}
-            onPress={() => {}}
-            style={styles.backButton}
-          />
+          {/* Back Navigation Link */}
+          <TouchableOpacity style={styles.backBtn} onPress={() => {}}>
+            <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+              ← Back to Sign in
+            </Text>
+          </TouchableOpacity>
 
-          <View style={{ height: 20 }} />
+          <View style={{ height: 16 }} />
 
-          <Text style={styles.title}>Account recovery</Text>
+          <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
+            Account recovery
+          </Text>
 
           <View style={{ height: 24 }} />
 
-          <Ux4gInputField
+          {/* Aadhaar Input Field with Eye Mask Toggle */}
+          <Ux4gAadhaarInputField
             value={aadhaar}
             onValueChange={setAadhaar}
             label="Aadhaar Number"
             placeholder="XXXX XXXX 1234"
+            showMaskToggle={true}
+            defaultMasked={true}
+            maskAll={false}
+            size="large"
           />
 
           <View style={{ height: 16 }} />
@@ -324,10 +366,12 @@ export const AccountRecoveryDefaultPattern = () => {
 
         {/* Powered by Digital India Footer */}
         <View style={styles.footer}>
-          <Text style={styles.poweredByText}>Powered by -</Text>
+          <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : '#64748B' }]}>
+            Powered by -
+          </Text>
           <Image
             source={{ uri: '/Digital_India_logo.svg' }}
-            style={styles.digitalIndiaLogo}
+            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
         </View>
@@ -362,26 +406,37 @@ const styles = StyleSheet.create({
   scrollContainer: {
     paddingHorizontal: 20, paddingTop: 16,
   },
-  backButton: {
+  backBtn: {
     alignSelf: 'flex-start',
-    height: 36,
-    paddingHorizontal: 0,
+    marginBottom: 4,
+  },
+  backText: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    fontFamily: 'Inter',
   },
   title: {
-    fontSize: 24, fontWeight: '700',
-    color: '#111827', letterSpacing: -0.3,
-    lineHeight: 28.8,
+    fontSize: 24,
+    fontWeight: '800',
+    letterSpacing: -0.3,
+    lineHeight: 30,
+    fontFamily: 'Inter',
   },
   actionButton: {
-    width: '100%', height: 48, borderRadius: 8,
+    width: '100%',
+    height: 48,
+    borderRadius: 8,
   },
   footer: {
-    paddingVertical: 14, paddingHorizontal: 20,
-    alignItems: 'center', flexDirection: 'row',
-    justifyContent: 'center', gap: 4,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 4,
   },
-  poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
-  digitalIndiaLogo: { height: 24, width: 80 },
+  poweredByText: { fontSize: 11, fontFamily: 'Inter' },
+  digitalIndiaLogo: { height: 22, width: 90 },
 });`;
   }, [variant]);
 
@@ -416,7 +471,7 @@ const styles = StyleSheet.create({
             useSafeArea={false}
             height={56}
             horizontalPadding={16}
-            leadingSpacing={12}
+            leadingSpacing={8}
             backgroundColor={colors.headerBg}
             borderColor={colors.border}
             leadingWidgets={[
@@ -433,40 +488,50 @@ const styles = StyleSheet.create({
                 key="divider"
                 style={{
                   width: 1,
-                  height: 28,
-                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                  margin: '0 4px',
+                  height: 26,
+                  backgroundColor: isDark ? UX4GColors.neutral700 : '#E2E8F0',
+                  margin: '0 2px',
                 }}
               />,
-              <UnionLogo key="union" size={32} isDark={isDark} />,
+              <img
+                key="union"
+                src="/Union.svg"
+                alt="Union"
+                style={{
+                  height: 26,
+                }}
+              />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <button
-                  key="menu"
-                  type="button"
-                  onClick={() => {}}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
-                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
-                  </svg>
-                </button>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <div
+                    key="menu"
+                    style={{
+                      width: 38,
+                      height: 38,
+                      borderRadius: 8,
+                      border: `1.5px solid ${colors.menuBorder}`,
+                      backgroundColor: colors.headerBg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span
+                      className="material-symbols-outlined"
+                      style={{
+                        fontSize: 20,
+                        color: colors.menuIcon,
+                      }}
+                    >
+                      menu
+                    </span>
+                  </div>
+                ),
+              },
+            ]}
           />
           <div
             style={{
@@ -501,29 +566,65 @@ const styles = StyleSheet.create({
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
                 }}
               >
+                {/* Back Link */}
+                <div
+                  onClick={() => {}}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    cursor: 'pointer',
+                    padding: '2px 0',
+                    marginBottom: 16,
+                  }}
+                >
+                  <span
+                    className="material-symbols-outlined"
+                    style={{
+                      fontSize: 18,
+                      color: colors.primary,
+                    }}
+                  >
+                    arrow_back
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 13.5,
+                      fontWeight: 600,
+                      color: colors.primary,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Back to Sign in
+                  </span>
+                </div>
+
                 {/* Title */}
                 <h2
                   style={{
-                    fontSize: 22,
-                    fontWeight: 700,
-                    lineHeight: 1.2,
+                    fontSize: 24,
+                    fontWeight: 800,
+                    lineHeight: 1.25,
                     letterSpacing: '-0.3px',
                     color: colors.title,
                     margin: 0,
+                    marginBottom: 20,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   Account recovery
                 </h2>
 
-                <div style={{ height: 20 }} />
-
-                {/* Aadhaar Input */}
-                <Ux4gInputField
+                {/* Aadhaar Input with Eye Mask Toggle */}
+                <Ux4gAadhaarInputField
                   value={aadhaar}
                   onValueChange={setAadhaar}
                   label="Aadhaar Number"
                   placeholder="XXXX XXXX 1234"
+                  showMaskToggle={true}
+                  defaultMasked={true}
+                  maskAll={false}
+                  size="large"
                 />
 
                 <div style={{ height: 16 }} />
@@ -535,7 +636,7 @@ const styles = StyleSheet.create({
                   label="I agree to verify my identity via Aadhaar OTP for the purpose of password recovery."
                 />
 
-                <div style={{ height: 20 }} />
+                <div style={{ height: 24 }} />
 
                 {/* Send OTP Button */}
                 <Ux4gButton
@@ -556,8 +657,8 @@ const styles = StyleSheet.create({
             {/* Brand Footer */}
             <div
               style={{
-              display: 'flex',
-              flexDirection: 'row',
+                display: 'flex',
+                flexDirection: 'row',
                 padding: '14px 20px',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -578,7 +679,7 @@ const styles = StyleSheet.create({
                 src="/Digital_India_logo.svg"
                 alt="Digital India"
                 style={{
-                  height: 24,
+                  height: 22,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
@@ -597,7 +698,7 @@ const styles = StyleSheet.create({
           >
             <div
               style={{
-                padding: '16px 20px 0 20px',
+                padding: '20px 20px 0 20px',
                 flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
@@ -613,6 +714,7 @@ const styles = StyleSheet.create({
                   gap: 6,
                   cursor: 'pointer',
                   padding: '2px 0',
+                  marginBottom: 16,
                 }}
               >
                 <span
@@ -626,8 +728,8 @@ const styles = StyleSheet.create({
                 </span>
                 <span
                   style={{
-                    fontSize: 14,
-                    fontWeight: 500,
+                    fontSize: 13.5,
+                    fontWeight: 600,
                     color: colors.primary,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
@@ -636,31 +738,32 @@ const styles = StyleSheet.create({
                 </span>
               </div>
 
-              <div style={{ height: 20 }} />
-
               {/* Title */}
               <h2
                 style={{
                   fontSize: 24,
-                  fontWeight: 700,
-                  lineHeight: 1.2,
+                  fontWeight: 800,
+                  lineHeight: 1.25,
                   letterSpacing: '-0.3px',
                   color: colors.title,
                   margin: 0,
+                  marginBottom: 20,
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
                 Account recovery
               </h2>
 
-              <div style={{ height: 24 }} />
-
-              {/* Aadhaar Input */}
-              <Ux4gInputField
+              {/* Aadhaar Input with Eye Mask Toggle */}
+              <Ux4gAadhaarInputField
                 value={aadhaar}
                 onValueChange={setAadhaar}
                 label="Aadhaar Number"
                 placeholder="XXXX XXXX 1234"
+                showMaskToggle={true}
+                defaultMasked={true}
+                maskAll={false}
+                size="large"
               />
 
               <div style={{ height: 16 }} />
@@ -692,8 +795,8 @@ const styles = StyleSheet.create({
             {/* Brand Footer */}
             <div
               style={{
-              display: 'flex',
-              flexDirection: 'row',
+                display: 'flex',
+                flexDirection: 'row',
                 padding: '14px 20px',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -714,7 +817,7 @@ const styles = StyleSheet.create({
                 src="/Digital_India_logo.svg"
                 alt="Digital India"
                 style={{
-                  height: 24,
+                  height: 22,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
@@ -734,7 +837,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          Aadhaar-based account recovery screen. Shows masked Aadhaar number and consent text before sending OTP.
+          Aadhaar-based account recovery screen. Shows masked Aadhaar number with eye toggle and consent text before sending OTP.
         </p>
       </div>
 
@@ -870,7 +973,11 @@ const styles = StyleSheet.create({
                     Card style
                   </button>
                 </div>
-                <CodeBlock code={codeString} language="tsx" />
+                <CodeBlock
+                  code={codeString}
+                  language="TSX"
+                  filename={variant === 'card' ? 'AccountRecoveryCardPattern.tsx' : 'AccountRecoveryDefaultPattern.tsx'}
+                />
               </div>
             )}
           </div>
