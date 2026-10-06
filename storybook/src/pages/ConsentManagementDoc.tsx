@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gButton } from '../../../src/components/button/Button';
 import { CodeBlock } from '../components/CodeBlock';
 
 interface ConsentManagementDocProps {
@@ -14,27 +13,26 @@ type VariantType = 'Default' | 'Card style';
 export const ConsentManagementDoc: React.FC<ConsentManagementDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('Default');
-
-  const [isAadhaarActive, setIsAadhaarActive] = useState(true);
-  const [isAddressActive, setIsAddressActive] = useState(true);
-  const [isEmailActive, setIsEmailActive] = useState(false);
+  const [documentsExpanded, setDocumentsExpanded] = useState(true);
 
   const colors = useMemo(() => {
     return {
       screenBg: variant === 'Card style'
-        ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100)
-        : (isDark ? UX4GColors.gray900 : UX4GColors.gray100),
-      cardBg: isDark ? UX4GColors.gray900 : '#FFFFFF',
-      border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-      titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
+        ? (isDark ? UX4GColors.primary900 : '#ECE8FF')
+        : (isDark ? UX4GColors.neutral900 : '#FFFFFF'),
+      cardBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+      border: isDark ? UX4GColors.neutral700 : '#F0F0F2',
+      titleColor: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900,
       subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-      iconBg: isDark ? UX4GColors.gray800 : '#EEF2F6',
-      primary: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      activeTagBg: isDark ? UX4GColors.green900 : '#DCFCE7',
-      activeTagText: isDark ? UX4GColors.green300 : '#166534',
-      withdrawnTagBg: isDark ? UX4GColors.red900 : '#FFF0F0',
-      withdrawnTagText: isDark ? UX4GColors.red300 : '#8A1A16',
-      footerText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      primaryLight: isDark ? UX4GColors.primary400 : UX4GColors.primary300,
+      sharedTagBg: isDark ? '#135200' : '#E6F7E6',
+      sharedTagText: isDark ? '#95DE64' : '#237804',
+      notSharedTagBg: isDark ? '#262626' : '#F0F0F0',
+      notSharedTagText: isDark ? '#8C8C8C' : '#595959',
+      partlySharedTagBg: isDark ? '#592D00' : '#FFE7BA',
+      partlySharedTagText: isDark ? '#FFC973' : '#AD4E00',
+      footerText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
     };
   }, [isDark, variant]);
 
@@ -47,9 +45,9 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {
-  Ux4gAppHeader,
   Ux4gButton,
   Ux4gTag,
   UX4GColors,
@@ -62,105 +60,230 @@ export const ConsentManagementPattern = ({
   isDark?: boolean;
   variant?: 'Default' | 'Card style';
 }) => {
-  const [isAadhaarActive, setIsAadhaarActive] = useState(true);
-  const [isAddressActive, setIsAddressActive] = useState(true);
-  const [isEmailActive, setIsEmailActive] = useState(false);
+  const [documentsExpanded, setDocumentsExpanded] = useState(true);
 
   const isCard = variant === 'Card style';
 
-  const managementItems = [
-    {
-      title: 'Aadhaar Number',
-      dateVersion: '10 Apr 2026, 14:34 · v2.1',
-      isActive: isAadhaarActive,
-      onToggle: () => setIsAadhaarActive(!isAadhaarActive),
-    },
-    {
-      title: 'Address',
-      dateVersion: '02 Jan 2026, 09:15 · v1.8',
-      isActive: isAddressActive,
-      onToggle: () => setIsAddressActive(!isAddressActive),
-    },
-    {
-      title: 'Email',
-      dateVersion: '15 Sep 2025, 11:02 · v1.6',
-      isActive: isEmailActive,
-      onToggle: () => setIsEmailActive(!isEmailActive),
-    },
-  ];
+  const renderTag = (status: 'Shared' | 'Not shared' | 'Partly shared') => {
+    let bg = isDark ? '#135200' : '#E6F7E6';
+    let text = isDark ? '#95DE64' : '#237804';
+
+    if (status === 'Not shared') {
+      bg = isDark ? '#262626' : '#F0F0F0';
+      text = isDark ? '#8C8C8C' : '#595959';
+    } else if (status === 'Partly shared') {
+      bg = isDark ? '#592D00' : '#FFE7BA';
+      text = isDark ? '#FFC973' : '#AD4E00';
+    }
+
+    return (
+      <View style={[styles.tag, { backgroundColor: bg }]}>
+        <Text style={[styles.tagText, { color: text }]}>{status}</Text>
+      </View>
+    );
+  };
 
   return (
-    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.gray900 : (isCard ? UX4GColors.primary100 : UX4GColors.gray100) }]}>
+    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral900 : (isCard ? '#ECE8FF' : '#FFFFFF') }]}>
       {/* Header */}
-      <Ux4gAppHeader variant="light" showBackButton={false}
-actions={[
-  {
-    customWidget: (
-      <TouchableOpacity
-        key="menu"
-        style={styles.menuBtn}
-        onPress={() => {}}
-      >
-        <Text style={styles.menuIcon}>☰</Text>
-      </TouchableOpacity>
-    ),
-  },
-]}
-/>
+      <View style={[styles.header, { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF', borderBottomColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }]}>
+        <View style={styles.headerLeft}>
+          <Image source={{ uri: '/national_emblem_logo.svg' }} style={styles.emblemLogo} resizeMode="contain" />
+          <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
+          <Image source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />
+        </View>
+        <TouchableOpacity style={[styles.menuBtn, { borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200 }]}>
+          <Text style={[styles.menuIcon, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>☰</Text>
+        </TouchableOpacity>
+      </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={isCard ? [styles.cardContainer, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }] : styles.flatContainer}>
-          {/* Shield Icon Indicator */}
-          <View style={[styles.iconCircle, { backgroundColor: isDark ? UX4GColors.gray800 : '#EEF2F6' }]}>
-            <Text style={{ fontSize: 28 }}>🛡️</Text>
-          </View>
-
-          <Text style={[styles.headline, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
-            Your Data, Your Control
-          </Text>
-          <Text style={[styles.description, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            A complete record of all consents you have given, including date, time, IP address, and policy version. You can withdraw any active consent below.
+        <View style={isCard ? [styles.cardContainer, { backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF' }] : styles.flatContainer}>
+          {/* Main Title */}
+          <Text style={[styles.mainTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+            You gave consent to share the following information
           </Text>
 
-          {/* Consents Cards */}
-          {managementItems.map((item, index) => (
-            <View key={index} style={[styles.dataCard, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF', borderColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]}>
-              <View style={styles.dataCardRow}>
-                <Text style={[styles.dataTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>{item.title}</Text>
-                <Ux4gTag
-                  text={item.isActive ? 'Active' : 'Withdrawn'}
-                  customBackgroundColor={item.isActive ? (isDark ? UX4GColors.green900 : '#DCFCE7') : (isDark ? UX4GColors.red900 : '#FFF0F0')}
-                  customContentColor={item.isActive ? (isDark ? UX4GColors.green300 : '#166534') : (isDark ? UX4GColors.red300 : '#8A1A16')}
-                  shape="rectangular"
-                  size="m"
-                />
-              </View>
-              <Text style={[styles.dataDetail, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-                {item.dateVersion}
-              </Text>
-              <TouchableOpacity onPress={item.onToggle} style={styles.actionRow}>
-                <Text style={[styles.actionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary600 }]}>
-                  {item.isActive ? 'Withdraw' : 'Restore'} →
+          {/* 1. Documents Section (Collapsible) */}
+          <View style={styles.itemContainer}>
+            <View style={styles.rowBetween}>
+              <TouchableOpacity
+                onPress={() => setDocumentsExpanded(!documentsExpanded)}
+                style={styles.accordionHeader}
+              >
+                <Text style={[styles.chevronIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  {documentsExpanded ? '▼' : '▶'}
+                </Text>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900, marginLeft: 8 }]}>
+                  Documents
                 </Text>
               </TouchableOpacity>
+              {renderTag('Partly shared')}
             </View>
-          ))}
 
-          {/* Download History Link */}
-          <TouchableOpacity onPress={() => {}} style={{ marginVertical: 8 }}>
-            <Text style={[styles.downloadLink, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary600 }]}>
-              Download consent history (PDF)
+            {documentsExpanded && (
+              <View style={styles.subItemsList}>
+                <View style={styles.subItemRow}>
+                  <Text style={[styles.subItemText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                    Aadhaar Card
+                  </Text>
+                  {renderTag('Shared')}
+                </View>
+                <View style={styles.subItemRow}>
+                  <Text style={[styles.subItemText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                    PAN
+                  </Text>
+                  {renderTag('Not shared')}
+                </View>
+                <View style={styles.subItemRow}>
+                  <Text style={[styles.subItemText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                    Driving License
+                  </Text>
+                  {renderTag('Not shared')}
+                </View>
+                <TouchableOpacity style={{ marginTop: 8 }}>
+                  <Text style={[styles.linkText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+                    View all
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 2. Profile Information */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>👤</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Profile information
+                </Text>
+                <Text style={[styles.subtleText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+                  Name, Date of Birth, Gender
+                </Text>
+              </View>
+            </View>
+            {renderTag('Shared')}
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 3. Get your email */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>✉️</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Get your email
+                </Text>
+              </View>
+            </View>
+            {renderTag('Shared')}
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 4. Get your profile picture */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>👤</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Get your profile picture
+                </Text>
+              </View>
+            </View>
+            {renderTag('Not shared')}
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 5. Location */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>📍</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Location
+                </Text>
+              </View>
+            </View>
+            {renderTag('Not shared')}
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 6. Consent Validity Date */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>📅</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Consent validity date
+                </Text>
+                <Text style={[styles.subtleText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+                  (Today + 30 days)
+                </Text>
+                <Text style={[styles.dateText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  08-Oct-2026
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity>
+              <Text style={[styles.linkText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+                Edit
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Notice Text */}
+          <View style={styles.noticeContainer}>
+            <Text style={[styles.noticeText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+              Consent validity is subject to applicable laws.
+            </Text>
+            <Text style={[styles.noticeText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+              By selecting Allow, you are giving consent to share the items above.
+            </Text>
+          </View>
+
+          {/* View Full Consent History Link */}
+          <TouchableOpacity style={styles.historyLinkContainer}>
+            <Text style={[styles.historyLinkText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+              View full consent history ↗
             </Text>
           </TouchableOpacity>
 
-          {/* Divider */}
-          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
-
-          {/* Actions */}
-          <View style={{ gap: 4 }}>
-            <Ux4gButton text="Confirm" height={48} size="large" />
-            <Ux4gButton text="Cancel" variant="ghost" contentColor={isDark ? UX4GColors.neutral50 : UX4GColors.neutral900} height={48} size="large" />
+          {/* Action Buttons */}
+          <View style={styles.actionButtons}>
+            <Ux4gButton
+              text="Close"
+              variant="filled"
+              size="large"
+              style={{
+                width: '100%',
+                height: 48,
+                backgroundColor: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+              }}
+              contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral0}
+            />
+            <Ux4gButton
+              text="Revoke consent"
+              variant="outline"
+              size="large"
+              style={{
+                width: '100%',
+                height: 48,
+                borderColor: isDark ? UX4GColors.primary300 : '#A391FF',
+                backgroundColor: 'transparent',
+              }}
+              contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary}
+            />
           </View>
+        </View>
+
+        {/* Brand Footer */}
+        <View style={styles.footer}>
+          <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+            Powered by -
+          </Text>
+          <Image source={{ uri: '/Digital_India_logo.svg' }} style={styles.digitalIndiaLogo} resizeMode="contain" />
         </View>
       </ScrollView>
     </View>
@@ -168,222 +291,329 @@ actions={[
 };
 
 const styles = StyleSheet.create({
+  screen: { flex: 1 },
+  header: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+  },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  emblemLogo: { height: 32, width: 24 },
+  headerDivider: { width: 1, height: 26 },
+  unionLogo: { height: 32, width: 44 },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  menuIcon: {
-    fontSize: 18,
-    color: UX4GColors.primary,
+  menuIcon: { fontSize: 18 },
+  scrollContainer: { paddingVertical: 16 },
+  flatContainer: { paddingHorizontal: 16 },
+  cardContainer: {
+    marginHorizontal: 16,
+    padding: 18,
+    borderRadius: 16,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 4 },
   },
-  screen: { flex: 1 },
-  scrollContainer: { padding: 16 },
-  flatContainer: { padding: 4 },
-  cardContainer: { padding: 20, borderRadius: 16, elevation: 2 },
-  iconCircle: { width: 56, height: 56, borderRadius: 28, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginBottom: 16 },
-  headline: { fontSize: 20, fontWeight: '600', textAlign: 'center', marginBottom: 8 },
-  description: { fontSize: 14, textAlign: 'center', lineHeight: 20, marginBottom: 24 },
-  dataCard: { padding: 16, borderRadius: 12, borderWidth: 1, marginBottom: 12 },
-  dataCardRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  dataTitle: { fontSize: 16, fontWeight: '600' },
-  dataDetail: { fontSize: 13, lineHeight: 18, marginTop: 2, marginBottom: 8 },
-  actionRow: { flexDirection: 'row', alignItems: 'center' },
-  actionText: { fontSize: 14, fontWeight: '500' },
-  downloadLink: { fontSize: 14, fontWeight: '500' },
-  divider: { height: 1, marginVertical: 20 },
+  mainTitle: { fontSize: 17, fontWeight: '700', lineHeight: 23, marginBottom: 18 },
+  itemContainer: { paddingVertical: 4 },
+  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  accordionHeader: { flexDirection: 'row', alignItems: 'center' },
+  chevronIcon: { fontSize: 12 },
+  itemTitle: { fontSize: 14, fontWeight: '700' },
+  subItemsList: { paddingLeft: 24, marginTop: 12, gap: 12 },
+  subItemRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  subItemText: { fontSize: 13 },
+  linkText: { fontSize: 13, fontWeight: '600' },
+  separator: { height: 1, marginVertical: 14 },
+  itemRowWithIcon: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 4 },
+  iconWithText: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  itemIcon: { fontSize: 20 },
+  subtleText: { fontSize: 12, marginTop: 2 },
+  dateText: { fontSize: 12, marginTop: 2, fontWeight: '500' },
+  noticeContainer: { marginTop: 20, marginBottom: 12 },
+  noticeText: { fontSize: 11, lineHeight: 16 },
+  historyLinkContainer: { marginBottom: 16 },
+  historyLinkText: { fontSize: 13, fontWeight: '600' },
+  tag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
+  tagText: { fontSize: 11.5, fontWeight: '600' },
+  actionButtons: { gap: 10, marginTop: 8 },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginVertical: 24 },
+  poweredByText: { fontSize: 11, fontWeight: '500' },
+  digitalIndiaLogo: { height: 22, width: 80 },
 });
 `;
   }, [isDark, variant]);
 
-  const renderManagementCard = (
-    title: string,
-    dateVersion: string,
-    isActive: boolean,
-    onToggle: () => void
-  ) => (
-    <div
-      style={{
-        width: '100%',
-        padding: 16,
-        backgroundColor: colors.cardBg,
-        borderRadius: 12,
-        border: `1px solid ${colors.border}`,
-        boxSizing: 'border-box',
-        marginBottom: 12,
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontSize: 16, fontWeight: 600, color: colors.titleColor, letterSpacing: '-0.01em' }}>
-          {title}
-        </span>
-        <span
-          style={{
-            fontSize: 12,
-            fontWeight: 500,
-            padding: '2px 8px',
-            borderRadius: 4,
-            backgroundColor: isActive ? colors.activeTagBg : colors.withdrawnTagBg,
-            color: isActive ? colors.activeTagText : colors.withdrawnTagText,
-            lineHeight: '1.2',
-          }}
-        >
-          {isActive ? 'Active' : 'Withdrawn'}
-        </span>
-      </div>
-      <div style={{ fontSize: 13, fontWeight: 400, color: colors.subtleText, marginTop: 6, lineHeight: '1.25' }}>
-        {dateVersion}
-      </div>
-      <div
-        onClick={onToggle}
+  const renderTag = (status: 'Shared' | 'Not shared' | 'Partly shared') => {
+    let bg = colors.sharedTagBg;
+    let text = colors.sharedTagText;
+
+    if (status === 'Not shared') {
+      bg = colors.notSharedTagBg;
+      text = colors.notSharedTagText;
+    } else if (status === 'Partly shared') {
+      bg = colors.partlySharedTagBg;
+      text = colors.partlySharedTagText;
+    }
+
+    return (
+      <span
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 4,
-          marginTop: 8,
-          cursor: 'pointer',
-          userSelect: 'none',
+          fontSize: 11.5,
+          fontWeight: 600,
+          padding: '2px 8px',
+          borderRadius: 4,
+          backgroundColor: bg,
+          color: text,
+          lineHeight: '1.2',
+          display: 'inline-block',
+          whiteSpace: 'nowrap',
         }}
       >
-        <span style={{ fontSize: 14, fontWeight: 500, color: colors.primary }}>
-          {isActive ? 'Withdraw' : 'Restore'}
-        </span>
-        <span
-          className="material-symbols-outlined"
-          style={{
-            fontSize: 14,
-            color: colors.primary,
-          }}
-        >
-          arrow_forward
-        </span>
-      </div>
-    </div>
-  );
+        {status}
+      </span>
+    );
+  };
 
   const renderMockupContent = () => (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {/* Shield Icon Indicator */}
-      <div
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: '50%',
-          backgroundColor: colors.iconBg,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: 16,
-        }}
-      >
-        <span
-          className="material-symbols-outlined"
-          style={{
-            fontSize: 28,
-            color: colors.primary,
-          }}
-        >
-          shield
-        </span>
-      </div>
-
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {/* Headline */}
       <h2
         style={{
-          fontSize: 20,
-          fontWeight: 600,
+          fontSize: 17,
+          fontWeight: 700,
           color: colors.titleColor,
-          textAlign: 'center',
-          margin: '0 0 8px 0',
+          textAlign: 'left',
+          margin: '0 0 16px 0',
           letterSpacing: '-0.01em',
-          lineHeight: '1.3',
+          lineHeight: 1.35,
         }}
       >
-        Your Data, Your Control
+        You gave consent to share the following information
       </h2>
 
-      {/* Description */}
-      <p
-        style={{
-          fontSize: 14,
-          fontWeight: 400,
-          color: colors.subtleText,
-          textAlign: 'center',
-          margin: '0 0 24px 0',
-          lineHeight: '1.45',
-        }}
-      >
-        A complete record of all consents you have given, including date, time, IP address, and policy version. You can withdraw any active consent below.
-      </p>
+      {/* 1. Documents Accordion */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            onClick={() => setDocumentsExpanded(!documentsExpanded)}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', userSelect: 'none' }}
+          >
+            <span
+              className="material-symbols-outlined"
+              style={{
+                fontSize: 20,
+                color: colors.titleColor,
+                transform: documentsExpanded ? 'rotate(0deg)' : 'rotate(-90deg)',
+                transition: 'transform 0.2s ease',
+              }}
+            >
+              keyboard_arrow_down
+            </span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+              Documents
+            </span>
+          </div>
+          {renderTag('Partly shared')}
+        </div>
 
-      {/* Consents Cards */}
-      {renderManagementCard(
-        'Aadhaar Number',
-        '10 Apr 2026, 14:34 · v2.1',
-        isAadhaarActive,
-        () => setIsAadhaarActive(!isAadhaarActive)
-      )}
-      {renderManagementCard(
-        'Address',
-        '02 Jan 2026, 09:15 · v1.8',
-        isAddressActive,
-        () => setIsAddressActive(!isAddressActive)
-      )}
-      {renderManagementCard(
-        'Email',
-        '15 Sep 2025, 11:02 · v1.6',
-        isEmailActive,
-        () => setIsEmailActive(!isEmailActive)
-      )}
-
-      {/* Download History Link */}
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginTop: 8, marginBottom: 4 }}>
-        <span
-          style={{
-            fontSize: 14,
-            fontWeight: 500,
-            color: colors.primary,
-            cursor: 'pointer',
-            textDecoration: 'none',
-          }}
-        >
-          Download consent history (PDF)
-        </span>
+        {documentsExpanded && (
+          <div style={{ paddingLeft: 26, marginTop: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 13, color: colors.titleColor }}>Aadhaar Card</span>
+              {renderTag('Shared')}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 13, color: colors.titleColor }}>PAN</span>
+              {renderTag('Not shared')}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 13, color: colors.titleColor }}>Driving License</span>
+              {renderTag('Not shared')}
+            </div>
+            <div style={{ marginTop: 2 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: colors.primary, cursor: 'pointer' }}>
+                View all
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Divider */}
-      <div
-        style={{
-          width: '100%',
-          height: 1,
-          backgroundColor: colors.border,
-          margin: '16px 0 20px 0',
-        }}
-      />
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
 
-      {/* Actions */}
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <Ux4gButton
-          text="Confirm"
-          onPress={() => {}}
-          height={48}
-          size="large"
-          width="100%"
-        />
-        <Ux4gButton
-          text="Cancel"
-          variant="ghost"
-          contentColor={isDark ? UX4GColors.neutral50 : UX4GColors.neutral900}
-          onPress={() => {}}
-          height={48}
-          size="large"
-          width="100%"
-        />
+      {/* 2. Profile Information */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            account_circle
+          </span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+              Profile information
+            </span>
+            <span style={{ fontSize: 12, color: colors.subtleText, marginTop: 1 }}>
+              Name, Date of Birth, Gender
+            </span>
+          </div>
+        </div>
+        {renderTag('Shared')}
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 3. Get your email */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            mail
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+            Get your email
+          </span>
+        </div>
+        {renderTag('Shared')}
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 4. Get your profile picture */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            account_circle
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+            Get your profile picture
+          </span>
+        </div>
+        {renderTag('Not shared')}
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 5. Location */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            location_on
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+            Location
+          </span>
+        </div>
+        {renderTag('Not shared')}
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 6. Consent validity date */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor, marginTop: 2 }}>
+            calendar_today
+          </span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+              Consent validity date
+            </span>
+            <span style={{ fontSize: 12, color: colors.subtleText, marginTop: 1 }}>
+              (Today + 30 days)
+            </span>
+            <span style={{ fontSize: 12, color: colors.titleColor, marginTop: 2, fontWeight: 500 }}>
+              08-Oct-2026
+            </span>
+          </div>
+        </div>
+        <span style={{ fontSize: 13, fontWeight: 600, color: colors.primary, cursor: 'pointer' }}>
+          Edit
+        </span>
+      </div>
+
+      {/* Notice Text */}
+      <div style={{ margin: '20px 0 12px 0' }}>
+        <p style={{ fontSize: 11, color: colors.subtleText, margin: 0, lineHeight: 1.45 }}>
+          Consent validity is subject to applicable laws.
+        </p>
+        <p style={{ fontSize: 11, color: colors.subtleText, margin: '2px 0 0 0', lineHeight: 1.45 }}>
+          By selecting Allow, you are giving consent to share the items above.
+        </p>
+      </div>
+
+      {/* View Full Consent History Link */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 16 }}>
+        <a
+          href="#history"
+          onClick={(e) => { e.preventDefault(); alert('View full consent history'); }}
+          style={{
+            fontSize: 13,
+            fontWeight: 600,
+            color: colors.primary,
+            textDecoration: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+          }}
+        >
+          View full consent history
+          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+            open_in_new
+          </span>
+        </a>
+      </div>
+
+      {/* Action Buttons */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <button
+          type="button"
+          onClick={() => alert('Closed')}
+          style={{
+            width: '100%',
+            height: 48,
+            backgroundColor: isDark ? colors.primaryLight : UX4GColors.primary,
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          onClick={() => alert('Consent Revoked')}
+          style={{
+            width: '100%',
+            height: 48,
+            backgroundColor: 'transparent',
+            color: isDark ? colors.primaryLight : UX4GColors.primary,
+            border: `1.5px solid ${isDark ? colors.primaryLight : '#A391FF'}`,
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          Revoke consent
+        </button>
       </div>
     </div>
   );
@@ -394,8 +624,8 @@ const styles = StyleSheet.create({
         style={{
           width: 360,
           height: 760,
-          borderRadius: 20,
-          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+          borderRadius: 24,
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden',
           backgroundColor: colors.screenBg,
           border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
@@ -407,7 +637,7 @@ const styles = StyleSheet.create({
         }}
       >
         {/* Consent Header */}
-        <div style={{ backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }}>
+        <div style={{ backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }}>
           <div
             style={{
               padding: '12px 16px',
@@ -429,7 +659,7 @@ const styles = StyleSheet.create({
                 style={{
                   width: 1,
                   height: 28,
-                  backgroundColor: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
+                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
                 }}
               />
               <img
@@ -456,26 +686,27 @@ const styles = StyleSheet.create({
                 className="material-symbols-outlined"
                 style={{
                   fontSize: 20,
-                  color: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+                  color: isDark ? UX4GColors.primary300 : UX4GColors.primary,
                 }}
               >
                 menu
               </span>
             </div>
           </div>
-          <div style={{ height: 1, backgroundColor: colors.border }} />
+          <div style={{ height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }} />
         </div>
 
         {/* Scrollable Container */}
         <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1, padding: variant === 'Card style' ? 16 : '20px 20px 0 20px' }}>
+          <div style={{ flex: 1, padding: variant === 'Card style' ? '12px 14px' : '20px 16px 0 16px' }}>
             {variant === 'Card style' ? (
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 20,
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
+                  padding: '18px 16px 20px 16px',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.03)'}`,
                 }}
               >
                 {renderMockupContent()}
@@ -488,35 +719,34 @@ const styles = StyleSheet.create({
 
           {/* Brand Footer */}
           <div
-          style={{
-            padding: '12px 0 16px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              padding: '12px 0 20px 0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              flexShrink: 0,
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 22,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
-        </div>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: colors.footerText,
+              }}
+            >
+              Powered by -
+            </span>
+            <img
+              src="/Digital_India_logo.svg"
+              alt="Digital India"
+              style={{
+                height: 22,
+                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+              }}
+            />
+          </div>
         </div>
       </div>
     );
@@ -531,7 +761,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          Pattern for viewing consent history, downloading PDF records, and toggling (withdrawing/restoring) active consents.
+          Pattern for reviewing existing consents, showing status tags (Shared, Not shared, Partly shared) with revocation and full history options.
         </p>
       </div>
 

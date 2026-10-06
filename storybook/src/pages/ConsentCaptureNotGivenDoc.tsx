@@ -1,11 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gButton } from '../../../src/components/button/Button';
 import { Ux4gCheckbox } from '../../../src/components/checkbox/Checkbox';
-import { Ux4gTag } from '../../../src/components/tag/Tag';
-import { Ux4gStatusBanner } from '../../../src/components/status-banner/StatusBanner';
 import { CodeBlock } from '../components/CodeBlock';
 
 interface ConsentCaptureNotGivenDocProps {
@@ -18,44 +14,70 @@ type VariantType = 'Default' | 'Card style';
 export const ConsentCaptureNotGivenDoc: React.FC<ConsentCaptureNotGivenDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('Default');
-  const [isInfoConsentGiven, setIsInfoConsentGiven] = useState(false);
-  const [isEmailUpdatesConsentGiven, setIsEmailUpdatesConsentGiven] = useState(false);
+  const [documentsExpanded, setDocumentsExpanded] = useState(true);
+  const [selectedDocs, setSelectedDocs] = useState({
+    aadhaar: false,
+    pan: false,
+    dl: false,
+  });
+  const [isProfileInfoGiven, setIsProfileInfoGiven] = useState(false);
+  const [isEmailGiven, setIsEmailGiven] = useState(false);
+  const [isProfilePicGiven, setIsProfilePicGiven] = useState(false);
+  const [isLocationGiven, setIsLocationGiven] = useState(false);
+
+  // Compute indeterminate/checked/unchecked state for Documents parent checkbox
+  const documentsSelectAllValue = useMemo<boolean | null>(() => {
+    const values = [selectedDocs.aadhaar, selectedDocs.pan, selectedDocs.dl];
+    const checkedCount = values.filter(Boolean).length;
+    if (checkedCount === values.length) return true;
+    if (checkedCount === 0) return false;
+    return null; // Indeterminate
+  }, [selectedDocs]);
+
+  const handleSelectAllDocuments = (newVal: boolean | null) => {
+    const target = newVal === true;
+    setSelectedDocs({
+      aadhaar: target,
+      pan: target,
+      dl: target,
+    });
+  };
 
   const colors = useMemo(() => {
     return {
       screenBg: variant === 'Card style'
-        ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100)
-        : (isDark ? UX4GColors.gray900 : UX4GColors.gray100),
-      cardBg: isDark ? UX4GColors.gray900 : '#FFFFFF',
-      border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-      titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
+        ? (isDark ? UX4GColors.primary900 : '#ECE8FF')
+        : (isDark ? UX4GColors.neutral900 : '#FFFFFF'),
+      cardBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+      border: isDark ? UX4GColors.neutral700 : '#F0F0F2',
+      titleColor: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900,
       subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-      iconBg: isDark ? UX4GColors.gray800 : '#EEF2F6',
-      primary: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      tagBg: isDark ? UX4GColors.red900 : '#FFF0F0',
-      tagText: isDark ? UX4GColors.red300 : '#8A1A16',
-      footerText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
-      warningBg: isDark ? 'rgba(250, 140, 22, 0.15)' : '#FFF7ED',
-      warningBorder: isDark ? 'rgba(250, 140, 22, 0.3)' : '#FFEDD5',
-      warningText: isDark ? UX4GColors.orange400 : '#C2410C',
+      primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      primaryLight: isDark ? UX4GColors.primary400 : UX4GColors.primary300,
+      warningBg: isDark ? '#3D2000' : '#FFF7E6',
+      warningBorder: isDark ? '#FA8C16' : '#FFC973',
+      warningText: isDark ? '#FFC973' : '#AD4E00',
+      warningIcon: isDark ? '#FFAB27' : '#FA8C16',
+      disabledBtnBg: isDark ? UX4GColors.neutral700 : '#E0E0E0',
+      disabledBtnText: isDark ? UX4GColors.neutral500 : '#9E9E9E',
+      footerText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
     };
   }, [isDark, variant]);
 
   const codeString = useMemo(() => {
     const isCard = variant === 'Card style';
-    return `import React, { useState } from 'react';
+    return `import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import {
-  Ux4gAppHeader,
   Ux4gButton,
   Ux4gCheckbox,
-  Ux4gTag,
-  Ux4gStatusBanner,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -66,111 +88,285 @@ export const ConsentCaptureNotGivenPattern = ({
   isDark?: boolean;
   variant?: 'Default' | 'Card style';
 }) => {
-  const [isInfoConsentGiven, setIsInfoConsentGiven] = useState(false);
-  const [isEmailUpdatesConsentGiven, setIsEmailUpdatesConsentGiven] = useState(false);
+  const [documentsExpanded, setDocumentsExpanded] = useState(true);
+  const [selectedDocs, setSelectedDocs] = useState({
+    aadhaar: false,
+    pan: false,
+    dl: false,
+  });
+  const [isProfileInfoGiven, setIsProfileInfoGiven] = useState(false);
+  const [isEmailGiven, setIsEmailGiven] = useState(false);
+  const [isProfilePicGiven, setIsProfilePicGiven] = useState(false);
+  const [isLocationGiven, setIsLocationGiven] = useState(false);
 
   const isCard = variant === 'Card style';
 
-  const dataItems = [
-    { title: 'Aadhaar Number', purpose: 'Identity verification', retention: '7 years' },
-    { title: 'Address', purpose: 'Record keeping', retention: '7 years' },
-    { title: 'Email', purpose: 'Status updates', retention: '1 year' },
-  ];
+  // Tri-state Select All calculation
+  const documentsSelectAllValue = useMemo(() => {
+    const values = [selectedDocs.aadhaar, selectedDocs.pan, selectedDocs.dl];
+    const checkedCount = values.filter(Boolean).length;
+    if (checkedCount === values.length) return true;
+    if (checkedCount === 0) return false;
+    return null; // Indeterminate
+  }, [selectedDocs]);
+
+  const handleSelectAllDocuments = (newVal: boolean | null) => {
+    const target = newVal === true;
+    setSelectedDocs({
+      aadhaar: target,
+      pan: target,
+      dl: target,
+    });
+  };
 
   return (
-    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.gray900 : (isCard ? UX4GColors.primary100 : UX4GColors.gray100) }]}>
+    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral900 : (isCard ? '#ECE8FF' : '#FFFFFF') }]}>
       {/* Header */}
-      <Ux4gAppHeader
-        variant="light"
-        showBackButton={false}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
-      />
+      <View style={[styles.header, { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF', borderBottomColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }]}>
+        <View style={styles.headerLeft}>
+          <Image source={{ uri: '/national_emblem_logo.svg' }} style={styles.emblemLogo} resizeMode="contain" />
+          <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
+          <Image source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />
+        </View>
+        <TouchableOpacity style={[styles.menuBtn, { borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200 }]}>
+          <Text style={[styles.menuIcon, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>☰</Text>
+        </TouchableOpacity>
+      </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={isCard ? [styles.cardContainer, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }] : styles.flatContainer}>
-          {/* Shield Icon Header */}
-          <View style={[styles.iconCircle, { backgroundColor: isDark ? UX4GColors.gray800 : '#EEF2F6' }]}>
-            <Text style={{ fontSize: 28 }}>🛡️</Text>
+        <View style={isCard ? [styles.cardContainer, { backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF' }] : styles.flatContainer}>
+          {/* Main Title */}
+          <Text style={[styles.mainTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+            Please provide your consent to share the following information
+          </Text>
+
+          {/* 1. Documents Section (Collapsible) */}
+          <View style={styles.itemContainer}>
+            <View style={styles.rowBetween}>
+              <TouchableOpacity
+                onPress={() => setDocumentsExpanded(!documentsExpanded)}
+                style={styles.accordionHeader}
+              >
+                <Text style={[styles.chevronIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  {documentsExpanded ? '▼' : '▶'}
+                </Text>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900, marginLeft: 8 }]}>
+                  Documents
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.rowRight}>
+                <Text style={[styles.subtleLabel, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, marginRight: 8 }]}>
+                  Select all
+                </Text>
+                <Ux4gCheckbox
+                  value={documentsSelectAllValue}
+                  onChanged={handleSelectAllDocuments}
+                  size="medium"
+                />
+              </View>
+            </View>
+
+            {documentsExpanded && (
+              <View style={styles.subItemsList}>
+                <View style={styles.subItemRow}>
+                  <Text style={[styles.subItemText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                    Aadhaar Card
+                  </Text>
+                  <Ux4gCheckbox
+                    value={selectedDocs.aadhaar}
+                    onChanged={(val) => setSelectedDocs(prev => ({ ...prev, aadhaar: !!val }))}
+                    size="medium"
+                  />
+                </View>
+                <View style={styles.subItemRow}>
+                  <Text style={[styles.subItemText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                    PAN
+                  </Text>
+                  <Ux4gCheckbox
+                    value={selectedDocs.pan}
+                    onChanged={(val) => setSelectedDocs(prev => ({ ...prev, pan: !!val }))}
+                    size="medium"
+                  />
+                </View>
+                <View style={styles.subItemRow}>
+                  <Text style={[styles.subItemText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                    Driving License
+                  </Text>
+                  <Ux4gCheckbox
+                    value={selectedDocs.dl}
+                    onChanged={(val) => setSelectedDocs(prev => ({ ...prev, dl: !!val }))}
+                    size="medium"
+                  />
+                </View>
+                <TouchableOpacity style={{ marginTop: 8 }}>
+                  <Text style={[styles.linkText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+                    View all
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 2. Profile Information */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>👤</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Profile information
+                </Text>
+                <Text style={[styles.subtleText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+                  Name, Date of Birth, Gender
+                </Text>
+              </View>
+            </View>
+            <Ux4gCheckbox
+              value={isProfileInfoGiven}
+              onChanged={(val) => setIsProfileInfoGiven(!!val)}
+              size="medium"
+            />
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 3. Get your email */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>✉️</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Get your email
+                </Text>
+              </View>
+            </View>
+            <Ux4gCheckbox
+              value={isEmailGiven}
+              onChanged={(val) => setIsEmailGiven(!!val)}
+              size="medium"
+            />
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 4. Get your profile picture */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>👤</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Get your profile picture
+                </Text>
+              </View>
+            </View>
+            <Ux4gCheckbox
+              value={isProfilePicGiven}
+              onChanged={(val) => setIsProfilePicGiven(!!val)}
+              size="medium"
+            />
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 5. Location */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>📍</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Location
+                </Text>
+              </View>
+            </View>
+            <Ux4gCheckbox
+              value={isLocationGiven}
+              onChanged={(val) => setIsLocationGiven(!!val)}
+              size="medium"
+            />
+          </View>
+          <View style={[styles.separator, { backgroundColor: isDark ? UX4GColors.neutral700 : '#F0F0F2' }]} />
+
+          {/* 6. Consent Validity Date */}
+          <View style={styles.itemRowWithIcon}>
+            <View style={styles.iconWithText}>
+              <Text style={[styles.itemIcon, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>📅</Text>
+              <View style={{ marginLeft: 12 }}>
+                <Text style={[styles.itemTitle, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  Consent validity date
+                </Text>
+                <Text style={[styles.subtleText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+                  (Today + 30 days)
+                </Text>
+                <Text style={[styles.dateText, { color: isDark ? UX4GColors.neutral0 : UX4GColors.neutral900 }]}>
+                  08-Oct-2026
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity>
+              <Text style={[styles.linkText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+                Edit
+              </Text>
+            </TouchableOpacity>
           </View>
 
-          <Text style={[styles.headline, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
-            Your Data, Your Control
-          </Text>
-          <Text style={[styles.description, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            To process your Income Certificate application, the Revenue Department will use the following data:
-          </Text>
-
-          {/* Data Cards */}
-          {dataItems.map((item, index) => (
-            <View key={index} style={[styles.dataCard, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF', borderColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]}>
-              <View style={styles.dataCardRow}>
-                <Text style={[styles.dataTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>{item.title}</Text>
-                <Ux4gTag text="Required" customBackgroundColor={isDark ? UX4GColors.red900 : '#FFF0F0'} customContentColor={isDark ? UX4GColors.red300 : '#8A1A16'} shape="rectangular" size="m" />
-              </View>
-              <Text style={[styles.dataDetail, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-                Purpose · {item.purpose}
-              </Text>
-              <Text style={[styles.dataDetail, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-                Retention · {item.retention}
-              </Text>
-            </View>
-          ))}
-
-          {/* Divider */}
-          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
+          {/* Notice Text */}
+          <View style={styles.noticeContainer}>
+            <Text style={[styles.noticeText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+              Consent validity is subject to applicable laws.
+            </Text>
+            <Text style={[styles.noticeText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+              By selecting Allow, you are giving consent to share the items above.
+            </Text>
+          </View>
 
           {/* Warning Banner */}
-          {!isInfoConsentGiven && (
-            <View style={[styles.warningBanner, { backgroundColor: isDark ? '#3A1C00' : '#FFF7ED', borderColor: isDark ? '#7C2D12' : '#FFEDD5' }]}>
-              <Text style={[styles.warningText, { color: isDark ? UX4GColors.orange400 : '#C2410C' }]}>
-                ⚠️ Consent not given. You cannot proceed without consenting.
-              </Text>
-            </View>
-          )}
-
-          {/* Consent Checkboxes */}
-          <Ux4gCheckbox
-            value={isInfoConsentGiven}
-            onChanged={(val) => setIsInfoConsentGiven(val ?? false)}
-            label="I consent to sharing the required information listed above"
-            isRequired={true}
-          />
-          <View style={{ height: 8 }} />
-          <Ux4gCheckbox
-            value={isEmailUpdatesConsentGiven}
-            onChanged={(val) => setIsEmailUpdatesConsentGiven(val ?? false)}
-            label="I also consent to receiving email updates regarding my application"
-            isRequired={false}
-          />
+          <View
+            style={[
+              styles.warningBanner,
+              {
+                backgroundColor: isDark ? '#3D2000' : '#FFF7E6',
+                borderColor: isDark ? '#FA8C16' : '#FFC973',
+              },
+            ]}
+          >
+            <Text style={{ color: isDark ? '#FFAB27' : '#FA8C16', fontSize: 16, marginRight: 8, marginTop: 1 }}>⚠️</Text>
+            <Text style={[styles.warningText, { color: isDark ? '#FFC973' : '#AD4E00' }]}>
+              You have not given consent. Nothing will be shared and you cannot continue.
+            </Text>
+          </View>
 
           {/* Action Buttons */}
-          <View style={{ marginTop: 24, gap: 4 }}>
+          <View style={styles.actionButtons}>
             <Ux4gButton
-              text="Proceed"
-              enabled={isInfoConsentGiven}
-              height={48}
+              text="Allow"
+              variant="filled"
+              enabled={false}
               size="large"
+              style={{
+                width: '100%',
+                height: 48,
+                backgroundColor: isDark ? UX4GColors.neutral700 : '#E0E0E0',
+              }}
+              contentColor={isDark ? UX4GColors.neutral500 : '#9E9E9E'}
             />
             <Ux4gButton
-              text="Decline and exit"
-              variant="ghost"
-              contentColor={isDark ? UX4GColors.neutral50 : UX4GColors.neutral900}
-              height={48}
+              text="Deny"
+              variant="outline"
               size="large"
+              style={{
+                width: '100%',
+                height: 48,
+                borderColor: isDark ? UX4GColors.primary300 : '#A391FF',
+                backgroundColor: 'transparent',
+              }}
+              contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary}
             />
           </View>
+        </View>
+
+        {/* Brand Footer */}
+        <View style={styles.footer}>
+          <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+            Powered by -
+          </Text>
+          <Image source={{ uri: '/Digital_India_logo.svg' }} style={styles.digitalIndiaLogo} resizeMode="contain" />
         </View>
       </ScrollView>
     </View>
@@ -178,221 +374,387 @@ export const ConsentCaptureNotGivenPattern = ({
 };
 
 const styles = StyleSheet.create({
+  screen: { flex: 1 },
+  header: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+  },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  emblemLogo: { height: 32, width: 24 },
+  headerDivider: { width: 1, height: 26 },
+  unionLogo: { height: 32, width: 44 },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  menuIcon: {
-    fontSize: 18,
-    color: UX4GColors.primary,
+  menuIcon: { fontSize: 18 },
+  scrollContainer: { paddingVertical: 16 },
+  flatContainer: { paddingHorizontal: 16 },
+  cardContainer: {
+    marginHorizontal: 16,
+    padding: 18,
+    borderRadius: 16,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 4 },
   },
-  screen: { flex: 1 },
-  scrollContainer: { padding: 16 },
-  flatContainer: { padding: 4 },
-  cardContainer: { padding: 20, borderRadius: 16, elevation: 2 },
-  iconCircle: { width: 56, height: 56, borderRadius: 28, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginBottom: 16 },
-  headline: { fontSize: 20, fontWeight: '600', textAlign: 'center', marginBottom: 8 },
-  description: { fontSize: 14, textAlign: 'center', lineHeight: 20, marginBottom: 24 },
-  dataCard: { padding: 16, borderRadius: 12, borderWidth: 1, marginBottom: 12 },
-  dataCardRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  dataTitle: { fontSize: 16, fontWeight: '600' },
-  dataDetail: { fontSize: 13, lineHeight: 18, marginTop: 2 },
-  divider: { height: 1, marginVertical: 20 },
-  warningBanner: { padding: 12, borderRadius: 8, borderWidth: 1, marginBottom: 16 },
-  warningText: { fontSize: 13, fontWeight: '500' },
+  mainTitle: { fontSize: 17, fontWeight: '700', lineHeight: 23, marginBottom: 18 },
+  itemContainer: { paddingVertical: 4 },
+  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  accordionHeader: { flexDirection: 'row', alignItems: 'center' },
+  chevronIcon: { fontSize: 12 },
+  itemTitle: { fontSize: 14, fontWeight: '700' },
+  rowRight: { flexDirection: 'row', alignItems: 'center' },
+  subtleLabel: { fontSize: 12 },
+  subItemsList: { paddingLeft: 24, marginTop: 12, gap: 12 },
+  subItemRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  subItemText: { fontSize: 13 },
+  linkText: { fontSize: 13, fontWeight: '600' },
+  separator: { height: 1, marginVertical: 14 },
+  itemRowWithIcon: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 4 },
+  iconWithText: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  itemIcon: { fontSize: 20 },
+  subtleText: { fontSize: 12, marginTop: 2 },
+  dateText: { fontSize: 12, marginTop: 2, fontWeight: '500' },
+  noticeContainer: { marginTop: 20, marginBottom: 16 },
+  noticeText: { fontSize: 11, lineHeight: 16 },
+  warningBanner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  warningText: { fontSize: 12, lineHeight: 16, flex: 1, fontWeight: '500' },
+  actionButtons: { gap: 10, marginTop: 8 },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginVertical: 24 },
+  poweredByText: { fontSize: 11, fontWeight: '500' },
+  digitalIndiaLogo: { height: 22, width: 80 },
 });
 `;
   }, [isDark, variant]);
 
-  const renderDataCard = (title: string, purpose: string, retention: string) => (
-    <div
-      style={{
-        width: '100%',
-        padding: 16,
-        backgroundColor: colors.cardBg,
-        borderRadius: 12,
-        border: `1px solid ${colors.border}`,
-        boxSizing: 'border-box',
-        marginBottom: 12,
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontSize: 16, fontWeight: 600, color: colors.titleColor, letterSpacing: '-0.01em' }}>
-          {title}
-        </span>
-        <span
-          style={{
-            fontSize: 12,
-            fontWeight: 500,
-            padding: '2px 8px',
-            borderRadius: 4,
-            backgroundColor: colors.tagBg,
-            color: colors.tagText,
-            lineHeight: '1.2',
-          }}
-        >
-          Required
-        </span>
-      </div>
-      <div style={{ fontSize: 13, fontWeight: 400, color: colors.subtleText, marginTop: 6, lineHeight: '1.25' }}>
-        Purpose · {purpose}
-      </div>
-      <div style={{ fontSize: 13, fontWeight: 400, color: colors.subtleText, marginTop: 2, lineHeight: '1.25' }}>
-        Retention · {retention}
-      </div>
-    </div>
-  );
-
   const renderMockupContent = () => (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {/* Shield Icon Indicator */}
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* Headline */}
+      <h2
+        style={{
+          fontSize: 17,
+          fontWeight: 700,
+          color: colors.titleColor,
+          textAlign: 'left',
+          margin: '0 0 16px 0',
+          letterSpacing: '-0.01em',
+          lineHeight: 1.35,
+        }}
+      >
+        Please provide your consent to share the following information
+      </h2>
+
+      {/* 1. Documents Accordion */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            onClick={() => setDocumentsExpanded(!documentsExpanded)}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', userSelect: 'none' }}
+          >
+            <span
+              className="material-symbols-outlined"
+              style={{
+                fontSize: 20,
+                color: colors.titleColor,
+                transform: documentsExpanded ? 'rotate(0deg)' : 'rotate(-90deg)',
+                transition: 'transform 0.2s ease',
+              }}
+            >
+              keyboard_arrow_down
+            </span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+              Documents
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span
+              onClick={() => handleSelectAllDocuments(documentsSelectAllValue === true ? false : true)}
+              style={{ fontSize: 12, color: colors.subtleText, cursor: 'pointer', userSelect: 'none' }}
+            >
+              Select all
+            </span>
+            <Ux4gCheckbox
+              value={documentsSelectAllValue}
+              onChanged={handleSelectAllDocuments}
+              size="medium"
+            />
+          </div>
+        </div>
+
+        {documentsExpanded && (
+          <div style={{ paddingLeft: 26, marginTop: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span
+                onClick={() => setSelectedDocs(prev => ({ ...prev, aadhaar: !prev.aadhaar }))}
+                style={{ fontSize: 13, color: colors.titleColor, cursor: 'pointer', userSelect: 'none' }}
+              >
+                Aadhaar Card
+              </span>
+              <Ux4gCheckbox
+                value={selectedDocs.aadhaar}
+                onChanged={(val) => setSelectedDocs(prev => ({ ...prev, aadhaar: !!val }))}
+                size="medium"
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span
+                onClick={() => setSelectedDocs(prev => ({ ...prev, pan: !prev.pan }))}
+                style={{ fontSize: 13, color: colors.titleColor, cursor: 'pointer', userSelect: 'none' }}
+              >
+                PAN
+              </span>
+              <Ux4gCheckbox
+                value={selectedDocs.pan}
+                onChanged={(val) => setSelectedDocs(prev => ({ ...prev, pan: !!val }))}
+                size="medium"
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span
+                onClick={() => setSelectedDocs(prev => ({ ...prev, dl: !prev.dl }))}
+                style={{ fontSize: 13, color: colors.titleColor, cursor: 'pointer', userSelect: 'none' }}
+              >
+                Driving License
+              </span>
+              <Ux4gCheckbox
+                value={selectedDocs.dl}
+                onChanged={(val) => setSelectedDocs(prev => ({ ...prev, dl: !!val }))}
+                size="medium"
+              />
+            </div>
+            <div style={{ marginTop: 2 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: colors.primary, cursor: 'pointer' }}>
+                View all
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 2. Profile Information */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          onClick={() => setIsProfileInfoGiven(!isProfileInfoGiven)}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flex: 1, userSelect: 'none' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            account_circle
+          </span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+              Profile information
+            </span>
+            <span style={{ fontSize: 12, color: colors.subtleText, marginTop: 1 }}>
+              Name, Date of Birth, Gender
+            </span>
+          </div>
+        </div>
+        <Ux4gCheckbox
+          value={isProfileInfoGiven}
+          onChanged={(val) => setIsProfileInfoGiven(!!val)}
+          size="medium"
+        />
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 3. Get your email */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          onClick={() => setIsEmailGiven(!isEmailGiven)}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flex: 1, userSelect: 'none' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            mail
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+            Get your email
+          </span>
+        </div>
+        <Ux4gCheckbox
+          value={isEmailGiven}
+          onChanged={(val) => setIsEmailGiven(!!val)}
+          size="medium"
+        />
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 4. Get your profile picture */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          onClick={() => setIsProfilePicGiven(!isProfilePicGiven)}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flex: 1, userSelect: 'none' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            account_circle
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+            Get your profile picture
+          </span>
+        </div>
+        <Ux4gCheckbox
+          value={isProfilePicGiven}
+          onChanged={(val) => setIsProfilePicGiven(!!val)}
+          size="medium"
+        />
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 5. Location */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          onClick={() => setIsLocationGiven(!isLocationGiven)}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flex: 1, userSelect: 'none' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor }}>
+            location_on
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+            Location
+          </span>
+        </div>
+        <Ux4gCheckbox
+          value={isLocationGiven}
+          onChanged={(val) => setIsLocationGiven(!!val)}
+          size="medium"
+        />
+      </div>
+
+      {/* Divider */}
+      <div style={{ height: 1, backgroundColor: colors.border, margin: '14px 0' }} />
+
+      {/* 6. Consent validity date */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 22, color: colors.titleColor, marginTop: 2 }}>
+            calendar_today
+          </span>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: 14, fontWeight: 700, color: colors.titleColor }}>
+              Consent validity date
+            </span>
+            <span style={{ fontSize: 12, color: colors.subtleText, marginTop: 1 }}>
+              (Today + 30 days)
+            </span>
+            <span style={{ fontSize: 12, color: colors.titleColor, marginTop: 2, fontWeight: 500 }}>
+              08-Oct-2026
+            </span>
+          </div>
+        </div>
+        <span style={{ fontSize: 13, fontWeight: 600, color: colors.primary, cursor: 'pointer' }}>
+          Edit
+        </span>
+      </div>
+
+      {/* Notice Text */}
+      <div style={{ margin: '20px 0 16px 0' }}>
+        <p style={{ fontSize: 11, color: colors.subtleText, margin: 0, lineHeight: 1.45 }}>
+          Consent validity is subject to applicable laws.
+        </p>
+        <p style={{ fontSize: 11, color: colors.subtleText, margin: '2px 0 0 0', lineHeight: 1.45 }}>
+          By selecting Allow, you are giving consent to share the items above.
+        </p>
+      </div>
+
+      {/* Warning Banner */}
       <div
         style={{
-          width: 56,
-          height: 56,
-          borderRadius: '50%',
-          backgroundColor: colors.iconBg,
+          backgroundColor: colors.warningBg,
+          border: `1px solid ${colors.warningBorder}`,
+          borderRadius: 8,
+          padding: '10px 12px',
           display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'flex-start',
+          gap: 8,
           marginBottom: 16,
         }}
       >
         <span
           className="material-symbols-outlined"
           style={{
-            fontSize: 28,
-            color: colors.primary,
+            fontSize: 18,
+            fontVariationSettings: "'FILL' 1",
+            color: colors.warningIcon,
+            flexShrink: 0,
+            marginTop: 1,
           }}
         >
-          shield
+          error
+        </span>
+        <span
+          style={{
+            fontSize: 12,
+            fontWeight: 500,
+            color: colors.warningText,
+            lineHeight: 1.45,
+          }}
+        >
+          You have not given consent. Nothing will be shared and you cannot continue.
         </span>
       </div>
 
-      {/* Headline */}
-      <h2
-        style={{
-          fontSize: 20,
-          fontWeight: 600,
-          color: colors.titleColor,
-          textAlign: 'center',
-          margin: '0 0 8px 0',
-          letterSpacing: '-0.01em',
-          lineHeight: '1.3',
-        }}
-      >
-        Your Data, Your Control
-      </h2>
-
-      {/* Description */}
-      <p
-        style={{
-          fontSize: 14,
-          fontWeight: 400,
-          color: colors.subtleText,
-          textAlign: 'center',
-          margin: '0 0 24px 0',
-          lineHeight: '1.4',
-        }}
-      >
-        To process your Income Certificate application, the Revenue Department will use the following data:
-      </p>
-
-      {/* Data Cards */}
-      {renderDataCard('Aadhaar Number', 'Identity verification', '7 years')}
-      {renderDataCard('Address', 'Record keeping', '7 years')}
-      {renderDataCard('Email', 'Status updates', '1 year')}
-
-      {/* Divider */}
-      <div
-        style={{
-          width: '100%',
-          height: 1,
-          backgroundColor: colors.border,
-          margin: '12px 0 20px 0',
-        }}
-      />
-
-      {/* Warning Status Banner */}
-      {!isInfoConsentGiven && (
-        <div
+      {/* Action Buttons */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <button
+          type="button"
+          disabled={true}
           style={{
             width: '100%',
-            padding: '12px 14px',
-            backgroundColor: colors.warningBg,
-            border: `1px solid ${colors.warningBorder}`,
+            height: 48,
+            backgroundColor: colors.disabledBtnBg,
+            color: colors.disabledBtnText,
+            border: 'none',
             borderRadius: 8,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            marginBottom: 16,
-            boxSizing: 'border-box',
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'not-allowed',
           }}
         >
-          <span
-            className="material-symbols-outlined"
-            style={{
-              fontSize: 20,
-              color: colors.warningText,
-              flexShrink: 0,
-            }}
-          >
-            warning
-          </span>
-          <span
-            style={{
-              fontSize: 13,
-              fontWeight: 500,
-              color: colors.warningText,
-              lineHeight: '1.4',
-            }}
-          >
-            Consent not given. You cannot proceed without consenting.
-          </span>
-        </div>
-      )}
-
-      {/* Checkboxes */}
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Ux4gCheckbox
-          value={isInfoConsentGiven}
-          onChanged={(val) => setIsInfoConsentGiven(val ?? false)}
-          label="I consent to sharing the required information listed above"
-          isRequired={true}
-        />
-        <Ux4gCheckbox
-          value={isEmailUpdatesConsentGiven}
-          onChanged={(val) => setIsEmailUpdatesConsentGiven(val ?? false)}
-          label="I also consent to receiving email updates regarding my application"
-          isRequired={false}
-        />
-      </div>
-
-      {/* Actions */}
-      <div style={{ width: '100%', marginTop: 24, display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <Ux4gButton
-          text="Proceed"
-          enabled={isInfoConsentGiven}
-          onPress={() => {}}
-          height={48}
-          size="large"
-          width="100%"
-        />
-        <Ux4gButton
-          text="Decline and exit"
-          variant="ghost"
-          contentColor={isDark ? UX4GColors.neutral50 : UX4GColors.neutral900}
-          onPress={() => {}}
-          height={48}
-          size="large"
-          width="100%"
-        />
+          Allow
+        </button>
+        <button
+          type="button"
+          onClick={() => alert('Consent Denied')}
+          style={{
+            width: '100%',
+            height: 48,
+            backgroundColor: 'transparent',
+            color: isDark ? colors.primaryLight : UX4GColors.primary,
+            border: `1.5px solid ${isDark ? colors.primaryLight : '#A391FF'}`,
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          Deny
+        </button>
       </div>
     </div>
   );
@@ -403,8 +765,8 @@ const styles = StyleSheet.create({
         style={{
           width: 360,
           height: 760,
-          borderRadius: 20,
-          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+          borderRadius: 24,
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden',
           backgroundColor: colors.screenBg,
           border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
@@ -416,7 +778,7 @@ const styles = StyleSheet.create({
         }}
       >
         {/* Consent Header */}
-        <div style={{ backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }}>
+        <div style={{ backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }}>
           <div
             style={{
               padding: '12px 16px',
@@ -438,7 +800,7 @@ const styles = StyleSheet.create({
                 style={{
                   width: 1,
                   height: 28,
-                  backgroundColor: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
+                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
                 }}
               />
               <img
@@ -465,26 +827,27 @@ const styles = StyleSheet.create({
                 className="material-symbols-outlined"
                 style={{
                   fontSize: 20,
-                  color: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+                  color: isDark ? UX4GColors.primary300 : UX4GColors.primary,
                 }}
               >
                 menu
               </span>
             </div>
           </div>
-          <div style={{ height: 1, backgroundColor: colors.border }} />
+          <div style={{ height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }} />
         </div>
 
         {/* Scrollable Container */}
         <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ flex: 1, padding: variant === 'Card style' ? 16 : '20px 20px 0 20px' }}>
+          <div style={{ flex: 1, padding: variant === 'Card style' ? '12px 14px' : '20px 16px 0 16px' }}>
             {variant === 'Card style' ? (
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 20,
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
+                  padding: '18px 16px 20px 16px',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.03)'}`,
                 }}
               >
                 {renderMockupContent()}
@@ -497,35 +860,34 @@ const styles = StyleSheet.create({
 
           {/* Brand Footer */}
           <div
-          style={{
-            padding: '12px 0 16px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              padding: '12px 0 20px 0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              flexShrink: 0,
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 22,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
-        </div>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: colors.footerText,
+              }}
+            >
+              Powered by -
+            </span>
+            <img
+              src="/Digital_India_logo.svg"
+              alt="Digital India"
+              style={{
+                height: 22,
+                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+              }}
+            />
+          </div>
         </div>
       </div>
     );
@@ -540,7 +902,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          Pattern showing the error state when the required consent is not selected. Displays the warning banner and disables the Proceed button.
+          Pattern showing the error state when required consent is not selected. Displays a warning message and disables the Allow button.
         </p>
       </div>
 
