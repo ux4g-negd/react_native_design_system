@@ -32,7 +32,7 @@ export const ChoosePaymentMethodDoc: React.FC<ChoosePaymentMethodDocProps> = ({ 
           : UX4GColors.primary100 // #DCD4FF
         : isDark
         ? UX4GColors.neutral950 // #0A0A0A
-        : UX4GColors.neutral50, // #FAFAFA
+        : UX4GColors.neutral0, // #FFFFFF
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
@@ -60,6 +60,7 @@ import {
   Ux4gAppHeader,
   Ux4gButton,
   Ux4gDivider,
+  Ux4gStepper,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -107,15 +108,24 @@ export const ChoosePaymentMethodCardPattern = ({ isDark }: { isDark: boolean }) 
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
-      {/* Stepper Bar */}
-      <View style={styles.stepBarContainer}>
-        {/* Horizontal 4-Step Stepper (Step 4: Payment Active) */}
-      </View>
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-
-      {/* Floating Card Content */}
+      {/* Floating Card Content with Stepper inside */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }]}>
+          {/* Stepper Bar (inside Card) */}
+          <View style={{ paddingBottom: 20 }}>
+            <Ux4gStepper
+              totalSteps={4}
+              currentStep={4}
+              showLabels
+              steps={[
+                { title: 'Personal info' },
+                { title: 'Documents' },
+                { title: 'Review' },
+                { title: 'Payment' },
+              ]}
+            />
+          </View>
+
           <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
             Choose payment method
           </Text>
@@ -266,7 +276,7 @@ export const ChoosePaymentMethodDefaultPattern = ({ isDark }: { isDark: boolean 
   ];
 
   return (
-    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0 }]}>
       {/* Official Government Header */}
       <Ux4gAppHeader
         title=""
@@ -298,11 +308,20 @@ export const ChoosePaymentMethodDefaultPattern = ({ isDark }: { isDark: boolean 
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
-      {/* Stepper Bar */}
-      <View style={styles.stepBarContainer}>
-        {/* Horizontal 4-Step Stepper (Step 4: Payment Active) */}
+      {/* Stepper Bar (4 steps: Personal info, Documents, Review, Payment) */}
+      <View style={{ paddingVertical: 12, paddingHorizontal: 8 }}>
+        <Ux4gStepper
+          totalSteps={4}
+          currentStep={4}
+          showLabels
+          steps={[
+            { title: 'Personal info' },
+            { title: 'Documents' },
+            { title: 'Review' },
+            { title: 'Payment' },
+          ]}
+        />
       </View>
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Main Body */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -426,6 +445,105 @@ export const ChoosePaymentMethodDefaultPattern = ({ isDark }: { isDark: boolean 
 };`;
   }, [variant]);
 
+  // Helper to render Stepper in both default (top of screen) and card (inside floating card) layouts
+  const renderStepper = (inCard: boolean) => (
+    <div
+      style={{
+        backgroundColor: inCard ? 'transparent' : colors.screenBg,
+        padding: inCard ? '0 10px 24px 10px' : '24px 26px 26px 26px',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative' }}>
+        {[
+          { label: 'Personal info', stepIndex: 1 },
+          { label: 'Documents', stepIndex: 2 },
+          { label: 'Review', stepIndex: 3 },
+          { label: 'Payment', stepIndex: 4 },
+        ].map(({ label, stepIndex }, idx) => {
+          const isCompleted = stepIndex < 4;
+          const isActive = stepIndex === 4;
+          const primaryColor = isDark ? colors.primaryLight : colors.primary;
+
+          return (
+            <React.Fragment key={label}>
+              {idx > 0 && (
+                <div
+                  style={{
+                    flex: 1,
+                    height: 2.5,
+                    borderRadius: 1.25,
+                    backgroundColor: idx < 4 ? primaryColor : (isDark ? UX4GColors.neutral800 : UX4GColors.neutral300),
+                    margin: '11px 0 0 0',
+                  }}
+                />
+              )}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  position: 'relative',
+                }}
+              >
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: '50%',
+                    backgroundColor: isCompleted ? primaryColor : 'transparent',
+                    border: `2px solid ${
+                      isCompleted || isActive
+                        ? primaryColor
+                        : (isDark ? UX4GColors.neutral800 : UX4GColors.neutral300)
+                    }`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  {isCompleted ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isDark ? UX4GColors.neutral900 : '#FFFFFF'} strokeWidth="3.5">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  ) : isActive ? (
+                    <div
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: '50%',
+                        backgroundColor: primaryColor,
+                      }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: 11, fontWeight: 700, color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 }}>
+                      {stepIndex}
+                    </span>
+                  )}
+                </div>
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: 27,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    fontSize: 10,
+                    fontWeight: isActive ? 600 : 500,
+                    color: isActive ? colors.titleColor : colors.subtleText,
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  {label}
+                </span>
+              </div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   // Live interactive mockup matching Flutter paymentMethodComponent (_PaymentMethodMockup / _PaymentMethodCardMockup) EXACTLY
   const renderLiveMockup = () => {
     const isCard = variant === 'card';
@@ -533,98 +651,8 @@ export const ChoosePaymentMethodDefaultPattern = ({ isDark }: { isDark: boolean 
           />
         </div>
 
-        {/* Stepper Bar (_PmtStepBar in Flutter: 4 steps, circles with no labels except the last step which shows "Payment") */}
-        <div
-          style={{
-            backgroundColor: colors.headerBg,
-            padding: '24px 28px 6px 16px',
-            borderBottom: `1px solid ${colors.border}`,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative' }}>
-            {[1, 2, 3, 4].map((stepIndex, idx) => {
-              const isCompleted = stepIndex < 4;
-              const isActive = stepIndex === 4;
-              const primaryColor = isDark ? colors.primaryLight : colors.primary;
-
-              return (
-                <React.Fragment key={stepIndex}>
-                  {idx > 0 && (
-                    <div
-                      style={{
-                        flex: 1,
-                        height: 2.5,
-                        borderRadius: 1.25,
-                        backgroundColor: idx < 4 ? primaryColor : (isDark ? UX4GColors.neutral800 : UX4GColors.neutral300),
-                        margin: '11px 4px 0 4px',
-                      }}
-                    />
-                  )}
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      position: 'relative',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: '50%',
-                        backgroundColor: isCompleted ? primaryColor : 'transparent',
-                        border: `2px solid ${
-                          isCompleted || isActive
-                            ? primaryColor
-                            : (isDark ? UX4GColors.neutral800 : UX4GColors.neutral300)
-                        }`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxSizing: 'border-box',
-                      }}
-                    >
-                      {isCompleted ? (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isDark ? UX4GColors.neutral900 : '#FFFFFF'} strokeWidth="3.5">
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      ) : isActive ? (
-                        <div
-                          style={{
-                            width: 10,
-                            height: 10,
-                            borderRadius: '50%',
-                            backgroundColor: primaryColor,
-                          }}
-                        />
-                      ) : (
-                        <span style={{ fontSize: 11, fontWeight: 700, color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 }}>
-                          {stepIndex}
-                        </span>
-                      )}
-                    </div>
-                    {isActive && (
-                      <span
-                        style={{
-                          position: 'absolute',
-                          top: 27,
-                          fontSize: 11,
-                          fontWeight: 600,
-                          color: colors.titleColor,
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        Payment
-                      </span>
-                    )}
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
-          <div style={{ height: 18 }} />
-        </div>
+        {/* Stepper Bar (Default variant: outside card) */}
+        {!isCard && renderStepper(false)}
 
         {/* Main Content Area */}
         <div
@@ -652,6 +680,9 @@ export const ChoosePaymentMethodDefaultPattern = ({ isDark }: { isDark: boolean 
               flexDirection: 'column',
             }}
           >
+            {/* Stepper Bar (Card variant: inside card at top) */}
+            {isCard && renderStepper(true)}
+
             {/* Title */}
             <h2
               style={{

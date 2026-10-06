@@ -27,7 +27,7 @@ export const PaymentSuccessDoc: React.FC<PaymentSuccessDocProps> = ({ isDark }) 
           : UX4GColors.primary100 // #DCD4FF
         : isDark
         ? UX4GColors.neutral950 // #0A0A0A
-        : UX4GColors.neutral50, // #FAFAFA
+        : UX4GColors.neutral0, // #FFFFFF
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
@@ -104,13 +104,8 @@ export const PaymentSuccessCardPattern = ({ isDark }: { isDark: boolean }) => {
 
       {/* Main Content Area */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Floating White Card Container (Wraps Stepper + Badge + Details) */}
+        {/* Floating White Card Container (Wraps Badge + Details + Actions) */}
         <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }]}>
-          {/* Stepper Bar Inside Card */}
-          <View style={styles.stepBarContainer}>
-            {/* Horizontal 4-Step Stepper */}
-          </View>
-
           {/* Green Checkmark Badge */}
           <View style={[styles.outerBadge, { backgroundColor: isDark ? UX4GColors.green800 : UX4GColors.green100 }]}>
             <View style={[styles.innerBadge, { backgroundColor: isDark ? UX4GColors.green600 : UX4GColors.green }]}>
@@ -125,7 +120,7 @@ export const PaymentSuccessCardPattern = ({ isDark }: { isDark: boolean }) => {
 
           {/* Subtitle */}
           <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral500 }]}>
-            Rs 41.30 paid via UPI to Revenue{'\n'}Department, Maharashtra.
+            Rs 41.30 paid via UPI to Revenue{\\n}Department, Maharashtra.
           </Text>
 
           {/* Transaction Detail Card */}
@@ -157,20 +152,20 @@ export const PaymentSuccessCardPattern = ({ isDark }: { isDark: boolean }) => {
               </View>
             ))}
           </View>
+
+          {/* Action Buttons Inside the Card */}
+          <Ux4gButton text="Track my application" variant="primary" size="large" style={{ marginTop: 20 }} />
+
+          <Ux4gButton text="Download receipt (PDF)" variant="outline" size="large" style={{ marginTop: 10 }} />
+
+          <TouchableOpacity style={styles.linkButton} onPress={() => {}}>
+            <Text style={[styles.linkButtonText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+              Return to services
+            </Text>
+          </TouchableOpacity>
         </View>
 
-        {/* Action Buttons OUTSIDE the Card (on soft purple background) */}
-        <Ux4gButton text="Track my application" variant="primary" size="large" style={{ marginTop: 20 }} />
-
-        <Ux4gButton text="Download receipt (PDF)" variant="outline" size="large" style={{ marginTop: 10 }} />
-
-        <TouchableOpacity style={styles.linkButton} onPress={() => {}}>
-          <Text style={[styles.linkButtonText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-            Return to services
-          </Text>
-        </TouchableOpacity>
-
-        {/* Footer */}
+        {/* Footer (Outside the Card) */}
         <View style={styles.footer}>
           <Text style={styles.poweredByText}>Powered by -</Text>
           <Image source={{ uri: '/Digital_India_logo.svg' }} style={styles.digitalIndiaLogo} resizeMode="contain" />
@@ -201,8 +196,7 @@ const styles = StyleSheet.create({
   emblemLogo: { height: 32, width: 32 },
   headerDivider: { width: 1, height: 24, backgroundColor: '#E5E7EB', marginHorizontal: 4 },
   unionLogo: { height: 32, width: 32 },
-  stepBarContainer: { paddingVertical: 12, width: '100%' },
-  outerBadge: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center', marginTop: 16 },
+  outerBadge: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
   innerBadge: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
   checkmarkText: { color: '#FFFFFF', fontSize: 20, fontWeight: '700' },
   title: { fontSize: 22, fontWeight: '800', marginTop: 16, textAlign: 'center' },
@@ -244,7 +238,7 @@ export const PaymentSuccessDefaultPattern = ({ isDark }: { isDark: boolean }) =>
   ];
 
   return (
-    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.screen, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0 }]}>
       {/* Official Header */}
       <Ux4gAppHeader
         title=""
@@ -276,12 +270,6 @@ export const PaymentSuccessDefaultPattern = ({ isDark }: { isDark: boolean }) =>
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
-      {/* Stepper Bar */}
-      <View style={styles.stepBarContainer}>
-        {/* Horizontal 4-Step Stepper */}
-      </View>
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-
       {/* Main Content Area */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Green Checkmark Badge */}
@@ -298,7 +286,7 @@ export const PaymentSuccessDefaultPattern = ({ isDark }: { isDark: boolean }) =>
 
         {/* Subtitle */}
         <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral500 }]}>
-          Rs 41.30 paid via UPI to Revenue{'\n'}Department, Maharashtra.
+          Rs 41.30 paid via UPI to Revenue{\\n}Department, Maharashtra.
         </Text>
 
         {/* Transaction Detail Card */}
@@ -372,7 +360,6 @@ const styles = StyleSheet.create({
   emblemLogo: { height: 32, width: 32 },
   headerDivider: { width: 1, height: 24, backgroundColor: '#E5E7EB', marginHorizontal: 4 },
   unionLogo: { height: 32, width: 32 },
-  stepBarContainer: { paddingVertical: 12, paddingHorizontal: 16, width: '100%' },
   outerBadge: { width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center', marginTop: 16 },
   innerBadge: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
   checkmarkText: { color: '#FFFFFF', fontSize: 20, fontWeight: '700' },
@@ -401,90 +388,6 @@ const styles = StyleSheet.create({
       { label: 'Method', value: 'UPI · ramesh@upi' },
       { label: 'Date and time', value: '12 Apr 2026, 2:34 PM IST' },
     ];
-
-    // Helper to render 4-step stepper bar with 3 completed checkmarks and Step 4 active
-    const renderStepperBar = () => {
-      const primaryColor = isDark ? colors.primaryLight : colors.primary;
-
-      return (
-        <div style={{ width: '100%', padding: isCard ? '4px 0 12px 0' : '0' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative' }}>
-            {[1, 2, 3, 4].map((stepIndex, idx) => {
-              const isCompleted = stepIndex < 4;
-              const isActive = stepIndex === 4;
-
-              return (
-                <React.Fragment key={stepIndex}>
-                  {idx > 0 && (
-                    <div
-                      style={{
-                        flex: 1,
-                        height: 2.5,
-                        borderRadius: 1.25,
-                        backgroundColor: primaryColor,
-                        margin: '11px 4px 0 4px',
-                      }}
-                    />
-                  )}
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      position: 'relative',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: '50%',
-                        backgroundColor: isCompleted ? primaryColor : 'transparent',
-                        border: `2px solid ${primaryColor}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxSizing: 'border-box',
-                      }}
-                    >
-                      {isCompleted ? (
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isDark ? UX4GColors.neutral900 : '#FFFFFF'} strokeWidth="3.5">
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      ) : (
-                        <div
-                          style={{
-                            width: 10,
-                            height: 10,
-                            borderRadius: '50%',
-                            backgroundColor: primaryColor,
-                          }}
-                        />
-                      )}
-                    </div>
-                    {isActive && (
-                      <span
-                        style={{
-                          position: 'absolute',
-                          top: 27,
-                          fontSize: 11,
-                          fontWeight: 600,
-                          color: colors.titleColor,
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        Payment
-                      </span>
-                    )}
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
-          <div style={{ height: 18 }} />
-        </div>
-      );
-    };
 
     return (
       <div
@@ -581,19 +484,6 @@ const styles = StyleSheet.create({
           />
         </div>
 
-        {/* Stepper Bar for Default Variant */}
-        {!isCard && (
-          <div
-            style={{
-              backgroundColor: colors.headerBg,
-              padding: '24px 28px 6px 16px',
-              borderBottom: `1px solid ${colors.border}`,
-            }}
-          >
-            {renderStepperBar()}
-          </div>
-        )}
-
         {/* Main Content Scroll Area */}
         <div
           style={{
@@ -601,20 +491,20 @@ const styles = StyleSheet.create({
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            padding: '20px 16px 16px 16px',
+            padding: isCard ? '20px 16px 16px 16px' : '20px 16px 16px 16px',
             backgroundColor: bgScreenColor,
           }}
         >
-          {/* Card Container (Wraps Stepper + Green Badge + Details) */}
+          {/* Card Container (Wraps Green Badge + Details + Actions) */}
           <div
             style={{
               backgroundColor: isCard ? colors.cardBg : 'transparent',
               borderRadius: isCard ? 16 : 0,
-              padding: isCard ? '16px 16px 20px 16px' : '0',
+              padding: isCard ? '24px 16px 20px 16px' : '0',
               boxShadow: isCard
                 ? isDark
                   ? '0 4px 16px rgba(0,0,0,0.4)'
-                  : '0 4px 16px rgba(0,0,0,0.04)'
+                  : '0 4px 16px rgba(0,0,0,0.06)'
                 : 'none',
               display: 'flex',
               flexDirection: 'column',
@@ -623,9 +513,6 @@ const styles = StyleSheet.create({
               boxSizing: 'border-box',
             }}
           >
-            {/* Stepper Bar Inside White Card for Card Style Variant */}
-            {isCard && renderStepperBar()}
-
             {/* Green Checkmark Success Badge */}
             <div
               style={{
@@ -636,7 +523,7 @@ const styles = StyleSheet.create({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginTop: isCard ? 4 : 4,
+                marginTop: isCard ? 0 : 4,
               }}
             >
               <div
@@ -729,103 +616,102 @@ const styles = StyleSheet.create({
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Action Buttons & Footer OUTSIDE the White Card Container (Directly on Screen Background) */}
-          <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-            {/* Track Application Solid Primary Button */}
-            <button
-              type="button"
-              onClick={() => alert('Tracking application...')}
-              style={{
-                width: '100%',
-                height: 48,
-                backgroundColor: isDark ? colors.primaryLight : colors.primary,
-                color: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-                border: 'none',
-                borderRadius: 8,
-                fontSize: 15,
-                fontWeight: 600,
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(74, 43, 194, 0.2)',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              Track my application
-            </button>
-
-            {/* Download Receipt Outline Button */}
-            <button
-              type="button"
-              onClick={() => alert('Downloading receipt PDF...')}
-              style={{
-                marginTop: 10,
-                width: '100%',
-                height: 48,
-                backgroundColor: isCard ? (isDark ? 'rgba(163, 145, 255, 0.15)' : 'rgba(74, 43, 194, 0.08)') : 'transparent',
-                color: isDark ? colors.primaryLight : colors.primary,
-                border: `1px solid ${isDark ? colors.primaryLight : colors.primary}`,
-                borderRadius: 8,
-                fontSize: 15,
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              Download receipt (PDF)
-            </button>
-
-            {/* Return to services Ghost Button */}
-            <div style={{ textAlign: 'center', marginTop: 12 }}>
+            {/* Action Buttons & Links Inside the Card */}
+            <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+              {/* Track Application Solid Primary Button */}
               <button
                 type="button"
-                onClick={() => alert('Return to services')}
+                onClick={() => alert('Tracking application...')}
                 style={{
-                  background: 'transparent',
+                  width: '100%',
+                  height: 48,
+                  backgroundColor: isDark ? colors.primaryLight : colors.primary,
+                  color: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
                   border: 'none',
-                  color: isDark ? colors.primaryLight : colors.primary,
-                  fontSize: 14,
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  padding: '8px 16px',
                   borderRadius: 8,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(74, 43, 194, 0.2)',
+                  transition: 'all 0.15s ease',
                 }}
               >
-                Return to services
+                Track my application
               </button>
-            </div>
 
-            {/* Powered by Digital India Footer */}
-            <div
-              style={{
-                paddingTop: 16,
-                paddingBottom: 12,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
+              {/* Download Receipt Outline Button */}
+              <button
+                type="button"
+                onClick={() => alert('Downloading receipt PDF...')}
+                style={{
+                  marginTop: 10,
+                  width: '100%',
+                  height: 48,
+                  backgroundColor: 'transparent',
+                  color: isDark ? colors.primaryLight : colors.primary,
+                  border: `1.5px solid ${isDark ? colors.primaryLight : colors.primary}`,
+                  borderRadius: 8,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                Download receipt (PDF)
+              </button>
+
+              {/* Return to services Ghost Button */}
+              <div style={{ textAlign: 'center', marginTop: 12 }}>
+                <button
+                  type="button"
+                  onClick={() => alert('Return to services')}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: isDark ? colors.primaryLight : colors.primary,
+                    fontSize: 14,
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    padding: '8px 16px',
+                    borderRadius: 8,
+                  }}
+                >
+                  Return to services
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer OUTSIDE the Card */}
+          <div
+            style={{
+              paddingTop: 16,
+              paddingBottom: 12,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
               gap: 6,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: UX4GColors.neutral400,
+                lineHeight: '1.3',
               }}
             >
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: UX4GColors.neutral400,
-                  lineHeight: '1.3',
-                }}
-              >
-                Powered by -
-              </span>
-              <img
-                src="/Digital_India_logo.svg"
-                alt="Digital India"
-                style={{
-                  height: 22,
-                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                }}
-              />
-            </div>
+              Powered by -
+            </span>
+            <img
+              src="/Digital_India_logo.svg"
+              alt="Digital India"
+              style={{
+                height: 22,
+                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+              }}
+            />
           </div>
         </div>
       </div>
