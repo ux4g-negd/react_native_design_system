@@ -2,10 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gButton } from '../../../src/components/button/Button';
-import { Ux4gCheckbox } from '../../../src/components/checkbox/Checkbox';
 import { CodeBlock } from '../components/CodeBlock';
-import { UnionLogo } from '../components/UnionLogo';
 
 interface OperatorAssistedAuthDocProps {
   isDark: boolean;
@@ -19,24 +16,29 @@ export const OperatorAssistedAuthDoc: React.FC<OperatorAssistedAuthDocProps> = (
   const [variant, setVariant] = useState<VariantType>('default');
   const [consent, setConsent] = useState<boolean>(false);
 
-  // Color Palette tokens matching Flutter Design System
+  // Color Palette tokens matching UX4G Design System
   const colors = useMemo(() => {
     return {
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
-      cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
-      cardBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : '#FFFFFF',
+      cardScreenBg: isDark ? '#1C1335' : '#F3F0FF',
+      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-      title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
-      subtitle: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      divider: isDark ? UX4GColors.neutral800 : '#F1F5F9',
+      title: isDark ? UX4GColors.neutral50 : '#0F172A',
+      subtitle: isDark ? UX4GColors.neutral400 : '#475569',
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      menuBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
       // Operator Card Tokens
-      operatorCardBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
-      operatorLabel: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-      operatorName: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
-      operatorDetails: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      operatorCardBg: isDark ? 'rgba(91, 58, 230, 0.15)' : '#F4F0FF',
+      operatorLabel: isDark ? UX4GColors.neutral400 : '#64748B',
+      operatorName: isDark ? UX4GColors.neutral50 : '#0F172A',
+      operatorDetails: isDark ? UX4GColors.neutral400 : '#64748B',
+      // Checkbox & Buttons
+      checkboxBorder: isDark ? UX4GColors.neutral600 : '#CBD5E1',
+      checkboxBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+      btnPrimaryBg: isDark ? UX4GColors.primary : '#4F46E5',
     };
   }, [isDark]);
 
@@ -53,9 +55,6 @@ import {
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gDivider,
-  Ux4gButton,
-  Ux4gCheckbox,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -63,129 +62,132 @@ export const OperatorAssistedAuthCardPattern = ({ isDark = false }: { isDark?: b
   const [consent, setConsent] = useState(false);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.primary800 : UX4GColors.primary100 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? '#1C1335' : '#F3F0FF' }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
-            <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Floating Card Container */}
       <View style={styles.cardWrapper}>
-        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }]}>
-          {/* Back Button */}
-          <View style={styles.backWrapper}>
-            <Ux4gButton
-              text="Back"
-              onPress={() => {}}
-              variant="ghost"
-              size="small"
-              height={36}
-            />
-          </View>
-          <View style={styles.gap12} />
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }]}>
+          {/* Back Navigation */}
+          <TouchableOpacity style={styles.backBtn} onPress={() => {}}>
+            <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+              ← Back
+            </Text>
+          </TouchableOpacity>
 
-          <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+          {/* Title & Subtitle */}
+          <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
             Operator-Assisted Authentication
           </Text>
-          <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
             A certified VLE operator will conduct this Aadhaar verification on your behalf with your consent.
           </Text>
-          <View style={styles.gap20} />
 
-          {/* VLE Operator Info Card */}
-          <View style={[styles.operatorCard, { backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary50 }]}>
-            <Text style={[styles.operatorLabel, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          {/* VLE Operator Card */}
+          <View style={[styles.operatorCard, { backgroundColor: isDark ? 'rgba(91, 58, 230, 0.15)' : '#F4F0FF' }]}>
+            <Text style={[styles.operatorLabel, { color: isDark ? UX4GColors.neutral400 : '#64748B' }]}>
               VLE Operator
             </Text>
-            <View style={styles.gap4} />
-            <Text style={[styles.operatorName, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+            <Text style={[styles.operatorName, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
               Ramesh Kumar
             </Text>
-            <View style={styles.gap8} />
-            <Text style={[styles.operatorDetails, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+            <Text style={[styles.operatorDetails, { color: isDark ? UX4GColors.neutral400 : '#64748B' }]}>
               ID: VLE-MH-2024-00387 · Certified by MeitY
             </Text>
           </View>
-          <View style={styles.gap20} />
 
           {/* Consent Checkbox */}
-          <Ux4gCheckbox
-            value={consent}
-            onValueChange={setConsent}
-            isRequired={true}
-            label="I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE."
-          />
+          <TouchableOpacity
+            style={styles.checkboxRow}
+            onPress={() => setConsent(!consent)}
+            activeOpacity={0.8}
+          >
+            <View
+              style={[
+                styles.checkboxBox,
+                {
+                  backgroundColor: consent ? (isDark ? UX4GColors.primary : '#4F46E5') : '#FFFFFF',
+                  borderColor: consent ? (isDark ? UX4GColors.primary : '#4F46E5') : (isDark ? UX4GColors.neutral600 : '#CBD5E1'),
+                },
+              ]}
+            >
+              {consent && <Text style={styles.checkmark}>✓</Text>}
+            </View>
+            <Text style={[styles.checkboxLabel, { color: isDark ? UX4GColors.neutral200 : '#0F172A' }]}>
+              I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE.
+              <Text style={{ color: '#DC2626' }}> *</Text>
+            </Text>
+          </TouchableOpacity>
+
+          {/* Divider */}
+          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : '#F1F5F9' }]} />
+
+          {/* Action Buttons */}
+          <View style={styles.actionRow}>
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={[styles.cancelText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.proceedBtn,
+                {
+                  backgroundColor: isDark ? UX4GColors.primary : '#4F46E5',
+                  opacity: consent ? 1 : 0.6,
+                },
+              ]}
+              onPress={() => {}}
+              disabled={!consent}
+            >
+              <Text style={styles.proceedBtnText}>Proceed with Consent</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
-      <View style={styles.flex1} />
-
-      {/* Footer Section */}
-      <View style={styles.cardFooterSection}>
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-        <View style={styles.gap6} />
-        <View style={styles.actionRow}>
-          <Ux4gButton
-            text="Cancel"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
-          <Ux4gButton
-            text="Proceed with Consent"
-            onPress={() => {}}
-            size="medium"
-            height={48}
-            disabled={!consent}
-          />
-        </View>
-        <View style={styles.gap8} />
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+      {/* Digital India Footer outside card */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
@@ -193,30 +195,31 @@ export const OperatorAssistedAuthCardPattern = ({ isDark = false }: { isDark?: b
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between' },
-  headerLeading: { flexDirection: 'row', alignItems: 'center' },
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   emblemImage: { height: 32, width: 24 },
-  headerDivider: { width: 1, height: 24, marginHorizontal: 8 },
-  unionText: { fontSize: 16, fontWeight: '700' },
-  menuBtn: { width: 40, height: 40, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-  cardWrapper: { paddingHorizontal: 16, paddingTop: 16 },
-  card: { borderRadius: 16, paddingHorizontal: 20, paddingVertical: 20, elevation: 4 },
-  backWrapper: { alignSelf: 'flex-start' },
-  flex1: { flex: 1 },
-  gap4: { height: 4 },
-  gap6: { height: 6 },
-  gap8: { height: 8 },
-  gap12: { height: 12 },
-  gap20: { height: 20 },
-  title: { fontSize: 26, fontWeight: '800', lineHeight: 31.2, letterSpacing: -0.3, marginBottom: 8, fontFamily: 'Inter' },
-  subtitle: { fontSize: 14, fontWeight: '400', lineHeight: 18.9, fontFamily: 'Inter' },
-  operatorCard: { width: '100%', padding: 20, borderRadius: 12 },
-  operatorLabel: { fontSize: 13, fontWeight: '400', fontFamily: 'Inter' },
-  operatorName: { fontSize: 18, fontWeight: '800', fontFamily: 'Inter' },
+  unionImage: { height: 24, width: 28 },
+  menuBtn: { width: 38, height: 38, borderRadius: 8, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  cardWrapper: { paddingHorizontal: 16, paddingTop: 16, flex: 1 },
+  card: { borderRadius: 16, padding: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
+  backBtn: { alignSelf: 'flex-start', marginBottom: 16 },
+  backText: { fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  title: { fontSize: 22, fontWeight: '800', lineHeight: 28, marginBottom: 8, textAlign: 'left', fontFamily: 'Inter' },
+  subtitle: { fontSize: 13.5, fontWeight: '400', lineHeight: 19, color: '#475569', marginBottom: 20, textAlign: 'left', fontFamily: 'Inter' },
+  operatorCard: { width: '100%', padding: 16, borderRadius: 12, marginBottom: 20 },
+  operatorLabel: { fontSize: 12.5, fontWeight: '400', fontFamily: 'Inter' },
+  operatorName: { fontSize: 17, fontWeight: '800', marginVertical: 4, fontFamily: 'Inter' },
   operatorDetails: { fontSize: 12, fontWeight: '400', fontFamily: 'Inter' },
-  cardFooterSection: { paddingHorizontal: 20, paddingBottom: 20 },
+  checkboxRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 20 },
+  checkboxBox: { width: 20, height: 20, borderRadius: 4, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center', marginTop: 2 },
+  checkmark: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
+  checkboxLabel: { fontSize: 13.5, lineHeight: 19, flex: 1, fontFamily: 'Inter' },
+  divider: { height: 1, width: '100%', marginBottom: 16 },
   actionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
-  footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
+  cancelText: { fontSize: 14, fontWeight: '600', paddingHorizontal: 8, paddingVertical: 10, fontFamily: 'Inter' },
+  proceedBtn: { paddingHorizontal: 20, height: 44, borderRadius: 10, justifyContent: 'center', alignItems: 'center' },
+  proceedBtnText: { color: '#FFFFFF', fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingBottom: 20 },
+  footerText: { fontSize: 11, fontWeight: '400', fontFamily: 'Inter' },
   digitalIndiaLogo: { height: 22, width: 100 },
 });`;
     }
@@ -231,9 +234,6 @@ import {
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gDivider,
-  Ux4gButton,
-  Ux4gCheckbox,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -241,121 +241,129 @@ export const OperatorAssistedAuthDefaultPattern = ({ isDark = false }: { isDark?
   const [consent, setConsent] = useState(false);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : '#FFFFFF' }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
-            <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <View style={styles.content}>
-        {/* Back Button */}
-        <View style={styles.backWrapper}>
-          <Ux4gButton
-            text="Back"
-            onPress={() => {}}
-            variant="ghost"
-            size="small"
-            height={36}
-          />
-        </View>
-        <View style={styles.gap16} />
+        {/* Back Navigation */}
+        <TouchableOpacity style={styles.backBtn} onPress={() => {}}>
+          <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+            ← Back
+          </Text>
+        </TouchableOpacity>
 
-        <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+        {/* Title & Subtitle */}
+        <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
           Operator-Assisted Authentication
         </Text>
-        <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+        <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
           A certified VLE operator will conduct this Aadhaar verification on your behalf with your consent.
         </Text>
-        <View style={styles.gap24} />
 
-        {/* VLE Operator Info Card */}
-        <View style={[styles.operatorCard, { backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary50 }]}>
-          <Text style={[styles.operatorLabel, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+        {/* VLE Operator Card */}
+        <View style={[styles.operatorCard, { backgroundColor: isDark ? 'rgba(91, 58, 230, 0.15)' : '#F4F0FF' }]}>
+          <Text style={[styles.operatorLabel, { color: isDark ? UX4GColors.neutral400 : '#64748B' }]}>
             VLE Operator
           </Text>
-          <View style={styles.gap4} />
-          <Text style={[styles.operatorName, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+          <Text style={[styles.operatorName, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
             Ramesh Kumar
           </Text>
-          <View style={styles.gap8} />
-          <Text style={[styles.operatorDetails, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          <Text style={[styles.operatorDetails, { color: isDark ? UX4GColors.neutral400 : '#64748B' }]}>
             ID: VLE-MH-2024-00387 · Certified by MeitY
           </Text>
         </View>
-        <View style={styles.gap24} />
 
         {/* Consent Checkbox */}
-        <Ux4gCheckbox
-          value={consent}
-          onValueChange={setConsent}
-          isRequired={true}
-          label="I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE."
-        />
+        <TouchableOpacity
+          style={styles.checkboxRow}
+          onPress={() => setConsent(!consent)}
+          activeOpacity={0.8}
+        >
+          <View
+            style={[
+              styles.checkboxBox,
+              {
+                backgroundColor: consent ? (isDark ? UX4GColors.primary : '#4F46E5') : '#FFFFFF',
+                borderColor: consent ? (isDark ? UX4GColors.primary : '#4F46E5') : (isDark ? UX4GColors.neutral600 : '#CBD5E1'),
+              },
+            ]}
+          >
+            {consent && <Text style={styles.checkmark}>✓</Text>}
+          </View>
+          <Text style={[styles.checkboxLabel, { color: isDark ? UX4GColors.neutral200 : '#0F172A' }]}>
+            I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE.
+            <Text style={{ color: '#DC2626' }}> *</Text>
+          </Text>
+        </TouchableOpacity>
       </View>
 
-      {/* Footer Section */}
-      <View style={styles.footerSection}>
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-        <View style={styles.gap6} />
-        <View style={styles.actionRow}>
-          <Ux4gButton
-            text="Cancel"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
-          <Ux4gButton
-            text="Proceed with Consent"
-            onPress={() => {}}
-            size="medium"
-            height={48}
-            disabled={!consent}
-          />
-        </View>
-        <View style={styles.gap8} />
+      {/* Bottom Fixed Action Buttons & Footer Area */}
+      <View style={styles.bottomSection}>
+        {/* Divider */}
+        <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : '#F1F5F9' }]} />
 
-        {/* Digital India Footer */}
+        {/* Action Buttons */}
+        <View style={styles.actionRow}>
+          <TouchableOpacity onPress={() => {}}>
+            <Text style={[styles.cancelText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.proceedBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.primary : '#4F46E5',
+                opacity: consent ? 1 : 0.6,
+              },
+            ]}
+            onPress={() => {}}
+            disabled={!consent}
+          >
+            <Text style={styles.proceedBtnText}>Proceed with Consent</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Digital India Footer with Gap */}
         <View style={styles.footer}>
           <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
             Powered by -
           </Text>
           <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
@@ -367,28 +375,31 @@ export const OperatorAssistedAuthDefaultPattern = ({ isDark = false }: { isDark?
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between' },
-  headerLeading: { flexDirection: 'row', alignItems: 'center' },
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   emblemImage: { height: 32, width: 24 },
-  headerDivider: { width: 1, height: 24, marginHorizontal: 8 },
-  unionText: { fontSize: 16, fontWeight: '700' },
-  menuBtn: { width: 40, height: 40, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-  content: { paddingHorizontal: 20, paddingTop: 20, flex: 1 },
-  backWrapper: { alignSelf: 'flex-start' },
-  gap4: { height: 4 },
-  gap6: { height: 6 },
-  gap8: { height: 8 },
-  gap16: { height: 16 },
-  gap24: { height: 24 },
-  title: { fontSize: 26, fontWeight: '800', lineHeight: 31.2, letterSpacing: -0.3, marginBottom: 8, fontFamily: 'Inter' },
-  subtitle: { fontSize: 14, fontWeight: '400', lineHeight: 18.9, fontFamily: 'Inter' },
-  operatorCard: { width: '100%', padding: 20, borderRadius: 12 },
-  operatorLabel: { fontSize: 13, fontWeight: '400', fontFamily: 'Inter' },
-  operatorName: { fontSize: 18, fontWeight: '800', fontFamily: 'Inter' },
+  unionImage: { height: 24, width: 28 },
+  menuBtn: { width: 38, height: 38, borderRadius: 8, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  content: { padding: 20 },
+  bottomSection: { paddingHorizontal: 20, paddingBottom: 20 },
+  backBtn: { alignSelf: 'flex-start', marginBottom: 16 },
+  backText: { fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  title: { fontSize: 22, fontWeight: '800', lineHeight: 28, marginBottom: 8, textAlign: 'left', fontFamily: 'Inter' },
+  subtitle: { fontSize: 13.5, fontWeight: '400', lineHeight: 19, color: '#475569', marginBottom: 20, textAlign: 'left', fontFamily: 'Inter' },
+  operatorCard: { width: '100%', padding: 16, borderRadius: 12, marginBottom: 20 },
+  operatorLabel: { fontSize: 12.5, fontWeight: '400', fontFamily: 'Inter' },
+  operatorName: { fontSize: 17, fontWeight: '800', marginVertical: 4, fontFamily: 'Inter' },
   operatorDetails: { fontSize: 12, fontWeight: '400', fontFamily: 'Inter' },
-  footerSection: { paddingHorizontal: 20, paddingBottom: 20 },
-  actionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
-  footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
+  checkboxRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
+  checkboxBox: { width: 20, height: 20, borderRadius: 4, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center', marginTop: 2 },
+  checkmark: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
+  checkboxLabel: { fontSize: 13.5, lineHeight: 19, flex: 1, fontFamily: 'Inter' },
+  divider: { height: 1, width: '100%', marginBottom: 16 },
+  actionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
+  cancelText: { fontSize: 14, fontWeight: '600', paddingHorizontal: 8, paddingVertical: 10, fontFamily: 'Inter' },
+  proceedBtn: { paddingHorizontal: 20, height: 44, borderRadius: 10, justifyContent: 'center', alignItems: 'center' },
+  proceedBtnText: { color: '#FFFFFF', fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
+  footerText: { fontSize: 11, fontWeight: '400', fontFamily: 'Inter' },
   digitalIndiaLogo: { height: 22, width: 100 },
 });`;
   }, [variant]);
@@ -445,16 +456,15 @@ const styles = StyleSheet.create({
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />,
-              <div
-                key="divider"
+              <img
+                key="union"
+                src="/Union.svg"
+                alt="Union"
                 style={{
-                  width: 1,
                   height: 24,
-                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                  margin: '0 4px',
+                  marginLeft: 4,
                 }}
               />,
-              <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
             actions={[
               {
@@ -462,9 +472,9 @@ const styles = StyleSheet.create({
                   <div
                     key="menuAction"
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
+                      width: 38,
+                      height: 38,
+                      borderRadius: 8,
                       border: `1.5px solid ${colors.menuBorder}`,
                       backgroundColor: colors.headerBg,
                       display: 'flex',
@@ -498,25 +508,22 @@ const styles = StyleSheet.create({
 
         {/* Main Body */}
         {isCard ? (
-          /* Card Style Variant */
+          /* Card Style Variant (Image 3) */
           <div
             style={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: colors.cardScreenBg,
               justifyContent: 'space-between',
             }}
           >
-            <div style={{ padding: '0 16px' }}>
-              <div style={{ height: 16 }} />
-
+            <div style={{ padding: '16px' }}>
               {/* Floating Card Container */}
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '20px',
+                  padding: '24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -524,34 +531,38 @@ const styles = StyleSheet.create({
                   flexDirection: 'column',
                 }}
               >
-                {/* Back Button */}
-                <div style={{ alignSelf: 'flex-start', marginBottom: 12 }}>
-                  <Ux4gButton
-                    text="Back"
-                    onPress={() => alert('Back pressed')}
-                    variant="ghost"
-                    size="small"
-                    height={36}
-                    leadingIcon={
-                      <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: 18, color: colors.primary }}
-                      >
-                        arrow_back
-                      </span>
-                    }
-                  />
+                {/* Back Link */}
+                <div
+                  onClick={() => alert('Back pressed')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    color: colors.primary,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    marginBottom: 16,
+                    cursor: 'pointer',
+                    width: 'max-content',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                    arrow_back
+                  </span>
+                  <span>Back</span>
                 </div>
 
+                {/* Title & Subtitle */}
                 <h2
                   style={{
-                    fontSize: 26,
+                    fontSize: 22,
                     fontWeight: 800,
-                    lineHeight: 1.2,
-                    letterSpacing: '-0.3px',
+                    lineHeight: 1.25,
                     color: colors.title,
                     margin: 0,
                     marginBottom: 8,
+                    textAlign: 'left',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
@@ -559,23 +570,24 @@ const styles = StyleSheet.create({
                 </h2>
                 <p
                   style={{
-                    fontSize: 14,
+                    fontSize: 13.5,
                     fontWeight: 400,
-                    lineHeight: 1.35,
+                    lineHeight: 1.4,
                     color: colors.subtitle,
                     margin: 0,
                     marginBottom: 20,
+                    textAlign: 'left',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   A certified VLE operator will conduct this Aadhaar verification on your behalf with your consent.
                 </p>
 
-                {/* VLE Operator Info Card */}
+                {/* VLE Operator Card */}
                 <div
                   style={{
                     width: '100%',
-                    padding: 20,
+                    padding: '16px 18px',
                     borderRadius: 12,
                     backgroundColor: colors.operatorCardBg,
                     display: 'flex',
@@ -586,26 +598,25 @@ const styles = StyleSheet.create({
                 >
                   <span
                     style={{
-                      fontSize: 13,
-                      fontWeight: 400,
+                      fontSize: 12.5,
+                      fontWeight: 500,
                       color: colors.operatorLabel,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
                     VLE Operator
                   </span>
-                  <div style={{ height: 4 }} />
                   <span
                     style={{
-                      fontSize: 18,
+                      fontSize: 17,
                       fontWeight: 800,
                       color: colors.operatorName,
+                      margin: '4px 0 8px 0',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
                     Ramesh Kumar
                   </span>
-                  <div style={{ height: 8 }} />
                   <span
                     style={{
                       fontSize: 12,
@@ -619,114 +630,181 @@ const styles = StyleSheet.create({
                 </div>
 
                 {/* Consent Checkbox */}
-                <Ux4gCheckbox
-                  value={consent}
-                  onChanged={(val) => setConsent(!!val)}
-                  isRequired={true}
-                  label="I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE."
+                <div
+                  onClick={() => setConsent(!consent)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 12,
+                    marginBottom: 20,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 20,
+                      height: 20,
+                      minWidth: 20,
+                      borderRadius: 4,
+                      border: `1.5px solid ${consent ? colors.btnPrimaryBg : colors.checkboxBorder}`,
+                      backgroundColor: consent ? colors.btnPrimaryBg : colors.checkboxBg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginTop: 2,
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {consent && (
+                      <span
+                        className="material-symbols-outlined"
+                        style={{ fontSize: 16, color: '#FFFFFF', fontWeight: 700 }}
+                      >
+                        check
+                      </span>
+                    )}
+                  </div>
+                  <span
+                    style={{
+                      fontSize: 13.5,
+                      lineHeight: 1.4,
+                      color: isDark ? UX4GColors.neutral200 : '#0F172A',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE.
+                    <span style={{ color: '#DC2626', marginLeft: 4 }}>*</span>
+                  </span>
+                </div>
+
+                {/* Divider */}
+                <div
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.divider,
+                    width: '100%',
+                    marginBottom: 16,
+                  }}
                 />
+
+                {/* Action Buttons */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => alert('Cancelled')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: colors.primary,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      padding: '8px 12px',
+                      cursor: 'pointer',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => alert('Proceeding with consent...')}
+                    disabled={!consent}
+                    style={{
+                      backgroundColor: colors.btnPrimaryBg,
+                      color: '#FFFFFF',
+                      border: 'none',
+                      padding: '12px 20px',
+                      borderRadius: 10,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      cursor: consent ? 'pointer' : 'not-allowed',
+                      opacity: consent ? 1 : 0.6,
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    Proceed with Consent
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Action Footer */}
-            <div style={{ padding: '12px 20px 20px 20px' }}>
-              <div
+            {/* Digital India Footer outside card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                paddingBottom: 20,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
                 style={{
-                  height: 1,
-                  backgroundColor: colors.border,
-                  width: '100%',
-                  marginBottom: 6,
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Ux4gButton
-                  text="Cancel"
-                  onPress={() => alert('Cancelled')}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
-                <Ux4gButton
-                  text="Proceed with Consent"
-                  onPress={() => alert('Proceeding with consent...')}
-                  size="medium"
-                  height={48}
-                  enabled={consent}
-                />
-              </div>
-              <div style={{ height: 8 }} />
-
-              {/* Digital India Footer */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
-                }}
-              >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
-                  style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                />
-              </div>
             </div>
           </div>
         ) : (
-          /* Default Layout Variant */
+          /* Default Layout Variant (Image 2) */
           <div
             style={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '20px 20px 20px 20px',
+              padding: '24px 20px 20px 20px',
               backgroundColor: colors.defaultScreenBg,
             }}
           >
             <div>
-              {/* Back Button */}
-              <div style={{ alignSelf: 'flex-start', marginBottom: 16 }}>
-                <Ux4gButton
-                  text="Back"
-                  onPress={() => alert('Back pressed')}
-                  variant="ghost"
-                  size="small"
-                  height={36}
-                  leadingIcon={
-                    <span
-                      className="material-symbols-outlined"
-                      style={{ fontSize: 18, color: colors.primary }}
-                    >
-                      arrow_back
-                    </span>
-                  }
-                />
+              {/* Back Link */}
+              <div
+                onClick={() => alert('Back pressed')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  color: colors.primary,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  marginBottom: 16,
+                  cursor: 'pointer',
+                  width: 'max-content',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                  arrow_back
+                </span>
+                <span>Back</span>
               </div>
 
+              {/* Title & Subtitle */}
               <h2
                 style={{
-                  fontSize: 26,
+                  fontSize: 22,
                   fontWeight: 800,
-                  lineHeight: 1.2,
-                  letterSpacing: '-0.3px',
+                  lineHeight: 1.25,
                   color: colors.title,
                   margin: 0,
                   marginBottom: 8,
+                  textAlign: 'left',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
@@ -734,53 +812,53 @@ const styles = StyleSheet.create({
               </h2>
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: 13.5,
                   fontWeight: 400,
-                  lineHeight: 1.35,
+                  lineHeight: 1.4,
                   color: colors.subtitle,
                   margin: 0,
-                  marginBottom: 24,
+                  marginBottom: 20,
+                  textAlign: 'left',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
                 A certified VLE operator will conduct this Aadhaar verification on your behalf with your consent.
               </p>
 
-              {/* VLE Operator Info Card */}
+              {/* VLE Operator Card */}
               <div
                 style={{
                   width: '100%',
-                  padding: 20,
+                  padding: '16px 18px',
                   borderRadius: 12,
                   backgroundColor: colors.operatorCardBg,
                   display: 'flex',
                   flexDirection: 'column',
                   boxSizing: 'border-box',
-                  marginBottom: 24,
+                  marginBottom: 20,
                 }}
               >
                 <span
                   style={{
-                    fontSize: 13,
-                    fontWeight: 400,
+                    fontSize: 12.5,
+                    fontWeight: 500,
                     color: colors.operatorLabel,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   VLE Operator
                 </span>
-                <div style={{ height: 4 }} />
                 <span
                   style={{
-                    fontSize: 18,
+                    fontSize: 17,
                     fontWeight: 800,
                     color: colors.operatorName,
+                    margin: '4px 0 8px 0',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   Ramesh Kumar
                 </span>
-                <div style={{ height: 8 }} />
                 <span
                   style={{
                     fontSize: 12,
@@ -794,47 +872,113 @@ const styles = StyleSheet.create({
               </div>
 
               {/* Consent Checkbox */}
-              <Ux4gCheckbox
-                value={consent}
-                onChanged={(val) => setConsent(!!val)}
-                isRequired={true}
-                label="I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE."
-              />
+              <div
+                onClick={() => setConsent(!consent)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 12,
+                  marginBottom: 20,
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                }}
+              >
+                <div
+                  style={{
+                    width: 20,
+                    height: 20,
+                    minWidth: 20,
+                    borderRadius: 4,
+                    border: `1.5px solid ${consent ? colors.btnPrimaryBg : colors.checkboxBorder}`,
+                    backgroundColor: consent ? colors.btnPrimaryBg : colors.checkboxBg,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 2,
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {consent && (
+                    <span
+                      className="material-symbols-outlined"
+                      style={{ fontSize: 16, color: '#FFFFFF', fontWeight: 700 }}
+                    >
+                      check
+                    </span>
+                  )}
+                </div>
+                <span
+                  style={{
+                    fontSize: 13.5,
+                    lineHeight: 1.4,
+                    color: isDark ? UX4GColors.neutral200 : '#0F172A',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  I consent to operator-assisted Aadhaar authentication. My identity documents have been verified by the VLE.
+                  <span style={{ color: '#DC2626', marginLeft: 4 }}>*</span>
+                </span>
+              </div>
             </div>
 
-            {/* Bottom Section */}
+            {/* Bottom Actions & Footer Section with Gap */}
             <div>
+              {/* Divider */}
               <div
                 style={{
                   height: 1,
-                  backgroundColor: colors.border,
+                  backgroundColor: colors.divider,
                   width: '100%',
-                  marginBottom: 6,
+                  marginBottom: 16,
                 }}
               />
+
+              {/* Action Buttons */}
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  marginBottom: 24,
                 }}
               >
-                <Ux4gButton
-                  text="Cancel"
-                  onPress={() => alert('Cancelled')}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
-                <Ux4gButton
-                  text="Proceed with Consent"
-                  onPress={() => alert('Proceeding with consent...')}
-                  size="medium"
-                  height={48}
-                  enabled={consent}
-                />
+                <button
+                  type="button"
+                  onClick={() => alert('Cancelled')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: colors.primary,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    padding: '8px 12px',
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => alert('Proceeding with consent...')}
+                  disabled={!consent}
+                  style={{
+                    backgroundColor: colors.btnPrimaryBg,
+                    color: '#FFFFFF',
+                    border: 'none',
+                    padding: '12px 20px',
+                    borderRadius: 10,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    cursor: consent ? 'pointer' : 'not-allowed',
+                    opacity: consent ? 1 : 0.6,
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  Proceed with Consent
+                </button>
               </div>
-              <div style={{ height: 8 }} />
 
               {/* Digital India Footer */}
               <div
@@ -842,8 +986,8 @@ const styles = StyleSheet.create({
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
+                  justifyContent: 'center',
+                  gap: 6,
                 }}
               >
                 <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
@@ -875,7 +1019,7 @@ const styles = StyleSheet.create({
           </div>
           <h1 className="wb-title">Operator-assisted authentication</h1>
           <p className="wb-subtitle">
-            Pattern for Aadhaar verification conducted by a certified VLE operator. Features a back button, operator details card, and a mandatory consent checkbox. Action footer allows proceeding with consent or cancelling.
+            Assisted mode allowing a verified Village Level Entrepreneur (VLE) or CSC operator to authenticate on behalf of a citizen with explicit digital consent capture.
           </p>
         </div>
       </div>
