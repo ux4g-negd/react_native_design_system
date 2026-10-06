@@ -27,32 +27,32 @@ export const NotificationChannelsDoc: React.FC<NotificationChannelsDocProps> = (
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [activeTabIdx, setActiveTabIdx] = useState<number>(0);
 
-  // Toggle States for Channels
+  // Toggle States for Channels (all checked by default as shown in Image 2)
   const [sms, setSms] = useState<boolean>(true);
   const [email, setEmail] = useState<boolean>(true);
   const [app, setApp] = useState<boolean>(true);
-  const [whatsapp, setWhatsapp] = useState<boolean>(false);
+  const [whatsapp, setWhatsapp] = useState<boolean>(true);
 
-  // Exact color tokens matching Flutter notif_prefs_stories.dart
+  // Color tokens
   const colors = useMemo(() => {
     return {
       bgScreen: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
-      cardBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-      cardBg: isDark ? '#1A1A1A' : UX4GColors.neutral0,
-      title: isDark ? UX4GColors.neutral0 : '#111827',
-      subtitle: isDark ? '#9CA3AF' : '#4B5563',
-      tabActiveBg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      cardBorder: isDark ? '#334155' : '#E2E8F0',
+      cardBg: isDark ? '#1E293B' : UX4GColors.neutral0,
+      title: isDark ? UX4GColors.neutral0 : '#0F172A',
+      subtitle: isDark ? '#94A3B8' : '#475569',
+      tabActiveBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
       tabActiveText: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       tabInactiveBg: isDark ? '#1E1E1E' : UX4GColors.neutral0,
       tabInactiveText: isDark ? '#D1D5DB' : '#1F2937',
-      tabBorder: isDark ? '#333333' : '#E5E7EB',
+      tabBorder: isDark ? '#333333' : '#E2E8F0',
       mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
     };
   }, [isDark]);
 
-  // Clean TSX code string matching Flutter notificationChannelsComponent
+  // Clean TSX code string matching NotificationChannelsPattern
   const codeString = useMemo(() => {
     return `import React, { useState } from 'react';
 import {
@@ -66,6 +66,8 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gToggle,
+  Ux4gChoiceChip,
+  Ux4gChipGroup,
   Ux4gDivider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -74,7 +76,7 @@ export const NotificationChannelsPattern = () => {
   const [sms, setSms] = useState(true);
   const [email, setEmail] = useState(true);
   const [app, setApp] = useState(true);
-  const [whatsapp, setWhatsapp] = useState(false);
+  const [whatsapp, setWhatsapp] = useState(true);
 
   return (
     <View style={styles.screen}>
@@ -103,25 +105,28 @@ export const NotificationChannelsPattern = () => {
             resizeMode="contain"
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Main Title */}
+      {/* 2. Main Title & Subtitle */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Notification Preferences</Text>
+        <Text style={styles.subtitleText}>
+          Control how and when the portal contacts you. Changes are saved automatically.
+        </Text>
       </View>
 
       {/* 3. Horizontal Filter Chips */}
@@ -130,7 +135,7 @@ export const NotificationChannelsPattern = () => {
         spacing={8}
         containerStyle={styles.tabsContainer}
       >
-        <Ux4gChoiceChip text="Notification channels" selected={true} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Notification Channels" selected={true} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Update Frequency" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Per Service Preferences" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Mandatory Notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
@@ -141,6 +146,11 @@ export const NotificationChannelsPattern = () => {
       {/* 4. Notification Channels Card */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
         <View style={styles.card}>
+          <Text style={styles.cardTitle}>Notification channels</Text>
+          <Text style={styles.cardSubtitle}>
+            Choose which channels the portal can use to reach you.
+          </Text>
+
           {/* SMS Row */}
           <View style={styles.channelRow}>
             <View style={{ flex: 1 }}>
@@ -149,7 +159,7 @@ export const NotificationChannelsPattern = () => {
             </View>
             <Ux4gToggle checked={sms} onCheckedChange={setSms} />
           </View>
-          <Ux4gDivider color={UX4GColors.neutral300} />
+          <Ux4gDivider color="#E2E8F0" />
 
           {/* Email Row */}
           <View style={styles.channelRow}>
@@ -159,7 +169,7 @@ export const NotificationChannelsPattern = () => {
             </View>
             <Ux4gToggle checked={email} onCheckedChange={setEmail} />
           </View>
-          <Ux4gDivider color={UX4GColors.neutral300} />
+          <Ux4gDivider color="#E2E8F0" />
 
           {/* App Notifications Row */}
           <View style={styles.channelRow}>
@@ -169,13 +179,15 @@ export const NotificationChannelsPattern = () => {
             </View>
             <Ux4gToggle checked={app} onCheckedChange={setApp} />
           </View>
-          <Ux4gDivider color={UX4GColors.neutral300} />
+          <Ux4gDivider color="#E2E8F0" />
 
           {/* WhatsApp Row */}
           <View style={styles.channelRow}>
             <View style={{ flex: 1 }}>
               <Text style={styles.channelTitle}>WhatsApp</Text>
-              <Text style={styles.channelSubtitle}>Opt-in required</Text>
+              <Text style={styles.channelSubtitle}>
+                Opt-in required — needs your explicit consent
+              </Text>
             </View>
             <Ux4gToggle checked={whatsapp} onCheckedChange={setWhatsapp} />
           </View>
@@ -196,12 +208,16 @@ export const NotificationChannelsPattern = () => {
 };
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
+  emblemLogo: { width: 32, height: 32 },
+  headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
+  unionLogo: { width: 32, height: 32 },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
+    borderColor: '#C0B3FF',
     backgroundColor: UX4GColors.neutral0,
     justifyContent: 'center',
     alignItems: 'center',
@@ -210,21 +226,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: UX4GColors.primary,
   },
-  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
-  emblemLogo: { width: 32, height: 32 },
-  headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
-  unionLogo: { width: 32, height: 32 },
   titleContainer: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12 },
-  titleText: { fontSize: 18, fontWeight: '700', color: '#111827', letterSpacing: -0.2 },
+  titleText: { fontSize: 20, fontWeight: '700', color: '#0F172A', letterSpacing: -0.2 },
+  subtitleText: { fontSize: 13, color: '#475569', marginTop: 6, lineHeight: 18 },
   tabsContainer: { paddingHorizontal: 16, gap: 8 },
-  tabButton: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 6, borderWidth: 1, borderColor: '#E5E7EB', backgroundColor: UX4GColors.neutral0 },
-  tabActive: { backgroundColor: UX4GColors.primary, borderWidth: 0 },
-  tabActiveText: { fontSize: 12, fontWeight: '600', color: UX4GColors.neutral0 },
-  tabInactiveText: { fontSize: 12, fontWeight: '500', color: '#1F2937' },
-  card: { backgroundColor: UX4GColors.neutral0, borderRadius: 12, borderWidth: 1, borderColor: UX4GColors.neutral300 },
-  channelRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 14 },
-  channelTitle: { fontSize: 14, fontWeight: '700', color: '#111827' },
-  channelSubtitle: { fontSize: 12, color: '#4B5563', marginTop: 2 },
+  card: {
+    backgroundColor: UX4GColors.neutral0,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    padding: 16,
+  },
+  cardTitle: { fontSize: 18, fontWeight: '700', color: '#0F172A' },
+  cardSubtitle: { fontSize: 13, color: '#475569', marginTop: 4, marginBottom: 12, lineHeight: 18 },
+  channelRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14 },
+  channelTitle: { fontSize: 14, fontWeight: '700', color: '#0F172A' },
+  channelSubtitle: { fontSize: 12.5, color: '#475569', marginTop: 2 },
   footer: { paddingVertical: 14, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 4 },
   poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
   digitalIndiaLogo: { height: 24, width: 80 },
@@ -283,33 +300,33 @@ const styles = StyleSheet.create({
               />,
               <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <button
-                  key="menu"
-                  type="button"
-                  onClick={() => {}}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
-                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
-                  </svg>
-                </button>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <button
+                    key="menu"
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                      border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      padding: 0,
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                ),
+              },
+            ]}
           />
           <div
             style={{
@@ -323,11 +340,11 @@ const styles = StyleSheet.create({
         {/* Content Body */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-            {/* Title */}
-            <div style={{ padding: '16px 16px 12px 16px', flexShrink: 0 }}>
+            {/* Main Title & Subtitle */}
+            <div style={{ padding: '16px 16px 10px 16px', flexShrink: 0 }}>
               <h2
                 style={{
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: 700,
                   color: colors.title,
                   margin: 0,
@@ -337,6 +354,18 @@ const styles = StyleSheet.create({
               >
                 Notification Preferences
               </h2>
+              <p
+                style={{
+                  fontSize: 13,
+                  fontWeight: 400,
+                  color: colors.subtitle,
+                  margin: '6px 0 0 0',
+                  lineHeight: '18px',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Control how and when the portal contacts you. Changes are saved automatically.
+              </p>
             </div>
 
             {/* Horizontal Scrollable Filter Chips */}
@@ -366,10 +395,10 @@ const styles = StyleSheet.create({
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexShrink: 0,
-                minHeight: 48,
+                minHeight: 44,
                 gap: 8,
                 overflowX: 'auto',
-                padding: '4px 16px 16px 16px',
+                padding: '4px 16px 12px 16px',
                 cursor: 'grab',
                 userSelect: 'none',
                 WebkitUserSelect: 'none',
@@ -379,10 +408,10 @@ const styles = StyleSheet.create({
             >
               {TAB_CHIPS.map((chip, idx) => {
                 const isSelected = activeTabIdx === idx;
-                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary;
                 const activeText = isDark ? UX4GColors.gray900 : UX4GColors.neutral0;
                 const inactiveBg = isDark ? '#1E1E1E' : UX4GColors.neutral0;
-                const inactiveBorder = isDark ? '#333333' : '#E5E7EB';
+                const inactiveBorder = isDark ? '#333333' : '#E2E8F0';
                 const inactiveText = isDark ? '#D1D5DB' : '#1F2937';
 
                 return (
@@ -412,21 +441,48 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   backgroundColor: colors.cardBg,
-                  borderRadius: 12,
-                  border: `1px solid ${colors.cardBorder}`,
-                  overflow: 'hidden',
+                  borderRadius: 16,
+                  border: `1.5px solid ${colors.cardBorder}`,
+                  padding: '16px 16px 6px 16px',
                 }}
               >
+                {/* Inside Card Header */}
+                <div style={{ marginBottom: 12 }}>
+                  <h3
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 700,
+                      color: colors.title,
+                      margin: 0,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Notification channels
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 400,
+                      color: colors.subtitle,
+                      margin: '4px 0 0 0',
+                      lineHeight: '18px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Choose which channels the portal can use to reach you.
+                  </p>
+                </div>
+
                 {/* 1. SMS */}
                 <div
                   style={{
-                    padding: '14px 16px',
+                    padding: '12px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                     <span
                       style={{
                         fontSize: 14,
@@ -439,7 +495,7 @@ const styles = StyleSheet.create({
                     </span>
                     <span
                       style={{
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: 400,
                         color: colors.subtitle,
                         marginTop: 2,
@@ -456,13 +512,13 @@ const styles = StyleSheet.create({
                 {/* 2. Email */}
                 <div
                   style={{
-                    padding: '14px 16px',
+                    padding: '12px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                     <span
                       style={{
                         fontSize: 14,
@@ -475,7 +531,7 @@ const styles = StyleSheet.create({
                     </span>
                     <span
                       style={{
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: 400,
                         color: colors.subtitle,
                         marginTop: 2,
@@ -492,13 +548,13 @@ const styles = StyleSheet.create({
                 {/* 3. App notifications */}
                 <div
                   style={{
-                    padding: '14px 16px',
+                    padding: '12px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                     <span
                       style={{
                         fontSize: 14,
@@ -511,7 +567,7 @@ const styles = StyleSheet.create({
                     </span>
                     <span
                       style={{
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: 400,
                         color: colors.subtitle,
                         marginTop: 2,
@@ -528,13 +584,13 @@ const styles = StyleSheet.create({
                 {/* 4. WhatsApp */}
                 <div
                   style={{
-                    padding: '14px 16px',
+                    padding: '12px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                     <span
                       style={{
                         fontSize: 14,
@@ -547,14 +603,15 @@ const styles = StyleSheet.create({
                     </span>
                     <span
                       style={{
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: 400,
                         color: colors.subtitle,
                         marginTop: 2,
+                        lineHeight: '17px',
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
                     >
-                      Opt-in required
+                      Opt-in required — needs your explicit consent
                     </span>
                   </div>
                   <Ux4gToggle checked={whatsapp} onCheckedChange={setWhatsapp} />

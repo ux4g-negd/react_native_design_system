@@ -16,12 +16,12 @@ interface ManageAllDocProps {
 type MainTab = 'preview' | 'code';
 
 const TAB_CHIPS = [
+  'Whatsapp Notifications',
+  'Manage all Subscriptions',
   'Notification channels',
   'Update Frequency',
   'Per Service Preferences',
-  'Mandatory Notification',
-  'WhatsApp notification',
-  'Manage all Subscriptions',
+  'Mandatory Notifications',
 ];
 
 interface OptionalNotifItem {
@@ -33,7 +33,7 @@ interface OptionalNotifItem {
 
 export const ManageAllDoc: React.FC<ManageAllDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
-  const [activeTabIdx, setActiveTabIdx] = useState<number>(5);
+  const [activeTabIdx, setActiveTabIdx] = useState<number>(1);
 
   const [optionalItems, setOptionalItems] = useState<OptionalNotifItem[]>([
     {
@@ -78,17 +78,22 @@ export const ManageAllDoc: React.FC<ManageAllDocProps> = ({ isDark }) => {
       bgScreen: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
-      cardBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-      cardBg: isDark ? '#1A1A1A' : UX4GColors.neutral0,
-      title: isDark ? UX4GColors.neutral0 : '#111827',
-      subtitle: isDark ? '#9CA3AF' : '#6B7280',
-      sectionHeader: isDark ? '#9CA3AF' : '#4B5563',
-      badgeBg: isDark ? '#262626' : '#E5E7EB',
-      badgeText: isDark ? '#E5E7EB' : '#111827',
-      btnBorder: '#EF4444',
-      btnContent: isDark ? '#F87171' : '#991B1B',
-      btnBg: isDark ? '#2C0B0E' : '#FEF2F2',
+      cardBorder: isDark ? '#334155' : '#E2E8F0',
+      cardBg: isDark ? '#1E293B' : UX4GColors.neutral0,
+      title: isDark ? UX4GColors.neutral0 : '#0F172A',
+      subtitle: isDark ? '#94A3B8' : '#475569',
+      sectionHeader: isDark ? '#94A3B8' : '#334155',
+      badgeBg: isDark ? '#334155' : '#E2E8F0',
+      badgeText: isDark ? '#F1F5F9' : '#1E293B',
+      btnBorder: isDark ? '#EF4444' : '#DC2626',
+      btnContent: isDark ? '#FCA5A5' : '#991B1B',
+      btnBg: isDark ? 'transparent' : '#FFFFFF',
       mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      tabActiveBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      tabActiveText: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      tabInactiveBg: isDark ? '#1E1E1E' : UX4GColors.neutral0,
+      tabInactiveText: isDark ? '#D1D5DB' : '#1F2937',
+      tabBorder: isDark ? '#333333' : '#E2E8F0',
     };
   }, [isDark]);
 
@@ -101,12 +106,11 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
   Ux4gToggle,
-  Ux4gButton,
-  Ux4gButtonVariant,
   Ux4gChoiceChip,
   Ux4gChipGroup,
   Ux4gDivider,
@@ -146,62 +150,70 @@ export const ManageAllPattern = () => {
           <View key="divider" style={styles.headerDivider} />,
           <Image key="union" source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Main Title */}
+      {/* 2. Main Title & Subtitle */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Notification Preferences</Text>
+        <Text style={styles.subtitleText}>
+          Control how and when the portal contacts you. Changes are saved automatically.
+        </Text>
       </View>
 
       {/* 3. Horizontal Filter Chips */}
       <Ux4gChipGroup arrangement="horizontal" spacing={8} containerStyle={styles.tabsContainer}>
+        <Ux4gChoiceChip text="Whatsapp Notifications" selected={false} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Manage all Subscriptions" selected={true} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Notification channels" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Update Frequency" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Per Service Preferences" selected={false} onClick={() => {}} size="s" borderRadius={6} />
-        <Ux4gChoiceChip text="Mandatory Notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
-        <Ux4gChoiceChip text="WhatsApp notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
-        <Ux4gChoiceChip text="Manage all Subscriptions" selected={true} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Mandatory Notifications" selected={false} onClick={() => {}} size="s" borderRadius={6} />
       </Ux4gChipGroup>
 
       {/* 4. Manage All Content Card */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
         <View style={styles.card}>
+          <Text style={styles.cardTitle}>Manage all subscriptions</Text>
+          <Text style={styles.cardSubtitle}>
+            A complete overview of every notification type and a quick way to opt out of optional ones.
+          </Text>
+
           {/* Section 1: Optional */}
-          <Text style={styles.sectionHeader}>OPTIONAL — YOU CAN TURN OFF</Text>
+          <Text style={styles.sectionHeader}>OPTIONAL — YOU CAN TURN THESE OFF</Text>
           {optionalItems.map((item, idx) => (
             <React.Fragment key={item.id}>
               <View style={styles.row}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, paddingRight: 12 }}>
                   <Text style={styles.itemTitle}>{item.title}</Text>
                   <Text style={styles.itemSubtitle}>{item.subtitle}</Text>
                 </View>
                 <Ux4gToggle checked={item.enabled} onCheckedChange={(v) => toggleItem(item.id, v)} />
               </View>
-              {idx < optionalItems.length - 1 && <Ux4gDivider color={UX4GColors.neutral300} />}
+              {idx < optionalItems.length - 1 && <Ux4gDivider color="#E2E8F0" />}
             </React.Fragment>
           ))}
 
-          <View style={{ height: 24 }} />
+          <View style={{ height: 20 }} />
 
           {/* Section 2: Mandatory */}
           <Text style={styles.sectionHeader}>MANDATORY — REQUIRED BY GOVERNMENT POLICY</Text>
           
           <View style={styles.row}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingRight: 12 }}>
               <Text style={styles.itemTitle}>SLA breach alerts</Text>
               <Text style={styles.itemSubtitle}>Service guarantee deadline notifications</Text>
             </View>
@@ -209,10 +221,10 @@ export const ManageAllPattern = () => {
               <Text style={styles.alwaysOnText}>Always on</Text>
             </View>
           </View>
-          <Ux4gDivider color={UX4GColors.neutral300} />
+          <Ux4gDivider color="#E2E8F0" />
 
           <View style={styles.row}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, paddingRight: 12 }}>
               <Text style={styles.itemTitle}>Rejection notices</Text>
               <Text style={styles.itemSubtitle}>Application rejection with reasons</Text>
             </View>
@@ -224,17 +236,12 @@ export const ManageAllPattern = () => {
           <View style={{ height: 20 }} />
 
           {/* Turn Off Optional CTA */}
-          <Ux4gButton
-            text="Turn off all optional notifications"
+          <TouchableOpacity
+            style={styles.turnOffBtn}
             onPress={turnOffAll}
-            variant={Ux4gButtonVariant.outline}
-            width="100%"
-            height={48}
-            borderColor="#EF4444"
-            contentColor="#991B1B"
-            backgroundColor="#FEF2F2"
-            borderRadius={8}
-          />
+          >
+            <Text style={styles.turnOffBtnText}>Turn off all optional notifications</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 
@@ -253,7 +260,7 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
+    borderColor: '#C0B3FF',
     backgroundColor: UX4GColors.neutral0,
     justifyContent: 'center',
     alignItems: 'center',
@@ -267,15 +274,39 @@ const styles = StyleSheet.create({
   headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
   unionLogo: { width: 32, height: 32 },
   titleContainer: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12 },
-  titleText: { fontSize: 18, fontWeight: '600', color: '#111827', letterSpacing: -0.2 },
+  titleText: { fontSize: 20, fontWeight: '700', color: '#0F172A', letterSpacing: -0.2 },
+  subtitleText: { fontSize: 13, color: '#475569', marginTop: 6, lineHeight: 18 },
   tabsContainer: { paddingHorizontal: 16 },
-  card: { backgroundColor: UX4GColors.neutral0, borderRadius: 12, borderWidth: 1, borderColor: UX4GColors.neutral300, padding: 16 },
-  sectionHeader: { fontSize: 11, fontWeight: '600', color: '#4B5563', letterSpacing: 0.5, marginBottom: 8, marginLeft: 4 },
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 4 },
-  itemTitle: { fontSize: 13, fontWeight: '600', color: '#111827' },
-  itemSubtitle: { fontSize: 11, color: '#6B7280', marginTop: 3 },
-  alwaysOnBadge: { backgroundColor: '#E5E7EB', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
-  alwaysOnText: { fontSize: 11, fontWeight: '600', color: '#111827' },
+  card: {
+    backgroundColor: UX4GColors.neutral0,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    padding: 16,
+  },
+  cardTitle: { fontSize: 18, fontWeight: '700', color: '#0F172A' },
+  cardSubtitle: { fontSize: 13, color: '#475569', marginTop: 4, marginBottom: 16, lineHeight: 18 },
+  sectionHeader: { fontSize: 11, fontWeight: '700', color: '#334155', letterSpacing: 0.5, marginBottom: 8 },
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14 },
+  itemTitle: { fontSize: 14, fontWeight: '700', color: '#0F172A' },
+  itemSubtitle: { fontSize: 12.5, color: '#475569', marginTop: 3 },
+  alwaysOnBadge: { backgroundColor: '#E2E8F0', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
+  alwaysOnText: { fontSize: 11, fontWeight: '600', color: '#1E293B' },
+  turnOffBtn: {
+    width: '100%',
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#EF4444',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  turnOffBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#991B1B',
+  },
   footer: { paddingVertical: 14, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 4 },
   poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
   digitalIndiaLogo: { height: 24, width: 80 },
@@ -374,11 +405,11 @@ const styles = StyleSheet.create({
         {/* Content Body */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-            {/* Title */}
+            {/* Title & Subtitle */}
             <div style={{ padding: '16px 16px 12px 16px', flexShrink: 0 }}>
               <h2
                 style={{
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: 700,
                   color: colors.title,
                   margin: 0,
@@ -388,6 +419,17 @@ const styles = StyleSheet.create({
               >
                 Notification Preferences
               </h2>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: colors.subtitle,
+                  margin: '6px 0 0 0',
+                  lineHeight: '18px',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Control how and when the portal contacts you. Changes are saved automatically.
+              </p>
             </div>
 
             {/* Horizontal Scrollable Filter Chips */}
@@ -417,7 +459,7 @@ const styles = StyleSheet.create({
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexShrink: 0,
-                minHeight: 48,
+                minHeight: 44,
                 gap: 8,
                 overflowX: 'auto',
                 padding: '4px 16px 16px 16px',
@@ -430,10 +472,10 @@ const styles = StyleSheet.create({
             >
               {TAB_CHIPS.map((chip, idx) => {
                 const isSelected = activeTabIdx === idx;
-                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary;
                 const activeText = isDark ? UX4GColors.gray900 : UX4GColors.neutral0;
                 const inactiveBg = isDark ? '#1E1E1E' : UX4GColors.neutral0;
-                const inactiveBorder = isDark ? '#333333' : '#E5E7EB';
+                const inactiveBorder = isDark ? '#333333' : '#E2E8F0';
                 const inactiveText = isDark ? '#D1D5DB' : '#1F2937';
 
                 return (
@@ -463,33 +505,56 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   backgroundColor: colors.cardBg,
-                  borderRadius: 12,
-                  border: `1px solid ${colors.cardBorder}`,
+                  borderRadius: 16,
+                  border: `1.5px solid ${colors.cardBorder}`,
                   padding: 16,
                   display: 'flex',
                   flexDirection: 'column',
                 }}
               >
+                {/* Card Title & Description */}
+                <h3
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    color: colors.title,
+                    margin: '0 0 6px 0',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Manage all subscriptions
+                </h3>
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: colors.subtitle,
+                    margin: '0 0 16px 0',
+                    lineHeight: '18px',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  A complete overview of every notification type and a quick way to opt out of optional ones.
+                </p>
+
                 {/* Section 1 Header */}
                 <span
                   style={{
                     fontSize: 11,
-                    fontWeight: 600,
+                    fontWeight: 700,
                     color: colors.sectionHeader,
                     letterSpacing: '0.5px',
                     marginBottom: 8,
-                    marginLeft: 4,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
-                  OPTIONAL — YOU CAN TURN OFF
+                  OPTIONAL — YOU CAN TURN THESE OFF
                 </span>
 
                 {optionalItems.map((item, idx) => (
                   <React.Fragment key={item.id}>
                     <div
                       style={{
-                        padding: '14px 4px',
+                        padding: '14px 0',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -498,8 +563,8 @@ const styles = StyleSheet.create({
                       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                         <span
                           style={{
-                            fontSize: 13,
-                            fontWeight: 600,
+                            fontSize: 14,
+                            fontWeight: 700,
                             color: colors.title,
                             fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                           }}
@@ -508,10 +573,11 @@ const styles = StyleSheet.create({
                         </span>
                         <span
                           style={{
-                            fontSize: 11,
+                            fontSize: 12.5,
                             fontWeight: 400,
                             color: colors.subtitle,
                             marginTop: 3,
+                            lineHeight: '17px',
                             fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                           }}
                         >
@@ -531,17 +597,16 @@ const styles = StyleSheet.create({
                   </React.Fragment>
                 ))}
 
-                <div style={{ height: 24 }} />
+                <div style={{ height: 20 }} />
 
                 {/* Section 2 Header */}
                 <span
                   style={{
                     fontSize: 11,
-                    fontWeight: 600,
+                    fontWeight: 700,
                     color: colors.sectionHeader,
                     letterSpacing: '0.5px',
                     marginBottom: 8,
-                    marginLeft: 4,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
@@ -551,7 +616,7 @@ const styles = StyleSheet.create({
                 {/* SLA breach alerts */}
                 <div
                   style={{
-                    padding: '14px 4px',
+                    padding: '14px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -560,8 +625,8 @@ const styles = StyleSheet.create({
                   <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                     <span
                       style={{
-                        fontSize: 13,
-                        fontWeight: 600,
+                        fontSize: 14,
+                        fontWeight: 700,
                         color: colors.title,
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
@@ -570,10 +635,11 @@ const styles = StyleSheet.create({
                     </span>
                     <span
                       style={{
-                        fontSize: 11,
+                        fontSize: 12.5,
                         fontWeight: 400,
                         color: colors.subtitle,
                         marginTop: 3,
+                        lineHeight: '17px',
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
                     >
@@ -600,7 +666,7 @@ const styles = StyleSheet.create({
                 {/* Rejection notices */}
                 <div
                   style={{
-                    padding: '14px 4px',
+                    padding: '14px 0',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -609,8 +675,8 @@ const styles = StyleSheet.create({
                   <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                     <span
                       style={{
-                        fontSize: 13,
-                        fontWeight: 600,
+                        fontSize: 14,
+                        fontWeight: 700,
                         color: colors.title,
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
@@ -619,10 +685,11 @@ const styles = StyleSheet.create({
                     </span>
                     <span
                       style={{
-                        fontSize: 11,
+                        fontSize: 12.5,
                         fontWeight: 400,
                         color: colors.subtitle,
                         marginTop: 3,
+                        lineHeight: '17px',
                         fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                       }}
                     >
@@ -648,18 +715,28 @@ const styles = StyleSheet.create({
                 <div style={{ height: 20 }} />
 
                 {/* Turn Off Optional Button */}
-                <Ux4gButton
-                  text="Turn off all optional notifications"
-                  onPress={turnOffAllOptional}
-                  variant="outline"
-                  width="100%"
-                  height={48}
-                  borderColor={colors.btnBorder}
-                  contentColor={colors.btnContent}
-                  backgroundColor={colors.btnBg}
-                  borderRadius={8}
-                  textStyle={{ fontSize: 13, fontWeight: '500' }}
-                />
+                <button
+                  type="button"
+                  onClick={turnOffAllOptional}
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 8,
+                    border: `1px solid ${colors.btnBorder}`,
+                    backgroundColor: colors.btnBg,
+                    color: colors.btnContent,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  Turn off all optional notifications
+                </button>
               </div>
             </div>
           </div>

@@ -118,22 +118,27 @@ export const PerServiceDoc: React.FC<PerServiceDocProps> = ({ isDark }) => {
     );
   };
 
-  // Colors matching Flutter notif_prefs_stories.dart
+  // Colors
   const colors = useMemo(() => {
     return {
       bgScreen: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
-      cardBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-      cardBg: isDark ? '#1A1A1A' : UX4GColors.neutral0,
-      accordionHeaderBg: isDark ? '#262626' : '#F3F4F6',
-      title: isDark ? UX4GColors.neutral0 : '#111827',
-      subtitle: isDark ? '#9CA3AF' : '#6B7280',
+      cardBorder: isDark ? '#334155' : '#E2E8F0',
+      cardBg: isDark ? '#1E293B' : UX4GColors.neutral0,
+      accordionHeaderBg: isDark ? '#262626' : '#F8FAFC',
+      title: isDark ? UX4GColors.neutral0 : '#0F172A',
+      subtitle: isDark ? '#94A3B8' : '#475569',
+      tabActiveBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      tabActiveText: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      tabInactiveBg: isDark ? '#1E1E1E' : UX4GColors.neutral0,
+      tabInactiveText: isDark ? '#D1D5DB' : '#1F2937',
+      tabBorder: isDark ? '#333333' : '#E2E8F0',
       mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
     };
   }, [isDark]);
 
-  // Clean TSX code string matching Flutter perServiceComponent
+  // Clean TSX code string matching PerServicePattern
   const codeString = useMemo(() => {
     return `import React, { useState } from 'react';
 import {
@@ -158,7 +163,6 @@ export const PerServicePattern = () => {
     {
       id: '1',
       name: 'Income Certificate',
-      summary: '3 of 3 notifications on',
       expanded: true,
       items: [
         { id: '1_1', label: 'Status updates', subtitle: 'When your application changes stage', enabled: true },
@@ -169,12 +173,31 @@ export const PerServicePattern = () => {
     {
       id: '2',
       name: 'Ration Card Renewal',
-      summary: '2 of 3 notifications on',
       expanded: false,
       items: [
         { id: '2_1', label: 'Status updates', subtitle: 'When your application changes stage', enabled: true },
         { id: '2_2', label: 'Action reminders', subtitle: 'When you need to upload or pay', enabled: true },
         { id: '2_3', label: 'Certificate expiry', subtitle: 'Renewal reminders before expiry', enabled: false },
+      ],
+    },
+    {
+      id: '3',
+      name: 'PAN Correction',
+      expanded: false,
+      items: [
+        { id: '3_1', label: 'Status updates', subtitle: 'When your application changes stage', enabled: true },
+        { id: '3_2', label: 'Action reminders', subtitle: 'When you need to upload or pay', enabled: true },
+        { id: '3_3', label: 'Certificate expiry', subtitle: 'Renewal reminders before expiry', enabled: true },
+      ],
+    },
+    {
+      id: '4',
+      name: 'Birth Certificate',
+      expanded: false,
+      items: [
+        { id: '4_1', label: 'Status updates', subtitle: 'When your application changes stage', enabled: false },
+        { id: '4_2', label: 'Action reminders', subtitle: 'When you need to upload or pay', enabled: false },
+        { id: '4_3', label: 'Certificate expiry', subtitle: 'Renewal reminders before expiry', enabled: false },
       ],
     },
   ]);
@@ -197,7 +220,7 @@ export const PerServicePattern = () => {
 
   return (
     <View style={styles.screen}>
-      {/* Official Government Header */}
+      {/* 1. Official Government Header */}
       <Ux4gAppHeader
         title=""
         variant="light"
@@ -212,68 +235,79 @@ export const PerServicePattern = () => {
           <View key="divider" style={styles.headerDivider} />,
           <Image key="union" source={{ uri: '/Union.svg' }} style={styles.unionLogo} resizeMode="contain" />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
+      {/* 2. Main Title & Subtitle */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Notification Preferences</Text>
+        <Text style={styles.subtitleText}>
+          Control how and when the portal contacts you. Changes are saved automatically.
+        </Text>
       </View>
 
-      {/* Horizontal Filter Chips */}
+      {/* 3. Horizontal Filter Chips */}
       <Ux4gChipGroup arrangement="horizontal" spacing={8} containerStyle={styles.tabsContainer}>
-        <Ux4gChoiceChip text="Notification channels" selected={false} onClick={() => {}} size="s" borderRadius={6} />
-        <Ux4gChoiceChip text="Update Frequency" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Per Service Preferences" selected={true} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Mandatory Notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="WhatsApp notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Manage all Subscriptions" selected={false} onClick={() => {}} size="s" borderRadius={6} />
       </Ux4gChipGroup>
 
-      {/* Per Service Accordions Card */}
+      {/* 4. Per Service Preferences Card */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
         <View style={styles.outerCard}>
+          <Text style={styles.cardTitle}>Per-service preferences</Text>
+          <Text style={styles.cardSubtitle}>
+            Fine-tune which notifications you receive for each service you use.
+          </Text>
+
           {services.map((cat, idx) => (
-            <View key={cat.id} style={[styles.accordionCard, idx < services.length - 1 && { marginBottom: 10 }]}>
+            <View key={cat.id} style={styles.serviceSection}>
               {/* Accordion Header */}
-              <TouchableOpacity activeOpacity={0.7} onPress={() => toggleExpand(cat.id)} style={styles.accordionHeader}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.categoryName}>{cat.name}</Text>
-                  <Text style={styles.categorySummary}>{cat.summary}</Text>
-                </View>
-                <Text style={styles.arrowIcon}>{cat.expanded ? '▲' : '▼'}</Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => toggleExpand(cat.id)}
+                style={[
+                  styles.accordionHeader,
+                  cat.expanded && styles.expandedHeader,
+                ]}
+              >
+                <Text style={styles.categoryName}>{cat.name}</Text>
+                <Text style={styles.arrowIcon}>{cat.expanded ? '∧' : '∨'}</Text>
               </TouchableOpacity>
 
               {/* Accordion Body */}
               {cat.expanded && (
-                <View>
-                  <Ux4gDivider color={UX4GColors.neutral300} />
+                <View style={styles.accordionBody}>
                   {cat.items.map((item, itemIdx) => (
                     <React.Fragment key={item.id}>
                       <View style={styles.itemRow}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, paddingRight: 12 }}>
                           <Text style={styles.itemLabel}>{item.label}</Text>
                           {item.subtitle && <Text style={styles.itemSubtitle}>{item.subtitle}</Text>}
                         </View>
                         <Ux4gToggle checked={item.enabled} onCheckedChange={(v) => toggleItem(cat.id, item.id, v)} />
                       </View>
-                      {itemIdx < cat.items.length - 1 && <Ux4gDivider color={UX4GColors.neutral300} />}
+                      {itemIdx < cat.items.length - 1 && <Ux4gDivider color="#E2E8F0" />}
                     </React.Fragment>
                   ))}
                 </View>
               )}
+              {idx < services.length - 1 && <Ux4gDivider color="#E2E8F0" />}
             </View>
           ))}
         </View>
@@ -289,12 +323,16 @@ export const PerServicePattern = () => {
 };
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
+  emblemLogo: { width: 32, height: 32 },
+  headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
+  unionLogo: { width: 32, height: 32 },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
+    borderColor: '#C0B3FF',
     backgroundColor: UX4GColors.neutral0,
     justifyContent: 'center',
     alignItems: 'center',
@@ -303,22 +341,40 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: UX4GColors.primary,
   },
-  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
-  emblemLogo: { width: 32, height: 32 },
-  headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
-  unionLogo: { width: 32, height: 32 },
   titleContainer: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12 },
-  titleText: { fontSize: 18, fontWeight: '700', color: '#111827' },
-  tabsContainer: { paddingHorizontal: 16 },
-  outerCard: { backgroundColor: UX4GColors.neutral0, borderRadius: 12, borderWidth: 1, borderColor: UX4GColors.neutral300, padding: 14 },
-  accordionCard: { backgroundColor: UX4GColors.neutral0, borderRadius: 10, borderWidth: 1, borderColor: UX4GColors.neutral300, overflow: 'hidden' },
-  accordionHeader: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 12 },
-  categoryName: { fontSize: 13, fontWeight: '700', color: '#111827' },
-  categorySummary: { fontSize: 11, color: '#6B7280', marginTop: 2 },
-  arrowIcon: { fontSize: 14, color: '#111827' },
-  itemRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 12 },
-  itemLabel: { fontSize: 12, fontWeight: '600', color: '#111827' },
-  itemSubtitle: { fontSize: 11, color: '#6B7280', marginTop: 2 },
+  titleText: { fontSize: 20, fontWeight: '700', color: '#0F172A', letterSpacing: -0.2 },
+  subtitleText: { fontSize: 13, color: '#475569', marginTop: 6, lineHeight: 18 },
+  tabsContainer: { paddingHorizontal: 16, gap: 8 },
+  outerCard: {
+    backgroundColor: UX4GColors.neutral0,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    padding: 16,
+  },
+  cardTitle: { fontSize: 18, fontWeight: '700', color: '#0F172A' },
+  cardSubtitle: { fontSize: 13, color: '#475569', marginTop: 4, marginBottom: 16, lineHeight: 18 },
+  serviceSection: { width: '100%' },
+  accordionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+  },
+  expandedHeader: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 8,
+  },
+  categoryName: { fontSize: 14.5, fontWeight: '700', color: '#0F172A' },
+  arrowIcon: { fontSize: 14, color: '#0F172A', fontWeight: 'bold' },
+  accordionBody: { paddingBottom: 8 },
+  itemRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, paddingHorizontal: 14 },
+  itemLabel: { fontSize: 13.5, fontWeight: '700', color: '#0F172A' },
+  itemSubtitle: { fontSize: 12, color: '#475569', marginTop: 2 },
   footer: { paddingVertical: 14, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 4 },
   poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
   digitalIndiaLogo: { height: 24, width: 80 },
@@ -377,33 +433,33 @@ const styles = StyleSheet.create({
               />,
               <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <button
-                  key="menu"
-                  type="button"
-                  onClick={() => {}}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
-                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
-                  </svg>
-                </button>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <button
+                    key="menu"
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                      border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      padding: 0,
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                ),
+              },
+            ]}
           />
           <div
             style={{
@@ -417,11 +473,11 @@ const styles = StyleSheet.create({
         {/* Content Body */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-            {/* Title */}
-            <div style={{ padding: '16px 16px 12px 16px', flexShrink: 0 }}>
+            {/* Main Title & Subtitle */}
+            <div style={{ padding: '16px 16px 10px 16px', flexShrink: 0 }}>
               <h2
                 style={{
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: 700,
                   color: colors.title,
                   margin: 0,
@@ -431,6 +487,18 @@ const styles = StyleSheet.create({
               >
                 Notification Preferences
               </h2>
+              <p
+                style={{
+                  fontSize: 13,
+                  fontWeight: 400,
+                  color: colors.subtitle,
+                  margin: '6px 0 0 0',
+                  lineHeight: '18px',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Control how and when the portal contacts you. Changes are saved automatically.
+              </p>
             </div>
 
             {/* Horizontal Scrollable Filter Chips */}
@@ -460,10 +528,10 @@ const styles = StyleSheet.create({
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexShrink: 0,
-                minHeight: 48,
+                minHeight: 44,
                 gap: 8,
                 overflowX: 'auto',
-                padding: '4px 16px 16px 16px',
+                padding: '4px 16px 12px 16px',
                 cursor: 'grab',
                 userSelect: 'none',
                 WebkitUserSelect: 'none',
@@ -471,12 +539,12 @@ const styles = StyleSheet.create({
                 scrollbarWidth: 'none',
               }}
             >
-              {TAB_CHIPS.map((chip, idx) => {
-                const isSelected = activeTabIdx === idx;
-                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+              {TAB_CHIPS.slice(2).map((chip, idx) => {
+                const isSelected = activeTabIdx === idx + 2;
+                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary;
                 const activeText = isDark ? UX4GColors.gray900 : UX4GColors.neutral0;
                 const inactiveBg = isDark ? '#1E1E1E' : UX4GColors.neutral0;
-                const inactiveBorder = isDark ? '#333333' : '#E5E7EB';
+                const inactiveBorder = isDark ? '#333333' : '#E2E8F0';
                 const inactiveText = isDark ? '#D1D5DB' : '#1F2937';
 
                 return (
@@ -484,7 +552,7 @@ const styles = StyleSheet.create({
                     key={chip}
                     text={chip}
                     selected={isSelected}
-                    onClick={() => setActiveTabIdx(idx)}
+                    onClick={() => setActiveTabIdx(idx + 2)}
                     size="s"
                     borderRadius={6}
                     containerStyle={{
@@ -506,65 +574,72 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   backgroundColor: colors.cardBg,
-                  borderRadius: 12,
-                  border: `1px solid ${colors.cardBorder}`,
-                  padding: 14,
+                  borderRadius: 16,
+                  border: `1.5px solid ${colors.cardBorder}`,
+                  padding: '16px 16px 8px 16px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 10,
                 }}
               >
-                {services.map((cat) => (
-                  <div
-                    key={cat.id}
+                {/* Inside Card Header */}
+                <div style={{ marginBottom: 12 }}>
+                  <h3
                     style={{
-                      backgroundColor: colors.cardBg,
-                      borderRadius: 10,
-                      border: `1px solid ${colors.cardBorder}`,
-                      overflow: 'hidden',
+                      fontSize: 18,
+                      fontWeight: 700,
+                      color: colors.title,
+                      margin: 0,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
+                    Per-service preferences
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 400,
+                      color: colors.subtitle,
+                      margin: '4px 0 0 0',
+                      lineHeight: '18px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Fine-tune which notifications you receive for each service you use.
+                  </p>
+                </div>
+
+                {/* Accordion list */}
+                {services.map((cat, idx) => (
+                  <div key={cat.id} style={{ width: '100%' }}>
                     {/* Accordion Header */}
                     <div
                       onClick={() => toggleCategoryExpand(cat.id)}
                       style={{
-                        padding: '12px 14px',
+                        padding: cat.expanded ? '10px 14px' : '14px 14px',
                         backgroundColor: cat.expanded ? colors.accordionHeaderBg : 'transparent',
+                        borderRadius: cat.expanded ? 8 : 0,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         cursor: 'pointer',
-                        transition: 'background-color 0.15s ease',
+                        transition: 'all 0.15s ease',
                       }}
                     >
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span
-                          style={{
-                            fontSize: 13,
-                            fontWeight: 700,
-                            color: colors.title,
-                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                          }}
-                        >
-                          {cat.name}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 400,
-                            color: colors.subtitle,
-                            marginTop: 2,
-                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                          }}
-                        >
-                          {cat.summary}
-                        </span>
-                      </div>
+                      <span
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: colors.title,
+                          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                        }}
+                      >
+                        {cat.name}
+                      </span>
 
                       <span
                         className="material-symbols-outlined"
                         style={{
-                          fontSize: 20,
+                          fontSize: 22,
                           color: colors.title,
                           userSelect: 'none',
                         }}
@@ -575,8 +650,7 @@ const styles = StyleSheet.create({
 
                     {/* Accordion Expanded Sub-Items */}
                     {cat.expanded && (
-                      <div>
-                        <div style={{ height: 1, backgroundColor: colors.cardBorder }} />
+                      <div style={{ paddingBottom: 6 }}>
                         {cat.items.map((item, itemIdx) => (
                           <React.Fragment key={item.id}>
                             <div
@@ -590,8 +664,8 @@ const styles = StyleSheet.create({
                               <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 12 }}>
                                 <span
                                   style={{
-                                    fontSize: 12,
-                                    fontWeight: 600,
+                                    fontSize: 13.5,
+                                    fontWeight: 700,
                                     color: colors.title,
                                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                                   }}
@@ -601,7 +675,7 @@ const styles = StyleSheet.create({
                                 {item.subtitle && (
                                   <span
                                     style={{
-                                      fontSize: 11,
+                                      fontSize: 12,
                                       fontWeight: 400,
                                       color: colors.subtitle,
                                       marginTop: 2,
@@ -620,11 +694,15 @@ const styles = StyleSheet.create({
                             </div>
 
                             {itemIdx < cat.items.length - 1 && (
-                              <div style={{ height: 1, backgroundColor: colors.cardBorder }} />
+                              <div style={{ height: 1, backgroundColor: colors.cardBorder, margin: '0 14px' }} />
                             )}
                           </React.Fragment>
                         ))}
                       </div>
+                    )}
+
+                    {idx < services.length - 1 && (
+                      <div style={{ height: 1, backgroundColor: colors.cardBorder }} />
                     )}
                   </div>
                 ))}

@@ -31,7 +31,7 @@ interface FrequencyOption {
 const FREQUENCY_OPTIONS: FrequencyOption[] = [
   {
     title: 'Immediately',
-    subtitle: 'Get each notification the moment it arrives.',
+    subtitle: 'Get each notification the moment it happens.',
   },
   {
     title: 'Daily Summary',
@@ -39,7 +39,7 @@ const FREQUENCY_OPTIONS: FrequencyOption[] = [
   },
   {
     title: 'Weekly Digest',
-    subtitle: 'A round-up every Monday morning.',
+    subtitle: 'A roundup every Monday morning.',
   },
 ];
 
@@ -48,28 +48,34 @@ export const UpdateFrequencyDoc: React.FC<UpdateFrequencyDocProps> = ({ isDark }
   const [activeTabIdx, setActiveTabIdx] = useState<number>(1);
   const [frequency, setFrequency] = useState<string>('Immediately');
 
-  // Colors matching Flutter notif_prefs_stories.dart
+  // Colors
   const colors = useMemo(() => {
-    const primary = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
     return {
       bgScreen: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
-      cardBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-      cardBg: isDark ? '#1A1A1A' : UX4GColors.neutral0,
-      title: isDark ? UX4GColors.neutral0 : '#111827',
-      primary,
-      selectedBg: isDark ? 'rgba(163, 145, 255, 0.15)' : 'rgba(74, 43, 194, 0.08)',
-      unselectedBg: isDark ? '#262626' : '#F3F4F6',
-      titleSelected: primary,
-      titleUnselected: isDark ? UX4GColors.neutral0 : '#111827',
-      subtitleSelected: isDark ? 'rgba(163, 145, 255, 0.8)' : 'rgba(74, 43, 194, 0.8)',
-      subtitleUnselected: isDark ? '#9CA3AF' : '#6B7280',
+      cardBorder: isDark ? '#334155' : '#E2E8F0',
+      cardBg: isDark ? '#1E293B' : UX4GColors.neutral0,
+      title: isDark ? UX4GColors.neutral0 : '#0F172A',
+      subtitle: isDark ? '#94A3B8' : '#475569',
+      tabActiveBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      tabActiveText: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      tabInactiveBg: isDark ? '#1E1E1E' : UX4GColors.neutral0,
+      tabInactiveText: isDark ? '#D1D5DB' : '#1F2937',
+      tabBorder: isDark ? '#333333' : '#E2E8F0',
+      selectedCardBg: isDark ? 'rgba(79, 70, 229, 0.15)' : '#EEF2FF',
+      selectedCardBorder: isDark ? UX4GColors.primary400 : '#C7D2FE',
+      unselectedCardBg: isDark ? '#1E293B' : '#F8FAFC',
+      unselectedCardBorder: isDark ? '#334155' : '#E2E8F0',
+      titleSelected: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      titleUnselected: isDark ? UX4GColors.neutral0 : '#0F172A',
+      subtitleSelected: isDark ? '#A5B4FC' : '#4F46E5',
+      subtitleUnselected: isDark ? '#94A3B8' : '#475569',
       mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
     };
   }, [isDark]);
 
-  // Clean TSX code string matching Flutter updateFrequencyComponent
+  // Clean TSX code string matching UpdateFrequencyPattern
   const codeString = useMemo(() => {
     return `import React, { useState } from 'react';
 import {
@@ -93,9 +99,9 @@ export const UpdateFrequencyPattern = () => {
   const [frequency, setFrequency] = useState('Immediately');
 
   const options = [
-    { title: 'Immediately', subtitle: 'Get each notification the moment it arrives.' },
+    { title: 'Immediately', subtitle: 'Get each notification the moment it happens.' },
     { title: 'Daily Summary', subtitle: 'One digest every day at 6:00 PM.' },
-    { title: 'Weekly Digest', subtitle: 'A round-up every Monday morning.' },
+    { title: 'Weekly Digest', subtitle: 'A roundup every Monday morning.' },
   ];
 
   return (
@@ -125,25 +131,28 @@ export const UpdateFrequencyPattern = () => {
             resizeMode="contain"
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Main Title */}
+      {/* 2. Main Title & Subtitle */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Notification Preferences</Text>
+        <Text style={styles.subtitleText}>
+          Control how and when the portal contacts you. Changes are saved automatically.
+        </Text>
       </View>
 
       {/* 3. Horizontal Filter Chips */}
@@ -159,6 +168,11 @@ export const UpdateFrequencyPattern = () => {
       {/* 4. Update Frequency Card */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
         <View style={styles.card}>
+          <Text style={styles.cardTitle}>Update frequency</Text>
+          <Text style={styles.cardSubtitle}>
+            Decide how often the portal batches and sends your notifications.
+          </Text>
+
           {options.map((item, idx) => {
             const isSelected = frequency === item.title;
             return (
@@ -167,9 +181,9 @@ export const UpdateFrequencyPattern = () => {
                 activeOpacity={0.7}
                 onPress={() => setFrequency(item.title)}
                 style={[
-                  styles.optionRow,
-                  isSelected ? styles.selectedRow : styles.unselectedRow,
-                  idx < options.length - 1 && { marginBottom: 10 },
+                  styles.optionCard,
+                  isSelected ? styles.selectedCard : styles.unselectedCard,
+                  idx < options.length - 1 && { marginBottom: 12 },
                 ]}
               >
                 <Ux4gRadioButton
@@ -182,7 +196,10 @@ export const UpdateFrequencyPattern = () => {
                   <Text style={[styles.optionTitle, isSelected && styles.selectedTitleText]}>
                     {item.title}
                   </Text>
-                  <Text style={[styles.optionSubtitle, isSelected && styles.selectedSubtitleText]}>
+                  <Text
+                    numberOfLines={1}
+                    style={[styles.optionSubtitle, isSelected && styles.selectedSubtitleText]}
+                  >
                     {item.subtitle}
                   </Text>
                 </View>
@@ -206,12 +223,16 @@ export const UpdateFrequencyPattern = () => {
 };
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
+  emblemLogo: { width: 32, height: 32 },
+  headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
+  unionLogo: { width: 32, height: 32 },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
+    borderColor: '#C0B3FF',
     backgroundColor: UX4GColors.neutral0,
     justifyContent: 'center',
     alignItems: 'center',
@@ -220,22 +241,40 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: UX4GColors.primary,
   },
-  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
-  emblemLogo: { width: 32, height: 32 },
-  headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
-  unionLogo: { width: 32, height: 32 },
   titleContainer: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12 },
-  titleText: { fontSize: 18, fontWeight: '700', color: '#111827', letterSpacing: -0.2 },
+  titleText: { fontSize: 20, fontWeight: '700', color: '#0F172A', letterSpacing: -0.2 },
+  subtitleText: { fontSize: 13, color: '#475569', marginTop: 6, lineHeight: 18 },
   tabsContainer: { paddingHorizontal: 16 },
-  card: { backgroundColor: UX4GColors.neutral0, borderRadius: 12, borderWidth: 1, borderColor: UX4GColors.neutral300, padding: 14 },
-  optionRow: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 12, borderRadius: 10 },
-  selectedRow: { backgroundColor: 'rgba(74, 43, 194, 0.08)' },
-  unselectedRow: { backgroundColor: '#F3F4F6' },
+  card: {
+    backgroundColor: UX4GColors.neutral0,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    padding: 16,
+  },
+  cardTitle: { fontSize: 18, fontWeight: '700', color: '#0F172A' },
+  cardSubtitle: { fontSize: 13, color: '#475569', marginTop: 4, marginBottom: 16, lineHeight: 18 },
+  optionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1.5,
+  },
+  selectedCard: {
+    backgroundColor: '#EEF2FF',
+    borderColor: '#C7D2FE',
+  },
+  unselectedCard: {
+    backgroundColor: '#F8FAFC',
+    borderColor: '#E2E8F0',
+  },
   textContainer: { flex: 1, marginLeft: 12 },
-  optionTitle: { fontSize: 13, fontWeight: '600', color: '#111827' },
+  optionTitle: { fontSize: 14, fontWeight: '700', color: '#0F172A' },
   selectedTitleText: { color: UX4GColors.primary },
-  optionSubtitle: { fontSize: 11, color: '#6B7280', marginTop: 2 },
-  selectedSubtitleText: { color: 'rgba(74, 43, 194, 0.8)' },
+  optionSubtitle: { fontSize: 12.5, color: '#475569', marginTop: 2 },
+  selectedSubtitleText: { color: '#4F46E5' },
   footer: { paddingVertical: 14, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 4 },
   poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
   digitalIndiaLogo: { height: 24, width: 80 },
@@ -294,33 +333,33 @@ const styles = StyleSheet.create({
               />,
               <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <button
-                  key="menu"
-                  type="button"
-                  onClick={() => {}}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
-                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
-                  </svg>
-                </button>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <button
+                    key="menu"
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                      border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      padding: 0,
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                ),
+              },
+            ]}
           />
           <div
             style={{
@@ -334,11 +373,11 @@ const styles = StyleSheet.create({
         {/* Content Body */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-            {/* Title */}
-            <div style={{ padding: '16px 16px 12px 16px', flexShrink: 0 }}>
+            {/* Main Title & Subtitle */}
+            <div style={{ padding: '16px 16px 10px 16px', flexShrink: 0 }}>
               <h2
                 style={{
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: 700,
                   color: colors.title,
                   margin: 0,
@@ -348,6 +387,18 @@ const styles = StyleSheet.create({
               >
                 Notification Preferences
               </h2>
+              <p
+                style={{
+                  fontSize: 13,
+                  fontWeight: 400,
+                  color: colors.subtitle,
+                  margin: '6px 0 0 0',
+                  lineHeight: '18px',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Control how and when the portal contacts you. Changes are saved automatically.
+              </p>
             </div>
 
             {/* Horizontal Scrollable Filter Chips */}
@@ -377,10 +428,10 @@ const styles = StyleSheet.create({
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexShrink: 0,
-                minHeight: 48,
+                minHeight: 44,
                 gap: 8,
                 overflowX: 'auto',
-                padding: '4px 16px 16px 16px',
+                padding: '4px 16px 12px 16px',
                 cursor: 'grab',
                 userSelect: 'none',
                 WebkitUserSelect: 'none',
@@ -390,10 +441,10 @@ const styles = StyleSheet.create({
             >
               {TAB_CHIPS.map((chip, idx) => {
                 const isSelected = activeTabIdx === idx;
-                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary;
                 const activeText = isDark ? UX4GColors.gray900 : UX4GColors.neutral0;
                 const inactiveBg = isDark ? '#1E1E1E' : UX4GColors.neutral0;
-                const inactiveBorder = isDark ? '#333333' : '#E5E7EB';
+                const inactiveBorder = isDark ? '#333333' : '#E2E8F0';
                 const inactiveText = isDark ? '#D1D5DB' : '#1F2937';
 
                 return (
@@ -423,64 +474,97 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   backgroundColor: colors.cardBg,
-                  borderRadius: 12,
-                  border: `1px solid ${colors.cardBorder}`,
-                  padding: 14,
+                  borderRadius: 16,
+                  border: `1.5px solid ${colors.cardBorder}`,
+                  padding: '16px 16px 16px 16px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 10,
                 }}
               >
-                {FREQUENCY_OPTIONS.map((item) => {
-                  const isSelected = frequency === item.title;
-                  return (
-                    <div
-                      key={item.title}
-                      onClick={() => setFrequency(item.title)}
-                      style={{
-                        padding: '12px 14px',
-                        borderRadius: 10,
-                        backgroundColor: isSelected ? colors.selectedBg : colors.unselectedBg,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 12,
-                        cursor: 'pointer',
-                        transition: 'all 0.15s ease',
-                      }}
-                    >
-                      <Ux4gRadioButton
-                        value={item.title}
-                        groupValue={frequency}
-                        onChanged={(v) => setFrequency(v)}
-                        color={colors.primary}
-                      />
+                {/* Inside Card Header */}
+                <div style={{ marginBottom: 14 }}>
+                  <h3
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 700,
+                      color: colors.title,
+                      margin: 0,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Update frequency
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 400,
+                      color: colors.subtitle,
+                      margin: '4px 0 0 0',
+                      lineHeight: '18px',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Decide how often the portal batches and sends your notifications.
+                  </p>
+                </div>
 
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                        <span
-                          style={{
-                            fontSize: 13,
-                            fontWeight: 600,
-                            color: isSelected ? colors.titleSelected : colors.titleUnselected,
-                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                          }}
-                        >
-                          {item.title}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 400,
-                            color: isSelected ? colors.subtitleSelected : colors.subtitleUnselected,
-                            marginTop: 2,
-                            fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                          }}
-                        >
-                          {item.subtitle}
-                        </span>
+                {/* Options list */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {FREQUENCY_OPTIONS.map((item) => {
+                    const isSelected = frequency === item.title;
+                    return (
+                      <div
+                        key={item.title}
+                        onClick={() => setFrequency(item.title)}
+                        style={{
+                          padding: '12px 14px',
+                          borderRadius: 12,
+                          backgroundColor: isSelected ? colors.selectedCardBg : colors.unselectedCardBg,
+                          border: `1.5px solid ${isSelected ? colors.selectedCardBorder : colors.unselectedCardBorder}`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 12,
+                          cursor: 'pointer',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        <Ux4gRadioButton
+                          value={item.title}
+                          groupValue={frequency}
+                          onChanged={(v) => setFrequency(v)}
+                          color={colors.titleSelected}
+                        />
+
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                          <span
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 700,
+                              color: isSelected ? colors.titleSelected : colors.titleUnselected,
+                              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                            }}
+                          >
+                            {item.title}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: 12.5,
+                              fontWeight: 400,
+                              color: isSelected ? colors.subtitleSelected : colors.subtitleUnselected,
+                              marginTop: 2,
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                            }}
+                          >
+                            {item.subtitle}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

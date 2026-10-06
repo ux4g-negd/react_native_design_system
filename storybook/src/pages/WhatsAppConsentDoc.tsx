@@ -16,12 +16,12 @@ interface WhatsAppConsentDocProps {
 type MainTab = 'preview' | 'code';
 
 const TAB_CHIPS = [
+  'Whatsapp Notifications',
+  'Manage all Subscriptions',
   'Notification channels',
   'Update Frequency',
   'Per Service Preferences',
-  'Mandatory Notification',
-  'WhatsApp notification',
-  'Manage all Subscriptions',
+  'Mandatory Notifications',
 ];
 
 const BENEFITS = [
@@ -32,25 +32,33 @@ const BENEFITS = [
 
 export const WhatsAppConsentDoc: React.FC<WhatsAppConsentDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
-  const [activeTabIdx, setActiveTabIdx] = useState<number>(4);
+  const [activeTabIdx, setActiveTabIdx] = useState<number>(0);
   const [consented, setConsented] = useState<boolean>(false);
   const [enabledSuccess, setEnabledSuccess] = useState<boolean>(false);
 
   // Colors matching Flutter notif_prefs_stories.dart
   const colors = useMemo(() => {
-    const primary = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+    const primary = isDark ? UX4GColors.primary300 : UX4GColors.primary;
     return {
       bgScreen: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
-      cardBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-      cardBg: isDark ? '#1A1A1A' : UX4GColors.neutral0,
-      title: isDark ? UX4GColors.neutral0 : '#111827',
+      cardBorder: isDark ? '#334155' : '#E2E8F0',
+      cardBg: isDark ? '#1E293B' : UX4GColors.neutral0,
+      title: isDark ? UX4GColors.neutral0 : '#0F172A',
+      subtitle: isDark ? '#94A3B8' : '#475569',
       primary,
-      bannerBg: isDark ? UX4GColors.green800 : UX4GColors.green100,
+      bannerBg: isDark ? 'rgba(0, 82, 44, 0.25)' : UX4GColors.green100,
       bannerBorder: isDark ? UX4GColors.green600 : UX4GColors.green300,
-      bannerText: isDark ? '#ECFDF5' : '#111827',
+      bannerText: isDark ? '#80DA88' : UX4GColors.green800,
+      bannerTitle: isDark ? '#DDF8D8' : UX4GColors.green800,
       mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      tabActiveBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      tabActiveText: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      tabInactiveBg: isDark ? '#1E1E1E' : UX4GColors.neutral0,
+      tabInactiveText: isDark ? '#D1D5DB' : '#1F2937',
+      tabBorder: isDark ? '#333333' : '#E2E8F0',
+      btnDisabledBg: isDark ? 'rgba(99, 102, 241, 0.3)' : '#B8ACFF',
     };
   }, [isDark]);
 
@@ -63,6 +71,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
@@ -104,40 +113,48 @@ export const WhatsAppConsentPattern = () => {
             resizeMode="contain"
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
-      {/* 2. Main Title */}
+      {/* 2. Main Title & Subtitle */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Notification Preferences</Text>
+        <Text style={styles.subtitleText}>
+          Control how and when the portal contacts you. Changes are saved automatically.
+        </Text>
       </View>
 
       {/* 3. Horizontal Filter Chips */}
       <Ux4gChipGroup arrangement="horizontal" spacing={8} containerStyle={styles.tabsContainer}>
+        <Ux4gChoiceChip text="Whatsapp Notifications" selected={true} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Manage all Subscriptions" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Notification channels" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Update Frequency" selected={false} onClick={() => {}} size="s" borderRadius={6} />
         <Ux4gChoiceChip text="Per Service Preferences" selected={false} onClick={() => {}} size="s" borderRadius={6} />
-        <Ux4gChoiceChip text="Mandatory Notification" selected={false} onClick={() => {}} size="s" borderRadius={6} />
-        <Ux4gChoiceChip text="WhatsApp notification" selected={true} onClick={() => {}} size="s" borderRadius={6} />
-        <Ux4gChoiceChip text="Manage all Subscriptions" selected={false} onClick={() => {}} size="s" borderRadius={6} />
+        <Ux4gChoiceChip text="Mandatory Notifications" selected={false} onClick={() => {}} size="s" borderRadius={6} />
       </Ux4gChipGroup>
 
       {/* 4. WhatsApp Consent Card */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16 }}>
         <View style={styles.card}>
+          <Text style={styles.cardTitle}>WhatsApp notifications</Text>
+          <Text style={styles.cardSubtitle}>
+            Receive updates on WhatsApp. This channel is strictly opt-in and needs your explicit consent.
+          </Text>
+
           {/* Green Benefit Banner */}
           <View style={styles.banner}>
             <Text style={styles.bannerTitle}>What you will receive on WhatsApp:</Text>
@@ -157,7 +174,7 @@ export const WhatsAppConsentPattern = () => {
             </View>
           </View>
 
-          <View style={{ height: 20 }} />
+          <View style={{ height: 16 }} />
 
           {/* Consent Checkbox */}
           <Ux4gCheckbox
@@ -178,7 +195,9 @@ export const WhatsAppConsentPattern = () => {
             width="100%"
             height={48}
             backgroundColor={UX4GColors.primary}
-            borderRadius={8}
+            disabledBackgroundColor="#B8ACFF"
+            disabledContentColor="#FFFFFF"
+            borderRadius={10}
           />
         </View>
       </ScrollView>
@@ -202,7 +221,7 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
+    borderColor: '#C0B3FF',
     backgroundColor: UX4GColors.neutral0,
     justifyContent: 'center',
     alignItems: 'center',
@@ -216,15 +235,30 @@ const styles = StyleSheet.create({
   headerDivider: { width: 1, height: 28, backgroundColor: UX4GColors.neutral300, marginHorizontal: 4 },
   unionLogo: { width: 32, height: 32 },
   titleContainer: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12 },
-  titleText: { fontSize: 18, fontWeight: '700', color: '#111827', letterSpacing: -0.2 },
+  titleText: { fontSize: 20, fontWeight: '700', color: '#0F172A', letterSpacing: -0.2 },
+  subtitleText: { fontSize: 13, color: '#475569', marginTop: 6, lineHeight: 18 },
   tabsContainer: { paddingHorizontal: 16 },
-  card: { backgroundColor: UX4GColors.neutral0, borderRadius: 12, borderWidth: 1, borderColor: UX4GColors.neutral300, padding: 16 },
-  banner: { backgroundColor: UX4GColors.green100, borderRadius: 8, borderWidth: 1, borderColor: UX4GColors.green300, padding: 16 },
-  bannerTitle: { fontSize: 13, fontWeight: '700', color: '#111827' },
-  benefitList: { marginTop: 12, gap: 10 },
+  card: {
+    backgroundColor: UX4GColors.neutral0,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    padding: 16,
+  },
+  cardTitle: { fontSize: 18, fontWeight: '700', color: '#0F172A' },
+  cardSubtitle: { fontSize: 13, color: '#475569', marginTop: 4, marginBottom: 16, lineHeight: 18 },
+  banner: {
+    backgroundColor: UX4GColors.green100,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: UX4GColors.green300,
+    padding: 14,
+  },
+  bannerTitle: { fontSize: 13.5, fontWeight: '700', color: UX4GColors.green800 },
+  benefitList: { marginTop: 10, gap: 8 },
   benefitRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
-  checkIcon: { fontSize: 14, color: '#111827', fontWeight: '700' },
-  benefitText: { fontSize: 12, color: '#111827', flex: 1 },
+  checkIcon: { fontSize: 14, color: UX4GColors.green800, fontWeight: '700' },
+  benefitText: { fontSize: 12.5, color: UX4GColors.green800, flex: 1, lineHeight: 18 },
   footer: { paddingVertical: 14, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 4 },
   poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
   digitalIndiaLogo: { height: 24, width: 80 },
@@ -323,11 +357,11 @@ const styles = StyleSheet.create({
         {/* Content Body */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-            {/* Title */}
+            {/* Title & Subtitle */}
             <div style={{ padding: '16px 16px 12px 16px', flexShrink: 0 }}>
               <h2
                 style={{
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: 700,
                   color: colors.title,
                   margin: 0,
@@ -337,6 +371,17 @@ const styles = StyleSheet.create({
               >
                 Notification Preferences
               </h2>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: colors.subtitle,
+                  margin: '6px 0 0 0',
+                  lineHeight: '18px',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                }}
+              >
+                Control how and when the portal contacts you. Changes are saved automatically.
+              </p>
             </div>
 
             {/* Horizontal Scrollable Filter Chips */}
@@ -366,7 +411,7 @@ const styles = StyleSheet.create({
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexShrink: 0,
-                minHeight: 48,
+                minHeight: 44,
                 gap: 8,
                 overflowX: 'auto',
                 padding: '4px 16px 16px 16px',
@@ -379,10 +424,10 @@ const styles = StyleSheet.create({
             >
               {TAB_CHIPS.map((chip, idx) => {
                 const isSelected = activeTabIdx === idx;
-                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+                const activeBg = isDark ? UX4GColors.primary300 : UX4GColors.primary;
                 const activeText = isDark ? UX4GColors.gray900 : UX4GColors.neutral0;
                 const inactiveBg = isDark ? '#1E1E1E' : UX4GColors.neutral0;
-                const inactiveBorder = isDark ? '#333333' : '#E5E7EB';
+                const inactiveBorder = isDark ? '#333333' : '#E2E8F0';
                 const inactiveText = isDark ? '#D1D5DB' : '#1F2937';
 
                 return (
@@ -412,36 +457,60 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   backgroundColor: colors.cardBg,
-                  borderRadius: 12,
-                  border: `1px solid ${colors.cardBorder}`,
+                  borderRadius: 16,
+                  border: `1.5px solid ${colors.cardBorder}`,
                   padding: 16,
                   display: 'flex',
                   flexDirection: 'column',
                 }}
               >
+                {/* Card Title & Description */}
+                <h3
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    color: colors.title,
+                    margin: '0 0 6px 0',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  WhatsApp notifications
+                </h3>
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: colors.subtitle,
+                    margin: '0 0 16px 0',
+                    lineHeight: '18px',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Receive updates on WhatsApp. This channel is strictly opt-in and needs your explicit consent.
+                </p>
+
                 {/* Green Benefit Banner */}
                 <div
                   style={{
                     backgroundColor: colors.bannerBg,
                     border: `1px solid ${colors.bannerBorder}`,
-                    borderRadius: 8,
-                    padding: 16,
+                    borderRadius: 12,
+                    padding: 14,
                     display: 'flex',
                     flexDirection: 'column',
                   }}
                 >
                   <span
                     style={{
-                      fontSize: 13,
+                      fontSize: 13.5,
                       fontWeight: 700,
-                      color: colors.bannerText,
+                      color: colors.bannerTitle,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
                     What you will receive on WhatsApp:
                   </span>
 
-                  <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
                     {BENEFITS.map((benefit) => (
                       <div
                         key={benefit}
@@ -452,18 +521,18 @@ const styles = StyleSheet.create({
                         }}
                       >
                         <span
-                          className="material-symbols-outlined"
                           style={{
-                            fontSize: 16,
+                            fontSize: 14,
+                            fontWeight: 700,
                             color: colors.bannerText,
                             lineHeight: '18px',
                           }}
                         >
-                          check
+                          ✓
                         </span>
                         <span
                           style={{
-                            fontSize: 12,
+                            fontSize: 12.5,
                             fontWeight: 400,
                             color: colors.bannerText,
                             lineHeight: '18px',
@@ -477,33 +546,123 @@ const styles = StyleSheet.create({
                   </div>
                 </div>
 
-                <div style={{ height: 20 }} />
+                <div style={{ height: 16 }} />
 
                 {/* Consent Checkbox */}
-                <Ux4gCheckbox
-                  value={consented}
-                  onChanged={(val) => setConsented(val ?? false)}
-                  label="I consent to receiving notifications on WhatsApp at +91 98765 43210."
-                  isRequired={true}
-                  description="You can withdraw this consent at any time. This checkbox is never pre-ticked (DPDP Act 2023)."
-                />
+                <div
+                  onClick={() => setConsented(!consented)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 10,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                  }}
+                >
+                  {/* Styled Checkbox Box */}
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: 4,
+                      marginTop: 2,
+                      flexShrink: 0,
+                      backgroundColor: consented ? (isDark ? UX4GColors.primary300 : UX4GColors.primary) : (isDark ? '#262626' : '#FFFFFF'),
+                      border: `1.5px solid ${
+                        consented
+                          ? (isDark ? UX4GColors.primary300 : UX4GColors.primary)
+                          : (isDark ? '#4B5563' : '#94A3B8')
+                      }`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'all 0.15s ease',
+                    }}
+                  >
+                    {consented && (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M20 6L9 17L4 12"
+                          stroke={isDark ? UX4GColors.gray900 : '#FFFFFF'}
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <span
+                      style={{
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: colors.title,
+                        lineHeight: '18px',
+                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      }}
+                    >
+                      I consent to receiving notifications on WhatsApp at +91 98765 43210.
+                      <span style={{ color: '#EF4444' }}> *</span>
+                    </span>
+
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 4, marginTop: 4 }}>
+                      <span
+                        style={{
+                          fontSize: 12,
+                          color: colors.subtitle,
+                          lineHeight: '16px',
+                        }}
+                      >
+                        ⓘ
+                      </span>
+                      <span
+                        style={{
+                          fontSize: 11.5,
+                          color: colors.subtitle,
+                          lineHeight: '16px',
+                          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                        }}
+                      >
+                        You can withdraw this consent at any time. This checkbox is never pre-ticked (DPDP Act 2023).
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
                 <div style={{ height: 20 }} />
 
                 {/* Enable Button */}
-                <Ux4gButton
-                  text={enabledSuccess ? 'WhatsApp notifications enabled!' : 'Enable WhatsApp notifications'}
-                  onPress={() => {
+                <button
+                  type="button"
+                  disabled={!consented}
+                  onClick={() => {
                     if (consented) {
                       setEnabledSuccess(true);
                     }
                   }}
-                  enabled={consented}
-                  width="100%"
-                  height={48}
-                  backgroundColor={colors.primary}
-                  borderRadius={8}
-                />
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 10,
+                    border: 'none',
+                    backgroundColor: consented
+                      ? (isDark ? UX4GColors.primary300 : UX4GColors.primary)
+                      : colors.btnDisabledBg,
+                    color: consented && isDark ? UX4GColors.gray900 : '#FFFFFF',
+                    fontSize: 14,
+                    fontWeight: 600,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    cursor: consented ? 'pointer' : 'not-allowed',
+                    transition: 'all 0.2s ease',
+                    boxShadow: consented ? '0 2px 8px rgba(79, 57, 246, 0.25)' : 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {enabledSuccess ? 'WhatsApp notifications enabled!' : 'Enable WhatsApp notifications'}
+                </button>
               </div>
             </div>
           </div>
