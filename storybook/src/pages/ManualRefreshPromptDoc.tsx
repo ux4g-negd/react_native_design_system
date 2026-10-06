@@ -36,9 +36,12 @@ export const ManualRefreshPromptDoc: React.FC<ManualRefreshPromptDocProps> = ({ 
       currentCardBg: isDark ? '#2E1A47' : '#F3F0FF',
       toastBg: isDark ? '#1E1E1E' : UX4GColors.neutral0,
       toastIcon: '#06B6D4',
-      pendingBadgeBg: isDark ? '#3B0A0A' : '#FEF2F2',
-      pendingBadgeText: isDark ? '#F87171' : '#DC2626',
-      pendingDot: isDark ? '#FDE68A' : '#D97706',
+      pendingBadgeBg: isDark ? 'rgba(164, 104, 0, 0.15)' : 'transparent',
+      pendingBadgeText: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
+      pendingDot: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
+      progressGradient: isDark
+        ? [UX4GColors.secondary400, UX4GColors.secondary300]
+        : [UX4GColors.secondary300, UX4GColors.secondary600],
     };
   }, [isDark]);
 
@@ -112,6 +115,7 @@ export const ManualRefreshPromptPattern = () => {
             <Text style={styles.cardTitle}>Income Certificate</Text>
             <Ux4gTag
               text="Under Review"
+              shape="rectangular"
               style="tonal"
               size="m"
             />
@@ -126,7 +130,7 @@ export const ManualRefreshPromptPattern = () => {
             label="8 days left"
             height={6}
             shape="rounded"
-            gradientColors={['#F59E0B', '#D97706']}
+            gradientColors={[UX4GColors.secondary300, UX4GColors.secondary600]}
           />
         </View>
 
@@ -167,10 +171,10 @@ export const ManualRefreshPromptPattern = () => {
                 title: 'Decision',
                 status: {
                   text: '2 days remaining',
-                  dotColor: '#D97706',
+                  dotColor: UX4GColors.secondary,
                   badgeText: 'Pending',
-                  badgeColor: '#FEF2F2',
-                  badgeTextColor: '#DC2626',
+                  badgeColor: 'transparent',
+                  badgeTextColor: UX4GColors.secondary,
                 },
               },
             ]}
@@ -375,6 +379,7 @@ const styles = StyleSheet.create({
               </span>
               <Ux4gTag
                 text="Under Review"
+                shape="rectangular"
                 style="tonal"
                 size="m"
               />
@@ -397,7 +402,7 @@ const styles = StyleSheet.create({
                 label="8 days left"
                 height={6}
                 shape="rounded"
-                gradientColors={['#F59E0B', '#D97706']}
+                gradientColors={colors.progressGradient}
               />
             </div>
           </div>

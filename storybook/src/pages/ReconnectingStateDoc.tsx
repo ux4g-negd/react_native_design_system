@@ -29,12 +29,15 @@ export const ReconnectingStateDoc: React.FC<ReconnectingStateDocProps> = ({ isDa
       cardBg: isDark ? '#1E1E1E' : UX4GColors.neutral0,
       onSurface: isDark ? '#FFFFFF' : '#111827',
       subtle: isDark ? '#9CA3AF' : '#6B7280',
-      badgeBg: isDark ? '#78350F' : '#FEF3C7',
-      badgeText: isDark ? '#FDE68A' : '#B45309',
+      badgeBg: isDark ? 'rgba(173, 78, 0, 0.3)' : '#FFD899',
+      badgeText: isDark ? '#FFD899' : '#AD4E00',
       currentCardBg: isDark ? '#2E1A47' : '#F3F0FF',
-      pendingBadgeBg: isDark ? '#3B0A0A' : '#FEF2F2',
-      pendingBadgeText: isDark ? '#F87171' : '#DC2626',
-      pendingDot: isDark ? '#FDE68A' : '#D97706',
+      pendingBadgeBg: isDark ? 'rgba(164, 104, 0, 0.15)' : 'transparent',
+      pendingBadgeText: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
+      pendingDot: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
+      progressGradient: isDark
+        ? [UX4GColors.secondary400, UX4GColors.secondary300]
+        : [UX4GColors.secondary300, UX4GColors.secondary600],
     };
   }, [isDark]);
 
@@ -104,10 +107,11 @@ export const ReconnectingStatePattern = () => {
             <Text style={styles.cardTitle}>Income Certificate</Text>
             <Ux4gTag
               text="Reconnecting"
+              shape="rectangular"
               style="tonal"
               size="m"
-              backgroundColor="#FEF3C7"
-              textColor="#B45309"
+              customBackgroundColor="#FFD899"
+              customContentColor="#AD4E00"
             />
           </View>
 
@@ -120,7 +124,7 @@ export const ReconnectingStatePattern = () => {
             label="8 days left"
             height={6}
             shape="rounded"
-            gradientColors={['#F59E0B', '#D97706']}
+            gradientColors={[UX4GColors.secondary300, UX4GColors.secondary600]}
           />
         </View>
 
@@ -161,10 +165,10 @@ export const ReconnectingStatePattern = () => {
                 title: 'Decision',
                 status: {
                   text: '2 days remaining',
-                  dotColor: '#D97706',
+                  dotColor: UX4GColors.secondary,
                   badgeText: 'Pending',
-                  badgeColor: '#FEF2F2',
-                  badgeTextColor: '#DC2626',
+                  badgeColor: 'transparent',
+                  badgeTextColor: UX4GColors.secondary,
                 },
               },
             ]}
@@ -351,19 +355,14 @@ const styles = StyleSheet.create({
               >
                 Income Certificate
               </span>
-              <span
-                style={{
-                  padding: '4px 10px',
-                  borderRadius: 6,
-                  backgroundColor: colors.badgeBg,
-                  color: colors.badgeText,
-                  fontSize: 11,
-                  fontWeight: 700,
-                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                }}
-              >
-                Reconnecting
-              </span>
+              <Ux4gTag
+                text="Reconnecting"
+                shape="rectangular"
+                style="tonal"
+                size="m"
+                customBackgroundColor={colors.badgeBg}
+                customContentColor={colors.badgeText}
+              />
             </div>
 
             <span
@@ -383,7 +382,7 @@ const styles = StyleSheet.create({
                 label="8 days left"
                 height={6}
                 shape="rounded"
-                gradientColors={['#F59E0B', '#D97706']}
+                gradientColors={colors.progressGradient}
               />
             </div>
           </div>

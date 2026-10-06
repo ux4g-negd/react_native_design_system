@@ -33,9 +33,12 @@ export const LiveStatusDoc: React.FC<LiveStatusDocProps> = ({ isDark }) => {
       badgeBg: isDark ? '#064E3B' : '#DCFCE7',
       badgeText: isDark ? '#6EE7B7' : '#15803D',
       currentCardBg: isDark ? '#2E1A47' : '#F3F0FF',
-      pendingBadgeBg: isDark ? '#3B0A0A' : '#FEF2F2',
-      pendingBadgeText: isDark ? '#F87171' : '#DC2626',
-      pendingDot: isDark ? '#FDE68A' : '#D97706',
+      pendingBadgeBg: isDark ? 'rgba(164, 104, 0, 0.15)' : 'transparent',
+      pendingBadgeText: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
+      pendingDot: isDark ? UX4GColors.secondary300 : UX4GColors.secondary,
+      progressGradient: isDark
+        ? [UX4GColors.secondary400, UX4GColors.secondary300]
+        : [UX4GColors.secondary300, UX4GColors.secondary600],
     };
   }, [isDark]);
 
@@ -105,10 +108,10 @@ export const LiveStatusPattern = () => {
             <Text style={styles.cardTitle}>Income Certificate</Text>
             <Ux4gTag
               text="Live"
+              shape="rectangular"
               style="tonal"
+              colorScheme="success"
               size="m"
-              backgroundColor="#DCFCE7"
-              textColor="#15803D"
             />
           </View>
 
@@ -121,7 +124,7 @@ export const LiveStatusPattern = () => {
             label="8 days left"
             height={6}
             shape="rounded"
-            gradientColors={['#F59E0B', '#D97706']}
+            gradientColors={[UX4GColors.secondary300, UX4GColors.secondary600]}
           />
         </View>
 
@@ -162,10 +165,10 @@ export const LiveStatusPattern = () => {
                 title: 'Decision',
                 status: {
                   text: '2 days remaining',
-                  dotColor: '#D97706',
+                  dotColor: UX4GColors.secondary,
                   badgeText: 'Pending',
-                  badgeColor: '#FEF2F2',
-                  badgeTextColor: '#DC2626',
+                  badgeColor: 'transparent',
+                  badgeTextColor: UX4GColors.secondary,
                 },
               },
             ]}
@@ -352,19 +355,15 @@ const styles = StyleSheet.create({
               >
                 Income Certificate
               </span>
-              <span
-                style={{
-                  padding: '4px 10px',
-                  borderRadius: 6,
-                  backgroundColor: colors.badgeBg,
-                  color: colors.badgeText,
-                  fontSize: 11,
-                  fontWeight: 700,
-                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                }}
-              >
-                Live
-              </span>
+              <Ux4gTag
+                text="Live"
+                shape="rectangular"
+                style="tonal"
+                colorScheme="success"
+                size="m"
+                customBackgroundColor={colors.badgeBg}
+                customContentColor={colors.badgeText}
+              />
             </div>
 
             <span
@@ -384,7 +383,7 @@ const styles = StyleSheet.create({
                 label="8 days left"
                 height={6}
                 shape="rounded"
-                gradientColors={['#F59E0B', '#D97706']}
+                gradientColors={colors.progressGradient}
               />
             </div>
           </div>
