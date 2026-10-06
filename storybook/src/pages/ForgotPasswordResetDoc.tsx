@@ -2,11 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gInputField } from '../../../src/components/input-field/InputField';
-import { Ux4gButton } from '../../../src/components/button/Button';
-import { Ux4gStatusBanner } from '../../../src/components/status-banner/StatusBanner';
 import { CodeBlock } from '../components/CodeBlock';
-import { UnionLogo } from '../components/UnionLogo';
 
 interface ForgotPasswordResetDocProps {
   isDark: boolean;
@@ -20,29 +16,28 @@ export const ForgotPasswordResetDoc: React.FC<ForgotPasswordResetDocProps> = ({ 
   const [variant, setVariant] = useState<VariantType>('default');
   const [mobile, setMobile] = useState('');
 
-  // Exact color tokens from UX4G Flutter Design System (1:1 match with Ux4gColors/Ux4gPalette)
+  // Color Palette tokens matching UX4G Design System
   const colors = useMemo(() => {
     return {
-      title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,           // _getTitleColor
-      subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,  // _getSubtleText
-      mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,   // _getMutedText
-      border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,      // _getBorder
-      cardBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100, // _getSuCardBg
-      defaultScreenBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : '#FFFFFF',
+      cardScreenBg: isDark ? '#1C1335' : '#F3F0FF',
+      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+      inputBorder: isDark ? UX4GColors.neutral700 : '#E2E8F0',
+      inputBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      title: isDark ? UX4GColors.neutral50 : '#0F172A',
+      subtitle: isDark ? UX4GColors.neutral400 : '#475569',
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      buttonBg: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      warningBannerText: '#92400E',
-      warningBannerIcon: '#D97706',
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
+      btnPrimaryBg: isDark ? UX4GColors.primary : '#4F46E5',
+      btnOutlineBorder: isDark ? UX4GColors.primary400 : '#C4B5FD',
+      btnOutlineText: isDark ? UX4GColors.primary300 : '#4F46E5',
     };
   }, [isDark]);
 
-  const handleSendOtp = () => {
-    alert('OTP sent to mobile number');
-  };
-
-  // Clean React Native TSX code snippet matching Flutter fpStep1Component
+  // TSX Code Strings for Default and Card style variants
   const codeString = useMemo(() => {
     if (variant === 'card') {
       return `import React, { useState } from 'react';
@@ -50,393 +45,133 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Image,
-  Pressable,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gInputField,
-  Ux4gButton,
-  Ux4gDivider,
-  Ux4gStatusBanner,
-  Ux4gIcons,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
-export const ResetPasswordCardPattern = () => {
+export const ResetPasswordCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const [mobile, setMobile] = useState('');
 
   return (
-    <View style={styles.screen}>
-      {/* 1. Official Government Header */}
+    <View style={[styles.container, { backgroundColor: isDark ? '#1C1335' : '#F3F0FF' }]}>
+      {/* App Header with Menu Action */}
       <Ux4gAppHeader
-        title=""
-        variant="light"
-        elevation={0}
-        useSafeArea={false}
-        horizontalPadding={16}
-        leadingSpacing={12}
-        backgroundColor={UX4GColors.neutral0}
-        borderColor={UX4GColors.neutral200}
+        variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
-          <Image
-            key="emblem"
-            source={{ uri: '/national_emblem_logo.svg' }}
-            style={styles.emblemLogo}
-            resizeMode="contain"
-          />,
-          <View key="divider" style={styles.headerDivider} />,
-          <Image
-            key="union"
-            source={{ uri: '/Union.svg' }}
-            style={styles.unionLogo}
-            resizeMode="contain"
-          />,
-        ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
-      />
-      <Ux4gDivider color={UX4GColors.neutral200} />
-
-      {/* 2. Card Layout Body */}
-      <View style={styles.cardContainer}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {/* Reusable Back Navigation Link */}
-          <Ux4gButton
-            text="Back to Sign In"
-            variant="ghost"
-            size="small"
-            leadingIcon="arrow_back"
-            iconSize={18}
-            onPress={() => {}}
-            style={styles.backButton}
-          />
-
-          <View style={{ height: 12 }} />
-
-          {/* Elevated Card Container */}
-          <View style={styles.card}>
-            <Text style={styles.title}>Reset Password</Text>
-            <View style={{ height: 6 }} />
-            <Text style={styles.subtitleText}>
-              Enter your registered mobile number to receive a verification code
-            </Text>
-
-            <View style={{ height: 20 }} />
-
-            <Ux4gInputField
-              value={mobile}
-              onValueChange={setMobile}
-              label="Mobile Number"
-              placeholder="Enter mobile number"
-              prefixText="+91"
-              type="number"
-              maxLength={10}
+          <View style={styles.headerLeading} key="leading">
+            <Image
+              source={{ uri: '/national_emblem_logo.svg' }}
+              style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
             />
-
-            <View style={{ height: 16 }} />
-
-            <Ux4gButton
-              text="Send OTP"
-              variant="primary"
-              size="large"
-              onPress={() => {}}
-              style={styles.actionButton}
-            />
-
-            <View style={{ height: 12 }} />
-
-            <Pressable onPress={() => {}}>
-              <Text style={styles.linkText}>
-                Recover account using Aadhaar Number  ?
-              </Text>
-            </Pressable>
-
-            <View style={{ height: 6 }} />
-
-            {/* OR Divider */}
-            <View style={styles.orRow}>
-              <View style={styles.orLine} />
-              <Text style={styles.orText}>OR</Text>
-              <View style={styles.orLine} />
-            </View>
-
-            <View style={{ height: 6 }} />
-
-            <Ux4gButton
-              text="Sign in with OTP instead"
-              variant="outline"
-              size="large"
-              onPress={() => {}}
-              style={styles.actionButton}
-            />
-
-            <View style={{ height: 14 }} />
-
-            {/* Warning Banner */}
-            <Ux4gStatusBanner
-              variant="warningLight"
-              title="Most services use OTP login so you may not need a password."
-              leadingIcon={Ux4gIcons.fillRevInfo({ size: 18, color: '#D97706' })}
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
             />
           </View>
-        </ScrollView>
+        ]}
+        actions={[
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
+        ]}
+      />
 
-        {/* Powered by Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.poweredByText}>Powered by -</Text>
-          <Image
-            source={{ uri: '/Digital_India_logo.svg' }}
-            style={styles.digitalIndiaLogo}
-            resizeMode="contain"
-          />
+      {/* Floating Card Container */}
+      <View style={styles.cardWrapper}>
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }]}>
+          {/* Back Navigation Link */}
+          <TouchableOpacity style={styles.backBtn} onPress={() => {}}>
+            <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+              ← Back to Sign in
+            </Text>
+          </TouchableOpacity>
+
+          {/* Title & Subtitle */}
+          <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
+            Reset Password
+          </Text>
+          <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
+            Enter your registered mobile number to receive a verification code
+          </Text>
+
+          {/* Mobile Number Input */}
+          <Text style={[styles.inputLabel, { color: isDark ? UX4GColors.neutral200 : '#1E293B' }]}>
+            Mobile Number
+          </Text>
+          <View style={[styles.inputBox, { borderColor: isDark ? UX4GColors.neutral700 : '#E2E8F0', backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }]}>
+            <Text style={[styles.prefixText, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
+              +91
+            </Text>
+            <TextInput
+              value={mobile}
+              onChangeText={setMobile}
+              placeholder="Enter mobile number"
+              placeholderTextColor="#94A3B8"
+              keyboardType="phone-pad"
+              maxLength={10}
+              style={[styles.inputField, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}
+            />
+          </View>
+
+          {/* Send OTP Button */}
+          <TouchableOpacity
+            style={[styles.sendOtpBtn, { backgroundColor: isDark ? UX4GColors.primary : '#4F46E5' }]}
+            onPress={() => {}}
+          >
+            <Text style={styles.sendOtpText}>Send OTP</Text>
+          </TouchableOpacity>
+
+          {/* Recover account using Aadhaar link */}
+          <TouchableOpacity onPress={() => {}} style={styles.linkWrapper}>
+            <Text style={[styles.linkText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+              Recover account using Aadhaar Number →
+            </Text>
+          </TouchableOpacity>
+
+          {/* OR Divider */}
+          <View style={styles.orRow}>
+            <View style={[styles.orLine, { backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }]} />
+            <Text style={styles.orText}>OR</Text>
+            <View style={[styles.orLine, { backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }]} />
+          </View>
+
+          {/* Alternative Sign In Button */}
+          <TouchableOpacity
+            style={[styles.altBtn, { borderColor: isDark ? UX4GColors.primary400 : '#C4B5FD' }]}
+            onPress={() => {}}
+          >
+            <Text style={[styles.altBtnText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+              Sign in with OTP instead
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </View>
-  );
-};
 
-const styles = StyleSheet.create({
-  menuBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: UX4GColors.primary,
-  },
-  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
-  emblemLogo: { width: 32, height: 32 },
-  headerDivider: {
-    width: 1, height: 28,
-    backgroundColor: UX4GColors.neutral300,
-    marginHorizontal: 4,
-  },
-  unionLogo: { width: 32, height: 32 },
-  cardContainer: {
-    flex: 1, backgroundColor: UX4GColors.primary100,
-  },
-  scrollContainer: { padding: 16 },
-  backButton: {
-    alignSelf: 'flex-start',
-    height: 36,
-    paddingHorizontal: 0,
-  },
-  card: {
-    backgroundColor: UX4GColors.neutral0,
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
-    shadowRadius: 16,
-    elevation: 2,
-  },
-  title: {
-    fontSize: 22, fontWeight: '700',
-    color: '#111827', letterSpacing: -0.3,
-    lineHeight: 26.4,
-  },
-  subtitleText: {
-    fontSize: 13, color: UX4GColors.neutral500,
-    lineHeight: 18.2,
-  },
-  actionButton: {
-    width: '100%', height: 48, borderRadius: 8,
-  },
-  linkText: {
-    fontSize: 12, fontWeight: '600',
-    color: UX4GColors.primary, textAlign: 'center',
-  },
-  orRow: {
-    flexDirection: 'row', alignItems: 'center',
-  },
-  orLine: {
-    flex: 1, height: 1, backgroundColor: UX4GColors.neutral200,
-  },
-  orText: {
-    fontSize: 12, fontWeight: '500',
-    color: UX4GColors.neutral400,
-    paddingHorizontal: 12,
-  },
-  footer: {
-    paddingVertical: 14, alignItems: 'center',
-    flexDirection: 'row', justifyContent: 'center', gap: 4,
-  },
-  poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
-  digitalIndiaLogo: { height: 24, width: 80 },
-});`;
-    }
-
-    return `import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Pressable,
-} from 'react-native';
-import {
-  Ux4gAppHeader,
-  Ux4gInputField,
-  Ux4gButton,
-  Ux4gDivider,
-  Ux4gStatusBanner,
-  Ux4gIcons,
-  UX4GColors,
-} from 'ux4g-react-native-components';
-
-export const ResetPasswordDefaultPattern = () => {
-  const [mobile, setMobile] = useState('');
-
-  return (
-    <View style={styles.screen}>
-      {/* 1. Official Government Header */}
-      <Ux4gAppHeader
-        title=""
-        variant="light"
-        elevation={0}
-        useSafeArea={false}
-        horizontalPadding={16}
-        leadingSpacing={12}
-        backgroundColor={UX4GColors.neutral0}
-        borderColor={UX4GColors.neutral200}
-        leadingWidgets={[
-          <Image
-            key="emblem"
-            source={{ uri: '/national_emblem_logo.svg' }}
-            style={styles.emblemLogo}
-            resizeMode="contain"
-          />,
-          <View key="divider" style={styles.headerDivider} />,
-          <Image
-            key="union"
-            source={{ uri: '/Union.svg' }}
-            style={styles.unionLogo}
-            resizeMode="contain"
-          />,
-        ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
-      />
-      <Ux4gDivider color={UX4GColors.neutral200} />
-
-      {/* 2. Main Content Body */}
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Back navigation link */}
-        <Ux4gButton
-          text="Back to Sign In"
-          variant="ghost"
-          size="small"
-          leadingIcon="arrow_back"
-          iconSize={18}
-          onPress={() => {}}
-          style={styles.backButton}
-        />
-
-        <View style={{ height: 20 }} />
-
-        <Text style={styles.title}>Reset Password</Text>
-        <View style={{ height: 6 }} />
-        <Text style={styles.subtitleText}>
-          Enter your registered mobile number to receive a verification code
-        </Text>
-
-        <View style={{ height: 24 }} />
-
-        <Ux4gInputField
-          value={mobile}
-          onValueChange={setMobile}
-          label="Mobile Number"
-          placeholder="Enter mobile number"
-          prefixText="+91"
-          type="number"
-          maxLength={10}
-        />
-
-        <View style={{ height: 20 }} />
-
-        <Ux4gButton
-          text="Send OTP"
-          variant="primary"
-          size="large"
-          onPress={() => {}}
-          style={styles.actionButton}
-        />
-
-        <View style={{ height: 14 }} />
-
-        <Pressable onPress={() => {}} style={{ alignSelf: 'center' }}>
-          <Text style={styles.linkText}>
-            Recover account using Aadhaar Number  ?
-          </Text>
-        </Pressable>
-
-        <View style={{ height: 8 }} />
-
-        {/* OR Divider */}
-        <View style={styles.orRow}>
-          <View style={styles.orLine} />
-          <Text style={styles.orText}>OR</Text>
-          <View style={styles.orLine} />
-        </View>
-
-        <View style={{ height: 8 }} />
-
-        <Ux4gButton
-          text="Sign in with OTP instead"
-          variant="outline"
-          size="large"
-          onPress={() => {}}
-          style={styles.actionButton}
-        />
-
-        <View style={{ height: 16 }} />
-
-        {/* Warning Banner */}
-        <Ux4gStatusBanner
-          variant="warningLight"
-          title="Most services use OTP login so you may not need a password."
-          leadingIcon={Ux4gIcons.fillRevInfo({ size: 18, color: '#D97706' })}
-        />
-      </ScrollView>
-
-      {/* Powered by Digital India Footer */}
+      {/* Digital India Footer */}
       <View style={styles.footer}>
-        <Text style={styles.poweredByText}>Powered by -</Text>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
         <Image
           source={{ uri: '/Digital_India_logo.svg' }}
-          style={styles.digitalIndiaLogo}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
           resizeMode="contain"
         />
       </View>
@@ -445,90 +180,213 @@ export const ResetPasswordDefaultPattern = () => {
 };
 
 const styles = StyleSheet.create({
-  menuBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: UX4GColors.primary,
-  },
-  screen: { flex: 1, backgroundColor: UX4GColors.neutral0 },
-  emblemLogo: { width: 32, height: 32 },
-  headerDivider: {
-    width: 1, height: 28,
-    backgroundColor: UX4GColors.neutral300,
-    marginHorizontal: 4,
-  },
-  unionLogo: { width: 32, height: 32 },
-  scrollContainer: {
-    paddingHorizontal: 20, paddingTop: 16,
-  },
-  backButton: {
-    alignSelf: 'flex-start',
-    height: 36,
-    paddingHorizontal: 0,
-  },
-  title: {
-    fontSize: 24, fontWeight: '700',
-    color: '#111827', letterSpacing: -0.3,
-    lineHeight: 28.8,
-  },
-  subtitleText: {
-    fontSize: 14, color: UX4GColors.neutral500,
-    lineHeight: 19.6,
-  },
-  actionButton: {
-    width: '100%', height: 48, borderRadius: 8,
-  },
-  linkText: {
-    fontSize: 13, fontWeight: '600',
-    color: UX4GColors.primary,
-  },
-  orRow: {
-    flexDirection: 'row', alignItems: 'center',
-  },
-  orLine: {
-    flex: 1, height: 1, backgroundColor: UX4GColors.neutral200,
-  },
-  orText: {
-    fontSize: 12, fontWeight: '500',
-    color: UX4GColors.neutral400,
-    paddingHorizontal: 16, letterSpacing: 0.5,
-  },
-  footer: {
-    paddingVertical: 14, paddingHorizontal: 20,
-    alignItems: 'center', flexDirection: 'row',
-    justifyContent: 'center', gap: 4,
-  },
-  poweredByText: { fontSize: 11, color: UX4GColors.neutral400 },
-  digitalIndiaLogo: { height: 24, width: 80 },
+  container: { flex: 1, justifyContent: 'space-between' },
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  emblemImage: { height: 32, width: 24 },
+  unionImage: { height: 24, width: 28 },
+  menuBtn: { width: 38, height: 38, borderRadius: 8, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  cardWrapper: { paddingHorizontal: 16, paddingTop: 16, flex: 1 },
+  card: { borderRadius: 16, padding: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
+  backBtn: { alignSelf: 'flex-start', marginBottom: 16 },
+  backText: { fontSize: 13.5, fontWeight: '600', fontFamily: 'Inter' },
+  title: { fontSize: 24, fontWeight: '800', lineHeight: 30, marginBottom: 8, textAlign: 'left', fontFamily: 'Inter' },
+  subtitle: { fontSize: 13.5, fontWeight: '400', lineHeight: 19, marginBottom: 20, textAlign: 'left', fontFamily: 'Inter' },
+  inputLabel: { fontSize: 13.5, fontWeight: '600', marginBottom: 6, fontFamily: 'Inter' },
+  inputBox: { height: 48, borderRadius: 10, borderWidth: 1.5, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, marginBottom: 16 },
+  prefixText: { fontSize: 14, fontWeight: '600', marginRight: 8, fontFamily: 'Inter' },
+  inputField: { flex: 1, fontSize: 14, fontFamily: 'Inter' },
+  sendOtpBtn: { height: 48, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
+  sendOtpText: { color: '#FFFFFF', fontSize: 15, fontWeight: '600', fontFamily: 'Inter' },
+  linkWrapper: { alignItems: 'center', marginBottom: 16 },
+  linkText: { fontSize: 13.5, fontWeight: '600', fontFamily: 'Inter' },
+  orRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  orLine: { flex: 1, height: 1 },
+  orText: { paddingHorizontal: 12, fontSize: 11.5, fontWeight: '500', color: '#94A3B8', fontFamily: 'Inter' },
+  altBtn: { height: 48, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  altBtnText: { fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingBottom: 20 },
+  footerText: { fontSize: 11, fontWeight: '400', fontFamily: 'Inter' },
+  digitalIndiaLogo: { height: 22, width: 100 },
+});`;
+    }
+
+    return `import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import {
+  Ux4gAppHeader,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+
+export const ResetPasswordDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
+  const [mobile, setMobile] = useState('');
+
+  return (
+    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : '#FFFFFF' }]}>
+      {/* App Header with Menu Action */}
+      <Ux4gAppHeader
+        variant={isDark ? 'dark' : 'light'}
+        leadingWidgets={[
+          <View style={styles.headerLeading} key="leading">
+            <Image
+              source={{ uri: '/national_emblem_logo.svg' }}
+              style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
+            />
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
+          </View>
+        ]}
+        actions={[
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
+        ]}
+      />
+
+      {/* Main Content Area */}
+      <View style={styles.content}>
+        {/* Back Navigation Link */}
+        <TouchableOpacity style={styles.backBtn} onPress={() => {}}>
+          <Text style={[styles.backText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+            ← Back to Sign in
+          </Text>
+        </TouchableOpacity>
+
+        {/* Title & Subtitle */}
+        <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
+          Reset Password
+        </Text>
+        <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
+          Enter your registered mobile number to receive a verification code
+        </Text>
+
+        {/* Mobile Number Input */}
+        <Text style={[styles.inputLabel, { color: isDark ? UX4GColors.neutral200 : '#1E293B' }]}>
+          Mobile Number
+        </Text>
+        <View style={[styles.inputBox, { borderColor: isDark ? UX4GColors.neutral700 : '#E2E8F0', backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }]}>
+          <Text style={[styles.prefixText, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
+            +91
+          </Text>
+          <TextInput
+            value={mobile}
+            onChangeText={setMobile}
+            placeholder="Enter mobile number"
+            placeholderTextColor="#94A3B8"
+            keyboardType="phone-pad"
+            maxLength={10}
+            style={[styles.inputField, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}
+          />
+        </View>
+
+        {/* Send OTP Button */}
+        <TouchableOpacity
+          style={[styles.sendOtpBtn, { backgroundColor: isDark ? UX4GColors.primary : '#4F46E5' }]}
+          onPress={() => {}}
+        >
+          <Text style={styles.sendOtpText}>Send OTP</Text>
+        </TouchableOpacity>
+
+        {/* Recover account using Aadhaar link */}
+        <TouchableOpacity onPress={() => {}} style={styles.linkWrapper}>
+          <Text style={[styles.linkText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+            Recover account using Aadhaar Number →
+          </Text>
+        </TouchableOpacity>
+
+        {/* OR Divider */}
+        <View style={styles.orRow}>
+          <View style={[styles.orLine, { backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }]} />
+          <Text style={styles.orText}>OR</Text>
+          <View style={[styles.orLine, { backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }]} />
+        </View>
+
+        {/* Alternative Sign In Button */}
+        <TouchableOpacity
+          style={[styles.altBtn, { borderColor: isDark ? UX4GColors.primary400 : '#C4B5FD' }]}
+          onPress={() => {}}
+        >
+          <Text style={[styles.altBtnText, { color: isDark ? UX4GColors.primary300 : '#4F46E5' }]}>
+            Sign in with Email instead
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Digital India Footer */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'space-between' },
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  emblemImage: { height: 32, width: 24 },
+  unionImage: { height: 24, width: 28 },
+  menuBtn: { width: 38, height: 38, borderRadius: 8, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  content: { padding: 20, flex: 1 },
+  backBtn: { alignSelf: 'flex-start', marginBottom: 16 },
+  backText: { fontSize: 13.5, fontWeight: '600', fontFamily: 'Inter' },
+  title: { fontSize: 24, fontWeight: '800', lineHeight: 30, marginBottom: 8, textAlign: 'left', fontFamily: 'Inter' },
+  subtitle: { fontSize: 13.5, fontWeight: '400', lineHeight: 19, marginBottom: 20, textAlign: 'left', fontFamily: 'Inter' },
+  inputLabel: { fontSize: 13.5, fontWeight: '600', marginBottom: 6, fontFamily: 'Inter' },
+  inputBox: { height: 48, borderRadius: 10, borderWidth: 1.5, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, marginBottom: 16 },
+  prefixText: { fontSize: 14, fontWeight: '600', marginRight: 8, fontFamily: 'Inter' },
+  inputField: { flex: 1, fontSize: 14, fontFamily: 'Inter' },
+  sendOtpBtn: { height: 48, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
+  sendOtpText: { color: '#FFFFFF', fontSize: 15, fontWeight: '600', fontFamily: 'Inter' },
+  linkWrapper: { alignItems: 'center', marginBottom: 16 },
+  linkText: { fontSize: 13.5, fontWeight: '600', fontFamily: 'Inter' },
+  orRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  orLine: { flex: 1, height: 1 },
+  orText: { paddingHorizontal: 12, fontSize: 11.5, fontWeight: '500', color: '#94A3B8', fontFamily: 'Inter' },
+  altBtn: { height: 48, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  altBtnText: { fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingBottom: 20 },
+  footerText: { fontSize: 11, fontWeight: '400', fontFamily: 'Inter' },
+  digitalIndiaLogo: { height: 22, width: 100 },
 });`;
   }, [variant]);
 
-  // Interactive Live Mockup for Web Preview (1:1 match with Flutter FP Step 1)
+  // Interactive Live Mockup for Web Preview
   const renderLiveMockup = () => {
     const isCard = variant === 'card';
     const bgScreenColor = isCard ? colors.cardScreenBg : colors.defaultScreenBg;
-
-    // SVG for fillRevInfo matching Flutter Ux4gIcons.fillRevInfo
-    const fillRevInfoIcon = (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="#D97706" style={{ flexShrink: 0 }}>
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm1-4h-2V7h2v6z" />
-      </svg>
-    );
 
     return (
       <div
         style={{
           width: 360,
-          height: 760,
+          minHeight: 760,
           borderRadius: 20,
           overflow: 'hidden',
           boxShadow: isDark
@@ -542,15 +400,23 @@ const styles = StyleSheet.create({
         }}
       >
         {/* Official Header */}
-        <div style={{ position: 'relative', zIndex: 10 }}>
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            boxShadow: isDark
+              ? '0 2px 8px rgba(0, 0, 0, 0.4)'
+              : '0 2px 8px rgba(0, 0, 0, 0.04)',
+          }}
+        >
           <Ux4gAppHeader
             title=""
             variant="light"
-            elevation={0}
+            elevation={2}
             useSafeArea={false}
             height={56}
             horizontalPadding={16}
-            leadingSpacing={12}
+            leadingSpacing={8}
             backgroundColor={colors.headerBg}
             borderColor={colors.border}
             leadingWidgets={[
@@ -563,44 +429,46 @@ const styles = StyleSheet.create({
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />,
-              <div
-                key="divider"
+              <img
+                key="union"
+                src="/Union.svg"
+                alt="Union"
                 style={{
-                  width: 1,
-                  height: 28,
-                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                  margin: '0 4px',
+                  height: 24,
+                  marginLeft: 4,
                 }}
               />,
-              <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <button
-                  key="menu"
-                  type="button"
-                  onClick={() => {}}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
-                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
-                  </svg>
-                </button>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <div
+                    key="menuAction"
+                    style={{
+                      width: 38,
+                      height: 38,
+                      borderRadius: 8,
+                      border: `1.5px solid ${colors.menuBorder}`,
+                      backgroundColor: colors.headerBg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span
+                      className="material-symbols-outlined"
+                      style={{
+                        fontSize: 20,
+                        color: colors.menuIcon,
+                      }}
+                    >
+                      menu
+                    </span>
+                  </div>
+                ),
+              },
+            ]}
           />
           <div
             style={{
@@ -613,453 +481,468 @@ const styles = StyleSheet.create({
 
         {/* Main Content Body */}
         {isCard ? (
-          /* Card Style Variant */
+          /* Card Style Variant (Image 3) */
           <div
             style={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: colors.cardScreenBg,
               justifyContent: 'space-between',
             }}
           >
-            <div style={{ padding: '16px', flex: 1, overflow: 'auto' }}>
-              {/* Back to Sign In Link */}
-              <div
-                onClick={() => {}}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  cursor: 'pointer',
-                  padding: '2px 0',
-                }}
-              >
-                <span
-                  className="material-symbols-outlined"
-                  style={{
-                    fontSize: 18,
-                    color: colors.primary,
-                  }}
-                >
-                  arrow_back
-                </span>
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: colors.primary,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Back to Sign In
-                </span>
-              </div>
-
-              <div style={{ height: 12 }} />
-
-              {/* Elevated Card */}
+            <div style={{ padding: '16px' }}>
+              {/* Floating Card Container */}
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '20px',
+                  padding: '24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
-                {/* Title */}
+                {/* Back to Sign In Link */}
+                <div
+                  onClick={() => alert('Back to Sign in')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    color: colors.primary,
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    marginBottom: 16,
+                    cursor: 'pointer',
+                    width: 'max-content',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                    arrow_back
+                  </span>
+                  <span>Back to Sign in</span>
+                </div>
+
+                {/* Title & Subtitle */}
                 <h2
                   style={{
-                    fontSize: 22,
-                    fontWeight: 700,
-                    lineHeight: 1.2,
-                    letterSpacing: '-0.3px',
+                    fontSize: 24,
+                    fontWeight: 800,
+                    lineHeight: 1.25,
                     color: colors.title,
                     margin: 0,
+                    marginBottom: 8,
+                    textAlign: 'left',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   Reset Password
                 </h2>
-
-                <div style={{ height: 6 }} />
-
-                {/* Subtitle */}
                 <p
                   style={{
-                    fontSize: 13,
+                    fontSize: 13.5,
                     fontWeight: 400,
                     lineHeight: 1.4,
-                    color: colors.subtleText,
+                    color: colors.subtitle,
                     margin: 0,
+                    marginBottom: 20,
+                    textAlign: 'left',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   Enter your registered mobile number to receive a verification code
                 </p>
 
-                <div style={{ height: 20 }} />
-
-                {/* Mobile Number Input */}
-                <Ux4gInputField
-                  value={mobile}
-                  onValueChange={setMobile}
-                  label="Mobile Number"
-                  placeholder="Enter mobile number"
-                  prefixText="+91"
-                  type="number"
-                  maxLength={10}
-                />
-
-                <div style={{ height: 16 }} />
-
-                {/* Send OTP Button */}
-                <Ux4gButton
-                  text="Send OTP"
-                  variant="primary"
-                  size="large"
-                  onPress={handleSendOtp}
+                {/* Mobile Number Label */}
+                <label
                   style={{
-                    height: 48,
-                    borderRadius: 8,
-                    width: '100%',
-                    backgroundColor: colors.buttonBg,
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    color: isDark ? UX4GColors.neutral200 : '#1E293B',
+                    marginBottom: 6,
+                    display: 'block',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
-                />
+                >
+                  Mobile Number
+                </label>
 
-                <div style={{ height: 12 }} />
-
-                {/* Aadhaar recovery link */}
-                <div style={{ textAlign: 'center' }}>
-                  <button
-                    type="button"
-                    onClick={() => alert('Recover via Aadhaar')}
+                {/* Mobile Number Input with +91 prefix */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: 48,
+                    borderRadius: 10,
+                    border: `1.5px solid ${colors.inputBorder}`,
+                    backgroundColor: colors.inputBg,
+                    padding: '0 14px',
+                    marginBottom: 16,
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <span
                     style={{
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: '4px',
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: 600,
-                      color: colors.primary,
+                      color: isDark ? UX4GColors.neutral400 : '#475569',
+                      marginRight: 8,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
-                    Recover account using Aadhaar Number  ?
-                  </button>
+                    +91
+                  </span>
+                  <input
+                    type="tel"
+                    value={mobile}
+                    onChange={(e) => setMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    placeholder="Enter mobile number"
+                    style={{
+                      flex: 1,
+                      border: 'none',
+                      outline: 'none',
+                      backgroundColor: 'transparent',
+                      fontSize: 14,
+                      color: colors.title,
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  />
                 </div>
 
-                <div style={{ height: 6 }} />
+                {/* Send OTP Button */}
+                <button
+                  type="button"
+                  onClick={() => alert('OTP sent to: +91 ' + (mobile || 'XXXXX'))}
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 10,
+                    backgroundColor: colors.btnPrimaryBg,
+                    color: '#FFFFFF',
+                    border: 'none',
+                    fontSize: 15,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    marginBottom: 16,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  Send OTP
+                </button>
+
+                {/* Recover account using Aadhaar link */}
+                <div style={{ textAlign: 'center', marginBottom: 16 }}>
+                  <span
+                    onClick={() => alert('Recover using Aadhaar')}
+                    style={{
+                      fontSize: 13.5,
+                      fontWeight: 600,
+                      color: colors.primary,
+                      cursor: 'pointer',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Recover account using Aadhaar Number →
+                  </span>
+                </div>
 
                 {/* OR Divider */}
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 0,
+                    marginBottom: 16,
                   }}
                 >
-                  <div style={{ flex: 1, height: 1, backgroundColor: colors.border }} />
+                  <div style={{ flex: 1, height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }} />
                   <span
                     style={{
-                      fontSize: 12,
-                      fontWeight: 500,
-                      color: colors.mutedText,
                       padding: '0 12px',
+                      fontSize: 11.5,
+                      fontWeight: 500,
+                      color: '#94A3B8',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                     }}
                   >
                     OR
                   </span>
-                  <div style={{ flex: 1, height: 1, backgroundColor: colors.border }} />
+                  <div style={{ flex: 1, height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }} />
                 </div>
 
-                <div style={{ height: 6 }} />
-
-                {/* Sign in with OTP Button */}
-                <Ux4gButton
-                  text="Sign in with OTP instead"
-                  variant="outline"
-                  size="large"
-                  onPress={() => alert('Sign in with OTP')}
+                {/* Sign in with OTP instead Button */}
+                <button
+                  type="button"
+                  onClick={() => alert('Sign in with OTP')}
                   style={{
-                    height: 48,
-                    borderRadius: 8,
                     width: '100%',
+                    height: 48,
+                    borderRadius: 10,
+                    border: `1.5px solid ${colors.btnOutlineBorder}`,
+                    backgroundColor: isDark ? 'rgba(91, 58, 230, 0.15)' : '#FAF8FF',
+                    color: colors.btnOutlineText,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    transition: 'all 0.2s ease',
                   }}
-                />
-
-                <div style={{ height: 14 }} />
-
-                {/* Warning Banner with exact Flutter fillRevInfo icon */}
-                <Ux4gStatusBanner
-                  variant="warningLight"
-                  title="Most services use OTP login so you may not need a password."
-                  leadingIcon={fillRevInfoIcon}
-                  titleStyle={{
-                    fontSize: 13,
-                    fontWeight: 400,
-                    color: colors.warningBannerText,
-                    lineHeight: 18,
-                  } as any}
-                  marginStyle={{ margin: 0 }}
-                  paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
-                />
+                >
+                  Sign in with OTP instead
+                </button>
               </div>
             </div>
 
-            {/* Brand Footer */}
+            {/* Digital India Footer outside card */}
             <div
               style={{
-              display: 'flex',
-              flexDirection: 'row',
-                padding: '14px 20px',
+                display: 'flex',
+                flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 4,
+                gap: 6,
+                paddingBottom: 20,
               }}
             >
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 400,
-                  color: colors.mutedText,
-                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                }}
-              >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                 Powered by -
               </span>
               <img
                 src="/Digital_India_logo.svg"
                 alt="Digital India"
                 style={{
-                  height: 24,
+                  height: 22,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
             </div>
           </div>
         ) : (
-          /* Default Flat Variant */
+          /* Default Layout Variant (Image 2) */
           <div
             style={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
+              padding: '24px 20px 20px 20px',
               backgroundColor: colors.defaultScreenBg,
             }}
           >
-            <div
-              style={{
-                padding: '16px 20px 0 20px',
-                flex: 1,
-                overflow: 'auto',
-              }}
-            >
+            <div>
               {/* Back to Sign In Link */}
               <div
-                onClick={() => {}}
+                onClick={() => alert('Back to Sign in')}
                 style={{
-                  display: 'inline-flex',
+                  display: 'flex',
                   alignItems: 'center',
-                  gap: 6,
+                  gap: 4,
+                  color: colors.primary,
+                  fontSize: 13.5,
+                  fontWeight: 600,
+                  marginBottom: 16,
                   cursor: 'pointer',
-                  padding: '2px 0',
+                  width: 'max-content',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
-                <span
-                  className="material-symbols-outlined"
-                  style={{
-                    fontSize: 18,
-                    color: colors.primary,
-                  }}
-                >
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
                   arrow_back
                 </span>
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: colors.primary,
-                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                  }}
-                >
-                  Back to Sign In
-                </span>
+                <span>Back to Sign in</span>
               </div>
 
-              <div style={{ height: 20 }} />
-
-              {/* Title */}
+              {/* Title & Subtitle */}
               <h2
                 style={{
                   fontSize: 24,
-                  fontWeight: 700,
-                  lineHeight: 1.2,
-                  letterSpacing: '-0.3px',
+                  fontWeight: 800,
+                  lineHeight: 1.25,
                   color: colors.title,
                   margin: 0,
+                  marginBottom: 8,
+                  textAlign: 'left',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
                 Reset Password
               </h2>
-
-              <div style={{ height: 6 }} />
-
-              {/* Subtitle */}
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: 13.5,
                   fontWeight: 400,
                   lineHeight: 1.4,
-                  color: colors.subtleText,
+                  color: colors.subtitle,
                   margin: 0,
+                  marginBottom: 20,
+                  textAlign: 'left',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
                 Enter your registered mobile number to receive a verification code
               </p>
 
-              <div style={{ height: 24 }} />
-
-              {/* Mobile Number Input */}
-              <Ux4gInputField
-                value={mobile}
-                onValueChange={setMobile}
-                label="Mobile Number"
-                placeholder="Enter mobile number"
-                prefixText="+91"
-                type="number"
-                maxLength={10}
-              />
-
-              <div style={{ height: 20 }} />
-
-              {/* Send OTP Button */}
-              <Ux4gButton
-                text="Send OTP"
-                variant="primary"
-                size="large"
-                onPress={handleSendOtp}
+              {/* Mobile Number Label */}
+              <label
                 style={{
-                  height: 48,
-                  borderRadius: 8,
-                  width: '100%',
-                  backgroundColor: colors.buttonBg,
+                  fontSize: 13.5,
+                  fontWeight: 600,
+                  color: isDark ? UX4GColors.neutral200 : '#1E293B',
+                  marginBottom: 6,
+                  display: 'block',
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
-              />
+              >
+                Mobile Number
+              </label>
 
-              <div style={{ height: 14 }} />
-
-              {/* Aadhaar recovery link */}
-              <div style={{ textAlign: 'center' }}>
-                <button
-                  type="button"
-                  onClick={() => alert('Recover via Aadhaar')}
+              {/* Mobile Number Input with +91 prefix */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: 48,
+                  borderRadius: 10,
+                  border: `1.5px solid ${colors.inputBorder}`,
+                  backgroundColor: colors.inputBg,
+                  padding: '0 14px',
+                  marginBottom: 16,
+                  boxSizing: 'border-box',
+                }}
+              >
+                <span
                   style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: '4px',
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: 600,
-                    color: colors.primary,
+                    color: isDark ? UX4GColors.neutral400 : '#475569',
+                    marginRight: 8,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
-                  Recover account using Aadhaar Number  ?
-                </button>
+                  +91
+                </span>
+                <input
+                  type="tel"
+                  value={mobile}
+                  onChange={(e) => setMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                  placeholder="Enter mobile number"
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: 14,
+                    color: colors.title,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                />
               </div>
 
-              <div style={{ height: 8 }} />
+              {/* Send OTP Button */}
+              <button
+                type="button"
+                onClick={() => alert('OTP sent to: +91 ' + (mobile || 'XXXXX'))}
+                style={{
+                  width: '100%',
+                  height: 48,
+                  borderRadius: 10,
+                  backgroundColor: colors.btnPrimaryBg,
+                  color: '#FFFFFF',
+                  border: 'none',
+                  fontSize: 15,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  marginBottom: 16,
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                Send OTP
+              </button>
+
+              {/* Recover account using Aadhaar link */}
+              <div style={{ textAlign: 'center', marginBottom: 16 }}>
+                <span
+                  onClick={() => alert('Recover using Aadhaar')}
+                  style={{
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    color: colors.primary,
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Recover account using Aadhaar Number →
+                </span>
+              </div>
 
               {/* OR Divider */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 0,
+                  marginBottom: 16,
                 }}
               >
-                <div style={{ flex: 1, height: 1, backgroundColor: colors.border }} />
+                <div style={{ flex: 1, height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }} />
                 <span
                   style={{
-                    fontSize: 12,
+                    padding: '0 12px',
+                    fontSize: 11.5,
                     fontWeight: 500,
-                    color: colors.mutedText,
-                    padding: '0 16px',
-                    letterSpacing: '0.5px',
+                    color: '#94A3B8',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   OR
                 </span>
-                <div style={{ flex: 1, height: 1, backgroundColor: colors.border }} />
+                <div style={{ flex: 1, height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#E2E8F0' }} />
               </div>
 
-              <div style={{ height: 8 }} />
-
-              {/* Sign in with OTP Button */}
-              <Ux4gButton
-                text="Sign in with OTP instead"
-                variant="outline"
-                size="large"
-                onPress={() => alert('Sign in with OTP')}
+              {/* Alternative Sign In Button */}
+              <button
+                type="button"
+                onClick={() => alert('Sign in with Email')}
                 style={{
-                  height: 48,
-                  borderRadius: 8,
                   width: '100%',
-                }}
-              />
-
-              <div style={{ height: 16 }} />
-
-              {/* Warning Banner with exact Flutter fillRevInfo icon */}
-              <Ux4gStatusBanner
-                variant="warningLight"
-                title="Most services use OTP login so you may not need a password."
-                leadingIcon={fillRevInfoIcon}
-                titleStyle={{
-                  fontSize: 13,
-                  fontWeight: 400,
-                  color: colors.warningBannerText,
-                  lineHeight: 18,
-                } as any}
-                marginStyle={{ margin: 0 }}
-                paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
-              />
-            </div>
-
-            {/* Brand Footer */}
-            <div
-              style={{
-              display: 'flex',
-              flexDirection: 'row',
-                padding: '14px 20px',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 4,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 400,
-                  color: colors.mutedText,
+                  height: 48,
+                  borderRadius: 10,
+                  border: `1.5px solid ${colors.btnOutlineBorder}`,
+                  backgroundColor: isDark ? 'rgba(91, 58, 230, 0.15)' : '#FAF8FF',
+                  color: colors.btnOutlineText,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: 'pointer',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  transition: 'all 0.2s ease',
                 }}
               >
+                Sign in with Email instead
+              </button>
+            </div>
+
+            {/* Digital India Footer */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                paddingTop: 16,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
                 Powered by -
               </span>
               <img
                 src="/Digital_India_logo.svg"
                 alt="Digital India"
                 style={{
-                  height: 24,
+                  height: 22,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
@@ -1071,16 +954,18 @@ const styles = StyleSheet.create({
   };
 
   return (
-    <div className="wb-page">
+    <div className={`wb-page ${isDark ? 'dark' : ''}`}>
       {/* Header */}
       <div className="wb-header">
-        <div className="wb-header-row">
+        <div>
+          <div className="wb-breadcrumb">
+            <span>Patterns</span> / <span>Identity and Access</span> / <span>Forgot Password and Account Recovery</span> / <span className="active">Reset Password</span>
+          </div>
           <h1 className="wb-title">Reset Password</h1>
-          <span className="wb-badge">Pattern</span>
+          <p className="wb-subtitle">
+            Entry point for the forgot-password flow. User enters their registered mobile number to receive an OTP verification code.
+          </p>
         </div>
-        <p className="wb-subtitle">
-          Entry point for the forgot-password flow. User enters their registered mobile number to receive an OTP.
-        </p>
       </div>
 
       {/* Main Body */}
@@ -1185,37 +1070,26 @@ const styles = StyleSheet.create({
                   <button
                     type="button"
                     onClick={() => setVariant('default')}
-                    style={{
-                      padding: '4px 12px',
-                      borderRadius: 6,
-                      border: 'none',
-                      fontSize: 12,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      backgroundColor: variant === 'default' ? UX4GColors.primary : 'transparent',
-                      color: variant === 'default' ? UX4GColors.neutral0 : isDark ? UX4GColors.neutral400 : UX4GColors.neutral600,
-                    }}
+                    className={`wb-tab ${variant === 'default' ? 'active' : ''}`}
+                    style={{ padding: '4px 12px', fontSize: 12 }}
                   >
                     Default
                   </button>
                   <button
                     type="button"
                     onClick={() => setVariant('card')}
-                    style={{
-                      padding: '4px 12px',
-                      borderRadius: 6,
-                      border: 'none',
-                      fontSize: 12,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      backgroundColor: variant === 'card' ? UX4GColors.primary : 'transparent',
-                      color: variant === 'card' ? UX4GColors.neutral0 : isDark ? UX4GColors.neutral400 : UX4GColors.neutral600,
-                    }}
+                    className={`wb-tab ${variant === 'card' ? 'active' : ''}`}
+                    style={{ padding: '4px 12px', fontSize: 12 }}
                   >
                     Card style
                   </button>
                 </div>
-                <CodeBlock code={codeString} language="tsx" />
+
+                <CodeBlock
+                  code={codeString}
+                  language="TSX"
+                  filename={variant === 'card' ? 'ResetPasswordCardPattern.tsx' : 'ResetPasswordDefaultPattern.tsx'}
+                />
               </div>
             )}
           </div>
@@ -1224,3 +1098,5 @@ const styles = StyleSheet.create({
     </div>
   );
 };
+
+export default ForgotPasswordResetDoc;
