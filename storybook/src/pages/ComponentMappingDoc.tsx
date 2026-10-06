@@ -280,6 +280,37 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
 
       {/* Main Content Area */}
       <main className="mg-body-container">
+        {/* Official NPM Package & Migration Notice Banner */}
+        <div style={{
+          backgroundColor: '#EFF6FF',
+          border: '1px solid #BFDBFE',
+          borderLeft: '4px solid #2563EB',
+          borderRadius: '10px',
+          padding: '1rem 1.25rem',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          gap: '1rem',
+          alignItems: 'flex-start'
+        }}>
+          <span className="material-symbols-outlined" style={{ color: '#2563EB', fontSize: '24px', marginTop: '2px' }}>
+            verified
+          </span>
+          <div style={{ flex: 1, fontSize: '0.875rem', lineHeight: '1.5', color: '#1E293B' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.25rem' }}>
+              <strong style={{ color: '#1E3A8A', fontSize: '0.95rem' }}>Official NPM Package:</strong>
+              <code style={{ backgroundColor: '#DBEAFE', color: '#1E40AF', padding: '2px 8px', borderRadius: '4px', fontWeight: 600, fontFamily: 'monospace' }}>
+                ux4g-react-native-components
+              </code>
+              <span style={{ color: '#DC2626', fontSize: '0.8rem', fontWeight: 500, marginLeft: '0.5rem' }}>
+                (Legacy <code>ux4g-react-native-design-system</code> is deprecated)
+              </span>
+            </div>
+            <p style={{ margin: 0, color: '#334155' }}>
+              When migrating or developing React Native components (including automated MCP coding agents and AI assistants), exclusively install and import from <strong><code>ux4g-react-native-components</code></strong>. Never use legacy or alternative package variants.
+            </p>
+          </div>
+        </div>
+
         {/* TAB 1: COMPONENTS */}
         {activeTab === 'components' && (
           <section>

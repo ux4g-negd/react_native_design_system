@@ -1,17 +1,25 @@
 export const MIGRATION_MD_CONTENT = `# UX4G React Native Design System — Complete Migration & Adoption Guide (MIGRATION.md)
 
-This comprehensive guide outlines how to migrate an existing React Native application (whether built with **Vanilla React Native**, **React Native Paper**, **React Native Elements**, **NativeBase**, or **custom UI components**) to the **UX4G React Native Design System (\`ux4g-react-native-components\`)** seamlessly — **preserving 100% of your original project colors, typography styles, exact component sizes, user flows, and business logic**.
+> [!IMPORTANT]
+> ### 🚨 Official NPM Package & Deprecation Notice
+> - **Official & Latest Package**: **\`ux4g-react-native-components\`** (v1.0.0+)
+> - **Deprecated Legacy Package**: **\`ux4g-react-native-design-system\`** (DO NOT USE)
+> - **Mandatory Package Rule**: When building or migrating React Native applications to UX4G, you **MUST ONLY use \`ux4g-react-native-components\`**. Do NOT use or import any other package, even if other package names contain \`ux4g\` (e.g., do NOT use \`ux4g-react-native-design-system\`, web UX4G packages, or unofficial variants).
+> - **MCP (Model Context Protocol) & AI Agent Directive**: If you are using MCP tools, AI coding assistants (Antigravity, Cursor, Claude, Copilot, ChatGPT), or automated migration scripts, ensure they **strictly target \`ux4g-react-native-components\`** for all imports and installations.
+
+This comprehensive guide outlines how to migrate an existing React Native application (whether built with **Vanilla React Native**, **React Native Paper**, **React Native Elements**, **NativeBase**, or **custom UI components**) or migrate from the legacy \`ux4g-react-native-design-system\` package to the **UX4G React Native Design System (\`ux4g-react-native-components\`)** seamlessly — **preserving 100% of your original project colors, typography styles, exact component sizes, user flows, and business logic**.
 
 ---
 
 ## Table of Contents
-1. [Core Migration Philosophy & The 5 Golden Rules](#1-core-migration-philosophy--the-5-golden-rules)
-2. [Installation & Package Setup](#2-installation--package-setup)
-3. [Global Theme & Brand Palette Binding](#3-global-theme--brand-palette-binding)
+1. [Official NPM Package & MCP Directives](#1-official-npm-package--mcp-directives)
+2. [Core Migration Philosophy & The 5 Golden Rules](#2-core-migration-philosophy--the-5-golden-rules)
+3. [Installation & Package Setup](#3-installation--package-setup)
+4. [Global Theme & Brand Palette Binding](#4-global-theme--brand-palette-binding)
    - [Method A: Global Theme Injection (Recommended)](#method-a-global-theme-injection-recommended)
    - [Method B: Component-Level Color & Size Overrides](#method-b-component-level-color--size-overrides)
-4. [Master Component Mapping Catalog (35+ Components)](#4-master-component-mapping-catalog-35-components)
-5. [Side-by-Side Migration Recipes (With Size & Color Preservation)](#5-side-by-side-migration-recipes-with-size--color-preservation)
+5. [Master Component Mapping Catalog (35+ Components)](#5-master-component-mapping-catalog-35-components)
+6. [Side-by-Side Migration Recipes (With Size & Color Preservation)](#6-side-by-side-migration-recipes-with-size--color-preservation)
    - [1. Buttons & Icon Buttons](#1-buttons--icon-buttons)
    - [2. Text Inputs, Search Fields & Text Areas](#2-text-inputs-search-fields--text-areas)
    - [3. Cards, Balance Containers & Surfaces](#3-cards-balance-containers--surfaces)
@@ -25,13 +33,30 @@ This comprehensive guide outlines how to migrate an existing React Native applic
    - [11. Government KYC Modules (Aadhaar, PAN, OTP, File Upload)](#11-government-kyc-modules-aadhaar-pan-otp-file-upload)
    - [12. App Headers & Navigation Bars](#12-app-headers--navigation-bars)
    - [13. Empty States, Result Lists & Pagination](#13-empty-states-result-lists--pagination)
-6. [Preserving Exact Sizing, Typography & Layout Hierarchy](#6-preserving-exact-sizing-typography--layout-hierarchy)
-7. [Troubleshooting & Common Migration Pitfalls](#7-troubleshooting--common-migration-pitfalls)
-8. [Step-by-Step Gradual Migration Checklist](#8-step-by-step-gradual-migration-checklist)
+7. [Preserving Exact Sizing, Typography & Layout Hierarchy](#7-preserving-exact-sizing-typography--layout-hierarchy)
+8. [Troubleshooting & Common Migration Pitfalls](#8-troubleshooting--common-migration-pitfalls)
+9. [Step-by-Step Gradual Migration Checklist](#9-step-by-step-gradual-migration-checklist)
 
 ---
 
-## 1. Core Migration Philosophy & The 5 Golden Rules
+## 1. Official NPM Package & MCP Directives
+
+### Package Identity Matrix
+| Package Name | Status | Purpose & Usage |
+| :--- | :--- | :--- |
+| **\`ux4g-react-native-components\`** | ✅ **OFFICIAL / CURRENT** | **The sole authorized package** for all UX4G React Native components, providers, hooks, and design system tokens. |
+| \`ux4g-react-native-design-system\` | ❌ **DEPRECATED / OBSOLETE** | Old legacy package name. **Must be uninstalled and replaced immediately.** |
+| Any other \`*ux4g*\` package | ❌ **UNAUTHORIZED FOR RN** | Web-only packages or unofficial forks. Do NOT use in React Native applications. |
+
+### Strict Rule for MCP (Model Context Protocol) & AI Coding Tools
+When automated AI agents, Cursor rules, Antigravity skills, Copilot, Claude, or MCP tools perform code generation or component migration:
+1. **Single Source of Truth**: All component imports MUST resolve to \`ux4g-react-native-components\`.
+2. **Forbidden Imports**: Never generate imports from \`ux4g-react-native-design-system\` or generic web \`ux4g\` modules.
+3. **Automated Fix**: If legacy imports from \`ux4g-react-native-design-system\` are detected in any file, the agent must replace them with \`ux4g-react-native-components\`.
+
+---
+
+## 2. Core Migration Philosophy & The 5 Golden Rules
 
 When migrating any existing app to UX4G, ensure no visual regressions or broken flows occur by adhering to these **5 Golden Rules**:
 
@@ -59,9 +84,10 @@ When migrating any existing app to UX4G, ensure no visual regressions or broken 
 
 ---
 
-## 2. Installation & Package Setup
+## 3. Installation & Package Setup
 
-Install the UX4G React Native Design System and required peer dependencies:
+### New Projects or Migrating from other UI Libraries
+Install the official UX4G React Native package and required peer dependencies:
 
 \`\`\`bash
 # Using npm
@@ -74,12 +100,32 @@ yarn add ux4g-react-native-components react-native-svg react-native-safe-area-co
 pnpm add ux4g-react-native-components react-native-svg react-native-safe-area-context
 \`\`\`
 
+### Migrating from Legacy \`ux4g-react-native-design-system\`
+If your project currently depends on the deprecated \`ux4g-react-native-design-system\` package, follow these two steps:
+
+**Step 1: Uninstall old package & install the official latest package**
+\`\`\`bash
+# Using npm
+npm uninstall ux4g-react-native-design-system
+npm install ux4g-react-native-components react-native-svg react-native-safe-area-context
+
+# Using yarn
+yarn remove ux4g-react-native-design-system
+yarn add ux4g-react-native-components react-native-svg react-native-safe-area-context
+\`\`\`
+
+**Step 2: Update all import statements across your codebase**
+\`\`\`diff
+- import { Ux4gButton, Ux4gCard, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
++ import { Ux4gButton, Ux4gCard, Ux4gThemeProvider } from 'ux4g-react-native-components';
+\`\`\`
+
 > **For iOS (Bare React Native)**: Run \`npx pod-install\` or \`cd ios && pod install\`.  
 > **For Expo**: Dependencies work seamlessly in Expo SDK 50+ out of the box.
 
 ---
 
-## 3. Global Theme & Brand Palette Binding
+## 4. Global Theme & Brand Palette Binding
 
 ### Method A: Global Theme Injection (Recommended)
 You do **NOT** have to adopt default UX4G blue/orange colors if your application already has a defined brand identity (e.g., Purple, Emerald, Indigo, Teal, or Dark Mode).
@@ -167,31 +213,33 @@ If any part of your UI can be represented by a UX4G component, use the correspon
 | **Card / Container**| \`<View style={cardStyle}>\`| \`<Card>\` | \`<Ux4gCard>\` | \`title\`, \`subtitle\`, \`variant\`, \`style\`, \`borderRadius\` |
 | **Carousel / Swiper**| Custom \`<FlatList horizontal>\`| \`react-native-snap-carousel\`| \`<Ux4gCarousel>\` | \`data\`, \`renderItem\`, \`autoPlay\`, \`pagination\`, \`height\` |
 | **Modal / Dialog** | \`<Modal>\`, Bottom Sheet | \`<Modal>\`, \`<Dialog>\` | \`<Ux4gModal>\` | \`visible\`, \`onClose\`, \`title\`, \`actions\`, \`animationType\` |
-| **Dropdown / Select**| \`@react-native-picker/picker\`| \`<Menu>\`, \`<Overlay>\` | \`<Ux4gSelectionDropdown>\`, \`<Ux4gActionDropdown>\` | \`options\`, \`value\`, \`onSelect\`, \`searchable\`, \`placeholder\` |
+| **Dropdown / Select**| \`@react-native-picker/picker\`| \`<Menu>\`, \`<Overlay>\` | \`<Ux4gDropdown>\` | \`options\`, \`value\`, \`onSelect\`, \`searchable\`, \`placeholder\` |
 | **Checkbox** | \`@react-native-community/checkbox\` | \`<Checkbox>\` | \`<Ux4gCheckbox>\` | \`label\`, \`checked\`, \`onChange\`, \`colorScheme\` |
+| **Checkbox Group** | Custom list of checkboxes | Custom view | \`<Ux4gCheckboxGroup>\` | \`options\`, \`selectedValues\`, \`onChange\` |
 | **Radio Button** | Custom Touchable circles | \`<RadioButton>\` | \`<Ux4gRadioButton>\` | \`label\`, \`selected\`, \`onSelect\`, \`colorScheme\` |
+| **Radio Group** | Custom radio lists | \`<RadioButton.Group>\` | \`<Ux4gRadioGroup>\` | \`options\`, \`selectedValue\`, \`onValueChange\` |
 | **Toggle Switch** | \`<Switch>\` | \`<Switch>\` | \`<Ux4gSwitch>\` | \`checked\`, \`onToggle\`, \`colorScheme\`, \`disabled\` |
-| **Tag / Pill** | \`<View style={tagStyle}>\` | \`<Chip>\` | \`<Ux4gTag>\`, \`<Ux4gUnifiedPillTag>\` | \`text\`, \`size\`, \`colorScheme\`, \`shape\`, \`style\` |
-| **Filter Chip** | Custom touchable pill | \`<Chip mode="flat">\` | \`<Ux4gChoiceChip>\`, \`<Ux4gFilterChip>\`, \`<Ux4gInputChip>\` | \`label\`, \`selected\`, \`onPress\`, \`removable\` |
+| **Tag / Pill** | \`<View style={tagStyle}>\` | \`<Chip>\` | \`<Ux4gTag>\` | \`text\`, \`size\`, \`colorScheme\`, \`shape\`, \`style\` |
+| **Filter Chip** | Custom touchable pill | \`<Chip mode="flat">\` | \`<Ux4gChip>\` | \`label\`, \`selected\`, \`onPress\`, \`removable\` |
 | **Badge Counter** | \`<View style={badgeStyle}>\` | \`<Badge>\` | \`<Ux4gBadge>\` | \`count\`, \`variant\`, \`size\`, \`colorScheme\` |
 | **Avatar** | \`<Image style={{ borderRadius }}>\` | \`<Avatar.Image>\` | \`<Ux4gAvatar>\` | \`source\`, \`name\`, \`size\`, \`shape\`, \`badge\` |
 | **Avatar Group** | Custom overlapping Images | Custom flex row | \`<Ux4gAvatarGroup>\` | \`avatars\`, \`max\`, \`size\` |
 | **Accordion** | Custom expandable view | \`<List.Accordion>\` | \`<Ux4gAccordion>\` | \`title\`, \`subtitle\`, \`expanded\`, \`onToggle\` |
 | **Linear Progress**| \`<ProgressBarAndroid>\` | \`<ProgressBar>\` | \`<Ux4gLinearProgressBar>\` | \`progress\`, \`colorScheme\`, \`height\`, \`showLabel\` |
-| **Circle Progress**| \`<ActivityIndicator>\` | \`<ActivityIndicator>\` | \`<Ux4gCircularProgress>\` | \`progress\`, \`size\`, \`strokeWidth\`, \`colorScheme\` |
+| **Circle Progress**| \`<ActivityIndicator>\` | \`<ActivityIndicator>\` | \`<Ux4gCircularProgressIndicator>\` | \`progress\`, \`size\`, \`strokeWidth\`, \`colorScheme\` |
 | **Half Circle Gauge**| Custom SVG Gauge | Custom view | \`<Ux4gHalfCircleProgress>\` | \`progress\`, \`size\`, \`thickness\`, \`colorScheme\` |
 | **Spinner Loader** | \`<ActivityIndicator>\` | \`<ActivityIndicator>\` | \`<Ux4gSpinner>\` | \`size\`, \`colorScheme\` |
-| **Slider / Range** | \`@react-native-community/slider\` | \`<Slider>\` | \`<Ux4gSlider>\`, \`<Ux4gRangeSlider>\` | \`value\`, \`onValueChange\`, \`min\`, \`max\`, \`step\`, \`colorScheme\` |
+| **Slider / Range** | \`@react-native-community/slider\` | \`<Slider>\` | \`<Ux4gSlider>\` | \`value\`, \`onValueChange\`, \`min\`, \`max\`, \`step\`, \`colorScheme\` |
 | **Toast / Alert** | \`Alert.alert()\`, \`react-native-toast-message\` | \`<Snackbar>\` | \`<Ux4gToast>\`, \`useUx4gToast()\` | \`title\`, \`message\`, \`variant\`, \`duration\` |
 | **Status Banner** | Custom colored banner view | \`<Banner>\` | \`<Ux4gStatusBanner>\` | \`type\`, \`title\`, \`description\`, \`actionLabel\`, \`onAction\` |
 | **Step Timeline** | Custom step list | Custom timeline | \`<Ux4gJourneyTimeline>\` | \`stages\`, \`currentStage\`, \`orientation\` |
 | **Status Pipeline**| Custom stage breadcrumb | Custom pipeline | \`<Ux4gStatusPipeline>\` | \`steps\`, \`activeStep\`, \`orientation\` |
-| **Stepper Counter**| Custom \`-\` \`+\` buttons | Custom counter | \`<Ux4gStepper>\`, \`<Ux4gCompactStepper>\` | \`value\`, \`onChange\`, \`min\`, \`max\`, \`step\` |
+| **Stepper Counter**| Custom \`-\` \`+\` buttons | Custom counter | \`<Ux4gStepper>\` | \`value\`, \`onChange\`, \`min\`, \`max\`, \`step\` |
 | **Aadhaar Input** | Custom masked TextInput | N/A | \`<Ux4gAadhaarInputField>\` | \`value\`, \`onChangeText\`, \`maskPeekToggle\` (Verhoeff checksum) |
 | **PAN Card Input** | Custom regex TextInput | N/A | \`<Ux4gPanInputField>\` | \`value\`, \`onChangeText\` (Auto uppercase & syntax check) |
 | **OTP Box Input** | 4/6 individual TextInputs | N/A | \`<Ux4gOtpInput>\` | \`length\`, \`onComplete\`, \`autoFocus\`, \`secureTextEntry\` |
 | **File Upload** | Custom DocumentPicker View | N/A | \`<Ux4gFileUpload>\` | \`onSelectFiles\`, \`accept\`, \`maxFiles\`, \`maxSizeMB\` |
-| **Slot Grid** | Custom time/date grid | Custom grid | \`<Ux4gTimeslot>\` | \`data\`, \`timeSlotProvider\`, \`onSlotConfirmed\` |
+| **Slot Grid** | Custom time/date grid | Custom grid | \`<Ux4gSlotGrid>\` | \`slots\`, \`selectedSlot\`, \`onSelectSlot\` |
 | **Date Picker** | \`@react-native-community/datetimepicker\` | \`react-native-paper-dates\` | \`<Ux4gDatePicker>\` | \`value\`, \`onChange\`, \`minDate\`, \`maxDate\` |
 | **Time Picker** | \`@react-native-community/datetimepicker\` | \`react-native-paper-dates\` | \`<Ux4gTimePicker>\` | \`value\`, \`onChange\`, \`is24Hour\` |
 | **Empty State** | Custom "No Data" View | Custom view | \`<Ux4gEmptyState>\` | \`title\`, \`description\`, \`icon\`, \`actionButton\` |
@@ -202,7 +250,7 @@ If any part of your UI can be represented by a UX4G component, use the correspon
 
 ---
 
-## 5. Side-by-Side Migration Recipes (With Size & Color Preservation)
+## 6. Side-by-Side Migration Recipes (With Size & Color Preservation)
 
 ### 1. Buttons & Icon Buttons
 
@@ -463,7 +511,7 @@ import { Text } from 'react-native';
 
 #### After (UX4G Searchable Dropdown with Custom Styling):
 \`\`\`tsx
-import { Ux4gSelectionDropdown } from 'ux4g-react-native-components';
+import { Ux4gDropdown } from 'ux4g-react-native-components';
 
 const BANK_OPTIONS = [
   { label: 'State Bank of India', value: 'SBI' },
@@ -471,11 +519,14 @@ const BANK_OPTIONS = [
   { label: 'ICICI Bank', value: 'ICICI' },
 ];
 
-<Ux4gSelectionDropdown
+<Ux4gDropdown
+  label="Select Bank Account"
+  placeholder="Choose your bank"
   options={BANK_OPTIONS}
   value={bank}
   onSelect={(option) => setBank(option.value)}
   searchable
+  style={{ marginBottom: 16 }}
 />
 \`\`\`
 
@@ -700,7 +751,7 @@ import { Ux4gEmptyState, Ux4gPagination } from 'ux4g-react-native-components';
 
 ---
 
-## 6. Preserving Exact Sizing, Typography & Layout Hierarchy
+## 7. Preserving Exact Sizing, Typography & Layout Hierarchy
 
 To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
 
@@ -733,10 +784,12 @@ To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
 
 ---
 
-## 7. Troubleshooting & Common Migration Pitfalls
+## 8. Troubleshooting & Common Migration Pitfalls
 
 | Issue Observed | Root Cause | Exact Solution |
 | :--- | :--- | :--- |
+| **"Cannot resolve module 'ux4g-react-native-design-system'"** | Using deprecated package name | Uninstall old package (\`npm uninstall ux4g-react-native-design-system\`) and install official package (\`npm install ux4g-react-native-components\`). Update imports to \`'ux4g-react-native-components'\`. |
+| **"MCP / AI imported wrong ux4g package"** | AI assistant selected web or legacy package | Configure AI / MCP prompt to strictly use \`ux4g-react-native-components\`. Replace all package imports with \`ux4g-react-native-components\`. |
 | **"Button color changed to default blue"** | Theme not supplied with brand colors | Pass \`colors={{ primary: '#YourColor' }}\` to \`<Ux4gThemeProvider>\` or set \`backgroundColor="#YourColor"\` on \`<Ux4gButton>\`. |
 | **"Buttons shrunk or expanded"** | Omitted \`size\` or parent \`flex\` constraints | Set \`size="md"\` or supply explicit \`style={{ height: 48, width: '100%' }}\`. |
 | **"Input border looks different"** | Custom borders in old stylesheet | Pass \`inputStyle={{ borderRadius: 10, borderColor: '#CBD5E1' }}\` to \`<Ux4gInputField>\`. |
@@ -746,9 +799,10 @@ To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
 
 ---
 
-## 8. Step-by-Step Gradual Migration Checklist
+## 9. Step-by-Step Gradual Migration Checklist
 
-- [ ] **Step 1: Root Integration**
+- [ ] **Step 1: Package & Root Integration**
+  - [ ] Ensure \`ux4g-react-native-components\` is installed and \`ux4g-react-native-design-system\` is removed.
   - [ ] Wrap App in \`<Ux4gThemeProvider>\` with your project's custom \`colors\` and \`typography\`.
   - [ ] Wrap in \`<Ux4gToastProvider>\`.
 - [ ] **Step 2: Buttons & Interactive Elements**
@@ -756,7 +810,7 @@ To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
   - [ ] Verify \`onPress\`, \`loading\`, \`disabled\`, and custom background colors.
 - [ ] **Step 3: Form Controls**
   - [ ] Replace \`<TextInput>\` with \`<Ux4gInputField>\`, \`<Ux4gTextArea>\`, and \`<Ux4gSearchField>\`.
-  - [ ] Replace native pickers with \`<Ux4gSelectionDropdown>\` or \`<Ux4gActionDropdown>\`.
+  - [ ] Replace native pickers with \`<Ux4gDropdown>\`.
   - [ ] Replace native checkboxes/switches with \`<Ux4gCheckbox>\`, \`<Ux4gRadioButton>\`, and \`<Ux4gSwitch>\`.
 - [ ] **Step 4: Surface Containers & Sliders**
   - [ ] Replace custom cards with \`<Ux4gCard>\`.

@@ -1,13 +1,21 @@
 # UX4G React Native Design System — Non-Destructive AI Migration Prompt
 
+> [!IMPORTANT]
+> ### 🚨 Mandatory Package Directive for MCP & AI Coding Assistants
+> - **Official NPM Package**: **`ux4g-react-native-components`** (v1.0.0+)
+> - **Deprecated NPM Package**: **`ux4g-react-native-design-system`** (DO NOT USE)
+> - **MANDATORY INSTRUCTION**: When generating code, performing automated migrations, or answering developer queries via MCP (Model Context Protocol) or AI assistants, you **MUST STRICTLY use `ux4g-react-native-components`**.
+> - **NEVER** import from `ux4g-react-native-design-system` or any other package even if it has `ux4g` in its name.
+> - If an existing codebase contains imports from `ux4g-react-native-design-system`, the AI/MCP agent must first uninstall the legacy package (`npm uninstall ux4g-react-native-design-system`) and replace all imports with `ux4g-react-native-components`.
+
 ## Context
 
-I have an existing React Native application that currently uses [Current UI Library: Vanilla React Native / React Native Paper (MD3) / React Native Elements / NativeBase / Custom UI Components]. I need to migrate it to the **UX4G React Native Design System** (`ux4g-react-native-components` package) **without altering my existing application flow, working functionality, custom color combinations, brand theme, exact component sizing, or typography hierarchy**.
+I have an existing React Native application that currently uses [Current UI Library: Vanilla React Native / React Native Paper (MD3) / React Native Elements / NativeBase / Legacy ux4g-react-native-design-system / Custom UI Components]. I need to migrate it to the **UX4G React Native Design System** (`ux4g-react-native-components` package) **without altering my existing application flow, working functionality, custom color combinations, brand theme, exact component sizing, or typography hierarchy**.
 
 ## Project Details
 
 - **React Native Framework / SDK:** [e.g. Expo SDK 50+ / Bare React Native 0.72+ / React Native 0.76+ (New Architecture)]
-- **Current UI Library:** [Vanilla React Native / React Native Paper / React Native Elements / NativeBase / Custom Components]
+- **Current UI Library:** [Vanilla React Native / React Native Paper / React Native Elements / NativeBase / ux4g-react-native-design-system / Custom Components]
 - **Current Color Palette / Brand Theme:** [e.g. Indigo #4F46E5, Emerald Green #059669, Saffron #FF9933, Navy #0F172A, Custom Palette]
 - **State Management & Form Libraries:** [React Hooks / Redux Toolkit / Zustand / MobX / React Hook Form / Formik]
 - **Navigation Library:** [React Navigation v6/v7 / Expo Router]
@@ -21,6 +29,11 @@ Migrate my React Native application from [current UI library] to the UX4G React 
 ---
 
 ## Zero-Disruption Migration Contract (Critical Rules)
+
+### Rule 0: Mandatory Package Enforcement (`ux4g-react-native-components` ONLY)
+- **Official Package Only**: You MUST install and import from `ux4g-react-native-components`.
+- **Legacy Cleanup**: If `ux4g-react-native-design-system` is present in `package.json` or source files, uninstall it (`npm uninstall ux4g-react-native-design-system`) and install `ux4g-react-native-components`.
+- **Zero Confusion**: Do NOT use or suggest any other package, even if other package names contain `ux4g` (e.g. web packages or old design-system packages). All React Native components, hooks, providers, and styles must be imported solely from `ux4g-react-native-components`.
 
 ### Rule 1: Zero Functional & Flow Disruption (100% Logic Preservation)
 - **Do NOT alter existing application flows, screen navigations, or business logic.**

@@ -1,17 +1,25 @@
 # UX4G React Native Design System — Complete Migration & Adoption Guide (MIGRATION.md)
 
-This comprehensive guide outlines how to migrate an existing React Native application (whether built with **Vanilla React Native**, **React Native Paper**, **React Native Elements**, **NativeBase**, or **custom UI components**) to the **UX4G React Native Design System (`ux4g-react-native-components`)** seamlessly — **preserving 100% of your original project colors, typography styles, exact component sizes, user flows, and business logic**.
+> [!IMPORTANT]
+> ### 🚨 Official NPM Package & Deprecation Notice
+> - **Official & Latest Package**: **`ux4g-react-native-components`** (v1.0.0+)
+> - **Deprecated Legacy Package**: **`ux4g-react-native-design-system`** (DO NOT USE)
+> - **Mandatory Package Rule**: When building or migrating React Native applications to UX4G, you **MUST ONLY use `ux4g-react-native-components`**. Do NOT use or import any other package, even if other package names contain `ux4g` (e.g., do NOT use `ux4g-react-native-design-system`, web UX4G packages, or unofficial variants).
+> - **MCP (Model Context Protocol) & AI Agent Directive**: If you are using MCP tools, AI coding assistants (Antigravity, Cursor, Claude, Copilot, ChatGPT), or automated migration scripts, ensure they **strictly target `ux4g-react-native-components`** for all imports and installations.
+
+This comprehensive guide outlines how to migrate an existing React Native application (whether built with **Vanilla React Native**, **React Native Paper**, **React Native Elements**, **NativeBase**, or **custom UI components**) or migrate from the legacy `ux4g-react-native-design-system` package to the **UX4G React Native Design System (`ux4g-react-native-components`)** seamlessly — **preserving 100% of your original project colors, typography styles, exact component sizes, user flows, and business logic**.
 
 ---
 
 ## Table of Contents
-1. [Core Migration Philosophy & The 5 Golden Rules](#1-core-migration-philosophy--the-5-golden-rules)
-2. [Installation & Package Setup](#2-installation--package-setup)
-3. [Global Theme & Brand Palette Binding](#3-global-theme--brand-palette-binding)
+1. [Official NPM Package & MCP Directives](#1-official-npm-package--mcp-directives)
+2. [Core Migration Philosophy & The 5 Golden Rules](#2-core-migration-philosophy--the-5-golden-rules)
+3. [Installation & Package Setup](#3-installation--package-setup)
+4. [Global Theme & Brand Palette Binding](#4-global-theme--brand-palette-binding)
    - [Method A: Global Theme Injection (Recommended)](#method-a-global-theme-injection-recommended)
    - [Method B: Component-Level Color & Size Overrides](#method-b-component-level-color--size-overrides)
-4. [Master Component Mapping Catalog (35+ Components)](#4-master-component-mapping-catalog-35-components)
-5. [Side-by-Side Migration Recipes (With Size & Color Preservation)](#5-side-by-side-migration-recipes-with-size--color-preservation)
+5. [Master Component Mapping Catalog (35+ Components)](#5-master-component-mapping-catalog-35-components)
+6. [Side-by-Side Migration Recipes (With Size & Color Preservation)](#6-side-by-side-migration-recipes-with-size--color-preservation)
    - [1. Buttons & Icon Buttons](#1-buttons--icon-buttons)
    - [2. Text Inputs, Search Fields & Text Areas](#2-text-inputs-search-fields--text-areas)
    - [3. Cards, Balance Containers & Surfaces](#3-cards-balance-containers--surfaces)
@@ -25,13 +33,30 @@ This comprehensive guide outlines how to migrate an existing React Native applic
    - [11. Government KYC Modules (Aadhaar, PAN, OTP, File Upload)](#11-government-kyc-modules-aadhaar-pan-otp-file-upload)
    - [12. App Headers & Navigation Bars](#12-app-headers--navigation-bars)
    - [13. Empty States, Result Lists & Pagination](#13-empty-states-result-lists--pagination)
-6. [Preserving Exact Sizing, Typography & Layout Hierarchy](#6-preserving-exact-sizing-typography--layout-hierarchy)
-7. [Troubleshooting & Common Migration Pitfalls](#7-troubleshooting--common-migration-pitfalls)
-8. [Step-by-Step Gradual Migration Checklist](#8-step-by-step-gradual-migration-checklist)
+7. [Preserving Exact Sizing, Typography & Layout Hierarchy](#7-preserving-exact-sizing-typography--layout-hierarchy)
+8. [Troubleshooting & Common Migration Pitfalls](#8-troubleshooting--common-migration-pitfalls)
+9. [Step-by-Step Gradual Migration Checklist](#9-step-by-step-gradual-migration-checklist)
 
 ---
 
-## 1. Core Migration Philosophy & The 5 Golden Rules
+## 1. Official NPM Package & MCP Directives
+
+### Package Identity Matrix
+| Package Name | Status | Purpose & Usage |
+| :--- | :--- | :--- |
+| **`ux4g-react-native-components`** | ✅ **OFFICIAL / CURRENT** | **The sole authorized package** for all UX4G React Native components, providers, hooks, and design system tokens. |
+| `ux4g-react-native-design-system` | ❌ **DEPRECATED / OBSOLETE** | Old legacy package name. **Must be uninstalled and replaced immediately.** |
+| Any other `*ux4g*` package | ❌ **UNAUTHORIZED FOR RN** | Web-only packages or unofficial forks. Do NOT use in React Native applications. |
+
+### Strict Rule for MCP (Model Context Protocol) & AI Coding Tools
+When automated AI agents, Cursor rules, Antigravity skills, Copilot, Claude, or MCP tools perform code generation or component migration:
+1. **Single Source of Truth**: All component imports MUST resolve to `ux4g-react-native-components`.
+2. **Forbidden Imports**: Never generate imports from `ux4g-react-native-design-system` or generic web `ux4g` modules.
+3. **Automated Fix**: If legacy imports from `ux4g-react-native-design-system` are detected in any file, the agent must replace them with `ux4g-react-native-components`.
+
+---
+
+## 2. Core Migration Philosophy & The 5 Golden Rules
 
 When migrating any existing app to UX4G, ensure no visual regressions or broken flows occur by adhering to these **5 Golden Rules**:
 
@@ -59,9 +84,10 @@ When migrating any existing app to UX4G, ensure no visual regressions or broken 
 
 ---
 
-## 2. Installation & Package Setup
+## 3. Installation & Package Setup
 
-Install the UX4G React Native Design System and required peer dependencies:
+### New Projects or Migrating from other UI Libraries
+Install the official UX4G React Native package and required peer dependencies:
 
 ```bash
 # Using npm
@@ -74,12 +100,32 @@ yarn add ux4g-react-native-components react-native-svg react-native-safe-area-co
 pnpm add ux4g-react-native-components react-native-svg react-native-safe-area-context
 ```
 
+### Migrating from Legacy `ux4g-react-native-design-system`
+If your project currently depends on the deprecated `ux4g-react-native-design-system` package, follow these two steps:
+
+**Step 1: Uninstall old package & install the official latest package**
+```bash
+# Using npm
+npm uninstall ux4g-react-native-design-system
+npm install ux4g-react-native-components react-native-svg react-native-safe-area-context
+
+# Using yarn
+yarn remove ux4g-react-native-design-system
+yarn add ux4g-react-native-components react-native-svg react-native-safe-area-context
+```
+
+**Step 2: Update all import statements across your codebase**
+```diff
+- import { Ux4gButton, Ux4gCard, Ux4gThemeProvider } from 'ux4g-react-native-design-system';
++ import { Ux4gButton, Ux4gCard, Ux4gThemeProvider } from 'ux4g-react-native-components';
+```
+
 > **For iOS (Bare React Native)**: Run `npx pod-install` or `cd ios && pod install`.  
 > **For Expo**: Dependencies work seamlessly in Expo SDK 50+ out of the box.
 
 ---
 
-## 3. Global Theme & Brand Palette Binding
+## 4. Global Theme & Brand Palette Binding
 
 ### Method A: Global Theme Injection (Recommended)
 You do **NOT** have to adopt default UX4G blue/orange colors if your application already has a defined brand identity (e.g., Purple, Emerald, Indigo, Teal, or Dark Mode).
@@ -204,7 +250,7 @@ If any part of your UI can be represented by a UX4G component, use the correspon
 
 ---
 
-## 5. Side-by-Side Migration Recipes (With Size & Color Preservation)
+## 6. Side-by-Side Migration Recipes (With Size & Color Preservation)
 
 ### 1. Buttons & Icon Buttons
 
@@ -705,7 +751,7 @@ import { Ux4gEmptyState, Ux4gPagination } from 'ux4g-react-native-components';
 
 ---
 
-## 6. Preserving Exact Sizing, Typography & Layout Hierarchy
+## 7. Preserving Exact Sizing, Typography & Layout Hierarchy
 
 To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
 
@@ -738,10 +784,12 @@ To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
 
 ---
 
-## 7. Troubleshooting & Common Migration Pitfalls
+## 8. Troubleshooting & Common Migration Pitfalls
 
 | Issue Observed | Root Cause | Exact Solution |
 | :--- | :--- | :--- |
+| **"Cannot resolve module 'ux4g-react-native-design-system'"** | Using deprecated package name | Uninstall old package (`npm uninstall ux4g-react-native-design-system`) and install official package (`npm install ux4g-react-native-components`). Update imports to `'ux4g-react-native-components'`. |
+| **"MCP / AI imported wrong ux4g package"** | AI assistant selected web or legacy package | Configure AI / MCP prompt to strictly use `ux4g-react-native-components`. Replace all package imports with `ux4g-react-native-components`. |
 | **"Button color changed to default blue"** | Theme not supplied with brand colors | Pass `colors={{ primary: '#YourColor' }}` to `<Ux4gThemeProvider>` or set `backgroundColor="#YourColor"` on `<Ux4gButton>`. |
 | **"Buttons shrunk or expanded"** | Omitted `size` or parent `flex` constraints | Set `size="md"` or supply explicit `style={{ height: 48, width: '100%' }}`. |
 | **"Input border looks different"** | Custom borders in old stylesheet | Pass `inputStyle={{ borderRadius: 10, borderColor: '#CBD5E1' }}` to `<Ux4gInputField>`. |
@@ -751,9 +799,10 @@ To ensure **no elements shrink, expand, or misalign** after switching to UX4G:
 
 ---
 
-## 8. Step-by-Step Gradual Migration Checklist
+## 9. Step-by-Step Gradual Migration Checklist
 
-- [ ] **Step 1: Root Integration**
+- [ ] **Step 1: Package & Root Integration**
+  - [ ] Ensure `ux4g-react-native-components` is installed and `ux4g-react-native-design-system` is removed.
   - [ ] Wrap App in `<Ux4gThemeProvider>` with your project's custom `colors` and `typography`.
   - [ ] Wrap in `<Ux4gToastProvider>`.
 - [ ] **Step 2: Buttons & Interactive Elements**
