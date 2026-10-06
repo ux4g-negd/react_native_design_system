@@ -856,16 +856,16 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('application-status-tracker') || cleanPath.includes('status-and-tracking') || cleanPath.includes('status-tracker') || (cleanPath.includes('status') && cleanPath.includes('application'))) {
       return 'pattern-application-status-tracker';
     }
-    if (cleanPath.includes('payment-waived') || cleanPath.includes('fee-waived') || cleanPath.includes('waived')) {
+    if (cleanPath.includes('payment-waived') || cleanPath.includes('fee-waived') || (cleanPath.includes('payment') && cleanPath.includes('waived'))) {
       return 'pattern-payment-waived';
     }
-    if (cleanPath.includes('payment-failed') || cleanPath.includes('failed')) {
+    if (cleanPath.includes('payment-failed') || (cleanPath.includes('payment') && cleanPath.includes('failed'))) {
       return 'pattern-payment-failed';
     }
     if (cleanPath.includes('payment-success') || cleanPath.includes('payment-successful')) {
       return 'pattern-payment-success';
     }
-    if (cleanPath.includes('payment-processing') || cleanPath.includes('processing')) {
+    if (cleanPath.includes('payment-processing') || (cleanPath.includes('payment') && cleanPath.includes('processing'))) {
       return 'pattern-payment-processing';
     }
     if (cleanPath.includes('choose-payment-method') || cleanPath.includes('payment-method')) {

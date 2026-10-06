@@ -599,16 +599,16 @@ const getMobileBreadcrumb = (page: string) => {
   if (page === 'pattern-application-status-tracker' || page.includes('application-status-tracker')) {
     return 'Patterns / Status and Tracking / Application Status Tracker';
   }
-  if (page === 'pattern-payment-waived' || page.includes('payment-waived') || page.includes('waived')) {
+  if (page === 'pattern-payment-waived' || page.includes('payment-waived') || (page.includes('payment') && page.includes('waived'))) {
     return 'Patterns / Payment and Confirmation / Payment Waived';
   }
-  if (page === 'pattern-payment-failed' || page.includes('payment-failed') || page.includes('failed')) {
+  if (page === 'pattern-payment-failed' || page.includes('payment-failed') || (page.includes('payment') && page.includes('failed'))) {
     return 'Patterns / Payment and Confirmation / Payment Failed';
   }
   if (page === 'pattern-payment-success' || page.includes('payment-success') || page.includes('payment-successful')) {
     return 'Patterns / Payment and Confirmation / Payment Successful';
   }
-  if (page === 'pattern-payment-processing' || page.includes('payment-processing') || page.includes('processing')) {
+  if (page === 'pattern-payment-processing' || page.includes('payment-processing') || (page.includes('payment') && page.includes('processing'))) {
     return 'Patterns / Payment and Confirmation / Payment Processing';
   }
   if (page === 'pattern-choose-payment-method' || page.includes('choose-payment-method')) {
@@ -1309,16 +1309,16 @@ export const App: React.FC = () => {
     if (activePage === 'pattern-application-status-tracker' || activePage.includes('application-status-tracker')) {
       return <ApplicationStatusTrackerDoc isDark={isDark} />;
     }
-    if (activePage === 'pattern-payment-waived' || activePage.includes('payment-waived') || activePage.includes('waived')) {
+    if (activePage === 'pattern-payment-waived' || activePage.includes('payment-waived') || (activePage.includes('payment') && activePage.includes('waived'))) {
       return <PaymentWaivedDoc isDark={isDark} />;
     }
-    if (activePage === 'pattern-payment-failed' || activePage.includes('payment-failed') || activePage.includes('failed')) {
+    if (activePage === 'pattern-payment-failed' || activePage.includes('payment-failed') || (activePage.includes('payment') && activePage.includes('failed'))) {
       return <PaymentFailedDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-payment-success' || activePage.includes('payment-success') || activePage.includes('payment-successful')) {
       return <PaymentSuccessDoc isDark={isDark} />;
     }
-    if (activePage === 'pattern-payment-processing' || activePage.includes('payment-processing') || activePage.includes('processing')) {
+    if (activePage === 'pattern-payment-processing' || activePage.includes('payment-processing') || (activePage.includes('payment') && activePage.includes('processing'))) {
       return <PaymentProcessingDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-choose-payment-method' || activePage.includes('choose-payment-method')) {

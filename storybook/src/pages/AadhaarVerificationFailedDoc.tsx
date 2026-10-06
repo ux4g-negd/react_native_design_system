@@ -2,8 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gStatusBanner } from '../../../src/components/status-banner/StatusBanner';
-import { Ux4gCard } from '../../../src/components/card/Card';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
@@ -23,22 +21,24 @@ export const AadhaarVerificationFailedDoc: React.FC<AadhaarVerificationFailedDoc
   const colors = useMemo(() => {
     return {
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
       cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
-      cardBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
       title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
       subtitle: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      menuBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
       // Error Badge & Banner tokens
-      badgeOuterBg: isDark ? UX4GColors.red900 : UX4GColors.red100,
-      badgeInnerBg: UX4GColors.red600,
-      bannerTitle: isDark ? UX4GColors.red300 : UX4GColors.red800,
-      bannerIcon: isDark ? UX4GColors.red500 : UX4GColors.red600,
-      attemptPillBg: isDark ? UX4GColors.red800 : UX4GColors.red200,
-      attemptPillText: isDark ? UX4GColors.red300 : UX4GColors.red800,
+      badgeOuterBg: isDark ? 'rgba(239, 68, 68, 0.2)' : '#FEE2E2',
+      badgeInnerBg: '#DC2626',
+      bannerBg: isDark ? '#450A0A' : '#FFF5F5',
+      bannerBorder: isDark ? '#7F1D1D' : '#FECACA',
+      bannerTitle: isDark ? '#FCA5A5' : '#991B1B',
+      bannerIcon: isDark ? '#F87171' : '#DC2626',
+      attemptPillBg: isDark ? 'rgba(239, 68, 68, 0.25)' : '#FEE2E2',
+      attemptPillText: isDark ? '#FCA5A5' : '#991B1B',
     };
   }, [isDark]);
 
@@ -56,7 +56,6 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gDivider,
-  Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -70,48 +69,47 @@ export const AadhaarVerificationFailedCardPattern = ({ isDark = false }: { isDar
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Floating Card Container */}
       <View style={styles.cardWrapper}>
-        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }]}>
-          {/* Red Error Badge */}
-          <View style={[styles.badgeOuter, { backgroundColor: isDark ? UX4GColors.red900 : UX4GColors.red100 }]}>
-            <View style={styles.badgeInner}>
-              <Text style={styles.badgeIcon}>!</Text>
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }]}>
+          {/* Centered Red Error Badge */}
+          <View style={styles.badgeContainer}>
+            <View style={[styles.badgeOuter, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.2)' : '#FEE2E2' }]}>
+              <View style={styles.badgeInner}>
+                <Text style={styles.badgeIcon}>!</Text>
+              </View>
             </View>
           </View>
-          <View style={styles.gap16} />
 
           <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
             Authentication Failed
@@ -119,100 +117,235 @@ export const AadhaarVerificationFailedCardPattern = ({ isDark = false }: { isDar
           <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
             The OTP entered is incorrect. You have 2 attempts remaining before your account is temporarily locked.
           </Text>
-          <View style={styles.gap12} />
 
-          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-          <View style={styles.gap4} />
+          {/* Divider above error banner */}
+          <View style={[styles.cardDivider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
 
-          {/* Inline Error Banner */}
-          <Ux4gStatusBanner
-            variant="errorLight"
-            title={'Verification failed, Please try a different\nmethod or try again'}
-            marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-            paddingStyle={{ paddingHorizontal: 12, paddingVertical: 12 }}
-            titleStyle={{
-              fontSize: 13,
-              fontWeight: '500',
-              color: isDark ? UX4GColors.red300 : UX4GColors.red800,
-              lineHeight: 17.55,
-            }}
-            subtitleWidget={
-              <View style={[styles.attemptPill, { backgroundColor: isDark ? UX4GColors.red800 : UX4GColors.red200 }]}>
-                <Text style={[styles.attemptPillText, { color: isDark ? UX4GColors.red300 : UX4GColors.red800 }]}>
-                  Attempt 1 of 2
-                </Text>
+          {/* Error Banner */}
+          <View
+            style={[
+              styles.errorBanner,
+              {
+                backgroundColor: isDark ? '#450A0A' : '#FFF5F5',
+                borderColor: isDark ? '#7F1D1D' : '#FECACA',
+              },
+            ]}
+          >
+            <View style={styles.errorTitleRow}>
+              <View style={[styles.errorIconCircle, { backgroundColor: '#DC2626' }]}>
+                <Text style={styles.errorIconExcl}>!</Text>
               </View>
-            }
-          />
+              <Text style={[styles.errorBannerText, { color: isDark ? '#FCA5A5' : '#991B1B' }]}>
+                Verification failed, Please try a different method or try again
+              </Text>
+            </View>
+            <View style={[styles.attemptPill, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.25)' : '#FEE2E2' }]}>
+              <Text style={[styles.attemptPillText, { color: isDark ? '#FCA5A5' : '#991B1B' }]}>
+                Attempt 1 of 2
+              </Text>
+            </View>
+          </View>
+
+          {/* Divider below error banner */}
+          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
+
+          {/* Action Buttons inside Card */}
+          <View style={styles.actionBtnRow}>
+            <TouchableOpacity onPress={() => {}} style={styles.ghostBtn}>
+              <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontWeight: '600', fontSize: 15 }}>
+                Try Different Method
+              </Text>
+            </TouchableOpacity>
+            <Ux4gButton
+              text="Try Again"
+              onPress={() => alert('Retrying...')}
+              size="medium"
+              height={44}
+            />
+          </View>
         </View>
       </View>
 
-      <View style={styles.flex1} />
-
-      {/* Footer Section */}
-      <View style={styles.cardFooterSection}>
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-        <View style={styles.gap6} />
-        <View style={styles.actionRow}>
-          <Ux4gButton
-            text="Try Different Method"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
-          <Ux4gButton
-            text="Try Again"
-            onPress={() => {}}
-            size="medium"
-            height={48}
-          />
-        </View>
-        <View style={styles.gap8} />
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+      {/* Digital India Footer outside Card */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
+        />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'space-between' },
-  headerLeading: { flexDirection: 'row', alignItems: 'center' },
-  emblemImage: { height: 32, width: 24 },
-  headerDivider: { width: 1, height: 24, marginHorizontal: 8 },
-  unionText: { fontSize: 16, fontWeight: '700' },
-  menuBtn: { width: 40, height: 40, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-  cardWrapper: { paddingHorizontal: 16, paddingTop: 16 },
-  card: { borderRadius: 16, paddingHorizontal: 20, paddingVertical: 20, elevation: 4 },
-  badgeOuter: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center' },
-  badgeInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: UX4GColors.red600, justifyContent: 'center', alignItems: 'center' },
-  badgeIcon: { color: '#FFFFFF', fontSize: 20, fontWeight: '800' },
-  flex1: { flex: 1 },
-  gap4: { height: 4 },
-  gap6: { height: 6 },
-  gap8: { height: 8 },
-  gap12: { height: 12 },
-  gap16: { height: 16 },
-  title: { fontSize: 26, fontWeight: '800', lineHeight: 31.2, letterSpacing: -0.3, marginBottom: 8, fontFamily: 'Inter' },
-  subtitle: { fontSize: 14, fontWeight: '400', lineHeight: 18.9, fontFamily: 'Inter' },
-  attemptPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, alignSelf: 'flex-start' },
-  attemptPillText: { fontSize: 11, fontWeight: '500', lineHeight: 13.2, fontFamily: 'Inter' },
-  cardFooterSection: { paddingHorizontal: 20, paddingBottom: 20 },
-  actionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
-  footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
-  digitalIndiaLogo: { height: 22, width: 100 },
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingBottom: 16,
+  },
+  headerLeading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  emblemImage: {
+    height: 32,
+    width: 24,
+  },
+  headerDivider: {
+    width: 1,
+    height: 24,
+    marginHorizontal: 8,
+  },
+  unionImage: {
+    width: 32,
+    height: 32,
+  },
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardWrapper: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  },
+  card: {
+    borderRadius: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.04,
+    shadowRadius: 16,
+    elevation: 4,
+  },
+  badgeContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  badgeOuter: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeInner: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#DC2626',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeIcon: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '800',
+    lineHeight: 31.2,
+    letterSpacing: -0.3,
+    marginBottom: 8,
+    fontFamily: 'Inter',
+  },
+  subtitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 18.2,
+    fontFamily: 'Inter',
+    marginBottom: 16,
+  },
+  cardDivider: {
+    height: 1,
+    width: '100%',
+    marginBottom: 16,
+  },
+  errorBanner: {
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 14,
+  },
+  errorTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  errorIconCircle: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  errorIconExcl: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '800',
+    lineHeight: 12,
+  },
+  errorBannerText: {
+    fontSize: 13.5,
+    fontWeight: '500',
+    lineHeight: 18,
+    flex: 1,
+    fontFamily: 'Inter',
+  },
+  attemptPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    alignSelf: 'flex-start',
+    marginTop: 8,
+    marginLeft: 24,
+  },
+  attemptPillText: {
+    fontSize: 11.5,
+    fontWeight: '600',
+    fontFamily: 'Inter',
+  },
+  divider: {
+    height: 1,
+    width: '100%',
+    marginTop: 24,
+    marginBottom: 16,
+  },
+  actionBtnRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  ghostBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    marginTop: 'auto',
+    paddingTop: 16,
+  },
+  footerText: {
+    fontSize: 11,
+    fontWeight: '400',
+    fontFamily: 'Inter',
+  },
+  digitalIndiaLogo: {
+    height: 22,
+    width: 100,
+  },
 });`;
     }
 
@@ -227,61 +360,59 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gDivider,
-  Ux4gStatusBanner,
   Ux4gButton,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 export const AadhaarVerificationFailedDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0 }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
       <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Main Content */}
       <View style={styles.content}>
-        {/* Red Error Badge */}
-        <View style={[styles.badgeOuter, { backgroundColor: isDark ? UX4GColors.red900 : UX4GColors.red100 }]}>
-          <View style={styles.badgeInner}>
-            <Text style={styles.badgeIcon}>!</Text>
+        {/* Centered Red Error Badge */}
+        <View style={styles.badgeContainer}>
+          <View style={[styles.badgeOuter, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.2)' : '#FEE2E2' }]}>
+            <View style={styles.badgeInner}>
+              <Text style={styles.badgeIcon}>!</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.gap16} />
 
         <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
           Authentication Failed
@@ -289,50 +420,51 @@ export const AadhaarVerificationFailedDefaultPattern = ({ isDark = false }: { is
         <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
           The OTP entered is incorrect. You have 2 attempts remaining before your account is temporarily locked.
         </Text>
-        <View style={styles.gap16} />
 
-        {/* Inline Error Banner */}
-        <Ux4gStatusBanner
-          variant="errorLight"
-          title={'Verification failed, Please try a different\nmethod or try again'}
-          marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-          paddingStyle={{ paddingHorizontal: 12, paddingVertical: 12 }}
-          titleStyle={{
-            fontSize: 13,
-            fontWeight: '500',
-            color: isDark ? UX4GColors.red300 : UX4GColors.red800,
-            lineHeight: 17.55,
-          }}
-          subtitleWidget={
-            <View style={[styles.attemptPill, { backgroundColor: isDark ? UX4GColors.red800 : UX4GColors.red200 }]}>
-              <Text style={[styles.attemptPillText, { color: isDark ? UX4GColors.red300 : UX4GColors.red800 }]}>
-                Attempt 1 of 2
-              </Text>
+        <View style={styles.gap20} />
+
+        {/* Error Banner */}
+        <View
+          style={[
+            styles.errorBanner,
+            {
+              backgroundColor: isDark ? '#450A0A' : '#FFF5F5',
+              borderColor: isDark ? '#7F1D1D' : '#FECACA',
+            },
+          ]}
+        >
+          <View style={styles.errorTitleRow}>
+            <View style={[styles.errorIconCircle, { backgroundColor: '#DC2626' }]}>
+              <Text style={styles.errorIconExcl}>!</Text>
             </View>
-          }
-        />
+            <Text style={[styles.errorBannerText, { color: isDark ? '#FCA5A5' : '#991B1B' }]}>
+              Verification failed, Please try a different method or try again
+            </Text>
+          </View>
+          <View style={[styles.attemptPill, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.25)' : '#FEE2E2' }]}>
+            <Text style={[styles.attemptPillText, { color: isDark ? '#FCA5A5' : '#991B1B' }]}>
+              Attempt 1 of 2
+            </Text>
+          </View>
+        </View>
       </View>
 
       {/* Footer Section */}
       <View style={styles.footerSection}>
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-        <View style={styles.gap6} />
-        <View style={styles.actionRow}>
-          <Ux4gButton
-            text="Try Different Method"
-            onPress={() => {}}
-            variant="ghost"
-            size="medium"
-            height={48}
-          />
+        <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200 }]} />
+        <View style={styles.actionBtnRow}>
+          <TouchableOpacity onPress={() => {}} style={styles.ghostBtn}>
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontWeight: '600', fontSize: 15 }}>
+              Try Different Method
+            </Text>
+          </TouchableOpacity>
           <Ux4gButton
             text="Try Again"
-            onPress={() => {}}
+            onPress={() => alert('Retrying...')}
             size="medium"
-            height={48}
+            height={44}
           />
         </View>
-        <View style={styles.gap8} />
 
         {/* Digital India Footer */}
         <View style={styles.footer}>
@@ -340,7 +472,7 @@ export const AadhaarVerificationFailedDefaultPattern = ({ isDark = false }: { is
             Powered by -
           </Text>
           <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
             resizeMode="contain"
           />
@@ -351,28 +483,160 @@ export const AadhaarVerificationFailedDefaultPattern = ({ isDark = false }: { is
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'space-between' },
-  headerLeading: { flexDirection: 'row', alignItems: 'center' },
-  emblemImage: { height: 32, width: 24 },
-  headerDivider: { width: 1, height: 24, marginHorizontal: 8 },
-  unionText: { fontSize: 16, fontWeight: '700' },
-  menuBtn: { width: 40, height: 40, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-  content: { paddingHorizontal: 20, paddingTop: 20, flex: 1 },
-  badgeOuter: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center' },
-  badgeInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: UX4GColors.red600, justifyContent: 'center', alignItems: 'center' },
-  badgeIcon: { color: '#FFFFFF', fontSize: 20, fontWeight: '800' },
-  gap6: { height: 6 },
-  gap8: { height: 8 },
-  gap16: { height: 16 },
-  title: { fontSize: 26, fontWeight: '800', lineHeight: 31.2, letterSpacing: -0.3, marginBottom: 8, fontFamily: 'Inter' },
-  subtitle: { fontSize: 14, fontWeight: '400', lineHeight: 18.9, fontFamily: 'Inter' },
-  attemptPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, alignSelf: 'flex-start' },
-  attemptPillText: { fontSize: 11, fontWeight: '500', lineHeight: 13.2, fontFamily: 'Inter' },
-  footerSection: { paddingHorizontal: 20, paddingBottom: 20 },
-  actionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
-  footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
-  digitalIndiaLogo: { height: 22, width: 100 },
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingBottom: 16,
+  },
+  headerLeading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  emblemImage: {
+    height: 32,
+    width: 24,
+  },
+  headerDivider: {
+    width: 1,
+    height: 24,
+    marginHorizontal: 8,
+  },
+  unionImage: {
+    width: 32,
+    height: 32,
+  },
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    flex: 1,
+  },
+  badgeContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  badgeOuter: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeInner: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#DC2626',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeIcon: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  gap20: {
+    height: 20,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '800',
+    lineHeight: 31.2,
+    letterSpacing: -0.3,
+    marginBottom: 8,
+    fontFamily: 'Inter',
+  },
+  subtitle: {
+    fontSize: 14,
+    fontWeight: '400',
+    lineHeight: 18.2,
+    fontFamily: 'Inter',
+  },
+  errorBanner: {
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 14,
+  },
+  errorTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  errorIconCircle: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 2,
+  },
+  errorIconExcl: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '800',
+    lineHeight: 12,
+  },
+  errorBannerText: {
+    fontSize: 13.5,
+    fontWeight: '500',
+    lineHeight: 18,
+    flex: 1,
+    fontFamily: 'Inter',
+  },
+  attemptPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    alignSelf: 'flex-start',
+    marginTop: 8,
+    marginLeft: 24,
+  },
+  attemptPillText: {
+    fontSize: 11.5,
+    fontWeight: '600',
+    fontFamily: 'Inter',
+  },
+  footerSection: {
+    paddingHorizontal: 20,
+    paddingBottom: 8,
+  },
+  divider: {
+    height: 1,
+    width: '100%',
+    marginBottom: 16,
+  },
+  actionBtnRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  ghostBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 4,
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  footerText: {
+    fontSize: 11,
+    fontWeight: '400',
+    fontFamily: 'Inter',
+  },
+  digitalIndiaLogo: {
+    height: 22,
+    width: 100,
+  },
 });`;
   }, [variant]);
 
@@ -380,6 +644,78 @@ const styles = StyleSheet.create({
   const renderLiveMockup = () => {
     const isCard = variant === 'card';
     const bgScreenColor = isCard ? colors.cardScreenBg : colors.defaultScreenBg;
+
+    const renderBanner = () => (
+      <div
+        style={{
+          backgroundColor: colors.bannerBg,
+          border: `1px solid ${colors.bannerBorder}`,
+          borderRadius: 10,
+          padding: '14px',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 8,
+          }}
+        >
+          <div
+            style={{
+              width: 16,
+              height: 16,
+              borderRadius: 8,
+              backgroundColor: colors.bannerIcon,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#FFFFFF',
+              fontSize: 11,
+              fontWeight: 800,
+              lineHeight: 1,
+              marginTop: 2,
+              flexShrink: 0,
+            }}
+          >
+            !
+          </div>
+          <span
+            style={{
+              fontSize: 13.5,
+              fontWeight: 500,
+              color: colors.bannerTitle,
+              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+              lineHeight: 1.35,
+            }}
+          >
+            Verification failed, Please try a different method or try again
+          </span>
+        </div>
+        <div
+          style={{
+            padding: '3px 8px',
+            backgroundColor: colors.attemptPillBg,
+            borderRadius: 6,
+            display: 'inline-flex',
+            alignSelf: 'flex-start',
+            marginTop: 8,
+            marginLeft: 24,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 11.5,
+              fontWeight: 600,
+              color: colors.attemptPillText,
+              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+            }}
+          >
+            Attempt 1 of 2
+          </span>
+        </div>
+      </div>
+    );
 
     return (
       <div
@@ -445,9 +781,9 @@ const styles = StyleSheet.create({
                   <div
                     key="menuAction"
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
                       border: `1.5px solid ${colors.menuBorder}`,
                       backgroundColor: colors.headerBg,
                       display: 'flex',
@@ -457,13 +793,13 @@ const styles = StyleSheet.create({
                     }}
                   >
                     <span
-                      className="material-symbols-outlined"
                       style={{
-                        fontSize: 20,
+                        fontSize: 18,
                         color: colors.menuIcon,
+                        lineHeight: 1,
                       }}
                     >
-                      menu
+                      ☰
                     </span>
                   </div>
                 ),
@@ -489,9 +825,11 @@ const styles = StyleSheet.create({
               flexDirection: 'column',
               backgroundColor: colors.cardScreenBg,
               justifyContent: 'space-between',
+              padding: '0 16px 20px 16px',
             }}
           >
-            <div style={{ padding: '0 16px' }}>
+            <div>
+              {/* Soft lavender gap above card */}
               <div style={{ height: 16 }} />
 
               {/* Floating Card Container */}
@@ -499,7 +837,7 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '20px',
+                  padding: '24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -507,42 +845,37 @@ const styles = StyleSheet.create({
                   flexDirection: 'column',
                 }}
               >
-                {/* Red Error Badge */}
-                <div
-                  style={{
-                    width: 64,
-                    height: 64,
-                    borderRadius: 32,
-                    backgroundColor: colors.badgeOuterBg,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+                {/* Centered Red Error Badge */}
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                   <div
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 18,
-                      backgroundColor: colors.badgeInnerBg,
+                      width: 64,
+                      height: 64,
+                      borderRadius: 32,
+                      backgroundColor: colors.badgeOuterBg,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
                   >
-                    <span
-                      className="material-symbols-outlined"
+                    <div
                       style={{
-                        fontSize: 22,
+                        width: 32,
+                        height: 32,
+                        borderRadius: 16,
+                        backgroundColor: colors.badgeInnerBg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         color: '#FFFFFF',
+                        fontSize: 18,
                         fontWeight: 800,
                       }}
                     >
-                      priority_high
-                    </span>
+                      !
+                    </div>
                   </div>
                 </div>
-                <div style={{ height: 16 }} />
 
                 <h2
                   style={{
@@ -562,17 +895,17 @@ const styles = StyleSheet.create({
                   style={{
                     fontSize: 14,
                     fontWeight: 400,
-                    lineHeight: 1.35,
+                    lineHeight: 1.4,
                     color: colors.subtitle,
                     margin: 0,
-                    marginBottom: 12,
+                    marginBottom: 16,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   The OTP entered is incorrect. You have 2 attempts remaining before your account is temporarily locked.
                 </p>
 
-                {/* Card divider */}
+                {/* Subtle Divider above error banner */}
                 <div
                   style={{
                     height: 1,
@@ -582,114 +915,76 @@ const styles = StyleSheet.create({
                   }}
                 />
 
-                {/* Inline Error Status Banner */}
-                <Ux4gStatusBanner
-                  variant="errorLight"
-                  title={'Verification failed, Please try a different\nmethod or try again'}
-                  marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                  paddingStyle={{ paddingLeft: 12, paddingTop: 12, paddingRight: 10, paddingBottom: 12 }}
-                  titleStyle={{
-                    fontSize: 13,
-                    fontWeight: '500',
-                    color: colors.bannerTitle,
-                    lineHeight: 17.55,
-                    whiteSpace: 'pre-line',
-                  } as any}
-                  leadingIcon={
-                    <span
-                      className="material-symbols-outlined"
-                      style={{
-                        fontSize: 18,
-                        color: colors.bannerIcon,
-                        fontVariationSettings: "'FILL' 1",
-                      }}
-                    >
-                      error
-                    </span>
-                  }
-                  subtitleWidget={
-                    <div
-                      style={{
-                        padding: '4px 10px',
-                        backgroundColor: colors.attemptPillBg,
-                        borderRadius: 6,
-                        display: 'inline-flex',
-                        alignSelf: 'flex-start',
-                        width: 'fit-content',
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 500,
-                          color: colors.attemptPillText,
-                          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                          lineHeight: '13.2px',
-                        }}
-                      >
-                        Attempt 1 of 2
-                      </span>
-                    </div>
-                  }
+                {/* Error Banner */}
+                {renderBanner()}
+
+                {/* Subtle Divider below error banner inside Card */}
+                <div
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.border,
+                    width: '100%',
+                    marginTop: 24,
+                    marginBottom: 16,
+                  }}
                 />
+
+                {/* Action Buttons inside Card */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: '8px 4px',
+                      color: colors.primary,
+                      fontSize: 15,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    }}
+                  >
+                    Try Different Method
+                  </button>
+                  <Ux4gButton
+                    text="Try Again"
+                    onPress={() => alert('Retrying...')}
+                    size="medium"
+                    height={44}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Action Footer */}
-            <div style={{ padding: '12px 20px 20px 20px' }}>
-              <div
+            {/* Footer Section outside Card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                paddingTop: 16,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
                 style={{
-                  height: 1,
-                  backgroundColor: colors.border,
-                  width: '100%',
-                  marginBottom: 6,
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Ux4gButton
-                  text="Try Different Method"
-                  onPress={() => alert('Choosing different method...')}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
-                <Ux4gButton
-                  text="Try Again"
-                  onPress={() => alert('Retrying...')}
-                  size="medium"
-                  height={48}
-                />
-              </div>
-              <div style={{ height: 8 }} />
-
-              {/* Digital India Footer */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
-                }}
-              >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
-                  style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                />
-              </div>
             </div>
           </div>
         ) : (
@@ -700,47 +995,42 @@ const styles = StyleSheet.create({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '20px 20px 20px 20px',
+              padding: '24px 20px 20px 20px',
               backgroundColor: colors.defaultScreenBg,
             }}
           >
             <div>
-              {/* Red Error Badge */}
-              <div
-                style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: 32,
-                  backgroundColor: colors.badgeOuterBg,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              {/* Centered Red Error Badge */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                 <div
                   style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 18,
-                    backgroundColor: colors.badgeInnerBg,
+                    width: 64,
+                    height: 64,
+                    borderRadius: 32,
+                    backgroundColor: colors.badgeOuterBg,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <span
-                    className="material-symbols-outlined"
+                  <div
                     style={{
-                      fontSize: 22,
+                      width: 32,
+                      height: 32,
+                      borderRadius: 16,
+                      backgroundColor: colors.badgeInnerBg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       color: '#FFFFFF',
+                      fontSize: 18,
                       fontWeight: 800,
                     }}
                   >
-                    priority_high
-                  </span>
+                    !
+                  </div>
                 </div>
               </div>
-              <div style={{ height: 16 }} />
 
               <h2
                 style={{
@@ -760,66 +1050,18 @@ const styles = StyleSheet.create({
                 style={{
                   fontSize: 14,
                   fontWeight: 400,
-                  lineHeight: 1.35,
+                  lineHeight: 1.4,
                   color: colors.subtitle,
                   margin: 0,
-                  marginBottom: 16,
+                  marginBottom: 20,
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
                 The OTP entered is incorrect. You have 2 attempts remaining before your account is temporarily locked.
               </p>
 
-              {/* Inline Error Status Banner */}
-              <Ux4gStatusBanner
-                variant="errorLight"
-                title={'Verification failed, Please try a different\nmethod or try again'}
-                marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                paddingStyle={{ paddingLeft: 12, paddingTop: 12, paddingRight: 10, paddingBottom: 12 }}
-                titleStyle={{
-                  fontSize: 13,
-                  fontWeight: '500',
-                  color: colors.bannerTitle,
-                  lineHeight: 17.55,
-                  whiteSpace: 'pre-line',
-                } as any}
-                leadingIcon={
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      fontSize: 18,
-                      color: colors.bannerIcon,
-                      fontVariationSettings: "'FILL' 1",
-                    }}
-                  >
-                    error
-                  </span>
-                }
-                subtitleWidget={
-                  <div
-                    style={{
-                      padding: '4px 10px',
-                      backgroundColor: colors.attemptPillBg,
-                      borderRadius: 6,
-                      display: 'inline-flex',
-                      alignSelf: 'flex-start',
-                      width: 'fit-content',
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 500,
-                        color: colors.attemptPillText,
-                        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-                        lineHeight: '13.2px',
-                      }}
-                    >
-                      Attempt 1 of 2
-                    </span>
-                  </div>
-                }
-              />
+              {/* Error Banner */}
+              {renderBanner()}
             </div>
 
             {/* Bottom Section */}
@@ -829,7 +1071,7 @@ const styles = StyleSheet.create({
                   height: 1,
                   backgroundColor: colors.border,
                   width: '100%',
-                  marginBottom: 6,
+                  marginBottom: 16,
                 }}
               />
               <div
@@ -837,31 +1079,40 @@ const styles = StyleSheet.create({
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  marginBottom: 16,
                 }}
               >
-                <Ux4gButton
-                  text="Try Different Method"
-                  onPress={() => alert('Choosing different method...')}
-                  variant="ghost"
-                  size="medium"
-                  height={48}
-                />
+                <button
+                  type="button"
+                  onClick={() => {}}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    padding: '8px 4px',
+                    color: colors.primary,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  }}
+                >
+                  Try Different Method
+                </button>
                 <Ux4gButton
                   text="Try Again"
                   onPress={() => alert('Retrying...')}
                   size="medium"
-                  height={48}
+                  height={44}
                 />
               </div>
-              <div style={{ height: 8 }} />
 
-              {/* Digital India Footer */}
+              {/* Footer */}
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-              justifyContent: 'center',
+                  justifyContent: 'center',
                   gap: 4,
                 }}
               >
@@ -894,7 +1145,7 @@ const styles = StyleSheet.create({
           </div>
           <h1 className="wb-title">Aadhaar verification failed</h1>
           <p className="wb-subtitle">
-            Failure state of the Aadhaar gate flow. Shows a red error badge, a clear failure title, a description that includes the remaining-attempts count, and an inline error banner with an attempt counter pill.
+            Failure state of the Aadhaar authentication flow shown after a failed OTP or face-match attempt. Displays an attempt counter, a retry action, and a fallback to switch authentication methods.
           </p>
         </div>
       </div>
