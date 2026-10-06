@@ -2,9 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gButton } from '../../../src/components/button/Button';
 import { CodeBlock } from '../components/CodeBlock';
-import { UnionLogo } from '../components/UnionLogo';
 
 interface AadhaarAccountLockedDocProps {
   isDark: boolean;
@@ -17,28 +15,32 @@ export const AadhaarAccountLockedDoc: React.FC<AadhaarAccountLockedDocProps> = (
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
 
-  // Color Palette tokens matching Flutter Design System
+  // Color Palette tokens matching UX4G Design System
   const colors = useMemo(() => {
     return {
       headerBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
-      defaultScreenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
-      cardScreenBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
-      cardBg: isDark ? UX4GColors.gray900 : UX4GColors.neutral0,
+      defaultScreenBg: isDark ? UX4GColors.neutral950 : '#FFFFFF',
+      cardScreenBg: isDark ? '#1C1335' : '#F3F0FF',
+      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-      title: isDark ? UX4GColors.neutral50 : UX4GColors.gray900,
-      subtitle: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      divider: isDark ? UX4GColors.neutral800 : '#F1F5F9',
+      title: isDark ? UX4GColors.neutral50 : '#0F172A',
+      subtitle: isDark ? UX4GColors.neutral400 : '#475569',
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary,
-      menuBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      menuBorder: isDark ? UX4GColors.primary400 : '#C0B3FF',
+      menuIcon: isDark ? UX4GColors.primary300 : UX4GColors.primary,
       // Lock Badge tokens
-      lockBadgeOuterBg: isDark ? UX4GColors.red900 : UX4GColors.red50,
-      lockBadgeInnerBg: isDark ? UX4GColors.red800 : UX4GColors.red100,
-      lockBadgeIconColor: isDark ? UX4GColors.red400 : UX4GColors.red600,
+      lockBadgeBg: isDark ? 'rgba(239, 68, 68, 0.18)' : '#FEE2E2',
+      lockBadgeIconColor: isDark ? '#F87171' : '#DC2626',
       // Yellow Countdown Box tokens
-      countdownBoxBg: isDark ? UX4GColors.orange900 : UX4GColors.orange50,
-      countdownHeader: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-      countdownTimer: isDark ? UX4GColors.orange300 : UX4GColors.orange800,
-      countdownInfoText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
+      countdownBoxBg: isDark ? '#2D1F08' : '#FFF8E7',
+      countdownHeader: isDark ? UX4GColors.neutral200 : '#1F2937',
+      countdownTimer: isDark ? '#FBBF24' : '#B45309',
+      countdownInfoText: isDark ? UX4GColors.neutral300 : '#4B5563',
+      // Button tokens
+      btnBg: isDark ? 'rgba(91, 58, 230, 0.15)' : '#FAF8FF',
+      btnBorder: isDark ? UX4GColors.primary400 : '#C4B5FD',
+      btnText: isDark ? UX4GColors.primary300 : UX4GColors.primary,
     };
   }, [isDark]);
 
@@ -55,114 +57,108 @@ import {
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gDivider,
-  Ux4gButton,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 export const AadhaarAccountLockedCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.primary800 : UX4GColors.primary100 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? '#1C1335' : '#F3F0FF' }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
-            <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
       {/* Floating Card Container */}
       <View style={styles.cardWrapper}>
-        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.gray900 : '#FFFFFF' }]}>
-          {/* Red Lock Badge */}
-          <View style={[styles.badgeOuter, { backgroundColor: isDark ? UX4GColors.red900 : UX4GColors.red50 }]}>
-            <View style={[styles.badgeInner, { backgroundColor: isDark ? UX4GColors.red800 : UX4GColors.red100 }]}>
-              <Text style={[styles.lockIcon, { color: isDark ? UX4GColors.red400 : UX4GColors.red600 }]}>🔒</Text>
+        <View style={[styles.card, { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }]}>
+          {/* Centered Red Lock Badge */}
+          <View style={styles.badgeContainer}>
+            <View style={[styles.lockBadge, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.18)' : '#FEE2E2' }]}>
+              <Text style={[styles.lockIcon, { color: isDark ? '#F87171' : '#DC2626' }]}>🔒</Text>
             </View>
           </View>
-          <View style={styles.gap16} />
 
-          <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+          {/* Left-Aligned Title & Subtitle */}
+          <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
             Account Locked
           </Text>
-          <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
             Your Aadhaar authentication has been suspended due to too many failed attempts.
           </Text>
-          <View style={styles.gap24} />
 
           {/* Yellow Countdown Box */}
-          <View style={[styles.countdownBox, { backgroundColor: isDark ? UX4GColors.orange900 : UX4GColors.orange50 }]}>
-            <Text style={[styles.countdownHeader, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 }]}>
+          <View style={[styles.countdownBox, { backgroundColor: isDark ? '#2D1F08' : '#FFF8E7' }]}>
+            <Text style={[styles.countdownHeader, { color: isDark ? UX4GColors.neutral200 : '#1F2937' }]}>
               Try again in
             </Text>
-            <View style={styles.gap8} />
-            <Text style={[styles.countdownTimer, { color: isDark ? UX4GColors.orange300 : UX4GColors.orange800 }]}>
+            <Text style={[styles.countdownTimer, { color: isDark ? '#FBBF24' : '#B45309' }]}>
               23:45:00
             </Text>
-            <View style={styles.gap16} />
-            <Text style={[styles.countdownInfoText, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 }]}>
+            <Text style={[styles.countdownInfoText, { color: isDark ? UX4GColors.neutral300 : '#4B5563' }]}>
               Your account will be unlocked automatically. If you need immediate assistance, contact UIDAI support.
             </Text>
           </View>
+
+          {/* Divider */}
+          <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : '#F1F5F9' }]} />
+
+          {/* Contact Support Button */}
+          <TouchableOpacity
+            style={[
+              styles.contactBtn,
+              {
+                backgroundColor: isDark ? 'rgba(91, 58, 230, 0.15)' : '#FAF8FF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C4B5FD',
+              }
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={[styles.contactBtnText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+              🛟 Contact UIDAI Support
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
-      <View style={styles.flex1} />
-
-      {/* Footer Section */}
-      <View style={styles.cardFooterSection}>
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-        <View style={styles.gap12} />
-        <Ux4gButton
-          text="Contact UIDAI Support"
-          onPress={() => {}}
-          variant="outline"
-          size="large"
-          height={48}
+      {/* Digital India Footer outside card */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
         />
-        <View style={styles.gap8} />
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
       </View>
     </View>
   );
@@ -170,30 +166,26 @@ export const AadhaarAccountLockedCardPattern = ({ isDark = false }: { isDark?: b
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between' },
-  headerLeading: { flexDirection: 'row', alignItems: 'center' },
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   emblemImage: { height: 32, width: 24 },
-  headerDivider: { width: 1, height: 24, marginHorizontal: 8 },
-  unionText: { fontSize: 16, fontWeight: '700' },
-  menuBtn: { width: 40, height: 40, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-  cardWrapper: { paddingHorizontal: 16, paddingTop: 16 },
-  card: { borderRadius: 16, paddingHorizontal: 20, paddingVertical: 20, elevation: 4 },
-  badgeOuter: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center' },
-  badgeInner: { width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center' },
-  lockIcon: { fontSize: 20 },
-  flex1: { flex: 1 },
-  gap8: { height: 8 },
-  gap12: { height: 12 },
-  gap16: { height: 16 },
-  gap24: { height: 24 },
-  title: { fontSize: 26, fontWeight: '800', lineHeight: 31.2, letterSpacing: -0.3, marginBottom: 8, fontFamily: 'Inter' },
-  subtitle: { fontSize: 14, fontWeight: '400', lineHeight: 18.9, fontFamily: 'Inter' },
-  countdownBox: { width: '100%', padding: 20, borderRadius: 12, alignItems: 'center' },
-  countdownHeader: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter' },
-  countdownTimer: { fontSize: 32, fontWeight: '800', letterSpacing: 1, fontFamily: 'Inter' },
-  countdownInfoText: { fontSize: 12, fontWeight: '400', textAlign: 'center', lineHeight: 16.8, fontFamily: 'Inter' },
-  cardFooterSection: { paddingHorizontal: 20, paddingBottom: 20 },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
-  footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
+  unionImage: { height: 24, width: 28 },
+  menuBtn: { width: 38, height: 38, borderRadius: 8, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  cardWrapper: { paddingHorizontal: 16, paddingTop: 16, flex: 1 },
+  card: { borderRadius: 16, padding: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 3 },
+  badgeContainer: { alignItems: 'center', marginBottom: 20 },
+  lockBadge: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center' },
+  lockIcon: { fontSize: 24 },
+  title: { fontSize: 22, fontWeight: '800', lineHeight: 28, marginBottom: 8, textAlign: 'left', fontFamily: 'Inter' },
+  subtitle: { fontSize: 13.5, fontWeight: '400', lineHeight: 19, color: '#475569', marginBottom: 20, textAlign: 'left', fontFamily: 'Inter' },
+  countdownBox: { width: '100%', padding: 20, borderRadius: 12, alignItems: 'center', marginBottom: 20 },
+  countdownHeader: { fontSize: 16, fontWeight: '700', marginBottom: 8, fontFamily: 'Inter' },
+  countdownTimer: { fontSize: 26, fontWeight: '800', letterSpacing: 0.5, marginBottom: 12, fontFamily: 'Inter' },
+  countdownInfoText: { fontSize: 12, fontWeight: '400', textAlign: 'center', lineHeight: 17, fontFamily: 'Inter' },
+  divider: { height: 1, width: '100%', marginBottom: 16 },
+  contactBtn: { width: '100%', height: 48, borderRadius: 10, borderWidth: 1.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  contactBtnText: { fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingBottom: 20 },
+  footerText: { fontSize: 11, fontWeight: '400', fontFamily: 'Inter' },
   digitalIndiaLogo: { height: 22, width: 100 },
 });`;
     }
@@ -208,110 +200,106 @@ import {
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gDivider,
-  Ux4gButton,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 export const AadhaarAccountLockedDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 }]}>
+    <View style={[styles.container, { backgroundColor: isDark ? UX4GColors.neutral950 : '#FFFFFF' }]}>
       {/* App Header with Menu Action */}
       <Ux4gAppHeader
         variant={isDark ? 'dark' : 'light'}
         leadingWidgets={[
           <View style={styles.headerLeading} key="leading">
             <Image
-              source={{ uri: 'https://ux4g.gov.in/assets/img/emblem-dark.png' }}
+              source={{ uri: '/national_emblem_logo.svg' }}
               style={[styles.emblemImage, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
-            <View style={[styles.headerDivider, { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300 }]} />
-            <Text style={[styles.unionText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
-              UNION
-            </Text>
+            <Image
+              source={{ uri: '/Union.svg' }}
+              style={styles.unionImage}
+              resizeMode="contain"
+            />
           </View>
         ]}
         actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={[
-                  styles.menuBtn,
-                  {
-                    backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                    borderColor: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-                  },
-                ]}
-                onPress={() => {}}
-              >
-                <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
+          <TouchableOpacity
+            key="menu"
+            style={[
+              styles.menuBtn,
+              {
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.primary400 : '#C0B3FF',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={{ color: isDark ? UX4GColors.primary300 : UX4GColors.primary, fontSize: 18 }}>☰</Text>
+          </TouchableOpacity>
         ]}
       />
-      <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <View style={styles.content}>
-        {/* Red Lock Badge */}
-        <View style={[styles.badgeOuter, { backgroundColor: isDark ? UX4GColors.red900 : UX4GColors.red50 }]}>
-          <View style={[styles.badgeInner, { backgroundColor: isDark ? UX4GColors.red800 : UX4GColors.red100 }]}>
-            <Text style={[styles.lockIcon, { color: isDark ? UX4GColors.red400 : UX4GColors.red600 }]}>🔒</Text>
+        {/* Centered Red Lock Badge */}
+        <View style={styles.badgeContainer}>
+          <View style={[styles.lockBadge, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.18)' : '#FEE2E2' }]}>
+            <Text style={[styles.lockIcon, { color: isDark ? '#F87171' : '#DC2626' }]}>🔒</Text>
           </View>
         </View>
-        <View style={styles.gap16} />
 
-        <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : UX4GColors.gray900 }]}>
+        {/* Left-Aligned Title & Subtitle */}
+        <Text style={[styles.title, { color: isDark ? UX4GColors.neutral50 : '#0F172A' }]}>
           Account Locked
         </Text>
-        <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+        <Text style={[styles.subtitle, { color: isDark ? UX4GColors.neutral400 : '#475569' }]}>
           Your Aadhaar authentication has been suspended due to too many failed attempts.
         </Text>
-        <View style={styles.gap24} />
 
         {/* Yellow Countdown Box */}
-        <View style={[styles.countdownBox, { backgroundColor: isDark ? UX4GColors.orange900 : UX4GColors.orange50 }]}>
-          <Text style={[styles.countdownHeader, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 }]}>
+        <View style={[styles.countdownBox, { backgroundColor: isDark ? '#2D1F08' : '#FFF8E7' }]}>
+          <Text style={[styles.countdownHeader, { color: isDark ? UX4GColors.neutral200 : '#1F2937' }]}>
             Try again in
           </Text>
-          <View style={styles.gap8} />
-          <Text style={[styles.countdownTimer, { color: isDark ? UX4GColors.orange300 : UX4GColors.orange800 }]}>
+          <Text style={[styles.countdownTimer, { color: isDark ? '#FBBF24' : '#B45309' }]}>
             23:45:00
           </Text>
-          <View style={styles.gap16} />
-          <Text style={[styles.countdownInfoText, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 }]}>
+          <Text style={[styles.countdownInfoText, { color: isDark ? UX4GColors.neutral300 : '#4B5563' }]}>
             Your account will be unlocked automatically. If you need immediate assistance, contact UIDAI support.
           </Text>
         </View>
+
+        {/* Divider */}
+        <View style={[styles.divider, { backgroundColor: isDark ? UX4GColors.neutral800 : '#F1F5F9' }]} />
+
+        {/* Contact Support Button */}
+        <TouchableOpacity
+          style={[
+            styles.contactBtn,
+            {
+              backgroundColor: isDark ? 'rgba(91, 58, 230, 0.15)' : '#FAF8FF',
+              borderColor: isDark ? UX4GColors.primary400 : '#C4B5FD',
+            }
+          ]}
+          onPress={() => {}}
+        >
+          <Text style={[styles.contactBtnText, { color: isDark ? UX4GColors.primary300 : UX4GColors.primary }]}>
+            🛟 Contact UIDAI Support
+          </Text>
+        </TouchableOpacity>
       </View>
 
-      {/* Footer Section */}
-      <View style={styles.footerSection}>
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} />
-        <View style={styles.gap12} />
-        <Ux4gButton
-          text="Contact UIDAI Support"
-          onPress={() => {}}
-          variant="outline"
-          size="large"
-          height={48}
+      {/* Digital India Footer */}
+      <View style={styles.footer}>
+        <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          Powered by -
+        </Text>
+        <Image
+          source={{ uri: '/Digital_India_logo.svg' }}
+          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+          resizeMode="contain"
         />
-        <View style={styles.gap8} />
-
-        {/* Digital India Footer */}
-        <View style={styles.footer}>
-          <Text style={[styles.footerText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={{ uri: 'https://ux4g.gov.in/assets/img/digital-india-logo.png' }}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
       </View>
     </View>
   );
@@ -319,28 +307,25 @@ export const AadhaarAccountLockedDefaultPattern = ({ isDark = false }: { isDark?
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between' },
-  headerLeading: { flexDirection: 'row', alignItems: 'center' },
+  headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   emblemImage: { height: 32, width: 24 },
-  headerDivider: { width: 1, height: 24, marginHorizontal: 8 },
-  unionText: { fontSize: 16, fontWeight: '700' },
-  menuBtn: { width: 40, height: 40, borderRadius: 10, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-  content: { paddingHorizontal: 20, paddingTop: 20, flex: 1 },
-  badgeOuter: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center' },
-  badgeInner: { width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center' },
-  lockIcon: { fontSize: 20 },
-  gap8: { height: 8 },
-  gap12: { height: 12 },
-  gap16: { height: 16 },
-  gap24: { height: 24 },
-  title: { fontSize: 26, fontWeight: '800', lineHeight: 31.2, letterSpacing: -0.3, marginBottom: 8, fontFamily: 'Inter' },
-  subtitle: { fontSize: 14, fontWeight: '400', lineHeight: 18.9, fontFamily: 'Inter' },
-  countdownBox: { width: '100%', padding: 20, borderRadius: 12, alignItems: 'center' },
-  countdownHeader: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter' },
-  countdownTimer: { fontSize: 32, fontWeight: '800', letterSpacing: 1, fontFamily: 'Inter' },
-  countdownInfoText: { fontSize: 12, fontWeight: '400', textAlign: 'center', lineHeight: 16.8, fontFamily: 'Inter' },
-  footerSection: { paddingHorizontal: 20, paddingBottom: 20 },
-  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, },
-  footerText: { fontSize: 11, fontWeight: '400', marginBottom: 4, fontFamily: 'Inter' },
+  unionImage: { height: 24, width: 28 },
+  menuBtn: { width: 38, height: 38, borderRadius: 8, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  content: { padding: 20, flex: 1 },
+  badgeContainer: { alignItems: 'center', marginBottom: 20 },
+  lockBadge: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center' },
+  lockIcon: { fontSize: 24 },
+  title: { fontSize: 22, fontWeight: '800', lineHeight: 28, marginBottom: 8, textAlign: 'left', fontFamily: 'Inter' },
+  subtitle: { fontSize: 13.5, fontWeight: '400', lineHeight: 19, color: '#475569', marginBottom: 20, textAlign: 'left', fontFamily: 'Inter' },
+  countdownBox: { width: '100%', padding: 20, borderRadius: 12, alignItems: 'center', marginBottom: 20 },
+  countdownHeader: { fontSize: 16, fontWeight: '700', marginBottom: 8, fontFamily: 'Inter' },
+  countdownTimer: { fontSize: 26, fontWeight: '800', letterSpacing: 0.5, marginBottom: 12, fontFamily: 'Inter' },
+  countdownInfoText: { fontSize: 12, fontWeight: '400', textAlign: 'center', lineHeight: 17, fontFamily: 'Inter' },
+  divider: { height: 1, width: '100%', marginBottom: 16 },
+  contactBtn: { width: '100%', height: 48, borderRadius: 10, borderWidth: 1.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  contactBtnText: { fontSize: 14, fontWeight: '600', fontFamily: 'Inter' },
+  footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingBottom: 20 },
+  footerText: { fontSize: 11, fontWeight: '400', fontFamily: 'Inter' },
   digitalIndiaLogo: { height: 22, width: 100 },
 });`;
   }, [variant]);
@@ -397,16 +382,15 @@ const styles = StyleSheet.create({
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />,
-              <div
-                key="divider"
+              <img
+                key="union"
+                src="/Union.svg"
+                alt="Union"
                 style={{
-                  width: 1,
                   height: 24,
-                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                  margin: '0 4px',
+                  marginLeft: 4,
                 }}
               />,
-              <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
             actions={[
               {
@@ -414,9 +398,9 @@ const styles = StyleSheet.create({
                   <div
                     key="menuAction"
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 10,
+                      width: 38,
+                      height: 38,
+                      borderRadius: 8,
                       border: `1.5px solid ${colors.menuBorder}`,
                       backgroundColor: colors.headerBg,
                       display: 'flex',
@@ -450,25 +434,22 @@ const styles = StyleSheet.create({
 
         {/* Main Body */}
         {isCard ? (
-          /* Card Style Variant */
+          /* Card Style Variant (Image 3) */
           <div
             style={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: colors.cardScreenBg,
               justifyContent: 'space-between',
             }}
           >
-            <div style={{ padding: '0 16px' }}>
-              <div style={{ height: 16 }} />
-
+            <div style={{ padding: '16px' }}>
               {/* Floating Card Container */}
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: '20px',
+                  padding: '24px 20px',
                   boxShadow: isDark
                     ? '0 4px 16px rgba(0, 0, 0, 0.4)'
                     : '0 4px 16px rgba(0, 0, 0, 0.04)',
@@ -476,24 +457,14 @@ const styles = StyleSheet.create({
                   flexDirection: 'column',
                 }}
               >
-                {/* Red Lock Badge */}
-                <div
-                  style={{
-                    width: 64,
-                    height: 64,
-                    borderRadius: 32,
-                    backgroundColor: colors.lockBadgeOuterBg,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+                {/* Centered Red Lock Badge */}
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                   <div
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 18,
-                      backgroundColor: colors.lockBadgeInnerBg,
+                      width: 64,
+                      height: 64,
+                      borderRadius: '50%',
+                      backgroundColor: colors.lockBadgeBg,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -502,7 +473,7 @@ const styles = StyleSheet.create({
                     <span
                       className="material-symbols-outlined"
                       style={{
-                        fontSize: 22,
+                        fontSize: 28,
                         color: colors.lockBadgeIconColor,
                         fontVariationSettings: "'FILL' 1",
                       }}
@@ -511,30 +482,33 @@ const styles = StyleSheet.create({
                     </span>
                   </div>
                 </div>
-                <div style={{ height: 16 }} />
 
+                {/* Left-Aligned Title */}
                 <h2
                   style={{
-                    fontSize: 26,
+                    fontSize: 22,
                     fontWeight: 800,
-                    lineHeight: 1.2,
-                    letterSpacing: '-0.3px',
+                    lineHeight: 1.25,
                     color: colors.title,
                     margin: 0,
                     marginBottom: 8,
+                    textAlign: 'left',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
                   Account Locked
                 </h2>
+
+                {/* Left-Aligned Subtitle */}
                 <p
                   style={{
-                    fontSize: 14,
+                    fontSize: 13.5,
                     fontWeight: 400,
-                    lineHeight: 1.35,
+                    lineHeight: 1.4,
                     color: colors.subtitle,
                     margin: 0,
-                    marginBottom: 24,
+                    marginBottom: 20,
+                    textAlign: 'left',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                   }}
                 >
@@ -545,13 +519,14 @@ const styles = StyleSheet.create({
                 <div
                   style={{
                     width: '100%',
-                    padding: 20,
+                    padding: '22px 18px',
                     borderRadius: 12,
                     backgroundColor: colors.countdownBoxBg,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     boxSizing: 'border-box',
+                    marginBottom: 20,
                   }}
                 >
                   <span
@@ -560,28 +535,28 @@ const styles = StyleSheet.create({
                       fontWeight: 700,
                       color: colors.countdownHeader,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      marginBottom: 8,
                     }}
                   >
                     Try again in
                   </span>
-                  <div style={{ height: 8 }} />
                   <span
                     style={{
-                      fontSize: 32,
+                      fontSize: 26,
                       fontWeight: 800,
-                      letterSpacing: '1px',
+                      letterSpacing: '0.5px',
                       color: colors.countdownTimer,
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                      marginBottom: 12,
                     }}
                   >
                     23:45:00
                   </span>
-                  <div style={{ height: 16 }} />
                   <span
                     style={{
                       fontSize: 12,
                       fontWeight: 400,
-                      lineHeight: '16.8px',
+                      lineHeight: '17px',
                       color: colors.countdownInfoText,
                       textAlign: 'center',
                       fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
@@ -590,96 +565,106 @@ const styles = StyleSheet.create({
                     Your account will be unlocked automatically. If you need immediate assistance, contact UIDAI support.
                   </span>
                 </div>
+
+                {/* Divider */}
+                <div
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.divider,
+                    width: '100%',
+                    marginBottom: 16,
+                  }}
+                />
+
+                {/* Contact UIDAI Support Button */}
+                <button
+                  type="button"
+                  onClick={() => alert('Contacting UIDAI Support...')}
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 10,
+                    border: `1.5px solid ${colors.btnBorder}`,
+                    backgroundColor: colors.btnBg,
+                    color: colors.btnText,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={colors.btnText}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="4" />
+                    <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" />
+                    <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" />
+                    <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" />
+                    <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" />
+                  </svg>
+                  <span>Contact UIDAI Support</span>
+                </button>
               </div>
             </div>
 
-            {/* Action Footer */}
-            <div style={{ padding: '12px 20px 20px 20px' }}>
-              <div
+            {/* Digital India Footer outside card */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                paddingBottom: 20,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
                 style={{
-                  height: 1,
-                  backgroundColor: colors.border,
-                  width: '100%',
-                  marginBottom: 12,
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
-              <Ux4gButton
-                text="Contact UIDAI Support"
-                onPress={() => alert('Contacting UIDAI Support...')}
-                variant="outline"
-                size="large"
-                height={48}
-                width="100%"
-                leadingIcon={
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      fontSize: 20,
-                      color: colors.primary,
-                      marginRight: 8,
-                    }}
-                  >
-                    support
-                  </span>
-                }
-              />
-              <div style={{ height: 8 }} />
-
-              {/* Digital India Footer */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
-                }}
-              >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
-                  style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                />
-              </div>
             </div>
           </div>
         ) : (
-          /* Default Layout Variant */
+          /* Default Layout Variant (Image 2) */
           <div
             style={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              padding: '20px 20px 20px 20px',
+              padding: '24px 20px 20px 20px',
               backgroundColor: colors.defaultScreenBg,
             }}
           >
             <div>
-              {/* Red Lock Badge */}
-              <div
-                style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: 32,
-                  backgroundColor: colors.lockBadgeOuterBg,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+              {/* Centered Red Lock Badge */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
                 <div
                   style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 18,
-                    backgroundColor: colors.lockBadgeInnerBg,
+                    width: 64,
+                    height: 64,
+                    borderRadius: '50%',
+                    backgroundColor: colors.lockBadgeBg,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -688,7 +673,7 @@ const styles = StyleSheet.create({
                   <span
                     className="material-symbols-outlined"
                     style={{
-                      fontSize: 22,
+                      fontSize: 28,
                       color: colors.lockBadgeIconColor,
                       fontVariationSettings: "'FILL' 1",
                     }}
@@ -697,30 +682,33 @@ const styles = StyleSheet.create({
                   </span>
                 </div>
               </div>
-              <div style={{ height: 16 }} />
 
+              {/* Left-Aligned Title */}
               <h2
                 style={{
-                  fontSize: 26,
+                  fontSize: 22,
                   fontWeight: 800,
-                  lineHeight: 1.2,
-                  letterSpacing: '-0.3px',
+                  lineHeight: 1.25,
                   color: colors.title,
                   margin: 0,
                   marginBottom: 8,
+                  textAlign: 'left',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
                 Account Locked
               </h2>
+
+              {/* Left-Aligned Subtitle */}
               <p
                 style={{
-                  fontSize: 14,
+                  fontSize: 13.5,
                   fontWeight: 400,
-                  lineHeight: 1.35,
+                  lineHeight: 1.4,
                   color: colors.subtitle,
                   margin: 0,
-                  marginBottom: 24,
+                  marginBottom: 20,
+                  textAlign: 'left',
                   fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
                 }}
               >
@@ -731,13 +719,14 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   width: '100%',
-                  padding: 20,
+                  padding: '22px 18px',
                   borderRadius: 12,
                   backgroundColor: colors.countdownBoxBg,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   boxSizing: 'border-box',
+                  marginBottom: 20,
                 }}
               >
                 <span
@@ -746,28 +735,28 @@ const styles = StyleSheet.create({
                     fontWeight: 700,
                     color: colors.countdownHeader,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    marginBottom: 8,
                   }}
                 >
                   Try again in
                 </span>
-                <div style={{ height: 8 }} />
                 <span
                   style={{
-                    fontSize: 32,
+                    fontSize: 26,
                     fontWeight: 800,
-                    letterSpacing: '1px',
+                    letterSpacing: '0.5px',
                     color: colors.countdownTimer,
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                    marginBottom: 12,
                   }}
                 >
                   23:45:00
                 </span>
-                <div style={{ height: 16 }} />
                 <span
                   style={{
                     fontSize: 12,
                     fontWeight: 400,
-                    lineHeight: '16.8px',
+                    lineHeight: '17px',
                     color: colors.countdownInfoText,
                     textAlign: 'center',
                     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
@@ -776,62 +765,82 @@ const styles = StyleSheet.create({
                   Your account will be unlocked automatically. If you need immediate assistance, contact UIDAI support.
                 </span>
               </div>
-            </div>
 
-            {/* Bottom Section */}
-            <div>
+              {/* Divider */}
               <div
                 style={{
                   height: 1,
-                  backgroundColor: colors.border,
+                  backgroundColor: colors.divider,
                   width: '100%',
-                  marginBottom: 12,
+                  marginBottom: 16,
                 }}
               />
-              <Ux4gButton
-                text="Contact UIDAI Support"
-                onPress={() => alert('Contacting UIDAI Support...')}
-                variant="outline"
-                size="large"
-                height={48}
-                width="100%"
-                leadingIcon={
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      fontSize: 20,
-                      color: colors.primary,
-                      marginRight: 8,
-                    }}
-                  >
-                    support
-                  </span>
-                }
-              />
-              <div style={{ height: 8 }} />
 
-              {/* Digital India Footer */}
-              <div
+              {/* Contact UIDAI Support Button */}
+              <button
+                type="button"
+                onClick={() => alert('Contacting UIDAI Support...')}
                 style={{
+                  width: '100%',
+                  height: 48,
+                  borderRadius: 10,
+                  border: `1.5px solid ${colors.btnBorder}`,
+                  backgroundColor: colors.btnBg,
+                  color: colors.btnText,
                   display: 'flex',
-                  flexDirection: 'row',
                   alignItems: 'center',
-              justifyContent: 'center',
-                  gap: 4,
+                  justifyContent: 'center',
+                  gap: 8,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
                 }}
               >
-                <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-                  Powered by -
-                </span>
-                <img
-                  src="/Digital_India_logo.svg"
-                  alt="Digital India"
-                  style={{
-                    height: 22,
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                />
-              </div>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke={colors.btnText}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="4" />
+                  <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" />
+                  <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" />
+                  <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" />
+                  <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" />
+                </svg>
+                <span>Contact UIDAI Support</span>
+              </button>
+            </div>
+
+            {/* Digital India Footer */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                paddingTop: 16,
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 400, color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500, fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
             </div>
           </div>
         )}
