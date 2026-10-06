@@ -49,22 +49,22 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
   Ux4gButton,
   Ux4gDivider,
-  Ux4gIcons,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
-export const PasswordResetSuccessCardPattern = () => {
+export const PasswordResetSuccessCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
     <View style={styles.screen}>
       {/* 1. Official Government Header */}
       <Ux4gAppHeader
         title=""
-        variant="light"
+        variant={isDark ? 'dark' : 'light'}
         elevation={0}
         useSafeArea={false}
         horizontalPadding={16}
@@ -86,19 +86,15 @@ export const PasswordResetSuccessCardPattern = () => {
             resizeMode="contain"
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          <TouchableOpacity
+            key="menu"
+            style={styles.menuBtn}
+            onPress={() => {}}
+          >
+            <Text style={styles.menuIcon}>☰</Text>
+          </TouchableOpacity>,
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
@@ -106,15 +102,17 @@ export const PasswordResetSuccessCardPattern = () => {
       <View style={styles.cardContainer}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.card}>
-            {/* Green Check Circle Badge */}
+            {/* Green Filled Check Circle Badge */}
             <View style={styles.iconCircle}>
-              <Text style={styles.checkIcon}>✓</Text>
+              <View style={styles.filledCheckCircle}>
+                <Text style={styles.whiteCheckIcon}>✓</Text>
+              </View>
             </View>
 
             <View style={{ height: 20 }} />
 
             <Text style={styles.title}>
-              {'Password reset\nsuccessfully'}
+              {'Password reset\\nsuccessfully'}
             </Text>
 
             <View style={{ height: 10 }} />
@@ -190,13 +188,25 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   iconCircle: {
-    width: 64, height: 64, borderRadius: 32,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     backgroundColor: UX4GColors.green100,
-    alignItems: 'center', justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  checkIcon: {
-    fontSize: 32, fontWeight: 'bold',
-    color: UX4GColors.green600,
+  filledCheckCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: UX4GColors.green600,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  whiteCheckIcon: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   title: {
     fontSize: 26, fontWeight: '700',
@@ -226,6 +236,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
@@ -234,13 +245,13 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-components';
 
-export const PasswordResetSuccessDefaultPattern = () => {
+export const PasswordResetSuccessDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   return (
     <View style={styles.screen}>
       {/* 1. Official Government Header */}
       <Ux4gAppHeader
         title=""
-        variant="light"
+        variant={isDark ? 'dark' : 'light'}
         elevation={0}
         useSafeArea={false}
         horizontalPadding={16}
@@ -262,19 +273,15 @@ export const PasswordResetSuccessDefaultPattern = () => {
             resizeMode="contain"
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          <TouchableOpacity
+            key="menu"
+            style={styles.menuBtn}
+            onPress={() => {}}
+          >
+            <Text style={styles.menuIcon}>☰</Text>
+          </TouchableOpacity>,
+        ]}
       />
       <Ux4gDivider color={UX4GColors.neutral200} />
 
@@ -282,15 +289,17 @@ export const PasswordResetSuccessDefaultPattern = () => {
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={{ alignItems: 'center' }}>
-            {/* Green Check Circle Badge */}
+            {/* Green Filled Check Circle Badge */}
             <View style={styles.iconCircle}>
-              <Text style={styles.checkIcon}>✓</Text>
+              <View style={styles.filledCheckCircle}>
+                <Text style={styles.whiteCheckIcon}>✓</Text>
+              </View>
             </View>
 
             <View style={{ height: 24 }} />
 
             <Text style={styles.title}>
-              {'Password reset\nsuccessfully'}
+              {'Password reset\\nsuccessfully'}
             </Text>
 
             <View style={{ height: 12 }} />
@@ -352,13 +361,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20, paddingTop: 48,
   },
   iconCircle: {
-    width: 64, height: 64, borderRadius: 32,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     backgroundColor: UX4GColors.green100,
-    alignItems: 'center', justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  checkIcon: {
-    fontSize: 32, fontWeight: 'bold',
-    color: UX4GColors.green600,
+  filledCheckCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: UX4GColors.green600,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  whiteCheckIcon: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   title: {
     fontSize: 26, fontWeight: '700',
@@ -437,33 +458,33 @@ const styles = StyleSheet.create({
               />,
               <UnionLogo key="union" size={32} isDark={isDark} />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <button
-                  key="menu"
-                  type="button"
-                  onClick={() => {}}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    backgroundColor: isDark ? 'transparent' : '#FFFFFF',
-                    border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
-                  </svg>
-                </button>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <button
+                    key="menu"
+                    type="button"
+                    onClick={() => {}}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                      border: `1.5px solid ${isDark ? UX4GColors.primary400 : '#C0B3FF'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      padding: 0,
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 6h16M4 12h16M4 18h16" stroke={isDark ? UX4GColors.primary300 : UX4GColors.primary} strokeWidth="2.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                ),
+              },
+            ]}
           />
           <div
             style={{
@@ -501,7 +522,7 @@ const styles = StyleSheet.create({
                   alignItems: 'center',
                 }}
               >
-                {/* Green Check Circle Badge */}
+                {/* Green Filled Check Circle Badge */}
                 <div
                   style={{
                     width: 64,
@@ -513,15 +534,10 @@ const styles = StyleSheet.create({
                     justifyContent: 'center',
                   }}
                 >
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      fontSize: 36,
-                      color: colors.greenIconColor,
-                    }}
-                  >
-                    check_circle
-                  </span>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill={colors.greenIconColor} />
+                    <path d="M8 12.2l2.8 2.8L16.2 9" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </div>
 
                 <div style={{ height: 20 }} />
@@ -581,8 +597,8 @@ const styles = StyleSheet.create({
             {/* Brand Footer */}
             <div
               style={{
-              display: 'flex',
-              flexDirection: 'row',
+                display: 'flex',
+                flexDirection: 'row',
                 padding: '14px 20px',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -630,7 +646,7 @@ const styles = StyleSheet.create({
                 overflow: 'auto',
               }}
             >
-              {/* Green Check Circle Badge */}
+              {/* Green Filled Check Circle Badge */}
               <div
                 style={{
                   width: 64,
@@ -642,15 +658,10 @@ const styles = StyleSheet.create({
                   justifyContent: 'center',
                 }}
               >
-                <span
-                  className="material-symbols-outlined"
-                  style={{
-                    fontSize: 36,
-                    color: colors.greenIconColor,
-                  }}
-                >
-                  check_circle
-                </span>
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" fill={colors.greenIconColor} />
+                  <path d="M8 12.2l2.8 2.8L16.2 9" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
 
               <div style={{ height: 24 }} />
@@ -710,8 +721,8 @@ const styles = StyleSheet.create({
               {/* Brand Footer */}
               <div
                 style={{
-              display: 'flex',
-              flexDirection: 'row',
+                  display: 'flex',
+                  flexDirection: 'row',
                   padding: '14px 20px',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -889,7 +900,11 @@ const styles = StyleSheet.create({
                     Card style
                   </button>
                 </div>
-                <CodeBlock code={codeString} language="tsx" />
+                <CodeBlock
+                  code={codeString}
+                  language="TSX"
+                  filename={variant === 'card' ? 'PasswordResetSuccessCardPattern.tsx' : 'PasswordResetSuccessDefaultPattern.tsx'}
+                />
               </div>
             )}
           </div>
