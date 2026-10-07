@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
@@ -39,15 +38,16 @@ export const EligibilitySuccessStepDoc: React.FC<EligibilitySuccessStepDocProps>
       headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
-      titleColor: isDark ? '#34D399' : '#065F46',
+      titleColor: isDark ? '#34D399' : '#064E3B',
       sectionTitle: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
       subtleText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      iconBg: isDark ? '#064E3B' : '#BBF7D0',
-      iconColor: isDark ? '#34D399' : '#15803D',
-      checkBg: isDark ? '#064E3B' : '#DCFCE7',
-      checkColor: isDark ? '#34D399' : '#16A34A',
+      iconBg: isDark ? 'rgba(190, 239, 187, 0.2)' : '#BEEFBB',
+      iconColor: isDark ? '#34D399' : '#128937',
+      checkBg: isDark ? 'rgba(190, 239, 187, 0.2)' : '#BEEFBB',
+      checkColor: isDark ? '#34D399' : '#128937',
       footerText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      menuBorder: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
     };
   }, [isDark, variant]);
 
@@ -62,6 +62,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import {
@@ -127,19 +128,25 @@ export const EligibilitySuccessCardScreen = ({
                 resizeMode="contain"
               />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <TouchableOpacity
-                  key="menu"
-                  style={styles.menuBtn}
-                  onPress={() => {}}
-                >
-                  <Text style={styles.menuIcon}>☰</Text>
-                </TouchableOpacity>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <TouchableOpacity
+                    key="menu"
+                    style={[
+                      styles.menuBtn,
+                      {
+                        borderColor: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                      },
+                    ]}
+                    onPress={() => {}}
+                  >
+                    <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+                  </TouchableOpacity>
+                ),
+              },
+            ]}
           />
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         </View>
@@ -149,7 +156,7 @@ export const EligibilitySuccessCardScreen = ({
           contentContainerStyle={styles.cardScrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Elevated Card */}
+          {/* Elevated Card Containing Content and Actions */}
           <View
             style={[
               styles.cardContainer,
@@ -160,31 +167,31 @@ export const EligibilitySuccessCardScreen = ({
             <View
               style={[
                 styles.successIconContainer,
-                { backgroundColor: isDark ? '#064E3B' : '#BBF7D0' },
+                { backgroundColor: isDark ? 'rgba(190, 239, 187, 0.2)' : '#BEEFBB' },
               ]}
             >
-              <Text style={[styles.successIconSymbol, { color: isDark ? '#34D399' : '#15803D' }]}>
-                ✓
-              </Text>
+              <View style={styles.innerSuccessCircle}>
+                <Text style={styles.innerCheckIcon}>✓</Text>
+              </View>
             </View>
 
             <View style={{ height: 16 }} />
 
             {/* Title */}
-            <Text style={[styles.successTitle, { color: isDark ? '#34D399' : '#065F46' }]}>
+            <Text style={[styles.successTitle, { color: isDark ? '#34D399' : '#064E3B' }]}>
               You're Eligible!
             </Text>
 
-            <View style={{ height: 12 }} />
+            <View style={{ height: 10 }} />
 
             {/* Subtitle */}
             <Text style={[styles.successSubtitle, { color: subtleText }]}>
               All criteria have been met. You can now proceed to apply for this service.
             </Text>
 
-            <View style={{ height: 24 }} />
-            <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
             <View style={{ height: 20 }} />
+            <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
+            <View style={{ height: 16 }} />
 
             {/* Criteria Title */}
             <Text
@@ -196,7 +203,7 @@ export const EligibilitySuccessCardScreen = ({
               Eligibility Criteria
             </Text>
 
-            <View style={{ height: 16 }} />
+            <View style={{ height: 14 }} />
 
             {/* Criteria List */}
             {CRITERIA_LIST.map((item) => (
@@ -207,33 +214,34 @@ export const EligibilitySuccessCardScreen = ({
                 <View
                   style={[
                     styles.checkBadge,
-                    { backgroundColor: isDark ? '#064E3B' : '#DCFCE7' },
+                    { backgroundColor: isDark ? 'rgba(190, 239, 187, 0.2)' : '#BEEFBB' },
                   ]}
                 >
-                  <Text style={[styles.checkBadgeIcon, { color: isDark ? '#34D399' : '#16A34A' }]}>
+                  <Text style={[styles.checkBadgeIcon, { color: isDark ? '#34D399' : '#128937' }]}>
                     ✓
                   </Text>
                 </View>
               </View>
             ))}
+
+            <View style={{ height: 24 }} />
+
+            {/* Action Button inside Card */}
+            <View style={styles.cardActionsContainer}>
+              <Ux4gButton
+                text="Apply Now"
+                onPress={onApplyNow}
+                size="large"
+                width="100%"
+                height={48}
+                backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+              />
+            </View>
           </View>
         </ScrollView>
 
-        {/* Actions & Footer Outside Card */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Apply Now"
-            onPress={onApplyNow}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-        </View>
-
-        {/* Footer */}
+        {/* Footer Outside Card */}
         <View style={styles.footerContainer}>
           <Text style={styles.poweredByText}>
             Powered by -
@@ -256,27 +264,32 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1.5,
     borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    color: UX4GColors.primary600,
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
   emblemIcon: { height: 32, width: 22 },
   verticalDivider: { height: 20, width: 1 },
   unionIcon: { height: 32, width: 44 },
-  cardScrollContainer: { padding: 16 },
+  cardScrollContainer: {
+    padding: 16,
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   cardContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingTop: 28,
+    paddingBottom: 24,
     borderRadius: 16,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
+    shadowOpacity: 0.05,
     shadowRadius: 16,
     elevation: 3,
     alignItems: 'center',
@@ -288,18 +301,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  successIconSymbol: {
-    fontSize: 32,
+  innerSuccessCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#128937',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerCheckIcon: {
+    color: '#FFFFFF',
+    fontSize: 16,
     fontWeight: '700',
   },
   successTitle: {
     fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
   successSubtitle: {
     fontSize: 14,
-    lineHeight: 21,
+    lineHeight: 20,
     textAlign: 'center',
   },
   criteriaHeading: {
@@ -312,7 +335,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    paddingBottom: 14,
+    paddingBottom: 12,
   },
   criteriaText: {
     fontSize: 13,
@@ -322,31 +345,32 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   checkBadge: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkBadgeIcon: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
   },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+  cardActionsContainer: {
+    width: '100%',
     alignItems: 'center',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 16,
-    paddingBottom: 20,
+    justifyContent: 'center',
+    gap: 6,
+    paddingTop: 12,
+    paddingBottom: 16,
   },
   poweredByText: {
     fontSize: 11,
     fontWeight: '500',
     color: '#9CA3AF',
-    marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 22,
@@ -362,6 +386,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import {
@@ -423,19 +448,25 @@ export const EligibilitySuccessScreen = ({
               resizeMode="contain"
             />,
           ]}
-        actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={styles.menuBtn}
-                onPress={() => {}}
-              >
-                <Text style={styles.menuIcon}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
-        ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={[
+                    styles.menuBtn,
+                    {
+                      borderColor: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                    },
+                  ]}
+                  onPress={() => {}}
+                >
+                  <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
         />
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
 
@@ -448,31 +479,31 @@ export const EligibilitySuccessScreen = ({
           <View
             style={[
               styles.successIconContainer,
-              { backgroundColor: isDark ? '#064E3B' : '#BBF7D0' },
+              { backgroundColor: isDark ? 'rgba(190, 239, 187, 0.2)' : '#BEEFBB' },
             ]}
           >
-            <Text style={[styles.successIconSymbol, { color: isDark ? '#34D399' : '#15803D' }]}>
-              ✓
-            </Text>
+            <View style={styles.innerSuccessCircle}>
+              <Text style={styles.innerCheckIcon}>✓</Text>
+            </View>
           </View>
 
           <View style={{ height: 16 }} />
 
           {/* Title */}
-          <Text style={[styles.successTitle, { color: isDark ? '#34D399' : '#065F46' }]}>
+          <Text style={[styles.successTitle, { color: isDark ? '#34D399' : '#064E3B' }]}>
             You're Eligible!
           </Text>
 
-          <View style={{ height: 12 }} />
+          <View style={{ height: 10 }} />
 
           {/* Subtitle */}
           <Text style={[styles.successSubtitle, { color: subtleText }]}>
             All criteria have been met. You can now proceed to apply for this service.
           </Text>
 
-          <View style={{ height: 24 }} />
-          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
           <View style={{ height: 20 }} />
+          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
+          <View style={{ height: 16 }} />
 
           {/* Criteria Title */}
           <Text
@@ -484,7 +515,7 @@ export const EligibilitySuccessScreen = ({
             Eligibility Criteria
           </Text>
 
-          <View style={{ height: 16 }} />
+          <View style={{ height: 14 }} />
 
           {/* Criteria List */}
           {CRITERIA_LIST.map((item) => (
@@ -495,10 +526,10 @@ export const EligibilitySuccessScreen = ({
               <View
                 style={[
                   styles.checkBadge,
-                  { backgroundColor: isDark ? '#064E3B' : '#DCFCE7' },
+                  { backgroundColor: isDark ? 'rgba(190, 239, 187, 0.2)' : '#BEEFBB' },
                 ]}
               >
-                <Text style={[styles.checkBadgeIcon, { color: isDark ? '#34D399' : '#16A34A' }]}>
+                <Text style={[styles.checkBadgeIcon, { color: isDark ? '#34D399' : '#128937' }]}>
                   ✓
                 </Text>
               </View>
@@ -507,7 +538,6 @@ export const EligibilitySuccessScreen = ({
         </ScrollView>
 
         {/* Actions */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         <View style={styles.actionsContainer}>
           <Ux4gButton
             text="Apply Now"
@@ -543,13 +573,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1.5,
     borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    color: UX4GColors.primary600,
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
@@ -568,18 +598,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  successIconSymbol: {
-    fontSize: 32,
+  innerSuccessCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#128937',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerCheckIcon: {
+    color: '#FFFFFF',
+    fontSize: 16,
     fontWeight: '700',
   },
   successTitle: {
     fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
   successSubtitle: {
     fontSize: 14,
-    lineHeight: 21,
+    lineHeight: 20,
     textAlign: 'center',
   },
   criteriaHeading: {
@@ -592,7 +632,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    paddingBottom: 14,
+    paddingBottom: 12,
   },
   criteriaText: {
     fontSize: 13,
@@ -602,23 +642,26 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   checkBadge: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkBadgeIcon: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
   },
   actionsContainer: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingTop: 16,
     alignItems: 'center',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     paddingTop: 16,
     paddingBottom: 20,
   },
@@ -626,7 +669,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '500',
     color: '#9CA3AF',
-    marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 22,
@@ -646,21 +688,37 @@ const styles = StyleSheet.create({
             width: 64,
             height: 64,
             borderRadius: '50%',
-            backgroundColor: '#BBF7D0',
+            backgroundColor: colors.iconBg,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: 16,
           }}
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="32"
-            height="32"
-            fill="#15803D"
+          <div
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: '50%',
+              backgroundColor: colors.iconColor,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-          </svg>
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
         </div>
 
         {/* Title */}
@@ -668,9 +726,9 @@ const styles = StyleSheet.create({
           style={{
             fontSize: 24,
             fontWeight: 800,
-            color: '#065F46',
+            color: colors.titleColor,
             textAlign: 'center',
-            marginBottom: 12,
+            marginBottom: 10,
             letterSpacing: '-0.3px',
           }}
         >
@@ -684,14 +742,14 @@ const styles = StyleSheet.create({
             color: colors.subtleText,
             lineHeight: 1.5,
             textAlign: 'center',
-            marginBottom: 24,
+            marginBottom: 20,
           }}
         >
           All criteria have been met. You can now proceed to apply for this service.
         </div>
 
         {/* Divider */}
-        <div style={{ width: '100%', marginBottom: 20 }}>
+        <div style={{ width: '100%', marginBottom: 16 }}>
           <Ux4gDivider color={colors.border} thickness={1} />
         </div>
 
@@ -702,7 +760,7 @@ const styles = StyleSheet.create({
             fontWeight: 700,
             color: colors.sectionTitle,
             alignSelf: 'flex-start',
-            marginBottom: 16,
+            marginBottom: 14,
           }}
         >
           Eligibility Criteria
@@ -715,9 +773,9 @@ const styles = StyleSheet.create({
               key={idx}
               style={{
                 display: 'flex',
-                alignItems: 'flex-start',
+                alignItems: 'center',
                 justifyContent: 'space-between',
-                paddingBottom: 14,
+                paddingBottom: 12,
               }}
             >
               <div
@@ -734,8 +792,8 @@ const styles = StyleSheet.create({
               </div>
               <div
                 style={{
-                  width: 20,
-                  height: 20,
+                  width: 22,
+                  height: 22,
                   borderRadius: 4,
                   backgroundColor: colors.checkBg,
                   display: 'flex',
@@ -781,7 +839,7 @@ const styles = StyleSheet.create({
           position: 'relative',
         }}
       >
-        {/* Top UX4G AppHeader */}
+        {/* Top UX4G AppHeader with Menu Button */}
         <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
           <div
             style={{
@@ -809,103 +867,187 @@ const styles = StyleSheet.create({
               />
               <UnionLogo size={32} isDark={isDark} />
             </div>
+
+            {/* Right Side Menu Icon Button */}
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: `1.5px solid ${colors.menuBorder}`,
+                backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: 20,
+                  color: colors.primaryColor,
+                }}
+              >
+                menu
+              </span>
+            </div>
           </div>
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         </div>
 
-        {/* Scrollable Center Content */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {isCard ? (
-            <div style={{ padding: 16 }}>
-              <div
-                style={{
-                  backgroundColor: colors.cardBg,
-                  borderRadius: 16,
-                  padding: 20,
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                {renderSuccessBody()}
-              </div>
-            </div>
-          ) : (
+        {/* Center Content */}
+        {isCard ? (
+          /* Card Style Variant */
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: '16px 16px 12px 16px',
+              overflowY: 'auto',
+            }}
+          >
+            {/* Elevated Card Containing Content and Apply Now Button */}
             <div
               style={{
-                padding: '32px 24px 0 24px',
+                backgroundColor: colors.cardBg,
+                borderRadius: 16,
+                padding: '28px 20px 24px 20px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
               }}
             >
               {renderSuccessBody()}
+
+              <div style={{ height: 24 }} />
+
+              {/* Action Button inside Card */}
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Ux4gButton
+                  text="Apply Now"
+                  onPress={() => {}}
+                  size="large"
+                  width="100%"
+                  height={48}
+                  backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                  contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+                />
+              </div>
             </div>
-          )}
-        </div>
 
-        {/* Bottom Actions */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
-        <div
-          style={{
-            padding: '16px 24px 0 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <Ux4gButton
-            text="Apply Now"
-            onPress={() => {}}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '16px 0 20px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
+            {/* Powered by Footer outside Card */}
+            <div
+              style={{
+                paddingTop: 12,
+                paddingBottom: 4,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: colors.footerText,
+                }}
+              >
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          /* Default Variant */
+          <div
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'auto',
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 22,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
-        </div>
+            <div
+              style={{
+                padding: '32px 24px 0 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                flex: 1,
+              }}
+            >
+              {renderSuccessBody()}
+            </div>
+
+            {/* Bottom Actions for Default */}
+            <div
+              style={{
+                padding: '16px 20px 0 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                backgroundColor: colors.screenBg,
+                flexShrink: 0,
+              }}
+            >
+              <Ux4gButton
+                text="Apply Now"
+                onPress={() => {}}
+                size="large"
+                width="100%"
+                height={48}
+                backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+              />
+            </div>
+
+            {/* Powered by Footer */}
+            <div
+              style={{
+                padding: '16px 0 20px 0',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                backgroundColor: colors.screenBg,
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: colors.footerText,
+                }}
+              >
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     );
   };

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
@@ -35,13 +34,16 @@ export const EligibilityQuestionStepDoc: React.FC<EligibilityQuestionStepDocProp
       titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
       subtleText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      progressTrack: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-      optionSelectedBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
-      optionUnselectedBg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral100,
+      progressTrack: isDark ? '#2D284B' : '#EAE8FA',
+      optionSelectedBg: isDark ? 'rgba(163, 145, 255, 0.12)' : '#F2EFFF',
+      optionSelectedBorder: isDark ? UX4GColors.primary400 : UX4GColors.primary200,
+      optionUnselectedBg: isDark ? UX4GColors.neutral800 : '#FAFAFA',
+      optionUnselectedBorder: isDark ? UX4GColors.neutral700 : '#E5E7EB',
       radioBorderSelected: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      radioBorderUnselected: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
+      radioBorderUnselected: isDark ? UX4GColors.neutral600 : '#D1D5DB',
       radioBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       footerText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      menuBorder: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
     };
   }, [isDark, variant]);
 
@@ -118,19 +120,25 @@ export const EligibilityQuestionCardScreen = ({
                 resizeMode="contain"
               />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <TouchableOpacity
-                  key="menu"
-                  style={styles.menuBtn}
-                  onPress={() => {}}
-                >
-                  <Text style={styles.menuIcon}>☰</Text>
-                </TouchableOpacity>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <TouchableOpacity
+                    key="menu"
+                    style={[
+                      styles.menuBtn,
+                      {
+                        borderColor: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                      },
+                    ]}
+                    onPress={() => {}}
+                  >
+                    <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+                  </TouchableOpacity>
+                ),
+              },
+            ]}
           />
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         </View>
@@ -140,7 +148,7 @@ export const EligibilityQuestionCardScreen = ({
           contentContainerStyle={styles.cardScrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Elevated Card */}
+          {/* Elevated Card Containing Content and Actions */}
           <View
             style={[
               styles.cardContainer,
@@ -174,7 +182,7 @@ export const EligibilityQuestionCardScreen = ({
             <Text style={[styles.questionTitle, { color: titleColor }]}>
               Are you a resident of Maharashtra?
             </Text>
-            <View style={{ height: 10 }} />
+            <View style={{ height: 8 }} />
             <Text style={[styles.questionHelper, { color: subtleText }]}>
               You must be a resident to apply for a state-issued income certificate.
             </Text>
@@ -190,11 +198,19 @@ export const EligibilityQuestionCardScreen = ({
                   backgroundColor:
                     selected === 'yes'
                       ? isDark
-                        ? UX4GColors.primary900
-                        : UX4GColors.primary50
+                        ? 'rgba(163, 145, 255, 0.12)'
+                        : '#F2EFFF'
                       : isDark
                       ? UX4GColors.neutral800
-                      : UX4GColors.neutral100,
+                      : '#FAFAFA',
+                  borderColor:
+                    selected === 'yes'
+                      ? isDark
+                        ? UX4GColors.primary400
+                        : UX4GColors.primary200
+                      : isDark
+                      ? UX4GColors.neutral700
+                      : '#E5E7EB',
                 },
               ]}
             >
@@ -206,8 +222,8 @@ export const EligibilityQuestionCardScreen = ({
                       selected === 'yes'
                         ? primaryColor
                         : isDark
-                        ? UX4GColors.neutral700
-                        : UX4GColors.neutral200,
+                        ? UX4GColors.neutral600
+                        : '#D1D5DB',
                     borderWidth: selected === 'yes' ? 6 : 2,
                     backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
                   },
@@ -227,7 +243,19 @@ export const EligibilityQuestionCardScreen = ({
                 >
                   Yes
                 </Text>
-                <Text style={[styles.optionSubtitle, { color: subtleText }]}>
+                <Text
+                  style={[
+                    styles.optionSubtitle,
+                    {
+                      color:
+                        selected === 'yes'
+                          ? isDark
+                            ? UX4GColors.primary200
+                            : UX4GColors.primary700
+                          : subtleText,
+                    },
+                  ]}
+                >
                   I am a resident of Maharashtra
                 </Text>
               </View>
@@ -245,11 +273,19 @@ export const EligibilityQuestionCardScreen = ({
                   backgroundColor:
                     selected === 'no'
                       ? isDark
-                        ? UX4GColors.primary900
-                        : UX4GColors.primary50
+                        ? 'rgba(163, 145, 255, 0.12)'
+                        : '#F2EFFF'
                       : isDark
                       ? UX4GColors.neutral800
-                      : UX4GColors.neutral100,
+                      : '#FAFAFA',
+                  borderColor:
+                    selected === 'no'
+                      ? isDark
+                        ? UX4GColors.primary400
+                        : UX4GColors.primary200
+                      : isDark
+                      ? UX4GColors.neutral700
+                      : '#E5E7EB',
                 },
               ]}
             >
@@ -261,8 +297,8 @@ export const EligibilityQuestionCardScreen = ({
                       selected === 'no'
                         ? primaryColor
                         : isDark
-                        ? UX4GColors.neutral700
-                        : UX4GColors.neutral200,
+                        ? UX4GColors.neutral600
+                        : '#D1D5DB',
                     borderWidth: selected === 'no' ? 6 : 2,
                     backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
                   },
@@ -282,40 +318,53 @@ export const EligibilityQuestionCardScreen = ({
                 >
                   No
                 </Text>
-                <Text style={[styles.optionSubtitle, { color: subtleText }]}>
+                <Text
+                  style={[
+                    styles.optionSubtitle,
+                    {
+                      color:
+                        selected === 'no'
+                          ? isDark
+                            ? UX4GColors.primary200
+                            : UX4GColors.primary700
+                          : subtleText,
+                    },
+                  ]}
+                >
                   I reside in a different state
                 </Text>
               </View>
             </TouchableOpacity>
+
+            <View style={{ height: 28 }} />
+
+            {/* Action Buttons inside Card */}
+            <View style={styles.cardActionsContainer}>
+              <Ux4gButton
+                text="Continue"
+                onPress={() => selected && onContinue(selected)}
+                enabled={selected !== null}
+                size="large"
+                width="100%"
+                height={48}
+                backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+              />
+              <View style={{ height: 8 }} />
+              <Ux4gButton
+                text="Back"
+                onPress={onBack}
+                variant="ghost"
+                size="large"
+                width="100%"
+                height={44}
+                contentColor={primaryColor}
+              />
+            </View>
           </View>
         </ScrollView>
 
-        {/* Actions & Footer Outside Card */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Continue"
-            onPress={() => selected && onContinue(selected)}
-            enabled={selected !== null}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-          <View style={{ height: 4 }} />
-          <Ux4gButton
-            text="Back"
-            onPress={onBack}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={primaryColor}
-          />
-        </View>
-
-        {/* Footer */}
+        {/* Footer Outside Card */}
         <View style={styles.footerContainer}>
           <Text style={styles.poweredByText}>
             Powered by -
@@ -338,26 +387,30 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1.5,
     borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    color: UX4GColors.primary600,
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
   emblemIcon: { height: 32, width: 22 },
   verticalDivider: { height: 20, width: 1 },
   unionIcon: { height: 32, width: 44 },
-  cardScrollContainer: { padding: 16 },
+  cardScrollContainer: {
+    padding: 16,
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   cardContainer: {
     padding: 20,
     borderRadius: 16,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
+    shadowOpacity: 0.05,
     shadowRadius: 16,
     elevation: 3,
   },
@@ -391,6 +444,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderRadius: 12,
+    borderWidth: 1.5,
   },
   radioCircle: {
     width: 22,
@@ -410,21 +464,22 @@ const styles = StyleSheet.create({
     marginTop: 2,
     lineHeight: 18,
   },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+  cardActionsContainer: {
+    width: '100%',
     alignItems: 'center',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     paddingTop: 12,
-    paddingBottom: 20,
+    paddingBottom: 16,
   },
   poweredByText: {
     fontSize: 11,
     fontWeight: '500',
     color: '#9CA3AF',
-    marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 22,
@@ -498,19 +553,25 @@ export const EligibilityQuestionScreen = ({
               resizeMode="contain"
             />,
           ]}
-        actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={styles.menuBtn}
-                onPress={() => {}}
-              >
-                <Text style={styles.menuIcon}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
-        ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={[
+                    styles.menuBtn,
+                    {
+                      borderColor: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                    },
+                  ]}
+                  onPress={() => {}}
+                >
+                  <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
         />
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
 
@@ -546,7 +607,7 @@ export const EligibilityQuestionScreen = ({
           <Text style={[styles.questionTitle, { color: titleColor }]}>
             Are you a resident of Maharashtra?
           </Text>
-          <View style={{ height: 10 }} />
+          <View style={{ height: 8 }} />
           <Text style={[styles.questionHelper, { color: subtleText }]}>
             You must be a resident to apply for a state-issued income certificate.
           </Text>
@@ -562,11 +623,19 @@ export const EligibilityQuestionScreen = ({
                 backgroundColor:
                   selected === 'yes'
                     ? isDark
-                      ? UX4GColors.primary900
-                      : UX4GColors.primary50
+                      ? 'rgba(163, 145, 255, 0.12)'
+                      : '#F2EFFF'
                     : isDark
                     ? UX4GColors.neutral800
-                    : UX4GColors.neutral100,
+                    : '#FAFAFA',
+                borderColor:
+                  selected === 'yes'
+                    ? isDark
+                      ? UX4GColors.primary400
+                      : UX4GColors.primary200
+                    : isDark
+                    ? UX4GColors.neutral700
+                    : '#E5E7EB',
               },
             ]}
           >
@@ -578,8 +647,8 @@ export const EligibilityQuestionScreen = ({
                     selected === 'yes'
                       ? primaryColor
                       : isDark
-                      ? UX4GColors.neutral700
-                      : UX4GColors.neutral200,
+                      ? UX4GColors.neutral600
+                      : '#D1D5DB',
                   borderWidth: selected === 'yes' ? 6 : 2,
                   backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
                 },
@@ -599,7 +668,19 @@ export const EligibilityQuestionScreen = ({
               >
                 Yes
               </Text>
-              <Text style={[styles.optionSubtitle, { color: subtleText }]}>
+              <Text
+                style={[
+                  styles.optionSubtitle,
+                  {
+                    color:
+                      selected === 'yes'
+                        ? isDark
+                          ? UX4GColors.primary200
+                          : UX4GColors.primary700
+                        : subtleText,
+                  },
+                ]}
+              >
                 I am a resident of Maharashtra
               </Text>
             </View>
@@ -617,11 +698,19 @@ export const EligibilityQuestionScreen = ({
                 backgroundColor:
                   selected === 'no'
                     ? isDark
-                      ? UX4GColors.primary900
-                      : UX4GColors.primary50
+                      ? 'rgba(163, 145, 255, 0.12)'
+                      : '#F2EFFF'
                     : isDark
                     ? UX4GColors.neutral800
-                    : UX4GColors.neutral100,
+                    : '#FAFAFA',
+                borderColor:
+                  selected === 'no'
+                    ? isDark
+                      ? UX4GColors.primary400
+                      : UX4GColors.primary200
+                    : isDark
+                    ? UX4GColors.neutral700
+                    : '#E5E7EB',
               },
             ]}
           >
@@ -633,8 +722,8 @@ export const EligibilityQuestionScreen = ({
                     selected === 'no'
                       ? primaryColor
                       : isDark
-                      ? UX4GColors.neutral700
-                      : UX4GColors.neutral200,
+                      ? UX4GColors.neutral600
+                      : '#D1D5DB',
                   borderWidth: selected === 'no' ? 6 : 2,
                   backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
                 },
@@ -654,7 +743,19 @@ export const EligibilityQuestionScreen = ({
               >
                 No
               </Text>
-              <Text style={[styles.optionSubtitle, { color: subtleText }]}>
+              <Text
+                style={[
+                  styles.optionSubtitle,
+                  {
+                    color:
+                      selected === 'no'
+                        ? isDark
+                          ? UX4GColors.primary200
+                          : UX4GColors.primary700
+                        : subtleText,
+                  },
+                ]}
+              >
                 I reside in a different state
               </Text>
             </View>
@@ -662,7 +763,6 @@ export const EligibilityQuestionScreen = ({
         </ScrollView>
 
         {/* Actions */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         <View style={styles.actionsContainer}>
           <Ux4gButton
             text="Continue"
@@ -674,14 +774,14 @@ export const EligibilityQuestionScreen = ({
             backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
             contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
           />
-          <View style={{ height: 4 }} />
+          <View style={{ height: 8 }} />
           <Ux4gButton
             text="Back"
             onPress={onBack}
             variant="ghost"
             size="large"
             width="100%"
-            height={48}
+            height={44}
             contentColor={primaryColor}
           />
         </View>
@@ -709,13 +809,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1.5,
     borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    color: UX4GColors.primary600,
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
@@ -724,7 +824,7 @@ const styles = StyleSheet.create({
   unionIcon: { height: 32, width: 44 },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 24,
   },
   progressText: {
     fontSize: 13,
@@ -741,9 +841,10 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   questionTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '800',
-    lineHeight: 26,
+    lineHeight: 28,
+    letterSpacing: -0.3,
   },
   questionHelper: {
     fontSize: 14,
@@ -755,6 +856,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderRadius: 12,
+    borderWidth: 1.5,
   },
   radioCircle: {
     width: 22,
@@ -776,19 +878,21 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 16,
     alignItems: 'center',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 12,
+    justifyContent: 'center',
+    gap: 6,
+    paddingTop: 16,
     paddingBottom: 20,
   },
   poweredByText: {
     fontSize: 11,
     fontWeight: '500',
     color: '#9CA3AF',
-    marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 22,
@@ -820,7 +924,7 @@ const styles = StyleSheet.create({
             height: 6,
             borderRadius: 9999,
             width: '100%',
-            backgroundColor: isDark ? '#2D284B' : '#EAE8FA',
+            backgroundColor: colors.progressTrack,
             overflow: 'hidden',
             marginBottom: 20,
           }}
@@ -831,8 +935,8 @@ const styles = StyleSheet.create({
               borderRadius: 9999,
               width: '20%',
               background: isDark
-                ? 'linear-gradient(90deg, rgba(163, 145, 255, 0.35) 0%, #A391FF 100%)'
-                : 'linear-gradient(90deg, #D4CBFD 0%, #432CBB 100%)',
+                ? 'linear-gradient(90deg, rgba(163, 145, 255, 0.4) 0%, #A391FF 100%)'
+                : 'linear-gradient(90deg, #D4CBFD 0%, #4A2BC2 100%)',
             }}
           />
         </div>
@@ -840,12 +944,12 @@ const styles = StyleSheet.create({
         {/* Question Title */}
         <div
           style={{
-            fontSize: isCard ? 22 : 20,
+            fontSize: 22,
             fontWeight: 800,
             color: colors.titleColor,
             lineHeight: 1.3,
             letterSpacing: '-0.3px',
-            marginBottom: 10,
+            marginBottom: 8,
           }}
         >
           Are you a resident of Maharashtra?
@@ -873,6 +977,11 @@ const styles = StyleSheet.create({
               selectedOption === 'yes'
                 ? colors.optionSelectedBg
                 : colors.optionUnselectedBg,
+            border: `1.5px solid ${
+              selectedOption === 'yes'
+                ? colors.optionSelectedBorder
+                : colors.optionUnselectedBorder
+            }`,
             display: 'flex',
             alignItems: 'center',
             cursor: 'pointer',
@@ -910,7 +1019,12 @@ const styles = StyleSheet.create({
             <div
               style={{
                 fontSize: 13,
-                color: colors.subtleText,
+                color:
+                  selectedOption === 'yes'
+                    ? isDark
+                      ? UX4GColors.primary200
+                      : UX4GColors.primary700
+                    : colors.subtleText,
                 marginTop: 2,
                 lineHeight: 1.3,
               }}
@@ -930,6 +1044,11 @@ const styles = StyleSheet.create({
               selectedOption === 'no'
                 ? colors.optionSelectedBg
                 : colors.optionUnselectedBg,
+            border: `1.5px solid ${
+              selectedOption === 'no'
+                ? colors.optionSelectedBorder
+                : colors.optionUnselectedBorder
+            }`,
             display: 'flex',
             alignItems: 'center',
             cursor: 'pointer',
@@ -966,7 +1085,12 @@ const styles = StyleSheet.create({
             <div
               style={{
                 fontSize: 13,
-                color: colors.subtleText,
+                color:
+                  selectedOption === 'no'
+                    ? isDark
+                      ? UX4GColors.primary200
+                      : UX4GColors.primary700
+                    : colors.subtleText,
                 marginTop: 2,
                 lineHeight: 1.3,
               }}
@@ -996,7 +1120,7 @@ const styles = StyleSheet.create({
           position: 'relative',
         }}
       >
-        {/* Top UX4G AppHeader */}
+        {/* Top UX4G AppHeader with Menu Button */}
         <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
           <div
             style={{
@@ -1024,112 +1148,207 @@ const styles = StyleSheet.create({
               />
               <UnionLogo size={32} isDark={isDark} />
             </div>
+
+            {/* Right Side Menu Icon Button */}
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: `1.5px solid ${colors.menuBorder}`,
+                backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: 20,
+                  color: colors.primaryColor,
+                }}
+              >
+                menu
+              </span>
+            </div>
           </div>
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         </div>
 
-        {/* Scrollable Center Content */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {isCard ? (
-            <div style={{ padding: 16 }}>
-              <div
-                style={{
-                  backgroundColor: colors.cardBg,
-                  borderRadius: 16,
-                  padding: 20,
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                {renderQuestionBody()}
-              </div>
-            </div>
-          ) : (
+        {/* Center Content */}
+        {isCard ? (
+          /* Card Style Variant */
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: '16px 16px 12px 16px',
+              overflowY: 'auto',
+            }}
+          >
+            {/* Elevated Card Containing Question and Action Buttons */}
             <div
               style={{
-                padding: '20px 20px 0 20px',
+                backgroundColor: colors.cardBg,
+                borderRadius: 16,
+                padding: '24px 20px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                 display: 'flex',
                 flexDirection: 'column',
               }}
             >
               {renderQuestionBody()}
+
+              <div style={{ height: 28 }} />
+
+              {/* Action Buttons inside Card */}
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Ux4gButton
+                  text="Continue"
+                  onPress={() => {}}
+                  enabled={selectedOption !== null}
+                  size="large"
+                  width="100%"
+                  height={48}
+                  backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                  contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+                />
+                <div style={{ height: 8 }} />
+                <Ux4gButton
+                  text="Back"
+                  onPress={() => {}}
+                  variant="ghost"
+                  size="large"
+                  width="100%"
+                  height={44}
+                  contentColor={colors.primaryColor}
+                />
+              </div>
             </div>
-          )}
-        </div>
 
-        {/* Bottom Actions */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
-        <div
-          style={{
-            padding: '12px 20px 0 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <Ux4gButton
-            text="Continue"
-            onPress={() => {}}
-            enabled={selectedOption !== null}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-          <div style={{ height: 4 }} />
-          <Ux4gButton
-            text="Back"
-            onPress={() => {}}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={colors.primaryColor}
-          />
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '12px 0 20px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
+            {/* Powered by Footer outside Card */}
+            <div
+              style={{
+                paddingTop: 12,
+                paddingBottom: 4,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: colors.footerText,
+                }}
+              >
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          /* Default Variant */
+          <div
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'auto',
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 22,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
-        </div>
+            <div
+              style={{
+                padding: '24px 20px 0 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+              }}
+            >
+              {renderQuestionBody()}
+            </div>
+
+            {/* Bottom Actions for Default */}
+            <div
+              style={{
+                padding: '16px 20px 0 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                backgroundColor: colors.screenBg,
+                flexShrink: 0,
+              }}
+            >
+              <Ux4gButton
+                text="Continue"
+                onPress={() => {}}
+                enabled={selectedOption !== null}
+                size="large"
+                width="100%"
+                height={48}
+                backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+              />
+              <div style={{ height: 8 }} />
+              <Ux4gButton
+                text="Back"
+                onPress={() => {}}
+                variant="ghost"
+                size="large"
+                width="100%"
+                height={44}
+                contentColor={colors.primaryColor}
+              />
+            </div>
+
+            {/* Powered by Footer */}
+            <div
+              style={{
+                padding: '16px 0 20px 0',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                backgroundColor: colors.screenBg,
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: colors.footerText,
+                }}
+              >
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     );
   };

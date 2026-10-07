@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
@@ -44,17 +43,18 @@ export const EligibilityFailureStepDoc: React.FC<EligibilityFailureStepDocProps>
       headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
-      titleColor: isDark ? '#FECACA' : '#991B1B',
+      titleColor: isDark ? '#FECACA' : '#7F1D1D',
       sectionTitle: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
       subtleText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      cancelIconBg: isDark ? '#7F1D1D' : '#FEE2E2',
+      cancelIconBg: isDark ? 'rgba(239, 68, 68, 0.2)' : '#FEE2E2',
       cancelIconColor: isDark ? '#F87171' : '#DC2626',
-      checkBg: isDark ? '#064E3B' : '#DCFCE7',
-      checkColor: isDark ? '#34D399' : '#16A34A',
-      crossBg: isDark ? '#7F1D1D' : '#FEE2E2',
+      checkBg: isDark ? 'rgba(190, 239, 187, 0.2)' : '#BEEFBB',
+      checkColor: isDark ? '#34D399' : '#128937',
+      crossBg: isDark ? 'rgba(239, 68, 68, 0.2)' : '#FEE2E2',
       crossColor: isDark ? '#F87171' : '#DC2626',
       footerText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      menuBorder: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
     };
   }, [isDark, variant]);
 
@@ -69,6 +69,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import {
@@ -139,19 +140,25 @@ export const EligibilityFailureCardScreen = ({
                 resizeMode="contain"
               />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <TouchableOpacity
-                  key="menu"
-                  style={styles.menuBtn}
-                  onPress={() => {}}
-                >
-                  <Text style={styles.menuIcon}>☰</Text>
-                </TouchableOpacity>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <TouchableOpacity
+                    key="menu"
+                    style={[
+                      styles.menuBtn,
+                      {
+                        borderColor: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                      },
+                    ]}
+                    onPress={() => {}}
+                  >
+                    <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+                  </TouchableOpacity>
+                ),
+              },
+            ]}
           />
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         </View>
@@ -161,42 +168,42 @@ export const EligibilityFailureCardScreen = ({
           contentContainerStyle={styles.cardScrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Elevated Card */}
+          {/* Elevated Card Containing Content and Action Button */}
           <View
             style={[
               styles.cardContainer,
               { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
             ]}
           >
-            {/* Cancel Icon */}
+            {/* Cancel Icon Badge */}
             <View
               style={[
                 styles.cancelIconContainer,
-                { backgroundColor: isDark ? '#7F1D1D' : '#FEE2E2' },
+                { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.2)' : '#FEE2E2' },
               ]}
             >
-              <Text style={[styles.cancelIconSymbol, { color: isDark ? '#F87171' : '#DC2626' }]}>
-                ✕
-              </Text>
+              <View style={styles.innerCancelCircle}>
+                <Text style={styles.innerCancelIcon}>✕</Text>
+              </View>
             </View>
 
             <View style={{ height: 16 }} />
 
             {/* Title */}
-            <Text style={[styles.failureTitle, { color: isDark ? '#FECACA' : '#991B1B' }]}>
+            <Text style={[styles.failureTitle, { color: isDark ? '#FECACA' : '#7F1D1D' }]}>
               Not Eligible
             </Text>
 
-            <View style={{ height: 12 }} />
+            <View style={{ height: 10 }} />
 
             {/* Subtitle */}
             <Text style={[styles.failureSubtitle, { color: subtleText }]}>
               Unfortunately, you do not meet all the required criteria for this service at this time.
             </Text>
 
-            <View style={{ height: 24 }} />
-            <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
             <View style={{ height: 20 }} />
+            <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
+            <View style={{ height: 16 }} />
 
             {/* Criteria Title */}
             <Text
@@ -208,7 +215,7 @@ export const EligibilityFailureCardScreen = ({
               Eligibility Criteria
             </Text>
 
-            <View style={{ height: 16 }} />
+            <View style={{ height: 14 }} />
 
             {/* Criteria List */}
             {CRITERIA_ITEMS.map((item, idx) => (
@@ -222,10 +229,10 @@ export const EligibilityFailureCardScreen = ({
                     {
                       backgroundColor: item.passed
                         ? isDark
-                          ? '#064E3B'
-                          : '#DCFCE7'
+                          ? 'rgba(190, 239, 187, 0.2)'
+                          : '#BEEFBB'
                         : isDark
-                        ? '#7F1D1D'
+                        ? 'rgba(239, 68, 68, 0.2)'
                         : '#FEE2E2',
                     },
                   ]}
@@ -237,7 +244,7 @@ export const EligibilityFailureCardScreen = ({
                         color: item.passed
                           ? isDark
                             ? '#34D399'
-                            : '#16A34A'
+                            : '#128937'
                           : isDark
                           ? '#F87171'
                           : '#DC2626',
@@ -249,24 +256,25 @@ export const EligibilityFailureCardScreen = ({
                 </View>
               </View>
             ))}
+
+            <View style={{ height: 24 }} />
+
+            {/* Action Button inside Card */}
+            <View style={styles.cardActionsContainer}>
+              <Ux4gButton
+                text="Explore Alternatives"
+                onPress={onExploreAlternatives}
+                size="large"
+                width="100%"
+                height={48}
+                backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+              />
+            </View>
           </View>
         </ScrollView>
 
-        {/* Actions & Footer Outside Card */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Explore Alternatives"
-            onPress={onExploreAlternatives}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-        </View>
-
-        {/* Footer */}
+        {/* Footer Outside Card */}
         <View style={styles.footerContainer}>
           <Text style={styles.poweredByText}>
             Powered by -
@@ -289,27 +297,32 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1.5,
     borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    color: UX4GColors.primary600,
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
   emblemIcon: { height: 32, width: 22 },
   verticalDivider: { height: 20, width: 1 },
   unionIcon: { height: 32, width: 44 },
-  cardScrollContainer: { padding: 16 },
+  cardScrollContainer: {
+    padding: 16,
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   cardContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
+    paddingTop: 28,
+    paddingBottom: 24,
     borderRadius: 16,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
+    shadowOpacity: 0.05,
     shadowRadius: 16,
     elevation: 3,
     alignItems: 'center',
@@ -321,18 +334,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cancelIconSymbol: {
-    fontSize: 32,
+  innerCancelCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#DC2626',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerCancelIcon: {
+    color: '#FFFFFF',
+    fontSize: 15,
     fontWeight: '700',
   },
   failureTitle: {
     fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
   failureSubtitle: {
     fontSize: 14,
-    lineHeight: 21,
+    lineHeight: 20,
     textAlign: 'center',
   },
   criteriaHeading: {
@@ -345,7 +368,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    paddingBottom: 14,
+    paddingBottom: 12,
   },
   criteriaText: {
     fontSize: 13,
@@ -355,31 +378,32 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   badge: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
   badgeIcon: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
   },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
+  cardActionsContainer: {
+    width: '100%',
     alignItems: 'center',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 16,
-    paddingBottom: 20,
+    justifyContent: 'center',
+    gap: 6,
+    paddingTop: 12,
+    paddingBottom: 16,
   },
   poweredByText: {
     fontSize: 11,
     fontWeight: '500',
     color: '#9CA3AF',
-    marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 22,
@@ -395,6 +419,7 @@ import {
   StyleSheet,
   ScrollView,
   Image,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import {
@@ -461,19 +486,25 @@ export const EligibilityFailureScreen = ({
               resizeMode="contain"
             />,
           ]}
-        actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={styles.menuBtn}
-                onPress={() => {}}
-              >
-                <Text style={styles.menuIcon}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
-        ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={[
+                    styles.menuBtn,
+                    {
+                      borderColor: isDark ? UX4GColors.primary300 : UX4GColors.primary200,
+                      backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                    },
+                  ]}
+                  onPress={() => {}}
+                >
+                  <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
         />
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
 
@@ -482,35 +513,35 @@ export const EligibilityFailureScreen = ({
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Cancel Icon */}
+          {/* Cancel Icon Badge */}
           <View
             style={[
               styles.cancelIconContainer,
-              { backgroundColor: isDark ? '#7F1D1D' : '#FEE2E2' },
+              { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.2)' : '#FEE2E2' },
             ]}
           >
-            <Text style={[styles.cancelIconSymbol, { color: isDark ? '#F87171' : '#DC2626' }]}>
-              ✕
-            </Text>
+            <View style={styles.innerCancelCircle}>
+              <Text style={styles.innerCancelIcon}>✕</Text>
+            </View>
           </View>
 
           <View style={{ height: 16 }} />
 
           {/* Title */}
-          <Text style={[styles.failureTitle, { color: isDark ? '#FECACA' : '#991B1B' }]}>
+          <Text style={[styles.failureTitle, { color: isDark ? '#FECACA' : '#7F1D1D' }]}>
             Not Eligible
           </Text>
 
-          <View style={{ height: 12 }} />
+          <View style={{ height: 10 }} />
 
           {/* Subtitle */}
           <Text style={[styles.failureSubtitle, { color: subtleText }]}>
             Unfortunately, you do not meet all the required criteria for this service at this time.
           </Text>
 
-          <View style={{ height: 24 }} />
-          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
           <View style={{ height: 20 }} />
+          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
+          <View style={{ height: 16 }} />
 
           {/* Criteria Title */}
           <Text
@@ -522,7 +553,7 @@ export const EligibilityFailureScreen = ({
             Eligibility Criteria
           </Text>
 
-          <View style={{ height: 16 }} />
+          <View style={{ height: 14 }} />
 
           {/* Criteria List */}
           {CRITERIA_ITEMS.map((item, idx) => (
@@ -536,10 +567,10 @@ export const EligibilityFailureScreen = ({
                   {
                     backgroundColor: item.passed
                       ? isDark
-                        ? '#064E3B'
-                        : '#DCFCE7'
+                        ? 'rgba(190, 239, 187, 0.2)'
+                        : '#BEEFBB'
                       : isDark
-                      ? '#7F1D1D'
+                      ? 'rgba(239, 68, 68, 0.2)'
                       : '#FEE2E2',
                   },
                 ]}
@@ -551,7 +582,7 @@ export const EligibilityFailureScreen = ({
                       color: item.passed
                         ? isDark
                           ? '#34D399'
-                          : '#16A34A'
+                          : '#128937'
                         : isDark
                         ? '#F87171'
                         : '#DC2626',
@@ -566,7 +597,6 @@ export const EligibilityFailureScreen = ({
         </ScrollView>
 
         {/* Actions */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         <View style={styles.actionsContainer}>
           <Ux4gButton
             text="Explore Alternatives"
@@ -602,13 +632,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1.5,
     borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    color: UX4GColors.primary600,
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
@@ -627,18 +657,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cancelIconSymbol: {
-    fontSize: 32,
+  innerCancelCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#DC2626',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  innerCancelIcon: {
+    color: '#FFFFFF',
+    fontSize: 15,
     fontWeight: '700',
   },
   failureTitle: {
     fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
+    letterSpacing: -0.3,
   },
   failureSubtitle: {
     fontSize: 14,
-    lineHeight: 21,
+    lineHeight: 20,
     textAlign: 'center',
   },
   criteriaHeading: {
@@ -651,7 +691,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    paddingBottom: 14,
+    paddingBottom: 12,
   },
   criteriaText: {
     fontSize: 13,
@@ -661,23 +701,26 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   badge: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
   badgeIcon: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
   },
   actionsContainer: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingTop: 16,
     alignItems: 'center',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     paddingTop: 16,
     paddingBottom: 20,
   },
@@ -685,7 +728,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '500',
     color: '#9CA3AF',
-    marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 22,
@@ -699,7 +741,7 @@ const styles = StyleSheet.create({
 
     const renderFailureBody = () => (
       <>
-        {/* Cancel Icon */}
+        {/* Cancel Icon Badge */}
         <div
           style={{
             width: 64,
@@ -712,14 +754,31 @@ const styles = StyleSheet.create({
             marginBottom: 16,
           }}
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="32"
-            height="32"
-            fill={colors.cancelIconColor}
+          <div
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: '50%',
+              backgroundColor: colors.cancelIconColor,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z" />
-          </svg>
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </div>
         </div>
 
         {/* Title */}
@@ -729,7 +788,7 @@ const styles = StyleSheet.create({
             fontWeight: 800,
             color: colors.titleColor,
             textAlign: 'center',
-            marginBottom: 12,
+            marginBottom: 10,
             letterSpacing: '-0.3px',
           }}
         >
@@ -743,14 +802,14 @@ const styles = StyleSheet.create({
             color: colors.subtleText,
             lineHeight: 1.5,
             textAlign: 'center',
-            marginBottom: 24,
+            marginBottom: 20,
           }}
         >
           Unfortunately, you do not meet all the required criteria for this service at this time.
         </div>
 
         {/* Divider */}
-        <div style={{ width: '100%', marginBottom: 20 }}>
+        <div style={{ width: '100%', marginBottom: 16 }}>
           <Ux4gDivider color={colors.border} thickness={1} />
         </div>
 
@@ -761,7 +820,7 @@ const styles = StyleSheet.create({
             fontWeight: 700,
             color: colors.sectionTitle,
             alignSelf: 'flex-start',
-            marginBottom: 16,
+            marginBottom: 14,
           }}
         >
           Eligibility Criteria
@@ -774,9 +833,9 @@ const styles = StyleSheet.create({
               key={idx}
               style={{
                 display: 'flex',
-                alignItems: 'flex-start',
+                alignItems: 'center',
                 justifyContent: 'space-between',
-                paddingBottom: 14,
+                paddingBottom: 12,
               }}
             >
               <div
@@ -793,8 +852,8 @@ const styles = StyleSheet.create({
               </div>
               <div
                 style={{
-                  width: 20,
-                  height: 20,
+                  width: 22,
+                  height: 22,
                   borderRadius: 4,
                   backgroundColor: item.passed ? colors.checkBg : colors.crossBg,
                   display: 'flex',
@@ -856,7 +915,7 @@ const styles = StyleSheet.create({
           position: 'relative',
         }}
       >
-        {/* Top UX4G AppHeader */}
+        {/* Top UX4G AppHeader with Menu Button */}
         <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
           <div
             style={{
@@ -884,103 +943,187 @@ const styles = StyleSheet.create({
               />
               <UnionLogo size={32} isDark={isDark} />
             </div>
+
+            {/* Right Side Menu Icon Button */}
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: `1.5px solid ${colors.menuBorder}`,
+                backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: 20,
+                  color: colors.primaryColor,
+                }}
+              >
+                menu
+              </span>
+            </div>
           </div>
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
         </div>
 
-        {/* Scrollable Center Content */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {isCard ? (
-            <div style={{ padding: 16 }}>
-              <div
-                style={{
-                  backgroundColor: colors.cardBg,
-                  borderRadius: 16,
-                  padding: 20,
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                {renderFailureBody()}
-              </div>
-            </div>
-          ) : (
+        {/* Center Content */}
+        {isCard ? (
+          /* Card Style Variant */
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: '16px 16px 12px 16px',
+              overflowY: 'auto',
+            }}
+          >
+            {/* Elevated Card Containing Content and Action Button */}
             <div
               style={{
-                padding: '32px 24px 0 24px',
+                backgroundColor: colors.cardBg,
+                borderRadius: 16,
+                padding: '28px 20px 24px 20px',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
               }}
             >
               {renderFailureBody()}
+
+              <div style={{ height: 24 }} />
+
+              {/* Action Button inside Card */}
+              <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Ux4gButton
+                  text="Explore Alternatives"
+                  onPress={() => {}}
+                  size="large"
+                  width="100%"
+                  height={48}
+                  backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                  contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+                />
+              </div>
             </div>
-          )}
-        </div>
 
-        {/* Bottom Actions */}
-        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#E5E7EB'} thickness={1} />
-        <div
-          style={{
-            padding: '16px 24px 0 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <Ux4gButton
-            text="Explore Alternatives"
-            onPress={() => {}}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '16px 0 20px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
+            {/* Powered by Footer outside Card */}
+            <div
+              style={{
+                paddingTop: 12,
+                paddingBottom: 4,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: colors.footerText,
+                }}
+              >
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          /* Default Variant */
+          <div
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'auto',
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 22,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
-        </div>
+            <div
+              style={{
+                padding: '32px 24px 0 24px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                flex: 1,
+              }}
+            >
+              {renderFailureBody()}
+            </div>
+
+            {/* Bottom Actions for Default */}
+            <div
+              style={{
+                padding: '16px 20px 0 20px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                backgroundColor: colors.screenBg,
+                flexShrink: 0,
+              }}
+            >
+              <Ux4gButton
+                text="Explore Alternatives"
+                onPress={() => {}}
+                size="large"
+                width="100%"
+                height={48}
+                backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+                contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+              />
+            </div>
+
+            {/* Powered by Footer */}
+            <div
+              style={{
+                padding: '16px 0 20px 0',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                backgroundColor: colors.screenBg,
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  color: colors.footerText,
+                }}
+              >
+                Powered by -
+              </span>
+              <img
+                src="/Digital_India_logo.svg"
+                alt="Digital India"
+                style={{
+                  height: 22,
+                  filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     );
   };
