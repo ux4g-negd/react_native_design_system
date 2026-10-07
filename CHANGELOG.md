@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-10-07
+
+### Added
+- **New Components**:
+  - `Ux4gBottomSheet`: Interactive and modal bottom sheet component with draggable gesture handle support and customizable contents.
+  - `Ux4gFab`: Floating Action Button component with support for all 5 style variants (standard, extended, speed-dial/group, subtle, primary).
+  - `Ux4gBottomNavigationBar`: Bottom navigation component with 4 distinct layout styles (standard, floating-pill, circular-center action button, and icon-only) with badge counts.
+  - `Ux4gSideMenu`: Responsive side drawer navigation menu with smooth open/close animations, RTL/LTR layout directions, search filter, and multiple styling variants (standard, bordered, minimal).
+- **Component Enhancements**:
+  - `Ux4gAadhaarInput`: Added Aadhaar number masking / unmasking toggle feature (`showMaskToggle`, `maskAll`, `defaultMasked`, `isMasked`) alongside Verhoeff checksum algorithm validation.
+- **Pattern Suites & Wizard Workflows**:
+  - **Eligibility Check Wizard**: Complete multi-step flow with landing page, question steps (progress indicator, responsive options), final question step with updated typography (`hS_strong`, `bM_default`, `bS_default`), and outcome steps (Success with custom status tokens `#BEEFBB` / `#128937`, Failure, and Warning).
+  - **Document Verification & Upload**: Multi-stage upload workflows including file progress, verification review, success confirmation, and document scan preview.
+  - **Aadhaar Authentication Flows**: Verification success, verification failed, locked profile, face capture with camera overlay, sign-in with mobile OTP, and sign-in with Aadhaar.
+  - **Application Status & Lifecycle**: Grievance status tracker, application status tracker, auto-save and draft expiry handling, resume application, and continue application patterns.
+  - **Identity & Recovery**: Password reset, create new password, password reset success, operator authentication, and account recovery.
+  - **User Preferences & Consent**: Consent capture flows and notification preference settings.
+  - **Payment & Checkout**: Payment confirmation and proactive transaction status updates.
+- **Documentation & Migration Tooling**:
+  - Added comprehensive `MIGRATION.md` guide and prompt dataset for smooth transitions to the UX4G React Native component suite.
+  - Integrated AppHeader menu actions and refined dark/light theme previews in Storybook.
+
+---
+
 ## [1.0.9-beta.0] - 2026-09-25
 
 ### Fixed
