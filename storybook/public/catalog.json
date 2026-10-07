@@ -1,7 +1,7 @@
 {
   "name": "UX4G React Native Design System Storybook",
   "description": "Comprehensive Storybook catalog detailing all components, tokens, and patterns for the UX4G React Native Design System.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "base_url": "https://react-native.ux4g.gov.in/",
   "categories": [
     {
@@ -256,6 +256,22 @@
         {
           "name": "Tooltip",
           "url": "https://react-native.ux4g.gov.in/#/?path=components/tooltip/introduction"
+        },
+        {
+          "name": "Bottom Navigation Bar",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/bottom-navigation/basic"
+        },
+        {
+          "name": "Bottom Sheet",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/bottom-sheet/basic"
+        },
+        {
+          "name": "Floating Action Button (FAB)",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/floating-action-button/basic"
+        },
+        {
+          "name": "Side Menu (Navigation Drawer)",
+          "url": "https://react-native.ux4g.gov.in/#/?path=components/side-menu/basic"
         }
       ]
     },

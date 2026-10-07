@@ -100,7 +100,7 @@ console.log('Generated llms.txt');
 const catalogJson = {
   name: "UX4G React Native Design System Storybook",
   description: "Comprehensive Storybook catalog detailing all components, tokens, and patterns for the UX4G React Native Design System.",
-  version: "1.0.0",
+  version: "1.1.0",
   base_url: "https://react-native.ux4g.gov.in/",
   categories: [
     {

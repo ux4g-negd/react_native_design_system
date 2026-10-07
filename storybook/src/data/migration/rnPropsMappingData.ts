@@ -588,5 +588,45 @@ export const RN_PROPS_MAPPING_DATA: RNPropMappingItem[] = [
     paperProp: "<IconButton icon={...} onPress={...} />",
     rneProp: "<SocialIcon type={...} onPress={...} />",
     description: "Branded or monochrome vector social media icon links with circular background and tooltip support."
+  },
+
+  // 44. Ux4gBottomNavigationBar
+  {
+    component: "Ux4gBottomNavigationBar",
+    propGroup: "Tabs, Variants & Indicators",
+    ux4gProp: "items={Ux4gBottomNavItem[]} | selectedIndex={number} | onTabChange={(idx, item) => void} | variant='labelled' | 'top-rounded' | 'icon-only' | 'centre-action' | 'floating-pill' | indicatorVariant='pill' | 'bar' | 'plain' | centerAction={Ux4gBottomNavCenterAction}",
+    paperProp: "<BottomNavigation navigationState={...} onIndexChange={...} renderScene={...} />",
+    rneProp: "<Tab value={index} onChange={...}><Tab.Item ... /></Tab>",
+    description: "Bottom navigation bar with 5 shape layouts, 3 active indicator styles (pill capsule, top bar, plain), badge counters, and center action FAB."
+  },
+
+  // 45. Ux4gBottomSheet
+  {
+    component: "Ux4gBottomSheet",
+    propGroup: "Modal Snap Points & Actions",
+    ux4gProp: "visible={boolean} | onDismiss={() => void} | size='peek' | 'half' | 'expanded' | 'full' | cornerRadius={number} | title={string} | description={string} | primaryButtonText={string} | secondaryButtonText={string} | onPrimaryPress={() => void} | onSecondaryPress={() => void}",
+    paperProp: "<Modal visible={...} onDismiss={...} contentContainerStyle={...}>",
+    rneProp: "<BottomSheet isVisible={...} onBackdropPress={...}>",
+    description: "Modal bottom sheet component with 16dp top corner radius, drag handle indicator, standardized header/description, and UX4G action buttons across 4 snap points."
+  },
+
+  // 46. Ux4gFab
+  {
+    component: "Ux4gFab",
+    propGroup: "Trigger, Speed Dial & Themes",
+    ux4gProp: "variant='icon' | 'labelled' | 'menu-joined' | 'menu-spaced' | 'menu-labelled' | colorTheme='brand' | 'surface' | 'light' | position='bottom-right' | 'bottom-left' | 'bottom-center' | actions={Ux4gFabActionItem[]} | showBackdrop={boolean} | onPress={() => void} | onToggle={(open) => void}",
+    paperProp: "<FAB icon={...} onPress={...} /> | <FAB.Group open={...} icon={...} actions={[...]} onStateChange={...} />",
+    rneProp: "<FAB icon={...} onPress={...} />",
+    description: "Floating action button supporting single icon, extended labelled, and 3 vertical speed dial modes with rotation animation and backdrop."
+  },
+
+  // 47. Ux4gSideMenu
+  {
+    component: "Ux4gSideMenu",
+    propGroup: "Drawer Presets & Sections",
+    ux4gProp: "isOpen={boolean} | onClose={() => void} | variant='standard' | 'citizen' | 'department-services' | 'department-switcher' | 'mailbox' | 'profile-summary' | position='left' | 'right' | user={Ux4gSideMenuUser} | profileSummary={Ux4gSideMenuProfileSummary} | actionCard={Ux4gSideMenuActionCard} | footerBranding={Ux4gSideMenuFooterBranding} | onItemPress={(item) => void} | onSignOut={() => void}",
+    paperProp: "<Drawer.Section title={...}><Drawer.Item ... /></Drawer.Section>",
+    rneProp: "<Overlay isVisible={...} onBackdropPress={...}> (Custom Drawer)",
+    description: "Comprehensive navigation drawer supporting 5 specialized government design presets with smooth slide animation and dark/light mode support."
   }
 ];

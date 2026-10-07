@@ -132,6 +132,31 @@ const NAV_ITEMS: NavItem[] = [
         ],
       },
       {
+        id: 'bottom-navigation-group',
+        label: 'Bottom Navigation Bar',
+        icon: 'folder',
+        children: [
+          { id: 'bottom-navigation-basic', label: 'Introduction & Matrix', icon: 'layers' },
+          { id: 'bottom-navigation-labelled', label: 'Labelled', icon: 'layers' },
+          { id: 'bottom-navigation-top-rounded', label: 'Top Rounded', icon: 'layers' },
+          { id: 'bottom-navigation-icon-only', label: 'Icon Only', icon: 'layers' },
+          { id: 'bottom-navigation-centre-action', label: 'Centre Action', icon: 'layers' },
+          { id: 'bottom-navigation-floating-pill', label: 'Floating Pill', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'bottom-sheet-group',
+        label: 'Bottom Sheet',
+        icon: 'folder',
+        children: [
+          { id: 'bottom-sheet-basic', label: 'Introduction', icon: 'layers' },
+          { id: 'bottom-sheet-peek', label: 'Peek (26%)', icon: 'layers' },
+          { id: 'bottom-sheet-half', label: 'Half (50%)', icon: 'layers' },
+          { id: 'bottom-sheet-expanded', label: 'Expanded (75%)', icon: 'layers' },
+          { id: 'bottom-sheet-full', label: 'Full (94%)', icon: 'layers' },
+        ],
+      },
+      {
         id: 'card-parent-group',
         label: 'Card',
         icon: 'folder',
@@ -305,6 +330,19 @@ const NAV_ITEMS: NavItem[] = [
           { id: 'empty-state-basic', label: 'Basic', icon: 'layers' },
           { id: 'empty-state-variants', label: 'Variants', icon: 'layers' },
           { id: 'empty-state-action', label: 'With Action', icon: 'layers' },
+        ],
+      },
+      {
+        id: 'fab-group',
+        label: 'Floating Action Button (FAB)',
+        icon: 'folder',
+        children: [
+          { id: 'fab-basic', label: 'Introduction & Matrix', icon: 'layers' },
+          { id: 'fab-icon', label: 'Icon Only', icon: 'layers' },
+          { id: 'fab-labelled', label: 'Extended (Labelled)', icon: 'layers' },
+          { id: 'fab-menu-joined', label: 'Speed Dial (Joined)', icon: 'layers' },
+          { id: 'fab-menu-spaced', label: 'Speed Dial (Spaced)', icon: 'layers' },
+          { id: 'fab-menu-labelled', label: 'Speed Dial (Action Cards)', icon: 'layers' },
         ],
       },
       {

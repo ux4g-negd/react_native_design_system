@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import { CodeBlock } from '../components/CodeBlock';
-import {
-  Ux4gSideMenu,
-  Ux4gSideMenuVariant,
-} from '../../../src/components/side-menu';
+import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
+import { CodeBlock } from '../components/CodeBlock';
 
 interface SideMenuDocProps {
   isDark: boolean;
@@ -13,567 +9,452 @@ interface SideMenuDocProps {
 
 type MainTab = 'preview' | 'code' | 'props';
 
-export const SideMenuDoc: React.FC<SideMenuDocProps> = ({ isDark }) => {
-  const [activeTab, setActiveTab] = useState<MainTab>('preview');
-  const [activeVariant, setActiveVariant] = useState<Ux4gSideMenuVariant>('citizen');
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerPosition, setDrawerPosition] = useState<'left' | 'right'>('left');
-  const [selectedKey, setSelectedKey] = useState('my-applications');
-  const [showSearch, setShowSearch] = useState(false);
-  const [activeScreenTitle, setActiveScreenTitle] = useState('My applications');
-  const [lastAction, setLastAction] = useState<string | null>(null);
+export const SideMenuDoc: React.FC<SideMenuDocProps> = ({ isDark, story = 'side-menu-variants' }) => {
+  const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
 
-  const handleOpen = (variant: Ux4gSideMenuVariant, pos: 'left' | 'right' = 'left') => {
-    setActiveVariant(variant);
-    setDrawerPosition(pos);
-    if (variant === 'citizen') {
-      setSelectedKey('my-applications');
-      setActiveScreenTitle('My applications');
-    } else if (variant === 'department-services') {
-      setSelectedKey('dashboard');
-      setActiveScreenTitle('Dashboard');
-    } else if (variant === 'department-switcher') {
-      setSelectedKey('dept-revenue');
-      setActiveScreenTitle('Revenue Department');
-    } else if (variant === 'mailbox') {
-      setSelectedKey('inbox');
-      setActiveScreenTitle('Inbox');
-    } else if (variant === 'profile-summary') {
-      setSelectedKey('profile-settings');
-      setActiveScreenTitle('Profile & settings');
+  /* ── Code Generator ── */
+  const codeString = useMemo(() => {
+    const lines: string[] = [];
+    lines.push(`import React, { useState } from 'react';`);
+    lines.push(`import { View, StyleSheet } from 'react-native';`);
+    lines.push(`import { Ux4gSideMenu, Ux4gButton } from 'ux4g-react-native-components';`);
+    lines.push('');
+    lines.push('export default function SideMenuExample() {');
+    lines.push('  const [isOpen, setIsOpen] = useState(false);');
+    lines.push('');
+    lines.push('  return (');
+    lines.push('    <View style={styles.container}>');
+    lines.push('      <Ux4gButton text="Open Navigation Drawer" onPress={() => setIsOpen(true)} />');
+    lines.push('');
+    lines.push('      <Ux4gSideMenu');
+    lines.push('        isOpen={isOpen}');
+    lines.push('        onClose={() => setIsOpen(false)}');
+
+    if (story === 'side-menu-services') {
+      lines.push('        variant="department-services"');
+      lines.push('        title="Revenue Department"');
+      lines.push('        subtitle="Kanpur division"');
+      lines.push('        actionCard={{');
+      lines.push('          tag: "ACTION REQUIRED",');
+      lines.push('          title: "Verify your Aadhaar",');
+      lines.push('          description: "Complete identity verification to continue.",');
+      lines.push('          buttonText: "Verify now",');
+      lines.push('          onButtonPress: () => console.log("Verify pressed"),');
+      lines.push('        }}');
+    } else if (story === 'side-menu-switcher') {
+      lines.push('        variant="department-switcher"');
+      lines.push('        title="Departments"');
+      lines.push('        subtitle="Choose a department to work in."');
+    } else if (story === 'side-menu-mailbox') {
+      lines.push('        variant="mailbox"');
+      lines.push('        title="Mailbox"');
+      lines.push('        subtitle="citizen@gov.in"');
+    } else if (story === 'side-menu-profile') {
+      lines.push('        variant="profile-summary"');
+      lines.push('        profileSummary={{');
+      lines.push('          name: "Ramesh Kumar",');
+      lines.push('          roleOrDesignation: "Citizen Account",');
+      lines.push('          avatarText: "RK",');
+      lines.push('          metricText: "12 applications · 3 actions required",');
+      lines.push('        }}');
     } else {
-      setSelectedKey('dashboard');
-      setActiveScreenTitle('Dashboard');
+      lines.push('        variant="citizen"');
+      lines.push('        user={{');
+      lines.push('          name: "Ramesh Kumar",');
+      lines.push('          roleOrEmail: "Citizen",');
+      lines.push('          avatarText: "RK",');
+      lines.push('        }}');
+      lines.push('        footerBranding={{');
+      lines.push('          title: "Revenue Department",');
+      lines.push('          subtitle: "Government of India",');
+      lines.push('        }}');
+      lines.push('        onSignOut={() => console.log("Signed out")}');
     }
-    setIsDrawerOpen(true);
-  };
 
-  const getCodeSnippet = () => {
-    switch (activeVariant) {
-      case 'citizen':
-        return `import React, { useState } from 'react';
-import { Ux4gSideMenu } from 'ux4g-react-native-components';
+    lines.push('        onItemPress={(item) => {');
+    lines.push('          console.log("Selected item:", item);');
+    lines.push('          setIsOpen(false);');
+    lines.push('        }}');
+    lines.push('      />');
+    lines.push('    </View>');
+    lines.push('  );');
+    lines.push('}');
+    lines.push('');
+    lines.push('const styles = StyleSheet.create({');
+    lines.push('  container: { flex: 1, justifyContent: "center", alignItems: "center" },');
+    lines.push('});');
+    return lines.join('\n');
+  }, [story]);
 
-export default function CitizenSideMenuExample() {
-  const [isOpen, setIsOpen] = useState(false);
+  /* ── Live Preview (Expo Snack) ── */
+  const renderStoryPreview = () => {
+    let componentsSnippet = '';
 
-  return (
-    <Ux4gSideMenu
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      variant="citizen"
-      user={{
-        name: 'Ramesh Kumar',
-        roleOrEmail: 'Citizen',
-        avatarText: 'RK',
-      }}
-      footerBranding={{
-        title: 'Revenue Department',
-        subtitle: 'Government of India',
-        logo: 'national-emblem-logo',
-      }}
-      onSignOut={() => console.log('Signed out')}
-    />
-  );
-}`;
-      case 'department-services':
-        return `import React, { useState } from 'react';
-import { Ux4gSideMenu } from 'ux4g-react-native-components';
-
-export default function DepartmentServicesExample() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Ux4gSideMenu
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      variant="department-services"
-      title="Revenue Department"
-      subtitle="Kanpur division"
-      actionCard={{
-        tag: 'ACTION REQUIRED',
-        title: 'Verify your Aadhaar',
-        description: 'Complete identity verification to continue.',
-        buttonText: 'Verify now',
-        onButtonPress: () => console.log('Verify pressed'),
-      }}
-    />
-  );
-}`;
-      case 'department-switcher':
-        return `import React, { useState } from 'react';
-import { Ux4gSideMenu } from 'ux4g-react-native-components';
-
-export default function DepartmentSwitcherExample() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Ux4gSideMenu
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      variant="department-switcher"
-      title="Departments"
-      subtitle="Choose a department to work in."
-      sections={[
-        {
-          items: [
-            {
-              key: 'dept-revenue',
-              label: 'Revenue Department',
-              subtitle: 'Current department',
-              avatarText: 'RD',
-              isCheckmark: true,
-            },
-            {
-              key: 'dept-transport',
-              label: 'Transport Department',
-              subtitle: 'transport.up.gov.in',
-              avatarText: 'TD',
-              statusTag: '3 applications pending',
-            },
-          ],
-        },
-      ]}
-      footerItems={[
-        { key: 'req', label: 'Request department access', icon: 'add' },
-        { key: 'set', label: 'Settings', icon: 'more-vert' },
-        { key: 'help', label: 'Help & support', icon: 'help' },
-      ]}
-    />
-  );
-}`;
-      case 'mailbox':
-        return `import React, { useState } from 'react';
-import { Ux4gSideMenu } from 'ux4g-react-native-components';
-
-export default function MailboxExample() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Ux4gSideMenu
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      variant="mailbox"
-      user={{
-        name: 'Ramesh Kumar',
-        roleOrEmail: 'ramesh.kumar@gov.in',
-        avatarText: 'RK',
-      }}
-      footerBranding={{
-        title: 'Revenue Department',
-        subtitle: 'Kanpur division',
-      }}
-    />
-  );
-}`;
-      case 'profile-summary':
-        return `import React, { useState } from 'react';
-import { Ux4gSideMenu } from 'ux4g-react-native-components';
-
-export default function ProfileSummaryExample() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Ux4gSideMenu
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      variant="profile-summary"
-      profileSummary={{
-        name: 'Ramesh Kumar',
-        role: 'Citizen',
-        metaInfo: '12 applications · 3 actions required',
-        avatarText: 'RK',
-        actionLabel: 'View profile',
-        onActionPress: () => console.log('View profile'),
-      }}
-      showSignOut={true}
-    />
-  );
-}`;
-      default:
-        return `import React, { useState } from 'react';
-import { Ux4gSideMenu } from 'ux4g-react-native-components';
-
-export default function StandardSideMenuExample() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <Ux4gSideMenu
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      variant="standard"
-      title="Revenue Department"
-      subtitle="Government of India"
-      showSearch={true}
-    />
-  );
-}`;
-    }
-  };
-
-  return (
-    <Ux4gThemeProvider>
-      <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Header Title */}
-        <div style={{ marginBottom: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <h1 style={{ fontSize: '28px', fontWeight: 700, margin: 0 }}>
-              Side Menu (Drawer)
-            </h1>
-            <span
-              style={{
-                backgroundColor: '#EDE9FE',
-                color: '#6D28D9',
-                fontSize: '12px',
-                fontWeight: 700,
-                padding: '4px 10px',
-                borderRadius: '12px',
-              }}
-            >
-              5 Design Variants
-            </span>
-          </div>
-          <p style={{ fontSize: '15px', color: isDark ? '#94A3B8' : '#475569', lineHeight: '1.6', margin: 0 }}>
-            Responsive Government Navigation Drawer component supporting Citizen Profile, Department Services with Action Callouts, Department Switcher, User Mailbox, and Centered Profile Summary variants with smooth left/right slide animations and theme awareness.
-          </p>
-        </div>
-
-        {/* Tab Switcher */}
-        <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid #E2E8F0', marginBottom: '24px' }}>
-          {(['preview', 'code', 'props'] as MainTab[]).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                padding: '10px 18px',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                background: 'none',
-                border: 'none',
-                borderBottom: activeTab === tab ? '2px solid #6D28D9' : '2px solid transparent',
-                color: activeTab === tab ? '#6D28D9' : isDark ? '#94A3B8' : '#64748B',
-                textTransform: 'capitalize',
-              }}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-
-        {/* Content Tabs */}
-        {activeTab === 'preview' && (
-          <div>
-            {/* Variant Cards Grid */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '16px',
-                marginBottom: '28px',
-              }}
-            >
-              {/* Card 1 */}
-              <div
-                style={{
-                  border: activeVariant === 'citizen' ? '2px solid #6D28D9' : '1px solid #E2E8F0',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>Variant 1: Citizen Profile</h3>
-                  <span style={{ fontSize: '11px', background: '#EDE9FE', color: '#6D28D9', padding: '2px 8px', borderRadius: '8px', fontWeight: 600 }}>Image 1 Left</span>
-                </div>
-                <p style={{ fontSize: '13px', color: isDark ? '#94A3B8' : '#64748B', marginBottom: '14px' }}>
-                  Identity header with avatar initials "RK", Citizen role, notification badge (3), and bottom emblem branding with sign out.
-                </p>
-                <button
-                  onClick={() => handleOpen('citizen')}
-                  style={{
-                    backgroundColor: '#6D28D9',
-                    color: '#FFF',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '8px 16px',
-                    fontWeight: 600,
-                    fontSize: '13px',
-                    cursor: 'pointer',
-                    width: '100%',
-                  }}
-                >
-                  Open Citizen Drawer
-                </button>
-              </div>
-
-              {/* Card 2 */}
-              <div
-                style={{
-                  border: activeVariant === 'department-services' ? '2px solid #6D28D9' : '1px solid #E2E8F0',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>Variant 2: Department Services</h3>
-                  <span style={{ fontSize: '11px', background: '#FEF3C7', color: '#92400E', padding: '2px 8px', borderRadius: '8px', fontWeight: 600 }}>Image 1 Right</span>
-                </div>
-                <p style={{ fontSize: '13px', color: isDark ? '#94A3B8' : '#64748B', marginBottom: '14px' }}>
-                  Department services with accordion tree sub-items, workspace section, and peach "Verify your Aadhaar" action card.
-                </p>
-                <button
-                  onClick={() => handleOpen('department-services')}
-                  style={{
-                    backgroundColor: '#6D28D9',
-                    color: '#FFF',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '8px 16px',
-                    fontWeight: 600,
-                    fontSize: '13px',
-                    cursor: 'pointer',
-                    width: '100%',
-                  }}
-                >
-                  Open Services Drawer
-                </button>
-              </div>
-
-              {/* Card 3 */}
-              <div
-                style={{
-                  border: activeVariant === 'department-switcher' ? '2px solid #6D28D9' : '1px solid #E2E8F0',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>Variant 3: Department Switcher</h3>
-                  <span style={{ fontSize: '11px', background: '#EDE9FE', color: '#6D28D9', padding: '2px 8px', borderRadius: '8px', fontWeight: 600 }}>Image 2 Left</span>
-                </div>
-                <p style={{ fontSize: '13px', color: isDark ? '#94A3B8' : '#64748B', marginBottom: '14px' }}>
-                  Department switcher with avatar boxes "RD", "TD", checkmark indicator, "3 applications pending" pill, and footer requests.
-                </p>
-                <button
-                  onClick={() => handleOpen('department-switcher')}
-                  style={{
-                    backgroundColor: '#6D28D9',
-                    color: '#FFF',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '8px 16px',
-                    fontWeight: 600,
-                    fontSize: '13px',
-                    cursor: 'pointer',
-                    width: '100%',
-                  }}
-                >
-                  Open Switcher Drawer
-                </button>
-              </div>
-
-              {/* Card 4 */}
-              <div
-                style={{
-                  border: activeVariant === 'mailbox' ? '2px solid #6D28D9' : '1px solid #E2E8F0',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>Variant 4: User Mailbox</h3>
-                  <span style={{ fontSize: '11px', background: '#EDE9FE', color: '#6D28D9', padding: '2px 8px', borderRadius: '8px', fontWeight: 600 }}>Image 2 Right</span>
-                </div>
-                <p style={{ fontSize: '13px', color: isDark ? '#94A3B8' : '#64748B', marginBottom: '14px' }}>
-                  User email header ("ramesh.kumar@gov.in"), inbox count badge (9), folder items, and "Customize inbox" action link.
-                </p>
-                <button
-                  onClick={() => handleOpen('mailbox')}
-                  style={{
-                    backgroundColor: '#6D28D9',
-                    color: '#FFF',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '8px 16px',
-                    fontWeight: 600,
-                    fontSize: '13px',
-                    cursor: 'pointer',
-                    width: '100%',
-                  }}
-                >
-                  Open Mailbox Drawer
-                </button>
-              </div>
-
-              {/* Card 5 */}
-              <div
-                style={{
-                  border: activeVariant === 'profile-summary' ? '2px solid #6D28D9' : '1px solid #E2E8F0',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>Variant 5: Centered Profile</h3>
-                  <span style={{ fontSize: '11px', background: '#EDE9FE', color: '#6D28D9', padding: '2px 8px', borderRadius: '8px', fontWeight: 600 }}>Image 3</span>
-                </div>
-                <p style={{ fontSize: '13px', color: isDark ? '#94A3B8' : '#64748B', marginBottom: '14px' }}>
-                  Large 58dp centered avatar, "12 applications · 3 actions required" metrics, outline "View profile" button, and sections.
-                </p>
-                <button
-                  onClick={() => handleOpen('profile-summary')}
-                  style={{
-                    backgroundColor: '#6D28D9',
-                    color: '#FFF',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '8px 16px',
-                    fontWeight: 600,
-                    fontSize: '13px',
-                    cursor: 'pointer',
-                    width: '100%',
-                  }}
-                >
-                  Open Profile Drawer
-                </button>
-              </div>
-            </div>
-
-            {/* Simulated Live View Box */}
-            <div
-              style={{
-                border: '1px solid #E2E8F0',
-                borderRadius: '16px',
-                padding: '24px',
-                backgroundColor: isDark ? '#0F172A' : '#F8FAFC',
-                textAlign: 'center',
-              }}
-            >
-              <h4 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '6px' }}>
-                Active Screen: {activeScreenTitle}
-              </h4>
-              <p style={{ fontSize: '13px', color: '#64748B', margin: '0 0 16px 0' }}>
-                Selected Menu Key: <code style={{ backgroundColor: '#EDE9FE', padding: '2px 6px', borderRadius: '4px', color: '#6D28D9' }}>{selectedKey}</code>
-              </p>
-              {lastAction && (
-                <div style={{ backgroundColor: '#ECFDF5', color: '#047857', padding: '8px 14px', borderRadius: '8px', display: 'inline-block', fontSize: '13px', fontWeight: 600 }}>
-                  ✓ {lastAction}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'code' && (
-          <div>
-            <div style={{ marginBottom: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {(['citizen', 'department-services', 'department-switcher', 'mailbox', 'profile-summary', 'standard'] as Ux4gSideMenuVariant[]).map((v) => (
-                <button
-                  key={v}
-                  onClick={() => setActiveVariant(v)}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '8px',
-                    border: activeVariant === v ? '2px solid #6D28D9' : '1px solid #CBD5E1',
-                    background: activeVariant === v ? '#EDE9FE' : '#FFF',
-                    color: activeVariant === v ? '#6D28D9' : '#334155',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {v}
-                </button>
-              ))}
-            </div>
-            <CodeBlock code={getCodeSnippet()} language="typescript" />
-          </div>
-        )}
-
-        {activeTab === 'props' && (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid #E2E8F0' }}>
-                  <th style={{ padding: '10px' }}>Prop</th>
-                  <th style={{ padding: '10px' }}>Type</th>
-                  <th style={{ padding: '10px' }}>Default</th>
-                  <th style={{ padding: '10px' }}>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                  <td style={{ padding: '10px', fontWeight: 600 }}>variant</td>
-                  <td style={{ padding: '10px' }}>'standard' | 'citizen' | 'department-services' | 'department-switcher' | 'mailbox' | 'profile-summary'</td>
-                  <td style={{ padding: '10px' }}>'standard'</td>
-                  <td style={{ padding: '10px' }}>Pre-configured layout preset matching UX4G government designs.</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                  <td style={{ padding: '10px', fontWeight: 600 }}>user</td>
-                  <td style={{ padding: '10px' }}>Ux4gSideMenuUser</td>
-                  <td style={{ padding: '10px' }}>undefined</td>
-                  <td style={{ padding: '10px' }}>User identity info with avatar initials ("RK"), name, and role/email.</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                  <td style={{ padding: '10px', fontWeight: 600 }}>profileSummary</td>
-                  <td style={{ padding: '10px' }}>Ux4gSideMenuProfileSummary</td>
-                  <td style={{ padding: '10px' }}>undefined</td>
-                  <td style={{ padding: '10px' }}>Large centered avatar, application counts, and "View profile" button.</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                  <td style={{ padding: '10px', fontWeight: 600 }}>actionCard</td>
-                  <td style={{ padding: '10px' }}>Ux4gSideMenuActionCard</td>
-                  <td style={{ padding: '10px' }}>undefined</td>
-                  <td style={{ padding: '10px' }}>Action required callout banner card with button.</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                  <td style={{ padding: '10px', fontWeight: 600 }}>footerBranding</td>
-                  <td style={{ padding: '10px' }}>Ux4gSideMenuFooterBranding</td>
-                  <td style={{ padding: '10px' }}>undefined</td>
-                  <td style={{ padding: '10px' }}>National emblem logo and department subtitle branding at bottom.</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                  <td style={{ padding: '10px', fontWeight: 600 }}>position</td>
-                  <td style={{ padding: '10px' }}>'left' | 'right'</td>
-                  <td style={{ padding: '10px' }}>'left'</td>
-                  <td style={{ padding: '10px' }}>Slide direction from left or right edge.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {/* Live Drawer Render */}
+    if (story === 'side-menu-citizen') {
+      componentsSnippet = `        <Ux4gButton
+          text="Open Citizen Profile Drawer"
+          onPress={() => setIsOpen(true)}
+        />
         <Ux4gSideMenu
-          isOpen={isDrawerOpen}
-          onClose={() => setIsDrawerOpen(false)}
-          variant={activeVariant}
-          position={drawerPosition}
-          selectedKey={selectedKey}
-          showSearch={showSearch}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          variant="citizen"
+          user={{
+            name: 'Ramesh Kumar',
+            roleOrEmail: 'Citizen',
+            avatarText: 'RK',
+          }}
+          footerBranding={{
+            title: 'Revenue Department',
+            subtitle: 'Government of India',
+          }}
           onItemPress={(item) => {
-            setSelectedKey(item.key);
-            setActiveScreenTitle(item.label);
-            setLastAction(`Selected: "${item.label}"`);
-            setIsDrawerOpen(false);
+            setCurrentScreen(item.label);
+            setIsOpen(false);
           }}
           onSignOut={() => {
-            setIsDrawerOpen(false);
-            setActiveScreenTitle('Signed out');
-            setLastAction('Sign out triggered.');
+            setCurrentScreen('Signed Out');
+            setIsOpen(false);
           }}
+        />`;
+    } else if (story === 'side-menu-services') {
+      componentsSnippet = `        <Ux4gButton
+          text="Open Department Services Drawer"
+          onPress={() => setIsOpen(true)}
         />
-      </div>
+        <Ux4gSideMenu
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          variant="department-services"
+          title="Revenue Department"
+          subtitle="Kanpur division"
+          actionCard={{
+            tag: 'ACTION REQUIRED',
+            title: 'Verify your Aadhaar',
+            description: 'Complete identity verification to continue.',
+            buttonText: 'Verify now',
+            onButtonPress: () => alert('Verify pressed'),
+          }}
+          onItemPress={(item) => {
+            setCurrentScreen(item.label);
+            setIsOpen(false);
+          }}
+        />`;
+    } else if (story === 'side-menu-switcher') {
+      componentsSnippet = `        <Ux4gButton
+          text="Open Department Switcher Drawer"
+          onPress={() => setIsOpen(true)}
+        />
+        <Ux4gSideMenu
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          variant="department-switcher"
+          title="Departments"
+          subtitle="Choose a department to work in."
+          onItemPress={(item) => {
+            setCurrentScreen(item.label);
+            setIsOpen(false);
+          }}
+        />`;
+    } else if (story === 'side-menu-mailbox') {
+      componentsSnippet = `        <Ux4gButton
+          text="Open Mailbox Drawer"
+          onPress={() => setIsOpen(true)}
+        />
+        <Ux4gSideMenu
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          variant="mailbox"
+          title="Mailbox"
+          subtitle="citizen@gov.in"
+          onItemPress={(item) => {
+            setCurrentScreen(item.label);
+            setIsOpen(false);
+          }}
+        />`;
+    } else if (story === 'side-menu-profile') {
+      componentsSnippet = `        <Ux4gButton
+          text="Open Centered Profile Drawer"
+          onPress={() => setIsOpen(true)}
+        />
+        <Ux4gSideMenu
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          variant="profile-summary"
+          profileSummary={{
+            name: 'Ramesh Kumar',
+            roleOrDesignation: 'Citizen Account',
+            avatarText: 'RK',
+            metricText: '12 applications · 3 actions required',
+          }}
+          onItemPress={(item) => {
+            setCurrentScreen(item.label);
+            setIsOpen(false);
+          }}
+        />`;
+    } else {
+      // Default / All 5 Variants
+      componentsSnippet = `        <View style={{ gap: 12, width: '100%', maxWidth: 320 }}>
+          <Ux4gButton text="1. Open Citizen Profile Drawer" onPress={() => { setVariant('citizen'); setIsOpen(true); }} />
+          <Ux4gButton text="2. Open Services Drawer" onPress={() => { setVariant('department-services'); setIsOpen(true); }} />
+          <Ux4gButton text="3. Open Dept Switcher Drawer" onPress={() => { setVariant('department-switcher'); setIsOpen(true); }} />
+          <Ux4gButton text="4. Open Mailbox Drawer" onPress={() => { setVariant('mailbox'); setIsOpen(true); }} />
+          <Ux4gButton text="5. Open Centered Profile Drawer" onPress={() => { setVariant('profile-summary'); setIsOpen(true); }} />
+        </View>
+        <Ux4gSideMenu
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          variant={variant}
+          user={{
+            name: 'Ramesh Kumar',
+            roleOrEmail: 'Citizen',
+            avatarText: 'RK',
+          }}
+          profileSummary={{
+            name: 'Ramesh Kumar',
+            roleOrDesignation: 'Citizen Account',
+            avatarText: 'RK',
+            metricText: '12 applications · 3 actions required',
+          }}
+          onItemPress={(item) => {
+            setCurrentScreen(item.label);
+            setIsOpen(false);
+          }}
+          onSignOut={() => {
+            setCurrentScreen('Signed Out');
+            setIsOpen(false);
+          }}
+        />`;
+    }
+
+    const snackCodeString = `import React, { useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { Ux4gSideMenu, Ux4gButton, Ux4gThemeProvider } from 'ux4g-react-native-components';
+
+export default function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [variant, setVariant] = useState('citizen');
+  const [currentScreen, setCurrentScreen] = useState('Home');
+
+  return (
+    <Ux4gThemeProvider isDark={${isDark}}>
+      <View style={[styles.container, { backgroundColor: ${isDark ? "'#0F172A'" : "'#F8FAFC'"} }]}>
+        <View style={styles.header}>
+          <Text style={{ fontSize: 18, fontWeight: '700', color: ${isDark ? "'#F8FAFC'" : "'#0F172A'"} }}>
+            Current View: {currentScreen}
+          </Text>
+        </View>
+
+${componentsSnippet}
+      </View>
     </Ux4gThemeProvider>
   );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  header: {
+    marginBottom: 20,
+  },
+});`;
+
+    const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${
+      isDark ? 'dark' : 'light'
+    }&name=Ux4gSideMenu%20Preview&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.1.0,react-native-svg@*&code=${encodeURIComponent(
+      snackCodeString
+    )}`;
+
+    return (
+      <iframe
+        src={snackUrl}
+        style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
+        title="Expo Snack Preview"
+      />
+    );
+  };
+
+  /* ── Props Table Data ── */
+  const propsData = [
+    {
+      name: 'isOpen',
+      type: 'boolean',
+      default: 'false',
+      desc: 'Controls whether the drawer side menu is open and visible.',
+      required: true,
+    },
+    {
+      name: 'onClose',
+      type: '() => void',
+      default: 'undefined',
+      desc: 'Callback fired when drawer backdrop is tapped or close icon is clicked.',
+      required: true,
+    },
+    {
+      name: 'variant',
+      type: "'standard' | 'citizen' | 'department-services' | 'department-switcher' | 'mailbox' | 'profile-summary'",
+      default: "'standard'",
+      desc: 'High-level UX4G government navigation drawer preset.',
+      required: false,
+    },
+    {
+      name: 'position',
+      type: "'left' | 'right'",
+      default: "'left'",
+      desc: 'Slide edge origin (left or right side).',
+      required: false,
+    },
+    {
+      name: 'user',
+      type: 'Ux4gSideMenuUser',
+      default: 'undefined',
+      desc: 'User identity details (name, roleOrEmail, avatarText, badgeCount) for "citizen" header.',
+      required: false,
+    },
+    {
+      name: 'profileSummary',
+      type: 'Ux4gSideMenuProfileSummary',
+      default: 'undefined',
+      desc: 'Centered avatar and application counts for "profile-summary" variant.',
+      required: false,
+    },
+    {
+      name: 'actionCard',
+      type: 'Ux4gSideMenuActionCard',
+      default: 'undefined',
+      desc: 'Action required banner card (e.g. Verify your Aadhaar) for "department-services".',
+      required: false,
+    },
+    {
+      name: 'footerBranding',
+      type: 'Ux4gSideMenuFooterBranding',
+      default: 'undefined',
+      desc: 'National emblem logo and department subtitle branding pinned to drawer bottom.',
+      required: false,
+    },
+    {
+      name: 'selectedKey',
+      type: 'string',
+      default: 'undefined',
+      desc: 'Key identifier of currently selected menu item.',
+      required: false,
+    },
+    {
+      name: 'onItemPress',
+      type: '(item: Ux4gSideMenuItem) => void',
+      default: 'undefined',
+      desc: 'Callback triggered when user taps any navigation item.',
+      required: false,
+    },
+    {
+      name: 'onSignOut',
+      type: '() => void',
+      default: 'undefined',
+      desc: 'Callback triggered when user taps sign out button.',
+      required: false,
+    },
+  ];
+
+  return (
+    <div className="wb-page">
+      {/* Header */}
+      <div className="wb-header">
+        <div className="wb-header-row">
+          <h1 className="wb-title">Side Menu (Navigation Drawer)</h1>
+          <span className="wb-badge">Component</span>
+        </div>
+        <p className="wb-subtitle">
+          Government-grade navigation drawer supporting 5 specialized design presets: Citizen Profile, Department Services with Action Callout, Department Switcher, User Mailbox, and Centered Profile Summary with smooth left/right sliding animations.
+        </p>
+        <p className="wb-subtitle" style={{ marginTop: 6 }}>
+          <span style={{ color: '#E11D48', fontWeight: 700 }}>*</span> marks required props.
+        </p>
+      </div>
+
+      {/* Main Body */}
+      <div className="wb-body">
+        <div className="wb-main">
+          {/* Main Tab Bar: Preview / Code / Props */}
+          <div className="wb-tab-bar">
+            <button
+              className={`wb-tab ${activeMainTab === 'preview' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('preview')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">visibility</span>
+              Preview
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('code')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">code</span>
+              Code
+            </button>
+            <button
+              className={`wb-tab ${activeMainTab === 'props' ? 'active' : ''}`}
+              onClick={() => setActiveMainTab('props')}
+              type="button"
+            >
+              <span className="material-symbols-outlined wb-tab-icon">tune</span>
+              Props
+            </button>
+          </div>
+
+          <div className="wb-tab-content">
+            {activeMainTab === 'preview' && (
+              <Ux4gThemeProvider isDark={isDark}>
+                <div className={`wb-preview-area ${isDark ? 'dark' : ''}`}>
+                  {renderStoryPreview()}
+                </div>
+              </Ux4gThemeProvider>
+            )}
+
+            {activeMainTab === 'code' && (
+              <div className="wb-code-area">
+                <CodeBlock code={codeString} language="TSX" filename="SideMenuExample.tsx" />
+              </div>
+            )}
+
+            {activeMainTab === 'props' && (
+              <div className="wb-props-area">
+                <table className="props-table">
+                  <thead>
+                    <tr>
+                      <th>Prop</th>
+                      <th>Type</th>
+                      <th>Description</th>
+                      <th>Default</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {propsData.map((p) => (
+                      <tr key={p.name}>
+                        <td>
+                          <span className="prop-name">
+                            {p.name}
+                            {p.required ? <span style={{ color: '#E11D48' }}> *</span> : null}
+                          </span>
+                        </td>
+                        <td><span className="prop-type">{p.type}</span></td>
+                        <td>{p.desc}</td>
+                        <td><span className="prop-default">{p.default}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
+
+export default SideMenuDoc;

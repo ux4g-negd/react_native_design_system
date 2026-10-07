@@ -71,6 +71,10 @@ This is the complete Storybook reference for the UX4G React Native Design System
 - **Switch (Toggle)**: [https://react-native.ux4g.gov.in/#/?path=components/switch/basic](https://react-native.ux4g.gov.in/#/?path=components/switch/basic)
 - **Time Slot**: [https://react-native.ux4g.gov.in/#/?path=components/time-slot/introduction](https://react-native.ux4g.gov.in/#/?path=components/time-slot/introduction)
 - **Tooltip**: [https://react-native.ux4g.gov.in/#/?path=components/tooltip/introduction](https://react-native.ux4g.gov.in/#/?path=components/tooltip/introduction)
+- **Bottom Navigation Bar**: [https://react-native.ux4g.gov.in/#/?path=components/bottom-navigation/basic](https://react-native.ux4g.gov.in/#/?path=components/bottom-navigation/basic)
+- **Bottom Sheet**: [https://react-native.ux4g.gov.in/#/?path=components/bottom-sheet/basic](https://react-native.ux4g.gov.in/#/?path=components/bottom-sheet/basic)
+- **Floating Action Button (FAB)**: [https://react-native.ux4g.gov.in/#/?path=components/floating-action-button/basic](https://react-native.ux4g.gov.in/#/?path=components/floating-action-button/basic)
+- **Side Menu (Navigation Drawer)**: [https://react-native.ux4g.gov.in/#/?path=components/side-menu/basic](https://react-native.ux4g.gov.in/#/?path=components/side-menu/basic)
 
 ### Patterns
 - **Sign in to your account**: [https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/sign-in-to-your-account](https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/sign-in-to-your-account)

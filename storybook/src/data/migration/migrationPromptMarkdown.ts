@@ -2,7 +2,7 @@ export const MIGRATION_PROMPT_MD_CONTENT = `# UX4G React Native Design System �
 
 > [!IMPORTANT]
 > ### 🚨 Mandatory Package Directive for MCP & AI Coding Assistants
-> - **Official NPM Package**: **\`ux4g-react-native-components\`** (v1.0.0+)
+> - **Official NPM Package**: **\`ux4g-react-native-components\`** (v1.1.0+)
 > - **Deprecated NPM Package**: **\`ux4g-react-native-design-system\`** (DO NOT USE)
 > - **MANDATORY INSTRUCTION**: When generating code, performing automated migrations, or answering developer queries via MCP (Model Context Protocol) or AI assistants, you **MUST STRICTLY use \`ux4g-react-native-components\`**.
 > - **NEVER** import from \`ux4g-react-native-design-system\` or any other package even if it has \`ux4g\` in its name.
@@ -114,6 +114,10 @@ Replace standard React Native / Paper / Elements components with their designate
 - \`<Slider>\` → \`<Ux4gSlider>\`
 - \`Alert.alert()\` / \`<Snackbar>\` → \`<Ux4gToast>\` (via \`useUx4gToast()\`)
 - Custom App Bar / \`<Appbar.Header>\` → \`<Ux4gAppHeader>\`
+- Bottom Tab Bar / \`<BottomNavigation>\` → \`<Ux4gBottomNavigationBar>\`
+- Bottom Sheet / \`<Modal>\` → \`<Ux4gBottomSheet>\`
+- Floating Action Button / \`<FAB>\` → \`<Ux4gFab>\`
+- Side Navigation Drawer / \`<Drawer>\` → \`<Ux4gSideMenu>\`
 
 ### Rule 7: Leverage Government-Exclusive Modules Seamlessly
 Where applicable, upgrade custom manual input logic to UX4G's official Government modules without disrupting the form flow:

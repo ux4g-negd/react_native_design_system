@@ -300,6 +300,26 @@
     "url": "https://react-native.ux4g.gov.in/#/?path=components/tooltip/introduction"
   },
   {
+    "var_name": "bottomNavigationComponent",
+    "comp_name": "Bottom Navigation Bar",
+    "url": "https://react-native.ux4g.gov.in/#/?path=components/bottom-navigation/basic"
+  },
+  {
+    "var_name": "bottomSheetComponent",
+    "comp_name": "Bottom Sheet",
+    "url": "https://react-native.ux4g.gov.in/#/?path=components/bottom-sheet/basic"
+  },
+  {
+    "var_name": "floatingActionButtonComponent",
+    "comp_name": "Floating Action Button (FAB)",
+    "url": "https://react-native.ux4g.gov.in/#/?path=components/floating-action-button/basic"
+  },
+  {
+    "var_name": "sideMenuComponent",
+    "comp_name": "Side Menu (Navigation Drawer)",
+    "url": "https://react-native.ux4g.gov.in/#/?path=components/side-menu/basic"
+  },
+  {
     "var_name": "signInDefaultComponent",
     "comp_name": "Sign in to your account",
     "url": "https://react-native.ux4g.gov.in/#/?path=patterns/identity-and-access/signin/sign-in-to-your-account"

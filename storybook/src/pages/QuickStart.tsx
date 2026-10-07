@@ -63,7 +63,7 @@ const INSTALL_CODES: DocCode[] = [
   },
   {
     label: "This will add a line like this to your package's package.json\n(and run an implicit install):",
-    code: '"dependencies": {\n  "ux4g-react-native-components": "^1.0.0",\n  "react-native-svg": ">=15.0.0"\n}',
+    code: '"dependencies": {\n  "ux4g-react-native-components": "^1.1.0",\n  "react-native-svg": ">=15.0.0"\n}',
   },
 ];
 

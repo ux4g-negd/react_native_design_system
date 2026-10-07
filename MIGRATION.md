@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > ### 🚨 Official NPM Package & Deprecation Notice
-> - **Official & Latest Package**: **`ux4g-react-native-components`** (v1.0.0+)
+> - **Official & Latest Package**: **`ux4g-react-native-components`** (v1.1.0+)
 > - **Deprecated Legacy Package**: **`ux4g-react-native-design-system`** (DO NOT USE)
 > - **Mandatory Package Rule**: When building or migrating React Native applications to UX4G, you **MUST ONLY use `ux4g-react-native-components`**. Do NOT use or import any other package, even if other package names contain `ux4g` (e.g., do NOT use `ux4g-react-native-design-system`, web UX4G packages, or unofficial variants).
 > - **MCP (Model Context Protocol) & AI Agent Directive**: If you are using MCP tools, AI coding assistants (Antigravity, Cursor, Claude, Copilot, ChatGPT), or automated migration scripts, ensure they **strictly target `ux4g-react-native-components`** for all imports and installations.
@@ -247,6 +247,10 @@ If any part of your UI can be represented by a UX4G component, use the correspon
 | **Result List** | Custom search results list | `<FlatList>` | `<Ux4gResultList>` | `items`, `renderItem`, `keyExtractor`, `emptyText` |
 | **Divider** | `<View style={{ height: 1 }} />`| `<Divider>` | `<Ux4gDivider>` | `orientation`, `thickness`, `color` |
 | **App Header** | Custom Header Bar | `<Appbar.Header>` | `<Ux4gAppHeader>` | `title`, `subtitle`, `showBackButton`, `onBackPress`, `rightActions` |
+| **Bottom Navigation** | Custom bottom bar / Tab navigator | `<BottomNavigation>` | `<Ux4gBottomNavigationBar>` | `tabs`, `activeTab`, `onTabPress`, `variant`, `backgroundColor` |
+| **Bottom Sheet** | `react-native-modalize` / `@gorhom/bottom-sheet` | `<Modal>` | `<Ux4gBottomSheet>` | `visible`, `onClose`, `title`, `snapPoints`, `children` |
+| **Floating Action Button** | Custom absolute `<TouchableOpacity>` | `<FAB>`, `<FAB.Group>` | `<Ux4gFab>` | `icon`, `label`, `onPress`, `variant`, `position`, `colorScheme` |
+| **Side Menu / Drawer** | `@react-navigation/drawer` / Custom modal | `<Drawer.Section>` | `<Ux4gSideMenu>` | `visible`, `onClose`, `header`, `items`, `activeItemId` |
 
 ---
 
