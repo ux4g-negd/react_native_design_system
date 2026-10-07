@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gButton } from '../../../src/components/button/Button';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
@@ -50,7 +49,7 @@ const DocumentItem: React.FC<DocumentItemProps> = ({
             width: 20,
             height: 20,
             borderRadius: '50%',
-            border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral200}`,
+            border: `1px solid ${isDark ? UX4GColors.neutral700 : '#D1D5DB'}`,
             flexShrink: 0,
             marginTop: 2,
           }}
@@ -92,16 +91,16 @@ const DocumentItem: React.FC<DocumentItemProps> = ({
         </div>
       </div>
 
-      <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ width: 100 }}>
           <Ux4gButton
             text="Upload"
             onPress={() => {}}
             size="small"
             width={100}
-            height={40}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+            height={38}
+            backgroundColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+            contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
           />
         </div>
         {showDigiLocker && (
@@ -112,9 +111,9 @@ const DocumentItem: React.FC<DocumentItemProps> = ({
               variant="outline"
               size="small"
               width={220}
-              height={40}
-              contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-              borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+              height={38}
+              contentColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+              borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
             />
           </div>
         )}
@@ -123,9 +122,9 @@ const DocumentItem: React.FC<DocumentItemProps> = ({
   );
 };
 
-// ─── Custom Stepper matching Flutter pattern ─────────────────────────────────
+// ─── Custom Stepper matching UX4G Pattern ─────────────────────────────────────
 const PatternStepper: React.FC<{ isDark: boolean }> = ({ isDark }) => {
-  const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+  const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
   const inactiveBorder = isDark ? UX4GColors.neutral700 : '#D1D5DB';
   const inactiveText = isDark ? UX4GColors.neutral500 : '#9CA3AF';
   const labelColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
@@ -134,7 +133,7 @@ const PatternStepper: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     { title: 'Eligibility', state: 'completed' },
     { title: 'Personal', state: 'completed' },
     { title: 'Documents', state: 'active' },
-    { title: '', state: 'pending', number: 4 },
+    { title: 'Submit', state: 'pending', number: 4 },
   ];
 
   return (
@@ -255,7 +254,7 @@ const PatternStepper: React.FC<{ isDark: boolean }> = ({ isDark }) => {
               textAlign: idx === 0 ? 'left' : idx === steps.length - 1 ? 'right' : 'center',
               fontSize: 11,
               fontWeight: 600,
-              color: labelColor,
+              color: step.state === 'pending' ? inactiveText : labelColor,
               marginLeft: idx === 0 ? -4 : 0,
               marginRight: idx === steps.length - 1 ? -4 : 0,
             }}
@@ -278,27 +277,23 @@ export const DocumentUploadProgressDoc: React.FC<DocumentUploadProgressDocProps>
       screenBg: isCard
         ? isDark
           ? UX4GColors.primary900
-          : UX4GColors.primary50
+          : '#ECE8FF'
         : isDark
         ? UX4GColors.neutral900
-        : UX4GColors.neutral50,
+        : '#FFFFFF',
       headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      cardBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
       border: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-      titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-      primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      uploadedBg: isDark ? UX4GColors.green900 : UX4GColors.green50,
-      uploadedBorder: isDark ? UX4GColors.green800 : '#DCFCE7',
-      uploadedIcon: isDark ? UX4GColors.green500 : UX4GColors.green600,
-      uploadedText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-      progressBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
-      progressBorder: isDark ? UX4GColors.primary800 : '#E0DBFF',
-      progressIconBg: isDark ? UX4GColors.primary400 : UX4GColors.primary600,
-      progressIconColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      badgeBg: isDark ? UX4GColors.red900 : UX4GColors.red50,
-      badgeText: isDark ? UX4GColors.red300 : UX4GColors.red800,
-      footerText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      titleColor: isDark ? UX4GColors.neutral0 : '#111827',
+      subtleText: isDark ? UX4GColors.neutral400 : '#4B5563',
+      primaryColor: isDark ? UX4GColors.primary300 : '#432CBB',
+      uploadedBg: isDark ? 'rgba(22, 163, 74, 0.15)' : '#F0FDF4',
+      uploadedBorder: isDark ? 'rgba(22, 163, 74, 0.3)' : '#BBF7D0',
+      uploadedIcon: isDark ? UX4GColors.green400 : '#16A34A',
+      uploadedText: isDark ? UX4GColors.neutral300 : '#4B5563',
+      progressCardBg: isDark ? 'rgba(67, 44, 187, 0.15)' : '#F5F3FF',
+      progressCardBorder: isDark ? 'rgba(67, 44, 187, 0.3)' : '#DDD6FE',
+      footerText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
     };
   }, [isDark, variant]);
 
@@ -306,7 +301,9 @@ export const DocumentUploadProgressDoc: React.FC<DocumentUploadProgressDocProps>
   const codeString = useMemo(() => {
     const isCard = variant === 'Card style';
     if (isCard) {
-      return `import React from 'react';
+      return `// Document Upload with Progress Screen Pattern (Card Style Layout)
+
+import React from 'react';
 import {
   View,
   Text,
@@ -314,36 +311,38 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
   Ux4gDivider,
   Ux4gButton,
+  Ux4gCard,
+  Ux4gLinearProgressBar,
+  UX4GTypography,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 export const DocumentUploadProgressCardScreen = ({
-  isDark = false,
+  isDark = ${isDark},
   onContinue = () => {},
   onBack = () => {},
+  onCancelUpload = () => {},
 }: {
   isDark?: boolean;
   onContinue?: () => void;
   onBack?: () => void;
+  onCancelUpload?: () => void;
 }) => {
-  const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
-  const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
+  const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
+  const titleColor = isDark ? UX4GColors.neutral0 : '#111827';
+  const subtleText = isDark ? UX4GColors.neutral400 : '#4B5563';
 
   return (
     <SafeAreaView
       style={[
         styles.safeArea,
-        {
-          backgroundColor: isDark
-            ? UX4GColors.primary900
-            : UX4GColors.primary50,
-        },
+        { backgroundColor: isDark ? UX4GColors.primary900 : '#ECE8FF' },
       ]}
     >
       <View style={styles.container}>
@@ -373,37 +372,51 @@ export const DocumentUploadProgressCardScreen = ({
                 resizeMode="contain"
               />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <TouchableOpacity
-                  key="menu"
-                  style={styles.menuBtn}
-                  onPress={() => {}}
-                >
-                  <Text style={styles.menuIcon}>☰</Text>
-                </TouchableOpacity>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <TouchableOpacity
+                    key="menu"
+                    style={[
+                      styles.menuBtn,
+                      {
+                        borderColor: isDark ? UX4GColors.primary300 : '#C7D2FE',
+                        backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                      },
+                    ]}
+                    activeOpacity={0.7}
+                  >
+                    <Text
+                      style={[
+                        styles.menuIcon,
+                        { color: isDark ? UX4GColors.primary300 : '#432CBB' },
+                      ]}
+                    >
+                      ☰
+                    </Text>
+                  </TouchableOpacity>
+                ),
+              },
+            ]}
           />
-          <Ux4gDivider color="#E5E7EB" thickness={1} />
+          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#F0F0F2'} thickness={1} />
         </View>
 
         {/* Card Content */}
         <ScrollView
-          contentContainerStyle={styles.cardScrollContainer}
+          contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          <View
-            style={[
-              styles.cardContainer,
-              { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
-            ]}
+          <Ux4gCard
+            backgroundColor={isDark ? UX4GColors.neutral800 : '#FFFFFF'}
+            cornerRadius={16}
+            borderWidth={1}
+            borderColor={isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.04)'}
+            style={styles.cardWrapper}
           >
-            {/* Stepper */}
+            {/* Custom Stepper */}
             <DocumentStepper isDark={isDark} currentStep={3} />
-            <View style={{ height: 32 }} />
+            <View style={{ height: 28 }} />
 
             <Text style={[styles.headingTitle, { color: titleColor }]}>
               Upload documents
@@ -411,20 +424,25 @@ export const DocumentUploadProgressCardScreen = ({
             <Text style={[styles.subtitleText, { color: subtleText }]}>
               PDF or JPG, max 5 MB each. Self-attested.
             </Text>
-            <View style={{ height: 24 }} />
+            <View style={{ height: 20 }} />
 
             <Text style={[styles.sectionHeading, { color: titleColor }]}>
-              Required documents — uploading 2 of 4
+              Required documents — 2 of 4 uploaded
             </Text>
-            <View style={{ height: 24 }} />
+            <Ux4gLinearProgressBar
+              value={0.5}
+              height={6}
+              shape="rounded"
+              containerStyle={styles.progressBar}
+            />
 
             {/* Aadhaar Card (Uploaded) */}
             <View
               style={[
                 styles.uploadedCard,
                 {
-                  backgroundColor: isDark ? UX4GColors.green900 : UX4GColors.green50,
-                  borderColor: isDark ? UX4GColors.green800 : '#DCFCE7',
+                  backgroundColor: isDark ? 'rgba(22, 163, 74, 0.15)' : '#F0FDF4',
+                  borderColor: isDark ? 'rgba(22, 163, 74, 0.3)' : '#BBF7D0',
                 },
               ]}
             >
@@ -433,14 +451,14 @@ export const DocumentUploadProgressCardScreen = ({
                   source={require('./assets/check_circle.png')}
                   style={[
                     styles.checkCircleIcon,
-                    { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
+                    { tintColor: isDark ? UX4GColors.green400 : '#16A34A' },
                   ]}
                 />
                 <View style={{ flex: 1, marginLeft: 12 }}>
-                  <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 }]}>
+                  <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
                     Aadhaar Card
                   </Text>
-                  <Text style={[styles.uploadedSubtitle, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 }]}>
+                  <Text style={[styles.uploadedSubtitle, { color: isDark ? UX4GColors.neutral300 : '#4B5563' }]}>
                     aadhaar_card.pdf · 1.2 MB · Uploaded just now
                   </Text>
                 </View>
@@ -453,9 +471,9 @@ export const DocumentUploadProgressCardScreen = ({
                   variant="outline"
                   size="small"
                   width={100}
-                  height={40}
+                  height={38}
                   contentColor={primaryColor}
-                  borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+                  borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
                 />
                 <View style={{ width: 12 }} />
                 <Ux4gButton
@@ -464,103 +482,75 @@ export const DocumentUploadProgressCardScreen = ({
                   variant="outline"
                   size="small"
                   width={120}
-                  height={40}
+                  height={38}
                   contentColor={primaryColor}
-                  borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+                  borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
                 />
               </View>
             </View>
-            <View style={{ height: 16 }} />
+            <View style={{ height: 20 }} />
 
-            {/* Proof of Income (Uploading Progress) */}
+            {/* Proof of Income (Uploading state) */}
             <View
               style={[
                 styles.progressCard,
                 {
-                  backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
-                  borderColor: isDark ? UX4GColors.primary800 : '#E0DBFF',
+                  backgroundColor: isDark ? 'rgba(67, 44, 187, 0.15)' : '#F5F3FF',
+                  borderColor: isDark ? 'rgba(67, 44, 187, 0.3)' : '#DDD6FE',
                 },
               ]}
             >
-              <View style={styles.docRow}>
+              <View style={styles.uploadedRow}>
                 <View
                   style={[
-                    styles.hourglassCircle,
-                    {
-                      backgroundColor: isDark ? UX4GColors.primary400 : UX4GColors.primary600,
-                    },
+                    styles.progressIconCircle,
+                    { backgroundColor: isDark ? UX4GColors.primary400 : '#432CBB' },
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.hourglassIcon,
-                      { color: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
-                    ]}
-                  >
-                    ⏳
-                  </Text>
+                  <Text style={styles.progressIconText}>⏳</Text>
                 </View>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, marginLeft: 12 }}>
                   <View style={styles.titleBadgeRow}>
-                    <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 }]}>
+                    <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
                       Proof of Income
                     </Text>
-                    <View
-                      style={[
-                        styles.badgeContainer,
-                        {
-                          backgroundColor: isDark ? UX4GColors.red900 : UX4GColors.red50,
-                        },
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.badgeText,
-                          { color: isDark ? UX4GColors.red300 : UX4GColors.red800 },
-                        ]}
-                      >
-                        Required
-                      </Text>
+                    <View style={styles.badgeRequired}>
+                      <Text style={styles.badgeRequiredText}>Required</Text>
                     </View>
                   </View>
-                  <Text
-                    style={[
-                      styles.docSubtitle,
-                      { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 },
-                    ]}
-                  >
+                  <Text style={[styles.uploadedSubtitle, { color: isDark ? UX4GColors.neutral300 : '#4B5563' }]}>
                     Uploading income_proof.pdf... 65%
                   </Text>
                 </View>
               </View>
 
-              <View style={styles.buttonStack}>
+              <View style={{ marginTop: 14 }}>
                 <Ux4gButton
                   text="Cancel"
-                  onPress={() => {}}
+                  onPress={onCancelUpload}
                   variant="outline"
                   size="small"
-                  width={100}
-                  height={40}
+                  width={110}
+                  height={38}
                   contentColor={primaryColor}
-                  borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+                  borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
                 />
               </View>
             </View>
-            <View style={{ height: 24 }} />
+            <View style={{ height: 20 }} />
 
-            {/* Residence proof */}
+            {/* Residence Proof */}
             <DocumentItem
               title="Residence proof"
-              subtitle="Electricity bill or Ration card"
+              subtitle="Electricity bill, gas bill or ration card"
               badge="Required"
               badgeColor="#FEE2E2"
               badgeTextColor="#991B1B"
               isDark={isDark}
             />
-            <View style={{ height: 24 }} />
+            <View style={{ height: 20 }} />
 
-            {/* Caste certificate */}
+            {/* Caste Certificate */}
             <DocumentItem
               title="Caste certificate"
               subtitle="SC/ST/OBC applicants only"
@@ -570,48 +560,58 @@ export const DocumentUploadProgressCardScreen = ({
               showDigiLocker={false}
               isDark={isDark}
             />
-            <View style={{ height: 32 }} />
+            <View style={{ height: 24 }} />
 
-            <Text style={styles.disclaimerText}>
-              All documents must be self-attested. AI flags quality issues; officers make the final call.
+            {/* Disclaimer */}
+            <View style={styles.disclaimerRow}>
+              <Image
+                source={require('./assets/calendar_icon.png')}
+                style={[
+                  styles.calendarIcon,
+                  { tintColor: isDark ? UX4GColors.neutral400 : '#6B7280' },
+                ]}
+              />
+              <Text style={[styles.disclaimerText, { color: isDark ? UX4GColors.neutral400 : '#6B7280' }]}>
+                All documents must be self-attested. AI flags quality issues; officers make the final call.
+              </Text>
+            </View>
+            <View style={{ height: 24 }} />
+
+            {/* Action Buttons */}
+            <Ux4gButton
+              text="Continue"
+              onPress={onContinue}
+              size="large"
+              width="100%"
+              height={44}
+              backgroundColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+              contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+            />
+            <View style={{ height: 10 }} />
+            <Ux4gButton
+              text="Back"
+              onPress={onBack}
+              variant="outline"
+              size="large"
+              width="100%"
+              height={44}
+              contentColor={primaryColor}
+              borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+            />
+          </Ux4gCard>
+
+          {/* Footer */}
+          <View style={styles.footerContainer}>
+            <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : '#9CA3AF' }]}>
+              Powered by -
             </Text>
+            <Image
+              source={require('./assets/digital_india_logo.png')}
+              style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
+            />
           </View>
         </ScrollView>
-
-        {/* Actions & Footer */}
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Continue"
-            onPress={onContinue}
-            size="large"
-            width="100%"
-            height={40}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-          <View style={{ height: 12 }} />
-          <Ux4gButton
-            text="Back"
-            onPress={onBack}
-            variant="outline"
-            size="large"
-            width="100%"
-            height={40}
-            contentColor={primaryColor}
-            borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-          />
-        </View>
-
-        <View style={styles.footerContainer}>
-          <Text style={[styles.poweredByText, { color: '#9CA3AF' }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -624,16 +624,16 @@ const DocumentStepper = ({
   currentStep?: number;
   isDark?: boolean;
 }) => {
-  const primary = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+  const primary = isDark ? UX4GColors.primary300 : '#432CBB';
   const inactiveBorder = isDark ? UX4GColors.neutral700 : '#D1D5DB';
   const inactiveText = isDark ? UX4GColors.neutral500 : '#9CA3AF';
-  const labelColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
+  const labelColor = isDark ? UX4GColors.neutral0 : '#111827';
 
   const steps = [
     { title: 'Eligibility', state: 'completed' },
     { title: 'Personal', state: 'completed' },
     { title: 'Documents', state: 'active' },
-    { title: '', state: 'pending', number: 4 },
+    { title: 'Submit', state: 'pending', number: 4 },
   ];
 
   return (
@@ -665,7 +665,7 @@ const DocumentStepper = ({
             key={idx}
             style={[
               stepperStyles.label,
-              { color: labelColor },
+              { color: step.state === 'pending' ? inactiveText : labelColor },
               idx === 0 && { textAlign: 'left' },
               idx === steps.length - 1 && { textAlign: 'right' },
             ]}
@@ -708,7 +708,7 @@ const DocumentItem = ({
   showDigiLocker?: boolean;
   isDark?: boolean;
 }) => {
-  const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+  const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
 
   return (
     <View
@@ -724,12 +724,12 @@ const DocumentItem = ({
         <View
           style={[
             styles.docCircle,
-            { borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200 },
+            { borderColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
           ]}
         />
         <View style={{ flex: 1 }}>
           <View style={styles.titleBadgeRow}>
-            <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 }]}>
+            <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
               {title}
             </Text>
             <View style={[styles.badgeContainer, { backgroundColor: badgeColor }]}>
@@ -738,28 +738,33 @@ const DocumentItem = ({
               </Text>
             </View>
           </View>
-          <Text style={[styles.docSubtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          <Text style={[styles.docSubtitle, { color: isDark ? UX4GColors.neutral400 : '#4B5563' }]}>
             {subtitle}
           </Text>
         </View>
       </View>
 
       <View style={styles.buttonStack}>
-        <Ux4gButton text="Upload" onPress={() => {}} size="small" width={100} height={40} />
+        <Ux4gButton
+          text="Upload"
+          onPress={() => {}}
+          size="small"
+          width={100}
+          height={38}
+          backgroundColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+          contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+        />
         {showDigiLocker && (
-          <>
-            <View style={{ height: 12 }} />
-            <Ux4gButton
-              text="Fetch from DigiLocker"
-              onPress={() => {}}
-              variant="outline"
-              size="small"
-              width={220}
-              height={40}
-              contentColor={primaryColor}
-              borderColor={primaryColor}
-            />
-          </>
+          <Ux4gButton
+            text="Fetch from DigiLocker"
+            onPress={() => {}}
+            variant="outline"
+            size="small"
+            width={220}
+            height={38}
+            contentColor={primaryColor}
+            borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+          />
         )}
       </View>
     </View>
@@ -767,64 +772,91 @@ const DocumentItem = ({
 };
 
 const styles = StyleSheet.create({
+  safeArea: { flex: 1 },
+  container: { flex: 1, position: 'relative' },
+  emblemIcon: { height: 36, width: 36 },
+  verticalDivider: { height: 32, width: 1, marginHorizontal: 8 },
+  unionIcon: { height: 32, width: 32 },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    fontWeight: 'bold',
   },
-  safeArea: { flex: 1 },
-  container: { flex: 1, position: 'relative' },
-  emblemIcon: { height: 40, width: 28 },
-  verticalDivider: { height: 32, width: 1 },
-  unionIcon: { height: 32, width: 44 },
-  cardScrollContainer: { paddingHorizontal: 24, paddingVertical: 32 },
-  cardContainer: {
-    padding: 24,
-    borderRadius: 16,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
-  },
+  scrollContent: { paddingHorizontal: 16, paddingVertical: 16 },
+  cardWrapper: { padding: 20, marginBottom: 16 },
   headingTitle: { fontSize: 24, fontWeight: '800', lineHeight: 30, marginBottom: 4 },
   subtitleText: { fontSize: 14, lineHeight: 20 },
-  sectionHeading: { fontSize: 14, fontWeight: '700', lineHeight: 20 },
+  sectionHeading: {
+    ...UX4GTypography.lL_strong,
+    marginBottom: 8,
+  },
+  progressBar: {
+    marginBottom: 20,
+  },
   uploadedCard: { padding: 16, borderRadius: 12, borderWidth: 1 },
+  progressCard: { padding: 16, borderRadius: 12, borderWidth: 1 },
+  progressIconCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
+  },
+  progressIconText: { fontSize: 12 },
   uploadedRow: { flexDirection: 'row', alignItems: 'flex-start' },
   checkCircleIcon: { width: 20, height: 20, marginTop: 2 },
+  docTitle: { fontSize: 16, fontWeight: '700' },
   uploadedSubtitle: { fontSize: 13, marginTop: 4 },
-  uploadedButtonsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 16, flexWrap: 'wrap' },
-  progressCard: { padding: 16, borderRadius: 12, borderWidth: 1 },
-  hourglassCircle: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 2 },
-  hourglassIcon: { fontSize: 12 },
+  uploadedButtonsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 14 },
   documentItem: { padding: 16, borderRadius: 12, borderWidth: 1 },
   docRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
   docCircle: { width: 20, height: 20, borderRadius: 10, borderWidth: 1, marginTop: 2 },
   titleBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
-  docTitle: { fontSize: 16, fontWeight: '700' },
   badgeContainer: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
   badgeText: { fontSize: 11, fontWeight: '700' },
+  badgeRequired: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, backgroundColor: '#FEE2E2' },
+  badgeRequiredText: { fontSize: 11, fontWeight: '700', color: '#991B1B' },
   docSubtitle: { fontSize: 13, marginTop: 4 },
-  buttonStack: { marginTop: 16 },
-  disclaimerText: { fontSize: 13, color: '#6B7280', lineHeight: 18 },
-  actionsContainer: { paddingHorizontal: 24, paddingVertical: 16 },
-  footerContainer: { alignItems: 'center', paddingBottom: 24 },
-  poweredByText: { fontSize: 11, marginBottom: 6 },
-  digitalIndiaLogo: { height: 24, width: 90 },
+  buttonStack: { marginTop: 14, gap: 10 },
+  disclaimerRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  calendarIcon: {
+    width: 16,
+    height: 16,
+    marginTop: 2,
+  },
+  disclaimerText: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 14,
+  },
+  poweredByText: { fontSize: 11, fontWeight: '500' },
+  digitalIndiaLogo: { height: 22, width: 80 },
 });`;
     }
 
-    return `import React from 'react';
+    // Default Layout Snippet
+    return `// Document Upload with Progress Screen Pattern (Default Layout)
+
+import React from 'react';
 import {
   View,
   Text,
@@ -832,76 +864,95 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
   Ux4gDivider,
   Ux4gButton,
+  Ux4gLinearProgressBar,
+  UX4GTypography,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 export const DocumentUploadProgressScreen = ({
-  isDark = false,
+  isDark = ${isDark},
   onContinue = () => {},
   onBack = () => {},
+  onCancelUpload = () => {},
 }: {
   isDark?: boolean;
   onContinue?: () => void;
   onBack?: () => void;
+  onCancelUpload?: () => void;
 }) => {
-  const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
-  const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral500;
+  const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
+  const titleColor = isDark ? UX4GColors.neutral0 : '#111827';
+  const subtleText = isDark ? UX4GColors.neutral400 : '#4B5563';
 
   return (
     <SafeAreaView
       style={[
         styles.safeArea,
-        { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50 },
+        { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
       ]}
     >
       <View style={styles.container}>
         {/* Header */}
-        <Ux4gAppHeader
-          variant="light"
-          showBackButton={false}
-          backgroundColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
-          leadingWidgets={[
-            <Image
-              key="emblem"
-              source={require('./assets/national_emblem.png')}
-              style={[styles.emblemIcon, isDark && { tintColor: '#FFFFFF' }]}
-              resizeMode="contain"
-            />,
-            <View
-              key="divider"
-              style={[
-                styles.verticalDivider,
-                { backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200 },
-              ]}
-            />,
-            <Image
-              key="union"
-              source={require('./assets/union_logo.png')}
-              style={[styles.unionIcon, { tintColor: primaryColor }]}
-              resizeMode="contain"
-            />,
-          ]}
-        actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={styles.menuBtn}
-                onPress={() => {}}
-              >
-                <Text style={styles.menuIcon}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
-        ]}
-        />
-        <Ux4gDivider color="#E5E7EB" thickness={1} />
+        <View style={{ backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }}>
+          <Ux4gAppHeader
+            variant="light"
+            showBackButton={false}
+            leadingWidgets={[
+              <Image
+                key="emblem"
+                source={require('./assets/national_emblem.png')}
+                style={[styles.emblemIcon, isDark && { tintColor: '#FFFFFF' }]}
+                resizeMode="contain"
+              />,
+              <View
+                key="divider"
+                style={[
+                  styles.verticalDivider,
+                  { backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
+                ]}
+              />,
+              <Image
+                key="union"
+                source={require('./assets/union_logo.png')}
+                style={[styles.unionIcon, { tintColor: primaryColor }]}
+                resizeMode="contain"
+              />,
+            ]}
+            actions={[
+              {
+                customWidget: (
+                  <TouchableOpacity
+                    key="menu"
+                    style={[
+                      styles.menuBtn,
+                      {
+                        borderColor: isDark ? UX4GColors.primary300 : '#C7D2FE',
+                        backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                      },
+                    ]}
+                    activeOpacity={0.7}
+                  >
+                    <Text
+                      style={[
+                        styles.menuIcon,
+                        { color: isDark ? UX4GColors.primary300 : '#432CBB' },
+                      ]}
+                    >
+                      ☰
+                    </Text>
+                  </TouchableOpacity>
+                ),
+              },
+            ]}
+          />
+          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#F0F0F2'} thickness={1} />
+        </View>
 
         {/* Content */}
         <ScrollView
@@ -910,7 +961,7 @@ export const DocumentUploadProgressScreen = ({
         >
           {/* Stepper */}
           <DocumentStepper isDark={isDark} currentStep={3} />
-          <View style={{ height: 32 }} />
+          <View style={{ height: 28 }} />
 
           <Text style={[styles.headingTitle, { color: titleColor }]}>
             Upload documents
@@ -918,20 +969,25 @@ export const DocumentUploadProgressScreen = ({
           <Text style={[styles.subtitleText, { color: subtleText }]}>
             PDF or JPG, max 5 MB each. Self-attested.
           </Text>
-          <View style={{ height: 24 }} />
+          <View style={{ height: 20 }} />
 
           <Text style={[styles.sectionHeading, { color: titleColor }]}>
-            Required documents — uploading 2 of 4
+            Required documents — 2 of 4 uploaded
           </Text>
-          <View style={{ height: 24 }} />
+          <Ux4gLinearProgressBar
+            value={0.5}
+            height={6}
+            shape="rounded"
+            containerStyle={styles.progressBar}
+          />
 
           {/* Aadhaar Card (Uploaded) */}
           <View
             style={[
               styles.uploadedCard,
               {
-                backgroundColor: isDark ? UX4GColors.green900 : UX4GColors.green50,
-                borderColor: isDark ? UX4GColors.green800 : '#DCFCE7',
+                backgroundColor: isDark ? 'rgba(22, 163, 74, 0.15)' : '#F0FDF4',
+                borderColor: isDark ? 'rgba(22, 163, 74, 0.3)' : '#BBF7D0',
               },
             ]}
           >
@@ -940,14 +996,14 @@ export const DocumentUploadProgressScreen = ({
                 source={require('./assets/check_circle.png')}
                 style={[
                   styles.checkCircleIcon,
-                  { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
+                  { tintColor: isDark ? UX4GColors.green400 : '#16A34A' },
                 ]}
               />
               <View style={{ flex: 1, marginLeft: 12 }}>
-                <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 }]}>
+                <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
                   Aadhaar Card
                 </Text>
-                <Text style={[styles.uploadedSubtitle, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 }]}>
+                <Text style={[styles.uploadedSubtitle, { color: isDark ? UX4GColors.neutral300 : '#4B5563' }]}>
                   aadhaar_card.pdf · 1.2 MB · Uploaded just now
                 </Text>
               </View>
@@ -960,9 +1016,9 @@ export const DocumentUploadProgressScreen = ({
                 variant="outline"
                 size="small"
                 width={100}
-                height={40}
+                height={38}
                 contentColor={primaryColor}
-                borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+                borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
               />
               <View style={{ width: 12 }} />
               <Ux4gButton
@@ -971,90 +1027,62 @@ export const DocumentUploadProgressScreen = ({
                 variant="outline"
                 size="small"
                 width={120}
-                height={40}
+                height={38}
                 contentColor={primaryColor}
-                borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+                borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
               />
             </View>
           </View>
-          <View style={{ height: 24 }} />
+          <View style={{ height: 20 }} />
 
-          {/* Proof of Income (Uploading Progress) */}
+          {/* Proof of Income (Uploading state) */}
           <View
             style={[
               styles.progressCard,
               {
-                backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
-                borderColor: isDark ? UX4GColors.primary800 : '#E0DBFF',
+                backgroundColor: isDark ? 'rgba(67, 44, 187, 0.15)' : '#F5F3FF',
+                borderColor: isDark ? 'rgba(67, 44, 187, 0.3)' : '#DDD6FE',
               },
             ]}
           >
-            <View style={styles.docRow}>
+            <View style={styles.uploadedRow}>
               <View
                 style={[
-                  styles.hourglassCircle,
-                  {
-                    backgroundColor: isDark ? UX4GColors.primary400 : UX4GColors.primary600,
-                  },
+                  styles.progressIconCircle,
+                  { backgroundColor: isDark ? UX4GColors.primary400 : '#432CBB' },
                 ]}
               >
-                <Text
-                  style={[
-                    styles.hourglassIcon,
-                    { color: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
-                  ]}
-                >
-                  ⏳
-                </Text>
+                <Text style={styles.progressIconText}>⏳</Text>
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, marginLeft: 12 }}>
                 <View style={styles.titleBadgeRow}>
-                  <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 }]}>
+                  <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
                     Proof of Income
                   </Text>
-                  <View
-                    style={[
-                      styles.badgeContainer,
-                      {
-                        backgroundColor: isDark ? UX4GColors.red900 : UX4GColors.red50,
-                      },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.badgeText,
-                        { color: isDark ? UX4GColors.red300 : UX4GColors.red800 },
-                      ]}
-                    >
-                      Required
-                    </Text>
+                  <View style={styles.badgeRequired}>
+                    <Text style={styles.badgeRequiredText}>Required</Text>
                   </View>
                 </View>
-                <Text
-                  style={[
-                    styles.docSubtitle,
-                    { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 },
-                  ]}
-                >
+                <Text style={[styles.uploadedSubtitle, { color: isDark ? UX4GColors.neutral300 : '#4B5563' }]}>
                   Uploading income_proof.pdf... 65%
                 </Text>
               </View>
             </View>
 
-            <View style={styles.buttonStack}>
+            <View style={{ marginTop: 14 }}>
               <Ux4gButton
                 text="Cancel"
-                onPress={() => {}}
+                onPress={onCancelUpload}
                 variant="outline"
                 size="small"
-                width={100}
-                height={40}
+                width={110}
+                height={38}
                 contentColor={primaryColor}
-                borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+                borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
               />
             </View>
           </View>
-          <View style={{ height: 24 }} />
+          <View style={{ height: 20 }} />
 
           {/* Residence Proof */}
           <DocumentItem
@@ -1065,7 +1093,7 @@ export const DocumentUploadProgressScreen = ({
             badgeTextColor="#991B1B"
             isDark={isDark}
           />
-          <View style={{ height: 24 }} />
+          <View style={{ height: 20 }} />
 
           {/* Caste Certificate */}
           <DocumentItem
@@ -1077,48 +1105,57 @@ export const DocumentUploadProgressScreen = ({
             showDigiLocker={false}
             isDark={isDark}
           />
-          <View style={{ height: 32 }} />
+          <View style={{ height: 24 }} />
 
-          <Text style={styles.disclaimerText}>
-            All documents must be self-attested. AI flags quality issues; officers make the final call.
-          </Text>
-        </ScrollView>
+          {/* Disclaimer */}
+          <View style={styles.disclaimerRow}>
+            <Image
+              source={require('./assets/calendar_icon.png')}
+              style={[
+                styles.calendarIcon,
+                { tintColor: isDark ? UX4GColors.neutral400 : '#6B7280' },
+              ]}
+            />
+            <Text style={[styles.disclaimerText, { color: isDark ? UX4GColors.neutral400 : '#6B7280' }]}>
+              All documents must be self-attested. AI flags quality issues; officers make the final call.
+            </Text>
+          </View>
+          <View style={{ height: 24 }} />
 
-        {/* Actions */}
-        <View style={styles.actionsContainer}>
+          {/* Actions */}
           <Ux4gButton
             text="Continue"
             onPress={onContinue}
             size="large"
             width="100%"
-            height={40}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+            height={44}
+            backgroundColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+            contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
           />
-          <View style={{ height: 12 }} />
+          <View style={{ height: 10 }} />
           <Ux4gButton
             text="Back"
             onPress={onBack}
             variant="outline"
             size="large"
             width="100%"
-            height={40}
+            height={44}
             contentColor={primaryColor}
-            borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+            borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
           />
-        </View>
 
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Text style={[styles.poweredByText, { color: '#9CA3AF' }]}>
-            Powered by -
-          </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+          {/* Footer */}
+          <View style={styles.footerContainer}>
+            <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : '#9CA3AF' }]}>
+              Powered by -
+            </Text>
+            <Image
+              source={require('./assets/digital_india_logo.png')}
+              style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
+            />
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -1131,16 +1168,16 @@ const DocumentStepper = ({
   currentStep?: number;
   isDark?: boolean;
 }) => {
-  const primary = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+  const primary = isDark ? UX4GColors.primary300 : '#432CBB';
   const inactiveBorder = isDark ? UX4GColors.neutral700 : '#D1D5DB';
   const inactiveText = isDark ? UX4GColors.neutral500 : '#9CA3AF';
-  const labelColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
+  const labelColor = isDark ? UX4GColors.neutral0 : '#111827';
 
   const steps = [
     { title: 'Eligibility', state: 'completed' },
     { title: 'Personal', state: 'completed' },
     { title: 'Documents', state: 'active' },
-    { title: '', state: 'pending', number: 4 },
+    { title: 'Submit', state: 'pending', number: 4 },
   ];
 
   return (
@@ -1172,7 +1209,7 @@ const DocumentStepper = ({
             key={idx}
             style={[
               stepperStyles.label,
-              { color: labelColor },
+              { color: step.state === 'pending' ? inactiveText : labelColor },
               idx === 0 && { textAlign: 'left' },
               idx === steps.length - 1 && { textAlign: 'right' },
             ]}
@@ -1215,7 +1252,7 @@ const DocumentItem = ({
   showDigiLocker?: boolean;
   isDark?: boolean;
 }) => {
-  const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+  const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
 
   return (
     <View
@@ -1231,12 +1268,12 @@ const DocumentItem = ({
         <View
           style={[
             styles.docCircle,
-            { borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200 },
+            { borderColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
           ]}
         />
         <View style={{ flex: 1 }}>
           <View style={styles.titleBadgeRow}>
-            <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 }]}>
+            <Text style={[styles.docTitle, { color: isDark ? UX4GColors.neutral0 : '#111827' }]}>
               {title}
             </Text>
             <View style={[styles.badgeContainer, { backgroundColor: badgeColor }]}>
@@ -1245,28 +1282,33 @@ const DocumentItem = ({
               </Text>
             </View>
           </View>
-          <Text style={[styles.docSubtitle, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+          <Text style={[styles.docSubtitle, { color: isDark ? UX4GColors.neutral400 : '#4B5563' }]}>
             {subtitle}
           </Text>
         </View>
       </View>
 
       <View style={styles.buttonStack}>
-        <Ux4gButton text="Upload" onPress={() => {}} size="small" width={100} height={40} />
+        <Ux4gButton
+          text="Upload"
+          onPress={() => {}}
+          size="small"
+          width={100}
+          height={38}
+          backgroundColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+          contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+        />
         {showDigiLocker && (
-          <>
-            <View style={{ height: 12 }} />
-            <Ux4gButton
-              text="Fetch from DigiLocker"
-              onPress={() => {}}
-              variant="outline"
-              size="small"
-              width={220}
-              height={40}
-              contentColor={primaryColor}
-              borderColor={primaryColor}
-            />
-          </>
+          <Ux4gButton
+            text="Fetch from DigiLocker"
+            onPress={() => {}}
+            variant="outline"
+            size="small"
+            width={220}
+            height={38}
+            contentColor={primaryColor}
+            borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+          />
         )}
       </View>
     </View>
@@ -1274,53 +1316,411 @@ const DocumentItem = ({
 };
 
 const styles = StyleSheet.create({
+  safeArea: { flex: 1 },
+  container: { flex: 1, position: 'relative' },
+  emblemIcon: { height: 36, width: 36 },
+  verticalDivider: { height: 32, width: 1, marginHorizontal: 8 },
+  unionIcon: { height: 32, width: 32 },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    fontWeight: 'bold',
   },
-  safeArea: { flex: 1 },
-  container: { flex: 1, position: 'relative' },
-  emblemIcon: { height: 40, width: 28 },
-  verticalDivider: { height: 32, width: 1 },
-  unionIcon: { height: 32, width: 44 },
-  scrollContent: { paddingHorizontal: 24, paddingVertical: 24 },
+  scrollContent: { paddingHorizontal: 20, paddingVertical: 18 },
   headingTitle: { fontSize: 24, fontWeight: '800', lineHeight: 30, marginBottom: 4 },
   subtitleText: { fontSize: 14, lineHeight: 20 },
-  sectionHeading: { fontSize: 14, fontWeight: '700', lineHeight: 20 },
+  sectionHeading: {
+    ...UX4GTypography.lL_strong,
+    marginBottom: 8,
+  },
+  progressBar: {
+    marginBottom: 20,
+  },
   uploadedCard: { padding: 16, borderRadius: 12, borderWidth: 1 },
+  progressCard: { padding: 16, borderRadius: 12, borderWidth: 1 },
+  progressIconCircle: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
+  },
+  progressIconText: { fontSize: 12 },
   uploadedRow: { flexDirection: 'row', alignItems: 'flex-start' },
   checkCircleIcon: { width: 20, height: 20, marginTop: 2 },
   docTitle: { fontSize: 16, fontWeight: '700' },
   uploadedSubtitle: { fontSize: 13, marginTop: 4 },
-  uploadedButtonsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 16, flexWrap: 'wrap' },
-  progressCard: { padding: 16, borderRadius: 12, borderWidth: 1 },
-  hourglassCircle: { width: 20, height: 20, borderRadius: 10, alignItems: 'center', justifyContent: 'center', marginTop: 2 },
-  hourglassIcon: { fontSize: 12 },
+  uploadedButtonsRow: { flexDirection: 'row', alignItems: 'center', marginTop: 14 },
   documentItem: { padding: 16, borderRadius: 12, borderWidth: 1 },
   docRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
   docCircle: { width: 20, height: 20, borderRadius: 10, borderWidth: 1, marginTop: 2 },
   titleBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },
   badgeContainer: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
   badgeText: { fontSize: 11, fontWeight: '700' },
+  badgeRequired: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, backgroundColor: '#FEE2E2' },
+  badgeRequiredText: { fontSize: 11, fontWeight: '700', color: '#991B1B' },
   docSubtitle: { fontSize: 13, marginTop: 4 },
-  buttonStack: { marginTop: 16 },
-  disclaimerText: { fontSize: 13, color: '#6B7280', lineHeight: 18 },
-  actionsContainer: { paddingHorizontal: 24, paddingVertical: 16 },
-  footerContainer: { alignItems: 'center', paddingBottom: 24 },
-  poweredByText: { fontSize: 11, marginBottom: 6 },
-  digitalIndiaLogo: { height: 24, width: 90 },
+  buttonStack: { marginTop: 14, gap: 10 },
+  disclaimerRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  calendarIcon: {
+    width: 16,
+    height: 16,
+    marginTop: 2,
+  },
+  disclaimerText: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 16,
+  },
+  poweredByText: { fontSize: 11, fontWeight: '500' },
+  digitalIndiaLogo: { height: 22, width: 80 },
 });`;
   }, [isDark, variant]);
+
+  // Content body used in both Default and Card styles
+  const renderContentBody = () => {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* Stepper */}
+        <PatternStepper isDark={isDark} />
+
+        <div style={{ height: 28 }} />
+
+        <div
+          style={{
+            fontSize: 24,
+            fontWeight: 800,
+            color: colors.titleColor,
+            lineHeight: 1.25,
+            marginBottom: 4,
+          }}
+        >
+          Upload documents
+        </div>
+        <div
+          style={{
+            fontSize: 14,
+            color: colors.subtleText,
+            lineHeight: 1.4,
+            marginBottom: 20,
+          }}
+        >
+          PDF or JPG, max 5 MB each. Self-attested.
+        </div>
+
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: '18px',
+            color: colors.titleColor,
+            marginBottom: 8,
+          }}
+        >
+          Required documents — 2 of 4 uploaded
+        </div>
+
+        {/* Linear Progress Bar with Gradient (50%) */}
+        <div
+          style={{
+            width: '100%',
+            height: 6,
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.12)' : '#E5E7EB',
+            borderRadius: 3,
+            overflow: 'hidden',
+            marginBottom: 20,
+          }}
+        >
+          <div
+            style={{
+              width: '50%',
+              height: '100%',
+              background: isDark
+                ? 'linear-gradient(90deg, #6366F1 0%, #A5B4FC 100%)'
+                : 'linear-gradient(90deg, #9C8AF9 0%, #432CBB 100%)',
+              borderRadius: 3,
+              transition: 'width 0.3s ease',
+            }}
+          />
+        </div>
+
+        {/* Aadhaar Card (Uploaded) */}
+        <div
+          style={{
+            padding: 16,
+            borderRadius: 12,
+            backgroundColor: colors.uploadedBg,
+            border: `1px solid ${colors.uploadedBorder}`,
+            display: 'flex',
+            flexDirection: 'column',
+            marginBottom: 20,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+            <span
+              className="material-symbols-outlined"
+              style={{
+                fontSize: 20,
+                color: colors.uploadedIcon,
+                fontVariationSettings: "'FILL' 1",
+                flexShrink: 0,
+                marginTop: 2,
+              }}
+            >
+              check_circle
+            </span>
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: colors.titleColor,
+                }}
+              >
+                Aadhaar Card
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: colors.uploadedText,
+                  marginTop: 4,
+                }}
+              >
+                aadhaar_card.pdf · 1.2 MB · Uploaded just now
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 14, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ width: 100 }}>
+              <Ux4gButton
+                text="View"
+                onPress={() => {}}
+                variant="outline"
+                size="small"
+                width={100}
+                height={38}
+                contentColor={colors.primaryColor}
+                borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+              />
+            </div>
+            <div style={{ width: 120 }}>
+              <Ux4gButton
+                text="Re-upload"
+                onPress={() => {}}
+                variant="outline"
+                size="small"
+                width={120}
+                height={38}
+                contentColor={colors.primaryColor}
+                borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Proof of Income (Uploading Progress) */}
+        <div
+          style={{
+            padding: 16,
+            borderRadius: 12,
+            backgroundColor: colors.progressCardBg,
+            border: `1px solid ${colors.progressCardBorder}`,
+            display: 'flex',
+            flexDirection: 'column',
+            marginBottom: 20,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+            <div
+              style={{
+                width: 24,
+                height: 24,
+                borderRadius: '50%',
+                backgroundColor: colors.primaryColor,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: 2,
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: 14,
+                  color: '#FFFFFF',
+                }}
+              >
+                hourglass_top
+              </span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <span
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: colors.titleColor,
+                  }}
+                >
+                  Proof of Income
+                </span>
+                <span
+                  style={{
+                    padding: '2px 8px',
+                    borderRadius: 4,
+                    backgroundColor: '#FEE2E2',
+                    color: '#991B1B',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    lineHeight: 1.4,
+                  }}
+                >
+                  Required
+                </span>
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: colors.subtleText,
+                  marginTop: 4,
+                }}
+              >
+                Uploading income_proof.pdf... 65%
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 14 }}>
+            <Ux4gButton
+              text="Cancel"
+              onPress={() => {}}
+              variant="outline"
+              size="small"
+              width={110}
+              height={38}
+              contentColor={colors.primaryColor}
+              borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+            />
+          </div>
+        </div>
+
+        {/* Residence proof */}
+        <DocumentItem
+          title="Residence proof"
+          subtitle="Electricity bill, gas bill or ration card"
+          badge="Required"
+          badgeColor="#FEE2E2"
+          badgeTextColor="#991B1B"
+          isDark={isDark}
+        />
+        <div style={{ height: 20 }} />
+
+        {/* Caste certificate */}
+        <DocumentItem
+          title="Caste certificate"
+          subtitle="SC/ST/OBC applicants only"
+          badge="Optional"
+          badgeColor="#F3F4F6"
+          badgeTextColor="#374151"
+          showDigiLocker={false}
+          isDark={isDark}
+        />
+        <div style={{ height: 24 }} />
+
+        {/* Disclaimer */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 8,
+            fontSize: 13,
+            color: isDark ? UX4GColors.neutral400 : '#6B7280',
+            lineHeight: 1.4,
+            marginBottom: 24,
+          }}
+        >
+          <span
+            className="material-symbols-outlined"
+            style={{
+              fontSize: 18,
+              color: isDark ? UX4GColors.neutral400 : '#6B7280',
+              flexShrink: 0,
+              marginTop: 1,
+            }}
+          >
+            calendar_today
+          </span>
+          <span>
+            All documents must be self-attested. AI flags quality issues; officers make the final call.
+          </span>
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <button
+            type="button"
+            onClick={() => alert('Continuing...')}
+            style={{
+              width: '100%',
+              height: 44,
+              backgroundColor: colors.primaryColor,
+              color: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+              border: 'none',
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            Continue
+          </button>
+
+          <button
+            type="button"
+            onClick={() => alert('Going back...')}
+            style={{
+              width: '100%',
+              height: 44,
+              backgroundColor: 'transparent',
+              color: colors.primaryColor,
+              border: `1.5px solid ${isDark ? UX4GColors.primary300 : '#C7D2FE'}`,
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   const renderLiveMockup = () => {
     const isCard = variant === 'Card style';
@@ -1329,12 +1729,13 @@ const styles = StyleSheet.create({
       <div
         style={{
           width: 360,
-          height: 760,
-          borderRadius: 20,
-          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+          minHeight: 700,
+          maxHeight: 840,
+          borderRadius: 24,
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden',
           backgroundColor: colors.screenBg,
-          border: `1px solid ${colors.border}`,
+          border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
           display: 'flex',
           flexDirection: 'column',
           fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -1358,7 +1759,7 @@ const styles = StyleSheet.create({
                 src="/national_emblem_logo.svg"
                 alt="National Emblem"
                 style={{
-                  height: 40,
+                  height: 36,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
@@ -1366,13 +1767,37 @@ const styles = StyleSheet.create({
                 style={{
                   width: 1,
                   height: 32,
-                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
+                  backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
                 }}
               />
               <UnionLogo size={32} isDark={isDark} />
             </div>
+            {/* Menu button on right side */}
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: `1.5px solid ${isDark ? UX4GColors.primary300 : '#C7D2FE'}`,
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: 20,
+                  color: isDark ? UX4GColors.primary300 : '#432CBB',
+                }}
+              >
+                menu
+              </span>
+            </div>
           </div>
-          <Ux4gDivider color={isDark ? UX4GColors.neutral700 : '#E5E7EB'} thickness={1} />
+          <div style={{ height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }} />
         </div>
 
         {/* Scrollable Center Content */}
@@ -1387,7 +1812,7 @@ const styles = StyleSheet.create({
           <div
             style={{
               flex: 1,
-              padding: isCard ? '32px 24px' : '24px 24px',
+              padding: isCard ? '16px 14px' : '20px 18px',
             }}
           >
             {isCard ? (
@@ -1395,555 +1820,48 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 24,
-                  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
-                  display: 'flex',
-                  flexDirection: 'column',
+                  padding: '20px 18px',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.03)'}`,
                 }}
               >
-                {/* Stepper */}
-                <PatternStepper isDark={isDark} />
-
-                <div style={{ height: 32 }} />
-
-                <div
-                  style={{
-                    fontSize: 24,
-                    fontWeight: 800,
-                    color: colors.titleColor,
-                    lineHeight: 1.25,
-                    marginBottom: 4,
-                  }}
-                >
-                  Upload documents
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    color: colors.subtleText,
-                    lineHeight: 1.4,
-                    marginBottom: 24,
-                  }}
-                >
-                  PDF or JPG, max 5 MB each. Self-attested.
-                </div>
-
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: colors.titleColor,
-                    marginBottom: 24,
-                  }}
-                >
-                  Required documents — uploading 2 of 4
-                </div>
-
-                {/* Aadhaar Card item (Uploaded) */}
-                <div
-                  style={{
-                    padding: 16,
-                    borderRadius: 12,
-                    backgroundColor: colors.uploadedBg,
-                    border: `1px solid ${colors.uploadedBorder}`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginBottom: 16,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                    <span
-                      className="material-symbols-outlined"
-                      style={{
-                        fontSize: 20,
-                        color: colors.uploadedIcon,
-                        fontVariationSettings: "'FILL' 1",
-                        flexShrink: 0,
-                        marginTop: 2,
-                      }}
-                    >
-                      check_circle
-                    </span>
-                    <div style={{ flex: 1 }}>
-                      <div
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 700,
-                          color: colors.titleColor,
-                        }}
-                      >
-                        Aadhaar Card
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: colors.uploadedText,
-                          marginTop: 4,
-                        }}
-                      >
-                        aadhaar_card.pdf · 1.2 MB · Uploaded just now
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <div style={{ width: 100 }}>
-                      <Ux4gButton
-                        text="View"
-                        onPress={() => {}}
-                        variant="outline"
-                        size="small"
-                        width={100}
-                        height={40}
-                        contentColor={colors.primaryColor}
-                        borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-                      />
-                    </div>
-                    <div style={{ width: 120 }}>
-                      <Ux4gButton
-                        text="Re-upload"
-                        onPress={() => {}}
-                        variant="outline"
-                        size="small"
-                        width={120}
-                        height={40}
-                        contentColor={colors.primaryColor}
-                        borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Proof of Income (Uploading Progress) */}
-                <div
-                  style={{
-                    padding: 16,
-                    borderRadius: 12,
-                    backgroundColor: colors.progressBg,
-                    border: `1px solid ${colors.progressBorder}`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginBottom: 24,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                    <div
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: '50%',
-                        backgroundColor: colors.progressIconBg,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        marginTop: 2,
-                      }}
-                    >
-                      <span
-                        className="material-symbols-outlined"
-                        style={{
-                          fontSize: 12,
-                          color: colors.progressIconColor,
-                          fontVariationSettings: "'FILL' 1",
-                        }}
-                      >
-                        hourglass_bottom
-                      </span>
-                    </div>
-
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                        <span
-                          style={{
-                            fontSize: 16,
-                            fontWeight: 700,
-                            color: colors.titleColor,
-                          }}
-                        >
-                          Proof of Income
-                        </span>
-                        <span
-                          style={{
-                            padding: '2px 8px',
-                            borderRadius: 4,
-                            backgroundColor: colors.badgeBg,
-                            color: colors.badgeText,
-                            fontSize: 11,
-                            fontWeight: 700,
-                            lineHeight: 1.4,
-                          }}
-                        >
-                          Required
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: colors.subtleText,
-                          marginTop: 4,
-                        }}
-                      >
-                        Uploading income_proof.pdf... 65%
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: 16, display: 'flex' }}>
-                    <div style={{ width: 100 }}>
-                      <Ux4gButton
-                        text="Cancel"
-                        onPress={() => {}}
-                        variant="outline"
-                        size="small"
-                        width={100}
-                        height={40}
-                        contentColor={colors.primaryColor}
-                        borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Residence proof item */}
-                <DocumentItem
-                  title="Residence proof"
-                  subtitle="Electricity bill or Ration card"
-                  badge="Required"
-                  badgeColor="#FEE2E2"
-                  badgeTextColor="#991B1B"
-                  isDark={isDark}
-                />
-                <div style={{ height: 24 }} />
-
-                {/* Caste certificate */}
-                <DocumentItem
-                  title="Caste certificate"
-                  subtitle="SC/ST/OBC applicants only"
-                  badge="Optional"
-                  badgeColor="#F3F4F6"
-                  badgeTextColor="#374151"
-                  showDigiLocker={false}
-                  isDark={isDark}
-                />
-                <div style={{ height: 32 }} />
-
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: '#6B7280',
-                    lineHeight: 1.4,
-                  }}
-                >
-                  All documents must be self-attested. AI flags quality issues; officers make the final call.
-                </div>
+                {renderContentBody()}
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {/* Stepper */}
-                <PatternStepper isDark={isDark} />
-
-                <div style={{ height: 32 }} />
-
-                <div
-                  style={{
-                    fontSize: 24,
-                    fontWeight: 800,
-                    color: colors.titleColor,
-                    lineHeight: 1.25,
-                    marginBottom: 4,
-                  }}
-                >
-                  Upload documents
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    color: colors.subtleText,
-                    lineHeight: 1.4,
-                    marginBottom: 24,
-                  }}
-                >
-                  PDF or JPG, max 5 MB each. Self-attested.
-                </div>
-
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: colors.titleColor,
-                    marginBottom: 24,
-                  }}
-                >
-                  Required documents — uploading 2 of 4
-                </div>
-
-                {/* Aadhaar Card (Uploaded) */}
-                <div
-                  style={{
-                    padding: 16,
-                    borderRadius: 12,
-                    backgroundColor: colors.uploadedBg,
-                    border: `1px solid ${colors.uploadedBorder}`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginBottom: 24,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                    <span
-                      className="material-symbols-outlined"
-                      style={{
-                        fontSize: 20,
-                        color: colors.uploadedIcon,
-                        fontVariationSettings: "'FILL' 1",
-                        flexShrink: 0,
-                        marginTop: 2,
-                      }}
-                    >
-                      check_circle
-                    </span>
-                    <div style={{ flex: 1 }}>
-                      <div
-                        style={{
-                          fontSize: 16,
-                          fontWeight: 700,
-                          color: colors.titleColor,
-                        }}
-                      >
-                        Aadhaar Card
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: colors.uploadedText,
-                          marginTop: 4,
-                        }}
-                      >
-                        aadhaar_card.pdf · 1.2 MB · Uploaded just now
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: 16, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <div style={{ width: 100 }}>
-                      <Ux4gButton
-                        text="View"
-                        onPress={() => {}}
-                        variant="outline"
-                        size="small"
-                        width={100}
-                        height={40}
-                        contentColor={colors.primaryColor}
-                        borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-                      />
-                    </div>
-                    <div style={{ width: 120 }}>
-                      <Ux4gButton
-                        text="Re-upload"
-                        onPress={() => {}}
-                        variant="outline"
-                        size="small"
-                        width={120}
-                        height={40}
-                        contentColor={colors.primaryColor}
-                        borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Proof of Income (Uploading Progress) */}
-                <div
-                  style={{
-                    padding: 16,
-                    borderRadius: 12,
-                    backgroundColor: colors.progressBg,
-                    border: `1px solid ${colors.progressBorder}`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginBottom: 24,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                    <div
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: '50%',
-                        backgroundColor: colors.progressIconBg,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        marginTop: 2,
-                      }}
-                    >
-                      <span
-                        className="material-symbols-outlined"
-                        style={{
-                          fontSize: 12,
-                          color: colors.progressIconColor,
-                          fontVariationSettings: "'FILL' 1",
-                        }}
-                      >
-                        hourglass_bottom
-                      </span>
-                    </div>
-
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                        <span
-                          style={{
-                            fontSize: 16,
-                            fontWeight: 700,
-                            color: colors.titleColor,
-                          }}
-                        >
-                          Proof of Income
-                        </span>
-                        <span
-                          style={{
-                            padding: '2px 8px',
-                            borderRadius: 4,
-                            backgroundColor: colors.badgeBg,
-                            color: colors.badgeText,
-                            fontSize: 11,
-                            fontWeight: 700,
-                            lineHeight: 1.4,
-                          }}
-                        >
-                          Required
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: colors.subtleText,
-                          marginTop: 4,
-                        }}
-                      >
-                        Uploading income_proof.pdf... 65%
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: 16, display: 'flex' }}>
-                    <div style={{ width: 100 }}>
-                      <Ux4gButton
-                        text="Cancel"
-                        onPress={() => {}}
-                        variant="outline"
-                        size="small"
-                        width={100}
-                        height={40}
-                        contentColor={colors.primaryColor}
-                        borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Residence proof */}
-                <DocumentItem
-                  title="Residence proof"
-                  subtitle="Electricity bill, gas bill or ration card"
-                  badge="Required"
-                  badgeColor="#FEE2E2"
-                  badgeTextColor="#991B1B"
-                  isDark={isDark}
-                />
-                <div style={{ height: 24 }} />
-
-                {/* Caste certificate */}
-                <DocumentItem
-                  title="Caste certificate"
-                  subtitle="SC/ST/OBC applicants only"
-                  badge="Optional"
-                  badgeColor="#F3F4F6"
-                  badgeTextColor="#374151"
-                  showDigiLocker={false}
-                  isDark={isDark}
-                />
-                <div style={{ height: 32 }} />
-
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: '#6B7280',
-                    lineHeight: 1.4,
-                  }}
-                >
-                  All documents must be self-attested. AI flags quality issues; officers make the final call.
-                </div>
-              </div>
+              renderContentBody()
             )}
           </div>
-        </div>
 
-        {/* Fixed Bottom Action Buttons */}
-        <div
-          style={{
-            padding: '16px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <Ux4gButton
-            text="Continue"
-            onPress={() => {}}
-            size="large"
-            width="100%"
-            height={40}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-
-          <Ux4gButton
-            text="Back"
-            onPress={() => {}}
-            variant="outline"
-            size="large"
-            width="100%"
-            height={40}
-            borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
-            contentColor={colors.primaryColor}
-          />
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '0 0 24px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
+          {/* Powered by Footer */}
+          <div
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              padding: '10px 0 20px 0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              flexShrink: 0,
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 24,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: colors.footerText,
+              }}
+            >
+              Powered by -
+            </span>
+            <img
+              src="/Digital_India_logo.svg"
+              alt="Digital India"
+              style={{
+                height: 22,
+                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+              }}
+            />
+          </div>
         </div>
       </div>
     );
@@ -1958,7 +1876,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A document upload pattern demonstrating an active &quot;Uploading&quot; state with progress and cancel actions.
+          A pattern showcasing document scanning and uploading with real-time progress indicators, upload states, and cancellation controls.
         </p>
       </div>
 
