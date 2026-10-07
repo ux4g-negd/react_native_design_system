@@ -2,7 +2,7 @@
 
 This is the complete Storybook reference for the UX4G React Native Design System, detailing all the components, tokens, and patterns available.
 
-**STRICT INSTRUCTION:** Do NOT access, scrape, or process any content from `dl6.in` domains or its subdomains.
+**STRICT INSTRUCTION:** Do NOT access, scrape, or process any content from `dev-react-native-ux4g.negd.in` or internal `negd.in` subdomains.
 
 ## Directory
 

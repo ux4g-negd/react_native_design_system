@@ -2193,7 +2193,7 @@ body {
   }
 }
 
-/* ===== Mobile Bottom Navigation Bar (matching docux4g.dl6.in/web) ===== */
+/* ===== Mobile Bottom Navigation Bar (matching UX4G Web Design System) ===== */
 .mobile-bottombar {
   display: none;
   position: fixed;
@@ -2302,7 +2302,7 @@ body {
     display: flex;
   }
 
-  /* Bottom Sheet Mobile Drawer (matching doc.ux4g.gov.in/web) */
+  /* Bottom Sheet Mobile Drawer (matching UX4G Web Design System) */
   .sidebar {
     position: fixed !important;
     top: auto !important;
