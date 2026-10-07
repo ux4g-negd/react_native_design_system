@@ -1,9 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
-import { Ux4gButton } from '../../../src/components/button/Button';
-import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { Ux4gJourneyTimeline } from '../../../src/components/journey-timeline/JourneyTimeline';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
@@ -14,6 +11,57 @@ interface CouldNotSubmitDocProps {
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'Default' | 'Card style';
+
+const JOURNEY_STEPS_PREVIEW = [
+  {
+    state: 'completed' as const,
+    date: '02 Sep 2026',
+    title: 'Draft Saved',
+    status: {
+      text: '',
+      badgeText: 'Saved',
+      badgeColor: '#DDF8D8',
+      badgeTextColor: '#15803D',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'current' as const,
+    date: '02 Sep 2026',
+    title: 'Submission Failed',
+    status: {
+      text: '',
+      badgeText: 'Failed',
+      badgeColor: '#FEE2E2',
+      badgeTextColor: '#DC2626',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'upcoming' as const,
+    date: 'Pending',
+    title: 'Document Verification',
+    status: {
+      text: '',
+      badgeText: 'Blocked',
+      badgeColor: '#F3F4F6',
+      badgeTextColor: '#4B5563',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'upcoming' as const,
+    date: 'Pending',
+    title: 'Certificate Issued',
+    status: {
+      text: '',
+      badgeText: 'Blocked',
+      badgeColor: '#F3F4F6',
+      badgeTextColor: '#4B5563',
+      badgePosition: 'topRight' as const,
+    },
+  },
+];
 
 export const CouldNotSubmitDoc: React.FC<CouldNotSubmitDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
@@ -26,24 +74,28 @@ export const CouldNotSubmitDoc: React.FC<CouldNotSubmitDocProps> = ({ isDark }) 
       screenBg: isCard
         ? isDark
           ? UX4GColors.primary900
-          : UX4GColors.primary50
+          : '#ECE8FF'
         : isDark
         ? UX4GColors.neutral900
         : '#FFFFFF',
       headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
-      titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      subtleText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-      primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      errorIconBg: isDark ? UX4GColors.red900 : UX4GColors.red50,
-      errorIconColor: isDark ? UX4GColors.red500 : UX4GColors.red600,
-      btn1Bg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      btn1Text: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
-      btn2Border: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
-      btn2Text: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      footerText: isDark ? UX4GColors.neutral500 : '#9CA3AF',
-      toastBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      cardBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+      border: isDark ? UX4GColors.neutral700 : '#E5E7EB',
+      titleColor: isDark ? UX4GColors.neutral0 : '#111827',
+      subtleText: isDark ? UX4GColors.neutral400 : '#4B5563',
+      linkPrimary: isDark ? UX4GColors.primary300 : '#432CBB',
+      errorIconBg: isDark ? 'rgba(220, 38, 38, 0.2)' : '#FEE2E2',
+      errorIconColor: isDark ? '#EF4444' : '#DC2626',
+      timelineCardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      timelineCardBorder: isDark ? UX4GColors.neutral700 : '#E5E7EB',
+      stepBoxBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      stepBoxBorder: isDark ? UX4GColors.neutral700 : '#E5E7EB',
+      btn1Bg: isDark ? UX4GColors.primary300 : '#432CBB',
+      btn1Text: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      btn2Border: isDark ? UX4GColors.primary300 : '#C7D2FE',
+      btn2Text: isDark ? UX4GColors.primary300 : '#432CBB',
+      footerText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      toastBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
     };
   }, [isDark, variant]);
 
@@ -51,7 +103,9 @@ export const CouldNotSubmitDoc: React.FC<CouldNotSubmitDocProps> = ({ isDark }) 
   const codeString = useMemo(() => {
     const isCard = variant === 'Card style';
     if (isCard) {
-      return `import React, { useState } from 'react';
+      return `// Could Not Submit Screen Pattern (Card Style Layout)
+
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -65,526 +119,92 @@ import {
   Ux4gAppHeader,
   Ux4gDivider,
   Ux4gButton,
+  Ux4gCard,
   Ux4gJourneyTimeline,
   UX4GColors,
 } from 'ux4g-react-native-components';
+
+const JOURNEY_STEPS = [
+  {
+    state: 'completed' as const,
+    date: '02 Sep 2026',
+    title: 'Draft Saved',
+    status: {
+      text: '',
+      badgeText: 'Saved',
+      badgeColor: '#DDF8D8',
+      badgeTextColor: '#15803D',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'current' as const,
+    date: '02 Sep 2026',
+    title: 'Submission Failed',
+    status: {
+      text: '',
+      badgeText: 'Failed',
+      badgeColor: '#FEE2E2',
+      badgeTextColor: '#DC2626',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'upcoming' as const,
+    date: 'Pending',
+    title: 'Document Verification',
+    status: {
+      text: '',
+      badgeText: 'Blocked',
+      badgeColor: '#F3F4F6',
+      badgeTextColor: '#4B5563',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'upcoming' as const,
+    date: 'Pending',
+    title: 'Certificate Issued',
+    status: {
+      text: '',
+      badgeText: 'Blocked',
+      badgeColor: '#F3F4F6',
+      badgeTextColor: '#4B5563',
+      badgePosition: 'topRight' as const,
+    },
+  },
+];
 
 export const CouldNotSubmitCardScreen = ({
   isDark = ${isDark},
-  onReturn = () => {},
+  onRetry = () => {},
   onSaveDraft = () => {},
   onContactSupport = () => {},
 }: {
   isDark?: boolean;
-  onReturn?: () => void;
+  onRetry?: () => void;
   onSaveDraft?: () => void;
   onContactSupport?: () => void;
 }) => {
   const [showToast, setShowToast] = useState(false);
 
-  const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
-  const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
-  const errorColor = isDark ? UX4GColors.red500 : UX4GColors.red600;
+  const handleRetry = () => {
+    setShowToast(true);
+    onRetry();
+  };
 
   return (
     <SafeAreaView
       style={[
         styles.safeArea,
-        {
-          backgroundColor: isDark
-            ? UX4GColors.primary900
-            : UX4GColors.primary50,
-        },
+        { backgroundColor: isDark ? UX4GColors.primary900 : '#ECE8FF' },
       ]}
     >
-      <View style={styles.container}>
-        {/* Header with white background */}
-        <View
-          style={{
-            backgroundColor: isDark
-              ? UX4GColors.neutral900
-              : '#FFFFFF',
-          }}
-        >
-          <Ux4gAppHeader
-            variant="light"
-            showBackButton={false}
-            leadingWidgets={[
-              <Image
-                key="emblem"
-                source={require('./assets/national_emblem.png')}
-                style={[
-                  styles.emblemIcon,
-                  isDark && { tintColor: '#FFFFFF' },
-                ]}
-                resizeMode="contain"
-              />,
-              <View
-                key="divider"
-                style={[
-                  styles.verticalDivider,
-                  {
-                    backgroundColor: isDark
-                      ? UX4GColors.neutral700
-                      : '#D1D5DB',
-                  },
-                ]}
-              />,
-              <Image
-                key="union"
-                source={require('./assets/union_logo.png')}
-                style={[
-                  styles.unionIcon,
-                  {
-                    tintColor: primaryColor,
-                  },
-                ]}
-                resizeMode="contain"
-              />,
-            ]}
-          actions={[
-            {
-              customWidget: (
-                <TouchableOpacity
-                  key="menu"
-                  style={styles.menuBtn}
-                  onPress={() => {}}
-                >
-                  <Text style={styles.menuIcon}>☰</Text>
-                </TouchableOpacity>
-              ),
-            },
-          ]}
-          />
-          <Ux4gDivider color="#E5E7EB" thickness={1} />
-        </View>
-
-        {/* White card with content */}
-        <ScrollView
-          contentContainerStyle={styles.cardScrollContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          <View
-            style={[
-              styles.cardContainer,
-              {
-                backgroundColor: isDark
-                  ? UX4GColors.neutral900
-                  : '#FFFFFF',
-              },
-            ]}
-          >
-            {/* Back link */}
-            <TouchableOpacity
-              onPress={onReturn}
-              style={styles.backLinkRow}
-              activeOpacity={0.7}
-            >
-              <Image
-                source={require('./assets/arrow_back.png')}
-                style={[
-                  styles.backArrowIcon,
-                  { tintColor: primaryColor },
-                ]}
-              />
-              <Text style={[styles.backLinkText, { color: primaryColor }]}>
-                Return to services
-              </Text>
-            </TouchableOpacity>
-
-            {/* Error icon */}
-            <View style={styles.centerContainer}>
-              <View
-                style={[
-                  styles.errorIconCircle,
-                  {
-                    backgroundColor: isDark
-                      ? UX4GColors.red900
-                      : UX4GColors.red50,
-                  },
-                ]}
-              >
-                <Image
-                  source={require('./assets/error.png')}
-                  style={[
-                    styles.errorIcon,
-                    { tintColor: errorColor },
-                  ]}
-                />
-              </View>
-            </View>
-
-            {/* Title */}
-            <Text
-              style={[
-                styles.headingTitle,
-                { color: titleColor },
-              ]}
-            >
-              {'Could Not Submit\\nApplication'}
-            </Text>
-
-            {/* Subtitle */}
-            <Text
-              style={[
-                styles.subtitleText,
-                { color: subtleText },
-              ]}
-            >
-              {"We could not submit your application due to\\na network or server error. Your data is saved —\\ntry again."}
-            </Text>
-
-            {/* Journey Timeline */}
-            <Ux4gJourneyTimeline
-              header={{ title: 'What happens next' }}
-              steps={[
-                {
-                  state: 'completed',
-                  stepNumber: '1',
-                  date: 'Date',
-                  title: 'Title',
-                  helpingText: 'Helping Text',
-                },
-                {
-                  state: 'completed',
-                  stepNumber: '2',
-                  date: 'Date',
-                  title: 'Title',
-                  helpingText: 'Helping Text',
-                },
-                {
-                  state: 'completed',
-                  stepNumber: '3',
-                  date: 'Date',
-                  title: 'Title',
-                  helpingText: 'Helping Text',
-                },
-              ]}
-            />
-          </View>
-        </ScrollView>
-
-        {/* Actions */}
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Retry submission"
-            onPress={() => setShowToast(true)}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={
-              isDark ? UX4GColors.primary300 : UX4GColors.primary600
-            }
-            contentColor={
-              isDark ? UX4GColors.neutral900 : UX4GColors.neutral50
-            }
-          />
-          <View style={{ height: 12 }} />
-          <Ux4gButton
-            text="Save draft"
-            onPress={onSaveDraft}
-            variant="outline"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={
-              isDark ? UX4GColors.primary300 : UX4GColors.primary600
-            }
-            borderColor={
-              isDark ? UX4GColors.primary600 : UX4GColors.primary300
-            }
-          />
-          <View style={{ height: 12 }} />
-          <TouchableOpacity
-            onPress={onContactSupport}
-            style={styles.contactSupportWrapper}
-            activeOpacity={0.7}
-          >
-            <Text
-              style={[
-                styles.contactSupportText,
-                { color: titleColor },
-              ]}
-            >
-              Contact support
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Text
-            style={[
-              styles.poweredByText,
-              { color: '#9CA3AF' },
-            ]}
-          >
-            Powered by -
-          </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[
-              styles.digitalIndiaLogo,
-              isDark && { tintColor: '#FFFFFF' },
-            ]}
-            resizeMode="contain"
-          />
-        </View>
-
-        {/* Error Toast Notification */}
-        {showToast && (
-          <View
-            style={[
-              styles.toastWrapper,
-              {
-                backgroundColor: isDark
-                  ? UX4GColors.neutral900
-                  : '#FFFFFF',
-              },
-            ]}
-          >
-            <Image
-              source={require('./assets/error.png')}
-              style={[styles.toastErrorIcon, { tintColor: errorColor }]}
-            />
-            <View style={styles.toastContent}>
-              <Text
-                style={[
-                  styles.toastTitle,
-                  { color: titleColor },
-                ]}
-              >
-                Could not submit
-              </Text>
-              <Text
-                style={[
-                  styles.toastMessage,
-                  { color: subtleText },
-                ]}
-              >
-                Network or server issue
-              </Text>
-            </View>
-            <TouchableOpacity onPress={() => setShowToast(false)}>
-              <Image
-                source={require('./assets/close.png')}
-                style={[styles.closeIcon, { tintColor: subtleText }]}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  menuBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: UX4GColors.primary,
-  },
-  safeArea: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    position: 'relative',
-  },
-  emblemIcon: {
-    height: 40,
-    width: 28,
-  },
-  verticalDivider: {
-    height: 32,
-    width: 1,
-  },
-  unionIcon: {
-    height: 32,
-    width: 44,
-  },
-  cardScrollContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-  },
-  cardContainer: {
-    padding: 24,
-    borderRadius: 16,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 20,
-    elevation: 3,
-  },
-  backLinkRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  backArrowIcon: {
-    width: 18,
-    height: 18,
-    marginRight: 6,
-  },
-  backLinkText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  centerContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  errorIconCircle: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  errorIcon: {
-    width: 30,
-    height: 30,
-  },
-  headingTitle: {
-    fontSize: 24,
-    fontWeight: '800',
-    textAlign: 'center',
-    lineHeight: 30,
-    marginBottom: 12,
-  },
-  subtitleText: {
-    fontSize: 14,
-    textAlign: 'center',
-    lineHeight: 20,
-    marginBottom: 32,
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-  },
-  contactSupportWrapper: {
-    alignItems: 'center',
-    paddingVertical: 4,
-  },
-  contactSupportText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  footerContainer: {
-    alignItems: 'center',
-    paddingBottom: 24,
-  },
-  poweredByText: {
-    fontSize: 11,
-    marginBottom: 6,
-  },
-  digitalIndiaLogo: {
-    height: 24,
-    width: 90,
-  },
-  toastWrapper: {
-    position: 'absolute',
-    top: 24,
-    left: 16,
-    right: 16,
-    padding: 16,
-    borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    elevation: 5,
-  },
-  toastErrorIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
-  },
-  toastContent: {
-    flex: 1,
-  },
-  toastTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  toastMessage: {
-    fontSize: 13,
-    marginTop: 4,
-  },
-  closeIcon: {
-    width: 18,
-    height: 18,
-  },
-});`;
-    }
-
-    return `import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  Ux4gAppHeader,
-  Ux4gDivider,
-  Ux4gButton,
-  Ux4gJourneyTimeline,
-  UX4GColors,
-} from 'ux4g-react-native-components';
-
-export const CouldNotSubmitScreen = ({
-  isDark = ${isDark},
-  onReturn = () => {},
-  onSaveDraft = () => {},
-  onContactSupport = () => {},
-}: {
-  isDark?: boolean;
-  onReturn?: () => void;
-  onSaveDraft?: () => void;
-  onContactSupport?: () => void;
-}) => {
-  const [showToast, setShowToast] = useState(false);
-
-  const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
-  const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
-  const errorColor = isDark ? UX4GColors.red500 : UX4GColors.red600;
-
-  return (
-    <SafeAreaView
-      style={[
-        styles.safeArea,
-        {
-          backgroundColor: isDark
-            ? UX4GColors.neutral900
-            : '#FFFFFF',
-        },
-      ]}
-    >
-      <View style={styles.container}>
-        {/* Header */}
+      {/* Header Container */}
+      <View style={{ backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }}>
         <Ux4gAppHeader
           variant="light"
           showBackButton={false}
-          backgroundColor={
-            isDark ? UX4GColors.neutral900 : '#FFFFFF'
-          }
           leadingWidgets={[
             <Image
               key="emblem"
@@ -599,11 +219,7 @@ export const CouldNotSubmitScreen = ({
               key="divider"
               style={[
                 styles.verticalDivider,
-                {
-                  backgroundColor: isDark
-                    ? UX4GColors.neutral700
-                    : '#D1D5DB',
-                },
+                { backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
               ]}
             />,
             <Image
@@ -611,176 +227,178 @@ export const CouldNotSubmitScreen = ({
               source={require('./assets/union_logo.png')}
               style={[
                 styles.unionIcon,
-                {
-                  tintColor: primaryColor,
-                },
+                { tintColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600 },
               ]}
               resizeMode="contain"
             />,
           ]}
-        actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={styles.menuBtn}
-                onPress={() => {}}
-              >
-                <Text style={styles.menuIcon}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
-        ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={[
+                    styles.menuBtn,
+                    {
+                      borderColor: isDark ? UX4GColors.primary300 : '#C7D2FE',
+                      backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                    },
+                  ]}
+                  activeOpacity={0.7}
+                >
+                  <Text
+                    style={[
+                      styles.menuIcon,
+                      { color: isDark ? UX4GColors.primary300 : '#432CBB' },
+                    ]}
+                  >
+                    ☰
+                  </Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
         />
-        <Ux4gDivider color="#E5E7EB" thickness={1} />
+        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#F0F0F2'} thickness={1} />
+      </View>
 
-        {/* Content */}
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Card Style Content Box */}
+        <Ux4gCard
+          backgroundColor={isDark ? UX4GColors.neutral800 : '#FFFFFF'}
+          cornerRadius={16}
+          borderWidth={1}
+          borderColor={isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.04)'}
+          style={styles.cardWrapper}
         >
-          {/* Back link */}
-          <TouchableOpacity
-            onPress={onReturn}
-            style={styles.backLinkRow}
-            activeOpacity={0.7}
-          >
-            <Image
-              source={require('./assets/arrow_back.png')}
-              style={[
-                styles.backArrowIcon,
-                { tintColor: primaryColor },
-              ]}
-            />
-            <Text style={[styles.backLinkText, { color: primaryColor }]}>
-              Return to services
-            </Text>
-          </TouchableOpacity>
-
-          {/* Error icon */}
-          <View style={styles.centerContainer}>
+          {/* Centered Error Icon */}
+          <View style={styles.iconContainer}>
             <View
               style={[
-                styles.errorIconCircle,
+                styles.errorCircle,
                 {
                   backgroundColor: isDark
-                    ? UX4GColors.red900
-                    : UX4GColors.red50,
+                    ? 'rgba(220, 38, 38, 0.2)'
+                    : '#FEE2E2',
                 },
               ]}
             >
-              <Image
-                source={require('./assets/error.png')}
+              <Text
                 style={[
-                  styles.errorIcon,
-                  { tintColor: errorColor },
+                  styles.exclamationIcon,
+                  { color: isDark ? '#EF4444' : '#DC2626' },
                 ]}
-              />
+              >
+                !
+              </Text>
             </View>
           </View>
 
           {/* Title */}
           <Text
             style={[
-              styles.headingTitle,
-              { color: titleColor },
+              styles.screenTitle,
+              { color: isDark ? UX4GColors.neutral0 : '#111827' },
             ]}
           >
-            {'Could Not Submit\\nApplication'}
+            Could Not Submit{'\n'}Application
           </Text>
 
           {/* Subtitle */}
           <Text
             style={[
-              styles.subtitleText,
-              { color: subtleText },
+              styles.screenSubtitle,
+              { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
             ]}
           >
-            {"We could not submit your application due to\\na network or server error. Your data is saved —\\ntry again."}
+            We could not submit your application due to a network or server error. Your data is saved — try again.
           </Text>
 
-          {/* What happens next - Journey Timeline */}
-          <Ux4gJourneyTimeline
-            header={{ title: 'What happens next' }}
-            steps={[
+          {/* Section Heading */}
+          <Text
+            style={[
+              styles.sectionHeading,
+              { color: isDark ? UX4GColors.neutral0 : '#111827' },
+            ]}
+          >
+            What happens next
+          </Text>
+
+          {/* Journey Timeline Card */}
+          <View
+            style={[
+              styles.timelineCard,
               {
-                state: 'completed',
-                stepNumber: '1',
-                date: 'Date',
-                title: 'Title',
-                helpingText: 'Helping Text',
-              },
-              {
-                state: 'completed',
-                stepNumber: '2',
-                date: 'Date',
-                title: 'Title',
-                helpingText: 'Helping Text',
-              },
-              {
-                state: 'completed',
-                stepNumber: '3',
-                date: 'Date',
-                title: 'Title',
-                helpingText: 'Helping Text',
+                backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+                borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
               },
             ]}
-          />
-        </ScrollView>
-
-        {/* Actions */}
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Retry submission"
-            onPress={() => setShowToast(true)}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={
-              isDark ? UX4GColors.primary300 : UX4GColors.primary600
-            }
-            contentColor={
-              isDark ? UX4GColors.neutral900 : UX4GColors.neutral50
-            }
-          />
-          <View style={{ height: 12 }} />
-          <Ux4gButton
-            text="Save draft"
-            onPress={onSaveDraft}
-            variant="outline"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={
-              isDark ? UX4GColors.primary300 : UX4GColors.primary600
-            }
-            borderColor={
-              isDark ? UX4GColors.primary600 : UX4GColors.primary300
-            }
-          />
-          <View style={{ height: 12 }} />
-          <TouchableOpacity
-            onPress={onContactSupport}
-            style={styles.contactSupportWrapper}
-            activeOpacity={0.7}
           >
-            <Text
-              style={[
-                styles.contactSupportText,
-                { color: titleColor },
-              ]}
+            <Ux4gJourneyTimeline
+              currentStep={1}
+              activeColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+              header={{
+                title: 'Application Progress',
+                description:
+                  'Submission failed due to a network error. Your data is saved — retry when ready',
+              }}
+              cardColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+              cardBorderColor={isDark ? UX4GColors.neutral700 : '#E5E7EB'}
+              cardBorderRadius={10}
+              steps={JOURNEY_STEPS}
+            />
+          </View>
+
+          {/* Action Buttons */}
+          <View style={styles.buttonGroup}>
+            <Ux4gButton
+              text="Retry submission"
+              onPress={handleRetry}
+              size="large"
+              width="100%"
+              height={46}
+              backgroundColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+              contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+            />
+
+            <Ux4gButton
+              text="Save draft"
+              onPress={onSaveDraft}
+              variant="outline"
+              size="large"
+              width="100%"
+              height={46}
+              borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+              contentColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+            />
+
+            <TouchableOpacity
+              onPress={onContactSupport}
+              style={styles.contactSupportBtn}
+              activeOpacity={0.7}
             >
-              Contact support
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={[
+                  styles.contactSupportText,
+                  { color: isDark ? UX4GColors.neutral0 : '#111827' },
+                ]}
+              >
+                Contact support
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Ux4gCard>
 
         {/* Footer */}
-        <View style={styles.footerContainer}>
+        <View style={styles.footer}>
           <Text
             style={[
               styles.poweredByText,
-              { color: '#9CA3AF' },
+              { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 },
             ]}
           >
             Powered by -
@@ -794,192 +412,778 @@ export const CouldNotSubmitScreen = ({
             resizeMode="contain"
           />
         </View>
+      </ScrollView>
 
-        {/* Error Toast Notification */}
-        {showToast && (
-          <View
-            style={[
-              styles.toastWrapper,
-              {
-                backgroundColor: isDark
-                  ? UX4GColors.neutral900
-                  : '#FFFFFF',
-              },
-            ]}
-          >
-            <Image
-              source={require('./assets/error.png')}
-              style={[styles.toastErrorIcon, { tintColor: errorColor }]}
-            />
-            <View style={styles.toastContent}>
+      {/* Floating Error Dialog Toast */}
+      {showToast && (
+        <View
+          style={[
+            styles.toastCard,
+            {
+              backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+              borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
+            },
+          ]}
+        >
+          <View style={styles.toastLeft}>
+            <View style={styles.toastErrorIconWrapper}>
+              <Text style={styles.toastErrorIcon}>!</Text>
+            </View>
+            <View style={styles.toastTextContainer}>
               <Text
                 style={[
                   styles.toastTitle,
-                  { color: titleColor },
+                  { color: isDark ? UX4GColors.neutral0 : '#111827' },
                 ]}
               >
                 Could not submit
               </Text>
               <Text
                 style={[
-                  styles.toastMessage,
-                  { color: subtleText },
+                  styles.toastSubtitle,
+                  { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
                 ]}
               >
                 Network or server issue
               </Text>
             </View>
-            <TouchableOpacity onPress={() => setShowToast(false)}>
-              <Image
-                source={require('./assets/close.png')}
-                style={[styles.closeIcon, { tintColor: subtleText }]}
-              />
-            </TouchableOpacity>
           </View>
-        )}
-      </View>
+          <TouchableOpacity
+            onPress={() => setShowToast(false)}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text
+              style={[
+                styles.closeIcon,
+                { color: isDark ? UX4GColors.neutral400 : '#6B7280' },
+              ]}
+            >
+              ✕
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  emblemIcon: {
+    height: 36,
+    width: 36,
+  },
+  verticalDivider: {
+    width: 1,
+    height: 32,
+    marginHorizontal: 8,
+  },
+  unionIcon: {
+    height: 32,
+    width: 32,
+  },
   menuBtn: {
     width: 36,
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   menuIcon: {
     fontSize: 18,
-    color: UX4GColors.primary,
+    fontWeight: 'bold',
   },
-  safeArea: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    position: 'relative',
-  },
-  emblemIcon: {
-    height: 40,
-    width: 28,
-  },
-  verticalDivider: {
-    height: 32,
-    width: 1,
-  },
-  unionIcon: {
-    height: 32,
-    width: 44,
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    paddingVertical: 24,
-  },
-  backLinkRow: {
+  toastCard: {
+    position: 'absolute',
+    top: 70,
+    left: 16,
+    right: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 32,
+    justifyContent: 'space-between',
+    padding: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+    zIndex: 100,
   },
-  backArrowIcon: {
-    width: 18,
-    height: 18,
-    marginRight: 6,
-  },
-  backLinkText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  centerContainer: {
+  toastLeft: {
+    flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
+    gap: 12,
+  },
+  toastErrorIconWrapper: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#DC2626',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toastErrorIcon: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: 'bold',
+    lineHeight: 16,
+  },
+  toastTextContainer: {
+    flex: 1,
+  },
+  toastTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    lineHeight: 18,
+  },
+  toastSubtitle: {
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 16,
+  },
+  closeIcon: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    padding: 4,
+  },
+  cardWrapper: {
+    padding: 20,
     marginBottom: 20,
   },
-  errorIconCircle: {
+  iconContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  errorCircle: {
     width: 56,
     height: 56,
     borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  errorIcon: {
-    width: 30,
-    height: 30,
+  exclamationIcon: {
+    fontSize: 28,
+    fontWeight: 'bold',
   },
-  headingTitle: {
-    fontSize: 24,
+  screenTitle: {
+    fontSize: 22,
     fontWeight: '800',
     textAlign: 'center',
-    lineHeight: 30,
-    marginBottom: 12,
+    lineHeight: 28,
+    marginBottom: 10,
   },
-  subtitleText: {
-    fontSize: 14,
+  screenSubtitle: {
+    fontSize: 13,
     textAlign: 'center',
-    lineHeight: 20,
-    marginBottom: 32,
+    lineHeight: 18,
+    marginBottom: 22,
   },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+  sectionHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 10,
   },
-  contactSupportWrapper: {
+  timelineCard: {
+    padding: 14,
+    borderWidth: 1,
+    borderRadius: 12,
+    marginBottom: 20,
+  },
+  buttonGroup: {
+    gap: 10,
+  },
+  contactSupportBtn: {
     alignItems: 'center',
-    paddingVertical: 4,
+    paddingVertical: 6,
+    marginTop: 4,
   },
   contactSupportText: {
     fontSize: 14,
     fontWeight: '600',
   },
-  footerContainer: {
+  footer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 24,
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 12,
   },
   poweredByText: {
     fontSize: 11,
-    marginBottom: 6,
+    fontWeight: '500',
   },
   digitalIndiaLogo: {
-    height: 24,
-    width: 90,
+    height: 22,
+    width: 80,
   },
-  toastWrapper: {
+});`;
+    }
+
+    // Default Layout Snippet
+    return `// Could Not Submit Screen Pattern (Default Layout)
+
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+import {
+  Ux4gAppHeader,
+  Ux4gDivider,
+  Ux4gButton,
+  Ux4gJourneyTimeline,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+
+const JOURNEY_STEPS = [
+  {
+    state: 'completed' as const,
+    date: '02 Sep 2026',
+    title: 'Draft Saved',
+    status: {
+      text: '',
+      badgeText: 'Saved',
+      badgeColor: '#DDF8D8',
+      badgeTextColor: '#15803D',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'current' as const,
+    date: '02 Sep 2026',
+    title: 'Submission Failed',
+    status: {
+      text: '',
+      badgeText: 'Failed',
+      badgeColor: '#FEE2E2',
+      badgeTextColor: '#DC2626',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'upcoming' as const,
+    date: 'Pending',
+    title: 'Document Verification',
+    status: {
+      text: '',
+      badgeText: 'Blocked',
+      badgeColor: '#F3F4F6',
+      badgeTextColor: '#4B5563',
+      badgePosition: 'topRight' as const,
+    },
+  },
+  {
+    state: 'upcoming' as const,
+    date: 'Pending',
+    title: 'Certificate Issued',
+    status: {
+      text: '',
+      badgeText: 'Blocked',
+      badgeColor: '#F3F4F6',
+      badgeTextColor: '#4B5563',
+      badgePosition: 'topRight' as const,
+    },
+  },
+];
+
+export const CouldNotSubmitDefaultScreen = ({
+  isDark = ${isDark},
+  onReturn = () => {},
+  onRetry = () => {},
+  onSaveDraft = () => {},
+  onContactSupport = () => {},
+}: {
+  isDark?: boolean;
+  onReturn?: () => void;
+  onRetry?: () => void;
+  onSaveDraft?: () => void;
+  onContactSupport?: () => void;
+}) => {
+  const [showToast, setShowToast] = useState(false);
+
+  const handleRetry = () => {
+    setShowToast(true);
+    onRetry();
+  };
+
+  return (
+    <SafeAreaView
+      style={[
+        styles.safeArea,
+        { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
+      ]}
+    >
+      {/* Top App Header */}
+      <View style={{ backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }}>
+        <Ux4gAppHeader
+          variant="light"
+          showBackButton={false}
+          leadingWidgets={[
+            <Image
+              key="emblem"
+              source={require('./assets/national_emblem.png')}
+              style={[
+                styles.emblemIcon,
+                isDark && { tintColor: '#FFFFFF' },
+              ]}
+              resizeMode="contain"
+            />,
+            <View
+              key="divider"
+              style={[
+                styles.verticalDivider,
+                { backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
+              ]}
+            />,
+            <Image
+              key="union"
+              source={require('./assets/union_logo.png')}
+              style={[
+                styles.unionIcon,
+                { tintColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600 },
+              ]}
+              resizeMode="contain"
+            />,
+          ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={[
+                    styles.menuBtn,
+                    {
+                      borderColor: isDark ? UX4GColors.primary300 : '#C7D2FE',
+                      backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                    },
+                  ]}
+                  activeOpacity={0.7}
+                >
+                  <Text
+                    style={[
+                      styles.menuIcon,
+                      { color: isDark ? UX4GColors.primary300 : '#432CBB' },
+                    ]}
+                  >
+                    ☰
+                  </Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
+        />
+        <Ux4gDivider color={isDark ? UX4GColors.neutral800 : '#F0F0F2'} thickness={1} />
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Return to services back link */}
+        <TouchableOpacity
+          onPress={onReturn}
+          style={styles.returnLink}
+          activeOpacity={0.7}
+        >
+          <Text
+            style={[
+              styles.returnArrow,
+              { color: isDark ? UX4GColors.primary300 : '#432CBB' },
+            ]}
+          >
+            ←
+          </Text>
+          <Text
+            style={[
+              styles.returnText,
+              { color: isDark ? UX4GColors.primary300 : '#432CBB' },
+            ]}
+          >
+            Return to services
+          </Text>
+        </TouchableOpacity>
+
+        {/* Centered Error Icon */}
+        <View style={styles.iconContainer}>
+          <View
+            style={[
+              styles.errorCircle,
+              {
+                backgroundColor: isDark
+                  ? 'rgba(220, 38, 38, 0.2)'
+                  : '#FEE2E2',
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.exclamationIcon,
+                { color: isDark ? '#EF4444' : '#DC2626' },
+              ]}
+            >
+              !
+            </Text>
+          </View>
+        </View>
+
+        {/* Title */}
+        <Text
+          style={[
+            styles.screenTitle,
+            { color: isDark ? UX4GColors.neutral0 : '#111827' },
+          ]}
+        >
+          Could Not Submit{'\n'}Application
+        </Text>
+
+        {/* Subtitle */}
+        <Text
+          style={[
+            styles.screenSubtitle,
+            { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
+          ]}
+        >
+          We could not submit your application due to a network or server error. Your data is saved — try again.
+        </Text>
+
+        {/* Section Heading */}
+        <Text
+          style={[
+            styles.sectionHeading,
+            { color: isDark ? UX4GColors.neutral0 : '#111827' },
+          ]}
+        >
+          What happens next
+        </Text>
+
+        {/* Journey Timeline Card */}
+        <View
+          style={[
+            styles.timelineCard,
+            {
+              backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+              borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
+            },
+          ]}
+        >
+          <Ux4gJourneyTimeline
+            currentStep={1}
+            activeColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+            header={{
+              title: 'Application Progress',
+              description:
+                'Submission failed due to a network error. Your data is saved — retry when ready',
+            }}
+            cardColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+            cardBorderColor={isDark ? UX4GColors.neutral700 : '#E5E7EB'}
+            cardBorderRadius={10}
+            steps={JOURNEY_STEPS}
+          />
+        </View>
+
+        {/* Action Buttons */}
+        <View style={styles.buttonGroup}>
+          <Ux4gButton
+            text="Retry submission"
+            onPress={handleRetry}
+            size="large"
+            width="100%"
+            height={46}
+            backgroundColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+            contentColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
+          />
+
+          <Ux4gButton
+            text="Save draft"
+            onPress={onSaveDraft}
+            variant="outline"
+            size="large"
+            width="100%"
+            height={46}
+            borderColor={isDark ? UX4GColors.primary300 : '#C7D2FE'}
+            contentColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+          />
+
+          <TouchableOpacity
+            onPress={onContactSupport}
+            style={styles.contactSupportBtn}
+            activeOpacity={0.7}
+          >
+            <Text
+              style={[
+                styles.contactSupportText,
+                { color: isDark ? UX4GColors.neutral0 : '#111827' },
+              ]}
+            >
+              Contact support
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <Text
+            style={[
+              styles.poweredByText,
+              { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 },
+            ]}
+          >
+            Powered by -
+          </Text>
+          <Image
+            source={require('./assets/digital_india_logo.png')}
+            style={[
+              styles.digitalIndiaLogo,
+              isDark && { tintColor: '#FFFFFF' },
+            ]}
+            resizeMode="contain"
+          />
+        </View>
+      </ScrollView>
+
+      {/* Floating Error Dialog Toast */}
+      {showToast && (
+        <View
+          style={[
+            styles.toastCard,
+            {
+              backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+              borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
+            },
+          ]}
+        >
+          <View style={styles.toastLeft}>
+            <View style={styles.toastErrorIconWrapper}>
+              <Text style={styles.toastErrorIcon}>!</Text>
+            </View>
+            <View style={styles.toastTextContainer}>
+              <Text
+                style={[
+                  styles.toastTitle,
+                  { color: isDark ? UX4GColors.neutral0 : '#111827' },
+                ]}
+              >
+                Could not submit
+              </Text>
+              <Text
+                style={[
+                  styles.toastSubtitle,
+                  { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
+                ]}
+              >
+                Network or server issue
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => setShowToast(false)}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          >
+            <Text
+              style={[
+                styles.closeIcon,
+                { color: isDark ? UX4GColors.neutral400 : '#6B7280' },
+              ]}
+            >
+              ✕
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingVertical: 18,
+  },
+  emblemIcon: {
+    height: 36,
+    width: 36,
+  },
+  verticalDivider: {
+    width: 1,
+    height: 32,
+    marginHorizontal: 8,
+  },
+  unionIcon: {
+    height: 32,
+    width: 32,
+  },
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  returnLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 20,
+  },
+  returnArrow: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  returnText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  iconContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  errorCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exclamationIcon: {
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
+  screenTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 28,
+    marginBottom: 10,
+  },
+  screenSubtitle: {
+    fontSize: 13,
+    textAlign: 'center',
+    lineHeight: 18,
+    marginBottom: 22,
+  },
+  sectionHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+    marginBottom: 10,
+  },
+  timelineCard: {
+    padding: 14,
+    borderWidth: 1,
+    borderRadius: 12,
+    marginBottom: 20,
+  },
+  buttonGroup: {
+    gap: 10,
+  },
+  contactSupportBtn: {
+    alignItems: 'center',
+    paddingVertical: 6,
+    marginTop: 4,
+  },
+  contactSupportText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 14,
+  },
+  poweredByText: {
+    fontSize: 11,
+    fontWeight: '500',
+  },
+  digitalIndiaLogo: {
+    height: 22,
+    width: 80,
+  },
+  toastCard: {
     position: 'absolute',
-    top: 24,
+    top: 70,
     left: 16,
     right: 16,
-    padding: 16,
-    borderRadius: 12,
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+    zIndex: 100,
+  },
+  toastLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    gap: 12,
+  },
+  toastErrorIconWrapper: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#DC2626',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   toastErrorIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: 'bold',
+    lineHeight: 16,
   },
-  toastContent: {
+  toastTextContainer: {
     flex: 1,
   },
   toastTitle: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '700',
+    lineHeight: 18,
   },
-  toastMessage: {
-    fontSize: 13,
-    marginTop: 4,
+  toastSubtitle: {
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 16,
   },
   closeIcon: {
-    width: 18,
-    height: 18,
+    fontSize: 14,
+    fontWeight: 'bold',
+    padding: 4,
   },
 });`;
   }, [isDark, variant]);
@@ -988,44 +1192,45 @@ const styles = StyleSheet.create({
   const renderContentBody = () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {/* Back link */}
-        <div
-          onClick={() => {}}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            cursor: 'pointer',
-            marginBottom: 32,
-            gap: 6,
-          }}
-        >
-          <span
-            className="material-symbols-outlined"
+        {/* Back link for Default variant */}
+        {variant === 'Default' && (
+          <div
+            onClick={() => {}}
             style={{
-              fontSize: 18,
-              color: colors.primaryColor,
-              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer',
+              marginBottom: 20,
+              gap: 6,
+              color: colors.linkPrimary,
             }}
           >
-            arrow_back
-          </span>
-          <span
-            style={{
-              fontSize: 14,
-              fontWeight: 500,
-              color: colors.primaryColor,
-            }}
-          >
-            Return to services
-          </span>
-        </div>
+            <span
+              className="material-symbols-outlined"
+              style={{
+                fontSize: 18,
+                fontWeight: 700,
+              }}
+            >
+              arrow_back
+            </span>
+            <span
+              style={{
+                fontSize: 14,
+                fontWeight: 600,
+              }}
+            >
+              Return to services
+            </span>
+          </div>
+        )}
 
-        {/* Error Icon */}
+        {/* Error Icon Circle */}
         <div
           style={{
             display: 'flex',
             justifyContent: 'center',
-            marginBottom: 20,
+            marginBottom: 16,
           }}
         >
           <div
@@ -1055,12 +1260,12 @@ const styles = StyleSheet.create({
         {/* Title */}
         <div
           style={{
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: 800,
             color: colors.titleColor,
             textAlign: 'center',
-            lineHeight: 1.2,
-            marginBottom: 12,
+            lineHeight: 1.25,
+            marginBottom: 10,
             whiteSpace: 'pre-line',
           }}
         >
@@ -1068,46 +1273,113 @@ const styles = StyleSheet.create({
         </div>
 
         {/* Subtitle */}
+        <p
+          style={{
+            fontSize: 13,
+            color: colors.subtleText,
+            textAlign: 'center',
+            lineHeight: 1.45,
+            margin: '0 0 20px 0',
+          }}
+        >
+          We could not submit your application due to a network or server error. Your data is saved — try again.
+        </p>
+
+        {/* What happens next */}
         <div
           style={{
             fontSize: 14,
-            color: colors.subtleText,
-            textAlign: 'center',
-            lineHeight: 1.4,
-            marginBottom: 32,
-            whiteSpace: 'pre-line',
+            fontWeight: 700,
+            color: colors.titleColor,
+            marginBottom: 10,
           }}
         >
-          {"We could not submit your application due to\na network or server error. Your data is saved —\ntry again."}
+          What happens next
         </div>
 
-        {/* What happens next - Journey Timeline */}
-        <Ux4gJourneyTimeline
-          header={{ title: 'What happens next' }}
-          steps={[
-            {
-              state: 'completed',
-              stepNumber: '1',
-              date: 'Date',
-              title: 'Title',
-              helpingText: 'Helping Text',
-            },
-            {
-              state: 'completed',
-              stepNumber: '2',
-              date: 'Date',
-              title: 'Title',
-              helpingText: 'Helping Text',
-            },
-            {
-              state: 'completed',
-              stepNumber: '3',
-              date: 'Date',
-              title: 'Title',
-              helpingText: 'Helping Text',
-            },
-          ]}
-        />
+        {/* Application Progress Timeline Card */}
+        <div
+          style={{
+            padding: '16px 14px',
+            backgroundColor: colors.timelineCardBg,
+            border: `1px solid ${colors.timelineCardBorder}`,
+            borderRadius: 14,
+            marginBottom: 18,
+          }}
+        >
+          <Ux4gJourneyTimeline
+            currentStep={1}
+            activeColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+            header={{
+              title: 'Application Progress',
+              description: 'Submission failed due to a network error. Your data is saved — retry when ready',
+            }}
+            cardColor={colors.stepBoxBg}
+            cardBorderColor={colors.stepBoxBorder}
+            cardBorderRadius={10}
+            steps={JOURNEY_STEPS_PREVIEW}
+          />
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {/* Button 1: Retry submission */}
+          <button
+            type="button"
+            onClick={() => setShowToast(true)}
+            style={{
+              width: '100%',
+              height: 44,
+              backgroundColor: colors.btn1Bg,
+              color: colors.btn1Text,
+              border: 'none',
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            Retry submission
+          </button>
+
+          {/* Button 2: Save draft */}
+          <button
+            type="button"
+            onClick={() => alert('Draft saved')}
+            style={{
+              width: '100%',
+              height: 44,
+              backgroundColor: 'transparent',
+              color: colors.btn2Text,
+              border: `1.5px solid ${colors.btn2Border}`,
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            Save draft
+          </button>
+
+          {/* Contact support text button */}
+          <div
+            onClick={() => alert('Support contacted')}
+            style={{
+              textAlign: 'center',
+              fontSize: 14,
+              fontWeight: 600,
+              color: colors.titleColor,
+              cursor: 'pointer',
+              padding: '6px 0',
+            }}
+          >
+            Contact support
+          </div>
+        </div>
       </div>
     );
   };
@@ -1119,12 +1391,13 @@ const styles = StyleSheet.create({
       <div
         style={{
           width: 360,
-          height: 760,
-          borderRadius: 20,
-          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+          minHeight: 700,
+          maxHeight: 820,
+          borderRadius: 24,
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden',
           backgroundColor: colors.screenBg,
-          border: `1px solid ${colors.border}`,
+          border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
           display: 'flex',
           flexDirection: 'column',
           fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
@@ -1133,7 +1406,7 @@ const styles = StyleSheet.create({
           position: 'relative',
         }}
       >
-        {/* Header */}
+        {/* Top UX4G AppHeader - Shown on both Default and Card style variants */}
         <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
           <div
             style={{
@@ -1148,7 +1421,7 @@ const styles = StyleSheet.create({
                 src="/national_emblem_logo.svg"
                 alt="National Emblem"
                 style={{
-                  height: 40,
+                  height: 36,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
@@ -1156,13 +1429,37 @@ const styles = StyleSheet.create({
                 style={{
                   width: 1,
                   height: 32,
-                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
+                  backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
                 }}
               />
               <UnionLogo size={32} isDark={isDark} />
             </div>
+            {/* Menu button on right side */}
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: `1.5px solid ${isDark ? UX4GColors.primary300 : '#C7D2FE'}`,
+                backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: 20,
+                  color: isDark ? UX4GColors.primary300 : '#432CBB',
+                }}
+              >
+                menu
+              </span>
+            </div>
           </div>
-          <Ux4gDivider color="#E5E7EB" thickness={1} />
+          <div style={{ height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }} />
         </div>
 
         {/* Scrollable Center Content */}
@@ -1177,7 +1474,7 @@ const styles = StyleSheet.create({
           <div
             style={{
               flex: 1,
-              padding: isCard ? '32px 24px' : '24px 24px',
+              padding: isCard ? '16px 14px' : '20px 18px',
             }}
           >
             {isCard ? (
@@ -1185,8 +1482,9 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 24,
+                  padding: '20px 18px',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.03)'}`,
                 }}
               >
                 {renderContentBody()}
@@ -1195,140 +1493,104 @@ const styles = StyleSheet.create({
               renderContentBody()
             )}
           </div>
-        </div>
 
-        {/* Fixed Bottom Action Buttons */}
-        <div
-          style={{
-            padding: '16px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <Ux4gButton
-            text="Retry submission"
-            onPress={() => setShowToast(true)}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={colors.btn1Bg}
-            contentColor={colors.btn1Text}
-          />
-
-          <Ux4gButton
-            text="Save draft"
-            onPress={() => {}}
-            variant="outline"
-            size="large"
-            width="100%"
-            height={48}
-            borderColor={colors.btn2Border}
-            contentColor={colors.btn2Text}
-          />
-
+          {/* Powered by Footer */}
           <div
-            onClick={() => {}}
             style={{
-              textAlign: 'center',
-              fontSize: 14,
-              fontWeight: 600,
-              color: colors.titleColor,
-              cursor: 'pointer',
-              paddingTop: 4,
+              padding: '10px 0 20px 0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              flexShrink: 0,
             }}
           >
-            Contact support
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: colors.footerText,
+              }}
+            >
+              Powered by -
+            </span>
+            <img
+              src="/Digital_India_logo.svg"
+              alt="Digital India"
+              style={{
+                height: 22,
+                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+              }}
+            />
           </div>
         </div>
 
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '0 0 24px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
-            }}
-          >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 24,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
-        </div>
-
-        {/* Error Toast Notification overlay */}
+        {/* Floating Error Dialog Toast Notification overlay */}
         {showToast && (
           <div
             style={{
               position: 'absolute',
-              top: 24,
+              top: 72,
               left: 16,
               right: 16,
-              padding: 16,
+              padding: '12px 14px',
               backgroundColor: colors.toastBg,
               borderRadius: 12,
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-              border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+              border: `1px solid ${isDark ? UX4GColors.neutral700 : '#E5E7EB'}`,
               display: 'flex',
-              alignItems: 'flex-start',
-              gap: 10,
-              zIndex: 10,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              zIndex: 50,
               animation: 'fadeIn 0.2s ease',
             }}
           >
-            <span
-              className="material-symbols-outlined"
-              style={{
-                fontSize: 20,
-                color: colors.errorIconColor,
-                fontVariationSettings: "'FILL' 1",
-                flexShrink: 0,
-                marginTop: 1,
-              }}
-            >
-              error
-            </span>
-
-            <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div
                 style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: colors.titleColor,
-                  lineHeight: 1.3,
+                  width: 22,
+                  height: 22,
+                  borderRadius: '50%',
+                  backgroundColor: colors.errorIconColor,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
                 }}
               >
-                Could not submit
+                <span
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: 13,
+                    fontWeight: 800,
+                    lineHeight: 1,
+                  }}
+                >
+                  !
+                </span>
               </div>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: colors.subtleText,
-                  marginTop: 4,
-                  lineHeight: 1.3,
-                }}
-              >
-                Network or server issue
+              <div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: colors.titleColor,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Could not submit
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: colors.subtleText,
+                    marginTop: 2,
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Network or server issue
+                </div>
               </div>
             </div>
 
@@ -1339,14 +1601,14 @@ const styles = StyleSheet.create({
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: 2,
+                padding: 4,
                 color: colors.subtleText,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
                 close
               </span>
             </button>
