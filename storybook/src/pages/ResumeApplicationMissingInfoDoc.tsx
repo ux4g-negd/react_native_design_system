@@ -1,8 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
-import { Ux4gButton } from '../../../src/components/button/Button';
-import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
@@ -16,27 +14,27 @@ type VariantType = 'Default' | 'Card style';
 interface StepData {
   title: string;
   subtitle: string;
-  status: 'completed' | 'error' | 'inProgress' | 'notStarted';
+  status: 'completed' | 'warning' | 'notStarted';
 }
 
 const STEPS: StepData[] = [
   {
-    title: 'Personal information',
+    title: 'Eligibility check',
     subtitle: 'Completed',
     status: 'completed',
   },
   {
-    title: 'Upload documents',
-    subtitle: '1 required document missing',
-    status: 'error',
+    title: 'Personal information',
+    subtitle: 'Completed',
+    status: 'warning',
   },
   {
-    title: 'Review',
-    subtitle: 'Not started',
+    title: 'Upload documents',
+    subtitle: '1 required document missing',
     status: 'notStarted',
   },
   {
-    title: 'Payment',
+    title: 'Submit',
     subtitle: 'Not started',
     status: 'notStarted',
   },
@@ -47,30 +45,28 @@ export const ResumeApplicationMissingInfoDoc: React.FC<ResumeApplicationMissingI
   const [variant, setVariant] = useState<VariantType>('Default');
 
   const colors = useMemo(() => {
+    const isCard = variant === 'Card style';
     return {
-      screenBg: variant === 'Card style'
-        ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100)
-        : (isDark ? UX4GColors.neutral950 : '#FAFAFA'),
-      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
-      headerBg: isDark ? UX4GColors.neutral950 : '#FFFFFF',
-      titleColor: isDark ? UX4GColors.neutral50 : '#111827',
+      screenBg: isCard
+        ? (isDark ? UX4GColors.primary900 : '#ECE8FF')
+        : (isDark ? UX4GColors.neutral900 : '#FFFFFF'),
+      headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      cardBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
+      border: isDark ? UX4GColors.neutral800 : '#F0F0F2',
+      titleColor: isDark ? UX4GColors.neutral0 : '#111827',
       subtleText: isDark ? UX4GColors.neutral400 : '#4B5563',
-      stepTitle: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      stepSubtitle: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-      timestampColor: variant === 'Card style'
-        ? (isDark ? UX4GColors.neutral500 : '#9CA3AF')
-        : (isDark ? UX4GColors.neutral200 : UX4GColors.neutral700),
-      completedIconBg: isDark ? UX4GColors.green500 : UX4GColors.green600,
-      completedBorder: isDark ? UX4GColors.green500 : UX4GColors.green600,
-      errorIconBg: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-      errorBorder: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-      inProgressBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-      inProgressBorder: isDark ? UX4GColors.neutral500 : '#D1D5DB',
-      notStartedBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-      notStartedBorder: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-      startFreshColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      footerText: isDark ? UX4GColors.neutral500 : '#9CA3AF',
+      sectionTitle: isDark ? UX4GColors.neutral0 : '#111827',
+      stepTitle: isDark ? UX4GColors.neutral0 : '#111827',
+      stepSubtitle: isDark ? UX4GColors.neutral400 : '#4B5563',
+      timestampColor: isDark ? UX4GColors.neutral400 : '#4B5563',
+      completedGreen: isDark ? '#1AA64A' : '#128937',
+      warningOrange: isDark ? '#F59E0B' : '#EA580C',
+      circleBorder: isDark ? UX4GColors.neutral600 : '#D1D5DB',
+      primaryBtnBg: isDark ? UX4GColors.primary300 : '#432CBB',
+      primaryBtnText: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      outlineBtnBorder: isDark ? UX4GColors.primary300 : '#432CBB',
+      outlineBtnText: isDark ? UX4GColors.primary300 : '#432CBB',
+      footerText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
     };
   }, [isDark, variant]);
 
@@ -100,14 +96,14 @@ import {
 interface StepItem {
   title: string;
   subtitle: string;
-  status: 'completed' | 'error' | 'inProgress' | 'notStarted';
+  status: 'completed' | 'warning' | 'notStarted';
 }
 
 const STEPS: StepItem[] = [
-  { title: 'Personal information', subtitle: 'Completed', status: 'completed' },
-  { title: 'Upload documents', subtitle: '1 required document missing', status: 'error' },
-  { title: 'Review', subtitle: 'Not started', status: 'notStarted' },
-  { title: 'Payment', subtitle: 'Not started', status: 'notStarted' },
+  { title: 'Eligibility check', subtitle: 'Completed', status: 'completed' },
+  { title: 'Personal information', subtitle: 'Completed', status: 'warning' },
+  { title: 'Upload documents', subtitle: '1 required document missing', status: 'notStarted' },
+  { title: 'Submit', subtitle: 'Not started', status: 'notStarted' },
 ];
 
 export const ResumeApplicationMissingInfoCardScreen = ({
@@ -123,11 +119,11 @@ export const ResumeApplicationMissingInfoCardScreen = ({
     <SafeAreaView
       style={[
         styles.safeArea,
-        { backgroundColor: isDark ? UX4GColors.primary900 : UX4GColors.primary100 },
+        { backgroundColor: isDark ? UX4GColors.primary900 : '#ECE8FF' },
       ]}
     >
       {/* Header Container */}
-      <View style={{ backgroundColor: isDark ? UX4GColors.neutral950 : '#FFFFFF' }}>
+      <View style={{ backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }}>
         <Ux4gAppHeader
           variant="light"
           showBackButton={false}
@@ -167,7 +163,7 @@ export const ResumeApplicationMissingInfoCardScreen = ({
           ]}
         />
         <Ux4gDivider
-          color={isDark ? UX4GColors.neutral800 : '#E5E7EB'}
+          color={isDark ? UX4GColors.neutral800 : '#F0F0F2'}
           thickness={1}
         />
       </View>
@@ -179,9 +175,9 @@ export const ResumeApplicationMissingInfoCardScreen = ({
       >
         <Ux4gCard
           cornerRadius={16}
-          backgroundColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
-          borderColor={isDark ? UX4GColors.neutral800 : 'transparent'}
-          borderWidth={isDark ? 1 : 0}
+          backgroundColor={isDark ? UX4GColors.neutral800 : '#FFFFFF'}
+          borderColor={isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.04)'}
+          borderWidth={1}
           elevation={2}
         >
           <View style={styles.cardInner}>
@@ -189,10 +185,10 @@ export const ResumeApplicationMissingInfoCardScreen = ({
             <Text
               style={[
                 styles.headingText,
-                { color: isDark ? UX4GColors.neutral50 : '#111827' },
+                { color: isDark ? UX4GColors.neutral0 : '#111827' },
               ]}
             >
-              {'Continue your\\napplication?'}
+              Continue your application?
             </Text>
             <Text
               style={[
@@ -207,7 +203,7 @@ export const ResumeApplicationMissingInfoCardScreen = ({
             <Text
               style={[
                 styles.sectionTitle,
-                { color: isDark ? UX4GColors.neutral50 : '#111827' },
+                { color: isDark ? UX4GColors.neutral0 : '#111827' },
               ]}
             >
               Your progress
@@ -217,15 +213,14 @@ export const ResumeApplicationMissingInfoCardScreen = ({
             <View style={styles.stepListContainer}>
               {STEPS.map((step, index) => {
                 const isCompleted = step.status === 'completed';
-                const isError = step.status === 'error';
-                const isInProgress = step.status === 'inProgress';
+                const isWarning = step.status === 'warning';
 
                 return (
                   <View
                     key={step.title}
                     style={[
                       styles.stepRow,
-                      index < STEPS.length - 1 && { marginBottom: 20 },
+                      index < STEPS.length - 1 && { marginBottom: 18 },
                     ]}
                   >
                     {/* Status Circle Indicator */}
@@ -233,31 +228,21 @@ export const ResumeApplicationMissingInfoCardScreen = ({
                       style={[
                         styles.indicatorCircle,
                         isCompleted && {
-                          backgroundColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
-                          borderColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
+                          backgroundColor: isDark ? '#1AA64A' : '#128937',
+                          borderColor: isDark ? '#1AA64A' : '#128937',
                         },
-                        isError && {
-                          backgroundColor: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-                          borderColor: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-                        },
-                        isInProgress && {
-                          backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                          borderColor: isDark ? UX4GColors.neutral500 : '#D1D5DB',
-                          borderWidth: 2,
+                        isWarning && {
+                          backgroundColor: isDark ? '#F59E0B' : '#EA580C',
+                          borderColor: isDark ? '#F59E0B' : '#EA580C',
                         },
                         step.status === 'notStarted' && {
-                          backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                          borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-                          borderWidth: 1.5,
+                          backgroundColor: 'transparent',
+                          borderColor: isDark ? UX4GColors.neutral600 : '#D1D5DB',
                         },
                       ]}
                     >
-                      {isCompleted && (
-                        <Text style={styles.iconText}>✓</Text>
-                      )}
-                      {isError && (
-                        <Text style={styles.iconText}>!</Text>
-                      )}
+                      {isCompleted && <Text style={styles.iconText}>✓</Text>}
+                      {isWarning && <Text style={styles.iconText}>!</Text>}
                     </View>
 
                     {/* Step Details */}
@@ -265,7 +250,7 @@ export const ResumeApplicationMissingInfoCardScreen = ({
                       <Text
                         style={[
                           styles.stepTitle,
-                          { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
+                          { color: isDark ? UX4GColors.neutral0 : '#111827' },
                         ]}
                       >
                         {step.title}
@@ -273,7 +258,7 @@ export const ResumeApplicationMissingInfoCardScreen = ({
                       <Text
                         style={[
                           styles.stepSubtitle,
-                          { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 },
+                          { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
                         ]}
                       >
                         {step.subtitle}
@@ -288,48 +273,48 @@ export const ResumeApplicationMissingInfoCardScreen = ({
             <Text
               style={[
                 styles.timestampText,
-                { color: isDark ? UX4GColors.neutral500 : '#9CA3AF' },
+                { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
               ]}
             >
               Last saved 10 Apr 2026 at 3:12 PM
             </Text>
+
+            {/* Action Buttons inside Card */}
+            <View style={styles.buttonGroup}>
+              <Ux4gButton
+                text="Go to incomplete section"
+                onPress={onGoToIncomplete}
+                size="large"
+                height={46}
+                width="100%"
+              />
+              <View style={{ height: 12 }} />
+              <Ux4gButton
+                text="Continue from beginning"
+                onPress={onContinueBeginning}
+                variant="outline"
+                size="large"
+                height={46}
+                width="100%"
+                contentColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+                borderColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+              />
+            </View>
           </View>
         </Ux4gCard>
+
+        {/* Footer */}
+        <View style={styles.footerContainer}>
+          <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+            Powered by -
+          </Text>
+          <Image
+            source={require('./assets/digital_india_logo.png')}
+            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+            resizeMode="contain"
+          />
+        </View>
       </ScrollView>
-
-      {/* Actions */}
-      <View style={styles.actionsContainer}>
-        <Ux4gButton
-          text="Go to incomplete section"
-          onPress={onGoToIncomplete}
-          size="large"
-          height={48}
-          width="100%"
-        />
-        <View style={{ height: 12 }} />
-        <Ux4gButton
-          text="Continue from beginning"
-          onPress={onContinueBeginning}
-          variant="outline"
-          size="large"
-          height={48}
-          width="100%"
-          contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-          borderColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-        />
-      </View>
-
-      {/* Footer */}
-      <View style={styles.footerContainer}>
-        <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral500 : '#9CA3AF' }]}>
-          Powered by -
-        </Text>
-        <Image
-          source={require('./assets/digital_india_logo.png')}
-          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-          resizeMode="contain"
-        />
-      </View>
     </SafeAreaView>
   );
 };
@@ -339,38 +324,35 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   emblemIcon: {
-    height: 40,
+    height: 36,
     width: 28,
   },
-  verticalDivider: {
-    height: 32,
-    width: 1,
-  },
   unionIcon: {
-    height: 32,
-    width: 44,
+    height: 30,
+    width: 40,
+    marginLeft: 8,
   },
   cardScrollPadding: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
   },
   cardInner: {
-    padding: 24,
+    padding: 20,
   },
   headingText: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '800',
-    lineHeight: 31,
+    lineHeight: 28,
   },
   subheadingText: {
     fontSize: 14,
-    marginTop: 8,
+    marginTop: 6,
     marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 15,
     fontWeight: '700',
-    marginBottom: 20,
+    marginBottom: 18,
   },
   stepListContainer: {
     marginBottom: 20,
@@ -383,45 +365,50 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
+    borderWidth: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 14,
+    marginRight: 12,
     marginTop: 2,
   },
   iconText: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
   },
   stepDetails: {
     flex: 1,
   },
   stepTitle: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
   },
   stepSubtitle: {
-    fontSize: 13,
+    fontSize: 12,
     marginTop: 2,
   },
   timestampText: {
     fontSize: 13,
+    marginBottom: 20,
   },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+  buttonGroup: {
+    width: '100%',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 24,
+    justifyContent: 'center',
+    gap: 6,
+    marginTop: 20,
+    paddingBottom: 16,
   },
   poweredByText: {
     fontSize: 11,
-    marginBottom: 6,
+    fontWeight: '500',
   },
   digitalIndiaLogo: {
-    height: 24,
-    width: 90,
+    height: 22,
+    width: 80,
   },
 });`;
     }
@@ -447,14 +434,14 @@ import {
 interface StepItem {
   title: string;
   subtitle: string;
-  status: 'completed' | 'error' | 'inProgress' | 'notStarted';
+  status: 'completed' | 'warning' | 'notStarted';
 }
 
 const STEPS: StepItem[] = [
-  { title: 'Personal information', subtitle: 'Completed', status: 'completed' },
-  { title: 'Upload documents', subtitle: '1 required document missing', status: 'error' },
-  { title: 'Review', subtitle: 'Not started', status: 'notStarted' },
-  { title: 'Payment', subtitle: 'Not started', status: 'notStarted' },
+  { title: 'Eligibility check', subtitle: 'Completed', status: 'completed' },
+  { title: 'Personal information', subtitle: 'Completed', status: 'warning' },
+  { title: 'Upload documents', subtitle: '1 required document missing', status: 'notStarted' },
+  { title: 'Submit', subtitle: 'Not started', status: 'notStarted' },
 ];
 
 export const ResumeApplicationMissingInfoScreen = ({
@@ -470,14 +457,14 @@ export const ResumeApplicationMissingInfoScreen = ({
     <SafeAreaView
       style={[
         styles.safeArea,
-        { backgroundColor: isDark ? UX4GColors.neutral950 : '#FAFAFA' },
+        { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
       ]}
     >
       {/* Header with UX4G AppHeader & Ux4gDivider */}
       <Ux4gAppHeader
         variant="light"
         showBackButton={false}
-        backgroundColor={isDark ? UX4GColors.neutral950 : '#FFFFFF'}
+        backgroundColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
         leadingWidgets={[
           <Image
             key="emblem"
@@ -489,12 +476,12 @@ export const ResumeApplicationMissingInfoScreen = ({
             resizeMode="contain"
           />,
           <View
-            key="divider"
-            style={[
-              styles.verticalDivider,
-              { backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
-            ]}
-          />,
+              key="divider"
+              style={[
+                styles.verticalDivider,
+                { backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' },
+              ]}
+            />,
           <Image
             key="union"
             source={require('./assets/union_logo.png')}
@@ -514,7 +501,7 @@ export const ResumeApplicationMissingInfoScreen = ({
         ]}
       />
       <Ux4gDivider
-        color={isDark ? UX4GColors.neutral800 : '#E5E7EB'}
+        color={isDark ? UX4GColors.neutral800 : '#F0F0F2'}
         thickness={1}
       />
 
@@ -527,10 +514,10 @@ export const ResumeApplicationMissingInfoScreen = ({
         <Text
           style={[
             styles.headingText,
-            { color: isDark ? UX4GColors.neutral50 : '#111827' },
+            { color: isDark ? UX4GColors.neutral0 : '#111827' },
           ]}
         >
-          {'Continue your\\napplication?'}
+          Continue your application?
         </Text>
         <Text
           style={[
@@ -545,7 +532,7 @@ export const ResumeApplicationMissingInfoScreen = ({
         <Text
           style={[
             styles.sectionTitle,
-            { color: isDark ? UX4GColors.neutral50 : '#111827' },
+            { color: isDark ? UX4GColors.neutral0 : '#111827' },
           ]}
         >
           Your progress
@@ -555,15 +542,14 @@ export const ResumeApplicationMissingInfoScreen = ({
         <View style={styles.stepListContainer}>
           {STEPS.map((step, index) => {
             const isCompleted = step.status === 'completed';
-            const isError = step.status === 'error';
-            const isInProgress = step.status === 'inProgress';
+            const isWarning = step.status === 'warning';
 
             return (
               <View
                 key={step.title}
                 style={[
                   styles.stepRow,
-                  index < STEPS.length - 1 && { marginBottom: 20 },
+                  index < STEPS.length - 1 && { marginBottom: 18 },
                 ]}
               >
                 {/* Status Circle Indicator */}
@@ -571,31 +557,21 @@ export const ResumeApplicationMissingInfoScreen = ({
                   style={[
                     styles.indicatorCircle,
                     isCompleted && {
-                      backgroundColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
-                      borderColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
+                      backgroundColor: isDark ? '#1AA64A' : '#128937',
+                      borderColor: isDark ? '#1AA64A' : '#128937',
                     },
-                    isError && {
-                      backgroundColor: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-                      borderColor: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-                    },
-                    isInProgress && {
-                      backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                      borderColor: isDark ? UX4GColors.neutral500 : '#D1D5DB',
-                      borderWidth: 2,
+                    isWarning && {
+                      backgroundColor: isDark ? '#F59E0B' : '#EA580C',
+                      borderColor: isDark ? '#F59E0B' : '#EA580C',
                     },
                     step.status === 'notStarted' && {
-                      backgroundColor: isDark ? UX4GColors.neutral800 : '#FFFFFF',
-                      borderColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
-                      borderWidth: 1.5,
+                      backgroundColor: 'transparent',
+                      borderColor: isDark ? UX4GColors.neutral600 : '#D1D5DB',
                     },
                   ]}
                 >
-                  {isCompleted && (
-                    <Text style={styles.iconText}>✓</Text>
-                  )}
-                  {isError && (
-                    <Text style={styles.iconText}>!</Text>
-                  )}
+                  {isCompleted && <Text style={styles.iconText}>✓</Text>}
+                  {isWarning && <Text style={styles.iconText}>!</Text>}
                 </View>
 
                 {/* Step Details */}
@@ -603,7 +579,7 @@ export const ResumeApplicationMissingInfoScreen = ({
                   <Text
                     style={[
                       styles.stepTitle,
-                      { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
+                      { color: isDark ? UX4GColors.neutral0 : '#111827' },
                     ]}
                   >
                     {step.title}
@@ -611,7 +587,7 @@ export const ResumeApplicationMissingInfoScreen = ({
                   <Text
                     style={[
                       styles.stepSubtitle,
-                      { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 },
+                      { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
                     ]}
                   >
                     {step.subtitle}
@@ -626,46 +602,46 @@ export const ResumeApplicationMissingInfoScreen = ({
         <Text
           style={[
             styles.timestampText,
-            { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700 },
+            { color: isDark ? UX4GColors.neutral400 : '#4B5563' },
           ]}
         >
           Last saved 10 Apr 2026 at 3:12 PM
         </Text>
+
+        {/* Actions */}
+        <View style={styles.buttonGroup}>
+          <Ux4gButton
+            text="Go to incomplete section"
+            onPress={onGoToIncomplete}
+            size="large"
+            height={46}
+            width="100%"
+          />
+          <View style={{ height: 12 }} />
+          <Ux4gButton
+            text="Continue from beginning"
+            onPress={onContinueBeginning}
+            variant="outline"
+            size="large"
+            height={46}
+            width="100%"
+            contentColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+            borderColor={isDark ? UX4GColors.primary300 : '#432CBB'}
+          />
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footerContainer}>
+          <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500 }]}>
+            Powered by -
+          </Text>
+          <Image
+            source={require('./assets/digital_india_logo.png')}
+            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+            resizeMode="contain"
+          />
+        </View>
       </ScrollView>
-
-      {/* Actions */}
-      <View style={styles.actionsContainer}>
-        <Ux4gButton
-          text="Go to incomplete section"
-          onPress={onGoToIncomplete}
-          size="large"
-          height={48}
-          width="100%"
-        />
-        <View style={{ height: 12 }} />
-        <Ux4gButton
-          text="Continue from beginning"
-          onPress={onContinueBeginning}
-          variant="outline"
-          size="large"
-          height={48}
-          width="100%"
-          contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-          borderColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-        />
-      </View>
-
-      {/* Footer */}
-      <View style={styles.footerContainer}>
-        <Text style={[styles.poweredByText, { color: isDark ? UX4GColors.neutral500 : '#9CA3AF' }]}>
-          Powered by -
-        </Text>
-        <Image
-          source={require('./assets/digital_india_logo.png')}
-          style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-          resizeMode="contain"
-        />
-      </View>
     </SafeAreaView>
   );
 };
@@ -675,35 +651,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   emblemIcon: {
-    height: 40,
+    height: 36,
     width: 28,
   },
-  verticalDivider: {
-    height: 32,
-    width: 1,
-  },
   unionIcon: {
-    height: 32,
-    width: 44,
+    height: 30,
+    width: 40,
+    marginLeft: 8,
   },
   scrollPadding: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   headingText: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '800',
-    lineHeight: 31,
+    lineHeight: 28,
   },
   subheadingText: {
     fontSize: 14,
-    marginTop: 8,
+    marginTop: 6,
     marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 15,
     fontWeight: '700',
-    marginBottom: 20,
+    marginBottom: 18,
   },
   stepListContainer: {
     marginBottom: 20,
@@ -716,209 +689,247 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
+    borderWidth: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 14,
+    marginRight: 12,
     marginTop: 2,
   },
   iconText: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
   },
   stepDetails: {
     flex: 1,
   },
   stepTitle: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
   },
   stepSubtitle: {
-    fontSize: 13,
+    fontSize: 12,
     marginTop: 2,
   },
   timestampText: {
     fontSize: 13,
+    marginBottom: 20,
   },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+  buttonGroup: {
+    width: '100%',
   },
   footerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 24,
+    justifyContent: 'center',
+    gap: 6,
+    marginTop: 24,
+    paddingBottom: 16,
   },
   poweredByText: {
     fontSize: 11,
-    marginBottom: 6,
+    fontWeight: '500',
   },
   digitalIndiaLogo: {
-    height: 24,
-    width: 90,
+    height: 22,
+    width: 80,
   },
 });`;
   }, [isDark, variant]);
 
-  const renderProgressStepList = () => {
+  const renderInnerContent = () => {
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {STEPS.map((step, index) => {
-          const isCompleted = step.status === 'completed';
-          const isError = step.status === 'error';
-          const isInProgress = step.status === 'inProgress';
-
-          let circleBg = colors.notStartedBg;
-          let circleBorder = `1.5px solid ${colors.notStartedBorder}`;
-
-          if (isCompleted) {
-            circleBg = colors.completedIconBg;
-            circleBorder = `1.5px solid ${colors.completedBorder}`;
-          } else if (isError) {
-            circleBg = colors.errorIconBg;
-            circleBorder = `1.5px solid ${colors.errorBorder}`;
-          } else if (isInProgress) {
-            circleBg = colors.inProgressBg;
-            circleBorder = `2px solid ${colors.inProgressBorder}`;
-          }
-
-          return (
-            <div
-              key={step.title}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                marginBottom: index < STEPS.length - 1 ? 20 : 0,
-              }}
-            >
-              {/* Status Indicator */}
-              <div
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: '50%',
-                  backgroundColor: circleBg,
-                  border: circleBorder,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: 14,
-                  marginTop: 2,
-                  flexShrink: 0,
-                  boxSizing: 'border-box',
-                }}
-              >
-                {isCompleted && (
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#FFFFFF"
-                    strokeWidth="3.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                )}
-                {isError && (
-                  <span
-                    style={{
-                      color: '#FFFFFF',
-                      fontSize: 12,
-                      fontWeight: 800,
-                      lineHeight: 1,
-                    }}
-                  >
-                    !
-                  </span>
-                )}
-              </div>
-
-              {/* Step Text Details */}
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 600,
-                    color: colors.stepTitle,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {step.title}
-                </div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: colors.stepSubtitle,
-                    marginTop: 2,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {step.subtitle}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
-  const renderContentBody = () => {
-    return (
-      <div>
         {/* Title */}
-        <div
+        <h2
           style={{
-            fontSize: 26,
+            fontSize: 22,
             fontWeight: 800,
             color: colors.titleColor,
-            lineHeight: 1.2,
-            whiteSpace: 'pre-line',
+            margin: '0 0 6px 0',
+            lineHeight: 1.3,
+            letterSpacing: '-0.01em',
           }}
         >
-          {'Continue your\napplication?'}
-        </div>
+          Continue your application?
+        </h2>
 
         {/* Subtitle */}
-        <div
+        <p
           style={{
             fontSize: 14,
             color: colors.subtleText,
-            marginTop: 8,
-            marginBottom: 20,
+            margin: '0 0 20px 0',
             lineHeight: 1.4,
+            fontWeight: 400,
           }}
         >
           Some sections have missing information
-        </div>
+        </p>
 
         {/* Section Title */}
         <div
           style={{
             fontSize: 15,
             fontWeight: 700,
-            color: colors.titleColor,
-            marginBottom: 20,
+            color: colors.sectionTitle,
+            marginBottom: 18,
           }}
         >
           Your progress
         </div>
 
         {/* Progress Step List */}
-        {renderProgressStepList()}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 20 }}>
+          {STEPS.map((step) => {
+            const isCompleted = step.status === 'completed';
+            const isWarning = step.status === 'warning';
+
+            return (
+              <div
+                key={step.title}
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 12,
+                }}
+              >
+                {/* Status Indicator */}
+                <div
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    backgroundColor: isCompleted
+                      ? colors.completedGreen
+                      : isWarning
+                        ? colors.warningOrange
+                        : 'transparent',
+                    border: `1.5px solid ${isCompleted
+                      ? colors.completedGreen
+                      : isWarning
+                        ? colors.warningOrange
+                        : colors.circleBorder
+                      }`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    marginTop: 2,
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  {isCompleted && (
+                    <span
+                      style={{
+                        color: '#FFFFFF',
+                        fontSize: 11,
+                        fontWeight: 700,
+                        userSelect: 'none',
+                        lineHeight: 1,
+                      }}
+                    >
+                      ✓
+                    </span>
+                  )}
+                  {isWarning && (
+                    <span
+                      style={{
+                        color: '#FFFFFF',
+                        fontSize: 12,
+                        fontWeight: 800,
+                        userSelect: 'none',
+                        lineHeight: 1,
+                      }}
+                    >
+                      !
+                    </span>
+                  )}
+                </div>
+
+                {/* Step Text Details */}
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: colors.stepTitle,
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {step.title}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: colors.stepSubtitle,
+                      marginTop: 2,
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {step.subtitle}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
         {/* Timestamp */}
         <div
           style={{
             fontSize: 13,
             color: colors.timestampColor,
-            marginTop: 20,
+            marginBottom: 22,
             lineHeight: 1.3,
           }}
         >
           Last saved 10 Apr 2026 at 3:12 PM
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {/* Go to incomplete section Button */}
+          <button
+            type="button"
+            onClick={() => alert('Navigating to incomplete section...')}
+            style={{
+              width: '100%',
+              height: 44,
+              backgroundColor: colors.primaryBtnBg,
+              color: colors.primaryBtnText,
+              border: 'none',
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            Go to incomplete section
+          </button>
+
+          {/* Continue from beginning Button */}
+          <button
+            type="button"
+            onClick={() => alert('Continuing from beginning...')}
+            style={{
+              width: '100%',
+              height: 44,
+              backgroundColor: 'transparent',
+              color: colors.outlineBtnText,
+              border: `1.5px solid ${colors.outlineBtnBorder}`,
+              borderRadius: 8,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            Continue from beginning
+          </button>
         </div>
       </div>
     );
@@ -931,18 +942,18 @@ const styles = StyleSheet.create({
       <div
         style={{
           width: 360,
-          height: 760,
-          borderRadius: 20,
-          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+          minHeight: 680,
+          maxHeight: 760,
+          borderRadius: 24,
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)',
           overflow: 'hidden',
           backgroundColor: colors.screenBg,
-          border: `1px solid ${colors.border}`,
+          border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
           display: 'flex',
           flexDirection: 'column',
           fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           WebkitFontSmoothing: 'antialiased',
           MozOsxFontSmoothing: 'grayscale',
-          position: 'relative',
         }}
       >
         {/* Top UX4G AppHeader */}
@@ -960,7 +971,7 @@ const styles = StyleSheet.create({
                 src="/national_emblem_logo.svg"
                 alt="National Emblem"
                 style={{
-                  height: 38,
+                  height: 36,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
@@ -978,24 +989,25 @@ const styles = StyleSheet.create({
                 width: 36,
                 height: 36,
                 borderRadius: 8,
-                border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
+                border: `1.5px solid ${isDark ? UX4GColors.primary300 : '#C7D2FE'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                cursor: 'pointer',
               }}
             >
               <span
                 className="material-symbols-outlined"
                 style={{
                   fontSize: 20,
-                  color: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+                  color: isDark ? UX4GColors.primary300 : '#432CBB',
                 }}
               >
                 menu
               </span>
             </div>
           </div>
-          <Ux4gDivider color={colors.border} thickness={1} />
+          <div style={{ height: 1, backgroundColor: isDark ? UX4GColors.neutral800 : '#F0F0F2' }} />
         </div>
 
         {/* Scrollable Center Content */}
@@ -1010,7 +1022,7 @@ const styles = StyleSheet.create({
           <div
             style={{
               flex: 1,
-              padding: isCard ? '32px 24px' : '32px 24px',
+              padding: isCard ? '16px 14px' : '20px 18px',
             }}
           >
             {isCard ? (
@@ -1018,82 +1030,48 @@ const styles = StyleSheet.create({
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 24,
-                  border: isDark ? `1px solid ${UX4GColors.neutral800}` : 'none',
-                  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
+                  padding: '22px 18px',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral700 : 'rgba(0,0,0,0.03)'}`,
                 }}
               >
-                {renderContentBody()}
+                {renderInnerContent()}
               </div>
             ) : (
-              renderContentBody()
+              renderInnerContent()
             )}
           </div>
-        </div>
 
-        {/* Fixed Bottom Action Buttons */}
-        <div
-          style={{
-            padding: '16px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            backgroundColor: isCard ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100) : colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          {/* Go to incomplete section Button */}
-          <Ux4gButton
-            text="Go to incomplete section"
-            onPress={() => {}}
-            height={48}
-            size="large"
-            width="100%"
-          />
-
-          {/* Continue from beginning Button */}
-          <Ux4gButton
-            text="Continue from beginning"
-            variant="outline"
-            onPress={() => {}}
-            height={48}
-            size="large"
-            width="100%"
-            contentColor={colors.startFreshColor}
-            borderColor={colors.startFreshColor}
-          />
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '0 0 24px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: isCard ? (isDark ? UX4GColors.primary900 : UX4GColors.primary100) : colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
+          {/* Powered by Footer */}
+          <div
             style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
+              padding: '10px 0 20px 0',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              flexShrink: 0,
             }}
           >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 24,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                color: colors.footerText,
+              }}
+            >
+              Powered by -
+            </span>
+            <img
+              src="/Digital_India_logo.svg"
+              alt="Digital India"
+              style={{
+                height: 22,
+                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+              }}
+            />
+          </div>
         </div>
       </div>
     );
@@ -1108,7 +1086,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A pattern showing the user's saved application progress with step-by-step status, allowing them to continue from where they left off or start fresh.
+          A pattern showing the user's saved application progress with missing information highlights, allowing them to jump directly to incomplete sections or continue from the beginning.
         </p>
       </div>
 
@@ -1190,8 +1168,8 @@ const styles = StyleSheet.create({
                                 variant === v
                                   ? UX4GColors.neutral0
                                   : isDark
-                                  ? UX4GColors.neutral400
-                                  : UX4GColors.neutral600,
+                                    ? UX4GColors.neutral400
+                                    : UX4GColors.neutral600,
                               transition: 'all 0.2s ease',
                             }}
                           >
@@ -1211,25 +1189,23 @@ const styles = StyleSheet.create({
             {/* 2. Code Tab */}
             {activeMainTab === 'code' && (
               <div className="wb-code-area">
-                <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-                  <button
-                    type="button"
-                    onClick={() => setVariant('Default')}
-                    className={`wb-tab ${variant === 'Default' ? 'active' : ''}`}
-                    style={{ padding: '4px 12px', fontSize: 12 }}
-                  >
-                    Default
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setVariant('Card style')}
-                    className={`wb-tab ${variant === 'Card style' ? 'active' : ''}`}
-                    style={{ padding: '4px 12px', fontSize: 12 }}
-                  >
-                    Card style
-                  </button>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 16,
+                    marginBottom: 16,
+                    padding: '12px 16px',
+                    backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                    border: `1px solid ${isDark ? UX4GColors.neutral800 : UX4GColors.neutral200}`,
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 600, color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700 }}>
+                    Active Variant: <span style={{ color: UX4GColors.primary }}>{variant}</span>
+                  </span>
                 </div>
-
                 <CodeBlock code={codeString} language="tsx" />
               </div>
             )}

@@ -26,6 +26,7 @@ export const GrievanceStatusTrackerDoc: React.FC<GrievanceStatusTrackerDocProps>
       subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
       mutedText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral600,
       primary: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      primaryLight: isDark ? UX4GColors.primary300 : UX4GColors.primary,
       headerBg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
     };
   }, [isDark]);
