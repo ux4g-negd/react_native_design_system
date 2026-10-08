@@ -279,14 +279,15 @@ export const SelectAppointmentTimeScreen = ({
           Adv. M. Sharma · 30-minute slot
         </Text>
 
-        {/* Appointment date & time dropdown trigger */}
+        {/* Appointment date & time DatePicker field */}
         <Text style={[styles.label, { color: colors.titleColor }]}>Appointment date & time</Text>
-        <TouchableOpacity style={[styles.dropdownTrigger, { borderColor: colors.border }]}>
+        <TouchableOpacity style={[styles.datePickerTrigger, { borderColor: colors.border, backgroundColor: colors.surface }]}>
           <Text style={[styles.triggerText, { color: selectedDate ? colors.titleColor : '#9CA3AF' }]}>
             {selectedDate && selectedSlot
               ? \`\${formatDate(selectedDate)} · \${selectedSlot.time}\`
               : 'Tap to pick date & time'}
           </Text>
+          <Ux4gIcons name="calendar_today" size={18} color="#6B7280" />
         </TouchableOpacity>
 
         {/* Ux4gTimeslot Calendar Component (Expanded View) */}
@@ -347,12 +348,15 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: '800' },
   subtitle: { fontSize: 13, marginTop: 4, marginBottom: 20 },
   label: { fontSize: 14, fontWeight: '600', marginBottom: 8 },
-  dropdownTrigger: {
+  datePickerTrigger: {
     width: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 8,
     borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
   triggerText: { fontSize: 14 },
@@ -438,13 +442,15 @@ export const SelectAppointmentTimeCompactScreen = ({
           Adv. M. Sharma · 30-minute slot
         </Text>
 
+        {/* Appointment date & time DatePicker field */}
         <Text style={[styles.label, { color: colors.titleColor }]}>Appointment date & time</Text>
-        <TouchableOpacity style={[styles.dropdownTrigger, { borderColor: colors.border }]}>
+        <TouchableOpacity style={[styles.datePickerTrigger, { borderColor: colors.border, backgroundColor: colors.surface }]}>
           <Text style={[styles.triggerText, { color: selectedDate ? colors.titleColor : '#9CA3AF' }]}>
             {selectedDate && selectedSlot
               ? \`\${formatDate(selectedDate)} · \${selectedSlot.time}\`
               : 'Tap to pick date & time'}
           </Text>
+          <Ux4gIcons name="calendar_today" size={18} color="#6B7280" />
         </TouchableOpacity>
 
         {/* Ux4gTimeslot with Compact View Mode */}
@@ -505,12 +511,15 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: '800' },
   subtitle: { fontSize: 13, marginTop: 4, marginBottom: 20 },
   label: { fontSize: 14, fontWeight: '600', marginBottom: 8 },
-  dropdownTrigger: {
+  datePickerTrigger: {
     width: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 8,
     borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
   triggerText: { fontSize: 14 },
@@ -709,7 +718,7 @@ const styles = StyleSheet.create({
                       Appointment date & time
                     </div>
 
-                    {/* Tap to Pick Dropdown Trigger */}
+                    {/* Date Picker Input Field */}
                     <div
                       onClick={() => {
                         setSheetCurrentDate(selectedDate);
@@ -717,7 +726,7 @@ const styles = StyleSheet.create({
                       }}
                       style={{
                         width: '100%',
-                        padding: '10px 16px',
+                        padding: '10px 14px',
                         backgroundColor: colors.surface,
                         border: `1px solid ${colors.dropdownBorder}`,
                         borderRadius: '8px',
@@ -732,7 +741,7 @@ const styles = StyleSheet.create({
                       <span
                         style={{
                           fontSize: '14px',
-                          color: confirmedSlot ? colors.titleColor : '#9CA3AF',
+                          color: confirmedSlot ? colors.titleColor : isDark ? UX4GColors.neutral400 : '#9CA3AF',
                         }}
                       >
                         {confirmedSlot
@@ -741,9 +750,9 @@ const styles = StyleSheet.create({
                       </span>
                       <span
                         className="material-symbols-outlined"
-                        style={{ fontSize: '20px', color: '#6B7280' }}
+                        style={{ fontSize: '18px', color: isDark ? UX4GColors.neutral400 : '#6B7280' }}
                       >
-                        keyboard_arrow_down
+                        calendar_today
                       </span>
                     </div>
 

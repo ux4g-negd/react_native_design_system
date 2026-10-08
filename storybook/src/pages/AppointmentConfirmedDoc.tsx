@@ -153,7 +153,18 @@ export const AppointmentConfirmedScreen = ({
           />
         </View>
 
-        {/* Add to calendar button */}
+        {/* Get directions button (Primary Filled) */}
+        <View style={styles.btnWrapper}>
+          <Ux4gButton
+            text="Get directions"
+            onPress={onGetDirections}
+            variant={Ux4gButtonVariant.primary}
+            size={Ux4gButtonSize.large}
+            leadingIcon="directions"
+          />
+        </View>
+
+        {/* Add to calendar button (Outline) */}
         <View style={styles.btnWrapper}>
           <Ux4gButton
             text="Add to calendar"
@@ -163,19 +174,6 @@ export const AppointmentConfirmedScreen = ({
             contentColor={colors.buttonText}
             borderColor={colors.buttonBorder}
             leadingIcon="calendar_today"
-          />
-        </View>
-
-        {/* Get directions button */}
-        <View style={styles.btnWrapper}>
-          <Ux4gButton
-            text="Get directions"
-            onPress={onGetDirections}
-            variant={Ux4gButtonVariant.outline}
-            size={Ux4gButtonSize.large}
-            contentColor={colors.buttonText}
-            borderColor={colors.buttonBorder}
-            leadingIcon="explore"
           />
         </View>
       </ScrollView>
@@ -577,14 +575,14 @@ const styles = StyleSheet.create({
                       </div>
                     </div>
 
-                    {/* Add to Calendar Button */}
+                    {/* Get Directions Button (Primary Filled) */}
                     <button
                       style={{
                         width: '100%',
                         height: '44px',
-                        backgroundColor: 'transparent',
-                        border: `1px solid ${colors.buttonBorder}`,
-                        color: colors.buttonText,
+                        backgroundColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+                        border: 'none',
+                        color: isDark ? UX4GColors.primary950 : '#FFFFFF',
                         borderRadius: '8px',
                         fontSize: '14px',
                         fontWeight: 600,
@@ -596,13 +594,13 @@ const styles = StyleSheet.create({
                         gap: '8px',
                       }}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                        calendar_today
+                      <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                        directions
                       </span>
-                      Add to calendar
+                      Get directions
                     </button>
 
-                    {/* Get Directions Button */}
+                    {/* Add to Calendar Button (Secondary Outline) */}
                     <button
                       style={{
                         width: '100%',
@@ -621,9 +619,9 @@ const styles = StyleSheet.create({
                       }}
                     >
                       <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                        explore
+                        calendar_today
                       </span>
-                      Get directions
+                      Add to calendar
                     </button>
                   </div>
                 </div>
