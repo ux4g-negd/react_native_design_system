@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { Ux4gResultList } from '../../../src/components/result-list/ResultList';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { CodeBlock } from '../components/CodeBlock';
 
 interface CategoryServiceListDocProps {
@@ -8,23 +10,145 @@ interface CategoryServiceListDocProps {
 
 type MainTab = 'preview' | 'code';
 
+interface ServiceDetails {
+  eligibility: string;
+  coverage: string;
+  department: string;
+  applyAt: string;
+  documents: string;
+  cardType: string;
+}
+
 interface ServiceItem {
   id: string;
   title: string;
   fee: string;
   time: string;
   isPaid: boolean;
+  details: ServiceDetails;
 }
 
 const SERVICES: ServiceItem[] = [
-  { id: '1', title: 'Ayushman Bharat Health Card', fee: 'Free', time: '7 days', isPaid: false },
-  { id: '2', title: 'Hospital Empanelment', fee: 'Free', time: '30 days', isPaid: false },
-  { id: '3', title: 'Birth Certificate', fee: 'Free', time: '20 mins', isPaid: false },
-  { id: '4', title: 'Disability Certificate (UDID)', fee: 'Free', time: '15 days', isPaid: false },
-  { id: '5', title: 'Health Insurance Claim', fee: 'Free', time: '10 days', isPaid: false },
-  { id: '6', title: 'Vaccination Certificate', fee: 'Free', time: 'Instant', isPaid: false },
-  { id: '7', title: 'Medical Reimbursement', fee: '₹ 500', time: '21 days', isPaid: true },
-  { id: '8', title: 'Janani Suraksha Yojana', fee: 'Free', time: 'On delivery', isPaid: false },
+  {
+    id: '1',
+    title: 'Ayushman Bharat Health Card',
+    fee: 'Free',
+    time: '7 days',
+    isPaid: false,
+    details: {
+      eligibility: 'SECC 2011 families',
+      coverage: '₹5,00,000 per year',
+      department: 'Health & Family Welfare',
+      applyAt: 'Empanelled hospitals',
+      documents: 'Aadhaar, ration card',
+      cardType: 'Digital, downloadable',
+    },
+  },
+  {
+    id: '2',
+    title: 'Hospital Empanelment',
+    fee: 'Free',
+    time: '30 days',
+    isPaid: false,
+    details: {
+      eligibility: 'Registered medical facilities',
+      coverage: 'National network',
+      department: 'Health & Family Welfare',
+      applyAt: 'State health agency',
+      documents: 'Registration & hospital NOC',
+      cardType: 'Accreditation certificate',
+    },
+  },
+  {
+    id: '3',
+    title: 'Birth Certificate',
+    fee: 'Free',
+    time: '20 mins',
+    isPaid: false,
+    details: {
+      eligibility: 'All citizens born in area',
+      coverage: 'Valid nationwide',
+      department: 'Revenue & Municipal Dept',
+      applyAt: 'Citizen service center',
+      documents: 'Hospital discharge slip',
+      cardType: 'Digital, downloadable PDF',
+    },
+  },
+  {
+    id: '4',
+    title: 'Disability Certificate (UDID)',
+    fee: 'Free',
+    time: '15 days',
+    isPaid: false,
+    details: {
+      eligibility: 'Persons with Disabilities',
+      coverage: 'Universal disability scheme',
+      department: 'Empowerment of PwD',
+      applyAt: 'District Medical Board',
+      documents: 'Medical evaluation report',
+      cardType: 'Smart card / digital',
+    },
+  },
+  {
+    id: '5',
+    title: 'Health Insurance Claim',
+    fee: 'Free',
+    time: '10 days',
+    isPaid: false,
+    details: {
+      eligibility: 'Enrolled scheme policyholders',
+      coverage: 'As per approved claim package',
+      department: 'Insurance & Claims Division',
+      applyAt: 'Designated TPA desk',
+      documents: 'Discharge summary, final bills',
+      cardType: 'Direct bank settlement',
+    },
+  },
+  {
+    id: '6',
+    title: 'Vaccination Certificate',
+    fee: 'Free',
+    time: 'Instant',
+    isPaid: false,
+    details: {
+      eligibility: 'All vaccinated beneficiaries',
+      coverage: 'Nationwide & international',
+      department: 'Ministry of Health & FW',
+      applyAt: 'CoWIN / National health portal',
+      documents: 'Beneficiary ID / Aadhaar',
+      cardType: 'QR-coded verifiable PDF',
+    },
+  },
+  {
+    id: '7',
+    title: 'Medical Reimbursement',
+    fee: '₹ 50',
+    time: '21 days',
+    isPaid: true,
+    details: {
+      eligibility: 'State / Central employees',
+      coverage: 'Approved medical expenses',
+      department: 'CGHS / State Health Services',
+      applyAt: 'Administrative office / portal',
+      documents: 'Original prescription & bills',
+      cardType: 'Bank credit sanction',
+    },
+  },
+  {
+    id: '8',
+    title: 'Janani Suraksha Yojana',
+    fee: 'Free',
+    time: 'On delivery',
+    isPaid: false,
+    details: {
+      eligibility: 'Pregnant women in BPL / SC / ST',
+      coverage: 'Direct financial assistance',
+      department: 'National Health Mission',
+      applyAt: 'Govt health centre / ASHA',
+      documents: 'MCP card, Bank passbook',
+      cardType: 'Direct Benefit Transfer (DBT)',
+    },
+  },
 ];
 
 const FILTER_CHIPS = ['All · 48', 'Hospitals · 12', 'Certificates · 18', 'Insurance'];
@@ -32,6 +156,8 @@ const FILTER_CHIPS = ['All · 48', 'Hospitals · 12', 'Certificates · 18', 'Ins
 export const CategoryServiceListDoc: React.FC<CategoryServiceListDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [selectedChip, setSelectedChip] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = 8;
 
   const chipsScrollRef = React.useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -110,9 +236,18 @@ import {
   Ux4gButton,
   Ux4gChoiceChip,
   Ux4gChipGroup,
-  Ux4gIcons,
+  Ux4gResultList,
   UX4GColors,
 } from 'ux4g-react-native-components';
+
+interface ServiceDetails {
+  eligibility: string;
+  coverage: string;
+  department: string;
+  applyAt: string;
+  documents: string;
+  cardType: string;
+}
 
 interface ServiceItem {
   id: string;
@@ -120,17 +255,130 @@ interface ServiceItem {
   fee: string;
   time: string;
   isPaid: boolean;
+  details: ServiceDetails;
 }
 
 const SERVICES: ServiceItem[] = [
-  { id: '1', title: 'Ayushman Bharat Health Card', fee: 'Free', time: '7 days', isPaid: false },
-  { id: '2', title: 'Hospital Empanelment', fee: 'Free', time: '30 days', isPaid: false },
-  { id: '3', title: 'Birth Certificate', fee: 'Free', time: '20 mins', isPaid: false },
-  { id: '4', title: 'Disability Certificate (UDID)', fee: 'Free', time: '15 days', isPaid: false },
-  { id: '5', title: 'Health Insurance Claim', fee: 'Free', time: '10 days', isPaid: false },
-  { id: '6', title: 'Vaccination Certificate', fee: 'Free', time: 'Instant', isPaid: false },
-  { id: '7', title: 'Medical Reimbursement', fee: '₹ 500', time: '21 days', isPaid: true },
-  { id: '8', title: 'Janani Suraksha Yojana', fee: 'Free', time: 'On delivery', isPaid: false },
+  {
+    id: '1',
+    title: 'Ayushman Bharat Health Card',
+    fee: 'Free',
+    time: '7 days',
+    isPaid: false,
+    details: {
+      eligibility: 'SECC 2011 families',
+      coverage: '₹5,00,000 per year',
+      department: 'Health & Family Welfare',
+      applyAt: 'Empanelled hospitals',
+      documents: 'Aadhaar, ration card',
+      cardType: 'Digital, downloadable',
+    },
+  },
+  {
+    id: '2',
+    title: 'Hospital Empanelment',
+    fee: 'Free',
+    time: '30 days',
+    isPaid: false,
+    details: {
+      eligibility: 'Registered medical facilities',
+      coverage: 'National network',
+      department: 'Health & Family Welfare',
+      applyAt: 'State health agency',
+      documents: 'Registration & hospital NOC',
+      cardType: 'Accreditation certificate',
+    },
+  },
+  {
+    id: '3',
+    title: 'Birth Certificate',
+    fee: 'Free',
+    time: '20 mins',
+    isPaid: false,
+    details: {
+      eligibility: 'All citizens born in area',
+      coverage: 'Valid nationwide',
+      department: 'Revenue & Municipal Dept',
+      applyAt: 'Citizen service center',
+      documents: 'Hospital discharge slip',
+      cardType: 'Digital, downloadable PDF',
+    },
+  },
+  {
+    id: '4',
+    title: 'Disability Certificate (UDID)',
+    fee: 'Free',
+    time: '15 days',
+    isPaid: false,
+    details: {
+      eligibility: 'Persons with Disabilities',
+      coverage: 'Universal disability scheme',
+      department: 'Empowerment of PwD',
+      applyAt: 'District Medical Board',
+      documents: 'Medical evaluation report',
+      cardType: 'Smart card / digital',
+    },
+  },
+  {
+    id: '5',
+    title: 'Health Insurance Claim',
+    fee: 'Free',
+    time: '10 days',
+    isPaid: false,
+    details: {
+      eligibility: 'Enrolled scheme policyholders',
+      coverage: 'As per approved claim package',
+      department: 'Insurance & Claims Division',
+      applyAt: 'Designated TPA desk',
+      documents: 'Discharge summary, final bills',
+      cardType: 'Direct bank settlement',
+    },
+  },
+  {
+    id: '6',
+    title: 'Vaccination Certificate',
+    fee: 'Free',
+    time: 'Instant',
+    isPaid: false,
+    details: {
+      eligibility: 'All vaccinated beneficiaries',
+      coverage: 'Nationwide & international',
+      department: 'Ministry of Health & FW',
+      applyAt: 'CoWIN / National health portal',
+      documents: 'Beneficiary ID / Aadhaar',
+      cardType: 'QR-coded verifiable PDF',
+    },
+  },
+  {
+    id: '7',
+    title: 'Medical Reimbursement',
+    fee: '₹ 50',
+    time: '21 days',
+    isPaid: true,
+    details: {
+      eligibility: 'State / Central employees',
+      coverage: 'Approved medical expenses',
+      department: 'CGHS / State Health Services',
+      applyAt: 'Administrative office / portal',
+      documents: 'Original prescription & bills',
+      cardType: 'Bank credit sanction',
+    },
+  },
+  {
+    id: '8',
+    title: 'Janani Suraksha Yojana',
+    fee: 'Free',
+    time: 'On delivery',
+    isPaid: false,
+    details: {
+      eligibility: 'Pregnant women in BPL / SC / ST',
+      coverage: 'Direct financial assistance',
+      department: 'National Health Mission',
+      applyAt: 'Govt health centre / ASHA',
+      documents: 'MCP card, Bank passbook',
+      cardType: 'Direct Benefit Transfer (DBT)',
+    },
+  },
 ];
 
 const FILTER_CHIPS = ['All · 48', 'Hospitals · 12', 'Certificates · 18', 'Insurance'];
@@ -147,6 +395,8 @@ export const CategoryServiceListScreen = ({
   onApply?: (service: ServiceItem) => void;
 }) => {
   const [selectedChip, setSelectedChip] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages = 8;
 
   const colors = {
     screenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
@@ -161,6 +411,10 @@ export const CategoryServiceListScreen = ({
     badgeText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
     buttonBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
     buttonText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
+    navCircleBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
+    navIconColor: isDark ? UX4GColors.primary200 : UX4GColors.primary600,
+    dotActiveBg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+    dotInactiveBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
   };
 
   return (
@@ -171,19 +425,15 @@ export const CategoryServiceListScreen = ({
         title="National Services Portal"
         showBackButton
         onBackPress={onBack}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity key="menu" style={styles.menuBtn} onPress={() => {}}>
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
 
       {/* Breadcrumb Bar */}
@@ -232,62 +482,78 @@ export const CategoryServiceListScreen = ({
           ))}
         />
 
-        {/* Service List */}
+        {/* Service Cards using Ux4gResultList */}
         <View style={styles.serviceList}>
-          {SERVICES.map((item) => (
+          {SERVICES.map((item, idx) => (
             <View
               key={item.id}
               style={[
-                styles.serviceRow,
-                { backgroundColor: colors.rowBg, borderBottomColor: colors.border },
+                styles.serviceCardWrapper,
+                { backgroundColor: colors.rowBg, borderColor: colors.border },
               ]}
             >
-              <View style={styles.serviceInfo}>
-                <Text style={[styles.serviceTitle, { color: colors.titleColor }]}>
-                  {item.title}
-                </Text>
-                <View style={styles.serviceMeta}>
-                  <View style={[styles.badge, { backgroundColor: colors.badgeBg }]}>
-                    <Text style={[styles.badgeText, { color: colors.badgeText }]}>
-                      {item.isPaid ? 'Paid' : 'Free'}
-                    </Text>
+              <Ux4gResultList
+                title={item.title}
+                statusTag={item.isPaid ? 'Paid' : 'Free'}
+                tagColorScheme="neutral"
+                customMetadata={
+                  <View style={styles.metaRow}>
+                    {item.isPaid && (
+                      <Text style={[styles.feeText, { color: colors.subtleText }]}>{item.fee}</Text>
+                    )}
+                    <Text style={[styles.metaTime, { color: colors.subtleText }]}>⏱ {item.time}</Text>
                   </View>
-                  {item.isPaid && (
-                    <Text style={[styles.feeText, { color: colors.subtleText }]}>
-                      {item.fee}
-                    </Text>
-                  )}
-                  <Text style={[styles.metaTime, { color: colors.subtleText }]}>
-                    ⏱ {item.time}
-                  </Text>
-                </View>
-              </View>
-              <Ux4gButton
-                text="Apply"
-                onPress={() => onApply(item)}
-                variant="outline"
-                size="small"
-                borderColor={colors.buttonBorder}
-                contentColor={colors.buttonText}
+                }
+                actionButtonText="Apply"
+                onActionPressed={() => onApply(item)}
+                initialExpanded={idx === 0}
+                showBottomDivider={false}
+                contentPadding={12}
+                details={[
+                  { label: 'Eligibility', value: item.details.eligibility },
+                  { label: 'Coverage', value: item.details.coverage },
+                  { label: 'Department', value: item.details.department },
+                  { label: 'Apply at', value: item.details.applyAt },
+                  { label: 'Documents', value: item.details.documents },
+                  { label: 'Card type', value: item.details.cardType },
+                ]}
               />
             </View>
           ))}
         </View>
 
-        {/* Pagination Dots */}
+        {/* Working Pagination Bar */}
         <View style={styles.paginationRow}>
-          <TouchableOpacity style={[styles.pageNavBtn, { backgroundColor: colors.badgeBg }]}>
-            <Text style={{ color: colors.primaryColor }}>‹</Text>
+          <TouchableOpacity
+            style={[styles.pageNavBtn, { backgroundColor: colors.navCircleBg }]}
+            onPress={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+          >
+            <Text style={{ color: colors.navIconColor }}>‹</Text>
           </TouchableOpacity>
-          <View style={[styles.pagePillActive, { backgroundColor: colors.primaryColor }]} />
-          {[1, 2, 3, 4, 5, 6, 7].map((dot) => (
-            <View
-              key={dot}
-              style={[styles.pageDot, { backgroundColor: colors.badgeBg }]}
-            />
-          ))}
-          <TouchableOpacity style={[styles.pageNavBtn, { backgroundColor: colors.badgeBg }]}>
-            <Text style={{ color: colors.primaryColor }}>›</Text>
+
+          {Array.from({ length: totalPages }).map((_, idx) => {
+            const pageNum = idx + 1;
+            const isActive = pageNum === currentPage;
+            return (
+              <TouchableOpacity
+                key={pageNum}
+                onPress={() => setCurrentPage(pageNum)}
+                style={
+                  isActive
+                    ? [styles.pagePillActive, { backgroundColor: colors.dotActiveBg }]
+                    : [styles.pageDot, { backgroundColor: colors.dotInactiveBg }]
+                }
+              />
+            );
+          })}
+
+          <TouchableOpacity
+            style={[styles.pageNavBtn, { backgroundColor: colors.navCircleBg }]}
+            onPress={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+          >
+            <Text style={{ color: colors.navIconColor }}>›</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -335,24 +601,17 @@ const styles = StyleSheet.create({
   },
   countText: { fontSize: 13, fontWeight: '600' },
   chipsRow: { paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
-  chipItem: { marginRight: 8 },
-  serviceList: { paddingHorizontal: 16, marginTop: 4 },
-  serviceRow: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
+  serviceList: { paddingHorizontal: 16, marginTop: 4, gap: 10 },
+  serviceCardWrapper: {
+    borderRadius: 12,
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 6,
   },
-  serviceInfo: { flex: 1, paddingRight: 12 },
-  serviceTitle: { fontSize: 14, fontWeight: '600', marginBottom: 6 },
-  serviceMeta: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  badge: {
-    paddingHorizontal: 6,
-    paddingVertical: 1,
-    borderRadius: 4,
-  },
-  badgeText: { fontSize: 10, fontWeight: '600' },
   feeText: { fontSize: 11 },
   metaTime: { fontSize: 11 },
   paginationRow: {
@@ -392,7 +651,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          Category-specific service listing with breadcrumb, filter chips, and paginated service rows with Apply actions.
+          Category-specific service listing with breadcrumb, filter chips, expandable ResultList cards with detailed info, and interactive pagination.
         </p>
       </div>
 
@@ -653,122 +912,70 @@ const styles = StyleSheet.create({
                       })}
                     </div>
 
-                    {/* Service Rows List */}
-                    <div style={{ padding: '0 16px', flexShrink: 0 }}>
-                      {SERVICES.map((item) => (
-                        <div
-                          key={item.id}
-                          style={{
-                            padding: '10px 0',
-                            borderBottom: `1px solid ${colors.border}`,
-                            backgroundColor: 'transparent',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            gap: '8px',
-                          }}
-                        >
-                          {/* Left Column info */}
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div
-                              style={{
-                                fontSize: '14px',
-                                fontWeight: 600,
-                                color: colors.titleColor,
-                                marginBottom: '4px',
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                              }}
-                            >
-                              {item.title}
-                            </div>
-                            <div
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                              }}
-                            >
-                              {/* Free / Paid Badge */}
-                              <span
-                                style={{
-                                  padding: '1px 6px',
-                                  borderRadius: '4px',
-                                  backgroundColor: colors.badgeBg,
-                                  color: colors.badgeText,
-                                  fontSize: '10px',
-                                  fontWeight: 600,
-                                }}
-                              >
-                                {item.isPaid ? 'Paid' : 'Free'}
-                              </span>
-
-                              {item.isPaid && (
-                                <span
-                                  style={{
-                                    fontSize: '11px',
-                                    color: colors.subtleText,
-                                  }}
-                                >
-                                  {item.fee}
-                                </span>
-                              )}
-
-                              {/* Clock Icon + Time */}
-                              <span
-                                className="material-symbols-outlined"
-                                style={{
-                                  fontSize: '13px',
-                                  color: colors.subtleText,
-                                  marginLeft: '4px',
-                                }}
-                              >
-                                access_time
-                              </span>
-                              <span
-                                style={{
-                                  fontSize: '11px',
-                                  color: colors.subtleText,
-                                }}
-                              >
-                                {item.time}
-                              </span>
-                            </div>
+                    {/* Expandable Service Cards List using Ux4gResultList */}
+                    <div
+                      style={{
+                        padding: '0 16px',
+                        flexShrink: 0,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                      }}
+                    >
+                      <Ux4gThemeProvider isDark={isDark}>
+                        {SERVICES.map((item, idx) => (
+                          <div
+                            key={item.id}
+                            style={{
+                              borderRadius: '12px',
+                              border: `1px solid ${colors.border}`,
+                              backgroundColor: colors.rowBg,
+                              overflow: 'hidden',
+                              boxSizing: 'border-box',
+                            }}
+                          >
+                            <Ux4gResultList
+                              title={item.title}
+                              statusTag={item.isPaid ? 'Paid' : 'Free'}
+                              tagColorScheme="neutral"
+                              customMetadata={
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                  {item.isPaid && (
+                                    <span style={{ fontSize: '11px', color: colors.subtleText }}>
+                                      {item.fee}
+                                    </span>
+                                  )}
+                                  <span
+                                    className="material-symbols-outlined"
+                                    style={{ fontSize: '13px', color: colors.subtleText }}
+                                  >
+                                    schedule
+                                  </span>
+                                  <span style={{ fontSize: '11px', color: colors.subtleText }}>
+                                    {item.time}
+                                  </span>
+                                </div>
+                              }
+                              actionButtonText="Apply"
+                              onActionPressed={() => {}}
+                              initialExpanded={idx === 0}
+                              showBottomDivider={false}
+                              contentPadding={12}
+                              details={[
+                                { label: 'Eligibility', value: item.details.eligibility },
+                                { label: 'Coverage', value: item.details.coverage },
+                                { label: 'Department', value: item.details.department },
+                                { label: 'Apply at', value: item.details.applyAt },
+                                { label: 'Documents', value: item.details.documents },
+                                { label: 'Card type', value: item.details.cardType },
+                              ]}
+                            />
                           </div>
-
-                          {/* Right Column: Apply Button + Chevron */}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-                            <button
-                              style={{
-                                padding: '4px 12px',
-                                backgroundColor: 'transparent',
-                                border: `1px solid ${colors.buttonBorder}`,
-                                borderRadius: '6px',
-                                color: colors.buttonText,
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                              }}
-                            >
-                              Apply
-                            </button>
-                            <span
-                              className="material-symbols-outlined"
-                              style={{
-                                fontSize: '20px',
-                                color: colors.subtleText,
-                                cursor: 'pointer',
-                              }}
-                            >
-                              keyboard_arrow_down
-                            </span>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </Ux4gThemeProvider>
                     </div>
 
-                    {/* Pagination Bar */}
+                    {/* Working Pagination Bar */}
                     <div
                       style={{
                         display: 'flex',
@@ -780,6 +987,8 @@ const styles = StyleSheet.create({
                     >
                       {/* Prev Button */}
                       <button
+                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
                         style={{
                           width: '30px',
                           height: '30px',
@@ -790,7 +999,8 @@ const styles = StyleSheet.create({
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          cursor: 'pointer',
+                          cursor: currentPage === 1 ? 'default' : 'pointer',
+                          opacity: currentPage === 1 ? 0.4 : 1,
                           padding: 0,
                         }}
                       >
@@ -799,31 +1009,30 @@ const styles = StyleSheet.create({
                         </span>
                       </button>
 
-                      {/* Active Indicator Capsule */}
-                      <div
-                        style={{
-                          width: '31px',
-                          height: '10px',
-                          borderRadius: '99px',
-                          backgroundColor: colors.dotActiveBg,
-                        }}
-                      />
-
-                      {/* Dot Indicators */}
-                      {[1, 2, 3, 4, 5, 6, 7].map((dot) => (
-                        <div
-                          key={dot}
-                          style={{
-                            width: '9px',
-                            height: '9px',
-                            borderRadius: '50%',
-                            backgroundColor: colors.dotInactiveBg,
-                          }}
-                        />
-                      ))}
+                      {/* Dot & Pill Indicators */}
+                      {Array.from({ length: totalPages }).map((_, idx) => {
+                        const pageNum = idx + 1;
+                        const isActive = pageNum === currentPage;
+                        return (
+                          <div
+                            key={pageNum}
+                            onClick={() => setCurrentPage(pageNum)}
+                            style={{
+                              width: isActive ? '31px' : '9px',
+                              height: isActive ? '10px' : '9px',
+                              borderRadius: isActive ? '99px' : '50%',
+                              backgroundColor: isActive ? colors.dotActiveBg : colors.dotInactiveBg,
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease',
+                            }}
+                          />
+                        );
+                      })}
 
                       {/* Next Button */}
                       <button
+                        onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                        disabled={currentPage === totalPages}
                         style={{
                           width: '30px',
                           height: '30px',
@@ -834,7 +1043,8 @@ const styles = StyleSheet.create({
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          cursor: 'pointer',
+                          cursor: currentPage === totalPages ? 'default' : 'pointer',
+                          opacity: currentPage === totalPages ? 0.4 : 1,
                           padding: 0,
                         }}
                       >

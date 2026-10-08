@@ -23,12 +23,12 @@ interface ServiceCardItem {
 }
 
 const CATEGORIES: CategoryItem[] = [
-  { icon: 'health_and_safety', label: 'Health', count: '24 services' },
+  { icon: 'medical_services', label: 'Health', count: '24 services' },
   { icon: 'school', label: 'Education', count: '31 services' },
   { icon: 'agriculture', label: 'Agriculture', count: '18 services' },
-  { icon: 'landscape', label: 'Land Records', count: '12 services' },
+  { icon: 'terrain', label: 'Land Records', count: '12 services' },
   { icon: 'directions_bus', label: 'Transport', count: '15 services' },
-  { icon: 'groups', label: 'Social Welfare', count: '27 services' },
+  { icon: 'volunteer_activism', label: 'Social Welfare', count: '27 services' },
   { icon: 'bolt', label: 'Utilities', count: '9 services' },
   { icon: 'account_balance', label: 'Finance', count: '21 services' },
 ];
@@ -95,8 +95,8 @@ export const GlobalServiceDiscoveryDoc: React.FC<GlobalServiceDiscoveryDocProps>
       categoryCardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
       border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
       inputBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      searchBarBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
-      featuredCardBg: isDark ? UX4GColors.primary950 : UX4GColors.primary50,
+      searchBarBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
+      featuredCardBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
       featuredCardBorder: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
       featuredTagColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
       primaryBtnBg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
@@ -106,7 +106,7 @@ export const GlobalServiceDiscoveryDoc: React.FC<GlobalServiceDiscoveryDocProps>
       feeColor: isDark ? UX4GColors.green300 : UX4GColors.green600,
       applyBorder: isDark ? UX4GColors.neutral600 : UX4GColors.primary300,
       applyText: isDark ? UX4GColors.neutral50 : UX4GColors.primary600,
-      quizCardBg: isDark ? UX4GColors.primary950 : UX4GColors.primary50,
+      quizCardBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
       quizCardBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
       quizBtnBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
       quizBtnText: isDark ? UX4GColors.primary200 : UX4GColors.primary700,
@@ -134,12 +134,12 @@ import {
 } from 'ux4g-react-native-components';
 
 const CATEGORIES = [
-  { icon: 'health_and_safety', label: 'Health', count: '24 services' },
+  { icon: 'medical_services', label: 'Health', count: '24 services' },
   { icon: 'school', label: 'Education', count: '31 services' },
   { icon: 'agriculture', label: 'Agriculture', count: '18 services' },
-  { icon: 'landscape', label: 'Land Records', count: '12 services' },
+  { icon: 'terrain', label: 'Land Records', count: '12 services' },
   { icon: 'directions_bus', label: 'Transport', count: '15 services' },
-  { icon: 'groups', label: 'Social Welfare', count: '27 services' },
+  { icon: 'volunteer_activism', label: 'Social Welfare', count: '27 services' },
   { icon: 'bolt', label: 'Utilities', count: '9 services' },
   { icon: 'account_balance', label: 'Finance', count: '21 services' },
 ];
@@ -161,13 +161,13 @@ export const GlobalServiceDiscoveryScreen = ({ isDark = false }: { isDark?: bool
 
   const colors = {
     screenBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50,
-    searchBarBg: isDark ? UX4GColors.neutral950 : UX4GColors.neutral0,
+    searchBarBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
     titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
     subtleText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
     cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral100,
     categoryCardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
     border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-    featuredCardBg: isDark ? UX4GColors.primary950 : UX4GColors.primary50,
+    featuredCardBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
     featuredCardBorder: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
     featuredTagColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
     primaryBtnBg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
@@ -177,7 +177,7 @@ export const GlobalServiceDiscoveryScreen = ({ isDark = false }: { isDark?: bool
     feeColor: isDark ? UX4GColors.green300 : UX4GColors.green600,
     applyBorder: isDark ? UX4GColors.neutral600 : UX4GColors.primary300,
     applyText: isDark ? UX4GColors.neutral50 : UX4GColors.primary600,
-    quizCardBg: isDark ? UX4GColors.primary950 : UX4GColors.primary50,
+    quizCardBg: isDark ? UX4GColors.primary900 : UX4GColors.primary50,
     quizCardBorder: isDark ? UX4GColors.primary600 : UX4GColors.primary300,
     quizBtnBg: isDark ? UX4GColors.primary800 : UX4GColors.primary100,
     quizBtnText: isDark ? UX4GColors.primary200 : UX4GColors.primary700,
@@ -386,7 +386,6 @@ export const GlobalServiceDiscoveryScreen = ({ isDark = false }: { isDark?: bool
               styles.quizCard,
               {
                 backgroundColor: colors.quizCardBg,
-                borderColor: colors.quizCardBorder,
               },
             ]}
           >
@@ -545,8 +544,7 @@ const styles = StyleSheet.create({
   },
   quizCard: {
     padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
+    borderRadius: 14,
     alignItems: 'center',
   },
   quizTitle: {
@@ -561,7 +559,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   quizBtn: {
-    width: 160,
+    width: '100%',
   },
 });
 `;
@@ -612,101 +610,59 @@ const styles = StyleSheet.create({
                 {/* Mobile Phone Mockup */}
                 <div
                   style={{
-              width: 360,
-              height: 760,
-              backgroundColor: colors.screenBg,
-              borderRadius: 24,
-              border: `1px solid ${colors.phoneBorder}`,
-              boxShadow: isDark
-                ? '0 12px 36px rgba(0, 0, 0, 0.6)'
-                : '0 12px 36px rgba(0, 0, 0, 0.1)',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-            }}
-          >
-            {/* Phone Status Bar */}
-            <div
-              style={{
-                height: '24px',
-                backgroundColor: colors.headerBg,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0 16px',
-                color: '#FFFFFF',
-                fontSize: '11px',
-                fontWeight: 600,
-              }}
-            >
-              <span>9:41</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>
-                  signal_cellular_4_bar
-                </span>
-                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>
-                  wifi
-                </span>
-                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>
-                  battery_full
-                </span>
-              </div>
-            </div>
-
-            {/* App Header */}
-            <div
-              style={{
-                width: '100%',
-                height: '60px',
-                padding: '0 16px 0 20px',
-                backgroundColor: colors.headerBg,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-                boxSizing: 'border-box',
-              }}
-            >
-              <button
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#FFFFFF',
-                  cursor: 'pointer',
-                  padding: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
-                  arrow_back
-                </span>
-              </button>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <img
-                  src="/national_emblem.png"
-                  alt="National Emblem"
-                  style={{
-                    height: '24px',
-                    objectFit: 'contain',
-                    filter: 'brightness(0) invert(1)',
-                  }}
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
-                <span
-                  style={{
-                    color: '#FFFFFF',
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    letterSpacing: '-0.2px',
+                    width: 360,
+                    height: 760,
+                    backgroundColor: colors.screenBg,
+                    borderRadius: 24,
+                    border: `1px solid ${colors.phoneBorder}`,
+                    boxShadow: isDark
+                      ? '0 12px 36px rgba(0, 0, 0, 0.6)'
+                      : '0 12px 36px rgba(0, 0, 0, 0.1)',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
                   }}
                 >
-                  National Services Portal
-                </span>
-              </div>
-            </div>
+                  {/* App Header */}
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '56px',
+                      padding: '0 16px',
+                      backgroundColor: colors.headerBg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      boxSizing: 'border-box',
+                    }}
+                  >
+                    <button
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#FFFFFF',
+                        cursor: 'pointer',
+                        padding: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
+                        arrow_back
+                      </span>
+                    </button>
+                    <span
+                      style={{
+                        color: '#FFFFFF',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        letterSpacing: '-0.2px',
+                      }}
+                    >
+                      National Services Portal
+                    </span>
+                  </div>
 
             {/* Scrollable Content */}
             <div
@@ -721,16 +677,17 @@ const styles = StyleSheet.create({
               <div
                 style={{
                   width: '100%',
-                  padding: '16px',
+                  padding: '20px 16px 16px',
                   backgroundColor: colors.searchBarBg,
                   boxSizing: 'border-box',
                 }}
               >
                 <div
                   style={{
-                    fontSize: '18px',
-                    fontWeight: 800,
+                    fontSize: '20px',
+                    fontWeight: 700,
                     color: colors.titleColor,
+                    letterSpacing: '-0.3px',
                   }}
                 >
                   Find any government service
@@ -750,19 +707,19 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     alignItems: 'center',
                     backgroundColor: colors.inputBg,
-                    border: `1.5px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
+                    border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
                     borderRadius: '8px',
                     overflow: 'hidden',
-                    height: '46px',
-                    marginTop: '16px',
+                    height: '38px',
+                    marginTop: '14px',
                   }}
                 >
                   <span
                     className="material-symbols-outlined"
                     style={{
-                      fontSize: '20px',
+                      fontSize: '18px',
                       color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-                      marginLeft: '12px',
+                      marginLeft: '10px',
                     }}
                   >
                     search
@@ -771,13 +728,13 @@ const styles = StyleSheet.create({
                     type="text"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="Search services..."
+                    placeholder="Search for..."
                     style={{
                       flex: 1,
                       border: 'none',
                       outline: 'none',
                       padding: '0 8px',
-                      fontSize: '14px',
+                      fontSize: '13px',
                       color: colors.titleColor,
                       backgroundColor: 'transparent',
                     }}
@@ -789,13 +746,13 @@ const styles = StyleSheet.create({
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
-                        padding: '4px',
+                        padding: '2px 4px',
                         display: 'flex',
                         alignItems: 'center',
                         color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
                       }}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
                         close
                       </span>
                     </button>
@@ -805,13 +762,13 @@ const styles = StyleSheet.create({
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      padding: '4px 6px',
+                      padding: '2px 6px',
                       display: 'flex',
                       alignItems: 'center',
                       color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: '19px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
                       mic
                     </span>
                   </button>
@@ -820,7 +777,7 @@ const styles = StyleSheet.create({
                       backgroundColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
                       border: 'none',
                       height: '100%',
-                      padding: '0 14px',
+                      padding: '0 12px',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -828,7 +785,7 @@ const styles = StyleSheet.create({
                       color: isDark ? UX4GColors.primary950 : '#FFFFFF',
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '17px' }}>
                       search
                     </span>
                   </button>
@@ -836,7 +793,7 @@ const styles = StyleSheet.create({
               </div>
 
               {/* Browse by Category */}
-              <div style={{ padding: '16px' }}>
+              <div style={{ padding: '8px 16px 16px' }}>
                 <div
                   style={{
                     fontSize: '16px',
@@ -852,17 +809,17 @@ const styles = StyleSheet.create({
                   style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(2, 1fr)',
-                    gap: '12px',
+                    gap: '10px',
                   }}
                 >
                   {CATEGORIES.map((cat, idx) => (
                     <div
                       key={idx}
                       style={{
-                        padding: '12px',
+                        padding: '14px 12px',
                         backgroundColor: colors.categoryCardBg,
                         border: `1px solid ${colors.border}`,
-                        borderRadius: '8px',
+                        borderRadius: '12px',
                         cursor: 'pointer',
                         transition: 'transform 0.15s ease, background-color 0.15s ease',
                       }}
@@ -875,14 +832,14 @@ const styles = StyleSheet.create({
                     >
                       <div
                         style={{
-                          width: '36px',
-                          height: '36px',
+                          width: '40px',
+                          height: '40px',
                           borderRadius: '50%',
-                          backgroundColor: colors.iconCircleBg,
+                          backgroundColor: isDark ? 'rgba(163,145,255,0.15)' : 'rgba(74,43,194,0.08)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          marginBottom: '10px',
+                          marginBottom: '8px',
                         }}
                       >
                         <span
@@ -894,8 +851,8 @@ const styles = StyleSheet.create({
                       </div>
                       <div
                         style={{
-                          fontSize: '13px',
-                          fontWeight: 600,
+                          fontSize: '14px',
+                          fontWeight: 700,
                           color: colors.titleColor,
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
@@ -906,7 +863,7 @@ const styles = StyleSheet.create({
                       </div>
                       <div
                         style={{
-                          fontSize: '11px',
+                          fontSize: '12px',
                           color: colors.subtleText,
                           marginTop: '2px',
                         }}
@@ -924,25 +881,24 @@ const styles = StyleSheet.create({
                   style={{
                     padding: '16px',
                     backgroundColor: colors.featuredCardBg,
-                    border: `1px solid ${colors.featuredCardBorder}`,
-                    borderRadius: '12px',
+                    borderRadius: '14px',
                     boxSizing: 'border-box',
                   }}
                 >
                   <div
                     style={{
-                      fontSize: '10px',
+                      fontSize: '11px',
                       fontWeight: 700,
-                      letterSpacing: '1px',
-                      color: colors.featuredTagColor,
-                      marginBottom: '8px',
+                      letterSpacing: '0.5px',
+                      color: isDark ? UX4GColors.primary300 : UX4GColors.primary700,
+                      marginBottom: '6px',
                     }}
                   >
                     FEATURED SCHEME
                   </div>
                   <div
                     style={{
-                      fontSize: '15px',
+                      fontSize: '16px',
                       fontWeight: 700,
                       color: colors.titleColor,
                       marginBottom: '4px',
@@ -952,25 +908,28 @@ const styles = StyleSheet.create({
                   </div>
                   <div
                     style={{
-                      fontSize: '12px',
+                      fontSize: '12.5px',
                       color: colors.subtleText,
-                      marginBottom: '12px',
-                      lineHeight: '1.4',
+                      marginBottom: '14px',
+                      lineHeight: '18px',
                     }}
                   >
-                    Subsidised housing loans — Interest subsidy up to ₹2.67 lakh.
+                    Subsidised housing loans — interest subsidy up to ₹2.67 lakh.
                   </div>
                   <button
                     style={{
                       width: '100%',
-                      padding: '10px 0',
+                      height: '38px',
                       backgroundColor: colors.primaryBtnBg,
                       color: colors.primaryBtnText,
                       border: 'none',
                       borderRadius: '8px',
-                      fontSize: '13px',
+                      fontSize: '13.5px',
                       fontWeight: 600,
                       cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
                     Check eligibility
@@ -995,7 +954,7 @@ const styles = StyleSheet.create({
                   <div
                     key={item.id}
                     style={{
-                      padding: '14px',
+                      padding: '14px 16px',
                       backgroundColor: colors.cardBg,
                       border: `1px solid ${colors.border}`,
                       borderRadius: '12px',
@@ -1005,8 +964,8 @@ const styles = StyleSheet.create({
                   >
                     <div
                       style={{
-                        fontSize: '14px',
-                        fontWeight: 600,
+                        fontSize: '14.5px',
+                        fontWeight: 700,
                         color: colors.titleColor,
                         marginBottom: '2px',
                       }}
@@ -1015,7 +974,7 @@ const styles = StyleSheet.create({
                     </div>
                     <div
                       style={{
-                        fontSize: '12px',
+                        fontSize: '12.5px',
                         color: colors.subtleText,
                         marginBottom: '8px',
                       }}
@@ -1032,24 +991,26 @@ const styles = StyleSheet.create({
                     >
                       <span
                         style={{
-                          fontSize: '12px',
+                          fontSize: '12.5px',
                           fontWeight: 600,
-                          color: colors.feeColor,
+                          color: item.fee.toLowerCase().includes('free')
+                            ? (isDark ? UX4GColors.green300 : '#16A34A')
+                            : colors.titleColor,
                         }}
                       >
                         {item.fee}
                       </span>
-                      <span style={{ fontSize: '12px', color: colors.subtleText }}>
+                      <span style={{ fontSize: '12.5px', color: colors.subtleText }}>
                         · {item.meta}
                       </span>
                     </div>
                     <button
                       style={{
-                        padding: '6px 16px',
+                        padding: '5px 18px',
                         backgroundColor: 'transparent',
-                        border: `1px solid ${colors.applyBorder}`,
-                        borderRadius: '6px',
-                        color: colors.applyText,
+                        border: `1px solid ${isDark ? UX4GColors.primary400 : '#A391FF'}`,
+                        borderRadius: '8px',
+                        color: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
                         fontSize: '13px',
                         fontWeight: 600,
                         cursor: 'pointer',
@@ -1078,7 +1039,7 @@ const styles = StyleSheet.create({
                   <div
                     key={item.id}
                     style={{
-                      padding: '14px',
+                      padding: '14px 16px',
                       backgroundColor: colors.cardBg,
                       border: `1px solid ${colors.border}`,
                       borderRadius: '12px',
@@ -1088,8 +1049,8 @@ const styles = StyleSheet.create({
                   >
                     <div
                       style={{
-                        fontSize: '14px',
-                        fontWeight: 600,
+                        fontSize: '14.5px',
+                        fontWeight: 700,
                         color: colors.titleColor,
                         marginBottom: '2px',
                       }}
@@ -1098,7 +1059,7 @@ const styles = StyleSheet.create({
                     </div>
                     <div
                       style={{
-                        fontSize: '12px',
+                        fontSize: '12.5px',
                         color: colors.subtleText,
                         marginBottom: '8px',
                       }}
@@ -1115,24 +1076,24 @@ const styles = StyleSheet.create({
                     >
                       <span
                         style={{
-                          fontSize: '12px',
+                          fontSize: '12.5px',
                           fontWeight: 600,
-                          color: colors.feeColor,
+                          color: isDark ? UX4GColors.green300 : '#16A34A',
                         }}
                       >
                         {item.fee}
                       </span>
-                      <span style={{ fontSize: '12px', color: colors.subtleText }}>
+                      <span style={{ fontSize: '12.5px', color: colors.subtleText }}>
                         · {item.meta}
                       </span>
                     </div>
                     <button
                       style={{
-                        padding: '6px 16px',
+                        padding: '5px 18px',
                         backgroundColor: 'transparent',
-                        border: `1px solid ${colors.applyBorder}`,
-                        borderRadius: '6px',
-                        color: colors.applyText,
+                        border: `1px solid ${isDark ? UX4GColors.primary400 : '#A391FF'}`,
+                        borderRadius: '8px',
+                        color: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
                         fontSize: '13px',
                         fontWeight: 600,
                         cursor: 'pointer',
@@ -1148,43 +1109,47 @@ const styles = StyleSheet.create({
               <div style={{ padding: '0 16px 24px' }}>
                 <div
                   style={{
-                    padding: '16px',
+                    padding: '20px 16px',
                     backgroundColor: colors.quizCardBg,
-                    border: `1px solid ${colors.quizCardBorder}`,
-                    borderRadius: '12px',
+                    borderRadius: '14px',
                     textAlign: 'center',
                     boxSizing: 'border-box',
                   }}
                 >
                   <div
                     style={{
-                      fontSize: '14px',
-                      fontWeight: 600,
+                      fontSize: '15px',
+                      fontWeight: 700,
                       color: colors.titleColor,
-                      marginBottom: '4px',
+                      marginBottom: '6px',
                     }}
                   >
                     Not sure what you're eligible for?
                   </div>
                   <div
                     style={{
-                      fontSize: '12px',
+                      fontSize: '12.5px',
                       color: colors.subtleText,
-                      marginBottom: '12px',
+                      marginBottom: '16px',
+                      lineHeight: '18px',
                     }}
                   >
                     Take a 2-minute quiz to find schemes you qualify for.
                   </div>
                   <button
                     style={{
-                      padding: '8px 20px',
+                      width: '100%',
+                      height: '38px',
                       backgroundColor: colors.quizBtnBg,
                       color: colors.quizBtnText,
                       border: 'none',
                       borderRadius: '8px',
-                      fontSize: '13px',
+                      fontSize: '13.5px',
                       fontWeight: 600,
                       cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
                     Find my schemes

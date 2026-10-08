@@ -153,7 +153,7 @@ export const ServiceDetailScreen = ({
 
         {/* Hero Service Card */}
         <View style={styles.heroCardWrapper}>
-          <View style={[styles.heroCard, { backgroundColor: colors.heroCardBg, borderColor: colors.heroCardBorder }]}>
+          <View style={[styles.heroCard, { backgroundColor: colors.heroCardBg }]}>
             <Text style={[styles.heroTitle, { color: colors.titleColor }]}>Birth Certificate</Text>
             <Text style={[styles.heroSubtitle, { color: colors.subtleText }]}>
               Municipal Corporation · Registration of Births & Deaths
@@ -311,7 +311,6 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 16,
     borderRadius: 12,
-    borderWidth: 1,
   },
   heroTitle: { fontSize: 18, fontWeight: '800' },
   heroSubtitle: { fontSize: 12, marginTop: 4 },
@@ -523,7 +522,6 @@ const styles = StyleSheet.create({
                           width: '100%',
                           padding: '16px',
                           backgroundColor: colors.heroCardBg,
-                          border: `1px solid ${colors.heroCardBorder}`,
                           borderRadius: '12px',
                           boxSizing: 'border-box',
                         }}
