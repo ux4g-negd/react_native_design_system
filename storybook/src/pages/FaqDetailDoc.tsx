@@ -12,6 +12,11 @@ type VariantType = 'default' | 'card';
 
 const FAQ_ITEMS = [
   {
+    title: 'How do I track my application ?',
+    answer:
+      'Sign in to the portal, open My Applications, and tap your active application. The Status Tracker shows every milestone — Submitted, Documents Verified, Under Review, Decision. SLA timer shows expected completion date.',
+  },
+  {
     title: 'My application was rejected — what next?',
     answer:
       'If your application was rejected, you can review the rejection reason in your application details. You may reapply after addressing the issues mentioned, or file a grievance if you believe the decision was incorrect.',
@@ -36,7 +41,7 @@ const FAQ_ITEMS = [
 export const FaqDetailDoc: React.FC<FaqDetailDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   const isCard = variant === 'card';
 
@@ -51,7 +56,8 @@ export const FaqDetailDoc: React.FC<FaqDetailDocProps> = ({ isDark }) => {
     const breadcrumbActive = isDark ? UX4GColors.primary300 : '#432CBB';
     const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
     const headerBg = isDark ? UX4GColors.neutral900 : '#FFFFFF';
-    const headerDividerColor = '#D1D5DB';
+    const headerDividerColor = isDark ? UX4GColors.neutral700 : '#D1D5DB';
+    const menuBtnBorder = isDark ? UX4GColors.primary400 : UX4GColors.primary200;
     const chevronColor = isDark ? '#9CA3AF' : '#6B7280';
     const footerText = isDark ? UX4GColors.neutral400 : '#6B7280';
     const screenBg = isCard
@@ -72,6 +78,7 @@ export const FaqDetailDoc: React.FC<FaqDetailDocProps> = ({ isDark }) => {
       primaryColor,
       headerBg,
       headerDividerColor,
+      menuBtnBorder,
       chevronColor,
       footerText,
       screenBg,
@@ -95,13 +102,17 @@ import {
 } from 'react-native';
 import {
   Ux4gAppHeader,
-  Ux4gAccordion,
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 const FAQ_ITEMS = [
+  {
+    title: 'How do I track my application ?',
+    answer:
+      'Sign in to the portal, open My Applications, and tap your active application. The Status Tracker shows every milestone — Submitted, Documents Verified, Under Review, Decision. SLA timer shows expected completion date.',
+  },
   {
     title: 'My application was rejected — what next?',
     answer:
@@ -125,7 +136,7 @@ const FAQ_ITEMS = [
 ];
 
 export const FaqDetailScreen = ({ isDark = false }: { isDark?: boolean }) => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   const screenBg = isDark ? UX4GColors.neutral950 : '#FFFFFF';
   const titleColor = isDark ? '#FFFFFF' : '#111827';
@@ -156,19 +167,19 @@ export const FaqDetailScreen = ({ isDark = false }: { isDark?: boolean }) => {
             color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
 
       {/* Content */}
@@ -176,71 +187,43 @@ export const FaqDetailScreen = ({ isDark = false }: { isDark?: boolean }) => {
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
       >
-        {/* Breadcrumb */}
+        {/* Breadcrumb Row */}
         <View style={styles.breadcrumbRow}>
-          <HomeIcon size={14} color={breadcrumbColor} />
-          <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-            {' '}Home
-          </Text>
-          <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-            {'  >  '}
-          </Text>
-          <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-            Help
-          </Text>
-          <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-            {'  >  '}
-          </Text>
-          <Text
-            style={[
-              styles.breadcrumbText,
-              { color: activeBreadcrumbColor, fontWeight: '500' },
-            ]}
-          >
+          <HomeIcon size={16} color={breadcrumbColor} />
+          <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}> Home </Text>
+          <Text style={[styles.breadcrumbSeparator, { color: breadcrumbColor }]}>&gt;</Text>
+          <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}> Help </Text>
+          <Text style={[styles.breadcrumbSeparator, { color: breadcrumbColor }]}>&gt;</Text>
+          <Text style={[styles.breadcrumbActive, { color: activeBreadcrumbColor }]}>
             Application Issues
           </Text>
         </View>
 
-        {/* Title */}
-        <Text style={[styles.title, { color: titleColor }]}>
-          How do I track my application?
-        </Text>
-
-        {/* Answer */}
-        <Text style={[styles.answer, { color: subtleTextColor }]}>
-          Sign in to the portal, open My Applications, and tap your active
-          application. The Status Tracker shows every milestone — Submitted,
-          Documents Verified, Under Review, Decision. SLA timer shows expected
-          completion date.
-        </Text>
-
-        {/* Related Questions Accordion List */}
-        <View style={styles.accordionList}>
-          {FAQ_ITEMS.map((item, index) => (
-            <View key={item.title}>
-              <Ux4gDivider color={borderColor} />
-              <Ux4gAccordion
-                title={item.title}
-                expanded={expandedIndex === index}
-                onExpandedChange={(isExp) =>
-                  setExpandedIndex(isExp ? index : null)
-                }
-                collapsedBorderColor="transparent"
-                expandedBorderColor="transparent"
-                backgroundColor="transparent"
-                contentBackgroundColor="transparent"
-              >
-                <Text
-                  style={[
-                    styles.accordionAnswer,
-                    { color: subtleTextColor },
-                  ]}
+        {/* FAQ Accordion List */}
+        <View style={styles.faqList}>
+          {FAQ_ITEMS.map((item, index) => {
+            const isExpanded = expandedIndex === index;
+            return (
+              <View key={item.title} style={styles.faqItemWrapper}>
+                <TouchableOpacity
+                  style={styles.faqHeader}
+                  onPress={() => setExpandedIndex(isExpanded ? null : index)}
+                  activeOpacity={0.7}
                 >
-                  {item.answer}
-                </Text>
-              </Ux4gAccordion>
-            </View>
-          ))}
+                  <Text style={[styles.faqTitle, { color: titleColor }]}>
+                    {item.title}
+                  </Text>
+                  <ChevronIcon isExpanded={isExpanded} size={20} color="#111827" />
+                </TouchableOpacity>
+                {isExpanded && (
+                  <Text style={[styles.faqAnswer, { color: subtleTextColor }]}>
+                    {item.answer}
+                  </Text>
+                )}
+                <Ux4gDivider color={borderColor} />
+              </View>
+            );
+          })}
         </View>
       </ScrollView>
 
@@ -301,23 +284,37 @@ const styles = StyleSheet.create({
   breadcrumbText: {
     fontSize: 13,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: '800',
-    marginBottom: 12,
+  breadcrumbSeparator: {
+    fontSize: 13,
+    marginHorizontal: 4,
   },
-  answer: {
-    fontSize: 14,
-    lineHeight: 21,
-    marginBottom: 24,
+  breadcrumbActive: {
+    fontSize: 13,
+    fontWeight: '600',
   },
-  accordionList: {
+  faqList: {
     width: '100%',
   },
-  accordionAnswer: {
-    fontSize: 13,
+  faqItemWrapper: {
+    width: '100%',
+  },
+  faqHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    gap: 8,
+  },
+  faqTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    flex: 1,
+    lineHeight: 22,
+  },
+  faqAnswer: {
+    fontSize: 13.5,
     lineHeight: 20,
-    paddingBottom: 12,
+    paddingBottom: 14,
   },
   footerRow: {
     flexDirection: 'row',
@@ -349,13 +346,17 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gCard,
-  Ux4gAccordion,
   Ux4gDivider,
   Ux4gDividerOrientation,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 const FAQ_ITEMS = [
+  {
+    title: 'How do I track my application ?',
+    answer:
+      'Sign in to the portal, open My Applications, and tap your active application. The Status Tracker shows every milestone — Submitted, Documents Verified, Under Review, Decision. SLA timer shows expected completion date.',
+  },
   {
     title: 'My application was rejected — what next?',
     answer:
@@ -380,7 +381,7 @@ const FAQ_ITEMS = [
 
 /// Card Style variant — FAQ detail inside a white card on purple background.
 export const FaqDetailCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   const screenBg = isDark ? UX4GColors.primary800 : UX4GColors.primary100;
   const cardBg = isDark ? '#1A1A1A' : '#FFFFFF';
@@ -412,19 +413,19 @@ export const FaqDetailCardScreen = ({ isDark = false }: { isDark?: boolean }) =>
             color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
 
       {/* White Card Content */}
@@ -437,71 +438,43 @@ export const FaqDetailCardScreen = ({ isDark = false }: { isDark?: boolean }) =>
           cornerRadius={16}
           style={styles.card}
         >
-          {/* Breadcrumb */}
+          {/* Breadcrumb Row */}
           <View style={styles.breadcrumbRow}>
-            <HomeIcon size={14} color={breadcrumbColor} />
-            <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-              {' '}Home
-            </Text>
-            <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-              {'  >  '}
-            </Text>
-            <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-              Help
-            </Text>
-            <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}>
-              {'  >  '}
-            </Text>
-            <Text
-              style={[
-                styles.breadcrumbText,
-                { color: activeBreadcrumbColor, fontWeight: '500' },
-              ]}
-            >
+            <HomeIcon size={16} color={breadcrumbColor} />
+            <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}> Home </Text>
+            <Text style={[styles.breadcrumbSeparator, { color: breadcrumbColor }]}>&gt;</Text>
+            <Text style={[styles.breadcrumbText, { color: breadcrumbColor }]}> Help </Text>
+            <Text style={[styles.breadcrumbSeparator, { color: breadcrumbColor }]}>&gt;</Text>
+            <Text style={[styles.breadcrumbActive, { color: activeBreadcrumbColor }]}>
               Application Issues
             </Text>
           </View>
 
-          {/* Title */}
-          <Text style={[styles.title, { color: titleColor }]}>
-            How do I track my application?
-          </Text>
-
-          {/* Answer */}
-          <Text style={[styles.answer, { color: subtleTextColor }]}>
-            Sign in to the portal, open My Applications, and tap your active
-            application. The Status Tracker shows every milestone — Submitted,
-            Documents Verified, Under Review, Decision. SLA timer shows expected
-            completion date.
-          </Text>
-
-          {/* Related Questions Accordion List */}
-          <View style={styles.accordionList}>
-            {FAQ_ITEMS.map((item, index) => (
-              <View key={item.title}>
-                <Ux4gDivider color={borderColor} />
-                <Ux4gAccordion
-                  title={item.title}
-                  expanded={expandedIndex === index}
-                  onExpandedChange={(isExp) =>
-                    setExpandedIndex(isExp ? index : null)
-                  }
-                  collapsedBorderColor="transparent"
-                  expandedBorderColor="transparent"
-                  backgroundColor="transparent"
-                  contentBackgroundColor="transparent"
-                >
-                  <Text
-                    style={[
-                      styles.accordionAnswer,
-                      { color: subtleTextColor },
-                    ]}
+          {/* FAQ Accordion List */}
+          <View style={styles.faqList}>
+            {FAQ_ITEMS.map((item, index) => {
+              const isExpanded = expandedIndex === index;
+              return (
+                <View key={item.title} style={styles.faqItemWrapper}>
+                  <TouchableOpacity
+                    style={styles.faqHeader}
+                    onPress={() => setExpandedIndex(isExpanded ? null : index)}
+                    activeOpacity={0.7}
                   >
-                    {item.answer}
-                  </Text>
-                </Ux4gAccordion>
-              </View>
-            ))}
+                    <Text style={[styles.faqTitle, { color: titleColor }]}>
+                      {item.title}
+                    </Text>
+                    <ChevronIcon isExpanded={isExpanded} size={20} color="#111827" />
+                  </TouchableOpacity>
+                  {isExpanded && (
+                    <Text style={[styles.faqAnswer, { color: subtleTextColor }]}>
+                      {item.answer}
+                    </Text>
+                  )}
+                  <Ux4gDivider color={borderColor} />
+                </View>
+              );
+            })}
           </View>
         </Ux4gCard>
       </ScrollView>
@@ -567,23 +540,37 @@ const styles = StyleSheet.create({
   breadcrumbText: {
     fontSize: 13,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: '800',
-    marginBottom: 12,
+  breadcrumbSeparator: {
+    fontSize: 13,
+    marginHorizontal: 4,
   },
-  answer: {
-    fontSize: 14,
-    lineHeight: 21,
-    marginBottom: 24,
+  breadcrumbActive: {
+    fontSize: 13,
+    fontWeight: '600',
   },
-  accordionList: {
+  faqList: {
     width: '100%',
   },
-  accordionAnswer: {
-    fontSize: 13,
+  faqItemWrapper: {
+    width: '100%',
+  },
+  faqHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 14,
+    gap: 8,
+  },
+  faqTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    flex: 1,
+    lineHeight: 22,
+  },
+  faqAnswer: {
+    fontSize: 13.5,
     lineHeight: 20,
-    paddingBottom: 12,
+    paddingBottom: 14,
   },
   footerRow: {
     flexDirection: 'row',
@@ -738,30 +725,59 @@ const styles = StyleSheet.create({
                       borderBottom: `1px solid ${colors.headerDividerColor}`,
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'space-between',
                       padding: '0 16px',
-                      gap: '8px',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                       zIndex: 10,
                       flexShrink: 0,
                     }}
                   >
-                    <img
-                      src="/national_emblem_logo.svg"
-                      alt="National Emblem"
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <img
+                        src="/national_emblem_logo.svg"
+                        alt="National Emblem"
+                        style={{
+                          height: '36px',
+                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: '1px',
+                          height: '28px',
+                          backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
+                          margin: '0 2px',
+                        }}
+                      />
+                      <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    </div>
+
+                    {/* Hamburger Menu Button */}
+                    <button
+                      type="button"
+                      onClick={() => {}}
                       style={{
-                        height: '40px',
-                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                        border: `1.5px solid ${colors.menuBtnBorder}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
                       }}
-                    />
-                    <div
-                      style={{
-                        width: '1px',
-                        height: '32px',
-                        backgroundColor: '#D1D5DB',
-                        margin: '0 4px',
-                      }}
-                    />
-                    <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M4 6h16M4 12h16M4 18h16"
+                          stroke={colors.primaryColor}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
                   </div>
 
                   {/* Scrollable Content Container */}
@@ -852,50 +868,12 @@ const styles = StyleSheet.create({
                         </span>
                       </div>
 
-                      {/* Title */}
-                      <div
-                        style={{
-                          fontSize: '22px',
-                          fontWeight: 800,
-                          color: colors.titleColor,
-                          marginBottom: '12px',
-                          lineHeight: '1.3',
-                        }}
-                      >
-                        How do I track my application?
-                      </div>
-
-                      {/* Primary Answer */}
-                      <div
-                        style={{
-                          fontSize: '14px',
-                          color: colors.subtleText,
-                          lineHeight: 1.5,
-                          marginBottom: '24px',
-                        }}
-                      >
-                        Sign in to the portal, open My Applications, and tap your
-                        active application. The Status Tracker shows every
-                        milestone — Submitted, Documents Verified, Under
-                        Review, Decision. SLA timer shows expected completion
-                        date.
-                      </div>
-
-                      {/* Related Questions Accordion List */}
+                      {/* FAQ Accordion List */}
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         {FAQ_ITEMS.map((item, index) => {
                           const isExpanded = expandedIndex === index;
                           return (
                             <div key={item.title}>
-                              {/* Top Divider */}
-                              <div
-                                style={{
-                                  height: '1px',
-                                  backgroundColor: colors.borderColor,
-                                  width: '100%',
-                                }}
-                              />
-
                               {/* Accordion Header */}
                               <div
                                 onClick={() => toggleAccordion(index)}
@@ -903,16 +881,16 @@ const styles = StyleSheet.create({
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'space-between',
-                                  padding: '14px 4px',
+                                  padding: '16px 0',
                                   cursor: 'pointer',
-                                  gap: '8px',
+                                  gap: '12px',
                                   userSelect: 'none',
                                 }}
                               >
                                 <span
                                   style={{
-                                    fontSize: '14px',
-                                    fontWeight: 500,
+                                    fontSize: '15px',
+                                    fontWeight: 700,
                                     color: colors.titleColor,
                                     lineHeight: '1.4',
                                   }}
@@ -922,8 +900,8 @@ const styles = StyleSheet.create({
                                 <span
                                   className="material-symbols-outlined"
                                   style={{
-                                    fontSize: '20px',
-                                    color: colors.chevronColor,
+                                    fontSize: '22px',
+                                    color: colors.titleColor,
                                     transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                                     transition: 'transform 0.2s ease',
                                     flexShrink: 0,
@@ -937,8 +915,8 @@ const styles = StyleSheet.create({
                               {isExpanded && (
                                 <div
                                   style={{
-                                    padding: '0 4px 14px 4px',
-                                    fontSize: '13px',
+                                    padding: '0 0 16px 0',
+                                    fontSize: '14px',
                                     color: colors.subtleText,
                                     lineHeight: 1.5,
                                     animation: 'fadeIn 0.2s ease-in-out',
@@ -947,17 +925,18 @@ const styles = StyleSheet.create({
                                   {item.answer}
                                 </div>
                               )}
+
+                              {/* Bottom Divider */}
+                              <div
+                                style={{
+                                  height: '1px',
+                                  backgroundColor: colors.borderColor,
+                                  width: '100%',
+                                }}
+                              />
                             </div>
                           );
                         })}
-                        {/* Bottom Divider */}
-                        <div
-                          style={{
-                            height: '1px',
-                            backgroundColor: colors.borderColor,
-                            width: '100%',
-                          }}
-                        />
                       </div>
                     </div>
 

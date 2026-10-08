@@ -35,7 +35,8 @@ export const HelpCenterDoc: React.FC<HelpCenterDocProps> = ({ isDark }) => {
     const cardBorder = isDark ? UX4GColors.neutral700 : '#E5E7EB';
     const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
     const headerBg = isDark ? UX4GColors.neutral900 : '#FFFFFF';
-    const headerDividerColor = '#D1D5DB';
+    const headerDividerColor = isDark ? UX4GColors.neutral700 : '#D1D5DB';
+    const menuBtnBorder = isDark ? UX4GColors.primary400 : UX4GColors.primary200;
     const chevronColor = '#9CA3AF';
     const footerText = isDark ? UX4GColors.neutral400 : '#6B7280';
     const screenBg = isCard
@@ -62,6 +63,7 @@ export const HelpCenterDoc: React.FC<HelpCenterDocProps> = ({ isDark }) => {
       primaryColor,
       headerBg,
       headerDividerColor,
+      menuBtnBorder,
       chevronColor,
       footerText,
       screenBg,
@@ -176,12 +178,18 @@ export const HelpCentreScreen = ({ isDark = false }: { isDark?: boolean }) => {
         </View>
 
         {/* Categories Section */}
-        <Text style={[styles.sectionTitle, { color: titleColor }]}>
+        <Text style={[styles.sectionTitle, { color: subtleTextColor }]}>
           Browse by category
         </Text>
 
-        <View style={styles.categoryList}>
-          {CATEGORIES.map((category) => (
+        <Ux4gCard
+          backgroundColor={cardBg}
+          cornerRadius={12}
+          borderColor={borderColor}
+          borderWidth={1}
+          style={styles.categoryCard}
+        >
+          {CATEGORIES.map((category, index) => (
             <View key={category}>
               <TouchableOpacity
                 style={styles.categoryItem}
@@ -191,12 +199,14 @@ export const HelpCentreScreen = ({ isDark = false }: { isDark?: boolean }) => {
                 <Text style={[styles.categoryText, { color: titleColor }]}>
                   {category}
                 </Text>
-                <ChevronRightIcon color="#9CA3AF" size={20} />
+                <ChevronRightIcon color="#4B5563" size={20} />
               </TouchableOpacity>
-              <Ux4gDivider color={borderColor} />
+              {index < CATEGORIES.length - 1 && (
+                <Ux4gDivider color={borderColor} />
+              )}
             </View>
           ))}
-        </View>
+        </Ux4gCard>
       </ScrollView>
 
       {/* Powered by Digital India */}
@@ -263,20 +273,23 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  categoryList: {
-    width: '100%',
+  categoryCard: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 16,
   },
   categoryItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 14,
+    paddingHorizontal: 16,
   },
   categoryText: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   footerRow: {
     flexDirection: 'row',
@@ -397,12 +410,18 @@ export const HelpCentreCardScreen = ({ isDark = false }: { isDark?: boolean }) =
           </View>
 
           {/* Categories Section */}
-          <Text style={[styles.sectionTitle, { color: titleColor }]}>
+          <Text style={[styles.sectionTitle, { color: subtleTextColor }]}>
             Browse by category
           </Text>
 
-          <View style={styles.categoryList}>
-            {CATEGORIES.map((category) => (
+          <Ux4gCard
+            backgroundColor={cardBg}
+            cornerRadius={12}
+            borderColor={borderColor}
+            borderWidth={1}
+            style={styles.categoryCard}
+          >
+            {CATEGORIES.map((category, index) => (
               <View key={category}>
                 <TouchableOpacity
                   style={styles.categoryItem}
@@ -412,12 +431,14 @@ export const HelpCentreCardScreen = ({ isDark = false }: { isDark?: boolean }) =
                   <Text style={[styles.categoryText, { color: titleColor }]}>
                     {category}
                   </Text>
-                  <ChevronRightIcon color="#9CA3AF" size={20} />
+                  <ChevronRightIcon color="#4B5563" size={20} />
                 </TouchableOpacity>
-                <Ux4gDivider color={borderColor} />
+                {index < CATEGORIES.length - 1 && (
+                  <Ux4gDivider color={borderColor} />
+                )}
               </View>
             ))}
-          </View>
+          </Ux4gCard>
         </Ux4gCard>
       </ScrollView>
 
@@ -489,20 +510,23 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  categoryList: {
-    width: '100%',
+  categoryCard: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 16,
   },
   categoryItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 14,
+    paddingHorizontal: 16,
   },
   categoryText: {
-    fontSize: 15,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   footerRow: {
     flexDirection: 'row',
@@ -657,30 +681,59 @@ const styles = StyleSheet.create({
                       borderBottom: `1px solid ${colors.headerDividerColor}`,
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'space-between',
                       padding: '0 16px',
-                      gap: '8px',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                       zIndex: 10,
                       flexShrink: 0,
                     }}
                   >
-                    <img
-                      src="/national_emblem_logo.svg"
-                      alt="National Emblem"
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <img
+                        src="/national_emblem_logo.svg"
+                        alt="National Emblem"
+                        style={{
+                          height: '36px',
+                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: '1px',
+                          height: '28px',
+                          backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
+                          margin: '0 2px',
+                        }}
+                      />
+                      <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    </div>
+
+                    {/* Hamburger Menu Button */}
+                    <button
+                      type="button"
+                      onClick={() => {}}
                       style={{
-                        height: '40px',
-                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                        border: `1.5px solid ${colors.menuBtnBorder}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
                       }}
-                    />
-                    <div
-                      style={{
-                        width: '1px',
-                        height: '32px',
-                        backgroundColor: '#D1D5DB',
-                        margin: '0 4px',
-                      }}
-                    />
-                    <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M4 6h16M4 12h16M4 18h16"
+                          stroke={colors.primaryColor}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
                   </div>
 
                   {/* Scrollable Content Container */}
@@ -845,17 +898,28 @@ const styles = StyleSheet.create({
                           fontSize: '14px',
                           fontWeight: 600,
                           color: colors.titleColor,
-                          marginBottom: '12px',
+                          marginBottom: '8px',
                         }}
                       >
                         Browse by category
                       </div>
 
-                      {/* Category List */}
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      {/* Category Card Container */}
+                      <div
+                        style={{
+                          backgroundColor: colors.cardBg,
+                          borderRadius: '12px',
+                          border: `1px solid ${colors.borderColor}`,
+                          overflow: 'hidden',
+                          boxShadow: isDark
+                            ? '0 2px 8px rgba(0,0,0,0.3)'
+                            : '0 2px 8px rgba(0,0,0,0.04)',
+                        }}
+                      >
                         {filteredCategories.length > 0 ? (
-                          filteredCategories.map((category) => {
+                          filteredCategories.map((category, index) => {
                             const isSelected = selectedCategory === category;
+                            const isLast = index === filteredCategories.length - 1;
                             return (
                               <div key={category}>
                                 <div
@@ -864,9 +928,8 @@ const styles = StyleSheet.create({
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
-                                    padding: '12px 4px',
+                                    padding: '14px 16px',
                                     cursor: 'pointer',
-                                    borderRadius: '6px',
                                     backgroundColor: isSelected
                                       ? isDark
                                         ? 'rgba(163,145,255,0.1)'
@@ -889,8 +952,8 @@ const styles = StyleSheet.create({
                                 >
                                   <span
                                     style={{
-                                      fontSize: '15px',
-                                      fontWeight: 500,
+                                      fontSize: '14px',
+                                      fontWeight: 600,
                                       color: isSelected
                                         ? colors.primaryColor
                                         : colors.titleColor,
@@ -901,32 +964,34 @@ const styles = StyleSheet.create({
                                   <span
                                     className="material-symbols-outlined"
                                     style={{
-                                      fontSize: '20px',
+                                      fontSize: '18px',
                                       color: isSelected
                                         ? colors.primaryColor
-                                        : colors.chevronColor,
+                                        : '#6B7280',
                                     }}
                                   >
                                     chevron_right
                                   </span>
                                 </div>
-                                <div
-                                  style={{
-                                    height: '1px',
-                                    backgroundColor: colors.borderColor,
-                                    width: '100%',
-                                  }}
-                                />
+                                {!isLast && (
+                                  <div
+                                    style={{
+                                      height: '1px',
+                                      backgroundColor: colors.borderColor,
+                                      width: '100%',
+                                    }}
+                                  />
+                                )}
                               </div>
                             );
                           })
                         ) : (
                           <div
                             style={{
-                              padding: '24px 0',
+                              padding: '24px 16px',
                               textAlign: 'center',
                               color: colors.subtleText,
-                              fontSize: '14px',
+                              fontSize: '13px',
                             }}
                           >
                             No categories match &quot;{searchQuery}&quot;

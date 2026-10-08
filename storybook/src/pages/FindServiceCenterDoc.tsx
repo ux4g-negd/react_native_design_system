@@ -68,7 +68,8 @@ export const FindServiceCenterDoc: React.FC<FindServiceCenterDocProps> = ({ isDa
     const inputText = isDark ? '#FFFFFF' : '#111827';
     const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
     const headerBg = isDark ? UX4GColors.neutral900 : '#FFFFFF';
-    const headerDividerColor = '#D1D5DB';
+    const headerDividerColor = isDark ? UX4GColors.neutral700 : '#D1D5DB';
+    const menuBtnBorder = isDark ? UX4GColors.primary400 : UX4GColors.primary200;
     const footerText = isDark ? UX4GColors.neutral400 : '#6B7280';
     const screenBg = isCard
       ? isDark
@@ -97,6 +98,7 @@ export const FindServiceCenterDoc: React.FC<FindServiceCenterDocProps> = ({ isDa
       primaryColor,
       headerBg,
       headerDividerColor,
+      menuBtnBorder,
       footerText,
       screenBg,
       primaryBtnBg,
@@ -549,37 +551,37 @@ export const FindServiceCentreCardScreen = ({ isDark = false }: { isDark?: boole
               1.2 km away · Open Mon-Sat 9 AM – 6 PM
             </Text>
           </Ux4gCard>
+
+          {/* Action Buttons inside Card */}
+          <View style={styles.cardButtonsContainer}>
+            <Ux4gButton
+              onPress={() => console.log('Get directions')}
+              text="Get directions"
+              variant={Ux4gButtonVariant.primary}
+              size={Ux4gButtonSize.large}
+              height={48}
+              backgroundColor={
+                isDark ? UX4GColors.primary300 : UX4GColors.primary600
+              }
+              contentColor={isDark ? '#000000' : '#FFFFFF'}
+            />
+            <View style={{ height: 12 }} />
+            <Ux4gButton
+              onPress={() => console.log('View all centres')}
+              text="View all centres"
+              variant={Ux4gButtonVariant.outline}
+              size={Ux4gButtonSize.large}
+              height={48}
+              borderColor={
+                isDark ? UX4GColors.primary300 : UX4GColors.primary600
+              }
+              contentColor={
+                isDark ? UX4GColors.primary300 : UX4GColors.primary600
+              }
+            />
+          </View>
         </Ux4gCard>
       </ScrollView>
-
-      {/* Buttons at bottom */}
-      <View style={styles.bottomButtonsContainer}>
-        <Ux4gButton
-          onPress={() => console.log('Get directions')}
-          text="Get directions"
-          variant={Ux4gButtonVariant.primary}
-          size={Ux4gButtonSize.large}
-          height={48}
-          backgroundColor={
-            isDark ? UX4GColors.primary300 : UX4GColors.primary600
-          }
-          contentColor={isDark ? '#000000' : '#FFFFFF'}
-        />
-        <View style={{ height: 12 }} />
-        <Ux4gButton
-          onPress={() => console.log('View all centres')}
-          text="View all centres"
-          variant={Ux4gButtonVariant.outline}
-          size={Ux4gButtonSize.large}
-          height={48}
-          borderColor={
-            isDark ? UX4GColors.primary300 : UX4GColors.primary600
-          }
-          contentColor={
-            isDark ? UX4GColors.primary300 : UX4GColors.primary600
-          }
-        />
-      </View>
 
       {/* Powered by Digital India */}
       <View style={styles.footerRow}>
@@ -645,6 +647,34 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     marginBottom: 20,
+  },
+  resultCard: {
+    padding: 14,
+    borderRadius: 12,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  cardAddress: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 4,
+  },
+  cardMeta: {
+    fontSize: 12,
+  },
+  cardButtonsContainer: {
+    width: '100%',
+    marginTop: 24,
+  },
+  footerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    paddingBottom: 12,
   },
   searchInputContainer: {
     flexDirection: 'row',
@@ -842,30 +872,59 @@ const styles = StyleSheet.create({
                       borderBottom: `1px solid ${colors.headerDividerColor}`,
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'space-between',
                       padding: '0 16px',
-                      gap: '8px',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                       zIndex: 10,
                       flexShrink: 0,
                     }}
                   >
-                    <img
-                      src="/national_emblem_logo.svg"
-                      alt="National Emblem"
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <img
+                        src="/national_emblem_logo.svg"
+                        alt="National Emblem"
+                        style={{
+                          height: '36px',
+                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: '1px',
+                          height: '28px',
+                          backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
+                          margin: '0 2px',
+                        }}
+                      />
+                      <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    </div>
+
+                    {/* Hamburger Menu Button */}
+                    <button
+                      type="button"
+                      onClick={() => {}}
                       style={{
-                        height: '40px',
-                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                        border: `1.5px solid ${colors.menuBtnBorder}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
                       }}
-                    />
-                    <div
-                      style={{
-                        width: '1px',
-                        height: '32px',
-                        backgroundColor: '#D1D5DB',
-                        margin: '0 4px',
-                      }}
-                    />
-                    <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M4 6h16M4 12h16M4 18h16"
+                          stroke={colors.primaryColor}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
                   </div>
 
                   {/* Scrollable Content Container */}
@@ -1069,62 +1128,120 @@ const styles = StyleSheet.create({
                           {selectedCenter.distance} · {selectedCenter.timings}
                         </div>
                       </div>
+
+                      {/* Action Buttons inside Card (Card variant only) */}
+                      {isCard && (
+                        <div
+                          style={{
+                            marginTop: '24px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px',
+                            width: '100%',
+                          }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => alert(`Opening navigation to ${selectedCenter.name}`)}
+                            style={{
+                              width: '100%',
+                              height: '48px',
+                              borderRadius: '8px',
+                              border: 'none',
+                              backgroundColor: colors.primaryBtnBg,
+                              color: colors.primaryBtnText,
+                              fontSize: '15px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '8px',
+                              boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
+                            }}
+                          >
+                            Get directions
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => alert('View all centres modal / list')}
+                            style={{
+                              width: '100%',
+                              height: '48px',
+                              borderRadius: '8px',
+                              border: `1.5px solid ${colors.outlineBtnColor}`,
+                              backgroundColor: 'transparent',
+                              color: colors.outlineBtnColor,
+                              fontSize: '15px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            View all centres
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  {/* Buttons at Bottom */}
-                  <div
-                    style={{
-                      padding: '0 16px 12px 16px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '12px',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => alert(`Opening navigation to ${selectedCenter.name}`)}
+                  {/* Buttons pinned at Bottom (Default variant only) */}
+                  {!isCard && (
+                    <div
                       style={{
-                        width: '100%',
-                        height: '48px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: colors.primaryBtnBg,
-                        color: colors.primaryBtnText,
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
+                        padding: '0 16px 12px 16px',
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
+                        flexDirection: 'column',
+                        gap: '12px',
+                        flexShrink: 0,
                       }}
                     >
-                      Get directions
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => alert('View all centres modal / list')}
-                      style={{
-                        width: '100%',
-                        height: '48px',
-                        borderRadius: '8px',
-                        border: `1.5px solid ${colors.outlineBtnColor}`,
-                        backgroundColor: 'transparent',
-                        color: colors.outlineBtnColor,
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      View all centres
-                    </button>
-                  </div>
+                      <button
+                        type="button"
+                        onClick={() => alert(`Opening navigation to ${selectedCenter.name}`)}
+                        style={{
+                          width: '100%',
+                          height: '48px',
+                          borderRadius: '8px',
+                          border: 'none',
+                          backgroundColor: colors.primaryBtnBg,
+                          color: colors.primaryBtnText,
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
+                        }}
+                      >
+                        Get directions
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => alert('View all centres modal / list')}
+                        style={{
+                          width: '100%',
+                          height: '48px',
+                          borderRadius: '8px',
+                          border: `1.5px solid ${colors.outlineBtnColor}`,
+                          backgroundColor: 'transparent',
+                          color: colors.outlineBtnColor,
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        View all centres
+                      </button>
+                    </div>
+                  )}
 
                   {/* Powered by Digital India */}
                   <div

@@ -45,7 +45,8 @@ export const FileComplaintDoc: React.FC<FileComplaintDocProps> = ({ isDark }) =>
     const inputPlaceholder = '#9CA3AF';
     const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
     const headerBg = isDark ? UX4GColors.neutral900 : '#FFFFFF';
-    const headerDividerColor = '#D1D5DB';
+    const headerDividerColor = isDark ? UX4GColors.neutral700 : '#D1D5DB';
+    const menuBtnBorder = isDark ? UX4GColors.primary400 : UX4GColors.primary200;
     const footerText = isDark ? UX4GColors.neutral400 : '#6B7280';
     const screenBg = isCard
       ? isDark
@@ -71,6 +72,7 @@ export const FileComplaintDoc: React.FC<FileComplaintDocProps> = ({ isDark }) =>
       primaryColor,
       headerBg,
       headerDividerColor,
+      menuBtnBorder,
       footerText,
       screenBg,
       primaryBtnBg,
@@ -449,37 +451,37 @@ export const FileComplaintCardScreen = ({ isDark = false }: { isDark?: boolean }
             placeholder="Tell us what happened, when, and what you expect"
             rows={4}
           />
+
+          {/* Action Buttons inside Card */}
+          <View style={styles.cardButtonsContainer}>
+            <Ux4gButton
+              onPress={() => console.log('Submit complaint:', { subject, category, description })}
+              text="Submit complaint"
+              variant={Ux4gButtonVariant.primary}
+              size={Ux4gButtonSize.large}
+              height={48}
+              backgroundColor={
+                isDark ? UX4GColors.primary300 : UX4GColors.primary600
+              }
+              contentColor={isDark ? '#000000' : '#FFFFFF'}
+            />
+            <View style={{ height: 12 }} />
+            <Ux4gButton
+              onPress={() => console.log('Cancel')}
+              text="Cancel"
+              variant={Ux4gButtonVariant.outline}
+              size={Ux4gButtonSize.large}
+              height={48}
+              borderColor={
+                isDark ? UX4GColors.primary300 : UX4GColors.primary600
+              }
+              contentColor={
+                isDark ? UX4GColors.primary300 : UX4GColors.primary600
+              }
+            />
+          </View>
         </Ux4gCard>
       </ScrollView>
-
-      {/* Action Buttons at bottom */}
-      <View style={styles.bottomButtonsContainer}>
-        <Ux4gButton
-          onPress={() => console.log('Submit complaint:', { subject, category, description })}
-          text="Submit complaint"
-          variant={Ux4gButtonVariant.primary}
-          size={Ux4gButtonSize.large}
-          height={48}
-          backgroundColor={
-            isDark ? UX4GColors.primary300 : UX4GColors.primary600
-          }
-          contentColor={isDark ? '#000000' : '#FFFFFF'}
-        />
-        <View style={{ height: 12 }} />
-        <Ux4gButton
-          onPress={() => console.log('Cancel')}
-          text="Cancel"
-          variant={Ux4gButtonVariant.outline}
-          size={Ux4gButtonSize.large}
-          height={48}
-          borderColor={
-            isDark ? UX4GColors.primary300 : UX4GColors.primary600
-          }
-          contentColor={
-            isDark ? UX4GColors.primary300 : UX4GColors.primary600
-          }
-        />
-      </View>
 
       {/* Powered by Digital India */}
       <View style={styles.footerRow}>
@@ -548,9 +550,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 6,
   },
-  bottomButtonsContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
+  cardButtonsContainer: {
+    width: '100%',
+    marginTop: 24,
   },
   footerRow: {
     flexDirection: 'row',
@@ -705,30 +707,59 @@ const styles = StyleSheet.create({
                       borderBottom: `1px solid ${colors.headerDividerColor}`,
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'space-between',
                       padding: '0 16px',
-                      gap: '8px',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                       zIndex: 10,
                       flexShrink: 0,
                     }}
                   >
-                    <img
-                      src="/national_emblem_logo.svg"
-                      alt="National Emblem"
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <img
+                        src="/national_emblem_logo.svg"
+                        alt="National Emblem"
+                        style={{
+                          height: '36px',
+                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: '1px',
+                          height: '28px',
+                          backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
+                          margin: '0 2px',
+                        }}
+                      />
+                      <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    </div>
+
+                    {/* Hamburger Menu Button */}
+                    <button
+                      type="button"
+                      onClick={() => {}}
                       style={{
-                        height: '40px',
-                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                        border: `1.5px solid ${colors.menuBtnBorder}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
                       }}
-                    />
-                    <div
-                      style={{
-                        width: '1px',
-                        height: '32px',
-                        backgroundColor: '#D1D5DB',
-                        margin: '0 4px',
-                      }}
-                    />
-                    <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M4 6h16M4 12h16M4 18h16"
+                          stroke={colors.primaryColor}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
                   </div>
 
                   {/* Scrollable Content Container */}
@@ -945,69 +976,135 @@ const styles = StyleSheet.create({
                           }}
                         />
                       </div>
+
+                      {/* Action Buttons inside Card (Card variant only) */}
+                      {isCard && (
+                        <div
+                          style={{
+                            marginTop: '24px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '12px',
+                            width: '100%',
+                          }}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (!subject.trim()) {
+                                alert('Please enter a subject');
+                                return;
+                              }
+                              setIsSubmitted(true);
+                              alert('Complaint submitted successfully!');
+                            }}
+                            style={{
+                              width: '100%',
+                              height: '48px',
+                              borderRadius: '8px',
+                              border: 'none',
+                              backgroundColor: colors.primaryBtnBg,
+                              color: colors.primaryBtnText,
+                              fontSize: '15px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transition: 'opacity 0.15s ease',
+                            }}
+                          >
+                            Submit complaint
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={handleReset}
+                            style={{
+                              width: '100%',
+                              height: '48px',
+                              borderRadius: '8px',
+                              border: `1.5px solid ${colors.outlineBtnColor}`,
+                              backgroundColor: 'transparent',
+                              color: colors.outlineBtnColor,
+                              fontSize: '15px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transition: 'opacity 0.15s ease',
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  {/* Action Buttons at bottom above Digital India logo */}
-                  <div
-                    style={{
-                      padding: '0 16px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '12px',
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (!subject.trim()) {
-                          alert('Please enter a subject');
-                          return;
-                        }
-                        setIsSubmitted(true);
-                        alert('Complaint submitted successfully!');
-                      }}
+                  {/* Action Buttons pinned at bottom (Default variant only) */}
+                  {!isCard && (
+                    <div
                       style={{
-                        width: '100%',
-                        height: '48px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: colors.primaryBtnBg,
-                        color: colors.primaryBtnText,
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
+                        padding: '0 16px 12px 16px',
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'opacity 0.15s ease',
+                        flexDirection: 'column',
+                        gap: '12px',
                       }}
                     >
-                      Submit complaint
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!subject.trim()) {
+                            alert('Please enter a subject');
+                            return;
+                          }
+                          setIsSubmitted(true);
+                          alert('Complaint submitted successfully!');
+                        }}
+                        style={{
+                          width: '100%',
+                          height: '48px',
+                          borderRadius: '8px',
+                          border: 'none',
+                          backgroundColor: colors.primaryBtnBg,
+                          color: colors.primaryBtnText,
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'opacity 0.15s ease',
+                        }}
+                      >
+                        Submit complaint
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      style={{
-                        width: '100%',
-                        height: '48px',
-                        borderRadius: '8px',
-                        border: `1px solid ${colors.outlineBtnColor}`,
-                        backgroundColor: 'transparent',
-                        color: colors.outlineBtnColor,
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'opacity 0.15s ease',
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        style={{
+                          width: '100%',
+                          height: '48px',
+                          borderRadius: '8px',
+                          border: `1.5px solid ${colors.outlineBtnColor}`,
+                          backgroundColor: 'transparent',
+                          color: colors.outlineBtnColor,
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'opacity 0.15s ease',
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
 
                   {/* Bottom Section: Powered by Digital India */}
                   <div
