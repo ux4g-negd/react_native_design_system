@@ -509,10 +509,10 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
       <Text
         style={[
           {
-          fontSize: hasGlobalError ? 16 : 24,
-          fontWeight: '700',
-          color: onBackground,
-          textAlign: 'center',
+            fontSize: hasGlobalError ? 16 : 24,
+            fontWeight: '700',
+            color: onBackground,
+            textAlign: 'center',
           },
           hasGlobalError ? errorTitleStyle : undefined,
         ]}
@@ -526,10 +526,10 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
       <Text
         style={[
           {
-          fontSize: bsDefault.fontSize,
-          fontWeight: bsDefault.fontWeight,
-          color: hasGlobalError ? errorColor : `${onSurface}99`, // 60% opacity
-          textAlign: 'center',
+            fontSize: bsDefault.fontSize,
+            fontWeight: bsDefault.fontWeight,
+            color: hasGlobalError ? errorColor : `${onSurface}99`, // 60% opacity
+            textAlign: 'center',
           },
           hasGlobalError ? errorTextStyle : undefined,
         ]}

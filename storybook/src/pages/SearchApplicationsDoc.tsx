@@ -1,5 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { Ux4gButton } from '../../../src/components/button/Button';
+import { Ux4gCard } from '../../../src/components/card/Card';
+import { Ux4gUnifiedPillTag } from '../../../src/components/tag/Tag';
+import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
+import { Ux4gDivider } from '../../../src/components/divider/Divider';
+import { Ux4gStatusAvatar } from '../../../src/components/avatar/Avatar';
+import { Ux4gSearchField } from '../../../src/components/search-field/SearchField';
+import { Ux4gChoiceChip } from '../../../src/components/chips/Chips';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
@@ -11,6 +20,7 @@ type MainTab = 'preview' | 'code';
 
 export const SearchApplicationsDoc: React.FC<SearchApplicationsDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
+  const [selectedTab, setSelectedTab] = useState<number>(2); // 'Under Review' default
   const [searchValue, setSearchValue] = useState<string>('income');
   const [expandedCard1, setExpandedCard1] = useState<boolean>(true);
   const [expandedCard2, setExpandedCard2] = useState<boolean>(false);
@@ -28,20 +38,23 @@ export const SearchApplicationsDoc: React.FC<SearchApplicationsDocProps> = ({ is
       detailLabel: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
       detailValue: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      searchFieldBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-      searchFieldBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-      searchBtnBg: UX4GColors.primary600,
-      searchBtnText: '#FFFFFF',
-      trackBtnBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-      trackBtnText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      dotColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary600,
-      underReviewColor: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-      actionNeededColor: isDark ? UX4GColors.secondary600 : UX4GColors.secondary300,
-      uploadDocColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      tagBorder: isDark ? UX4GColors.neutral700 : '#D1D5DB',
-      tagText: isDark ? UX4GColors.neutral100 : '#1F2937',
+      secondaryColor: isDark ? UX4GColors.secondary300 : UX4GColors.secondary600,
+      errorColor: isDark ? UX4GColors.red300 : UX4GColors.red600,
+      statCardBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
+      buttonOutlineBorder: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
+      buttonOutlineText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
+      tagBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
+      tagText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
     };
   }, [isDark]);
+
+  const tabsData = [
+    { label: 'All', count: '62' },
+    { label: 'Pending', count: '3' },
+    { label: 'Under Review', count: '12' },
+    { label: 'Approved', count: '41' },
+    { label: 'Rejected', count: '6' },
+  ];
 
   const codeString = useMemo(() => {
     return `import React, { useState } from 'react';
@@ -52,76 +65,100 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  TextInput,
   SafeAreaView,
 } from 'react-native';
 import {
   Ux4gAppHeader,
   Ux4gDivider,
   Ux4gButton,
+  Ux4gCard,
+  Ux4gUnifiedPillTag,
+  Ux4gStatusAvatar,
+  Ux4gSearchField,
+  Ux4gChoiceChip,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
 export const SearchApplicationsScreen = ({
   isDark = false,
-  onTrack = () => {},
+  onTrack = (_ref: string) => {},
   onUploadDocument = () => {},
 }: {
   isDark?: boolean;
-  onTrack?: () => void;
+  onTrack?: (ref: string) => void;
   onUploadDocument?: () => void;
 }) => {
+  const [selectedTab, setSelectedTab] = useState(2); // 'Under Review' default
   const [searchValue, setSearchValue] = useState('income');
   const [expandedCard1, setExpandedCard1] = useState(true);
   const [expandedCard2, setExpandedCard2] = useState(false);
 
-  const screenBg = isDark ? UX4GColors.neutral950 : UX4GColors.neutral50;
-  const headerBg = isDark ? UX4GColors.neutral900 : UX4GColors.neutral0;
+  const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
+  const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral600;
   const cardBg = isDark ? UX4GColors.neutral900 : UX4GColors.neutral0;
   const borderColor = isDark ? UX4GColors.neutral700 : UX4GColors.neutral200;
-  const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
+  const secondaryColor = isDark ? UX4GColors.secondary300 : UX4GColors.secondary600;
+
+  const tabs = [
+    { label: 'All', count: '62' },
+    { label: 'Pending', count: '3' },
+    { label: 'Under Review', count: '12' },
+    { label: 'Approved', count: '41' },
+    { label: 'Rejected', count: '6' },
+  ];
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: screenBg }]}>
+    <SafeAreaView
+      style={[
+        styles.safeArea,
+        { backgroundColor: isDark ? UX4GColors.neutral950 : UX4GColors.neutral50 },
+      ]}
+    >
       {/* Header */}
-      <Ux4gAppHeader
-        variant={isDark ? 'dark' : 'light'}
-        title=""
-        leadingWidgets={[
-          <View key="logos" style={styles.headerLeading}>
-            <Image
-              source={require('./assets/national_emblem.png')}
-              style={[
-                styles.emblem,
-                { tintColor: isDark ? '#FFFFFF' : undefined },
-              ]}
-              resizeMode="contain"
-            />
-            <Ux4gDivider orientation="vertical" color={borderColor} style={{ height: 24 }} />
-            <Image
-              source={require('./assets/union.png')}
-              style={styles.unionLogo}
-              resizeMode="contain"
-            />
-            <Text style={[styles.govTitle, { color: titleColor }]}>
-              Government of India
-            </Text>
-          </View>,
-        ]}
-        actions={[
-          {
-            icon: 'notifications-outline',
-            onPress: () => {},
-          },
-        ]}
-        showAvatar
-        avatarInitials="R"
-      />
-      <Ux4gDivider color={borderColor} />
+      <View style={{ backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 }}>
+        <Ux4gAppHeader
+          variant="light"
+          title=""
+          backgroundColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral0}
+          leadingWidgets={[
+            <View key="header-leading" style={styles.headerLeading}>
+              <Image
+                source={require('./assets/national_emblem.png')}
+                style={[styles.emblem, isDark && { tintColor: '#FFFFFF' }]}
+                resizeMode="contain"
+              />
+              <Ux4gDivider
+                orientation="vertical"
+                color={borderColor}
+                style={{ height: 24 }}
+              />
+              <Image
+                source={require('./assets/union_logo.png')}
+                style={[styles.unionLogo, { tintColor: primaryColor }]}
+                resizeMode="contain"
+              />
+              <Text style={[styles.govTitle, { color: titleColor }]}>
+                Government of India
+              </Text>
+            </View>,
+          ]}
+          actions={[
+            {
+              customWidget: (
+                <Ux4gStatusAvatar
+                  key="user-avatar"
+                  size="s"
+                  variant="online"
+                  imageUrl="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&auto=format&fit=crop&q=80"
+                />
+              ),
+            },
+          ]}
+        />
+        <Ux4gDivider color={borderColor} thickness={1} />
+      </View>
 
-      {/* Content */}
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Greeting */}
         <Text style={[styles.greetingTitle, { color: titleColor }]}>
@@ -131,36 +168,84 @@ export const SearchApplicationsScreen = ({
           Find an application by reference or service name
         </Text>
 
-        {/* Search Bar */}
-        <View
-          style={[
-            styles.searchContainer,
-            {
-              backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-              borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-            },
-          ]}
+        {/* Stats Grid */}
+        <View style={styles.statsGrid}>
+          <View style={styles.statsRow}>
+            <View style={[styles.statCard, { backgroundColor: cardBg, borderColor }]}>
+              <Text style={[styles.statValue, { color: titleColor }]}>2</Text>
+              <Text style={[styles.statLabel, { color: subtleText }]}>Active</Text>
+            </View>
+            <View style={[styles.statCard, { backgroundColor: cardBg, borderColor }]}>
+              <View style={styles.statValueRow}>
+                <Text style={[styles.statValue, { color: titleColor }]}>1</Text>
+                <View style={[styles.dot, { backgroundColor: UX4GColors.red600 }]} />
+              </View>
+              <Text style={[styles.statLabel, { color: subtleText }]}>Needs attention</Text>
+            </View>
+          </View>
+          <View style={styles.statsRow}>
+            <View style={[styles.statCard, { backgroundColor: cardBg, borderColor }]}>
+              <Text style={[styles.statValue, { color: titleColor }]}>5</Text>
+              <Text style={[styles.statLabel, { color: subtleText }]}>Completed</Text>
+            </View>
+            <View style={[styles.statCard, { backgroundColor: cardBg, borderColor }]}>
+              <Text style={[styles.statValue, { color: titleColor }]}>8</Text>
+              <Text style={[styles.statLabel, { color: subtleText }]}>Total</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Section Heading */}
+        <Text style={[styles.sectionTitle, { color: titleColor }]}>
+          Your applications
+        </Text>
+
+        {/* Tab Filters */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabsContainer}
         >
-          <TextInput
+          {tabs.map((tab, idx) => {
+            const isSelected = selectedTab === idx;
+            return (
+              <Ux4gChoiceChip
+                key={tab.label}
+                text={tab.label}
+                selected={isSelected}
+                onClick={() => setSelectedTab(idx)}
+                size="s"
+                borderRadius={4}
+                trailingContent={
+                  <View
+                    style={[
+                      styles.tabCountBadge,
+                      {
+                        backgroundColor: isSelected
+                          ? 'rgba(255, 255, 255, 0.25)'
+                          : UX4GColors.primary600,
+                      },
+                    ]}
+                  >
+                    <Text style={styles.tabCountText}>{tab.count}</Text>
+                  </View>
+                }
+              />
+            );
+          })}
+        </ScrollView>
+
+        {/* Search Field */}
+        <View style={styles.searchContainer}>
+          <Ux4gSearchField
+            variant="searchWithSubmit"
+            placeholder="Search for..."
             value={searchValue}
-            onChangeText={setSearchValue}
-            placeholder="Search..."
-            placeholderTextColor={isDark ? UX4GColors.neutral500 : UX4GColors.neutral400}
-            style={[styles.searchInput, { color: titleColor }]}
+            onValueChange={setSearchValue}
+            showVoiceIcon={true}
+            showClearIcon={true}
+            size="medium"
           />
-          {searchValue.length > 0 && (
-            <TouchableOpacity
-              onPress={() => setSearchValue('')}
-              style={styles.clearBtn}
-            >
-              <Text style={{ fontSize: 16, color: subtleText }}>✕</Text>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={[styles.searchSubmitBtn, { backgroundColor: UX4GColors.primary600 }]}
-          >
-            <Text style={{ color: '#FFFFFF', fontSize: 16 }}>🔍</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Result Count */}
@@ -169,102 +254,74 @@ export const SearchApplicationsScreen = ({
         </Text>
 
         {/* Result Card 1 (Expanded) */}
-        <View
-          style={[
-            styles.resultCard,
-            {
-              backgroundColor: cardBg,
-              borderColor: borderColor,
-            },
-          ]}
+        <Ux4gCard
+          cornerRadius={12}
+          borderColor={borderColor}
+          backgroundColor={cardBg}
+          style={styles.cardWrapper}
         >
           <View style={styles.cardHeader}>
             <Text style={[styles.cardTitle, { color: titleColor }]}>
               Income Certificate
             </Text>
-            <View style={styles.cardActions}>
-              <TouchableOpacity
-                onPress={onTrack}
-                style={[
-                  styles.trackBtn,
-                  {
-                    borderColor: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-                  },
-                ]}
-              >
-                <Text
+            <View style={styles.actionRow}>
+              <Ux4gButton
+                text="Track"
+                onPress={() => onTrack('INC-2026-MH-04127')}
+                variant="outline"
+                size="small"
+              />
+              <TouchableOpacity onPress={() => setExpandedCard1(!expandedCard1)}>
+                <Image
+                  source={require('./assets/chevron_down.png')}
                   style={[
-                    styles.trackBtnText,
-                    { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
+                    styles.chevronIcon,
+                    expandedCard1 && { transform: [{ rotate: '180deg' }] },
                   ]}
-                >
-                  Track
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setExpandedCard1(!expandedCard1)}
-                style={styles.expandToggle}
-              >
-                <Text style={{ fontSize: 16, color: subtleText }}>
-                  {expandedCard1 ? '▲' : '▼'}
-                </Text>
+                />
               </TouchableOpacity>
             </View>
           </View>
 
           {/* Unified Status Pill Tag */}
-          <View style={[styles.pillTag, { borderColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' }]}>
-            <View style={styles.pillSegment}>
-              <View
-                style={[
-                  styles.dot,
-                  {
-                    backgroundColor: isDark
-                      ? UX4GColors.secondary300
-                      : UX4GColors.secondary600,
-                  },
-                ]}
-              />
-              <Text
-                style={[
-                  styles.pillText,
-                  { color: isDark ? UX4GColors.neutral100 : '#1F2937' },
-                ]}
-              >
-                8 days left
-              </Text>
-            </View>
-            <View style={styles.pillDivider} />
-            <View style={styles.pillSegment}>
-              <Text
-                style={[
-                  styles.pillText,
-                  {
-                    color: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-                    fontWeight: '600',
-                  },
-                ]}
-              >
-                Under review
-              </Text>
-            </View>
+          <View style={styles.tagWrapper}>
+            <Ux4gUnifiedPillTag
+              containerStyle={styles.pillTag}
+              segments={[
+                {
+                  text: '8 days left',
+                  textColor: titleColor,
+                  leading: (
+                    <View
+                      style={[
+                        styles.tagDot,
+                        {
+                          backgroundColor: secondaryColor,
+                        },
+                      ]}
+                    />
+                  ),
+                },
+                {
+                  text: 'Under review',
+                  textColor: secondaryColor,
+                  bold: true,
+                },
+              ]}
+            />
           </View>
 
           {expandedCard1 && (
             <View style={styles.detailsContainer}>
               <View style={styles.detailRow}>
                 <View style={styles.detailCol}>
-                  <Text style={[styles.detailLabel, { color: subtleText }]}>
-                    Reference Number
-                  </Text>
+                  <Text style={styles.detailLabel}>Reference Number</Text>
                   <Text style={[styles.detailValue, { color: titleColor }]}>
                     INC-2026-MH-04127
                   </Text>
                 </View>
                 <View style={styles.detailCol}>
-                  <Text style={[styles.detailLabel, { color: subtleText }]}>
-                    Last Updated Date
-                  </Text>
+                  <Text style={styles.detailLabel}>Last Updated Date</Text>
                   <Text style={[styles.detailValue, { color: titleColor }]}>
                     10 Apr 2026
                   </Text>
@@ -273,17 +330,13 @@ export const SearchApplicationsScreen = ({
 
               <View style={styles.detailRow}>
                 <View style={styles.detailCol}>
-                  <Text style={[styles.detailLabel, { color: subtleText }]}>
-                    Submitted Date
-                  </Text>
+                  <Text style={styles.detailLabel}>Submitted Date</Text>
                   <Text style={[styles.detailValue, { color: titleColor }]}>
                     1 Apr 2026
                   </Text>
                 </View>
                 <View style={styles.detailCol}>
-                  <Text style={[styles.detailLabel, { color: subtleText }]}>
-                    Assigned Officer
-                  </Text>
+                  <Text style={styles.detailLabel}>Assigned Officer</Text>
                   <Text style={[styles.detailValue, { color: titleColor }]}>
                     Rahul Sharma
                   </Text>
@@ -292,136 +345,94 @@ export const SearchApplicationsScreen = ({
 
               <View style={styles.detailRow}>
                 <View style={styles.detailCol}>
-                  <Text style={[styles.detailLabel, { color: subtleText }]}>
-                    Department
-                  </Text>
+                  <Text style={styles.detailLabel}>Department</Text>
                   <Text style={[styles.detailValue, { color: titleColor }]}>
                     Revenue Department
                   </Text>
                 </View>
                 <View style={styles.detailCol}>
-                  <Text style={[styles.detailLabel, { color: subtleText }]}>
-                    Documents
-                  </Text>
+                  <Text style={styles.detailLabel}>Documents</Text>
                   <Text style={[styles.detailValue, { color: titleColor }]}>
-                    ID Proof, Address\nProof
+                    ID Proof, Address Proof
                   </Text>
                 </View>
               </View>
 
               <View style={styles.actionSection}>
-                <Text
-                  style={[
-                    styles.actionLabel,
-                    {
-                      color: isDark
-                        ? UX4GColors.secondary600
-                        : UX4GColors.secondary300,
-                    },
-                  ]}
-                >
+                <Text style={[styles.actionLabel, { color: secondaryColor }]}>
                   Action needed
                 </Text>
                 <TouchableOpacity
+                  style={styles.linkButton}
                   onPress={onUploadDocument}
-                  style={styles.uploadBtn}
                 >
-                  <Text
-                    style={[
-                      styles.uploadBtnText,
-                      { color: primaryColor },
-                    ]}
-                  >
-                    Upload document 📤
+                  <Text style={[styles.linkButtonText, { color: primaryColor }]}>
+                    Upload document ⭱
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
           )}
-        </View>
+        </Ux4gCard>
 
         {/* Result Card 2 (Collapsed) */}
-        <View
-          style={[
-            styles.resultCard,
-            {
-              backgroundColor: cardBg,
-              borderColor: borderColor,
-            },
-          ]}
+        <Ux4gCard
+          cornerRadius={12}
+          borderColor={borderColor}
+          backgroundColor={cardBg}
+          style={styles.cardWrapper}
         >
           <View style={styles.cardHeader}>
             <Text style={[styles.cardTitle, { color: titleColor }]}>
               Income Certificate
             </Text>
-            <View style={styles.cardActions}>
-              <TouchableOpacity
-                onPress={onTrack}
-                style={[
-                  styles.trackBtn,
-                  {
-                    borderColor: isDark ? UX4GColors.neutral600 : UX4GColors.neutral300,
-                  },
-                ]}
-              >
-                <Text
+            <View style={styles.actionRow}>
+              <Ux4gButton
+                text="Track"
+                onPress={() => onTrack('INC-2026-MH-04128')}
+                variant="outline"
+                size="small"
+              />
+              <TouchableOpacity onPress={() => setExpandedCard2(!expandedCard2)}>
+                <Image
+                  source={require('./assets/chevron_down.png')}
                   style={[
-                    styles.trackBtnText,
-                    { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
+                    styles.chevronIcon,
+                    expandedCard2 && { transform: [{ rotate: '180deg' }] },
                   ]}
-                >
-                  Track
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setExpandedCard2(!expandedCard2)}
-                style={styles.expandToggle}
-              >
-                <Text style={{ fontSize: 16, color: subtleText }}>
-                  {expandedCard2 ? '▲' : '▼'}
-                </Text>
+                />
               </TouchableOpacity>
             </View>
           </View>
 
           {/* Unified Status Pill Tag */}
-          <View style={[styles.pillTag, { borderColor: isDark ? UX4GColors.neutral700 : '#D1D5DB' }]}>
-            <View style={styles.pillSegment}>
-              <View
-                style={[
-                  styles.dot,
-                  {
-                    backgroundColor: isDark
-                      ? UX4GColors.secondary300
-                      : UX4GColors.secondary600,
-                  },
-                ]}
-              />
-              <Text
-                style={[
-                  styles.pillText,
-                  { color: isDark ? UX4GColors.neutral100 : '#1F2937' },
-                ]}
-              >
-                8 days left
-              </Text>
-            </View>
-            <View style={styles.pillDivider} />
-            <View style={styles.pillSegment}>
-              <Text
-                style={[
-                  styles.pillText,
-                  {
-                    color: isDark ? UX4GColors.orange300 : UX4GColors.orange600,
-                    fontWeight: '600',
-                  },
-                ]}
-              >
-                Under review
-              </Text>
-            </View>
+          <View style={styles.tagWrapper}>
+            <Ux4gUnifiedPillTag
+              containerStyle={styles.pillTag}
+              segments={[
+                {
+                  text: '8 days left',
+                  textColor: titleColor,
+                  leading: (
+                    <View
+                      style={[
+                        styles.tagDot,
+                        {
+                          backgroundColor: secondaryColor,
+                        },
+                      ]}
+                    />
+                  ),
+                },
+                {
+                  text: 'Under review',
+                  textColor: secondaryColor,
+                  bold: true,
+                },
+              ]}
+            />
           </View>
-        </View>
+        </Ux4gCard>
       </ScrollView>
     </SafeAreaView>
   );
@@ -430,78 +441,55 @@ export const SearchApplicationsScreen = ({
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
   headerLeading: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  emblem: { height: 36, width: 26 },
-  unionLogo: { height: 26, width: 34 },
+  emblem: { height: 28, width: 20 },
+  unionLogo: { height: 20, width: 28 },
   govTitle: { fontSize: 13, fontWeight: '600' },
-  scrollContent: { padding: 20 },
-  greetingTitle: { fontSize: 20, fontWeight: '800', marginBottom: 4 },
-  greetingSubtitle: { fontSize: 13, marginBottom: 16 },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
+  scrollContent: { padding: 16, paddingBottom: 32 },
+  greetingTitle: { fontSize: 20, fontWeight: '700', marginBottom: 4 },
+  greetingSubtitle: { fontSize: 13, marginBottom: 20 },
+  statsGrid: { gap: 10, marginBottom: 20 },
+  statsRow: { flexDirection: 'row', gap: 10 },
+  statCard: { flex: 1, padding: 12, borderRadius: 10, borderWidth: 1 },
+  statValueRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  statValue: { fontSize: 18, fontWeight: '700' },
+  dot: { width: 8, height: 8, borderRadius: 4 },
+  statLabel: { fontSize: 12, marginTop: 4 },
+  sectionTitle: { fontSize: 16, fontWeight: '700', marginBottom: 12 },
+  tabsContainer: { gap: 6, marginBottom: 16 },
+  tabCountBadge: {
+    minWidth: 16,
+    height: 16,
+    paddingHorizontal: 4,
     borderRadius: 8,
-    overflow: 'hidden',
-    height: 44,
-  },
-  searchInput: {
-    flex: 1,
-    paddingHorizontal: 12,
-    fontSize: 14,
-  },
-  clearBtn: { padding: 8 },
-  searchSubmitBtn: {
-    width: 44,
-    height: 44,
+    marginLeft: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  resultCount: { fontSize: 13, marginVertical: 16 },
-  resultCard: {
-    borderRadius: 12,
-    borderWidth: 1,
-    padding: 16,
-    marginBottom: 16,
-  },
+  tabCountText: { fontSize: 10, fontWeight: '700', color: '#FFFFFF' },
+  searchContainer: { marginBottom: 16 },
+  resultCount: { fontSize: 13, marginBottom: 16 },
+  cardWrapper: { padding: 14, marginBottom: 12 },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
   },
-  cardTitle: { fontSize: 15, fontWeight: '700' },
-  cardActions: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  trackBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 6,
-    borderWidth: 1,
-  },
-  trackBtnText: { fontSize: 12, fontWeight: '600' },
-  expandToggle: { padding: 4 },
-  pillTag: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    borderWidth: 1,
-    borderRadius: 16,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    gap: 6,
-  },
-  pillSegment: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  pillDivider: { width: 1, height: 12, backgroundColor: '#D1D5DB' },
-  dot: { width: 8, height: 8, borderRadius: 4 },
-  pillText: { fontSize: 12, fontWeight: '500' },
-  detailsContainer: { marginTop: 16, gap: 12 },
+  cardTitle: { fontSize: 14, fontWeight: '700' },
+  actionRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  chevronIcon: { width: 16, height: 16 },
+  tagWrapper: { flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 10 },
+  pillTag: { alignSelf: 'flex-start', borderRadius: 4 },
+  tagDot: { width: 8, height: 8, borderRadius: 4, marginRight: 6 },
+  detailsContainer: { marginTop: 12, gap: 10 },
   detailRow: { flexDirection: 'row', gap: 12 },
   detailCol: { flex: 1 },
-  detailLabel: { fontSize: 11, marginBottom: 2 },
+  detailLabel: { fontSize: 11, color: '#6B7280', marginBottom: 2 },
   detailValue: { fontSize: 13, fontWeight: '500' },
   actionSection: { marginTop: 4 },
-  actionLabel: { fontSize: 11, marginBottom: 2 },
-  uploadBtn: { paddingVertical: 2 },
-  uploadBtnText: { fontSize: 13, fontWeight: '600' },
+  actionLabel: { fontSize: 11, marginBottom: 2, fontWeight: '500' },
+  linkButton: { paddingVertical: 2 },
+  linkButtonText: { fontSize: 13, fontWeight: '600' },
 });
 `;
   }, []);
@@ -515,7 +503,7 @@ const styles = StyleSheet.create({
           <span className="wb-badge">Pattern</span>
         </div>
         <p className="wb-subtitle">
-          A search pattern for finding applications by reference number or service name. Shows search input, result count, and application cards with expanded details.
+          A search pattern for finding applications by reference number or service name. Shows stats overview, filter chips, search input, result count, and application cards with expanded details.
         </p>
       </div>
 
@@ -547,608 +535,713 @@ const styles = StyleSheet.create({
                 className={`wb-preview-area ${isDark ? 'dark' : ''}`}
                 style={{ flexDirection: 'column', alignItems: 'center' }}
               >
-                {/* Phone Frame Mockup */}
-                <div
-                  style={{
-                    width: 360,
-                    height: 760,
-                    borderRadius: 20,
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    backgroundColor: colors.screenBg,
-                    border: isDark ? 'none' : '1px solid #E5E7EB',
-                    boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
-                    position: 'relative',
-                    boxSizing: 'border-box',
-                  }}
-                >
-                  {/* Header (Top) */}
+                {/* Mobile Phone Mockup */}
+                <Ux4gThemeProvider isDark={isDark}>
                   <div
                     style={{
-                      backgroundColor: colors.headerBg,
-                      padding: '10px 14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      flexShrink: 0,
-                      borderBottom: `1px solid ${colors.dividerColor}`,
-                    }}
-                  >
-                    {/* Left group */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <img
-                        src="/national_emblem_logo.svg"
-                        alt="National Emblem"
-                        style={{
-                          height: 28,
-                          width: 'auto',
-                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                        }}
-                      />
-                      <div
-                        style={{
-                          width: 1,
-                          height: 24,
-                          backgroundColor: colors.verticalDividerColor,
-                        }}
-                      />
-                      <UnionLogo color={colors.primaryColor} size={24} />
-                      <span
-                        style={{
-                          fontSize: 12,
-                          fontWeight: 600,
-                          color: colors.titleColor,
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        Government of India
-                      </span>
-                    </div>
-
-                    {/* Right group */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <button
-                        type="button"
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          padding: 4,
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: colors.titleColor,
-                        }}
-                      >
-                        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-                          notifications
-                        </span>
-                      </button>
-                      {/* Avatar with online dot */}
-                      <div style={{ position: 'relative' }}>
-                        <div
-                          style={{
-                            width: 28,
-                            height: 28,
-                            borderRadius: '50%',
-                            backgroundColor: UX4GColors.primary600,
-                            color: '#FFFFFF',
-                            fontSize: 12,
-                            fontWeight: 700,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          R
-                        </div>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 0,
-                            width: 7,
-                            height: 7,
-                            borderRadius: '50%',
-                            backgroundColor: '#22C55E',
-                            border: `1.5px solid ${colors.headerBg}`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Scrollable Body */}
-                  <div
-                    style={{
-                      flex: 1,
-                      overflowY: 'auto',
-                      padding: '20px',
+                      width: 360,
+                      height: 760,
+                      borderRadius: 20,
+                      overflow: 'hidden',
                       display: 'flex',
                       flexDirection: 'column',
+                      backgroundColor: colors.screenBg,
+                      border: isDark ? 'none' : '1px solid #E5E7EB',
+                      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+                      position: 'relative',
                       boxSizing: 'border-box',
+                      fontFamily:
+                        "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
                     }}
                   >
-                    {/* Greeting */}
-                    <div
-                      style={{
-                        fontSize: 20,
-                        fontWeight: 800,
-                        color: colors.titleColor,
-                        marginBottom: 4,
-                        letterSpacing: '-0.3px',
-                      }}
-                    >
-                      Good morning, Ramesh
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 13,
-                        color: colors.subtleText,
-                        marginBottom: 16,
-                      }}
-                    >
-                      Find an application by reference or service name
+                    {/* Header (Top) */}
+                    <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
+                      <Ux4gAppHeader
+                        variant="light"
+                        title=""
+                        backgroundColor={colors.headerBg}
+                        leadingWidgets={[
+                          <div
+                            key="emblem-group"
+                            style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+                          >
+                            <img
+                              src="/national_emblem_logo.svg"
+                              alt="National Emblem"
+                              style={{
+                                height: 28,
+                                width: 'auto',
+                                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                              }}
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                            <div
+                              style={{
+                                width: 1,
+                                height: 24,
+                                backgroundColor: colors.verticalDividerColor,
+                              }}
+                            />
+                            <UnionLogo color={colors.primaryColor} size={24} />
+                            <span
+                              style={{
+                                fontSize: 13,
+                                fontWeight: 600,
+                                color: colors.titleColor,
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              Government of India
+                            </span>
+                          </div>,
+                        ]}
+                        actions={[
+                          {
+                            customWidget: (
+                              <Ux4gStatusAvatar
+                                key="user-avatar"
+                                size="s"
+                                variant="online"
+                                imageUrl="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&auto=format&fit=crop&q=80"
+                              />
+                            ),
+                          },
+                        ]}
+                      />
+                      <Ux4gDivider color={colors.dividerColor} thickness={1} />
                     </div>
 
-                    {/* Search Field */}
+                    {/* Scrollable Body */}
                     <div
                       style={{
+                        flex: 1,
+                        overflowY: 'auto',
+                        padding: '16px',
                         display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: colors.searchFieldBg,
-                        border: `1px solid ${colors.searchFieldBorder}`,
-                        borderRadius: 8,
-                        overflow: 'hidden',
-                        height: 44,
+                        flexDirection: 'column',
                         boxSizing: 'border-box',
                       }}
                     >
-                      <input
-                        type="text"
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        placeholder="Search..."
-                        style={{
-                          flex: 1,
-                          border: 'none',
-                          background: 'transparent',
-                          padding: '0 12px',
-                          fontSize: 14,
-                          color: colors.titleColor,
-                          outline: 'none',
-                        }}
-                      />
-                      {searchValue.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => setSearchValue('')}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            padding: '0 8px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: colors.subtleText,
-                          }}
-                        >
-                          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
-                            close
-                          </span>
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        style={{
-                          width: 44,
-                          height: 44,
-                          backgroundColor: colors.searchBtnBg,
-                          border: 'none',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: colors.searchBtnText,
-                        }}
-                      >
-                        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-                          search
-                        </span>
-                      </button>
-                    </div>
-
-                    {/* Result Count */}
-                    <div
-                      style={{
-                        fontSize: 13,
-                        color: colors.subtleText,
-                        margin: '16px 0',
-                      }}
-                    >
-                      2 results for "{searchValue}"
-                    </div>
-
-                    {/* Result Card 1 - Expanded */}
-                    <div
-                      style={{
-                        backgroundColor: colors.cardBg,
-                        border: `1px solid ${colors.border}`,
-                        borderRadius: 12,
-                        padding: 16,
-                        marginBottom: 16,
-                      }}
-                    >
-                      {/* Card Title Row */}
+                      {/* Greeting */}
                       <div
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginBottom: 10,
+                          fontSize: 20,
+                          fontWeight: 700,
+                          color: colors.titleColor,
+                          marginBottom: 4,
+                          letterSpacing: '-0.3px',
                         }}
                       >
-                        <div
-                          style={{
-                            fontSize: 15,
-                            fontWeight: 700,
-                            color: colors.titleColor,
-                          }}
-                        >
-                          Income Certificate
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <button
-                            type="button"
-                            style={{
-                              padding: '4px 10px',
-                              borderRadius: 6,
-                              border: `1px solid ${colors.trackBtnBorder}`,
-                              backgroundColor: 'transparent',
-                              color: colors.trackBtnText,
-                              fontSize: 12,
-                              fontWeight: 600,
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Track
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setExpandedCard1(!expandedCard1)}
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              padding: 2,
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              color: colors.subtleText,
-                            }}
-                          >
-                            <span
-                              className="material-symbols-outlined"
-                              style={{
-                                fontSize: 20,
-                                transform: expandedCard1 ? 'rotate(180deg)' : 'rotate(0deg)',
-                                transition: 'transform 0.2s ease',
-                              }}
-                            >
-                              keyboard_arrow_down
-                            </span>
-                          </button>
-                        </div>
+                        Good morning, Ramesh
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 13,
+                          color: colors.subtleText,
+                          marginBottom: 16,
+                        }}
+                      >
+                        Find an application by reference or service name
                       </div>
 
-                      {/* Unified Status Pill Tag */}
+                      {/* Stats Grid */}
                       <div
                         style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          border: `1px solid ${colors.tagBorder}`,
-                          borderRadius: 16,
-                          padding: '3px 8px',
-                          gap: 6,
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 1fr',
+                          gap: 10,
+                          marginBottom: 18,
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        {/* Stat 1: Active */}
+                        <div
+                          style={{
+                            backgroundColor: colors.cardBg,
+                            border: `1px solid ${colors.statCardBorder}`,
+                            borderRadius: 10,
+                            padding: 12,
+                          }}
+                        >
                           <div
                             style={{
-                              width: 8,
-                              height: 8,
-                              borderRadius: 4,
-                              backgroundColor: colors.dotColor,
-                            }}
-                          />
-                          <span
-                            style={{
-                              fontSize: 12,
-                              fontWeight: 500,
-                              color: colors.tagText,
+                              fontSize: 18,
+                              fontWeight: 700,
+                              color: colors.titleColor,
+                              lineHeight: 1.2,
                             }}
                           >
-                            8 days left
-                          </span>
+                            2
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: colors.subtleText,
+                              marginTop: 4,
+                            }}
+                          >
+                            Active
+                          </div>
                         </div>
+
+                        {/* Stat 2: Needs attention */}
                         <div
                           style={{
-                            width: 1,
-                            height: 12,
-                            backgroundColor: colors.tagBorder,
-                          }}
-                        />
-                        <span
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 600,
-                            color: colors.underReviewColor,
+                            backgroundColor: colors.cardBg,
+                            border: `1px solid ${colors.statCardBorder}`,
+                            borderRadius: 10,
+                            padding: 12,
                           }}
                         >
-                          Under review
-                        </span>
-                      </div>
-
-                      {/* Expanded Details */}
-                      {expandedCard1 && (
-                        <div
-                          style={{
-                            marginTop: 16,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 12,
-                          }}
-                        >
-                          <div style={{ display: 'flex', gap: 12 }}>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Reference Number
-                              </div>
-                              <div style={{ fontSize: 13, fontWeight: 500, color: colors.detailValue }}>
-                                INC-2026-MH-04127
-                              </div>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Last Updated Date
-                              </div>
-                              <div style={{ fontSize: 13, fontWeight: 500, color: colors.detailValue }}>
-                                10 Apr 2026
-                              </div>
-                            </div>
-                          </div>
-
-                          <div style={{ display: 'flex', gap: 12 }}>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Submitted Date
-                              </div>
-                              <div style={{ fontSize: 13, fontWeight: 500, color: colors.detailValue }}>
-                                1 Apr 2026
-                              </div>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Assigned Officer
-                              </div>
-                              <div style={{ fontSize: 13, fontWeight: 500, color: colors.detailValue }}>
-                                Rahul Sharma
-                              </div>
-                            </div>
-                          </div>
-
-                          <div style={{ display: 'flex', gap: 12 }}>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Department
-                              </div>
-                              <div style={{ fontSize: 13, fontWeight: 500, color: colors.detailValue }}>
-                                Revenue Department
-                              </div>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Documents
-                              </div>
-                              <div
-                                style={{
-                                  fontSize: 13,
-                                  fontWeight: 500,
-                                  color: colors.detailValue,
-                                  whiteSpace: 'pre-line',
-                                }}
-                              >
-                                ID Proof, Address{'\n'}Proof
-                              </div>
-                            </div>
-                          </div>
-
-                          <div style={{ marginTop: 4 }}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 6,
+                              fontSize: 18,
+                              fontWeight: 700,
+                              color: colors.titleColor,
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            1
                             <div
                               style={{
-                                fontSize: 11,
-                                color: colors.actionNeededColor,
-                                marginBottom: 2,
+                                width: 7,
+                                height: 7,
+                                borderRadius: '50%',
+                                backgroundColor: colors.errorColor,
                               }}
-                            >
-                              Action needed
-                            </div>
+                            />
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: colors.subtleText,
+                              marginTop: 4,
+                            }}
+                          >
+                            Needs attention
+                          </div>
+                        </div>
+
+                        {/* Stat 3: Completed */}
+                        <div
+                          style={{
+                            backgroundColor: colors.cardBg,
+                            border: `1px solid ${colors.statCardBorder}`,
+                            borderRadius: 10,
+                            padding: 12,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 18,
+                              fontWeight: 700,
+                              color: colors.titleColor,
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            5
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: colors.subtleText,
+                              marginTop: 4,
+                            }}
+                          >
+                            Completed
+                          </div>
+                        </div>
+
+                        {/* Stat 4: Total */}
+                        <div
+                          style={{
+                            backgroundColor: colors.cardBg,
+                            border: `1px solid ${colors.statCardBorder}`,
+                            borderRadius: 10,
+                            padding: 12,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 18,
+                              fontWeight: 700,
+                              color: colors.titleColor,
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            8
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: colors.subtleText,
+                              marginTop: 4,
+                            }}
+                          >
+                            Total
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Your applications Section Heading */}
+                      <div
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 700,
+                          color: colors.titleColor,
+                          marginBottom: 12,
+                        }}
+                      >
+                        Your applications
+                      </div>
+
+                      {/* Tab Filters using Ux4gChoiceChip */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          gap: 6,
+                          marginBottom: 14,
+                        }}
+                      >
+                        {tabsData.map((tab, index) => (
+                          <Ux4gChoiceChip
+                            key={tab.label}
+                            text={tab.label}
+                            selected={selectedTab === index}
+                            onClick={() => setSelectedTab(index)}
+                            size="s"
+                            borderRadius={4}
+                            trailingContent={
+                              <span
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  minWidth: 16,
+                                  height: 16,
+                                  fontSize: 10,
+                                  fontWeight: 700,
+                                  padding: '0 4px',
+                                  borderRadius: 8,
+                                  backgroundColor:
+                                    selectedTab === index
+                                      ? 'rgba(255, 255, 255, 0.25)'
+                                      : UX4GColors.primary600,
+                                  color: '#FFFFFF',
+                                  marginLeft: 4,
+                                  lineHeight: 1,
+                                  boxSizing: 'border-box',
+                                }}
+                              >
+                                {tab.count}
+                              </span>
+                            }
+                          />
+                        ))}
+                      </div>
+
+                      {/* Search Field */}
+                      <div style={{ marginBottom: 14 }}>
+                        <Ux4gSearchField
+                          variant="searchWithSubmit"
+                          placeholder="Search for..."
+                          value={searchValue}
+                          onValueChange={setSearchValue}
+                          showVoiceIcon={true}
+                          showClearIcon={true}
+                          size="medium"
+                        />
+                      </div>
+
+                      {/* Result Count */}
+                      <div
+                        style={{
+                          fontSize: 13,
+                          color: colors.subtleText,
+                          marginBottom: 14,
+                        }}
+                      >
+                        2 results for "{searchValue}"
+                      </div>
+
+                      {/* Result Card 1 - Expanded */}
+                      <div
+                        style={{
+                          backgroundColor: colors.cardBg,
+                          border: `1px solid ${colors.border}`,
+                          borderRadius: 12,
+                          padding: 14,
+                          marginBottom: 12,
+                        }}
+                      >
+                        {/* Card Title Row */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginBottom: 8,
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 700,
+                              color: colors.titleColor,
+                            }}
+                          >
+                            Income Certificate
+                          </span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <Ux4gButton
+                              text="Track"
+                              variant="outline"
+                              size="small"
+                              contentColor={colors.buttonOutlineText}
+                              borderColor={colors.buttonOutlineBorder}
+                              onPress={() => {}}
+                            />
                             <button
                               type="button"
+                              onClick={() => setExpandedCard1(!expandedCard1)}
                               style={{
                                 background: 'none',
                                 border: 'none',
-                                padding: 0,
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: 4,
-                                color: colors.uploadDocColor,
-                                fontSize: 13,
-                                fontWeight: 600,
+                                padding: 2,
                                 cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                color: colors.subtleText,
                               }}
                             >
-                              Upload document
-                              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
-                                upload
+                              <span
+                                className="material-symbols-outlined"
+                                style={{
+                                  fontSize: 18,
+                                  transform: expandedCard1 ? 'rotate(180deg)' : 'rotate(0deg)',
+                                  transition: 'transform 0.2s ease',
+                                }}
+                              >
+                                keyboard_arrow_down
                               </span>
                             </button>
                           </div>
                         </div>
-                      )}
-                    </div>
 
-                    {/* Result Card 2 - Collapsed */}
-                    <div
-                      style={{
-                        backgroundColor: colors.cardBg,
-                        border: `1px solid ${colors.border}`,
-                        borderRadius: 12,
-                        padding: 16,
-                        marginBottom: 16,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginBottom: 10,
-                        }}
-                      >
+                        {/* Status Pill Tag with secondary color & borderRadius 4 */}
                         <div
                           style={{
-                            fontSize: 15,
-                            fontWeight: 700,
-                            color: colors.titleColor,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            marginBottom: 10,
                           }}
                         >
-                          Income Certificate
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <button
-                            type="button"
-                            style={{
-                              padding: '4px 10px',
-                              borderRadius: 6,
-                              border: `1px solid ${colors.trackBtnBorder}`,
-                              backgroundColor: 'transparent',
-                              color: colors.trackBtnText,
-                              fontSize: 12,
-                              fontWeight: 600,
-                              cursor: 'pointer',
+                          <Ux4gUnifiedPillTag
+                            containerStyle={{
+                              alignSelf: 'flex-start',
+                              borderRadius: 4,
                             }}
-                          >
-                            Track
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setExpandedCard2(!expandedCard2)}
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              padding: 2,
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              color: colors.subtleText,
-                            }}
-                          >
-                            <span
-                              className="material-symbols-outlined"
-                              style={{
-                                fontSize: 20,
-                                transform: expandedCard2 ? 'rotate(180deg)' : 'rotate(0deg)',
-                                transition: 'transform 0.2s ease',
-                              }}
-                            >
-                              keyboard_arrow_down
-                            </span>
-                          </button>
+                            segments={[
+                              {
+                                text: '8 days left',
+                                textColor: colors.titleColor,
+                                leading: (
+                                  <div
+                                    style={{
+                                      width: 7,
+                                      height: 7,
+                                      borderRadius: '50%',
+                                      backgroundColor: colors.secondaryColor,
+                                      marginRight: 6,
+                                    }}
+                                  />
+                                ),
+                              },
+                              {
+                                text: 'Under review',
+                                textColor: colors.secondaryColor,
+                                bold: true,
+                              },
+                            ]}
+                            backgroundColor={colors.cardBg}
+                            borderColor={colors.border}
+                            dividerColor={colors.border}
+                          />
                         </div>
-                      </div>
 
-                      {/* Unified Status Pill Tag */}
-                      <div
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          border: `1px solid ${colors.tagBorder}`,
-                          borderRadius: 16,
-                          padding: '3px 8px',
-                          gap: 6,
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        {/* Expanded Details */}
+                        {expandedCard1 && (
                           <div
                             style={{
-                              width: 8,
-                              height: 8,
-                              borderRadius: 4,
-                              backgroundColor: colors.dotColor,
-                            }}
-                          />
-                          <span
-                            style={{
-                              fontSize: 12,
-                              fontWeight: 500,
-                              color: colors.tagText,
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 10,
+                              marginTop: 10,
                             }}
                           >
-                            8 days left
-                          </span>
-                        </div>
-                        <div
-                          style={{
-                            width: 1,
-                            height: 12,
-                            backgroundColor: colors.tagBorder,
-                          }}
-                        />
-                        <span
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 600,
-                            color: colors.underReviewColor,
-                          }}
-                        >
-                          Under review
-                        </span>
-                      </div>
-
-                      {expandedCard2 && (
-                        <div
-                          style={{
-                            marginTop: 16,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 12,
-                          }}
-                        >
-                          <div style={{ display: 'flex', gap: 12 }}>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Reference Number
+                            {/* Row 1 */}
+                            <div style={{ display: 'flex', gap: 12 }}>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
+                                  Reference Number
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    color: colors.detailValue,
+                                  }}
+                                >
+                                  INC-2026-MH-04127
+                                </div>
                               </div>
-                              <div style={{ fontSize: 13, fontWeight: 500, color: colors.detailValue }}>
-                                INC-2026-MH-04128
+                              <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
+                                  Last Updated Date
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    color: colors.detailValue,
+                                  }}
+                                >
+                                  10 Apr 2026
+                                </div>
                               </div>
                             </div>
-                            <div style={{ flex: 1 }}>
-                              <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
-                                Last Updated Date
+
+                            {/* Row 2 */}
+                            <div style={{ display: 'flex', gap: 12 }}>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
+                                  Submitted Date
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    color: colors.detailValue,
+                                  }}
+                                >
+                                  1 Apr 2026
+                                </div>
                               </div>
-                              <div style={{ fontSize: 13, fontWeight: 500, color: colors.detailValue }}>
-                                08 Apr 2026
+                              <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
+                                  Assigned Officer
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    color: colors.detailValue,
+                                  }}
+                                >
+                                  Rahul Sharma
+                                </div>
                               </div>
+                            </div>
+
+                            {/* Row 3 */}
+                            <div style={{ display: 'flex', gap: 12 }}>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
+                                  Department
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    color: colors.detailValue,
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  Revenue Department
+                                </div>
+                              </div>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 11, color: colors.detailLabel, marginBottom: 2 }}>
+                                  Documents
+                                </div>
+                                <div
+                                  style={{
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                    color: colors.detailValue,
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  ID Proof, Address Proof
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Action Needed with Secondary Color */}
+                            <div style={{ marginTop: 4 }}>
+                              <div
+                                style={{
+                                  fontSize: 11,
+                                  color: colors.secondaryColor,
+                                  fontWeight: 500,
+                                  marginBottom: 2,
+                                }}
+                              >
+                                Action needed
+                              </div>
+                              <button
+                                type="button"
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  padding: 0,
+                                  fontSize: 13,
+                                  fontWeight: 600,
+                                  color: colors.primaryColor,
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: 5,
+                                  cursor: 'pointer',
+                                  marginTop: 2,
+                                }}
+                              >
+                                Upload document
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke={colors.primaryColor}
+                                  strokeWidth="2.2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+                                  <polyline points="7 9 12 4 17 9" />
+                                  <line x1="12" y1="4" x2="12" y2="16" />
+                                </svg>
+                              </button>
                             </div>
                           </div>
+                        )}
+                      </div>
+
+                      {/* Result Card 2 - Collapsed */}
+                      <div
+                        style={{
+                          backgroundColor: colors.cardBg,
+                          border: `1px solid ${colors.border}`,
+                          borderRadius: 12,
+                          padding: 14,
+                          marginBottom: 12,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginBottom: 8,
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 700,
+                              color: colors.titleColor,
+                            }}
+                          >
+                            Income Certificate
+                          </span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <Ux4gButton
+                              text="Track"
+                              variant="outline"
+                              size="small"
+                              contentColor={colors.buttonOutlineText}
+                              borderColor={colors.buttonOutlineBorder}
+                              onPress={() => {}}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setExpandedCard2(!expandedCard2)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                padding: 2,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                color: colors.subtleText,
+                              }}
+                            >
+                              <span
+                                className="material-symbols-outlined"
+                                style={{
+                                  fontSize: 18,
+                                  transform: expandedCard2 ? 'rotate(180deg)' : 'rotate(0deg)',
+                                  transition: 'transform 0.2s ease',
+                                }}
+                              >
+                                keyboard_arrow_down
+                              </span>
+                            </button>
+                          </div>
                         </div>
-                      )}
+
+                        {/* Status Pill Tag with secondary color & borderRadius 4 */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                          }}
+                        >
+                          <Ux4gUnifiedPillTag
+                            containerStyle={{
+                              alignSelf: 'flex-start',
+                              borderRadius: 4,
+                            }}
+                            segments={[
+                              {
+                                text: '8 days left',
+                                textColor: colors.titleColor,
+                                leading: (
+                                  <div
+                                    style={{
+                                      width: 7,
+                                      height: 7,
+                                      borderRadius: '50%',
+                                      backgroundColor: colors.secondaryColor,
+                                      marginRight: 6,
+                                    }}
+                                  />
+                                ),
+                              },
+                              {
+                                text: 'Under review',
+                                textColor: colors.secondaryColor,
+                                bold: true,
+                              },
+                            ]}
+                            backgroundColor={colors.cardBg}
+                            borderColor={colors.border}
+                            dividerColor={colors.border}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Ux4gThemeProvider>
               </div>
             )}
 

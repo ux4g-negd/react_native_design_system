@@ -1,5 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { Ux4gButton } from '../../../src/components/button/Button';
+import { Ux4gEmptyState } from '../../../src/components/empty-state/EmptyState';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
@@ -58,6 +61,7 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gDivider,
+  Ux4gEmptyState,
   Ux4gButton,
   Ux4gStatusAvatar,
   UX4GColors,
@@ -156,28 +160,18 @@ export const NoApplicationsScreen = ({
         </Text>
 
         {/* Empty State */}
-        <View style={styles.emptyStateContainer}>
-          <Image
-            source={require('./assets/inbox.png')}
-            style={[styles.emptyStateIcon, { tintColor: primaryColor }]}
-            resizeMode="contain"
-          />
-          <Text style={[styles.emptyStateTitle, { color: titleColor }]}>
-            No active applications
-          </Text>
-          <Text style={[styles.emptyStateDescription, { color: subtleText }]}>
-            {'Start your application easily by clicking on the\\nbutton below'}
-          </Text>
-          <View style={styles.ctaButtonWrapper}>
-            <Ux4gButton
-              text="Start application"
-              onPress={onStartApplication}
-              variant="primary"
-              backgroundColor={isDark ? '#2E1C89' : '#EDE9FE'}
-              contentColor={isDark ? '#E0E7FF' : '#432CBB'}
-            />
-          </View>
-        </View>
+        <Ux4gEmptyState
+          variant="noData"
+          iconSize={56}
+          iconColor={primaryColor}
+          title="No active applications"
+          subtitle="Start your application easily by clicking on the button below"
+          buttonText="Start application"
+          onButtonPressed={onStartApplication}
+          buttonSize="small"
+          padding={0}
+          containerStyle={styles.emptyStateContainer}
+        />
 
         {/* Popular Services Section */}
         <Text style={[styles.sectionTitle, { color: titleColor }]}>
@@ -295,277 +289,241 @@ const styles = StyleSheet.create({
                 className={`wb-preview-area ${isDark ? 'dark' : ''}`}
                 style={{ flexDirection: 'column', alignItems: 'center' }}
               >
-          {/* Phone Frame Mockup */}
-          <div
-            style={{
-              width: 360,
-              height: 760,
-              borderRadius: 20,
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: colors.screenBg,
-              border: isDark ? 'none' : '1px solid #E5E7EB',
-              boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
-              position: 'relative',
-              boxSizing: 'border-box',
-            }}
-          >
-            {/* Header (Top) */}
-            <div
-              style={{
-                backgroundColor: colors.headerBg,
-                padding: '10px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexShrink: 0,
-                borderBottom: `1px solid ${colors.dividerColor}`,
-              }}
-            >
-              {/* Left group */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <img
-                  src="/national_emblem_logo.svg"
-                  alt="National Emblem"
-                  style={{
-                    height: 36,
-                    width: 'auto',
-                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                  }}
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
-                <div
-                  style={{
-                    width: 1,
-                    height: 24,
-                    backgroundColor: colors.verticalDividerColor,
-                  }}
-                />
-                <UnionLogo color={colors.primaryColor} size={26} />
-                <span
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: colors.titleColor,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Government of India
-                </span>
-              </div>
-
-              {/* Right actions: Bell + Avatar */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <button
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: 0,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: colors.titleColor,
-                  }}
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-                    notifications
-                  </span>
-                </button>
-                {/* Avatar with online dot */}
-                <div style={{ position: 'relative' }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200"
-                    alt="Avatar"
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: '50%',
-                      objectFit: 'cover',
-                      display: 'block',
-                    }}
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
+                {/* Phone Frame Mockup */}
+                <Ux4gThemeProvider isDark={isDark}>
                   <div
                     style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      right: 0,
-                      width: 7,
-                      height: 7,
-                      borderRadius: '50%',
-                      backgroundColor: '#22C55E',
-                      border: `1.5px solid ${colors.headerBg}`,
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Scrollable Dashboard Body */}
-            <div
-              style={{
-                flex: 1,
-                overflowY: 'auto',
-                padding: '20px 16px 28px',
-                display: 'flex',
-                flexDirection: 'column',
-                boxSizing: 'border-box',
-              }}
-            >
-              {/* Greeting */}
-              <div
-                style={{
-                  fontSize: 20,
-                  fontWeight: 800,
-                  color: colors.titleColor,
-                  marginBottom: 4,
-                }}
-              >
-                Good morning, Ramesh
-              </div>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: colors.subtleText,
-                  marginBottom: 36,
-                }}
-              >
-                You haven't started any applications yet
-              </div>
-
-              {/* Empty State Center Card */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  marginBottom: 36,
-                }}
-              >
-                {/* Inbox Illustration Icon */}
-                <span
-                  className="material-symbols-outlined"
-                  style={{
-                    fontSize: 64,
-                    color: colors.primaryColor,
-                    marginBottom: 16,
-                  }}
-                >
-                  inbox
-                </span>
-
-                <div
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 700,
-                    color: colors.titleColor,
-                    marginBottom: 8,
-                  }}
-                >
-                  No active applications
-                </div>
-
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: colors.subtleText,
-                    lineHeight: 1.4,
-                    marginBottom: 20,
-                  }}
-                >
-                  Start your application easily by clicking on the<br />button below
-                </div>
-
-                <button
-                  style={{
-                    padding: '9px 18px',
-                    borderRadius: 6,
-                    border: 'none',
-                    backgroundColor: colors.ctaBg,
-                    color: colors.ctaText,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'opacity 0.2s ease',
-                  }}
-                >
-                  Start application
-                </button>
-              </div>
-
-              {/* Popular Services Section */}
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: colors.titleColor,
-                  marginBottom: 14,
-                }}
-              >
-                Popular services to get started
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {popularServices.map((service) => (
-                  <div
-                    key={service.title}
-                    style={{
-                      backgroundColor: colors.cardBg,
-                      border: `1px solid ${colors.border}`,
-                      borderRadius: 12,
-                      padding: 16,
+                      width: 360,
+                      height: 760,
+                      borderRadius: 20,
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      backgroundColor: colors.screenBg,
+                      border: isDark ? 'none' : '1px solid #E5E7EB',
+                      boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
+                      position: 'relative',
+                      boxSizing: 'border-box',
                     }}
                   >
+                    {/* Header (Top) */}
                     <div
                       style={{
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: colors.titleColor,
-                        marginBottom: 4,
-                      }}
-                    >
-                      {service.title}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 12,
-                        color: colors.subtleText,
-                        marginBottom: 8,
-                      }}
-                    >
-                      {service.subtitle}
-                    </div>
-                    <div
-                      style={{
-                        display: 'inline-flex',
+                        backgroundColor: colors.headerBg,
+                        padding: '10px 14px',
+                        display: 'flex',
                         alignItems: 'center',
-                        gap: 4,
-                        fontSize: 13,
-                        fontWeight: 500,
-                        color: colors.primaryColor,
-                        cursor: 'pointer',
+                        justifyContent: 'space-between',
+                        flexShrink: 0,
+                        borderBottom: `1px solid ${colors.dividerColor}`,
                       }}
                     >
-                      Start now
-                      <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: 14, transform: 'translateY(1px)' }}
+                      {/* Left group */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <img
+                          src="/national_emblem_logo.svg"
+                          alt="National Emblem"
+                          style={{
+                            height: 36,
+                            width: 'auto',
+                            filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                          }}
+                          onError={(e) => {
+                            (e.target as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                        <div
+                          style={{
+                            width: 1,
+                            height: 24,
+                            backgroundColor: colors.verticalDividerColor,
+                          }}
+                        />
+                        <UnionLogo color={colors.primaryColor} size={26} />
+                        <span
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 600,
+                            color: colors.titleColor,
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          Government of India
+                        </span>
+                      </div>
+
+                      {/* Right actions: Bell + Avatar */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <button
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: colors.titleColor,
+                          }}
+                        >
+                          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
+                            notifications
+                          </span>
+                        </button>
+                        {/* Avatar with online dot */}
+                        <div style={{ position: 'relative' }}>
+                          <img
+                            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200"
+                            alt="Avatar"
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: '50%',
+                              objectFit: 'cover',
+                              display: 'block',
+                            }}
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: 0,
+                              right: 0,
+                              width: 7,
+                              height: 7,
+                              borderRadius: '50%',
+                              backgroundColor: '#22C55E',
+                              border: `1.5px solid ${colors.headerBg}`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Scrollable Dashboard Body */}
+                    <div
+                      style={{
+                        flex: 1,
+                        overflowY: 'auto',
+                        padding: '20px 16px 28px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        boxSizing: 'border-box',
+                      }}
+                    >
+                      {/* Greeting */}
+                      <div
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 800,
+                          color: colors.titleColor,
+                          marginBottom: 4,
+                        }}
                       >
-                        arrow_forward
-                      </span>
+                        Good morning, Ramesh
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 13,
+                          color: colors.subtleText,
+                          marginBottom: 36,
+                        }}
+                      >
+                        You haven't started any applications yet
+                      </div>
+
+                      {/* Empty State using Ux4gEmptyState */}
+                      <div style={{ marginBottom: 32 }}>
+                        <Ux4gEmptyState
+                          variant="noData"
+                          icon={
+                            <svg width="60" height="60" viewBox="0 0 72 72" fill="none">
+                              <path
+                                d="M57 9H15C11.7 9 9 11.7 9 15V57C9 60.3 11.67 63 15 63H57C60.3 63 63 60.3 63 57V15C63 11.7 60.3 9 57 9ZM57 57H15V48H25.68C27.75 51.57 31.59 54 36.03 54C40.47 54 44.28 51.57 46.38 48H57V57ZM57 42H42.03C42.03 45.3 39.33 48 36.03 48C32.73 48 30.03 45.3 30.03 42H15V15H57V42Z"
+                                fill={colors.primaryColor}
+                              />
+                            </svg>
+                          }
+                          iconSize={60}
+                          iconColor={colors.primaryColor}
+                          title="No active applications"
+                          subtitle="Start your application easily by clicking on the button below"
+                          buttonText="Start application"
+                          onButtonPressed={() => {}}
+                          buttonSize="small"
+                          padding={0}
+                        />
+                      </div>
+
+                      {/* Popular Services Section */}
+                      <div
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 600,
+                          color: colors.titleColor,
+                          marginBottom: 14,
+                        }}
+                      >
+                        Popular services to get started
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                        {popularServices.map((service) => (
+                          <div
+                            key={service.title}
+                            style={{
+                              backgroundColor: colors.cardBg,
+                              border: `1px solid ${colors.border}`,
+                              borderRadius: 12,
+                              padding: 16,
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 600,
+                                color: colors.titleColor,
+                                marginBottom: 4,
+                              }}
+                            >
+                              {service.title}
+                            </div>
+                            <div
+                              style={{
+                                fontSize: 12,
+                                color: colors.subtleText,
+                                marginBottom: 8,
+                              }}
+                            >
+                              {service.subtitle}
+                            </div>
+                            <div
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 4,
+                                fontSize: 13,
+                                fontWeight: 500,
+                                color: colors.primaryColor,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Start now
+                              <span
+                                className="material-symbols-outlined"
+                                style={{ fontSize: 14, transform: 'translateY(1px)' }}
+                              >
+                                arrow_forward
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
+                </Ux4gThemeProvider>
         </div>
       )}
 
