@@ -1,5 +1,9 @@
 import React, { useState, useMemo } from 'react';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
+import { Ux4gDivider } from '../../../src/components/divider/Divider';
+import { Ux4gButton } from '../../../src/components/button/Button';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
@@ -38,6 +42,7 @@ export const ApplicationSentSuccessDoc: React.FC<ApplicationSentSuccessDocProps>
       outlineBtnText: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
       iconBg: isDark ? UX4GColors.green800 : UX4GColors.green100,
       iconColor: isDark ? UX4GColors.green500 : UX4GColors.green600,
+      menuBtnBorder: isDark ? UX4GColors.primary700 : UX4GColors.primary200,
       footerText: isDark ? UX4GColors.neutral400 : '#9CA3AF',
     };
   }, [isDark, variant]);
@@ -49,6 +54,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import {
@@ -82,8 +88,9 @@ export const ApplicationSentScreen = ({
       <Ux4gAppHeader
         variant="light"
         title=""
-        leadingWidgets={
-          <View style={styles.headerLeading}>
+        backgroundColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral0}
+        leadingWidgets={[
+          <View key="emblem-union" style={styles.headerLeading}>
             <Image
               source={require('./assets/national_emblem.png')}
               style={[
@@ -94,76 +101,90 @@ export const ApplicationSentScreen = ({
             />
             <Ux4gDivider
               orientation="vertical"
-              color="#D1D5DB"
-              style={{ height: 32 }}
+              color={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
+              thickness={1}
             />
             <Image
               source={require('./assets/union_logo.png')}
               style={[styles.unionLogo, { tintColor: primaryColor }]}
               resizeMode="contain"
             />
-          </View>
-        }
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+          </View>,
+        ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={[
+                  styles.menuBtn,
+                  {
+                    borderColor: isDark ? UX4GColors.primary700 : UX4GColors.primary200,
+                    backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral0,
+                  },
+                ]}
+                onPress={() => {}}
+              >
+                <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
-      <Ux4gDivider color="#E5E7EB" thickness={1} />
+      <Ux4gDivider
+        color={isDark ? UX4GColors.neutral800 : '#E5E7EB'}
+        thickness={1}
+      />
 
       {/* Main Content */}
-      <View style={styles.content}>
-        {/* Success Icon */}
-        <View
-          style={[
-            styles.iconCircle,
-            { backgroundColor: isDark ? UX4GColors.green800 : UX4GColors.green100 },
-          ]}
-        >
-          <Image
-            source={require('./assets/check_circle.png')}
+      <View style={styles.contentContainer}>
+        {/* Success Info */}
+        <View style={styles.centerSection}>
+          <View
             style={[
-              styles.checkIcon,
-              { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
+              styles.iconCircle,
+              { backgroundColor: isDark ? UX4GColors.green800 : UX4GColors.green100 },
             ]}
-            resizeMode="contain"
-          />
+          >
+            <Image
+              source={require('./assets/check_circle.png')}
+              style={[
+                styles.checkIcon,
+                { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
+              ]}
+              resizeMode="contain"
+            />
+          </View>
+
+          <Text style={[styles.title, { color: titleColor }]}>
+            Application sent!
+          </Text>
+
+          <Text style={[styles.subtitle, { color: subtitleColor }]}>
+            We will review and contact you within 3 working days.
+          </Text>
         </View>
 
-        {/* Title */}
-        <Text style={[styles.title, { color: titleColor }]}>
-          Application sent!
-        </Text>
-
-        {/* Subtitle */}
-        <Text style={[styles.subtitle, { color: subtitleColor }]}>
-          We will review and contact you within 3 working days.
-        </Text>
-      </View>
-
-      {/* Bottom Actions */}
-      <View style={styles.actionsContainer}>
-        <Ux4gButton
-          text="View application status"
-          onPress={onViewStatus}
-          variant="primary"
-          style={styles.actionButton}
-        />
-        <Ux4gButton
-          text="Back to dashboard"
-          onPress={onBackToDashboard}
-          variant="outline"
-          style={styles.actionButton}
-        />
+        {/* Action Buttons */}
+        <View style={styles.actionsContainer}>
+          <Ux4gButton
+            text="View application status"
+            size="large"
+            height={48}
+            width="100%"
+            onPress={onViewStatus}
+          />
+          <Ux4gButton
+            text="Back to dashboard"
+            size="large"
+            height={48}
+            width="100%"
+            variant="outline"
+            contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+            borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+            onPress={onBackToDashboard}
+          />
+        </View>
       </View>
 
       {/* Footer */}
@@ -190,27 +211,13 @@ export const ApplicationSentScreen = ({
 };
 
 const styles = StyleSheet.create({
-  menuBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: UX4GColors.primary,
-  },
   safeArea: {
     flex: 1,
   },
   headerLeading: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
   },
   emblem: {
     height: 40,
@@ -220,11 +227,28 @@ const styles = StyleSheet.create({
     height: 32,
     width: 44,
   },
-  content: {
-    flex: 1,
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
     paddingHorizontal: 24,
+    paddingTop: 48,
+    paddingBottom: 24,
+  },
+  centerSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iconCircle: {
     width: 80,
@@ -232,32 +256,26 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
   },
   checkIcon: {
     width: 48,
     height: 48,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   subtitle: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 14,
+    lineHeight: 20,
     textAlign: 'center',
+    maxWidth: 240,
   },
   actionsContainer: {
-    paddingHorizontal: 24,
-    paddingBottom: 16,
     gap: 12,
-  },
-  actionButton: {
-    width: '100%',
-    height: 48,
-    borderRadius: 8,
   },
   footer: {
     flexDirection: 'row',
@@ -268,7 +286,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 11,
-    marginBottom: 6,
+    fontWeight: '500',
   },
   digitalIndiaLogo: {
     height: 24,
@@ -285,6 +303,7 @@ import {
   Text,
   StyleSheet,
   Image,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import {
@@ -318,142 +337,146 @@ export const ApplicationSentCardScreen = ({
       <Ux4gAppHeader
         variant="light"
         title=""
-        leadingWidgets={
-          <View style={styles.headerLeading}>
+        backgroundColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral0}
+        leadingWidgets={[
+          <View key="emblem-union" style={styles.headerLeading}>
             <Image
               source={require('./assets/national_emblem.png')}
-              style={[
-                styles.emblem,
-                isDark && { tintColor: '#FFFFFF' },
-              ]}
+              style={[styles.emblem, isDark && { tintColor: '#FFFFFF' }]}
               resizeMode="contain"
             />
             <Ux4gDivider
               orientation="vertical"
-              color="#D1D5DB"
-              style={{ height: 32 }}
+              color={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
+              thickness={1}
             />
             <Image
               source={require('./assets/union_logo.png')}
               style={[styles.unionLogo, { tintColor: primaryColor }]}
               resizeMode="contain"
             />
-          </View>
-        }
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+          </View>,
+        ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={[
+                  styles.menuBtn,
+                  {
+                    borderColor: isDark ? UX4GColors.primary700 : UX4GColors.primary200,
+                    backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral0,
+                  },
+                ]}
+                onPress={() => {}}
+              >
+                <Text style={[styles.menuIcon, { color: primaryColor }]}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
-      <Ux4gDivider color="#E5E7EB" thickness={1} />
+      <Ux4gDivider
+        color={isDark ? UX4GColors.neutral800 : '#E5E7EB'}
+        thickness={1}
+      />
 
-      {/* Card Container */}
-      <View style={styles.cardWrapper}>
+      {/* Main Content Area */}
+      <View style={styles.mainWrapper}>
+        {/* Card */}
         <View
           style={[
             styles.card,
-            { backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral0 },
+            {
+              backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral0,
+              borderColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+            },
           ]}
         >
-          {/* Success Icon */}
-          <View
-            style={[
-              styles.iconCircle,
-              { backgroundColor: isDark ? UX4GColors.green800 : UX4GColors.green100 },
-            ]}
-          >
-            <Image
-              source={require('./assets/check_circle.png')}
+          {/* Success Info */}
+          <View style={styles.cardCenterSection}>
+            <View
               style={[
-                styles.checkIcon,
-                { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
+                styles.iconCircle,
+                {
+                  backgroundColor: isDark ? UX4GColors.green800 : UX4GColors.green100,
+                },
               ]}
-              resizeMode="contain"
-            />
+            >
+              <Image
+                source={require('./assets/check_circle.png')}
+                style={[
+                  styles.checkIcon,
+                  { tintColor: isDark ? UX4GColors.green500 : UX4GColors.green600 },
+                ]}
+                resizeMode="contain"
+              />
+            </View>
+
+            <Text style={[styles.title, { color: titleColor }]}>
+              Application sent!
+            </Text>
+
+            <Text style={[styles.subtitle, { color: subtitleColor }]}>
+              We will review and contact you within 3 working days.
+            </Text>
           </View>
 
-          {/* Title */}
-          <Text style={[styles.title, { color: titleColor }]}>
-            Application sent!
-          </Text>
-
-          {/* Subtitle */}
-          <Text style={[styles.subtitle, { color: subtitleColor }]}>
-            We will review and contact you within 3 working days.
-          </Text>
+          {/* Action Buttons inside Card */}
+          <View style={styles.actionsContainer}>
+            <Ux4gButton
+              text="View application status"
+              size="large"
+              height={48}
+              width="100%"
+              onPress={onViewStatus}
+            />
+            <Ux4gButton
+              text="Back to dashboard"
+              size="large"
+              height={48}
+              width="100%"
+              variant="outline"
+              contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+              borderColor={isDark ? UX4GColors.primary600 : UX4GColors.primary300}
+              onPress={onBackToDashboard}
+            />
+          </View>
         </View>
-      </View>
 
-      {/* Bottom Actions */}
-      <View style={styles.actionsContainer}>
-        <Ux4gButton
-          text="View application status"
-          onPress={onViewStatus}
-          variant="primary"
-          style={styles.actionButton}
-        />
-        <Ux4gButton
-          text="Back to dashboard"
-          onPress={onBackToDashboard}
-          variant="outline"
-          style={styles.actionButton}
-        />
-      </View>
-
-      {/* Footer */}
-      <View style={styles.footer}>
-        <Text
-          style={[
-            styles.footerText,
-            { color: isDark ? UX4GColors.neutral400 : '#9CA3AF' },
-          ]}
-        >
-          Powered by -
-        </Text>
-        <Image
-          source={require('./assets/digital_india_logo.png')}
-          style={[
-            styles.digitalIndiaLogo,
-            isDark && { tintColor: '#FFFFFF' },
-          ]}
-          resizeMode="contain"
-        />
+        {/* Footer outside Card */}
+        <View style={styles.footer}>
+          <Text
+            style={[
+              styles.footerText,
+              { color: isDark ? UX4GColors.neutral400 : '#9CA3AF' },
+            ]}
+          >
+            Powered by -
+          </Text>
+          <Image
+            source={require('./assets/digital_india_logo.png')}
+            style={[
+              styles.digitalIndiaLogo,
+              isDark && { tintColor: '#FFFFFF' },
+            ]}
+            resizeMode="contain"
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  menuBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: UX4GColors.primary,
-  },
   safeArea: {
     flex: 1,
   },
   headerLeading: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
   },
   emblem: {
     height: 40,
@@ -463,21 +486,39 @@ const styles = StyleSheet.create({
     height: 32,
     width: 44,
   },
-  cardWrapper: {
-    flex: 1,
-    padding: 24,
-  },
-  card: {
-    flex: 1,
-    borderRadius: 16,
-    padding: 24,
+  menuBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  menuIcon: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  mainWrapper: {
+    flex: 1,
+    justifyContent: 'space-between',
+    padding: 16,
+    paddingBottom: 24,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 24,
+    paddingTop: 36,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
+  },
+  cardCenterSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 32,
   },
   iconCircle: {
     width: 80,
@@ -485,43 +526,38 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
   },
   checkIcon: {
     width: 48,
     height: 48,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '800',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   subtitle: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: 14,
+    lineHeight: 20,
     textAlign: 'center',
+    maxWidth: 240,
   },
   actionsContainer: {
-    paddingHorizontal: 24,
-    paddingBottom: 16,
     gap: 12,
-  },
-  actionButton: {
     width: '100%',
-    height: 48,
-    borderRadius: 8,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    paddingBottom: 24,
+    paddingTop: 12,
   },
   footerText: {
     fontSize: 11,
-    marginBottom: 6,
+    fontWeight: '500',
   },
   digitalIndiaLogo: {
     height: 24,
@@ -636,277 +672,375 @@ const styles = StyleSheet.create({
                 </div>
 
                 {/* Render Live Mobile Mockup */}
-                <div
-                  style={{
-                    width: 360,
-                    height: 760,
-                    borderRadius: 20,
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    backgroundColor: colors.screenBg,
-                    border: isDark ? 'none' : '1px solid #E5E7EB',
-                    boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
-                    position: 'relative',
-                    boxSizing: 'border-box',
-                  }}
-                >
-                  {/* Top UX4G AppHeader */}
+                <Ux4gThemeProvider isDark={isDark}>
                   <div
                     style={{
-                      backgroundColor: colors.headerBg,
-                      padding: '12px 16px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      flexShrink: 0,
-                      borderBottom: `1px solid ${colors.dividerColor}`,
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <img
-                        src="/national_emblem_logo.svg"
-                        alt="National Emblem"
-                        style={{
-                          height: 36,
-                          width: 'auto',
-                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                        }}
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
-                      />
-                      <div
-                        style={{
-                          width: 1,
-                          height: 24,
-                          backgroundColor: colors.verticalDividerColor,
-                        }}
-                      />
-                      <UnionLogo color={colors.primaryColor} size={28} />
-                    </div>
-                  </div>
-
-                  {/* Main Success Content Body */}
-                  <div
-                    style={{
-                      flex: 1,
+                      width: 360,
+                      height: 760,
+                      borderRadius: 20,
+                      overflow: 'hidden',
                       display: 'flex',
                       flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: isCard ? '24px' : '0 24px',
+                      backgroundColor: colors.screenBg,
+                      border: `1px solid ${colors.border}`,
+                      boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+                      position: 'relative',
                       boxSizing: 'border-box',
+                      fontFamily:
+                        "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
                     }}
                   >
+                    {/* Top UX4G AppHeader */}
+                    <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
+                      <Ux4gAppHeader
+                        variant="light"
+                        title=""
+                        backgroundColor={colors.headerBg}
+                        leadingWidgets={[
+                          <div
+                            key="emblem-union"
+                            style={{ display: 'flex', alignItems: 'center', gap: 10 }}
+                          >
+                            <img
+                              src="/national_emblem_logo.svg"
+                              alt="National Emblem"
+                              style={{
+                                height: 40,
+                                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                              }}
+                            />
+                            <div
+                              style={{
+                                width: 1,
+                                height: 32,
+                                backgroundColor: colors.verticalDividerColor,
+                              }}
+                            />
+                            <UnionLogo size={32} isDark={isDark} />
+                          </div>,
+                        ]}
+                        actions={[
+                          {
+                            customWidget: (
+                              <div
+                                key="menu"
+                                style={{
+                                  width: 36,
+                                  height: 36,
+                                  borderRadius: 8,
+                                  border: `1.5px solid ${colors.menuBtnBorder}`,
+                                  backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral0,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                <svg
+                                  width="18"
+                                  height="18"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke={colors.primaryColor}
+                                  strokeWidth="2.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <line x1="3" y1="6" x2="21" y2="6" />
+                                  <line x1="3" y1="12" x2="21" y2="12" />
+                                  <line x1="3" y1="18" x2="21" y2="18" />
+                                </svg>
+                              </div>
+                            ),
+                          },
+                        ]}
+                      />
+                      <Ux4gDivider color={colors.dividerColor} thickness={1} />
+                    </div>
+
+                    {/* Main Success Content Body */}
                     {isCard ? (
-                      /* Card Container */
+                      /* Card Style Layout */
                       <div
                         style={{
-                          width: '100%',
-                          height: '100%',
-                          borderRadius: 16,
-                          backgroundColor: colors.cardBg,
-                          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.05)',
+                          flex: 1,
                           display: 'flex',
                           flexDirection: 'column',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          padding: 24,
+                          justifyContent: 'space-between',
+                          padding: '16px 16px 20px 16px',
                           boxSizing: 'border-box',
                         }}
                       >
-                        {/* Circle Icon */}
+                        {/* Card Box */}
                         <div
                           style={{
-                            width: 80,
-                            height: 80,
-                            borderRadius: '50%',
-                            backgroundColor: colors.iconBg,
+                            backgroundColor: colors.cardBg,
+                            borderRadius: 16,
+                            border: `1px solid ${colors.border}`,
+                            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                            padding: '36px 20px 24px 20px',
                             display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            textAlign: 'center',
+                          }}
+                        >
+                          {/* Success Icon Circle */}
+                          <div
+                            style={{
+                              width: 80,
+                              height: 80,
+                              borderRadius: 40,
+                              backgroundColor: colors.iconBg,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginBottom: 24,
+                            }}
+                          >
+                            <span
+                              className="material-symbols-outlined"
+                              style={{
+                                fontSize: 48,
+                                color: colors.iconColor,
+                                fontVariationSettings: "'FILL' 1",
+                              }}
+                            >
+                              check_circle
+                            </span>
+                          </div>
+
+                          {/* Title */}
+                          <div
+                            style={{
+                              fontSize: 24,
+                              fontWeight: 800,
+                              color: colors.titleColor,
+                              marginBottom: 12,
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            Application sent!
+                          </div>
+
+                          {/* Subtitle */}
+                          <div
+                            style={{
+                              fontSize: 14,
+                              lineHeight: 1.5,
+                              color: colors.subtleText,
+                              maxWidth: 240,
+                              marginBottom: 32,
+                            }}
+                          >
+                            We will review and contact you within 3 working days.
+                          </div>
+
+                          {/* Buttons inside Card */}
+                          <div
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 12,
+                            }}
+                          >
+                            <Ux4gButton
+                              text="View application status"
+                              size="large"
+                              height={48}
+                              width="100%"
+                              backgroundColor={colors.primaryBtnBg}
+                              contentColor={colors.primaryBtnText}
+                              onPress={() => {}}
+                            />
+                            <Ux4gButton
+                              text="Back to dashboard"
+                              size="large"
+                              height={48}
+                              width="100%"
+                              variant="outline"
+                              contentColor={colors.outlineBtnText}
+                              borderColor={colors.outlineBtnBorder}
+                              onPress={() => {}}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Footer outside Card */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginBottom: 32,
+                            gap: 6,
+                            paddingTop: 12,
                           }}
                         >
                           <span
-                            className="material-symbols-outlined"
                             style={{
-                              fontSize: 48,
-                              color: colors.iconColor,
-                              fontVariationSettings: "'FILL' 1",
+                              fontSize: 11,
+                              fontWeight: 500,
+                              color: colors.footerText,
                             }}
                           >
-                            check_circle
+                            Powered by -
                           </span>
-                        </div>
-
-                        {/* Title */}
-                        <div
-                          style={{
-                            fontSize: 28,
-                            fontWeight: 800,
-                            color: colors.titleColor,
-                            textAlign: 'center',
-                            marginBottom: 16,
-                            lineHeight: 1.2,
-                          }}
-                        >
-                          Application sent!
-                        </div>
-
-                        {/* Subtitle */}
-                        <div
-                          style={{
-                            fontSize: 16,
-                            lineHeight: 1.5,
-                            color: colors.subtleText,
-                            textAlign: 'center',
-                          }}
-                        >
-                          We will review and contact you within 3 working days.
+                          <img
+                            src="/Digital_India_logo.svg"
+                            alt="Digital India"
+                            style={{
+                              height: 24,
+                              filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                            }}
+                          />
                         </div>
                       </div>
                     ) : (
-                      /* Default View (Direct Centered Content) */
-                      <>
-                        {/* Circle Icon */}
+                      /* Default Layout */
+                      <div
+                        style={{
+                          flex: 1,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          padding: '40px 24px 20px 24px',
+                          boxSizing: 'border-box',
+                        }}
+                      >
+                        {/* Center Info Section */}
                         <div
                           style={{
-                            width: 80,
-                            height: 80,
-                            borderRadius: '50%',
-                            backgroundColor: colors.iconBg,
                             display: 'flex',
+                            flexDirection: 'column',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            marginBottom: 32,
+                            textAlign: 'center',
+                            marginTop: 40,
                           }}
                         >
-                          <span
-                            className="material-symbols-outlined"
+                          {/* Success Icon Circle */}
+                          <div
                             style={{
-                              fontSize: 48,
-                              color: colors.iconColor,
-                              fontVariationSettings: "'FILL' 1",
+                              width: 80,
+                              height: 80,
+                              borderRadius: 40,
+                              backgroundColor: colors.iconBg,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginBottom: 28,
                             }}
                           >
-                            check_circle
-                          </span>
+                            <span
+                              className="material-symbols-outlined"
+                              style={{
+                                fontSize: 48,
+                                color: colors.iconColor,
+                                fontVariationSettings: "'FILL' 1",
+                              }}
+                            >
+                              check_circle
+                            </span>
+                          </div>
+
+                          {/* Title */}
+                          <div
+                            style={{
+                              fontSize: 24,
+                              fontWeight: 800,
+                              color: colors.titleColor,
+                              marginBottom: 12,
+                              lineHeight: 1.2,
+                            }}
+                          >
+                            Application sent!
+                          </div>
+
+                          {/* Subtitle */}
+                          <div
+                            style={{
+                              fontSize: 14,
+                              lineHeight: 1.5,
+                              color: colors.subtleText,
+                              maxWidth: 240,
+                            }}
+                          >
+                            We will review and contact you within 3 working days.
+                          </div>
                         </div>
 
-                        {/* Title */}
+                        {/* Bottom Actions & Footer */}
                         <div
                           style={{
-                            fontSize: 28,
-                            fontWeight: 800,
-                            color: colors.titleColor,
-                            textAlign: 'center',
-                            marginBottom: 16,
-                            lineHeight: 1.2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 24,
                           }}
                         >
-                          Application sent!
-                        </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 12,
+                            }}
+                          >
+                            <Ux4gButton
+                              text="View application status"
+                              size="large"
+                              height={48}
+                              width="100%"
+                              backgroundColor={colors.primaryBtnBg}
+                              contentColor={colors.primaryBtnText}
+                              onPress={() => {}}
+                            />
+                            <Ux4gButton
+                              text="Back to dashboard"
+                              size="large"
+                              height={48}
+                              width="100%"
+                              variant="outline"
+                              contentColor={colors.outlineBtnText}
+                              borderColor={colors.outlineBtnBorder}
+                              onPress={() => {}}
+                            />
+                          </div>
 
-                        {/* Subtitle */}
-                        <div
-                          style={{
-                            fontSize: 16,
-                            lineHeight: 1.5,
-                            color: colors.subtleText,
-                            textAlign: 'center',
-                          }}
-                        >
-                          We will review and contact you within 3 working days.
+                          {/* Footer */}
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: 6,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: 11,
+                                fontWeight: 500,
+                                color: colors.footerText,
+                              }}
+                            >
+                              Powered by -
+                            </span>
+                            <img
+                              src="/Digital_India_logo.svg"
+                              alt="Digital India"
+                              style={{
+                                height: 24,
+                                filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                              }}
+                            />
+                          </div>
                         </div>
-                      </>
+                      </div>
                     )}
                   </div>
-
-                  {/* Actions (Bottom) */}
-                  <div
-                    style={{
-                      padding: isCard ? '0 24px 16px 24px' : '16px 24px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 12,
-                      flexShrink: 0,
-                    }}
-                  >
-                    <button
-                      style={{
-                        width: '100%',
-                        height: 48,
-                        borderRadius: 8,
-                        backgroundColor: colors.primaryBtnBg,
-                        color: colors.primaryBtnText,
-                        border: 'none',
-                        fontSize: 16,
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'opacity 0.2s ease',
-                      }}
-                    >
-                      View application status
-                    </button>
-
-                    <button
-                      style={{
-                        width: '100%',
-                        height: 48,
-                        borderRadius: 8,
-                        backgroundColor: 'transparent',
-                        color: colors.outlineBtnText,
-                        border: `1.5px solid ${colors.outlineBtnBorder}`,
-                        fontSize: 16,
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'background-color 0.2s ease',
-                      }}
-                    >
-                      Back to dashboard
-                    </button>
-                  </div>
-
-                  {/* Footer (Bottom) */}
-                  <div
-                    style={{
-                      paddingBottom: 24,
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
-                      flexShrink: 0,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 11,
-                        color: colors.footerText,
-                        marginBottom: 6,
-                      }}
-                    >
-                      Powered by -
-                    </span>
-                    <img
-                      src="/digital_india_logo.png"
-                      alt="Digital India"
-                      style={{
-                        height: 24,
-                        width: 'auto',
-                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                      }}
-                    />
-                  </div>
-                </div>
+                </Ux4gThemeProvider>
               </div>
             )}
 

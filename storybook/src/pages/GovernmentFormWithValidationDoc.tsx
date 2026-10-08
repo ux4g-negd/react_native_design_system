@@ -1,5 +1,9 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
+import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
+import { Ux4gButton } from '../../../src/components/button/Button';
+import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
 
@@ -9,6 +13,14 @@ interface GovernmentFormWithValidationDocProps {
 
 type MainTab = 'preview' | 'code';
 type VariantType = 'Default' | 'Card style';
+
+const STATE_OPTIONS = [
+  { id: 'dl', label: 'Delhi' },
+  { id: 'mh', label: 'Maharashtra' },
+  { id: 'up', label: 'Uttar Pradesh' },
+  { id: 'ka', label: 'Karnataka' },
+  { id: 'tn', label: 'Tamil Nadu' },
+];
 
 export const GovernmentFormWithValidationDoc: React.FC<GovernmentFormWithValidationDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
@@ -24,30 +36,9 @@ export const GovernmentFormWithValidationDoc: React.FC<GovernmentFormWithValidat
   const [maritalStatus, setMaritalStatus] = useState<string | null>(null);
   const [reason, setReason] = useState('');
   const [income, setIncome] = useState(0);
+  const [confirmAccuracy, setConfirmAccuracy] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (showBanner) {
-      timer = setTimeout(() => {
-        setShowBanner(false);
-      }, 3000);
-    }
-    return () => clearTimeout(timer);
-  }, [showBanner]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const [showBanner, setShowBanner] = useState(true);
 
   const colors = useMemo(() => {
     const isCard = variant === 'Card style';
@@ -55,44 +46,40 @@ export const GovernmentFormWithValidationDoc: React.FC<GovernmentFormWithValidat
       screenBg: isCard
         ? isDark
           ? UX4GColors.primary900
-          : UX4GColors.primary50
+          : '#F4F0FF'
         : isDark
-          ? UX4GColors.neutral900
-          : UX4GColors.neutral0,
-      headerBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-      cardBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-      border: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-      dividerColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-      verticalDividerColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-      titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      subtleText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral600,
-      labelColor: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
-      inputBg: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-      inputDisabledBg: isDark ? UX4GColors.neutral800 : '#F3F4F6',
-      inputDisabledText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800,
+        ? UX4GColors.neutral900
+        : '#FFFFFF',
+      headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
       inputBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
+      inputBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+      inputDisabledBg: isDark ? UX4GColors.neutral800 : '#E5E7EB',
+      inputDisabledText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral900,
       inputText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
+      inputPlaceholder: isDark ? UX4GColors.neutral500 : '#9CA3AF',
+      titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
+      subtitleColor: isDark ? UX4GColors.neutral300 : UX4GColors.neutral600,
+      labelColor: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800,
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      primaryBrand: '#432CBB',
-      ghostButtonColor: isDark ? UX4GColors.primary300 : UX4GColors.primary900,
-      buttonDisabledBg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
-      buttonDisabledText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
-      sliderTrackInactive: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
       stepperLineInactive: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
       stepperCircleInactive: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-      stepperTextInactive: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-      dropdownMenuBg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral0,
-      dropdownMenuBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
-      dropdownHoverBg: isDark ? UX4GColors.neutral700 : UX4GColors.neutral100,
-      footerText: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400,
-      bannerBg: isDark ? '#064E3B' : '#F0FDF4',
+      stepperTextInactive: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
+      stepperLabelText: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
+      footerText: isDark ? UX4GColors.neutral500 : '#9CA3AF',
+      backBtnText: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
+      backBtnBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
+      menuBtnBorder: isDark ? UX4GColors.primary700 : '#D8D6F6',
+      bannerBg: isDark ? '#064E3B' : '#F2FCEF',
       bannerBorder: isDark ? '#065F46' : 'transparent',
-      bannerText: isDark ? '#34D399' : '#065F46',
+      bannerText: isDark ? '#34D399' : '#00522C',
+      bannerIcon: isDark ? '#34D399' : '#128937',
     };
   }, [isDark, variant]);
 
   const defaultCodeString = useMemo(() => {
-    return `import React, { useState, useEffect } from 'react';
+    return `import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -128,35 +115,34 @@ export const GovernmentFormScreen = ({
   onContinue?: () => void;
   onSaveDraft?: () => void;
 }) => {
-  const [fullName, setFullName] = useState('Ramesh Kumar');
+  const [fullName] = useState('Ramesh Kumar');
   const [mobileNumber, setMobileNumber] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [aadhaarNumber, setAadhaarNumber] = useState('');
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [selectedState, setSelectedState] = useState<string[]>([]);
   const [maritalStatus, setMaritalStatus] = useState<string | null>(null);
   const [reason, setReason] = useState('');
   const [income, setIncome] = useState(0);
+  const [confirmAccuracy, setConfirmAccuracy] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral600;
+  const subtleText = isDark ? UX4GColors.neutral300 : UX4GColors.neutral600;
 
-  const handleContinue = () => {
-    if (!acceptTerms) return;
-    setShowBanner(true);
-    setTimeout(() => {
-      setShowBanner(false);
-    }, 3000);
-    onContinue();
-  };
+  const stateOptions = [
+    { id: 'dl', label: 'Delhi' },
+    { id: 'mh', label: 'Maharashtra' },
+    { id: 'up', label: 'Uttar Pradesh' },
+    { id: 'ka', label: 'Karnataka' },
+    { id: 'tn', label: 'Tamil Nadu' },
+  ];
 
   return (
     <SafeAreaView
       style={[
         styles.safeArea,
-        { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0 },
+        { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
       ]}
     >
       <View style={styles.container}>
@@ -164,6 +150,7 @@ export const GovernmentFormScreen = ({
         <Ux4gAppHeader
           variant="light"
           showBackButton={false}
+          backgroundColor={isDark ? UX4GColors.neutral900 : '#FFFFFF'}
           leadingWidgets={[
             <Image
               key="emblem"
@@ -185,278 +172,247 @@ export const GovernmentFormScreen = ({
               resizeMode="contain"
             />,
           ]}
-        actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={styles.menuBtn}
-                onPress={() => {}}
-              >
-                <Text style={styles.menuIcon}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
-        ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={styles.menuBtn}
+                  onPress={() => {}}
+                >
+                  <Text style={styles.menuIcon}>☰</Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
         />
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
 
-        {/* Back Button */}
-        <View style={styles.backButtonContainer}>
-          <Ux4gButton
-            text="Back"
-            variant="ghost"
-            onPress={onBack}
-            leadingIcon="arrow_back"
-            contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary900}
-          />
-        </View>
-
-        {/* Form Content */}
+        {/* Scrollable Content */}
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Progress Stepper */}
+          {/* Back Navigation Link */}
+          <TouchableOpacity onPress={onBack} style={styles.backRow}>
+            <Text style={[styles.backText, { color: primaryColor }]}>← Back</Text>
+          </TouchableOpacity>
+
+          <View style={{ height: 16 }} />
+
+          {/* Stepper */}
           <Ux4gStepper
             totalSteps={4}
             currentStep={2}
             stepSize={20}
             steps={[
-              { title: 'Eligibility', titleStyle: { fontSize: 10, fontWeight: '600' } },
-              { title: 'Personal', titleStyle: { fontSize: 10, fontWeight: '600' } },
-              { title: 'Documents', titleStyle: { fontSize: 10, fontWeight: '600' } },
-              { title: '' },
+              { title: 'Eligibility' },
+              {
+                title: 'Personal',
+                titleStyle: {
+                  fontSize: 11,
+                  fontWeight: '600',
+                  color: primaryColor,
+                },
+              },
+              { title: 'Documents' },
+              { title: 'Submit' },
             ]}
           />
 
-          <View style={{ height: 32 }} />
+          <View style={{ height: 16 }} />
 
-          {/* Heading */}
+          {/* Saved Status Banner */}
+          <Ux4gStatusBanner
+            variant="successLight"
+            title="Saved 3:14 PM"
+            leadingIcon={
+              <Text style={{ color: '#128937', fontSize: 16 }}>✓</Text>
+            }
+          />
+
+          <View style={{ height: 24 }} />
+
+          {/* Section Heading */}
           <Text style={[styles.heading, { color: titleColor }]}>
             Personal information
           </Text>
-          <View style={{ height: 8 }} />
+          <View style={{ height: 6 }} />
           <Text style={[styles.subheading, { color: subtleText }]}>
             Please enter your details.
           </Text>
 
-          <View style={{ height: 32 }} />
+          <View style={{ height: 24 }} />
 
-          {/* Full Name (Disabled / Pre-filled) */}
+          {/* 1. Full name (Disabled / Pre-filled) */}
           <Ux4gInputField
             label="Full name"
             value={fullName}
             enabled={false}
-            onValueChange={setFullName}
-            size="medium"
+            size="large"
           />
-          <View style={{ height: 8 }} />
-          <TouchableOpacity
-            style={styles.uidaiLinkRow}
-            onPress={() => {}}
-            activeOpacity={0.7}
-          >
-            <Text style={[styles.uidaiLinkText, { color: primaryColor }]}>
-              From Aadhaar · Update via UIDAI
+
+          {/* Aadhaar Update Link */}
+          <TouchableOpacity onPress={() => {}} style={styles.uidaiLink}>
+            <Text style={{ fontSize: 12, color: primaryColor, fontWeight: '500' }}>
+              From Aadhaar · Update via UIDAI ↗
             </Text>
-            <Image
-              source={require('./assets/open_in_new.png')}
-              style={[styles.externalIcon, { tintColor: primaryColor }]}
-            />
           </TouchableOpacity>
-
-          <View style={{ height: 24 }} />
-
-          {/* Mobile Number */}
-          <Ux4gInputField
-            label="Mobile number"
-            value={mobileNumber}
-            onValueChange={setMobileNumber}
-            size="medium"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Email Address */}
-          <Ux4gInputField
-            label="Email address"
-            value={emailAddress}
-            onValueChange={setEmailAddress}
-            size="medium"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Aadhaar Number */}
-          <Ux4gInputField
-            label="Aadhaar number"
-            value={aadhaarNumber}
-            onValueChange={setAadhaarNumber}
-            size="medium"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* State of Residence */}
-          <Ux4gSelectionDropdown
-            label="State of residence"
-            placeholder="Please select.."
-            options={[
-              { id: 'dl', label: 'Delhi' },
-              { id: 'mh', label: 'Maharashtra' },
-              { id: 'up', label: 'Uttar Pradesh' },
-            ]}
-            selectedOptionIds={selectedState ? [selectedState] : []}
-            onSelectionChange={(ids: string[]) => setSelectedState(ids[0] || null)}
-            size="m"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Marital Status */}
-          <Text
-            style={[
-              styles.radioGroupLabel,
-              { color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700 },
-            ]}
-          >
-            Your marital status
-          </Text>
-          <View style={{ height: 8 }} />
-          <Ux4gRadioButton
-            label="Single"
-            value="Single"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-          <Ux4gRadioButton
-            label="Married"
-            value="Married"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-          <Ux4gRadioButton
-            label="Divorced or widowed"
-            value="Divorced"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-          <Ux4gRadioButton
-            label="Option 4"
-            value="Option4"
-            groupValue={maritalStatus}
-            onChanged={(v: string) => setMaritalStatus(v)}
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Application Reason */}
-          <Ux4gTextArea
-            label="Brief reason for application (optional)"
-            value={reason}
-            onValueChange={setReason}
-            placeholder="Placeholder"
-          />
-
-          <View style={{ height: 24 }} />
-
-          {/* Annual Income Slider */}
-          <Ux4gSlider
-            label="Annual Income (Lakh ₹)"
-            isRequired
-            value={income}
-            min={0}
-            max={10}
-            steps={9}
-            showMarksAndValues
-            valueFormatter={(val: number) => (val === 10 ? '10+' : val.toString())}
-            onValueChange={setIncome}
-          />
-
-          <View style={{ height: 32 }} />
-
-          {/* SMS Updates Label */}
-          <Text
-            style={[
-              styles.smsUpdatesTitle,
-              { color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900 },
-            ]}
-          >
-            Receive application status updates via SMS
-          </Text>
 
           <View style={{ height: 16 }} />
 
-          {/* Terms Checkbox */}
-          <Ux4gCheckbox
-            label="Accept terms and conditions"
-            isRequired
-            value={acceptTerms}
-            onChanged={(val) => setAcceptTerms(val ?? false)}
+          {/* 2. Mobile number */}
+          <Ux4gInputField
+            label="Mobile number"
+            placeholder="Placeholder"
+            value={mobileNumber}
+            onValueChange={setMobileNumber}
+            keyboardType="phone-pad"
+            size="large"
           />
 
-          <View style={{ height: 32 }} />
-        </ScrollView>
+          <View style={{ height: 16 }} />
 
-        {/* Floating Saved Banner */}
-        {showBanner && (
-          <View style={styles.bannerPosition}>
-            <Ux4gStatusBanner
-              variant="successLight"
-              title=""
-              backgroundColor="#F0FDF4"
-              trailingIcon={
-                <View style={styles.bannerRow}>
-                  <Image
-                    source={require('./assets/check_circle.png')}
-                    style={{ width: 14, height: 14, tintColor: '#065F46' }}
-                  />
-                  <Text style={styles.bannerText}>Saved 3:14 PM</Text>
-                </View>
-              }
-            />
+          {/* 3. Email address */}
+          <Ux4gInputField
+            label="Email address"
+            placeholder="Placeholder"
+            value={emailAddress}
+            onValueChange={setEmailAddress}
+            keyboardType="email-address"
+            size="large"
+          />
+
+          <View style={{ height: 16 }} />
+
+          {/* 4. Aadhaar number */}
+          <Ux4gInputField
+            label="Aadhaar number"
+            placeholder="Placeholder"
+            value={aadhaarNumber}
+            onValueChange={setAadhaarNumber}
+            keyboardType="numeric"
+            maxLength={14}
+            size="large"
+          />
+
+          <View style={{ height: 16 }} />
+
+          {/* 5. State of residence */}
+          <Ux4gSelectionDropdown
+            label="State of residence"
+            placeholder="Please select.."
+            options={stateOptions}
+            selectedOptionIds={selectedState}
+            onSelectionChange={setSelectedState}
+            size="l"
+          />
+
+          <View style={{ height: 20 }} />
+
+          {/* 6. Marital status Radio buttons */}
+          <Text style={[styles.inputLabel, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 }]}>
+            Your marital status
+          </Text>
+          <View style={{ height: 8 }} />
+          <View style={{ gap: 10 }}>
+            {[
+              { label: 'Single', value: 'Single' },
+              { label: 'Married', value: 'Married' },
+              { label: 'Divorced or widowed', value: 'Divorced' },
+              { label: 'Option 4', value: 'Option4' },
+            ].map((opt) => (
+              <Ux4gRadioButton
+                key={opt.value}
+                label={opt.label}
+                selected={maritalStatus === opt.value}
+                onSelect={() => setMaritalStatus(opt.value)}
+              />
+            ))}
           </View>
-        )}
 
-        {/* Bottom Actions */}
-        <View style={styles.actionsContainer}>
+          <View style={{ height: 20 }} />
+
+          {/* 7. Brief reason textarea */}
+          <Ux4gTextArea
+            label="Brief reason for application (optional)"
+            placeholder="Placeholder"
+            value={reason}
+            onValueChange={setReason}
+            rows={3}
+          />
+
+          <View style={{ height: 20 }} />
+
+          {/* 8. Annual Income Slider */}
+          <Ux4gSlider
+            label="Annual Income (Lakh ₹)"
+            isRequired={true}
+            value={income}
+            min={0}
+            max={10}
+            step={1}
+            onValueChange={setIncome}
+          />
+
+          <View style={{ height: 20 }} />
+
+          {/* Checkbox 1: Accuracy confirmation */}
+          <Ux4gCheckbox
+            value={confirmAccuracy}
+            onChanged={(val) => setConfirmAccuracy(!!val)}
+            label="I confirm the above information is accurate and authorise verification."
+            isRequired={true}
+            size="small"
+          />
+
+          <View style={{ height: 14 }} />
+
+          {/* Checkbox 2: Accept terms */}
+          <Ux4gCheckbox
+            value={acceptTerms}
+            onChanged={(val) => setAcceptTerms(!!val)}
+            label="Accept terms and conditions"
+            isRequired={true}
+            size="small"
+          />
+
+          <View style={{ height: 28 }} />
+
+          {/* Actions */}
           <Ux4gButton
             text="Continue"
-            onPress={handleContinue}
+            onPress={onContinue}
             size="large"
             width="100%"
             height={48}
-            enabled={acceptTerms}
+            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
           />
           <View style={{ height: 12 }} />
           <Ux4gButton
             text="Save as Draft"
             onPress={onSaveDraft}
-            variant="ghost"
+            variant="outline"
             size="large"
             width="100%"
             height={48}
-            contentColor="#432CBB"
+            contentColor={primaryColor}
+            borderColor={isDark ? UX4GColors.primary700 : '#C7D2FE'}
           />
-        </View>
 
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Text
-            style={[
-              styles.poweredByText,
-              { color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 },
-            ]}
-          >
-            Powered by -
-          </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+          <View style={{ height: 24 }} />
+
+          {/* Footer */}
+          <View style={styles.footerContainer}>
+            <Text style={styles.poweredByText}>Powered by -</Text>
+            <Image
+              source={require('./assets/digital_india_logo.png')}
+              style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
+            />
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -468,8 +424,8 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    borderColor: '#D8D6F6',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -479,88 +435,56 @@ const styles = StyleSheet.create({
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
-  emblemIcon: { height: 40, width: 26 },
+  emblemIcon: { height: 40, width: 28 },
   verticalDivider: { height: 32, width: 1 },
   unionIcon: { height: 32, width: 44 },
-  backButtonContainer: {
-    paddingLeft: 8,
-    paddingTop: 8,
-    alignItems: 'flex-start',
-  },
   scrollContent: {
-    paddingHorizontal: 24,
-    paddingVertical: 24,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  backRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   heading: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
-    lineHeight: 30,
+    lineHeight: 26,
   },
   subheading: {
-    fontSize: 15,
-    lineHeight: 22,
-  },
-  uidaiLinkRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  uidaiLinkText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  externalIcon: {
-    width: 12,
-    height: 12,
-  },
-  radioGroupLabel: {
     fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 4,
+    lineHeight: 20,
   },
-  smsUpdatesTitle: {
-    fontSize: 15,
+  inputLabel: {
+    fontSize: 13,
     fontWeight: '600',
-    lineHeight: 22,
   },
-  bannerPosition: {
-    position: 'absolute',
-    top: 74,
-    left: 16,
-    right: 16,
-    zIndex: 100,
-  },
-  bannerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  bannerText: {
-    color: '#065F46',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+  uidaiLink: {
+    marginTop: 6,
   },
   footerContainer: {
     alignItems: 'center',
-    paddingBottom: 24,
+    paddingVertical: 24,
   },
   poweredByText: {
     fontSize: 11,
+    fontWeight: '500',
+    color: '#9CA3AF',
     marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 24,
-    width: 88,
+    width: 90,
   },
 });`;
   }, []);
 
   const cardCodeString = useMemo(() => {
-    return `import React, { useState, useEffect } from 'react';
+    return `import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -576,6 +500,8 @@ import {
   Ux4gButton,
   Ux4gInputField,
   Ux4gSelectionDropdown,
+  Ux4gRadioButton,
+  Ux4gTextArea,
   Ux4gSlider,
   Ux4gCheckbox,
   Ux4gStepper,
@@ -594,25 +520,28 @@ export const GovernmentFormCardScreen = ({
   onContinue?: () => void;
   onSaveDraft?: () => void;
 }) => {
-  const [fullName, setFullName] = useState('Ramesh Kumar');
+  const [fullName] = useState('Ramesh Kumar');
   const [mobileNumber, setMobileNumber] = useState('');
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [emailAddress, setEmailAddress] = useState('');
+  const [aadhaarNumber, setAadhaarNumber] = useState('');
+  const [selectedState, setSelectedState] = useState<string[]>([]);
+  const [maritalStatus, setMaritalStatus] = useState<string | null>(null);
+  const [reason, setReason] = useState('');
   const [income, setIncome] = useState(0);
+  const [confirmAccuracy, setConfirmAccuracy] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleText = isDark ? UX4GColors.neutral400 : UX4GColors.neutral600;
+  const subtleText = isDark ? UX4GColors.neutral300 : UX4GColors.neutral600;
 
-  const handleContinue = () => {
-    if (!acceptTerms) return;
-    setShowBanner(true);
-    setTimeout(() => {
-      setShowBanner(false);
-    }, 3000);
-    onContinue();
-  };
+  const stateOptions = [
+    { id: 'dl', label: 'Delhi' },
+    { id: 'mh', label: 'Maharashtra' },
+    { id: 'up', label: 'Uttar Pradesh' },
+    { id: 'ka', label: 'Karnataka' },
+    { id: 'tn', label: 'Tamil Nadu' },
+  ];
 
   return (
     <SafeAreaView
@@ -626,12 +555,8 @@ export const GovernmentFormCardScreen = ({
       ]}
     >
       <View style={styles.container}>
-        {/* Top Header Card Bar */}
-        <View
-          style={{
-            backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
-          }}
-        >
+        {/* Top Header */}
+        <View style={{ backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' }}>
           <Ux4gAppHeader
             variant="light"
             showBackButton={false}
@@ -656,209 +581,254 @@ export const GovernmentFormCardScreen = ({
                 resizeMode="contain"
               />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <TouchableOpacity
-                  key="menu"
-                  style={styles.menuBtn}
-                  onPress={() => {}}
-                >
-                  <Text style={styles.menuIcon}>☰</Text>
-                </TouchableOpacity>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <TouchableOpacity
+                    key="menu"
+                    style={styles.menuBtn}
+                    onPress={() => {}}
+                  >
+                    <Text style={styles.menuIcon}>☰</Text>
+                  </TouchableOpacity>
+                ),
+              },
+            ]}
           />
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
-          <View style={styles.backButtonContainer}>
-            <Ux4gButton
-              text="Back"
-              variant="ghost"
-              onPress={onBack}
-              leadingIcon="arrow_back"
-              contentColor={isDark ? UX4GColors.primary300 : UX4GColors.primary900}
-            />
-          </View>
         </View>
 
-        {/* Scrollable Area */}
+        {/* Scrollable Content with White Card */}
         <ScrollView
           contentContainerStyle={styles.cardScrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Elevated Card */}
+          {/* White Card */}
           <View
             style={[
               styles.cardContainer,
-              {
-                backgroundColor: isDark
-                  ? UX4GColors.neutral900
-                  : UX4GColors.neutral0,
-              },
+              { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
             ]}
           >
+            {/* Back Navigation Link */}
+            <TouchableOpacity onPress={onBack} style={styles.backRow}>
+              <Text style={[styles.backText, { color: primaryColor }]}>← Back</Text>
+            </TouchableOpacity>
+
+            <View style={{ height: 16 }} />
+
             {/* Stepper */}
-            <View style={{ marginTop: 8 }}>
-              <Ux4gStepper
-                totalSteps={4}
-                currentStep={2}
-                stepSize={20}
-                steps={[
-                  { title: 'Eligibility', titleStyle: { fontSize: 10, fontWeight: '600' } },
-                  { title: 'Personal', titleStyle: { fontSize: 10, fontWeight: '600' } },
-                  { title: 'Documents', titleStyle: { fontSize: 10, fontWeight: '600' } },
-                  { title: '' },
-                ]}
-              />
-            </View>
+            <Ux4gStepper
+              totalSteps={4}
+              currentStep={2}
+              stepSize={20}
+              steps={[
+                { title: 'Eligibility' },
+                {
+                  title: 'Personal',
+                  titleStyle: {
+                    fontSize: 11,
+                    fontWeight: '600',
+                    color: primaryColor,
+                  },
+                },
+                { title: 'Documents' },
+                { title: 'Submit' },
+              ]}
+            />
 
-            <View style={{ height: 32 }} />
+            <View style={{ height: 16 }} />
 
-            {/* Heading */}
+            {/* Saved Status Banner */}
+            <Ux4gStatusBanner
+              variant="successLight"
+              title="Saved 3:14 PM"
+              leadingIcon={
+                <Text style={{ color: '#128937', fontSize: 16 }}>✓</Text>
+              }
+            />
+
+            <View style={{ height: 24 }} />
+
+            {/* Section Heading */}
             <Text style={[styles.heading, { color: titleColor }]}>
               Personal information
             </Text>
-            <View style={{ height: 8 }} />
+            <View style={{ height: 6 }} />
             <Text style={[styles.subheading, { color: subtleText }]}>
               Please enter your details.
             </Text>
 
-            <View style={{ height: 32 }} />
+            <View style={{ height: 24 }} />
 
-            {/* Full Name */}
+            {/* 1. Full name (Disabled / Pre-filled) */}
             <Ux4gInputField
               label="Full name"
               value={fullName}
               enabled={false}
-              onValueChange={setFullName}
-              size="medium"
+              size="large"
             />
-            <View style={{ height: 8 }} />
-            <TouchableOpacity
-              style={styles.uidaiLinkRow}
-              onPress={() => {}}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.uidaiLinkText, { color: primaryColor }]}>
-                From Aadhaar · Update via UIDAI
+
+            {/* Aadhaar Update Link */}
+            <TouchableOpacity onPress={() => {}} style={styles.uidaiLink}>
+              <Text style={{ fontSize: 12, color: primaryColor, fontWeight: '500' }}>
+                From Aadhaar · Update via UIDAI ↗
               </Text>
-              <Image
-                source={require('./assets/open_in_new.png')}
-                style={[styles.externalIcon, { tintColor: primaryColor }]}
-              />
             </TouchableOpacity>
 
-            <View style={{ height: 24 }} />
+            <View style={{ height: 16 }} />
 
-            {/* Mobile Number */}
+            {/* 2. Mobile number */}
             <Ux4gInputField
               label="Mobile number"
+              placeholder="Placeholder"
               value={mobileNumber}
               onValueChange={setMobileNumber}
-              size="medium"
+              keyboardType="phone-pad"
+              size="large"
             />
 
-            <View style={{ height: 24 }} />
+            <View style={{ height: 16 }} />
 
-            {/* State of Residence */}
+            {/* 3. Email address */}
+            <Ux4gInputField
+              label="Email address"
+              placeholder="Placeholder"
+              value={emailAddress}
+              onValueChange={setEmailAddress}
+              keyboardType="email-address"
+              size="large"
+            />
+
+            <View style={{ height: 16 }} />
+
+            {/* 4. Aadhaar number */}
+            <Ux4gInputField
+              label="Aadhaar number"
+              placeholder="Placeholder"
+              value={aadhaarNumber}
+              onValueChange={setAadhaarNumber}
+              keyboardType="numeric"
+              maxLength={14}
+              size="large"
+            />
+
+            <View style={{ height: 16 }} />
+
+            {/* 5. State of residence */}
             <Ux4gSelectionDropdown
               label="State of residence"
               placeholder="Please select.."
-              options={[
-                { id: 'dl', label: 'Delhi' },
-                { id: 'mh', label: 'Maharashtra' },
-              ]}
-              selectedOptionIds={selectedState ? [selectedState] : []}
-              onSelectionChange={(ids: string[]) => setSelectedState(ids[0] || null)}
-              size="m"
+              options={stateOptions}
+              selectedOptionIds={selectedState}
+              onSelectionChange={setSelectedState}
+              size="l"
+            />
+
+            <View style={{ height: 20 }} />
+
+            {/* 6. Marital status Radio buttons */}
+            <Text style={[styles.inputLabel, { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 }]}>
+              Your marital status
+            </Text>
+            <View style={{ height: 8 }} />
+            <View style={{ gap: 10 }}>
+              {[
+                { label: 'Single', value: 'Single' },
+                { label: 'Married', value: 'Married' },
+                { label: 'Divorced or widowed', value: 'Divorced' },
+                { label: 'Option 4', value: 'Option4' },
+              ].map((opt) => (
+                <Ux4gRadioButton
+                  key={opt.value}
+                  label={opt.label}
+                  selected={maritalStatus === opt.value}
+                  onSelect={() => setMaritalStatus(opt.value)}
+                />
+              ))}
+            </View>
+
+            <View style={{ height: 20 }} />
+
+            {/* 7. Brief reason textarea */}
+            <Ux4gTextArea
+              label="Brief reason for application (optional)"
+              placeholder="Placeholder"
+              value={reason}
+              onValueChange={setReason}
+              rows={3}
+            />
+
+            <View style={{ height: 20 }} />
+
+            {/* 8. Annual Income Slider */}
+            <Ux4gSlider
+              label="Annual Income (Lakh ₹)"
+              isRequired={true}
+              value={income}
+              min={0}
+              max={10}
+              step={1}
+              onValueChange={setIncome}
+            />
+
+            <View style={{ height: 20 }} />
+
+            {/* Checkbox 1: Accuracy confirmation */}
+            <Ux4gCheckbox
+              value={confirmAccuracy}
+              onChanged={(val) => setConfirmAccuracy(!!val)}
+              label="I confirm the above information is accurate and authorise verification."
+              isRequired={true}
+              size="small"
+            />
+
+            <View style={{ height: 14 }} />
+
+            {/* Checkbox 2: Accept terms */}
+            <Ux4gCheckbox
+              value={acceptTerms}
+              onChanged={(val) => setAcceptTerms(!!val)}
+              label="Accept terms and conditions"
+              isRequired={true}
+              size="small"
             />
 
             <View style={{ height: 24 }} />
 
-            {/* Annual Income */}
-            <Ux4gSlider
-              label="Annual Income (Lakh ₹)"
-              isRequired
-              value={income}
-              min={0}
-              max={10}
-              steps={9}
-              showMarksAndValues
-              valueFormatter={(val: number) => (val === 10 ? '10+' : val.toString())}
-              onValueChange={setIncome}
+            {/* Action Buttons Inside Card */}
+            <Ux4gButton
+              text="Continue"
+              onPress={onContinue}
+              size="large"
+              width="100%"
+              height={48}
+              backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+              contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
             />
+            <View style={{ height: 12 }} />
+            <Ux4gButton
+              text="Save as Draft"
+              onPress={onSaveDraft}
+              variant="outline"
+              size="large"
+              width="100%"
+              height={48}
+              contentColor={primaryColor}
+              borderColor={isDark ? UX4GColors.primary700 : '#C7D2FE'}
+            />
+          </View>
 
-            <View style={{ height: 32 }} />
-
-            {/* Terms Checkbox */}
-            <Ux4gCheckbox
-              label="Accept terms and conditions"
-              isRequired
-              value={acceptTerms}
-              onChanged={(val) => setAcceptTerms(val ?? false)}
+          {/* Footer outside Card */}
+          <View style={styles.footerContainer}>
+            <Text style={styles.poweredByText}>Powered by -</Text>
+            <Image
+              source={require('./assets/digital_india_logo.png')}
+              style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
             />
           </View>
         </ScrollView>
-
-        {/* Floating Saved Banner */}
-        {showBanner && (
-          <View style={styles.bannerPosition}>
-            <Ux4gStatusBanner
-              variant="successLight"
-              title=""
-              backgroundColor="#F0FDF4"
-              trailingIcon={
-                <View style={styles.bannerRow}>
-                  <Image
-                    source={require('./assets/check_circle.png')}
-                    style={{ width: 14, height: 14, tintColor: '#065F46' }}
-                  />
-                  <Text style={styles.bannerText}>Saved 3:14 PM</Text>
-                </View>
-              }
-            />
-          </View>
-        )}
-
-        {/* Bottom Actions */}
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Continue"
-            onPress={handleContinue}
-            size="large"
-            width="100%"
-            height={48}
-            enabled={acceptTerms}
-          />
-          <View style={{ height: 12 }} />
-          <Ux4gButton
-            text="Save as Draft"
-            onPress={onSaveDraft}
-            variant="ghost"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor="#432CBB"
-          />
-        </View>
-
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Text
-            style={[
-              styles.poweredByText,
-              { color: isDark ? UX4GColors.neutral600 : UX4GColors.neutral400 },
-            ]}
-          >
-            Powered by -
-          </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -870,8 +840,8 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    borderColor: '#D8D6F6',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -881,293 +851,390 @@ const styles = StyleSheet.create({
   },
   safeArea: { flex: 1 },
   container: { flex: 1, position: 'relative' },
-  emblemIcon: { height: 40, width: 26 },
+  emblemIcon: { height: 40, width: 28 },
   verticalDivider: { height: 32, width: 1 },
   unionIcon: { height: 32, width: 44 },
-  backButtonContainer: {
-    paddingLeft: 8,
-    paddingTop: 8,
-    paddingBottom: 8,
-    alignItems: 'flex-start',
-  },
-  cardScrollContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-  },
+  cardScrollContainer: { paddingHorizontal: 16, paddingVertical: 20 },
   cardContainer: {
     padding: 24,
     borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#000000',
     shadowOpacity: 0.05,
-    shadowRadius: 8,
+    shadowRadius: 10,
     elevation: 2,
   },
+  backRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
   heading: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
-    lineHeight: 30,
+    lineHeight: 26,
   },
   subheading: {
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
   },
-  uidaiLinkRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
+  inputLabel: {
+    fontSize: 13,
+    fontWeight: '600',
   },
-  uidaiLinkText: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  externalIcon: {
-    width: 12,
-    height: 12,
-  },
-  bannerPosition: {
-    position: 'absolute',
-    top: 74,
-    left: 16,
-    right: 16,
-    zIndex: 100,
-  },
-  bannerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  bannerText: {
-    color: '#065F46',
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+  uidaiLink: {
+    marginTop: 6,
   },
   footerContainer: {
     alignItems: 'center',
-    paddingBottom: 24,
+    paddingVertical: 24,
   },
   poweredByText: {
     fontSize: 11,
+    fontWeight: '500',
+    color: '#9CA3AF',
     marginBottom: 6,
   },
   digitalIndiaLogo: {
     height: 24,
-    width: 88,
+    width: 90,
   },
 });`;
   }, []);
 
-  // Stepper matching actual Ux4gStepper component architecture
-  const renderStepper = () => {
-    const totalSteps = 4;
-    const currentStep = 2;
-    const stepSize = 24;
-    const stepsData = [
-      { title: 'Eligibility' },
-      { title: 'Personal' },
-      { title: 'Documents' },
-      { title: '' },
-    ];
-
-    return (
-      <div style={{ width: '100%', position: 'relative' }}>
-        {/* Layer 1: Connecting Lines between step circles */}
-        <div
-          style={{
-            position: 'absolute',
-            top: stepSize / 2,
-            left: 0,
-            right: 0,
-            display: 'flex',
-            transform: 'translateY(-50%)',
-            pointerEvents: 'none',
-          }}
-        >
-          {Array.from({ length: totalSteps }).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {/* Left half segment */}
-              {i === 0 ? (
-                <div style={{ flex: 1 }} />
-              ) : (
-                <div
-                  style={{
-                    flex: 1,
-                    height: 2,
-                    backgroundColor:
-                      currentStep > i
-                        ? colors.primaryColor
-                        : isDark
-                        ? UX4GColors.neutral700
-                        : UX4GColors.neutral300,
-                  }}
-                />
-              )}
-
-              {/* Gap for Icon */}
-              <div style={{ width: stepSize, flexShrink: 0 }} />
-
-              {/* Right half segment */}
-              {i === totalSteps - 1 ? (
-                <div style={{ flex: 1 }} />
-              ) : (
-                <div
-                  style={{
-                    flex: 1,
-                    height: 2,
-                    backgroundColor:
-                      currentStep > i + 1
-                        ? colors.primaryColor
-                        : isDark
-                        ? UX4GColors.neutral700
-                        : UX4GColors.neutral300,
-                  }}
-                />
-              )}
-            </div>
-          ))}
+  // Stepper Visual Component
+  const renderStepper = () => (
+    <div style={{ position: 'relative', width: '100%' }}>
+      {/* Background Connecting Lines Layer */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 9, // Centered vertically on the 20px step icon
+          left: 0,
+          right: 0,
+          display: 'flex',
+          flexDirection: 'row',
+          zIndex: 1,
+        }}
+      >
+        {/* Column 0 Lines */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div style={{ flex: 1 }} />
+          <div style={{ width: 20 }} />
+          <div style={{ flex: 1, height: 2, backgroundColor: colors.primaryColor }} />
         </div>
 
-        {/* Layer 2: Step Icons and Labels */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', position: 'relative', zIndex: 2 }}>
-          {Array.from({ length: totalSteps }).map((_, i) => {
-            const stepIndex = i + 1;
-            const isCompleted = currentStep > stepIndex;
-            const isActive = currentStep === stepIndex;
-            const isPending = currentStep < stepIndex;
-            const stepData = stepsData[i];
+        {/* Column 1 Lines */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div style={{ flex: 1, height: 2, backgroundColor: colors.primaryColor }} />
+          <div style={{ width: 20 }} />
+          <div style={{ flex: 1, height: 2, backgroundColor: colors.stepperLineInactive }} />
+        </div>
 
-            return (
-              <div
-                key={i}
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                {/* Step Icon */}
-                <div
-                  style={{
-                    width: stepSize,
-                    height: stepSize,
-                    borderRadius: '50%',
-                    backgroundColor: isCompleted
-                      ? colors.primaryColor
-                      : isDark
-                      ? colors.cardBg
-                      : '#FFFFFF',
-                    border: isCompleted
-                      ? `2px solid ${colors.primaryColor}`
-                      : isActive
-                      ? `2px solid ${colors.primaryColor}`
-                      : `1.5px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxSizing: 'border-box',
-                  }}
-                >
-                  {isCompleted && (
-                    <svg
-                      width="13"
-                      height="13"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="#FFFFFF"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                  {isActive && (
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        backgroundColor: colors.primaryColor,
-                      }}
-                    />
-                  )}
-                  {isPending && (
-                    <span
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 700,
-                        color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {stepIndex}
-                    </span>
-                  )}
-                </div>
+        {/* Column 2 Lines */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div style={{ flex: 1, height: 2, backgroundColor: colors.stepperLineInactive }} />
+          <div style={{ width: 20 }} />
+          <div style={{ flex: 1, height: 2, backgroundColor: colors.stepperLineInactive }} />
+        </div>
 
-                {/* Step Label */}
-                {stepData.title ? (
-                  <span
-                    style={{
-                      marginTop: 8,
-                      fontSize: 11,
-                      fontWeight: isCompleted || isActive ? 600 : 500,
-                      color: isCompleted || isActive ? colors.titleColor : colors.subtleText,
-                      textAlign: 'center',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {stepData.title}
-                  </span>
-                ) : (
-                  <div style={{ height: 18, marginTop: 8 }} />
-                )}
-              </div>
-            );
-          })}
+        {/* Column 3 Lines */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div style={{ flex: 1, height: 2, backgroundColor: colors.stepperLineInactive }} />
+          <div style={{ width: 20 }} />
+          <div style={{ flex: 1 }} />
         </div>
       </div>
-    );
-  };
 
-  // Form Fields Component matching Flutter implementation exactly
-  const renderFormContent = (isCard: boolean) => {
-    const stateOptions = isCard
-      ? [
-        { id: 'dl', label: 'Delhi' },
-        { id: 'mh', label: 'Maharashtra' },
-      ]
-      : [
-        { id: 'dl', label: 'Delhi' },
-        { id: 'mh', label: 'Maharashtra' },
-        { id: 'up', label: 'Uttar Pradesh' },
-      ];
+      {/* Foreground Step Icons & Labels Layer */}
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          width: '100%',
+          zIndex: 2,
+        }}
+      >
+        {/* Step 1: Completed */}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              backgroundColor: colors.primaryColor,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              fontWeight: 500,
+              color: colors.stepperLabelText,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Eligibility
+          </div>
+        </div>
+
+        {/* Step 2: Current / Active (Personal) */}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              backgroundColor: 'transparent',
+              border: `2px solid ${colors.primaryColor}`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+            }}
+          >
+            <div
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                backgroundColor: colors.primaryColor,
+              }}
+            />
+          </div>
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              fontWeight: 600,
+              color: colors.primaryColor,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Personal
+          </div>
+        </div>
+
+        {/* Step 3: Pending (Documents) */}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              backgroundColor: 'transparent',
+              border: `1.5px solid ${colors.stepperCircleInactive}`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+            }}
+          >
+            <span
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                color: colors.stepperTextInactive,
+                lineHeight: 1,
+              }}
+            >
+              3
+            </span>
+          </div>
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              fontWeight: 500,
+              color: colors.stepperTextInactive,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Documents
+          </div>
+        </div>
+
+        {/* Step 4: Pending (Submit) */}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: '50%',
+              backgroundColor: 'transparent',
+              border: `1.5px solid ${colors.stepperCircleInactive}`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+            }}
+          >
+            <span
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                color: colors.stepperTextInactive,
+                lineHeight: 1,
+              }}
+            >
+              4
+            </span>
+          </div>
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              fontWeight: 500,
+              color: colors.stepperTextInactive,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Submit
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Status Banner: Saved 3:14 PM
+  const renderSavedBanner = () => (
+    <div
+      style={{
+        backgroundColor: colors.bannerBg,
+        border: `1px solid ${colors.bannerBorder}`,
+        borderRadius: 8,
+        padding: '10px 14px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        gap: 6,
+        width: '100%',
+        boxSizing: 'border-box',
+      }}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke={colors.bannerIcon}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="9 12 11 14 15 10" />
+      </svg>
+      <span
+        style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color: colors.bannerText,
+        }}
+      >
+        Saved 3:14 PM
+      </span>
+    </div>
+  );
+
+  // Form Fields Component matching UX4G Components behavior
+  const renderFormContent = () => {
+    const selectedStateObj = STATE_OPTIONS.find((o) => o.id === selectedState);
 
     return (
       <>
+        {/* Back Link */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+            cursor: 'pointer',
+            marginBottom: 16,
+            userSelect: 'none',
+          }}
+        >
+          <span
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: colors.primaryColor,
+            }}
+          >
+            ← Back
+          </span>
+        </div>
+
         {/* Stepper */}
-        <div style={{ width: '100%', marginBottom: 32 }}>{renderStepper()}</div>
+        {renderStepper()}
+
+        <div style={{ height: 16 }} />
+
+        {/* Saved Banner */}
+        {renderSavedBanner()}
+
+        <div style={{ height: 24 }} />
 
         {/* Heading & Subheading */}
         <div
           style={{
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: 800,
             color: colors.titleColor,
-            lineHeight: 1.25,
-            marginBottom: 8,
+            lineHeight: 1.2,
+            marginBottom: 6,
             letterSpacing: '-0.3px',
           }}
         >
@@ -1175,22 +1242,22 @@ const styles = StyleSheet.create({
         </div>
         <div
           style={{
-            fontSize: 15,
-            color: colors.subtleText,
+            fontSize: 14,
+            color: colors.subtitleColor,
             lineHeight: 1.4,
-            marginBottom: 32,
+            marginBottom: 24,
           }}
         >
           Please enter your details.
         </div>
 
-        {/* Field 1: Full name (Disabled / Pre-filled) */}
-        <div style={{ width: '100%', marginBottom: 8 }}>
+        {/* 1. Full name (Disabled / Pre-filled) */}
+        <div style={{ width: '100%', marginBottom: 6 }}>
           <label
             style={{
               display: 'block',
-              fontSize: 14,
-              fontWeight: 500,
+              fontSize: 13,
+              fontWeight: 600,
               color: colors.labelColor,
               marginBottom: 6,
             }}
@@ -1203,13 +1270,14 @@ const styles = StyleSheet.create({
             disabled
             style={{
               width: '100%',
-              height: 40,
+              height: 44,
               borderRadius: 8,
               border: `1px solid ${colors.inputBorder}`,
               backgroundColor: colors.inputDisabledBg,
               color: colors.inputDisabledText,
               padding: '0 12px',
               fontSize: 14,
+              fontWeight: 500,
               outline: 'none',
               boxSizing: 'border-box',
               cursor: 'not-allowed',
@@ -1217,16 +1285,15 @@ const styles = StyleSheet.create({
           />
         </div>
 
-        {/* Helper Link */}
+        {/* Aadhaar Update Link */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: 4,
-            marginBottom: 24,
+            marginBottom: 16,
             cursor: 'pointer',
           }}
-          onClick={() => { }}
         >
           <span
             style={{
@@ -1237,24 +1304,29 @@ const styles = StyleSheet.create({
           >
             From Aadhaar · Update via UIDAI
           </span>
-          <span
-            className="material-symbols-outlined"
-            style={{
-              fontSize: 14,
-              color: colors.primaryColor,
-            }}
+          <svg
+            viewBox="0 0 24 24"
+            width="12"
+            height="12"
+            fill="none"
+            stroke={colors.primaryColor}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            open_in_new
-          </span>
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
         </div>
 
-        {/* Field 2: Mobile number */}
-        <div style={{ width: '100%', marginBottom: 24 }}>
+        {/* 2. Mobile number */}
+        <div style={{ width: '100%', marginBottom: 16 }}>
           <label
             style={{
               display: 'block',
-              fontSize: 14,
-              fontWeight: 500,
+              fontSize: 13,
+              fontWeight: 600,
               color: colors.labelColor,
               marginBottom: 6,
             }}
@@ -1265,10 +1337,10 @@ const styles = StyleSheet.create({
             type="tel"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
-            placeholder=""
+            placeholder="Placeholder"
             style={{
               width: '100%',
-              height: 40,
+              height: 44,
               borderRadius: 8,
               border: `1px solid ${colors.inputBorder}`,
               backgroundColor: colors.inputBg,
@@ -1277,317 +1349,390 @@ const styles = StyleSheet.create({
               fontSize: 14,
               outline: 'none',
               boxSizing: 'border-box',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = colors.primaryColor;
+              e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.primaryColor}22`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = colors.inputBorder;
+              e.currentTarget.style.boxShadow = 'none';
             }}
           />
         </div>
 
-        {/* Default Variant Fields */}
-        {!isCard && (
-          <>
-            {/* Field 3: Email address */}
-            <div style={{ width: '100%', marginBottom: 24 }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: colors.labelColor,
-                  marginBottom: 6,
-                }}
-              >
-                Email address
-              </label>
-              <input
-                type="email"
-                value={emailAddress}
-                onChange={(e) => setEmailAddress(e.target.value)}
-                placeholder=""
-                style={{
-                  width: '100%',
-                  height: 40,
-                  borderRadius: 8,
-                  border: `1px solid ${colors.inputBorder}`,
-                  backgroundColor: colors.inputBg,
-                  color: colors.inputText,
-                  padding: '0 12px',
-                  fontSize: 14,
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-
-            {/* Field 4: Aadhaar number */}
-            <div style={{ width: '100%', marginBottom: 24 }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: colors.labelColor,
-                  marginBottom: 6,
-                }}
-              >
-                Aadhaar number
-              </label>
-              <input
-                type="text"
-                value={aadhaarNumber}
-                onChange={(e) => setAadhaarNumber(e.target.value)}
-                placeholder=""
-                maxLength={14}
-                style={{
-                  width: '100%',
-                  height: 40,
-                  borderRadius: 8,
-                  border: `1px solid ${colors.inputBorder}`,
-                  backgroundColor: colors.inputBg,
-                  color: colors.inputText,
-                  padding: '0 12px',
-                  fontSize: 14,
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-          </>
-        )}
-
-        {/* Field 5: State of residence Dropdown */}
-        <div style={{ width: '100%', marginBottom: 24, position: 'relative' }} ref={dropdownRef}>
+        {/* 3. Email address */}
+        <div style={{ width: '100%', marginBottom: 16 }}>
           <label
             style={{
               display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
+              color: colors.labelColor,
+              marginBottom: 6,
+            }}
+          >
+            Email address
+          </label>
+          <input
+            type="email"
+            value={emailAddress}
+            onChange={(e) => setEmailAddress(e.target.value)}
+            placeholder="Placeholder"
+            style={{
+              width: '100%',
+              height: 44,
+              borderRadius: 8,
+              border: `1px solid ${colors.inputBorder}`,
+              backgroundColor: colors.inputBg,
+              color: colors.inputText,
+              padding: '0 12px',
               fontSize: 14,
-              fontWeight: 500,
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = colors.primaryColor;
+              e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.primaryColor}22`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = colors.inputBorder;
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+        </div>
+
+        {/* 4. Aadhaar number */}
+        <div style={{ width: '100%', marginBottom: 16 }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
+              color: colors.labelColor,
+              marginBottom: 6,
+            }}
+          >
+            Aadhaar number
+          </label>
+          <input
+            type="text"
+            value={aadhaarNumber}
+            onChange={(e) => setAadhaarNumber(e.target.value)}
+            placeholder="Placeholder"
+            maxLength={14}
+            style={{
+              width: '100%',
+              height: 44,
+              borderRadius: 8,
+              border: `1px solid ${colors.inputBorder}`,
+              backgroundColor: colors.inputBg,
+              color: colors.inputText,
+              padding: '0 12px',
+              fontSize: 14,
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = colors.primaryColor;
+              e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.primaryColor}22`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = colors.inputBorder;
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+        </div>
+
+        {/* 5. State of residence Dropdown */}
+        <div style={{ width: '100%', marginBottom: 20, position: 'relative' }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
               color: colors.labelColor,
               marginBottom: 6,
             }}
           >
             State of residence
           </label>
+
           <div
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             style={{
               width: '100%',
-              height: 40,
+              height: 44,
               borderRadius: 8,
-              border: `1px solid ${colors.inputBorder}`,
+              border: `1px solid ${isDropdownOpen ? colors.primaryColor : colors.inputBorder}`,
+              boxShadow: isDropdownOpen ? `0 0 0 3px ${colors.primaryColor}22` : 'none',
               backgroundColor: colors.inputBg,
-              color: selectedState
-                ? colors.inputText
-                : isDark
-                  ? UX4GColors.neutral500
-                  : UX4GColors.neutral400,
-              padding: '0 12px',
-              fontSize: 14,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              padding: '0 12px',
               cursor: 'pointer',
               boxSizing: 'border-box',
               userSelect: 'none',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
             }}
           >
-            <span>
-              {selectedState
-                ? stateOptions.find((o) => o.id === selectedState)?.label || 'Please select..'
-                : 'Please select..'}
-            </span>
             <span
-              className="material-symbols-outlined"
               style={{
-                fontSize: 20,
-                color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-                transform: isDropdownOpen ? 'rotate(180deg)' : 'none',
+                fontSize: 14,
+                color: selectedStateObj ? colors.inputText : colors.inputPlaceholder,
+              }}
+            >
+              {selectedStateObj ? selectedStateObj.label : 'Please select..'}
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke={colors.subtitleColor}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                 transition: 'transform 0.2s ease',
               }}
             >
-              expand_more
-            </span>
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
           </div>
 
-          {/* Dropdown Options Overlay */}
+          {/* Floating Dropdown Overlay Menu */}
           {isDropdownOpen && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '100%',
-                left: 0,
-                right: 0,
-                marginTop: 4,
-                backgroundColor: colors.dropdownMenuBg,
-                border: `1px solid ${colors.dropdownMenuBorder}`,
-                borderRadius: 8,
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-                zIndex: 50,
-                overflow: 'hidden',
-              }}
-            >
-              {stateOptions.map((opt) => {
-                const isSelected = selectedState === opt.id;
-                return (
-                  <div
-                    key={opt.id}
-                    onClick={() => {
-                      setSelectedState(opt.id);
-                      setIsDropdownOpen(false);
-                    }}
-                    style={{
-                      padding: '10px 14px',
-                      fontSize: 14,
-                      color: isSelected ? colors.primaryColor : colors.inputText,
-                      fontWeight: isSelected ? 600 : 400,
-                      backgroundColor: isSelected
-                        ? colors.dropdownHoverBg
-                        : 'transparent',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <span>{opt.label}</span>
-                    {isSelected && (
-                      <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: 16, color: colors.primaryColor }}
-                      >
-                        check
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            <>
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 99,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDropdownOpen(false);
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 4px)',
+                  left: 0,
+                  right: 0,
+                  backgroundColor: colors.inputBg,
+                  borderRadius: 8,
+                  border: `1px solid ${colors.border}`,
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
+                  zIndex: 100,
+                  overflow: 'hidden',
+                  padding: '4px 0',
+                }}
+              >
+                {STATE_OPTIONS.map((opt) => {
+                  const isSelected = selectedState === opt.id;
+                  return (
+                    <div
+                      key={opt.id}
+                      onClick={() => {
+                        setSelectedState(opt.id);
+                        setIsDropdownOpen(false);
+                      }}
+                      style={{
+                        padding: '10px 14px',
+                        fontSize: 13,
+                        fontWeight: isSelected ? 600 : 400,
+                        color: isSelected ? colors.primaryColor : colors.inputText,
+                        backgroundColor: isSelected
+                          ? isDark
+                            ? UX4GColors.primary900
+                            : UX4GColors.primary50
+                          : 'transparent',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.15s',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.backgroundColor = isDark
+                            ? UX4GColors.neutral800
+                            : UX4GColors.neutral100;
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                        }
+                      }}
+                    >
+                      <span>{opt.label}</span>
+                      {isSelected && (
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="14"
+                          height="14"
+                          fill="none"
+                          stroke={colors.primaryColor}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </div>
 
-        {/* Marital Status (Default variant) */}
-        {!isCard && (
-          <div style={{ width: '100%', marginBottom: 24 }}>
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                color: colors.labelColor,
-                marginBottom: 8,
-              }}
-            >
-              Your marital status
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {[
-                { label: 'Single', value: 'Single' },
-                { label: 'Married', value: 'Married' },
-                { label: 'Divorced or widowed', value: 'Divorced' },
-                { label: 'Option 4', value: 'Option4' },
-              ].map((item) => {
-                const isSelected = maritalStatus === item.value;
-                return (
+        {/* 6. Marital status Radio buttons */}
+        <div style={{ width: '100%', marginBottom: 20 }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
+              color: colors.labelColor,
+              marginBottom: 10,
+            }}
+          >
+            Your marital status
+          </label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {[
+              { label: 'Single', value: 'Single' },
+              { label: 'Married', value: 'Married' },
+              { label: 'Divorced or widowed', value: 'Divorced' },
+              { label: 'Option 4', value: 'Option4' },
+            ].map((item) => {
+              const isSelected = maritalStatus === item.value;
+              return (
+                <div
+                  key={item.value}
+                  onClick={() => setMaritalStatus(item.value)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                  }}
+                >
                   <div
-                    key={item.value}
-                    onClick={() => setMaritalStatus(item.value)}
                     style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      border: `1.5px solid ${
+                        isSelected ? colors.primaryColor : colors.inputBorder
+                      }`,
                       display: 'flex',
                       alignItems: 'center',
-                      cursor: 'pointer',
-                      userSelect: 'none',
+                      justifyContent: 'center',
+                      marginRight: 10,
+                      backgroundColor: 'transparent',
+                      transition: 'border-color 0.15s',
                     }}
                   >
-                    <div
-                      style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: '50%',
-                        border: `1.5px solid ${isSelected ? colors.primaryColor : colors.inputBorder
-                          }`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: 10,
-                        backgroundColor: 'transparent',
-                      }}
-                    >
-                      {isSelected && (
-                        <div
-                          style={{
-                            width: 10,
-                            height: 10,
-                            borderRadius: '50%',
-                            backgroundColor: colors.primaryColor,
-                          }}
-                        />
-                      )}
-                    </div>
-                    <span
-                      style={{
-                        fontSize: 14,
-                        color: colors.inputText,
-                      }}
-                    >
-                      {item.label}
-                    </span>
+                    {isSelected && (
+                      <div
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: '50%',
+                          backgroundColor: colors.primaryColor,
+                        }}
+                      />
+                    )}
                   </div>
-                );
-              })}
-            </div>
+                  <span
+                    style={{
+                      fontSize: 13.5,
+                      fontWeight: 500,
+                      color: colors.labelColor,
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        )}
+        </div>
 
-        {/* Brief reason (Default variant) */}
-        {!isCard && (
-          <div style={{ width: '100%', marginBottom: 24 }}>
-            <label
-              style={{
-                display: 'block',
-                fontSize: 14,
-                fontWeight: 500,
-                color: colors.labelColor,
-                marginBottom: 6,
-              }}
-            >
-              Brief reason for application (optional)
-            </label>
-            <textarea
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="Placeholder"
-              rows={3}
-              style={{
-                width: '100%',
-                borderRadius: 8,
-                border: `1px solid ${colors.inputBorder}`,
-                backgroundColor: colors.inputBg,
-                color: colors.inputText,
-                padding: '10px 12px',
-                fontSize: 14,
-                outline: 'none',
-                boxSizing: 'border-box',
-                resize: 'none',
-                fontFamily: 'inherit',
-              }}
-            />
-          </div>
-        )}
+        {/* 7. Brief reason textarea */}
+        <div style={{ width: '100%', marginBottom: 20 }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
+              color: colors.labelColor,
+              marginBottom: 6,
+            }}
+          >
+            Brief reason for application (optional)
+          </label>
+          <textarea
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="Placeholder"
+            rows={3}
+            style={{
+              width: '100%',
+              borderRadius: 8,
+              border: `1px solid ${colors.inputBorder}`,
+              backgroundColor: colors.inputBg,
+              color: colors.inputText,
+              padding: '10px 12px',
+              fontSize: 14,
+              outline: 'none',
+              boxSizing: 'border-box',
+              resize: 'none',
+              fontFamily: 'inherit',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = colors.primaryColor;
+              e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.primaryColor}22`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = colors.inputBorder;
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+        </div>
 
-        {/* Annual Income Slider matching exact screenshot UI */}
-        <div style={{ width: '100%', marginBottom: 32 }}>
+        {/* 8. Annual Income Slider */}
+        <div style={{ width: '100%', marginBottom: 24 }}>
           {/* Label Row */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: 12,
+              marginBottom: 8,
             }}
           >
-            <div style={{ fontSize: 14, fontWeight: 500, color: colors.titleColor }}>
-              Annual Income (Lakh ₹) <span style={{ color: '#EF4444' }}>*</span>
+            <div style={{ fontSize: 13, fontWeight: 600, color: colors.labelColor }}>
+              Annual Income (Lakh ₹) <span style={{ color: UX4GColors.red600 }}>*</span>
             </div>
             <div
               style={{
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: 700,
                 color: colors.titleColor,
               }}
@@ -1596,12 +1741,12 @@ const styles = StyleSheet.create({
             </div>
           </div>
 
-          {/* Slider Input with Custom Track & White Thumb */}
+          {/* Slider Input with Custom Track */}
           <div
             style={{
               position: 'relative',
               width: '100%',
-              padding: '10px 0',
+              padding: '8px 0',
               userSelect: 'none',
             }}
           >
@@ -1610,7 +1755,7 @@ const styles = StyleSheet.create({
               style={{
                 width: '100%',
                 height: 4,
-                backgroundColor: isDark ? UX4GColors.neutral700 : '#E5E7EB',
+                backgroundColor: colors.stepperLineInactive,
                 borderRadius: 2,
                 position: 'relative',
               }}
@@ -1623,33 +1768,31 @@ const styles = StyleSheet.create({
                   top: 0,
                   bottom: 0,
                   width: `${(income / 10) * 100}%`,
-                  backgroundColor: isDark ? UX4GColors.primary300 : colors.primaryBrand,
+                  backgroundColor: colors.primaryColor,
                   borderRadius: 2,
-                  transition: 'width 0.08s ease',
                 }}
               />
             </div>
 
-            {/* Custom White Thumb matching user screenshot */}
+            {/* Custom White Thumb */}
             <div
               style={{
                 position: 'absolute',
                 top: '50%',
-                left: `calc(${(income / 10) * 100}% - ${(income / 10) * 20}px)`,
+                left: `calc(${(income / 10) * 100}% - ${(income / 10) * 16}px)`,
                 transform: 'translateY(-50%)',
-                width: 20,
-                height: 20,
+                width: 18,
+                height: 18,
                 borderRadius: '50%',
                 backgroundColor: isDark ? UX4GColors.neutral100 : '#FFFFFF',
-                border: `1.5px solid ${isDark ? UX4GColors.neutral400 : '#E5E7EB'}`,
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.18)',
+                border: `1.5px solid ${isDark ? UX4GColors.neutral400 : '#D1D5DB'}`,
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.15)',
                 pointerEvents: 'none',
-                transition: 'left 0.08s ease',
                 zIndex: 3,
               }}
             />
 
-            {/* Invisible native range input on top for smooth dragging */}
+            {/* Native range input for dragging */}
             <input
               type="range"
               min={0}
@@ -1671,12 +1814,12 @@ const styles = StyleSheet.create({
             />
           </div>
 
-          {/* Marks & Values Row below track */}
+          {/* Marks Row */}
           <div
             style={{
               position: 'relative',
               width: '100%',
-              height: 28,
+              height: 24,
               marginTop: 2,
             }}
           >
@@ -1697,36 +1840,19 @@ const styles = StyleSheet.create({
                     cursor: 'pointer',
                   }}
                 >
-                  {/* Tick line */}
                   <div
                     style={{
-                      width: isSelected ? 1.5 : 1,
-                      height: 6,
-                      backgroundColor: isSelected
-                        ? isDark
-                          ? UX4GColors.primary300
-                          : colors.primaryBrand
-                        : isDark
-                          ? UX4GColors.neutral600
-                          : '#9CA3AF',
-                      borderRadius: 1,
-                      marginBottom: 4,
-                      transition: 'background-color 0.15s ease',
+                      width: 1,
+                      height: 4,
+                      backgroundColor: isSelected ? colors.primaryColor : colors.inputBorder,
+                      marginBottom: 2,
                     }}
                   />
-                  {/* Number label */}
                   <span
                     style={{
-                      fontSize: 12,
-                      fontWeight: isSelected ? 600 : 400,
-                      color: isSelected
-                        ? isDark
-                          ? UX4GColors.primary300
-                          : colors.primaryBrand
-                        : isDark
-                          ? UX4GColors.neutral400
-                          : '#6B7280',
-                      transition: 'color 0.15s ease',
+                      fontSize: 10,
+                      fontWeight: isSelected ? 700 : 400,
+                      color: isSelected ? colors.primaryColor : colors.footerText,
                     }}
                   >
                     {val === 10 ? '10+' : val}
@@ -1737,22 +1863,82 @@ const styles = StyleSheet.create({
           </div>
         </div>
 
-        {/* SMS status updates text (Default variant) */}
-        {!isCard && (
-          <div
+        {/* Checkbox 1: Accuracy verification */}
+        <div
+          onClick={() => setConfirmAccuracy(!confirmAccuracy)}
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+            userSelect: 'none',
+            width: '100%',
+            marginBottom: 14,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', flex: 1, marginRight: 8 }}>
+            <div
+              style={{
+                width: 18,
+                height: 18,
+                borderRadius: 4,
+                border: `1.5px solid ${
+                  confirmAccuracy
+                    ? colors.primaryColor
+                    : isDark
+                    ? UX4GColors.neutral600
+                    : UX4GColors.neutral400
+                }`,
+                backgroundColor: confirmAccuracy ? colors.primaryColor : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 10,
+                marginTop: 1,
+                flexShrink: 0,
+                transition: 'all 0.15s ease',
+              }}
+            >
+              {confirmAccuracy && (
+                <svg
+                  viewBox="0 0 24 24"
+                  width="12"
+                  height="12"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              )}
+            </div>
+            <span
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: colors.labelColor,
+                lineHeight: '20px',
+              }}
+            >
+              I confirm the above information is accurate and authorise verification.
+            </span>
+          </div>
+          <span
             style={{
-              fontSize: 15,
-              fontWeight: 600,
-              color: colors.titleColor,
-              lineHeight: 1.4,
-              marginBottom: 16,
+              color: UX4GColors.red600,
+              fontWeight: 700,
+              fontSize: 16,
+              lineHeight: '20px',
+              flexShrink: 0,
             }}
           >
-            Receive application status updates via SMS
-          </div>
-        )}
+            *
+          </span>
+        </div>
 
-        {/* Accept terms checkbox */}
+        {/* Checkbox 2: Accept terms */}
         <div
           onClick={() => setAcceptTerms(!acceptTerms)}
           style={{
@@ -1760,7 +1946,7 @@ const styles = StyleSheet.create({
             alignItems: 'center',
             cursor: 'pointer',
             userSelect: 'none',
-            marginBottom: isCard ? 0 : 16,
+            width: '100%',
           }}
         >
           <div
@@ -1768,8 +1954,13 @@ const styles = StyleSheet.create({
               width: 18,
               height: 18,
               borderRadius: 4,
-              border: `1.5px solid ${acceptTerms ? colors.primaryColor : colors.inputBorder
-                }`,
+              border: `1.5px solid ${
+                acceptTerms
+                  ? colors.primaryColor
+                  : isDark
+                  ? UX4GColors.neutral600
+                  : UX4GColors.neutral400
+              }`,
               backgroundColor: acceptTerms ? colors.primaryColor : 'transparent',
               display: 'flex',
               alignItems: 'center',
@@ -1796,17 +1987,53 @@ const styles = StyleSheet.create({
           </div>
           <span
             style={{
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: 500,
               color: colors.labelColor,
+              lineHeight: '20px',
             }}
           >
-            Accept terms and conditions <span style={{ color: '#EF4444' }}>*</span>
+            Accept terms and conditions{' '}
+            <span style={{ color: UX4GColors.red600, fontWeight: 700 }}>*</span>
           </span>
         </div>
       </>
     );
   };
+
+  const renderButtons = () => (
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <Ux4gButton
+        text="Continue"
+        onPress={() => {}}
+        size="large"
+        width="100%"
+        height={46}
+        backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+        contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+      />
+      <div style={{ height: 10 }} />
+      <button
+        type="button"
+        style={{
+          width: '100%',
+          height: 46,
+          borderRadius: 8,
+          border: `1.5px solid ${isDark ? UX4GColors.primary700 : '#C7D2FE'}`,
+          backgroundColor: 'transparent',
+          color: colors.primaryColor,
+          fontSize: 15,
+          fontWeight: 600,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        Save as Draft
+      </button>
+    </div>
+  );
 
   const renderLiveMockup = () => {
     const isCard = variant === 'Card style';
@@ -1815,16 +2042,14 @@ const styles = StyleSheet.create({
       <div
         style={{
           width: 360,
-          height: 760,
           borderRadius: 20,
-          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
           backgroundColor: colors.screenBg,
           border: `1px solid ${colors.border}`,
           display: 'flex',
           flexDirection: 'column',
-          fontFamily:
-            "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+          fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
           WebkitFontSmoothing: 'antialiased',
           MozOsxFontSmoothing: 'grayscale',
           position: 'relative',
@@ -1834,121 +2059,54 @@ const styles = StyleSheet.create({
         <div style={{ backgroundColor: colors.headerBg, flexShrink: 0 }}>
           <div
             style={{
-              padding: '10px 16px',
+              padding: '12px 16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <img
                 src="/national_emblem_logo.svg"
                 alt="National Emblem"
                 style={{
-                  height: 40,
+                  height: 36,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
               <div
                 style={{
                   width: 1,
-                  height: 32,
-                  backgroundColor: colors.verticalDividerColor,
+                  height: 28,
+                  backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
                 }}
               />
-              <UnionLogo size={32} isDark={isDark} />
+              <UnionLogo size={28} isDark={isDark} />
             </div>
-          </div>
-          <div style={{ height: 1, backgroundColor: colors.dividerColor }} />
 
-          {/* Back Button */}
-          <div
-            style={{
-              paddingLeft: 8,
-              paddingTop: 8,
-              paddingBottom: isCard ? 8 : 0,
-              display: 'flex',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => { }}
+            {/* Menu button */}
+            <div
               style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: `1.5px solid ${colors.menuBtnBorder}`,
+                backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                gap: 4,
-                background: 'transparent',
-                border: 'none',
-                padding: '6px 12px',
-                borderRadius: 6,
-                color: colors.ghostButtonColor,
-                fontSize: 14,
-                fontWeight: 500,
+                justifyContent: 'center',
+                gap: 3.5,
                 cursor: 'pointer',
               }}
             >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 18, color: colors.ghostButtonColor }}
-              >
-                arrow_back
-              </span>
-              Back
-            </button>
-          </div>
-        </div>
-
-        {/* Floating Top Saved Banner */}
-        {showBanner && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 74,
-              left: 16,
-              right: 16,
-              zIndex: 100,
-              animation: 'fadeIn 0.25s ease-in-out',
-            }}
-          >
-            <div
-              style={{
-                height: 44,
-                width: '100%',
-                backgroundColor: colors.bannerBg,
-                borderRadius: 8,
-                border: `1px solid ${colors.bannerBorder}`,
-                padding: '0 16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-                boxSizing: 'border-box',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span
-                  className="material-symbols-outlined"
-                  style={{
-                    fontSize: 16,
-                    color: colors.bannerText,
-                  }}
-                >
-                  check_circle
-                </span>
-                <span
-                  style={{
-                    color: colors.bannerText,
-                    fontSize: 12,
-                    fontWeight: 500,
-                  }}
-                >
-                  Saved 3:14 PM
-                </span>
-              </div>
+              <div style={{ width: 16, height: 2, backgroundColor: colors.primaryColor, borderRadius: 1 }} />
+              <div style={{ width: 16, height: 2, backgroundColor: colors.primaryColor, borderRadius: 1 }} />
+              <div style={{ width: 16, height: 2, backgroundColor: colors.primaryColor, borderRadius: 1 }} />
             </div>
           </div>
-        )}
+          <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
+        </div>
 
         {/* Scrollable Center Content */}
         <div
@@ -1960,117 +2118,104 @@ const styles = StyleSheet.create({
           }}
         >
           {isCard ? (
-            <div style={{ padding: '32px 24px' }}>
+            <div style={{ padding: '20px 16px' }}>
+              {/* White Card containing Stepper, Form Content, and Action Buttons */}
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 24,
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
+                  padding: '24px 20px',
                   display: 'flex',
                   flexDirection: 'column',
+                  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.04)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral800 : '#F3F4F6'}`,
                 }}
               >
-                {renderFormContent(true)}
+                {renderFormContent()}
+
+                <div style={{ height: 24 }} />
+
+                {renderButtons()}
+              </div>
+
+              <div style={{ height: 24 }} />
+
+              {/* Powered by Footer outside card */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 500,
+                    color: colors.footerText,
+                  }}
+                >
+                  Powered by -
+                </span>
+                <img
+                  src="/Digital_India_logo.svg"
+                  alt="Digital India"
+                  style={{
+                    height: 24,
+                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                  }}
+                />
               </div>
             </div>
           ) : (
-            <div style={{ padding: '24px 24px' }}>
-              {renderFormContent(false)}
+            <div
+              style={{
+                padding: '24px 20px',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {renderFormContent()}
+
+              <div style={{ height: 28 }} />
+
+              {/* Action Buttons */}
+              {renderButtons()}
+
+              <div style={{ height: 24 }} />
+
+              {/* Powered by Footer */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 500,
+                    color: colors.footerText,
+                  }}
+                >
+                  Powered by -
+                </span>
+                <img
+                  src="/Digital_India_logo.svg"
+                  alt="Digital India"
+                  style={{
+                    height: 24,
+                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                  }}
+                />
+              </div>
             </div>
           )}
-        </div>
-
-        {/* Bottom Actions */}
-        <div
-          style={{
-            padding: '16px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-            backgroundColor: isCard ? colors.screenBg : colors.headerBg,
-            flexShrink: 0,
-          }}
-        >
-          <button
-            type="button"
-            disabled={!acceptTerms}
-            onClick={() => {
-              if (!acceptTerms) return;
-              setShowBanner(true);
-            }}
-            style={{
-              height: 48,
-              width: '100%',
-              borderRadius: 8,
-              border: 'none',
-              backgroundColor: acceptTerms
-                ? isDark
-                  ? UX4GColors.primary300
-                  : colors.primaryBrand
-                : colors.buttonDisabledBg,
-              color: acceptTerms
-                ? isDark
-                  ? UX4GColors.neutral900
-                  : '#FFFFFF'
-                : colors.buttonDisabledText,
-              fontSize: 15,
-              fontWeight: 600,
-              cursor: acceptTerms ? 'pointer' : 'not-allowed',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            Continue
-          </button>
-          <button
-            type="button"
-            onClick={() => { }}
-            style={{
-              height: 48,
-              width: '100%',
-              borderRadius: 8,
-              border: 'none',
-              backgroundColor: 'transparent',
-              color: isDark ? UX4GColors.primary300 : colors.primaryBrand,
-              fontSize: 15,
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            Save as Draft
-          </button>
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '0 0 24px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: isCard ? colors.screenBg : colors.headerBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
-            }}
-          >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 24,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
         </div>
       </div>
     );
@@ -2113,74 +2258,76 @@ const styles = StyleSheet.create({
           <div className="wb-content">
             {/* 1. Preview Tab */}
             {activeMainTab === 'preview' && (
-              <div
-                className={`wb-preview-area ${isDark ? 'dark' : ''}`}
-                style={{ flexDirection: 'column', alignItems: 'center' }}
-              >
-                {/* Knob Controls Toolbar */}
+              <Ux4gThemeProvider isDark={isDark}>
                 <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: 16,
-                    marginBottom: 24,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                  className={`wb-preview-area ${isDark ? 'dark' : ''}`}
+                  style={{ flexDirection: 'column', alignItems: 'center' }}
                 >
-                  {/* Variant Knob */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
-                      }}
-                    >
-                      Layout Variant:
-                    </span>
-                    <div
-                      style={{
-                        display: 'flex',
-                        gap: 4,
-                        backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral100,
-                        padding: 4,
-                        borderRadius: 10,
-                        border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral200}`,
-                      }}
-                    >
-                      {(['Default', 'Card style'] as VariantType[]).map((v) => (
-                        <button
-                          key={v}
-                          type="button"
-                          onClick={() => setVariant(v)}
-                          style={{
-                            padding: '6px 14px',
-                            borderRadius: 6,
-                            border: 'none',
-                            fontSize: 12,
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            backgroundColor: variant === v ? UX4GColors.primary : 'transparent',
-                            color:
-                              variant === v
-                                ? UX4GColors.neutral0
-                                : isDark
+                  {/* Knob Controls Toolbar */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: 16,
+                      marginBottom: 24,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {/* Variant Knob */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span
+                        style={{
+                          fontSize: 13,
+                          fontWeight: 600,
+                          color: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
+                        }}
+                      >
+                        Layout Variant:
+                      </span>
+                      <div
+                        style={{
+                          display: 'flex',
+                          gap: 4,
+                          backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral100,
+                          padding: 4,
+                          borderRadius: 10,
+                          border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral200}`,
+                        }}
+                      >
+                        {(['Default', 'Card style'] as VariantType[]).map((v) => (
+                          <button
+                            key={v}
+                            type="button"
+                            onClick={() => setVariant(v)}
+                            style={{
+                              padding: '6px 14px',
+                              borderRadius: 6,
+                              border: 'none',
+                              fontSize: 12,
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              backgroundColor: variant === v ? UX4GColors.primary : 'transparent',
+                              color:
+                                variant === v
+                                  ? UX4GColors.neutral0
+                                  : isDark
                                   ? UX4GColors.neutral400
                                   : UX4GColors.neutral600,
-                            transition: 'all 0.2s ease',
-                          }}
-                        >
-                          {v}
-                        </button>
-                      ))}
+                              transition: 'all 0.2s ease',
+                            }}
+                          >
+                            {v}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Render Live Mobile Mockup */}
-                {renderLiveMockup()}
-              </div>
+                  {/* Render Live Mobile Mockup */}
+                  {renderLiveMockup()}
+                </div>
+              </Ux4gThemeProvider>
             )}
 
             {/* 2. Code Tab */}

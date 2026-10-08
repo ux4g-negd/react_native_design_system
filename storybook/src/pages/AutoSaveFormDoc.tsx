@@ -29,9 +29,9 @@ export const AutoSaveFormDoc: React.FC<AutoSaveFormDocProps> = ({ isDark }) => {
       headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       titleColor: isDark ? UX4GColors.neutral0 : '#111827',
       subtleText: isDark ? UX4GColors.neutral400 : '#4B5563',
-      bannerBg: isDark ? 'rgba(20, 83, 45, 0.25)' : '#F0FDF4',
-      bannerText: isDark ? UX4GColors.green400 : '#15803D',
-      bannerIcon: isDark ? UX4GColors.green400 : '#16A34A',
+      bannerBg: isDark ? 'rgba(20, 83, 45, 0.25)' : '#F2FCEF',
+      bannerText: isDark ? UX4GColors.green400 : '#00522C',
+      bannerIcon: isDark ? UX4GColors.green400 : '#128937',
       primaryColor: isDark ? UX4GColors.primary300 : '#432CBB',
       primaryBtnBg: isDark ? UX4GColors.primary300 : '#432CBB',
       primaryBtnText: isDark ? UX4GColors.neutral900 : '#FFFFFF',
@@ -163,7 +163,7 @@ export const AutoSaveFormCardScreen = ({
               leadingIcon={
                 <Ux4gIcons.checkCircle
                   size={16}
-                  color={isDark ? UX4GColors.green400 : '#16A34A'}
+                  color={isDark ? UX4GColors.green400 : '#128937'}
                 />
               }
               marginStyle={{ marginHorizontal: 0, marginVertical: 0, marginBottom: 20 }}
@@ -172,7 +172,7 @@ export const AutoSaveFormCardScreen = ({
               titleStyle={{
                 fontSize: 12,
                 fontWeight: '500',
-                color: isDark ? UX4GColors.green400 : '#15803D',
+                color: isDark ? UX4GColors.green400 : '#00522C',
               }}
             />
 
@@ -569,7 +569,7 @@ export const AutoSaveFormScreen = ({
           leadingIcon={
             <Ux4gIcons.checkCircle
               size={16}
-              color={isDark ? UX4GColors.green400 : '#16A34A'}
+              color={isDark ? UX4GColors.green400 : '#128937'}
             />
           }
           marginStyle={{ marginHorizontal: 0, marginVertical: 0, marginBottom: 20 }}
@@ -578,7 +578,7 @@ export const AutoSaveFormScreen = ({
           titleStyle={{
             fontSize: 12,
             fontWeight: '500',
-            color: isDark ? UX4GColors.green400 : '#15803D',
+            color: isDark ? UX4GColors.green400 : '#00522C',
           }}
         />
 
