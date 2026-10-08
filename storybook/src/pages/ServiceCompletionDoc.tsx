@@ -20,7 +20,7 @@ export const ServiceCompletionDoc: React.FC<ServiceCompletionDocProps> = ({ isDa
     return {
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
       titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      subtleColor: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
+      subtleColor: isDark ? UX4GColors.neutral200 : UX4GColors.neutral600,
       screenBg: isCard
         ? isDark
           ? UX4GColors.primary800
@@ -30,17 +30,17 @@ export const ServiceCompletionDoc: React.FC<ServiceCompletionDocProps> = ({ isDa
         : '#FFFFFF',
       cardBg: isDark ? UX4GColors.neutral800 : '#FFFFFF',
       headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-      dividerColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
-      unionColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      // Success Banner Colors matching Flutter
+      dividerColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
+      menuBtnBorder: isDark ? UX4GColors.primary400 : UX4GColors.primary200,
+      // Success Banner Colors
       successBg: isDark ? UX4GColors.green900 : UX4GColors.green50,
       successBorder: isDark ? UX4GColors.green600 : UX4GColors.green300,
       successTextColor: isDark ? UX4GColors.green300 : UX4GColors.green800,
-      successIconColor: isDark ? UX4GColors.green50 : UX4GColors.green600,
+      successIconColor: isDark ? UX4GColors.green400 : UX4GColors.green600,
       // File Card Colors
-      fileCardBg: isDark ? UX4GColors.neutral800 : UX4GColors.neutral50,
+      fileCardBg: isDark ? UX4GColors.neutral700 : UX4GColors.neutral50,
       fileCardTitleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      fileCardSubColor: isDark ? UX4GColors.neutral200 : UX4GColors.neutral700,
+      fileCardSubColor: isDark ? UX4GColors.neutral300 : UX4GColors.neutral600,
       // Buttons
       buttonBg: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
       buttonTextColor: isDark ? '#000000' : '#FFFFFF',
@@ -49,7 +49,7 @@ export const ServiceCompletionDoc: React.FC<ServiceCompletionDocProps> = ({ isDa
     };
   }, [isDark, isCard]);
 
-  // Clean React Native TSX source code strings matching Flutter implementation
+  // React Native Default Pattern Code
   const defaultCodeString = `import React from 'react';
 import {
   SafeAreaView,
@@ -72,70 +72,69 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-components';
 
-export const ServiceCompletionScreen = ({ isDark = false }: { isDark?: boolean }) => {
+export const ServiceCompletionDefaultPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleColor = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
+  const subtleColor = isDark ? UX4GColors.neutral200 : UX4GColors.neutral600;
   const screenBg = isDark ? UX4GColors.neutral900 : '#FFFFFF';
 
   const successBg = isDark ? UX4GColors.green900 : UX4GColors.green50;
   const successBorder = isDark ? UX4GColors.green600 : UX4GColors.green300;
   const successTextColor = isDark ? UX4GColors.green300 : UX4GColors.green800;
-  const successIconColor = isDark ? UX4GColors.green50 : UX4GColors.green600;
+  const successIconColor = isDark ? UX4GColors.green400 : UX4GColors.green600;
 
   const fileCardBg = isDark ? UX4GColors.neutral800 : UX4GColors.neutral50;
   const fileCardTitleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const fileCardSubColor = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
+  const fileCardSubColor = isDark ? UX4GColors.neutral300 : UX4GColors.neutral600;
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: screenBg }]}>
-      {/* App Header with logos and elevation */}
+      {/* 1. Official Header with Menu */}
       <Ux4gAppHeader
         elevation={2}
-        variant="light"
+        variant={isDark ? 'dark' : 'light'}
         title=""
         leadingSpacing={8}
         leadingWidgets={[
-          <NationalEmblemLogo key="emblem" isDark={isDark} height={40} />,
+          <Image
+            key="emblem"
+            source={{ uri: '/national_emblem_logo.svg' }}
+            style={styles.emblemLogo}
+            resizeMode="contain"
+          />,
           <View key="divider" style={styles.headerDividerWrapper}>
             <Ux4gDivider
               orientation={Ux4gDividerOrientation.vertical}
-              color="#D1D5DB"
+              color={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
             />
           </View>,
           <UnionLogo
             key="union"
             height={32}
-            color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+            color={primaryColor}
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         {/* Back button */}
-        <View style={styles.backWrapper}>
-          <Ux4gButton
-            text="Back"
-            onPress={() => {}}
-            variant={Ux4gButtonVariant.ghost}
-            leadingIcon="arrow_back"
-            contentColor={isDark ? UX4GColors.neutral50 : UX4GColors.neutral900}
-            size={Ux4gButtonSize.small}
-          />
-        </View>
+        <TouchableOpacity style={styles.backWrapper} onPress={() => {}}>
+          <Ux4gIcon name="arrow_back" size={18} color={primaryColor} />
+          <Text style={[styles.backText, { color: primaryColor }]}>Back</Text>
+        </TouchableOpacity>
 
         {/* Title */}
         <Text style={[styles.title, { color: titleColor }]}>
@@ -188,12 +187,24 @@ export const ServiceCompletionScreen = ({ isDark = false }: { isDark?: boolean }
             </Text>
           </View>
         </Ux4gCard>
-      </ScrollView>
 
-      {/* Action Buttons & Footer */}
-      <View style={styles.bottomSection}>
-        {/* Save to DigiLocker */}
-        <View style={styles.buttonWrapper}>
+        <View style={styles.spacer} />
+
+        {/* Action Buttons */}
+        <View style={styles.bottomSection}>
+          <Ux4gButton
+            text="Download Again"
+            onPress={() => {}}
+            variant={Ux4gButtonVariant.primary}
+            size={Ux4gButtonSize.large}
+            height={48}
+            borderRadius={8}
+            backgroundColor={primaryColor}
+            contentColor={isDark ? '#000000' : '#FFFFFF'}
+          />
+
+          <View style={{ height: 10 }} />
+
           <Ux4gButton
             text="Save to DigiLocker"
             onPress={() => {}}
@@ -206,35 +217,33 @@ export const ServiceCompletionScreen = ({ isDark = false }: { isDark?: boolean }
           />
         </View>
 
-        {/* Download Again */}
-        <View style={styles.buttonWrapper}>
-          <Ux4gButton
-            text="Download Again"
-            onPress={() => {}}
-            variant={Ux4gButtonVariant.primary}
-            size={Ux4gButtonSize.large}
-            height={48}
-            borderRadius={8}
-            backgroundColor={primaryColor}
-            contentColor={isDark ? '#000000' : '#FFFFFF'}
-          />
-        </View>
-
-        {/* Powered by Digital India */}
+        {/* Powered by Digital India Footer */}
         <View style={styles.footerRow}>
           <Text style={styles.footerText}>Powered by -</Text>
           <Image
-            source={{ uri: '/digital_india_logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={styles.digitalIndiaLogo}
             resizeMode="contain"
           />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  emblemLogo: {
+    width: 36,
+    height: 36,
+  },
+  headerDividerWrapper: {
+    height: 28,
+    justifyContent: 'center',
+    marginHorizontal: 4,
+  },
   menuBtn: {
     width: 36,
     height: 36,
@@ -249,22 +258,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: UX4GColors.primary,
   },
-  safeArea: {
-    flex: 1,
-  },
-  headerDividerWrapper: {
-    height: 32,
-    justifyContent: 'center',
-  },
   scroll: {
     flex: 1,
   },
   content: {
+    flexGrow: 1,
     padding: 16,
+    justifyContent: 'space-between',
   },
   backWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 16,
     alignSelf: 'flex-start',
-    marginBottom: 20,
+  },
+  backText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     fontSize: 18,
@@ -291,14 +302,14 @@ const styles = StyleSheet.create({
   },
   bannerBodyContainer: {
     paddingLeft: 28,
-    marginTop: 6,
+    marginTop: 4,
   },
   bannerBodyText: {
     fontSize: 13,
     lineHeight: 18,
   },
   viewLinkWrapper: {
-    marginTop: 4,
+    marginTop: 6,
     alignSelf: 'flex-start',
   },
   viewLinkText: {
@@ -321,20 +332,20 @@ const styles = StyleSheet.create({
   fileMeta: {
     fontSize: 12,
   },
-  bottomSection: {
-    padding: 16,
-    paddingTop: 0,
+  spacer: {
+    flex: 1,
+    minHeight: 120,
   },
-  buttonWrapper: {
+  bottomSection: {
     width: '100%',
-    marginBottom: 8,
+    marginBottom: 16,
   },
   footerRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 12,
-    gap: 4,
+    gap: 6,
   },
   footerText: {
     fontSize: 11,
@@ -347,6 +358,7 @@ const styles = StyleSheet.create({
 });
 `;
 
+  // React Native Card Pattern Code
   const cardCodeString = `import React from 'react';
 import {
   SafeAreaView,
@@ -369,73 +381,72 @@ import {
   UX4GColors,
 } from 'ux4g-react-native-components';
 
-export const ServiceCompletionCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
+export const ServiceCompletionCardPattern = ({ isDark = false }: { isDark?: boolean }) => {
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const titleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const subtleColor = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
+  const subtleColor = isDark ? UX4GColors.neutral200 : UX4GColors.neutral600;
   const screenBg = isDark ? UX4GColors.primary800 : UX4GColors.primary100;
   const cardBg = isDark ? UX4GColors.neutral800 : '#FFFFFF';
 
   const successBg = isDark ? UX4GColors.green900 : UX4GColors.green50;
   const successBorder = isDark ? UX4GColors.green600 : UX4GColors.green300;
   const successTextColor = isDark ? UX4GColors.green300 : UX4GColors.green800;
-  const successIconColor = isDark ? UX4GColors.green50 : UX4GColors.green600;
+  const successIconColor = isDark ? UX4GColors.green400 : UX4GColors.green600;
 
-  const fileCardBg = isDark ? UX4GColors.neutral800 : UX4GColors.neutral50;
+  const fileCardBg = isDark ? UX4GColors.neutral700 : UX4GColors.neutral50;
   const fileCardTitleColor = isDark ? UX4GColors.neutral50 : UX4GColors.neutral900;
-  const fileCardSubColor = isDark ? UX4GColors.neutral200 : UX4GColors.neutral700;
+  const fileCardSubColor = isDark ? UX4GColors.neutral300 : UX4GColors.neutral600;
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: screenBg }]}>
-      {/* App Header with logos and elevation */}
+      {/* 1. Official Header with Menu */}
       <Ux4gAppHeader
         elevation={2}
-        variant="light"
+        variant={isDark ? 'dark' : 'light'}
         title=""
         leadingSpacing={8}
         leadingWidgets={[
-          <NationalEmblemLogo key="emblem" isDark={isDark} height={40} />,
+          <Image
+            key="emblem"
+            source={{ uri: '/national_emblem_logo.svg' }}
+            style={styles.emblemLogo}
+            resizeMode="contain"
+          />,
           <View key="divider" style={styles.headerDividerWrapper}>
             <Ux4gDivider
               orientation={Ux4gDividerOrientation.vertical}
-              color="#D1D5DB"
+              color={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
             />
           </View>,
           <UnionLogo
             key="union"
             height={32}
-            color={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+            color={primaryColor}
           />,
         ]}
-      actions={[
-        {
-          customWidget: (
-            <TouchableOpacity
-              key="menu"
-              style={styles.menuBtn}
-              onPress={() => {}}
-            >
-              <Text style={styles.menuIcon}>☰</Text>
-            </TouchableOpacity>
-          ),
-        },
-      ]}
+        actions={[
+          {
+            customWidget: (
+              <TouchableOpacity
+                key="menu"
+                style={styles.menuBtn}
+                onPress={() => {}}
+              >
+                <Text style={styles.menuIcon}>☰</Text>
+              </TouchableOpacity>
+            ),
+          },
+        ]}
       />
 
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-        {/* Card container */}
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.cardScrollContent}>
+        {/* Floating White Card */}
         <View style={[styles.card, { backgroundColor: cardBg }]}>
           {/* Back button */}
-          <View style={styles.backWrapper}>
-            <Ux4gButton
-              text="Back"
-              onPress={() => {}}
-              variant={Ux4gButtonVariant.ghost}
-              leadingIcon="arrow_back"
-              contentColor={isDark ? UX4GColors.neutral50 : UX4GColors.neutral900}
-              size={Ux4gButtonSize.small}
-            />
-          </View>
+          <TouchableOpacity style={styles.backWrapper} onPress={() => {}}>
+            <Ux4gIcon name="arrow_back" size={18} color={primaryColor} />
+            <Text style={[styles.backText, { color: primaryColor }]}>Back</Text>
+          </TouchableOpacity>
 
           {/* Title */}
           <Text style={[styles.title, { color: titleColor }]}>
@@ -488,13 +499,23 @@ export const ServiceCompletionCardScreen = ({ isDark = false }: { isDark?: boole
               </Text>
             </View>
           </Ux4gCard>
-        </View>
-      </ScrollView>
 
-      {/* Action Buttons & Footer */}
-      <View style={styles.bottomSection}>
-        {/* Save to DigiLocker */}
-        <View style={styles.buttonWrapper}>
+          <View style={styles.cardSpacer} />
+
+          {/* Action Buttons Inside Card */}
+          <Ux4gButton
+            text="Download Again"
+            onPress={() => {}}
+            variant={Ux4gButtonVariant.primary}
+            size={Ux4gButtonSize.large}
+            height={48}
+            borderRadius={8}
+            backgroundColor={primaryColor}
+            contentColor={isDark ? '#000000' : '#FFFFFF'}
+          />
+
+          <View style={{ height: 10 }} />
+
           <Ux4gButton
             text="Save to DigiLocker"
             onPress={() => {}}
@@ -507,35 +528,33 @@ export const ServiceCompletionCardScreen = ({ isDark = false }: { isDark?: boole
           />
         </View>
 
-        {/* Download Again */}
-        <View style={styles.buttonWrapper}>
-          <Ux4gButton
-            text="Download Again"
-            onPress={() => {}}
-            variant={Ux4gButtonVariant.primary}
-            size={Ux4gButtonSize.large}
-            height={48}
-            borderRadius={8}
-            backgroundColor={primaryColor}
-            contentColor={isDark ? '#000000' : '#FFFFFF'}
-          />
-        </View>
-
-        {/* Powered by Digital India */}
+        {/* Powered by Digital India Footer Outside Card */}
         <View style={styles.footerRow}>
           <Text style={styles.footerText}>Powered by -</Text>
           <Image
-            source={{ uri: '/digital_india_logo.png' }}
+            source={{ uri: '/Digital_India_logo.svg' }}
             style={styles.digitalIndiaLogo}
             resizeMode="contain"
           />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  emblemLogo: {
+    width: 36,
+    height: 36,
+  },
+  headerDividerWrapper: {
+    height: 28,
+    justifyContent: 'center',
+    marginHorizontal: 4,
+  },
   menuBtn: {
     width: 36,
     height: 36,
@@ -550,26 +569,34 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: UX4GColors.primary,
   },
-  safeArea: {
-    flex: 1,
-  },
-  headerDividerWrapper: {
-    height: 32,
-    justifyContent: 'center',
-  },
   scroll: {
     flex: 1,
   },
-  content: {
+  cardScrollContent: {
+    flexGrow: 1,
     padding: 16,
+    paddingBottom: 12,
+    justifyContent: 'space-between',
   },
   card: {
     borderRadius: 16,
     padding: 16,
+    elevation: 2,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
   },
   backWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 16,
     alignSelf: 'flex-start',
-    marginBottom: 20,
+  },
+  backText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   title: {
     fontSize: 18,
@@ -596,14 +623,14 @@ const styles = StyleSheet.create({
   },
   bannerBodyContainer: {
     paddingLeft: 28,
-    marginTop: 6,
+    marginTop: 4,
   },
   bannerBodyText: {
     fontSize: 13,
     lineHeight: 18,
   },
   viewLinkWrapper: {
-    marginTop: 4,
+    marginTop: 6,
     alignSelf: 'flex-start',
   },
   viewLinkText: {
@@ -626,20 +653,15 @@ const styles = StyleSheet.create({
   fileMeta: {
     fontSize: 12,
   },
-  bottomSection: {
-    padding: 16,
-    paddingTop: 0,
-  },
-  buttonWrapper: {
-    width: '100%',
-    marginBottom: 8,
+  cardSpacer: {
+    height: 120,
   },
   footerRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 12,
-    gap: 4,
+    gap: 6,
   },
   footerText: {
     fontSize: 11,
@@ -654,7 +676,7 @@ const styles = StyleSheet.create({
 
   const codeString = isCard ? cardCodeString : defaultCodeString;
 
-  const renderFormFields = () => (
+  const renderTopContent = () => (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {/* Ghost Back Button */}
       <button
@@ -667,15 +689,18 @@ const styles = StyleSheet.create({
           background: 'none',
           border: 'none',
           padding: 0,
-          color: colors.titleColor,
+          color: colors.primaryColor,
           fontSize: '14px',
           fontWeight: 600,
           cursor: 'pointer',
-          marginBottom: '20px',
+          marginBottom: '16px',
           alignSelf: 'flex-start',
         }}
       >
-        <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+        <span
+          className="material-symbols-outlined"
+          style={{ fontSize: '18px', color: colors.primaryColor }}
+        >
           arrow_back
         </span>
         Back
@@ -746,7 +771,7 @@ const styles = StyleSheet.create({
             Income Certificate Downloaded.
           </div>
         </div>
-        <div style={{ paddingLeft: '28px', marginTop: '6px' }}>
+        <div style={{ paddingLeft: '28px', marginTop: '4px' }}>
           <div
             style={{
               fontSize: '13px',
@@ -760,9 +785,9 @@ const styles = StyleSheet.create({
             onClick={() => alert('View certificate clicked')}
             style={{
               fontSize: '13px',
-              fontWeight: 'bold',
+              fontWeight: 700,
               color: colors.successTextColor,
-              marginTop: '4px',
+              marginTop: '6px',
               cursor: 'pointer',
               display: 'inline-block',
             }}
@@ -803,6 +828,95 @@ const styles = StyleSheet.create({
           28 KB · PDF
         </span>
       </div>
+    </div>
+  );
+
+  const renderActionButtons = () => (
+    <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+      {/* 1. Download Again (Primary Purple) */}
+      <button
+        type="button"
+        onClick={() => alert('Download Again pressed')}
+        style={{
+          width: '100%',
+          height: '48px',
+          minHeight: '48px',
+          maxHeight: '48px',
+          backgroundColor: colors.buttonBg,
+          color: colors.buttonTextColor,
+          borderRadius: '8px',
+          border: 'none',
+          fontSize: '15px',
+          fontWeight: 600,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '10px',
+          transition: 'opacity 0.2s',
+        }}
+      >
+        Download Again
+      </button>
+
+      {/* 2. Save to DigiLocker (Outline Purple) */}
+      <button
+        type="button"
+        onClick={() => alert('Save to DigiLocker pressed')}
+        style={{
+          width: '100%',
+          height: '48px',
+          minHeight: '48px',
+          maxHeight: '48px',
+          backgroundColor: 'transparent',
+          color: colors.outlineTextColor,
+          border: `1.5px solid ${colors.outlineBorderColor}`,
+          borderRadius: '8px',
+          fontSize: '15px',
+          fontWeight: 600,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'background-color 0.2s',
+        }}
+      >
+        Save to DigiLocker
+      </button>
+    </div>
+  );
+
+  const renderFooter = () => (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '6px',
+        padding: '12px 0 4px',
+      }}
+    >
+      <span
+        style={{
+          fontSize: '11px',
+          color: '#6B7280',
+        }}
+      >
+        Powered by -
+      </span>
+      <img
+        src="/Digital_India_logo.svg"
+        alt="Digital India"
+        style={{
+          height: '20px',
+          objectFit: 'contain',
+        }}
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.src = '/digital_india_logo.png';
+        }}
+      />
     </div>
   );
 
@@ -935,154 +1049,123 @@ const styles = StyleSheet.create({
                       borderBottom: `1px solid ${colors.dividerColor}`,
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'space-between',
                       padding: '0 16px',
-                      gap: '8px',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                       zIndex: 10,
                       flexShrink: 0,
                     }}
                   >
-                    <img
-                      src="/national_emblem_logo.svg"
-                      alt="National Emblem"
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <img
+                        src="/national_emblem_logo.svg"
+                        alt="National Emblem"
+                        style={{
+                          height: '36px',
+                          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: '1px',
+                          height: '28px',
+                          backgroundColor: isDark ? UX4GColors.neutral700 : '#D1D5DB',
+                          margin: '0 2px',
+                        }}
+                      />
+                      <UnionLogo size={32} color={colors.primaryColor} isDark={isDark} />
+                    </div>
+
+                    {/* Hamburger Menu Button */}
+                    <button
+                      type="button"
+                      onClick={() => {}}
                       style={{
-                        height: '40px',
-                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: isDark ? 'transparent' : '#FFFFFF',
+                        border: `1.5px solid ${colors.menuBtnBorder}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
                       }}
-                    />
-                    <div
-                      style={{
-                        width: '1px',
-                        height: '32px',
-                        backgroundColor: '#D1D5DB',
-                        margin: '0 4px',
-                      }}
-                    />
-                    <UnionLogo size={32} color={colors.unionColor} isDark={isDark} />
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M4 6h16M4 12h16M4 18h16"
+                          stroke={colors.primaryColor}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </button>
                   </div>
 
                   {/* Scrollable Content Body */}
-                  <div
-                    style={{
-                      flex: 1,
-                      overflowY: 'auto',
-                      padding: '16px',
-                      boxSizing: 'border-box',
-                    }}
-                  >
-                    {isCard ? (
-                      /* Card Style Variant */
+                  {isCard ? (
+                    /* Card Style Variant */
+                    <div
+                      style={{
+                        flex: 1,
+                        overflowY: 'auto',
+                        padding: '16px 16px 12px 16px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        boxSizing: 'border-box',
+                      }}
+                    >
+                      {/* Floating Card */}
                       <div
                         style={{
                           width: '100%',
                           backgroundColor: colors.cardBg,
                           borderRadius: '16px',
-                          padding: '16px',
+                          padding: '16px 16px 18px 16px',
+                          boxShadow: isDark
+                            ? '0 4px 16px rgba(0,0,0,0.4)'
+                            : '0 4px 16px rgba(0,0,0,0.06)',
+                          display: 'flex',
+                          flexDirection: 'column',
                           boxSizing: 'border-box',
                         }}
                       >
-                        {renderFormFields()}
+                        {renderTopContent()}
+
+                        <div style={{ height: '110px' }} />
+
+                        {renderActionButtons()}
                       </div>
-                    ) : (
-                      /* Default Variant */
-                      renderFormFields()
-                    )}
-                  </div>
 
-                  {/* Bottom Actions Section */}
-                  <div
-                    style={{
-                      padding: '16px 16px 12px 16px',
-                      paddingTop: 0,
-                      flexShrink: 0,
-                      width: '100%',
-                      boxSizing: 'border-box',
-                    }}
-                  >
-                    {/* Save to DigiLocker */}
-                    <button
-                      type="button"
-                      onClick={() => alert('Save to DigiLocker pressed')}
-                      style={{
-                        width: '100%',
-                        height: '48px',
-                        minHeight: '48px',
-                        maxHeight: '48px',
-                        backgroundColor: 'transparent',
-                        color: colors.outlineTextColor,
-                        border: `1.5px solid ${colors.outlineBorderColor}`,
-                        borderRadius: '8px',
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '8px',
-                        transition: 'background-color 0.2s',
-                      }}
-                    >
-                      Save to DigiLocker
-                    </button>
-
-                    {/* Download Again */}
-                    <button
-                      type="button"
-                      onClick={() => alert('Download Again pressed')}
-                      style={{
-                        width: '100%',
-                        height: '48px',
-                        minHeight: '48px',
-                        maxHeight: '48px',
-                        backgroundColor: colors.buttonBg,
-                        color: colors.buttonTextColor,
-                        borderRadius: '8px',
-                        border: 'none',
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '12px',
-                        transition: 'opacity 0.2s',
-                      }}
-                    >
-                      Download Again
-                    </button>
-
-                    {/* Powered by Digital India Footer */}
+                      {/* Footer outside card */}
+                      {renderFooter()}
+                    </div>
+                  ) : (
+                    /* Default Variant */
                     <div
                       style={{
-              display: 'flex',
-              flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
+                        flex: 1,
+                        overflowY: 'auto',
+                        padding: '16px 16px 12px 16px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        boxSizing: 'border-box',
                       }}
                     >
-                      <span
-                        style={{
-                          fontSize: '11px',
-                          color: '#6B7280',
-                        }}
-                      >
-                        Powered by -
-                      </span>
-                      <img
-                        src="/digital_india_logo.png"
-                        alt="Digital India"
-                        style={{
-                          height: '20px',
-                          objectFit: 'contain',
-                        }}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = '/Digital_India_logo.svg';
-                        }}
-                      />
+                      <div>
+                        {renderTopContent()}
+                      </div>
+
+                      <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
+                        {renderActionButtons()}
+                        {renderFooter()}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             )}

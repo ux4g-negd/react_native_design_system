@@ -804,6 +804,7 @@ const styles = StyleSheet.create({
 
                       {/* Tab Filters */}
                       <div
+                        className="hide-scrollbar"
                         onWheel={(e) => {
                           if (e.deltaY) {
                             e.currentTarget.scrollLeft += e.deltaY;
@@ -954,7 +955,7 @@ const styles = StyleSheet.create({
                               size="small"
                               contentColor={colors.buttonOutlineText}
                               borderColor={colors.buttonOutlineBorder}
-                              onPress={() => {}}
+                              onPress={() => { }}
                             />
                             <button
                               type="button"
@@ -1216,7 +1217,7 @@ const styles = StyleSheet.create({
                               size="small"
                               contentColor={colors.buttonOutlineText}
                               borderColor={colors.buttonOutlineBorder}
-                              onPress={() => {}}
+                              onPress={() => { }}
                             />
                             <button
                               type="button"
