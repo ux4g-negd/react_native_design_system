@@ -14,14 +14,23 @@ interface ResumeJourneyDocProps {
 type MainTab = 'preview' | 'code';
 type VariantType = 'Default' | 'Card style';
 
+const DOMAIN_OPTIONS = [
+  { id: 'healthcare', label: 'Healthcare' },
+  { id: 'education', label: 'Education' },
+  { id: 'agriculture', label: 'Agriculture' },
+  { id: 'finance', label: 'Finance' },
+];
+
 export const ResumeJourneyDoc: React.FC<ResumeJourneyDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('Default');
 
   // Form pre-filled state for Resume Journey
   const [fullName, setFullName] = useState('Ramesh Kumar');
+  const [selectedDomain, setSelectedDomain] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [panNumber, setPanNumber] = useState('ABCDE1234F');
-  const [acceptTerms, setAcceptTerms] = useState(true);
+  const [confirmDetails, setConfirmDetails] = useState(false);
 
   const colors = useMemo(() => {
     const isCard = variant === 'Card style';
@@ -29,27 +38,29 @@ export const ResumeJourneyDoc: React.FC<ResumeJourneyDocProps> = ({ isDark }) =>
       screenBg: isCard
         ? isDark
           ? UX4GColors.primary900
-          : UX4GColors.primary50
+          : '#F4F0FF'
         : isDark
         ? UX4GColors.neutral900
-        : UX4GColors.neutral50,
+        : '#FFFFFF',
       headerBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       cardBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       border: isDark ? UX4GColors.neutral800 : '#E5E7EB',
       inputBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
       inputBg: isDark ? UX4GColors.neutral900 : '#FFFFFF',
       inputText: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
+      inputPlaceholder: isDark ? UX4GColors.neutral500 : '#9CA3AF',
       titleColor: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-      subtitleColor: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      subtitleColor: isDark ? UX4GColors.neutral300 : UX4GColors.neutral600,
       labelColor: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800,
       primaryColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
-      stepperLineInactive: isDark ? UX4GColors.neutral800 : UX4GColors.neutral200,
+      stepperLineInactive: isDark ? UX4GColors.neutral700 : UX4GColors.neutral200,
       stepperCircleInactive: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
       stepperTextInactive: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
-      stepperLabelText: isDark ? UX4GColors.neutral300 : UX4GColors.neutral600,
-      footerText: isDark ? UX4GColors.neutral500 : UX4GColors.neutral400,
-      backBtnText: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+      stepperLabelText: isDark ? UX4GColors.neutral300 : UX4GColors.neutral700,
+      footerText: isDark ? UX4GColors.neutral500 : '#9CA3AF',
+      backBtnText: isDark ? UX4GColors.neutral200 : UX4GColors.neutral900,
       backBtnBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
+      menuBtnBorder: isDark ? UX4GColors.primary700 : '#D8D6F6',
       bannerBg: isDark ? '#431407' : '#FFF7ED',
       bannerBorder: isDark ? '#7C2D12' : '#FFEDD5',
       bannerText: isDark ? '#FFD899' : '#AD4E00',
@@ -65,7 +76,6 @@ export const ResumeJourneyDoc: React.FC<ResumeJourneyDocProps> = ({ isDark }) =>
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   ScrollView,
   Image,
@@ -78,6 +88,9 @@ import {
   Ux4gButton,
   Ux4gStepper,
   Ux4gStatusBanner,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
+  Ux4gCheckbox,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -91,11 +104,19 @@ export const ResumeJourneyCardScreen = ({
   onBack?: () => void;
 }) => {
   const [fullName, setFullName] = useState('Ramesh Kumar');
+  const [selectedDomain, setSelectedDomain] = useState<string[]>([]);
   const [panNumber, setPanNumber] = useState('ABCDE1234F');
-  const [acceptTerms, setAcceptTerms] = useState(true);
+  const [confirmDetails, setConfirmDetails] = useState(false);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const subtleText = isDark ? UX4GColors.neutral300 : UX4GColors.neutral600;
+
+  const domainOptions = [
+    { id: 'healthcare', label: 'Healthcare' },
+    { id: 'education', label: 'Education' },
+    { id: 'agriculture', label: 'Agriculture' },
+    { id: 'finance', label: 'Finance' },
+  ];
 
   return (
     <SafeAreaView
@@ -135,19 +156,19 @@ export const ResumeJourneyCardScreen = ({
                 resizeMode="contain"
               />,
             ]}
-          actions={[
-            {
-              customWidget: (
-                <TouchableOpacity
-                  key="menu"
-                  style={styles.menuBtn}
-                  onPress={() => {}}
-                >
-                  <Text style={styles.menuIcon}>☰</Text>
-                </TouchableOpacity>
-              ),
-            },
-          ]}
+            actions={[
+              {
+                customWidget: (
+                  <TouchableOpacity
+                    key="menu"
+                    style={styles.menuBtn}
+                    onPress={() => {}}
+                  >
+                    <Text style={styles.menuIcon}>☰</Text>
+                  </TouchableOpacity>
+                ),
+              },
+            ]}
           />
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
         </View>
@@ -157,41 +178,6 @@ export const ResumeJourneyCardScreen = ({
           contentContainerStyle={styles.cardScrollContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Stepper */}
-          <Ux4gStepper
-            totalSteps={4}
-            currentStep={3}
-            stepSize={20}
-            steps={[
-              { title: '' },
-              { title: '' },
-              {
-                title: 'Documents',
-                titleStyle: {
-                  fontSize: 11,
-                  fontWeight: '600',
-                  color: subtleText,
-                },
-              },
-              { title: '' },
-            ]}
-          />
-
-          <View style={{ height: 32 }} />
-
-          {/* Alert Banner */}
-          <Ux4gStatusBanner
-            variant="warningLight"
-            title="Resuming from Step 3 — review before continuing."
-            leadingIcon={
-              <Text style={{ color: isDark ? '#FFBA4D' : '#FA8C16', fontSize: 16 }}>
-                ⚠
-              </Text>
-            }
-          />
-
-          <View style={{ height: 32 }} />
-
           {/* White Card */}
           <View
             style={[
@@ -199,6 +185,41 @@ export const ResumeJourneyCardScreen = ({
               { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
             ]}
           >
+            {/* Stepper */}
+            <Ux4gStepper
+              totalSteps={4}
+              currentStep={3}
+              stepSize={20}
+              steps={[
+                { title: 'Eligibility' },
+                { title: 'Personal' },
+                {
+                  title: 'Documents',
+                  titleStyle: {
+                    fontSize: 11,
+                    fontWeight: '600',
+                    color: subtleText,
+                  },
+                },
+                { title: 'Submit' },
+              ]}
+            />
+
+            <View style={{ height: 20 }} />
+
+            {/* Alert Banner */}
+            <Ux4gStatusBanner
+              variant="warningLight"
+              title="Resuming from Step 3 — review before continuing."
+              leadingIcon={
+                <Text style={{ color: isDark ? '#FFBA4D' : '#FA8C16', fontSize: 16 }}>
+                  ⚠
+                </Text>
+              }
+            />
+
+            <View style={{ height: 24 }} />
+
             {/* Title & Subtitle */}
             <Text
               style={[
@@ -208,134 +229,93 @@ export const ResumeJourneyCardScreen = ({
             >
               Verify your details
             </Text>
-            <View style={{ height: 8 }} />
+            <View style={{ height: 6 }} />
             <Text style={[styles.subtitle, { color: subtleText }]}>
               Confirm the information below to proceed.
             </Text>
 
-            <View style={{ height: 32 }} />
+            <View style={{ height: 24 }} />
 
             {/* Input 1: Full name */}
-            <Text
-              style={[
-                styles.inputLabel,
-                { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 },
-              ]}
-            >
-              Full name (as per Aadhaar)
-            </Text>
-            <View style={{ height: 6 }} />
-            <TextInput
-              style={[
-                styles.inputField,
-                {
-                  borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                  backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                  color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-                },
-              ]}
+            <Ux4gInputField
+              label="Full name (as per Aadhaar)"
+              placeholder="Ramesh Kumar"
               value={fullName}
-              onChangeText={setFullName}
+              onValueChange={setFullName}
+              size="large"
+            />
+
+            <View style={{ height: 16 }} />
+
+            {/* Input 2: Select domain */}
+            <Ux4gSelectionDropdown
+              label="Select domain"
+              placeholder="Please select.."
+              options={domainOptions}
+              selectedOptionIds={selectedDomain}
+              onSelectionChange={setSelectedDomain}
+              size="l"
+            />
+
+            <View style={{ height: 16 }} />
+
+            {/* Input 3: PAN number */}
+            <Ux4gInputField
+              label="PAN number"
+              placeholder="ABCDE1234F"
+              value={panNumber}
+              onValueChange={(val) => setPanNumber(val.toUpperCase())}
+              size="large"
+            />
+
+            <View style={{ height: 20 }} />
+
+            {/* Checkbox */}
+            <Ux4gCheckbox
+              value={confirmDetails}
+              onChanged={(val) => setConfirmDetails(!!val)}
+              label="I confirm these details match my official documents."
+              isRequired={true}
+              size="small"
             />
 
             <View style={{ height: 24 }} />
 
-            {/* Input 2: PAN number */}
-            <Text
-              style={[
-                styles.inputLabel,
-                { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 },
-              ]}
-            >
-              PAN number
-            </Text>
-            <View style={{ height: 6 }} />
-            <TextInput
-              style={[
-                styles.inputField,
-                {
-                  borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                  backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                  color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-                },
-              ]}
-              value={panNumber}
-              onChangeText={setPanNumber}
-              autoCapitalize="characters"
+            {/* Action Buttons Inside Card */}
+            <Ux4gButton
+              text="Continue"
+              onPress={onContinue}
+              size="large"
+              width="100%"
+              height={48}
+              backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+              contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
             />
+            <View style={{ height: 12 }} />
+            <Ux4gButton
+              text="Back"
+              onPress={onBack}
+              variant="outline"
+              size="large"
+              width="100%"
+              height={48}
+              contentColor={isDark ? UX4GColors.neutral200 : UX4GColors.neutral900}
+              borderColor={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
+            />
+          </View>
 
-            <View style={{ height: 32 }} />
-
-            {/* Checkbox */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => setAcceptTerms(!acceptTerms)}
-              style={styles.checkboxRow}
-            >
-              <View
-                style={[
-                  styles.checkboxBox,
-                  {
-                    borderColor: acceptTerms
-                      ? primaryColor
-                      : isDark
-                      ? UX4GColors.neutral600
-                      : UX4GColors.neutral400,
-                    backgroundColor: acceptTerms ? primaryColor : 'transparent',
-                  },
-                ]}
-              >
-                {acceptTerms && <Text style={styles.checkmarkIcon}>✓</Text>}
-              </View>
-              <Text
-                style={[
-                  styles.checkboxLabel,
-                  { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 },
-                ]}
-              >
-                Accept terms and conditions{' '}
-                <Text style={{ color: UX4GColors.red600 }}>*</Text>
-              </Text>
-            </TouchableOpacity>
+          {/* Footer outside Card */}
+          <View style={styles.footerContainer}>
+            <Text style={styles.poweredByText}>
+              Powered by -
+            </Text>
+            <Image
+              source={require('./assets/digital_india_logo.png')}
+              style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
+            />
           </View>
         </ScrollView>
-
-        {/* Actions */}
-        <View style={styles.actionsContainer}>
-          <Ux4gButton
-            text="Continue"
-            onPress={onContinue}
-            enabled={acceptTerms}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-          <View style={{ height: 12 }} />
-          <Ux4gButton
-            text="Back"
-            onPress={onBack}
-            variant="outline"
-            size="large"
-            width="100%"
-            height={48}
-            contentColor={isDark ? UX4GColors.neutral400 : UX4GColors.neutral500}
-            borderColor={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
-          />
-        </View>
-
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Text style={styles.poweredByText}>
-            Powered by -
-          </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -347,8 +327,8 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    borderColor: '#D8D6F6',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -361,60 +341,27 @@ const styles = StyleSheet.create({
   emblemIcon: { height: 40, width: 28 },
   verticalDivider: { height: 32, width: 1 },
   unionIcon: { height: 32, width: 44 },
-  cardScrollContainer: { paddingHorizontal: 24, paddingVertical: 32 },
+  cardScrollContainer: { paddingHorizontal: 16, paddingVertical: 20 },
   cardContainer: {
     padding: 24,
     borderRadius: 16,
+    shadowColor: '#000000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
-    lineHeight: 28,
+    lineHeight: 26,
   },
   subtitle: {
-    fontSize: 15,
-    lineHeight: 21,
-  },
-  inputLabel: {
     fontSize: 14,
-    fontWeight: '600',
-  },
-  inputField: {
-    height: 44,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    fontSize: 14,
-  },
-  checkboxRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkboxBox: {
-    width: 18,
-    height: 18,
-    borderRadius: 4,
-    borderWidth: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  checkmarkIcon: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  checkboxLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    lineHeight: 20,
   },
   footerContainer: {
     alignItems: 'center',
-    paddingBottom: 24,
+    paddingVertical: 24,
   },
   poweredByText: {
     fontSize: 11,
@@ -433,7 +380,6 @@ const styles = StyleSheet.create({
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   ScrollView,
   Image,
@@ -446,6 +392,9 @@ import {
   Ux4gButton,
   Ux4gStepper,
   Ux4gStatusBanner,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
+  Ux4gCheckbox,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -459,17 +408,25 @@ export const ResumeJourneyScreen = ({
   onBack?: () => void;
 }) => {
   const [fullName, setFullName] = useState('Ramesh Kumar');
+  const [selectedDomain, setSelectedDomain] = useState<string[]>([]);
   const [panNumber, setPanNumber] = useState('ABCDE1234F');
-  const [acceptTerms, setAcceptTerms] = useState(true);
+  const [confirmDetails, setConfirmDetails] = useState(false);
 
   const primaryColor = isDark ? UX4GColors.primary300 : UX4GColors.primary600;
   const subtleText = isDark ? UX4GColors.neutral300 : UX4GColors.neutral600;
+
+  const domainOptions = [
+    { id: 'healthcare', label: 'Healthcare' },
+    { id: 'education', label: 'Education' },
+    { id: 'agriculture', label: 'Agriculture' },
+    { id: 'finance', label: 'Finance' },
+  ];
 
   return (
     <SafeAreaView
       style={[
         styles.safeArea,
-        { backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral50 },
+        { backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF' },
       ]}
     >
       <View style={styles.container}>
@@ -499,19 +456,19 @@ export const ResumeJourneyScreen = ({
               resizeMode="contain"
             />,
           ]}
-        actions={[
-          {
-            customWidget: (
-              <TouchableOpacity
-                key="menu"
-                style={styles.menuBtn}
-                onPress={() => {}}
-              >
-                <Text style={styles.menuIcon}>☰</Text>
-              </TouchableOpacity>
-            ),
-          },
-        ]}
+          actions={[
+            {
+              customWidget: (
+                <TouchableOpacity
+                  key="menu"
+                  style={styles.menuBtn}
+                  onPress={() => {}}
+                >
+                  <Text style={styles.menuIcon}>☰</Text>
+                </TouchableOpacity>
+              ),
+            },
+          ]}
         />
         <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
 
@@ -526,8 +483,8 @@ export const ResumeJourneyScreen = ({
             currentStep={3}
             stepSize={20}
             steps={[
-              { title: '' },
-              { title: '' },
+              { title: 'Eligibility' },
+              { title: 'Personal' },
               {
                 title: 'Documents',
                 titleStyle: {
@@ -536,11 +493,11 @@ export const ResumeJourneyScreen = ({
                   color: subtleText,
                 },
               },
-              { title: '' },
+              { title: 'Submit' },
             ]}
           />
 
-          <View style={{ height: 32 }} />
+          <View style={{ height: 20 }} />
 
           {/* Alert Banner */}
           <Ux4gStatusBanner
@@ -553,7 +510,7 @@ export const ResumeJourneyScreen = ({
             }
           />
 
-          <View style={{ height: 40 }} />
+          <View style={{ height: 24 }} />
 
           {/* Title & Subtitle */}
           <Text
@@ -564,102 +521,63 @@ export const ResumeJourneyScreen = ({
           >
             Verify your details
           </Text>
-          <View style={{ height: 8 }} />
+          <View style={{ height: 6 }} />
           <Text style={[styles.subtitle, { color: subtleText }]}>
             Confirm the information below to proceed.
           </Text>
 
-          <View style={{ height: 32 }} />
-
-          {/* Form Fields */}
-          <Text
-            style={[
-              styles.inputLabel,
-              { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 },
-            ]}
-          >
-            Full name (as per Aadhaar)
-          </Text>
-          <View style={{ height: 6 }} />
-          <TextInput
-            style={[
-              styles.inputField,
-              {
-                borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-              },
-            ]}
-            value={fullName}
-            onChangeText={setFullName}
-          />
-
           <View style={{ height: 24 }} />
 
-          <Text
-            style={[
-              styles.inputLabel,
-              { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 },
-            ]}
-          >
-            PAN number
-          </Text>
-          <View style={{ height: 6 }} />
-          <TextInput
-            style={[
-              styles.inputField,
-              {
-                borderColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-                backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
-                color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
-              },
-            ]}
-            value={panNumber}
-            onChangeText={setPanNumber}
-            autoCapitalize="characters"
+          {/* Form Fields using UX4G Components */}
+          {/* Input 1: Full name */}
+          <Ux4gInputField
+            label="Full name (as per Aadhaar)"
+            placeholder="Ramesh Kumar"
+            value={fullName}
+            onValueChange={setFullName}
+            size="large"
           />
 
-          <View style={{ height: 32 }} />
+          <View style={{ height: 16 }} />
+
+          {/* Input 2: Select domain */}
+          <Ux4gSelectionDropdown
+            label="Select domain"
+            placeholder="Please select.."
+            options={domainOptions}
+            selectedOptionIds={selectedDomain}
+            onSelectionChange={setSelectedDomain}
+            size="l"
+          />
+
+          <View style={{ height: 16 }} />
+
+          {/* Input 3: PAN number */}
+          <Ux4gInputField
+            label="PAN number"
+            placeholder="ABCDE1234F"
+            value={panNumber}
+            onValueChange={(val) => setPanNumber(val.toUpperCase())}
+            size="large"
+          />
+
+          <View style={{ height: 20 }} />
 
           {/* Checkbox */}
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => setAcceptTerms(!acceptTerms)}
-            style={styles.checkboxRow}
-          >
-            <View
-              style={[
-                styles.checkboxBox,
-                {
-                  borderColor: acceptTerms
-                    ? primaryColor
-                    : isDark
-                    ? UX4GColors.neutral600
-                    : UX4GColors.neutral400,
-                  backgroundColor: acceptTerms ? primaryColor : 'transparent',
-                },
-              ]}
-            >
-              {acceptTerms && <Text style={styles.checkmarkIcon}>✓</Text>}
-            </View>
-            <Text
-              style={[
-                styles.checkboxLabel,
-                { color: isDark ? UX4GColors.neutral200 : UX4GColors.neutral800 },
-              ]}
-            >
-              Accept terms and conditions{' '}
-              <Text style={{ color: UX4GColors.red600 }}>*</Text>
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
+          <Ux4gCheckbox
+            value={confirmDetails}
+            onChanged={(val) => setConfirmDetails(!!val)}
+            label="I confirm these details match my official documents."
+            isRequired={true}
+            size="small"
+          />
 
-        {/* Actions */}
-        <View style={styles.actionsContainer}>
+          <View style={{ height: 28 }} />
+
+          {/* Actions */}
           <Ux4gButton
             text="Continue"
             onPress={onContinue}
-            enabled={acceptTerms}
             size="large"
             width="100%"
             height={48}
@@ -674,22 +592,24 @@ export const ResumeJourneyScreen = ({
             size="large"
             width="100%"
             height={48}
-            contentColor={isDark ? UX4GColors.neutral400 : UX4GColors.neutral500}
+            contentColor={isDark ? UX4GColors.neutral200 : UX4GColors.neutral900}
             borderColor={isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}
           />
-        </View>
 
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Text style={styles.poweredByText}>
-            Powered by -
-          </Text>
-          <Image
-            source={require('./assets/digital_india_logo.png')}
-            style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
-            resizeMode="contain"
-          />
-        </View>
+          <View style={{ height: 24 }} />
+
+          {/* Footer */}
+          <View style={styles.footerContainer}>
+            <Text style={styles.poweredByText}>
+              Powered by -
+            </Text>
+            <Image
+              source={require('./assets/digital_india_logo.png')}
+              style={[styles.digitalIndiaLogo, isDark && { tintColor: '#FFFFFF' }]}
+              resizeMode="contain"
+            />
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -701,8 +621,8 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary200,
-    backgroundColor: UX4GColors.neutral0,
+    borderColor: '#D8D6F6',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -716,58 +636,21 @@ const styles = StyleSheet.create({
   verticalDivider: { height: 32, width: 1 },
   unionIcon: { height: 32, width: 44 },
   scrollContent: {
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingHorizontal: 20,
+    paddingVertical: 24,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '800',
-    lineHeight: 28,
+    lineHeight: 26,
   },
   subtitle: {
-    fontSize: 15,
-    lineHeight: 21,
-  },
-  inputLabel: {
     fontSize: 14,
-    fontWeight: '600',
-  },
-  inputField: {
-    height: 44,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    fontSize: 14,
-  },
-  checkboxRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkboxBox: {
-    width: 18,
-    height: 18,
-    borderRadius: 4,
-    borderWidth: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  checkmarkIcon: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  checkboxLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  actionsContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    lineHeight: 20,
   },
   footerContainer: {
     alignItems: 'center',
-    paddingBottom: 24,
+    paddingVertical: 24,
   },
   poweredByText: {
     fontSize: 11,
@@ -789,7 +672,7 @@ const styles = StyleSheet.create({
       <div
         style={{
           position: 'absolute',
-          top: 9,
+          top: 9, // Centered vertically on the 20px step icon
           left: 0,
           right: 0,
           display: 'flex',
@@ -870,6 +753,18 @@ const styles = StyleSheet.create({
               <polyline points="20 6 9 17 4 12" />
             </svg>
           </div>
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              fontWeight: 500,
+              color: colors.stepperLabelText,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Eligibility
+          </div>
         </div>
 
         {/* Step 2: Completed */}
@@ -904,6 +799,18 @@ const styles = StyleSheet.create({
             >
               <polyline points="20 6 9 17 4 12" />
             </svg>
+          </div>
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              fontWeight: 500,
+              color: colors.stepperLabelText,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Personal
           </div>
         </div>
 
@@ -985,164 +892,425 @@ const styles = StyleSheet.create({
               4
             </span>
           </div>
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              fontWeight: 500,
+              color: colors.stepperTextInactive,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Submit
+          </div>
         </div>
       </div>
     </div>
   );
 
-  // Form Fields Component
-  const renderFormContent = () => (
-    <>
-      {/* Title & Subtitle */}
-      <div
-        style={{
-          fontSize: 24,
-          fontWeight: 800,
-          color: colors.titleColor,
-          lineHeight: 1.2,
-          marginBottom: 8,
-          letterSpacing: '-0.3px',
-        }}
+  // Status Alert Banner Component
+  const renderStatusBanner = () => (
+    <div
+      style={{
+        backgroundColor: colors.bannerBg,
+        border: `1px solid ${colors.bannerBorder}`,
+        borderRadius: 8,
+        padding: '12px 14px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        width: '100%',
+        boxSizing: 'border-box',
+      }}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill={colors.bannerIcon}
+        style={{ flexShrink: 0 }}
       >
-        Verify your details
-      </div>
-      <div
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+      </svg>
+      <span
         style={{
-          fontSize: 15,
-          color: colors.subtitleColor,
+          fontSize: 12.5,
+          fontWeight: 500,
+          color: colors.bannerText,
           lineHeight: 1.4,
-          marginBottom: 32,
         }}
       >
-        Confirm the information below to proceed.
-      </div>
+        Resuming from Step 3 — review before continuing.
+      </span>
+    </div>
+  );
 
-      {/* Input 1: Full name */}
-      <div style={{ width: '100%', marginBottom: 24 }}>
-        <label
-          style={{
-            display: 'block',
-            fontSize: 14,
-            fontWeight: 600,
-            color: colors.labelColor,
-            marginBottom: 6,
-          }}
-        >
-          Full name (as per Aadhaar)
-        </label>
-        <input
-          type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          placeholder=""
-          style={{
-            width: '100%',
-            height: 44,
-            borderRadius: 8,
-            border: `1px solid ${colors.inputBorder}`,
-            backgroundColor: colors.inputBg,
-            color: colors.inputText,
-            padding: '0 12px',
-            fontSize: 14,
-            outline: 'none',
-            boxSizing: 'border-box',
-          }}
-        />
-      </div>
+  // Form Fields Component matching UX4G Components behavior
+  const renderFormContent = () => {
+    const selectedDomainObj = DOMAIN_OPTIONS.find((o) => o.id === selectedDomain);
 
-      {/* Input 2: PAN number */}
-      <div style={{ width: '100%', marginBottom: 32 }}>
-        <label
-          style={{
-            display: 'block',
-            fontSize: 14,
-            fontWeight: 600,
-            color: colors.labelColor,
-            marginBottom: 6,
-          }}
-        >
-          PAN number
-        </label>
-        <input
-          type="text"
-          value={panNumber}
-          onChange={(e) => setPanNumber(e.target.value.toUpperCase())}
-          placeholder=""
-          style={{
-            width: '100%',
-            height: 44,
-            borderRadius: 8,
-            border: `1px solid ${colors.inputBorder}`,
-            backgroundColor: colors.inputBg,
-            color: colors.inputText,
-            padding: '0 12px',
-            fontSize: 14,
-            outline: 'none',
-            boxSizing: 'border-box',
-            textTransform: 'uppercase',
-          }}
-        />
-      </div>
-
-      {/* Checkbox */}
-      <div
-        onClick={() => setAcceptTerms(!acceptTerms)}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          cursor: 'pointer',
-          userSelect: 'none',
-          width: '100%',
-        }}
-      >
+    return (
+      <>
+        {/* Title & Subtitle */}
         <div
           style={{
-            width: 18,
-            height: 18,
-            borderRadius: 4,
-            border: `1.5px solid ${
-              acceptTerms
-                ? colors.primaryColor
-                : isDark
-                ? UX4GColors.neutral600
-                : UX4GColors.neutral400
-            }`,
-            backgroundColor: acceptTerms ? colors.primaryColor : 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginRight: 10,
-            flexShrink: 0,
-            transition: 'all 0.15s ease',
+            fontSize: 22,
+            fontWeight: 800,
+            color: colors.titleColor,
+            lineHeight: 1.2,
+            marginBottom: 6,
+            letterSpacing: '-0.3px',
           }}
         >
-          {acceptTerms && (
-            <svg
-              viewBox="0 0 24 24"
-              width="12"
-              height="12"
-              fill="none"
-              stroke="#FFFFFF"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-          )}
+          Verify your details
         </div>
-        <span
+        <div
           style={{
             fontSize: 14,
-            fontWeight: 500,
-            color: colors.labelColor,
+            color: colors.subtitleColor,
+            lineHeight: 1.4,
+            marginBottom: 24,
           }}
         >
-          Accept terms and conditions{' '}
-          <span style={{ color: UX4GColors.red600 }}>*</span>
-        </span>
-      </div>
-    </>
+          Confirm the information below to proceed.
+        </div>
+
+        {/* Ux4gInputField 1: Full name */}
+        <div style={{ width: '100%', marginBottom: 16 }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
+              color: colors.labelColor,
+              marginBottom: 6,
+            }}
+          >
+            Full name (as per Aadhaar)
+          </label>
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="Ramesh Kumar"
+            style={{
+              width: '100%',
+              height: 44,
+              borderRadius: 8,
+              border: `1px solid ${colors.inputBorder}`,
+              backgroundColor: colors.inputBg,
+              color: colors.inputText,
+              padding: '0 12px',
+              fontSize: 14,
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = colors.primaryColor;
+              e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.primaryColor}22`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = colors.inputBorder;
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+        </div>
+
+        {/* Ux4gSelectionDropdown: Select domain */}
+        <div style={{ width: '100%', marginBottom: 16, position: 'relative' }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
+              color: colors.labelColor,
+              marginBottom: 6,
+            }}
+          >
+            Select domain
+          </label>
+
+          <div
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            style={{
+              width: '100%',
+              height: 44,
+              borderRadius: 8,
+              border: `1px solid ${isDropdownOpen ? colors.primaryColor : colors.inputBorder}`,
+              boxShadow: isDropdownOpen ? `0 0 0 3px ${colors.primaryColor}22` : 'none',
+              backgroundColor: colors.inputBg,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0 12px',
+              cursor: 'pointer',
+              boxSizing: 'border-box',
+              userSelect: 'none',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+          >
+            <span
+              style={{
+                fontSize: 14,
+                color: selectedDomainObj ? colors.inputText : colors.inputPlaceholder,
+              }}
+            >
+              {selectedDomainObj ? selectedDomainObj.label : 'Please select..'}
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              fill="none"
+              stroke={colors.subtitleColor}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease',
+              }}
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+
+          {/* Floating Dropdown Overlay Menu */}
+          {isDropdownOpen && (
+            <>
+              <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 99,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDropdownOpen(false);
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 4px)',
+                  left: 0,
+                  right: 0,
+                  backgroundColor: colors.inputBg,
+                  borderRadius: 8,
+                  border: `1px solid ${colors.border}`,
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.14)',
+                  zIndex: 100,
+                  overflow: 'hidden',
+                  padding: '4px 0',
+                }}
+              >
+                {DOMAIN_OPTIONS.map((opt) => {
+                  const isSelected = selectedDomain === opt.id;
+                  return (
+                    <div
+                      key={opt.id}
+                      onClick={() => {
+                        setSelectedDomain(opt.id);
+                        setIsDropdownOpen(false);
+                      }}
+                      style={{
+                        padding: '10px 14px',
+                        fontSize: 13,
+                        fontWeight: isSelected ? 600 : 400,
+                        color: isSelected ? colors.primaryColor : colors.inputText,
+                        backgroundColor: isSelected
+                          ? isDark
+                            ? UX4GColors.primary900
+                            : UX4GColors.primary50
+                          : 'transparent',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.15s',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.backgroundColor = isDark
+                            ? UX4GColors.neutral800
+                            : UX4GColors.neutral100;
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.backgroundColor = 'transparent';
+                        }
+                      }}
+                    >
+                      <span>{opt.label}</span>
+                      {isSelected && (
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="14"
+                          height="14"
+                          fill="none"
+                          stroke={colors.primaryColor}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Ux4gInputField 2: PAN number */}
+        <div style={{ width: '100%', marginBottom: 20 }}>
+          <label
+            style={{
+              display: 'block',
+              fontSize: 13,
+              fontWeight: 600,
+              color: colors.labelColor,
+              marginBottom: 6,
+            }}
+          >
+            PAN number
+          </label>
+          <input
+            type="text"
+            value={panNumber}
+            onChange={(e) => setPanNumber(e.target.value.toUpperCase())}
+            placeholder="ABCDE1234F"
+            style={{
+              width: '100%',
+              height: 44,
+              borderRadius: 8,
+              border: `1px solid ${colors.inputBorder}`,
+              backgroundColor: colors.inputBg,
+              color: colors.inputText,
+              padding: '0 12px',
+              fontSize: 14,
+              outline: 'none',
+              boxSizing: 'border-box',
+              textTransform: 'uppercase',
+              transition: 'border-color 0.15s, box-shadow 0.15s',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = colors.primaryColor;
+              e.currentTarget.style.boxShadow = `0 0 0 3px ${colors.primaryColor}22`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = colors.inputBorder;
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+        </div>
+
+        {/* Ux4gCheckbox: Official documents agreement */}
+        <div
+          onClick={() => setConfirmDetails(!confirmDetails)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+            userSelect: 'none',
+            width: '100%',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', flex: 1, marginRight: 8 }}>
+            <div
+              style={{
+                width: 18,
+                height: 18,
+                borderRadius: 4,
+                border: `1.5px solid ${
+                  confirmDetails
+                    ? colors.primaryColor
+                    : isDark
+                    ? UX4GColors.neutral600
+                    : UX4GColors.neutral400
+                }`,
+                backgroundColor: confirmDetails ? colors.primaryColor : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 10,
+                flexShrink: 0,
+                transition: 'all 0.15s ease',
+              }}
+            >
+              {confirmDetails && (
+                <svg
+                  viewBox="0 0 24 24"
+                  width="12"
+                  height="12"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              )}
+            </div>
+            <span
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: colors.labelColor,
+                lineHeight: 1.3,
+              }}
+            >
+              I confirm these details match my official documents.
+            </span>
+          </div>
+          <span style={{ color: UX4GColors.red600, fontWeight: 700, fontSize: 16 }}>*</span>
+        </div>
+      </>
+    );
+  };
+
+  const renderButtons = () => (
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <Ux4gButton
+        text="Continue"
+        onPress={() => {}}
+        size="large"
+        width="100%"
+        height={46}
+        backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
+        contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
+      />
+      <div style={{ height: 10 }} />
+      <button
+        type="button"
+        style={{
+          width: '100%',
+          height: 46,
+          borderRadius: 8,
+          border: `1px solid ${colors.backBtnBorder}`,
+          backgroundColor: 'transparent',
+          color: colors.backBtnText,
+          fontSize: 15,
+          fontWeight: 600,
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        Back
+      </button>
+    </div>
   );
 
   const renderLiveMockup = () => {
@@ -1152,7 +1320,6 @@ const styles = StyleSheet.create({
       <div
         style={{
           width: 360,
-          height: 760,
           borderRadius: 20,
           boxShadow: '0 6px 24px rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
@@ -1181,18 +1348,39 @@ const styles = StyleSheet.create({
                 src="/national_emblem_logo.svg"
                 alt="National Emblem"
                 style={{
-                  height: 40,
+                  height: 36,
                   filter: isDark ? 'brightness(0) invert(1)' : 'none',
                 }}
               />
               <div
                 style={{
                   width: 1,
-                  height: 32,
+                  height: 28,
                   backgroundColor: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
                 }}
               />
-              <UnionLogo size={32} isDark={isDark} />
+              <UnionLogo size={28} isDark={isDark} />
+            </div>
+
+            {/* Menu button */}
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 8,
+                border: `1.5px solid ${colors.menuBtnBorder}`,
+                backgroundColor: isDark ? UX4GColors.neutral900 : '#FFFFFF',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 3.5,
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{ width: 16, height: 2, backgroundColor: colors.primaryColor, borderRadius: 1 }} />
+              <div style={{ width: 16, height: 2, backgroundColor: colors.primaryColor, borderRadius: 1 }} />
+              <div style={{ width: 16, height: 2, backgroundColor: colors.primaryColor, borderRadius: 1 }} />
             </div>
           </div>
           <Ux4gDivider color={isDark ? UX4GColors.neutral800 : UX4GColors.neutral200} thickness={1} />
@@ -1208,64 +1396,69 @@ const styles = StyleSheet.create({
           }}
         >
           {isCard ? (
-            <div style={{ padding: '32px 24px' }}>
-              {/* Stepper */}
-              {renderStepper()}
-
-              <div style={{ height: 32 }} />
-
-              {/* Status Alert Banner */}
-              <div
-                style={{
-                  backgroundColor: colors.bannerBg,
-                  border: `1px solid ${colors.bannerBorder}`,
-                  borderRadius: 8,
-                  padding: '12px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                }}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill={colors.bannerIcon}
-                >
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                </svg>
-                <span
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 500,
-                    color: colors.bannerText,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  Resuming from Step 3 — review before continuing.
-                </span>
-              </div>
-
-              <div style={{ height: 32 }} />
-
-              {/* White Card */}
+            <div style={{ padding: '20px 16px' }}>
+              {/* White Card containing Stepper, Status Banner, Form Content, and Action Buttons */}
               <div
                 style={{
                   backgroundColor: colors.cardBg,
                   borderRadius: 16,
-                  padding: 24,
+                  padding: '24px 20px',
                   display: 'flex',
                   flexDirection: 'column',
                   boxShadow: '0 2px 12px rgba(0, 0, 0, 0.04)',
+                  border: `1px solid ${isDark ? UX4GColors.neutral800 : '#F3F4F6'}`,
                 }}
               >
+                {renderStepper()}
+
+                <div style={{ height: 16 }} />
+
+                {renderStatusBanner()}
+
+                <div style={{ height: 24 }} />
+
                 {renderFormContent()}
+
+                <div style={{ height: 24 }} />
+
+                {renderButtons()}
+              </div>
+
+              <div style={{ height: 24 }} />
+
+              {/* Powered by Footer outside card */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 500,
+                    color: colors.footerText,
+                  }}
+                >
+                  Powered by -
+                </span>
+                <img
+                  src="/Digital_India_logo.svg"
+                  alt="Digital India"
+                  style={{
+                    height: 24,
+                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                  }}
+                />
               </div>
             </div>
           ) : (
             <div
               style={{
-                padding: '32px 24px',
+                padding: '24px 20px',
                 display: 'flex',
                 flexDirection: 'column',
               }}
@@ -1273,120 +1466,53 @@ const styles = StyleSheet.create({
               {/* Stepper */}
               {renderStepper()}
 
-              <div style={{ height: 32 }} />
+              <div style={{ height: 16 }} />
 
               {/* Status Alert Banner */}
-              <div
-                style={{
-                  backgroundColor: colors.bannerBg,
-                  border: `1px solid ${colors.bannerBorder}`,
-                  borderRadius: 8,
-                  padding: '12px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                }}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
-                  fill={colors.bannerIcon}
-                >
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                </svg>
-                <span
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 500,
-                    color: colors.bannerText,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  Resuming from Step 3 — review before continuing.
-                </span>
-              </div>
+              {renderStatusBanner()}
 
-              <div style={{ height: 40 }} />
+              <div style={{ height: 24 }} />
 
               {/* Form Content */}
               {renderFormContent()}
+
+              <div style={{ height: 28 }} />
+
+              {/* Action Buttons */}
+              {renderButtons()}
+
+              <div style={{ height: 24 }} />
+
+              {/* Powered by Footer */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 6,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 500,
+                    color: colors.footerText,
+                  }}
+                >
+                  Powered by -
+                </span>
+                <img
+                  src="/Digital_India_logo.svg"
+                  alt="Digital India"
+                  style={{
+                    height: 24,
+                    filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                  }}
+                />
+              </div>
             </div>
           )}
-        </div>
-
-        {/* Bottom Actions */}
-        <div
-          style={{
-            padding: '16px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <Ux4gButton
-            text="Continue"
-            onPress={() => {}}
-            enabled={acceptTerms}
-            size="large"
-            width="100%"
-            height={48}
-            backgroundColor={isDark ? UX4GColors.primary300 : UX4GColors.primary600}
-            contentColor={isDark ? UX4GColors.neutral900 : UX4GColors.neutral50}
-          />
-          <div style={{ height: 12 }} />
-          <button
-            type="button"
-            style={{
-              width: '100%',
-              height: 48,
-              borderRadius: 8,
-              border: `1px solid ${colors.backBtnBorder}`,
-              backgroundColor: 'transparent',
-              color: colors.backBtnText,
-              fontSize: 16,
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            Back
-          </button>
-        </div>
-
-        {/* Powered by Footer */}
-        <div
-          style={{
-            padding: '0 0 24px 0',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 6,
-            backgroundColor: colors.screenBg,
-            flexShrink: 0,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 500,
-              color: colors.footerText,
-            }}
-          >
-            Powered by -
-          </span>
-          <img
-            src="/Digital_India_logo.svg"
-            alt="Digital India"
-            style={{
-              height: 24,
-              filter: isDark ? 'brightness(0) invert(1)' : 'none',
-            }}
-          />
         </div>
       </div>
     );
