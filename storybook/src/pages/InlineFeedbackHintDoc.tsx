@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
-import { validateAadhaar } from '../../../src/components/aadhaar-input-field/AadhaarInputField';
+import { validateAadhaar, formatAadhaar } from '../../../src/components/aadhaar-input-field/AadhaarInputField';
 
 interface InlineFeedbackHintDocProps {
   isDark: boolean;
@@ -15,6 +15,7 @@ export const InlineFeedbackHintDoc: React.FC<InlineFeedbackHintDocProps> = ({ is
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
   const [aadhaarValue, setAadhaarValue] = useState<string>('');
+  const [isMasked, setIsMasked] = useState<boolean>(true);
 
   const isCard = variant === 'card';
 
@@ -164,8 +165,10 @@ export const InlineFeedbackHintScreen = ({ isDark = false }: { isDark?: boolean 
           value={aadhaarValue}
           onValueChange={setAadhaarValue}
           label="Aadhaar Number"
-          placeholder="Enter 12-digit Aadhaar number"
-          caption="Enter 12 digits — we will prefill your name and address"
+          placeholder="xxxx xxxx xxxx"
+          showMaskToggle
+          defaultMasked
+          caption="Enter 12 digits, we will prefill your name and address"
         />
 
         <View style={styles.spacer} />
@@ -326,8 +329,10 @@ export const InlineFeedbackHintCardScreen = ({ isDark = false }: { isDark?: bool
             value={aadhaarValue}
             onValueChange={setAadhaarValue}
             label="Aadhaar Number"
-            placeholder="Enter 12-digit Aadhaar number"
-            caption="Enter 12 digits — we will prefill your name and address"
+            placeholder="xxxx xxxx xxxx"
+            showMaskToggle
+            defaultMasked
+            caption="Enter 12 digits, we will prefill your name and address"
           />
         </View>
       </View>
@@ -481,13 +486,35 @@ const styles = StyleSheet.create({
           padding: '13px 16px',
           marginBottom: '6px',
           transition: 'border-color 0.2s',
+          gap: '8px',
         }}
       >
         <input
           type="text"
-          value={aadhaarValue}
-          onChange={(e) => handleAadhaarChange(e.target.value)}
-          placeholder="Enter 12-digit Aadhaar number"
+          value={isMasked ? formatAadhaar(aadhaarValue.replace(/\s+/g, ''), true, true) : aadhaarValue}
+          onChange={(e) => {
+            if (!isMasked) {
+              handleAadhaarChange(e.target.value);
+            } else {
+              // In masked mode, extract new digits from the typed text
+              const newText = e.target.value;
+              const rawDigits = aadhaarValue.replace(/\s+/g, '');
+              const newTextClean = newText.replace(/\s+/g, '');
+              let nextRaw = '';
+              for (let i = 0; i < newTextClean.length && i < 12; i++) {
+                const char = newTextClean[i];
+                if (char === 'X' || char === 'x') {
+                  if (i < rawDigits.length) {
+                    nextRaw += rawDigits[i];
+                  }
+                } else if (/\d/.test(char)) {
+                  nextRaw += char;
+                }
+              }
+              handleAadhaarChange(nextRaw);
+            }
+          }}
+          placeholder="XXXX XXXX XXXX"
           maxLength={14}
           style={{
             flex: 1,
@@ -497,6 +524,7 @@ const styles = StyleSheet.create({
             fontSize: '14px',
             color: colors.titleColor,
             fontWeight: 400,
+            letterSpacing: isMasked && aadhaarValue ? '1px' : 'normal',
           }}
         />
         {isValid && (
@@ -515,6 +543,28 @@ const styles = StyleSheet.create({
             cancel
           </span>
         )}
+        <button
+          type="button"
+          onClick={() => setIsMasked(!isMasked)}
+          style={{
+            border: 'none',
+            background: 'transparent',
+            cursor: 'pointer',
+            padding: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral600,
+          }}
+          title={isMasked ? 'Show Aadhaar number' : 'Hide Aadhaar number'}
+        >
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: '20px' }}
+          >
+            {isMasked ? 'visibility_off' : 'visibility'}
+          </span>
+        </button>
       </div>
 
       {/* Dynamic Hint / Validation feedback */}
@@ -579,7 +629,7 @@ const styles = StyleSheet.create({
                 fontWeight: 400,
               }}
             >
-              Enter 12 digits — we will prefill your name and address
+              Enter 12 digits, we will prefill your name and address
             </span>
           </>
         )}
@@ -737,6 +787,29 @@ const styles = StyleSheet.create({
                       }}
                     />
                     <UnionLogo size={32} color={colors.unionColor} isDark={isDark} />
+                    <div style={{ flex: 1 }} />
+                    <button
+                      type="button"
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        border: `1.5px solid ${isDark ? UX4GColors.primary400 : UX4GColors.primary200}`,
+                        backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
+                      }}
+                    >
+                      <span
+                        className="material-symbols-outlined"
+                        style={{ fontSize: '20px', color: isDark ? UX4GColors.primary300 : UX4GColors.primary }}
+                      >
+                        menu
+                      </span>
+                    </button>
                   </div>
 
                   {/* Body Content */}

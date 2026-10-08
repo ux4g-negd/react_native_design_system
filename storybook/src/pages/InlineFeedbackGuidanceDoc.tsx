@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { CodeBlock } from '../components/CodeBlock';
 import { UnionLogo } from '../components/UnionLogo';
+import { Ux4gSelectionDropdown, Ux4gDropdownOption } from '../../../src/components/dropdown/Dropdown';
 
 interface InlineFeedbackGuidanceDocProps {
   isDark: boolean;
@@ -10,10 +11,17 @@ interface InlineFeedbackGuidanceDocProps {
 type MainTab = 'preview' | 'code';
 type VariantType = 'default' | 'card';
 
+const CATEGORY_OPTIONS: Ux4gDropdownOption[] = [
+  { id: 'sc', label: 'Scheduled Caste (SC)' },
+  { id: 'st', label: 'Scheduled Tribe (ST)' },
+  { id: 'obc', label: 'OBC' },
+  { id: 'general', label: 'General' },
+];
+
 export const InlineFeedbackGuidanceDoc: React.FC<InlineFeedbackGuidanceDocProps> = ({ isDark }) => {
   const [activeMainTab, setActiveMainTab] = useState<MainTab>('preview');
   const [variant, setVariant] = useState<VariantType>('default');
-  const [category, setCategory] = useState<string>('SC/ST');
+  const [selectedCategory, setSelectedCategory] = useState<string[]>(['sc']);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
   const isCard = variant === 'card';
@@ -40,11 +48,11 @@ export const InlineFeedbackGuidanceDoc: React.FC<InlineFeedbackGuidanceDocProps>
       inputBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
       uploadBg: isDark ? 'rgba(255,255,255,0.03)' : '#FAFAFA',
       uploadBorder: isDark ? UX4GColors.neutral700 : UX4GColors.neutral300,
-      // Status Banner Colors (Warning / Orange)
-      warningBg: isDark ? 'rgba(164, 104, 0, 0.2)' : '#FFF8F2',
-      warningBorder: isDark ? '#A46800' : '#FFD9AF',
-      warningTextColor: isDark ? '#FFBE6F' : '#764A00',
-      warningIconColor: isDark ? '#FFBE6F' : '#A46800',
+      // Status Banner Colors (Warning / Orange from UX4GColors foundation)
+      warningBg: isDark ? 'rgba(250, 140, 22, 0.15)' : UX4GColors.orange50, // #FFF7E6
+      warningBorder: isDark ? UX4GColors.orange700 : UX4GColors.orange300, // #FFC973
+      warningTextColor: isDark ? UX4GColors.orange300 : UX4GColors.orange800, // #AD4E00
+      warningIconColor: isDark ? UX4GColors.orange400 : UX4GColors.orange600, // #FA8C16
     };
   }, [isDark, isCard]);
 
@@ -56,13 +64,14 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
   Ux4gButton,
   Ux4gButtonVariant,
   Ux4gButtonSize,
-  Ux4gInputField,
+  Ux4gSelectionDropdown,
   Ux4gFileUpload,
   Ux4gDivider,
   Ux4gDividerOrientation,
@@ -71,17 +80,17 @@ import {
 } from 'ux4g-react-native-components';
 
 export const InlineFeedbackGuidanceScreen = ({ isDark = false }: { isDark?: boolean }) => {
-  const [category, setCategory] = useState('SC/ST');
+  const [selectedCategory, setSelectedCategory] = useState<string[]>(['sc']);
 
   const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
   const titleColor = isDark ? UX4GColors.neutral50 : '#111827';
   const subtleColor = isDark ? UX4GColors.neutral200 : '#4B5563';
   const screenBg = isDark ? UX4GColors.neutral900 : '#FFFFFF';
 
-  const warningBg = isDark ? 'rgba(164, 104, 0, 0.2)' : '#FFF8F2';
-  const warningBorder = isDark ? '#A46800' : '#FFD9AF';
-  const warningTextColor = isDark ? '#FFBE6F' : '#764A00';
-  const warningIconColor = isDark ? '#FFBE6F' : '#A46800';
+  const warningBg = isDark ? 'rgba(250, 140, 22, 0.15)' : UX4GColors.orange50;
+  const warningBorder = isDark ? UX4GColors.orange700 : UX4GColors.orange300;
+  const warningTextColor = isDark ? UX4GColors.orange300 : UX4GColors.orange800;
+  const warningIconColor = isDark ? UX4GColors.orange400 : UX4GColors.orange600;
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: screenBg }]}>
@@ -143,12 +152,20 @@ export const InlineFeedbackGuidanceScreen = ({ isDark = false }: { isDark?: bool
           Context-sensitive info appears based on the selected field value.
         </Text>
 
-        {/* Input field */}
-        <Ux4gInputField
-          value={category}
-          onValueChange={setCategory}
-          label="Reservation Category"
-          caption="Select your reservation category"
+        {/* Selection Dropdown */}
+        <Ux4gSelectionDropdown
+          label="Social Category"
+          description="Select your reservation category"
+          placeholder="Please select.."
+          options={[
+            { id: 'sc', label: 'Scheduled Caste (SC)' },
+            { id: 'st', label: 'Scheduled Tribe (ST)' },
+            { id: 'obc', label: 'OBC' },
+            { id: 'general', label: 'General' },
+          ]}
+          selectedOptionIds={selectedCategory}
+          onSelectionChange={setSelectedCategory}
+          mode="single"
         />
 
         <View style={styles.spacing} />
@@ -165,22 +182,24 @@ export const InlineFeedbackGuidanceScreen = ({ isDark = false }: { isDark?: bool
         <View style={styles.spacing} />
 
         {/* Conditional Warning Banner */}
-        <View
-          style={[
-            styles.warningBanner,
-            { backgroundColor: warningBg, borderColor: warningBorder },
-          ]}
-        >
-          <Ux4gIcon name="error" size={18} color={warningIconColor} />
-          <View style={styles.warningTextContainer}>
-            <Text style={[styles.warningTitle, { color: warningTextColor }]}>
-              Additional Document Required
-            </Text>
-            <Text style={[styles.warningBody, { color: warningTextColor }]}>
-              Since you selected SC category, please upload your caste certificate in the Documents step.
-            </Text>
+        {selectedCategory.includes('sc') && (
+          <View
+            style={[
+              styles.warningBanner,
+              { backgroundColor: warningBg, borderColor: warningBorder },
+            ]}
+          >
+            <Ux4gIcon name="error" size={18} color={warningIconColor} />
+            <View style={styles.warningTextContainer}>
+              <Text style={[styles.warningTitle, { color: warningTextColor }]}>
+                Additional Document Required
+              </Text>
+              <Text style={[styles.warningBody, { color: warningTextColor }]}>
+                Since you selected SC category, please upload your caste certificate in the Documents step.
+              </Text>
+            </View>
           </View>
-        </View>
+        )}
       </ScrollView>
 
       {/* Continue button at bottom */}
@@ -279,13 +298,14 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {
   Ux4gAppHeader,
   Ux4gButton,
   Ux4gButtonVariant,
   Ux4gButtonSize,
-  Ux4gInputField,
+  Ux4gSelectionDropdown,
   Ux4gFileUpload,
   Ux4gDivider,
   Ux4gDividerOrientation,
@@ -294,7 +314,7 @@ import {
 } from 'ux4g-react-native-components';
 
 export const InlineFeedbackGuidanceCardScreen = ({ isDark = false }: { isDark?: boolean }) => {
-  const [category, setCategory] = useState('SC/ST');
+  const [selectedCategory, setSelectedCategory] = useState<string[]>(['sc']);
 
   const primaryColor = isDark ? UX4GColors.primary300 : '#432CBB';
   const titleColor = isDark ? UX4GColors.neutral50 : '#111827';
@@ -302,10 +322,10 @@ export const InlineFeedbackGuidanceCardScreen = ({ isDark = false }: { isDark?: 
   const screenBg = isDark ? UX4GColors.primary800 : '#F2EFFF';
   const cardBg = isDark ? UX4GColors.neutral800 : '#FFFFFF';
 
-  const warningBg = isDark ? 'rgba(164, 104, 0, 0.2)' : '#FFF8F2';
-  const warningBorder = isDark ? '#A46800' : '#FFD9AF';
-  const warningTextColor = isDark ? '#FFBE6F' : '#764A00';
-  const warningIconColor = isDark ? '#FFBE6F' : '#A46800';
+  const warningBg = isDark ? 'rgba(250, 140, 22, 0.15)' : UX4GColors.orange50;
+  const warningBorder = isDark ? UX4GColors.orange700 : UX4GColors.orange300;
+  const warningTextColor = isDark ? UX4GColors.orange300 : UX4GColors.orange800;
+  const warningIconColor = isDark ? UX4GColors.orange400 : UX4GColors.orange600;
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: screenBg }]}>
@@ -369,12 +389,20 @@ export const InlineFeedbackGuidanceCardScreen = ({ isDark = false }: { isDark?: 
             Context-sensitive info appears based on the selected field value.
           </Text>
 
-          {/* Input field */}
-          <Ux4gInputField
-            value={category}
-            onValueChange={setCategory}
-            label="Reservation Category"
-            caption="Select your reservation category"
+          {/* Selection Dropdown */}
+          <Ux4gSelectionDropdown
+            label="Social Category"
+            description="Select your reservation category"
+            placeholder="Please select.."
+            options={[
+              { id: 'sc', label: 'Scheduled Caste (SC)' },
+              { id: 'st', label: 'Scheduled Tribe (ST)' },
+              { id: 'obc', label: 'OBC' },
+              { id: 'general', label: 'General' },
+            ]}
+            selectedOptionIds={selectedCategory}
+            onSelectionChange={setSelectedCategory}
+            mode="single"
           />
 
           <View style={styles.spacing} />
@@ -391,22 +419,24 @@ export const InlineFeedbackGuidanceCardScreen = ({ isDark = false }: { isDark?: 
           <View style={styles.spacing} />
 
           {/* Conditional Warning Banner */}
-          <View
-            style={[
-              styles.warningBanner,
-              { backgroundColor: warningBg, borderColor: warningBorder },
-            ]}
-          >
-            <Ux4gIcon name="error" size={18} color={warningIconColor} />
-            <View style={styles.warningTextContainer}>
-              <Text style={[styles.warningTitle, { color: warningTextColor }]}>
-                Additional Document Required
-              </Text>
-              <Text style={[styles.warningBody, { color: warningTextColor }]}>
-                Since you selected SC category, please upload your caste certificate in the Documents step.
-              </Text>
+          {selectedCategory.includes('sc') && (
+            <View
+              style={[
+                styles.warningBanner,
+                { backgroundColor: warningBg, borderColor: warningBorder },
+              ]}
+            >
+              <Ux4gIcon name="error" size={18} color={warningIconColor} />
+              <View style={styles.warningTextContainer}>
+                <Text style={[styles.warningTitle, { color: warningTextColor }]}>
+                  Additional Document Required
+                </Text>
+                <Text style={[styles.warningBody, { color: warningTextColor }]}>
+                  Since you selected SC category, please upload your caste certificate in the Documents step.
+                </Text>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </ScrollView>
 
@@ -561,64 +591,18 @@ const styles = StyleSheet.create({
         Context-sensitive info appears based on the selected field value.
       </div>
 
-      {/* Field Label */}
-      <div
-        style={{
-          fontSize: '14px',
-          fontWeight: 600,
-          color: colors.titleColor,
-          marginBottom: '8px',
-        }}
-      >
-        Reservation Category
-      </div>
-
-      {/* Input box */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          border: `1px solid ${colors.inputBorder}`,
-          borderRadius: '8px',
-          backgroundColor: colors.inputBg,
-          padding: '13px 16px',
-          marginBottom: '6px',
-        }}
-      >
-        <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          placeholder="Select category"
-          style={{
-            flex: 1,
-            border: 'none',
-            outline: 'none',
-            backgroundColor: 'transparent',
-            fontSize: '15px',
-            color: colors.titleColor,
-            fontWeight: 500,
-          }}
-        />
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          fontSize: '12.5px',
-          color: colors.subtleColor,
-          marginBottom: '20px',
-        }}
-      >
-        <span
-          className="material-symbols-outlined"
-          style={{ fontSize: '15px', color: colors.subtleColor }}
-        >
-          info
-        </span>
-        Select your reservation category
-      </div>
+      {/* Selection Dropdown */}
+      <Ux4gSelectionDropdown
+        label="Social Category"
+        description="Select your reservation category"
+        placeholder="Please select.."
+        options={CATEGORY_OPTIONS}
+        selectedOptionIds={selectedCategory}
+        onSelectionChange={setSelectedCategory}
+        mode="single"
+        size="m"
+        containerStyle={{ marginBottom: 20 }}
+      />
 
       {/* Upload Documents Box */}
       <div
@@ -640,7 +624,7 @@ const styles = StyleSheet.create({
           style={{
             fontSize: '40px',
             color: colors.primaryColor,
-            marginBottom: '6px',
+            marginBottom: '12px',
           }}
         >
           cloud_upload
@@ -721,57 +705,59 @@ const styles = StyleSheet.create({
       </div>
 
       {/* Warning Guidance Banner matching Flutter status banner */}
-      <div
-        style={{
-          backgroundColor: isDark ? 'rgba(164, 104, 0, 0.2)' : '#FFF5EA',
-          border: `1px solid ${isDark ? '#A46800' : '#FFD9AF'}`,
-          borderRadius: '12px',
-          padding: '14px 16px',
-          display: 'flex',
-          gap: '12px',
-          alignItems: 'flex-start',
-        }}
-      >
+      {selectedCategory.includes('sc') && (
         <div
           style={{
-            width: '20px',
-            height: '20px',
-            borderRadius: '50%',
-            backgroundColor: isDark ? '#E89C30' : '#FFBE6F',
+            backgroundColor: colors.warningBg,
+            border: `1px solid ${colors.warningBorder}`,
+            borderRadius: '12px',
+            padding: '14px 16px',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#FFFFFF',
-            fontWeight: 800,
-            fontSize: '13px',
-            flexShrink: 0,
-            marginTop: '1px',
+            gap: '12px',
+            alignItems: 'flex-start',
           }}
         >
-          !
-        </div>
-        <div style={{ flex: 1 }}>
           <div
             style={{
-              fontSize: '14px',
-              fontWeight: 700,
-              color: isDark ? '#FFBE6F' : '#764A00',
-              marginBottom: '4px',
-            }}
-          >
-            Additional Document Required
-          </div>
-          <div
-            style={{
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              backgroundColor: colors.warningIconColor,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#FFFFFF',
+              fontWeight: 800,
               fontSize: '13px',
-              lineHeight: '1.45',
-              color: isDark ? '#FFD9AF' : '#764A00',
+              flexShrink: 0,
+              marginTop: '1px',
             }}
           >
-            Since you selected SC category, please upload your caste certificate in the Documents step.
+            !
+          </div>
+          <div style={{ flex: 1 }}>
+            <div
+              style={{
+                fontSize: '14px',
+                fontWeight: 700,
+                color: colors.warningTextColor,
+                marginBottom: '4px',
+              }}
+            >
+              Additional Document Required
+            </div>
+            <div
+              style={{
+                fontSize: '13px',
+                lineHeight: '1.45',
+                color: colors.warningTextColor,
+              }}
+            >
+              Since you selected SC category, please upload your caste certificate in the Documents step.
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 
@@ -928,6 +914,29 @@ const styles = StyleSheet.create({
                       }}
                     />
                     <UnionLogo size={32} color={colors.unionColor} isDark={isDark} />
+                    <div style={{ flex: 1 }} />
+                    <button
+                      type="button"
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        border: `1.5px solid ${isDark ? UX4GColors.primary400 : UX4GColors.primary200}`,
+                        backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
+                      }}
+                    >
+                      <span
+                        className="material-symbols-outlined"
+                        style={{ fontSize: '20px', color: isDark ? UX4GColors.primary300 : UX4GColors.primary }}
+                      >
+                        menu
+                      </span>
+                    </button>
                   </div>
 
                   {/* Scrollable Content Body */}

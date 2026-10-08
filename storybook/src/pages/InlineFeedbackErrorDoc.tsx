@@ -673,6 +673,29 @@ const styles = StyleSheet.create({
                       }}
                     />
                     <UnionLogo size={32} color={colors.unionColor} isDark={isDark} />
+                    <div style={{ flex: 1 }} />
+                    <button
+                      type="button"
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        border: `1.5px solid ${isDark ? UX4GColors.primary400 : UX4GColors.primary200}`,
+                        backgroundColor: isDark ? UX4GColors.neutral900 : UX4GColors.neutral0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        padding: 0,
+                      }}
+                    >
+                      <span
+                        className="material-symbols-outlined"
+                        style={{ fontSize: '20px', color: isDark ? UX4GColors.primary300 : UX4GColors.primary }}
+                      >
+                        menu
+                      </span>
+                    </button>
                   </div>
 
                   {/* Body Content */}
