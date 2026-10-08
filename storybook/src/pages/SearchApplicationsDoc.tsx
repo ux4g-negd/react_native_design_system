@@ -7,7 +7,7 @@ import { Ux4gAppHeader } from '../../../src/components/app-header/AppHeader';
 import { Ux4gDivider } from '../../../src/components/divider/Divider';
 import { Ux4gStatusAvatar } from '../../../src/components/avatar/Avatar';
 import { Ux4gSearchField } from '../../../src/components/search-field/SearchField';
-import { Ux4gChoiceChip } from '../../../src/components/chips/Chips';
+import { Ux4gChoiceChip, Ux4gChipGroup } from '../../../src/components/chips/Chips';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { UnionLogo } from '../components/UnionLogo';
 import { CodeBlock } from '../components/CodeBlock';
@@ -76,6 +76,7 @@ import {
   Ux4gStatusAvatar,
   Ux4gSearchField,
   Ux4gChoiceChip,
+  Ux4gChipGroup,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -201,10 +202,10 @@ export const SearchApplicationsScreen = ({
         </Text>
 
         {/* Tab Filters */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.tabsContainer}
+        <Ux4gChipGroup
+          arrangement="horizontal"
+          spacing={8}
+          containerStyle={styles.tabsContainer}
         >
           {tabs.map((tab, idx) => {
             const isSelected = selectedTab === idx;
@@ -233,7 +234,7 @@ export const SearchApplicationsScreen = ({
               />
             );
           })}
-        </ScrollView>
+        </Ux4gChipGroup>
 
         {/* Search Field */}
         <View style={styles.searchContainer}>
@@ -801,50 +802,96 @@ const styles = StyleSheet.create({
                         Your applications
                       </div>
 
-                      {/* Tab Filters using Ux4gChoiceChip */}
+                      {/* Tab Filters */}
                       <div
+                        onWheel={(e) => {
+                          if (e.deltaY) {
+                            e.currentTarget.scrollLeft += e.deltaY;
+                          }
+                        }}
+                        onMouseDown={(e) => {
+                          const slider = e.currentTarget;
+                          let isDown = true;
+                          let startX = e.pageX - slider.offsetLeft;
+                          let scrollLeft = slider.scrollLeft;
+
+                          const onMouseMove = (moveEvent: MouseEvent) => {
+                            if (!isDown) return;
+                            moveEvent.preventDefault();
+                            const x = moveEvent.pageX - slider.offsetLeft;
+                            const walk = (x - startX) * 1.5;
+                            slider.scrollLeft = scrollLeft - walk;
+                          };
+
+                          const onMouseUp = () => {
+                            isDown = false;
+                            window.removeEventListener('mousemove', onMouseMove);
+                            window.removeEventListener('mouseup', onMouseUp);
+                          };
+                          window.addEventListener('mousemove', onMouseMove);
+                          window.addEventListener('mouseup', onMouseUp);
+                        }}
                         style={{
                           display: 'flex',
                           flexDirection: 'row',
-                          flexWrap: 'wrap',
-                          gap: 6,
-                          marginBottom: 14,
+                          alignItems: 'center',
+                          flexShrink: 0,
+                          minHeight: 38,
+                          gap: 8,
+                          overflowX: 'auto',
+                          padding: '2px 0 8px 0',
+                          marginBottom: 10,
+                          cursor: 'grab',
+                          userSelect: 'none',
+                          WebkitUserSelect: 'none',
+                          msOverflowStyle: 'none',
+                          scrollbarWidth: 'none',
+                          boxSizing: 'border-box',
+                          width: '100%',
                         }}
                       >
                         {tabsData.map((tab, index) => (
-                          <Ux4gChoiceChip
+                          <div
                             key={tab.label}
-                            text={tab.label}
-                            selected={selectedTab === index}
-                            onClick={() => setSelectedTab(index)}
-                            size="s"
-                            borderRadius={4}
-                            trailingContent={
-                              <span
-                                style={{
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  minWidth: 16,
-                                  height: 16,
-                                  fontSize: 10,
-                                  fontWeight: 700,
-                                  padding: '0 4px',
-                                  borderRadius: 8,
-                                  backgroundColor:
-                                    selectedTab === index
-                                      ? 'rgba(255, 255, 255, 0.25)'
-                                      : UX4GColors.primary600,
-                                  color: '#FFFFFF',
-                                  marginLeft: 4,
-                                  lineHeight: 1,
-                                  boxSizing: 'border-box',
-                                }}
-                              >
-                                {tab.count}
-                              </span>
-                            }
-                          />
+                            style={{
+                              flexShrink: 0,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Ux4gChoiceChip
+                              text={tab.label}
+                              selected={selectedTab === index}
+                              onClick={() => setSelectedTab(index)}
+                              size="s"
+                              borderRadius={4}
+                              trailingContent={
+                                <span
+                                  style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    minWidth: 16,
+                                    height: 16,
+                                    fontSize: 10,
+                                    fontWeight: 700,
+                                    padding: '0 4px',
+                                    borderRadius: 8,
+                                    backgroundColor:
+                                      selectedTab === index
+                                        ? 'rgba(255, 255, 255, 0.25)'
+                                        : UX4GColors.primary600,
+                                    color: '#FFFFFF',
+                                    marginLeft: 4,
+                                    lineHeight: 1,
+                                    boxSizing: 'border-box',
+                                  }}
+                                >
+                                  {tab.count}
+                                </span>
+                              }
+                            />
+                          </div>
                         ))}
                       </div>
 

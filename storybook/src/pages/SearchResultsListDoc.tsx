@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { Ux4gChoiceChip, Ux4gChipGroup } from '../../../src/components/chips/Chips';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { CodeBlock } from '../components/CodeBlock';
 
 interface SearchResultsListDocProps {
@@ -108,6 +110,7 @@ import {
   Ux4gAppHeader,
   Ux4gSearchField,
   Ux4gChoiceChip,
+  Ux4gChipGroup,
   Ux4gButton,
   Ux4gIcons,
   UX4GColors,
@@ -230,11 +233,10 @@ export const SearchResultsListScreen = ({ isDark = false }: { isDark?: boolean }
       </View>
 
       {/* Horizontal Filter Chips */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chipsScrollContent}
-        style={styles.chipsScrollView}
+      <Ux4gChipGroup
+        arrangement="horizontal"
+        spacing={8}
+        containerStyle={styles.chipsContainer}
       >
         {FILTER_CHIPS.map((chip) => (
           <Ux4gChoiceChip
@@ -242,10 +244,11 @@ export const SearchResultsListScreen = ({ isDark = false }: { isDark?: boolean }
             text={chip.label}
             selected={selectedChip === chip.id}
             onClick={() => setSelectedChip(chip.id)}
-            style={styles.chipItem}
+            size="s"
+            borderRadius={8}
           />
         ))}
-      </ScrollView>
+      </Ux4gChipGroup>
 
       {/* Results List */}
       <ScrollView style={styles.resultsList} contentContainerStyle={styles.resultsListContent}>
@@ -309,23 +312,42 @@ export const SearchResultsListScreen = ({ isDark = false }: { isDark?: boolean }
       <View style={styles.paginationContainer}>
         <TouchableOpacity
           onPress={() => setCurrentPage((p) => Math.max(0, p - 1))}
-          style={[styles.paginationNavBtn, { backgroundColor: colors.paginationArrowBg }]}
+          disabled={currentPage === 0}
+          style={[
+            styles.paginationNavBtn,
+            {
+              backgroundColor: colors.paginationArrowBg,
+              opacity: currentPage === 0 ? 0.4 : 1,
+            },
+          ]}
         >
           <Ux4gIcons name="chevron_left" size={19} color={colors.paginationArrowColor} />
         </TouchableOpacity>
 
-        <View style={[styles.paginationActivePill, { backgroundColor: colors.paginationActiveBg }]} />
-
-        {[...Array(7)].map((_, i) => (
-          <View
-            key={i}
-            style={[styles.paginationDot, { backgroundColor: colors.paginationDotBg }]}
-          />
-        ))}
+        <View style={styles.paginationDotsRow}>
+          {[...Array(8)].map((_, i) => (
+            <TouchableOpacity
+              key={i}
+              onPress={() => setCurrentPage(i)}
+              style={
+                currentPage === i
+                  ? [styles.paginationActivePill, { backgroundColor: colors.paginationActiveBg }]
+                  : [styles.paginationDot, { backgroundColor: colors.paginationDotBg }]
+              }
+            />
+          ))}
+        </View>
 
         <TouchableOpacity
           onPress={() => setCurrentPage((p) => Math.min(7, p + 1))}
-          style={[styles.paginationNavBtn, { backgroundColor: colors.paginationArrowBg }]}
+          disabled={currentPage === 7}
+          style={[
+            styles.paginationNavBtn,
+            {
+              backgroundColor: colors.paginationArrowBg,
+              opacity: currentPage === 7 ? 0.4 : 1,
+            },
+          ]}
         >
           <Ux4gIcons name="chevron_right" size={19} color={colors.paginationArrowColor} />
         </TouchableOpacity>
@@ -506,7 +528,8 @@ const styles = StyleSheet.create({
                 style={{ flexDirection: 'column', alignItems: 'center' }}
               >
                 {/* Mobile Phone Mockup */}
-                <div
+                <Ux4gThemeProvider isDark={isDark}>
+                  <div
             style={{
               width: 360,
               height: 760,
@@ -630,15 +653,15 @@ const styles = StyleSheet.create({
                     border: `1.5px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
                     borderRadius: '8px',
                     overflow: 'hidden',
-                    height: '46px',
+                    height: '38px',
                   }}
                 >
                   <span
                     className="material-symbols-outlined"
                     style={{
-                      fontSize: '20px',
+                      fontSize: '18px',
                       color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-                      marginLeft: '12px',
+                      marginLeft: '10px',
                     }}
                   >
                     search
@@ -657,7 +680,7 @@ const styles = StyleSheet.create({
                       border: 'none',
                       outline: 'none',
                       padding: '0 8px',
-                      fontSize: '14px',
+                      fontSize: '13px',
                       color: colors.titleColor,
                       backgroundColor: 'transparent',
                     }}
@@ -669,13 +692,13 @@ const styles = StyleSheet.create({
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
-                        padding: '4px',
+                        padding: '2px 4px',
                         display: 'flex',
                         alignItems: 'center',
                         color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
                       }}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
                         close
                       </span>
                     </button>
@@ -685,13 +708,13 @@ const styles = StyleSheet.create({
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      padding: '4px 6px',
+                      padding: '2px 6px',
                       display: 'flex',
                       alignItems: 'center',
                       color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: '19px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
                       mic
                     </span>
                   </button>
@@ -701,7 +724,7 @@ const styles = StyleSheet.create({
                       backgroundColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
                       border: 'none',
                       height: '100%',
-                      padding: '0 14px',
+                      padding: '0 12px',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -709,7 +732,7 @@ const styles = StyleSheet.create({
                       color: isDark ? UX4GColors.primary950 : '#FFFFFF',
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '17px' }}>
                       search
                     </span>
                   </button>
@@ -720,7 +743,7 @@ const styles = StyleSheet.create({
                   <div
                     style={{
                       position: 'absolute',
-                      top: '64px',
+                      top: '56px',
                       left: '16px',
                       right: '16px',
                       backgroundColor: colors.cardBg,
@@ -840,48 +863,63 @@ const styles = StyleSheet.create({
                 </button>
               </div>
 
-              {/* Filter Choice Chips (Horizontal Scrollable) */}
+              {/* Filter Choice Chips */}
               <div
+                onWheel={(e) => {
+                  if (e.deltaY) {
+                    e.currentTarget.scrollLeft += e.deltaY;
+                  }
+                }}
+                onMouseDown={(e) => {
+                  const slider = e.currentTarget;
+                  let isDown = true;
+                  let startX = e.pageX - slider.offsetLeft;
+                  let scrollLeft = slider.scrollLeft;
+
+                  const onMouseMove = (moveEvent: MouseEvent) => {
+                    if (!isDown) return;
+                    moveEvent.preventDefault();
+                    const x = moveEvent.pageX - slider.offsetLeft;
+                    const walk = (x - startX) * 1.5;
+                    slider.scrollLeft = scrollLeft - walk;
+                  };
+
+                  const onMouseUp = () => {
+                    isDown = false;
+                    window.removeEventListener('mousemove', onMouseMove);
+                    window.removeEventListener('mouseup', onMouseUp);
+                  };
+                  window.addEventListener('mousemove', onMouseMove);
+                  window.addEventListener('mouseup', onMouseUp);
+                }}
                 style={{
                   marginTop: '10px',
-                  padding: '0 16px',
                   display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                   gap: '8px',
                   overflowX: 'auto',
+                  padding: '0 16px 4px 16px',
+                  cursor: 'grab',
+                  userSelect: 'none',
+                  WebkitUserSelect: 'none',
+                  msOverflowStyle: 'none',
                   scrollbarWidth: 'none',
                   boxSizing: 'border-box',
+                  width: '100%',
                 }}
               >
-                {FILTER_CHIPS.map((chip) => {
-                  const isSelected = selectedChip === chip.id;
-                  return (
-                    <button
-                      key={chip.id}
+                {FILTER_CHIPS.map((chip) => (
+                  <div key={chip.id} style={{ flexShrink: 0 }}>
+                    <Ux4gChoiceChip
+                      text={chip.label}
+                      selected={selectedChip === chip.id}
                       onClick={() => setSelectedChip(chip.id)}
-                      style={{
-                        padding: '6px 14px',
-                        borderRadius: '20px',
-                        border: isSelected
-                          ? 'none'
-                          : `1px solid ${colors.chipUnselectedBorder}`,
-                        backgroundColor: isSelected
-                          ? colors.chipSelectedBg
-                          : colors.chipUnselectedBg,
-                        color: isSelected
-                          ? colors.chipSelectedText
-                          : colors.chipUnselectedText,
-                        fontSize: '13px',
-                        fontWeight: isSelected ? 600 : 500,
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        transition: 'all 0.15s ease',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {chip.label}
-                    </button>
-                  );
-                })}
+                      size="s"
+                      borderRadius={8}
+                    />
+                  </div>
+                ))}
               </div>
 
               {/* Results List */}
@@ -1018,12 +1056,14 @@ const styles = StyleSheet.create({
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: '12px 0 24px',
-                  gap: '7px',
+                  gap: '6px',
                 }}
               >
                 {/* Chevron Left */}
                 <button
+                  type="button"
                   onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
+                  disabled={currentPage === 0}
                   style={{
                     width: '30px',
                     height: '30px',
@@ -1033,9 +1073,10 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    cursor: 'pointer',
+                    cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
+                    opacity: currentPage === 0 ? 0.4 : 1,
                     color: colors.paginationArrowColor,
-                    transition: 'opacity 0.15s ease',
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '19px' }}>
@@ -1043,34 +1084,35 @@ const styles = StyleSheet.create({
                   </span>
                 </button>
 
-                {/* Active Pill Indicator */}
-                <div
-                  style={{
-                    width: '31px',
-                    height: '10px',
-                    backgroundColor: colors.paginationActiveBg,
-                    borderRadius: '99px',
-                    margin: '0 4px',
-                  }}
-                />
-
-                {/* Dots */}
-                {[...Array(7)].map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      width: '9px',
-                      height: '9px',
-                      borderRadius: '50%',
-                      backgroundColor: colors.paginationDotBg,
-                      margin: '0 3px',
-                    }}
-                  />
-                ))}
+                {/* Interactive Dynamic Dots & Pill */}
+                <div style={{ display: 'flex', alignItems: 'center', margin: '0 4px', gap: '6px' }}>
+                  {Array.from({ length: 8 }).map((_, i) => {
+                    const isActive = currentPage === i;
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => setCurrentPage(i)}
+                        title={`Page ${i + 1}`}
+                        style={{
+                          width: isActive ? '28px' : '9px',
+                          height: isActive ? '10px' : '9px',
+                          borderRadius: isActive ? '99px' : '50%',
+                          backgroundColor: isActive
+                            ? colors.paginationActiveBg
+                            : colors.paginationDotBg,
+                          cursor: 'pointer',
+                          transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
 
                 {/* Chevron Right */}
                 <button
+                  type="button"
                   onClick={() => setCurrentPage((p) => Math.min(7, p + 1))}
+                  disabled={currentPage === 7}
                   style={{
                     width: '30px',
                     height: '30px',
@@ -1080,9 +1122,10 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    cursor: 'pointer',
+                    cursor: currentPage === 7 ? 'not-allowed' : 'pointer',
+                    opacity: currentPage === 7 ? 0.4 : 1,
                     color: colors.paginationArrowColor,
-                    transition: 'opacity 0.15s ease',
+                    transition: 'all 0.15s ease',
                   }}
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '19px' }}>
@@ -1091,7 +1134,8 @@ const styles = StyleSheet.create({
                 </button>
               </div>
             </div>
-                </div>
+                  </div>
+                </Ux4gThemeProvider>
               </div>
             )}
 

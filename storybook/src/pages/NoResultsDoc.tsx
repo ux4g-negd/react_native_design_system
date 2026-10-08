@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { UX4GColors } from '../../../src/foundation/colors';
+import { Ux4gEmptyState } from '../../../src/components/empty-state/EmptyState';
+import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
 import { CodeBlock } from '../components/CodeBlock';
 
 interface NoResultsDocProps {
@@ -78,8 +80,8 @@ import {
 import {
   Ux4gAppHeader,
   Ux4gSearchField,
+  Ux4gEmptyState,
   Ux4gButton,
-  Ux4gIcons,
   UX4GColors,
 } from 'ux4g-react-native-components';
 
@@ -161,7 +163,7 @@ export const NoResultsScreen = ({ isDark = false }: { isDark?: boolean }) => {
           value={searchValue}
           onValueChange={setSearchValue}
           variant="searchWithSubmit"
-          size="large"
+          size="medium"
           placeholder="Search services..."
           showVoiceIcon={true}
           showClearIcon={true}
@@ -175,52 +177,14 @@ export const NoResultsScreen = ({ isDark = false }: { isDark?: boolean }) => {
         style={styles.contentScrollView}
         contentContainerStyle={styles.contentContainer}
       >
-        <View style={styles.emptyStateSection}>
-          {/* Search Icon */}
-          <Ux4gIcons
-            name="search"
-            size={52}
-            color={colors.iconColor}
-            style={styles.searchIcon}
-          />
-
-          {/* Heading */}
-          <Text style={[styles.noResultsTitle, { color: colors.titleColor }]}>
-            No services found for "{searchValue}"
-          </Text>
-
-          {/* Subtitle */}
-          <Text style={[styles.didYouMeanText, { color: colors.subtleText }]}>
-            Did you mean:
-          </Text>
-
-          {/* Suggestions */}
-          <View style={styles.suggestionsWrap}>
-            {SUGGESTIONS.map((suggestion, index) => {
-              const isLast = index === SUGGESTIONS.length - 1;
-              return (
-                <TouchableOpacity
-                  key={suggestion}
-                  onPress={() => setSearchValue(suggestion)}
-                >
-                  <Text style={[styles.suggestionText, { color: colors.suggestionColor }]}>
-                    {isLast ? suggestion : \`\${suggestion},  \`}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-
-          {/* Browse all services button */}
-          <Ux4gButton
-            text="Browse all services"
-            variant="secondary"
-            size="medium"
-            style={[styles.browseButton, { backgroundColor: colors.browseBtnBg }]}
-            contentColor={colors.browseBtnText}
-            onPressed={() => setSearchValue('')}
-          />
-        </View>
+        <Ux4gEmptyState
+          variant="noResults"
+          title={'No services found for "' + searchValue + '"'}
+          subtitle="Did you mean: Income Certificate, Income & Asset Certificate"
+          buttonText="Browse all services"
+          onButtonPressed={() => setSearchValue('')}
+          padding={16}
+        />
 
         {/* Popular Services Section */}
         <View style={styles.popularSection}>
@@ -420,7 +384,8 @@ const styles = StyleSheet.create({
                 style={{ flexDirection: 'column', alignItems: 'center' }}
               >
                 {/* Mobile Phone Mockup */}
-                <div
+                <Ux4gThemeProvider isDark={isDark}>
+                  <div
             style={{
               width: 360,
               height: 760,
@@ -436,34 +401,6 @@ const styles = StyleSheet.create({
               position: 'relative',
             }}
           >
-            {/* Phone Status Bar */}
-            <div
-              style={{
-                height: '24px',
-                backgroundColor: colors.headerBg,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0 16px',
-                color: '#FFFFFF',
-                fontSize: '11px',
-                fontWeight: 600,
-              }}
-            >
-              <span>9:41</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>
-                  signal_cellular_4_bar
-                </span>
-                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>
-                  wifi
-                </span>
-                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>
-                  battery_full
-                </span>
-              </div>
-            </div>
-
             {/* App Header */}
             <div
               style={{
@@ -530,9 +467,8 @@ const styles = StyleSheet.create({
               {/* Search Bar Container */}
               <div
                 style={{
-                  padding: '12px 16px',
+                  padding: '10px 16px',
                   backgroundColor: colors.searchBarBg,
-                  marginTop: '16px',
                   position: 'relative',
                 }}
               >
@@ -541,18 +477,18 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     alignItems: 'center',
                     backgroundColor: colors.inputBg,
-                    border: `1.5px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
+                    border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral300}`,
                     borderRadius: '8px',
                     overflow: 'hidden',
-                    height: '46px',
+                    height: '38px',
                   }}
                 >
                   <span
                     className="material-symbols-outlined"
                     style={{
-                      fontSize: '20px',
+                      fontSize: '18px',
                       color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
-                      marginLeft: '12px',
+                      marginLeft: '10px',
                     }}
                   >
                     search
@@ -567,7 +503,7 @@ const styles = StyleSheet.create({
                       border: 'none',
                       outline: 'none',
                       padding: '0 8px',
-                      fontSize: '14px',
+                      fontSize: '13px',
                       color: colors.titleColor,
                       backgroundColor: 'transparent',
                     }}
@@ -579,13 +515,13 @@ const styles = StyleSheet.create({
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
-                        padding: '4px',
+                        padding: '2px 4px',
                         display: 'flex',
                         alignItems: 'center',
                         color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
                       }}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
                         close
                       </span>
                     </button>
@@ -595,13 +531,13 @@ const styles = StyleSheet.create({
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      padding: '4px 6px',
+                      padding: '2px 6px',
                       display: 'flex',
                       alignItems: 'center',
                       color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: '19px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
                       mic
                     </span>
                   </button>
@@ -610,7 +546,7 @@ const styles = StyleSheet.create({
                       backgroundColor: isDark ? UX4GColors.primary300 : UX4GColors.primary600,
                       border: 'none',
                       height: '100%',
-                      padding: '0 14px',
+                      padding: '0 12px',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -618,7 +554,7 @@ const styles = StyleSheet.create({
                       color: isDark ? UX4GColors.primary950 : '#FFFFFF',
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '17px' }}>
                       search
                     </span>
                   </button>
@@ -634,105 +570,27 @@ const styles = StyleSheet.create({
                   flexDirection: 'column',
                 }}
               >
-                {/* Empty State Center Card */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    paddingTop: '20px',
-                    textAlign: 'center',
-                  }}
-                >
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      fontSize: '52px',
-                      color: colors.iconColor,
-                      marginBottom: '16px',
-                    }}
-                  >
-                    search
-                  </span>
-
-                  <div
-                    style={{
-                      fontSize: '16px',
-                      fontWeight: 700,
-                      color: colors.titleColor,
-                      marginBottom: '12px',
-                    }}
-                  >
-                    No services found for "{searchValue}"
-                  </div>
-
-                  <div
-                    style={{
-                      fontSize: '14px',
-                      color: colors.subtleText,
-                      marginBottom: '4px',
-                    }}
-                  >
-                    Did you mean:
-                  </div>
-
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      justifyContent: 'center',
-                      gap: '4px',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    {SUGGESTIONS.map((suggestion, index) => {
-                      const isLast = index === SUGGESTIONS.length - 1;
-                      return (
-                        <span
-                          key={suggestion}
-                          onClick={() => setSearchValue(suggestion)}
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 500,
-                            color: colors.suggestionColor,
-                            cursor: 'pointer',
-                            textDecoration: 'underline',
-                            textUnderlineOffset: '2px',
-                          }}
-                        >
-                          {isLast ? suggestion : `${suggestion}, `}
-                        </span>
-                      );
-                    })}
-                  </div>
-
-                  <button
-                    onClick={() => setSearchValue('')}
-                    style={{
-                      width: '180px',
-                      height: '44px',
-                      backgroundColor: colors.browseBtnBg,
-                      color: colors.browseBtnText,
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      transition: 'all 0.15s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '0.9';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '1';
-                    }}
-                  >
-                    Browse all services
-                  </button>
-                </div>
+                {/* Ux4gEmptyState Component */}
+                <Ux4gEmptyState
+                  variant="noResults"
+                  icon={
+                    <span
+                      className="material-symbols-outlined"
+                      style={{
+                        fontSize: '52px',
+                        color: colors.iconColor,
+                        display: 'inline-block',
+                      }}
+                    >
+                      search
+                    </span>
+                  }
+                  title={`No services found for "${searchValue}"`}
+                  subtitle="Did you mean: Income Certificate, Income & Asset Certificate"
+                  buttonText="Browse all services"
+                  onButtonPressed={() => setSearchValue('')}
+                  padding={16}
+                />
 
                 {/* Popular Services Section */}
                 <div style={{ marginTop: '44px', paddingBottom: '24px' }}>
@@ -837,7 +695,8 @@ const styles = StyleSheet.create({
                 </div>
               </div>
             </div>
-                </div>
+                  </div>
+                </Ux4gThemeProvider>
               </div>
             )}
 
