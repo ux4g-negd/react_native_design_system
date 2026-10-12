@@ -470,12 +470,13 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Side Menu (Drawer)',
         icon: 'folder',
         children: [
-          { id: 'side-menu-variants', label: 'All 5 Variants', icon: 'layers' },
+          { id: 'side-menu-variants', label: 'All 6 Variants', icon: 'layers' },
+          { id: 'side-menu-standard', label: 'Standard (Default)', icon: 'layers' },
           { id: 'side-menu-citizen', label: 'Citizen Profile', icon: 'layers' },
           { id: 'side-menu-services', label: 'Department Services', icon: 'layers' },
           { id: 'side-menu-switcher', label: 'Department Switcher', icon: 'layers' },
           { id: 'side-menu-mailbox', label: 'User Mailbox', icon: 'layers' },
-          { id: 'side-menu-profile', label: 'Centered Profile', icon: 'layers' },
+          { id: 'side-menu-profile', label: 'Profile Summary', icon: 'layers' },
         ],
       },
       {
