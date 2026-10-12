@@ -26,7 +26,7 @@ export const BottomNavigationBarDoc: React.FC<BottomNavigationBarDocProps> = ({
     lines.push('  const [selectedIndex, setSelectedIndex] = useState(0);');
     lines.push('');
 
-    if (story === 'bottom-navigation-centre-action') {
+    if (story === 'bottom-navigation-center-action' || story === 'bottom-navigation-centre-action') {
       lines.push('  const items = [');
       lines.push(`    { key: 'home', label: 'Home', icon: 'home' },`);
       lines.push(`    { key: 'services', label: 'Services', icon: 'services' },`);
@@ -36,7 +36,7 @@ export const BottomNavigationBarDoc: React.FC<BottomNavigationBarDocProps> = ({
       lines.push('');
       lines.push('  return (');
       lines.push('    <Ux4gBottomNavigationBar');
-      lines.push('      variant="centre-action"');
+      lines.push('      variant="center-action"');
       lines.push('      indicatorVariant="pill"');
       lines.push('      items={items}');
       lines.push('      selectedIndex={selectedIndex}');
@@ -141,9 +141,9 @@ export const BottomNavigationBarDoc: React.FC<BottomNavigationBarDocProps> = ({
           selectedIndex={selectedIndex}
           onTabChange={(idx) => setSelectedIndex(idx)}
         />`;
-    } else if (story === 'bottom-navigation-centre-action') {
+    } else if (story === 'bottom-navigation-center-action' || story === 'bottom-navigation-centre-action') {
       componentsSnippet = `        <Ux4gBottomNavigationBar
-          variant="centre-action"
+          variant="center-action"
           indicatorVariant="pill"
           items={centreActionItems}
           selectedIndex={selectedIndex}
@@ -172,7 +172,8 @@ export const BottomNavigationBarDoc: React.FC<BottomNavigationBarDocProps> = ({
         />`;
     }
 
-    const isCentre = story === 'bottom-navigation-centre-action';
+    const isCentre =
+      story === 'bottom-navigation-center-action' || story === 'bottom-navigation-centre-action';
 
     const snackCodeString = `import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
@@ -284,9 +285,9 @@ const styles = StyleSheet.create({
     },
     {
       name: 'variant',
-      type: "'labelled' | 'top-rounded' | 'icon-only' | 'centre-action' | 'floating-pill'",
+      type: "'labelled' | 'top-rounded' | 'icon-only' | 'center-action' | 'floating-pill'",
       default: "'labelled'",
-      desc: 'Layout shape variant preset adhering to UX4G government standards.',
+      desc: 'Layout shape variant preset adhering to UX4G government standards (also accepts legacy "centre-action").',
       required: false,
     },
     {
@@ -300,7 +301,7 @@ const styles = StyleSheet.create({
       name: 'centerAction',
       type: 'Ux4gBottomNavCenterAction',
       default: 'undefined',
-      desc: 'Configuration for elevated center action button (used with "centre-action" variant).',
+      desc: 'Configuration for elevated center action button (used with "center-action" variant). Also supports centreAction alias.',
       required: false,
     },
     {

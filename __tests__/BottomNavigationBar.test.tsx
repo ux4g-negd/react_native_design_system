@@ -169,6 +169,30 @@ describe('Ux4gBottomNavigationBar Component Suite', () => {
       fireEvent.press(centerBtn);
       expect(onCenterPressMock).toHaveBeenCalledTimes(1);
     });
+
+    it('renders center-action variant directly and supports centreAction prop alias', () => {
+      const onCenterPressMock = jest.fn();
+      const centreItems = mockItems.slice(0, 4);
+
+      const { getByTestId } = renderWithTheme(
+        <Ux4gBottomNavigationBar
+          variant="center-action"
+          items={centreItems}
+          centreAction={{
+            onPress: onCenterPressMock,
+            testID: 'center-fab-alias',
+          }}
+          testID="center-action-nav"
+        />
+      );
+
+      expect(getByTestId('center-action-nav')).toBeTruthy();
+      const centerBtn = getByTestId('center-fab-alias');
+      expect(centerBtn).toBeTruthy();
+
+      fireEvent.press(centerBtn);
+      expect(onCenterPressMock).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('Badges and Custom Elements', () => {

@@ -136,11 +136,11 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Bottom Navigation Bar',
         icon: 'folder',
         children: [
-          { id: 'bottom-navigation-basic', label: 'Introduction & Matrix', icon: 'layers' },
+          { id: 'bottom-navigation-basic', label: 'Introduction', icon: 'layers' },
           { id: 'bottom-navigation-labelled', label: 'Labelled', icon: 'layers' },
           { id: 'bottom-navigation-top-rounded', label: 'Top Rounded', icon: 'layers' },
           { id: 'bottom-navigation-icon-only', label: 'Icon Only', icon: 'layers' },
-          { id: 'bottom-navigation-centre-action', label: 'Centre Action', icon: 'layers' },
+          { id: 'bottom-navigation-center-action', label: 'Center Action', icon: 'layers' },
           { id: 'bottom-navigation-floating-pill', label: 'Floating Pill', icon: 'layers' },
         ],
       },
@@ -337,7 +337,7 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Floating Action Button (FAB)',
         icon: 'folder',
         children: [
-          { id: 'fab-basic', label: 'Introduction & Matrix', icon: 'layers' },
+          { id: 'fab-basic', label: 'Introduction', icon: 'layers' },
           { id: 'fab-icon', label: 'Icon Only', icon: 'layers' },
           { id: 'fab-labelled', label: 'Extended (Labelled)', icon: 'layers' },
           { id: 'fab-menu-joined', label: 'Speed Dial (Joined)', icon: 'layers' },

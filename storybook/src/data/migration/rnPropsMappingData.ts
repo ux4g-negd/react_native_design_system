@@ -594,7 +594,7 @@ export const RN_PROPS_MAPPING_DATA: RNPropMappingItem[] = [
   {
     component: "Ux4gBottomNavigationBar",
     propGroup: "Tabs, Variants & Indicators",
-    ux4gProp: "items={Ux4gBottomNavItem[]} | selectedIndex={number} | onTabChange={(idx, item) => void} | variant='labelled' | 'top-rounded' | 'icon-only' | 'centre-action' | 'floating-pill' | indicatorVariant='pill' | 'bar' | 'plain' | centerAction={Ux4gBottomNavCenterAction}",
+    ux4gProp: "items={Ux4gBottomNavItem[]} | selectedIndex={number} | onTabChange={(idx, item) => void} | variant='labelled' | 'top-rounded' | 'icon-only' | 'center-action' | 'floating-pill' | indicatorVariant='pill' | 'bar' | 'plain' | centerAction={Ux4gBottomNavCenterAction}",
     paperProp: "<BottomNavigation navigationState={...} onIndexChange={...} renderScene={...} />",
     rneProp: "<Tab value={index} onChange={...}><Tab.Item ... /></Tab>",
     description: "Bottom navigation bar with 5 shape layouts, 3 active indicator styles (pill capsule, top bar, plain), badge counters, and center action FAB."

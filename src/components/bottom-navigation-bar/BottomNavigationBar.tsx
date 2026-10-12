@@ -29,13 +29,15 @@ export type Ux4gBottomNavIndicatorVariant = 'pill' | 'bar' | 'plain';
  * - `labelled`: Standard flat bottom bar with icons and text labels
  * - `top-rounded`: Bottom bar with rounded top-left and top-right corners
  * - `icon-only`: Icons only without text labels
- * - `centre-action`: Bottom bar with a prominent circular action button in the center
+ * - `center-action`: Bottom bar with a prominent circular action button in the center
+ * - `centre-action`: Legacy alias for `center-action` (British spelling)
  * - `floating-pill`: Floating capsule bar with rounded edges detached from screen borders
  */
 export type Ux4gBottomNavVariant =
   | 'labelled'
   | 'top-rounded'
   | 'icon-only'
+  | 'center-action'
   | 'centre-action'
   | 'floating-pill';
 
@@ -117,8 +119,10 @@ export interface Ux4gBottomNavigationBarProps {
   /** Whether to show text labels below icons (default true, automatically false for 'icon-only') */
   showLabels?: boolean;
 
-  /** Configuration for prominent center action button (used in 'centre-action' variant) */
+  /** Configuration for prominent center action button (used in 'center-action' / 'centre-action' variant) */
   centerAction?: Ux4gBottomNavCenterAction;
+  /** Alias for centerAction (supporting UK spelling) */
+  centreAction?: Ux4gBottomNavCenterAction;
 
   /** Color for active icon and label text (default: theme primary purple) */
   activeColor?: string;
@@ -180,6 +184,7 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
   shape: customShape,
   showLabels: customShowLabels,
   centerAction,
+  centreAction,
   activeColor,
   inactiveColor,
   pillBackgroundColor,
@@ -217,8 +222,10 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
         : 'rectangular');
 
   const isIconOnly = variant === 'icon-only' || customShowLabels === false;
+  const activeCenterAction = centerAction ?? centreAction;
+  const isCenterVariant = variant === 'center-action' || variant === 'centre-action';
   const hasCenterAction =
-    variant === 'centre-action' || (centerAction !== undefined && centerAction !== null);
+    isCenterVariant || (activeCenterAction !== undefined && activeCenterAction !== null);
 
   // Colors with robust Dark Mode high-contrast fallbacks
   const resolvedActiveColor =
@@ -252,7 +259,7 @@ export const Ux4gBottomNavigationBar: React.FC<Ux4gBottomNavigationBarProps> = (
     backgroundColor: resolvedActiveColor,
     iconColor: UX4GColors.neutral0,
     elevation: 4,
-    ...centerAction,
+    ...activeCenterAction,
   };
 
   // Content height
@@ -576,7 +583,7 @@ export const Ux4gFloatingBottomNavBar: React.FC<
  */
 export const Ux4gCenterActionBottomNavBar: React.FC<
   Omit<Ux4gBottomNavigationBarProps, 'variant'>
-> = (props) => <Ux4gBottomNavigationBar {...props} variant="centre-action" />;
+> = (props) => <Ux4gBottomNavigationBar {...props} variant="center-action" />;
 
 // ─── STYLES ──────────────────────────────────────────────────────────────────
 
