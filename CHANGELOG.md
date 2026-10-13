@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-10-12
+
+### Added & Enhanced
+- **Side Menu Drawer (`Ux4gSideMenu`)**:
+  - Full support and dedicated stories for all 6 specialized design presets: `standard`, `citizen`, `department-services`, `department-switcher`, `mailbox`, and `profile-summary`.
+  - Added dedicated preview, interactive code generator, and Expo Snack support for `standard` preset.
+  - Aligned naming convention across props and documentation for `profile-summary`.
+  - Streamlined direct component props documentation.
+- **Bottom Navigation Bar (`Ux4gBottomNavigationBar`)**:
+  - Added official `variant="center-action"` support with backwards compatibility alias `centreAction`.
+  - Updated test coverage and Storybook documentation for all layout shape variants.
+- **Pattern Suites & Documentation**:
+  - Added and updated UI patterns for Contact & Support, Language Switcher, Inline Feedback, Search Applications, and Auth Flows.
+  - Updated migration guide, non-destructive migration prompt dataset, and Quickstart guides targeting `v1.2.0`.
+
 ## [1.1.0] - 2026-10-07
 
 ### Added

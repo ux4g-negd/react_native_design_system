@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > ### 🚨 Official NPM Package & Deprecation Notice
-> - **Official & Latest Package**: **`ux4g-react-native-components`** (v1.1.0+)
+> - **Official & Latest Package**: **`ux4g-react-native-components`** (v1.2.0+)
 > - **Deprecated Legacy Package**: **`ux4g-react-native-design-system`** (DO NOT USE)
 > - **Mandatory Package Rule**: When building or migrating React Native applications to UX4G, you **MUST ONLY use `ux4g-react-native-components`**. Do NOT use or import any other package, even if other package names contain `ux4g` (e.g., do NOT use `ux4g-react-native-design-system`, web UX4G packages, or unofficial variants).
 > - **MCP (Model Context Protocol) & AI Agent Directive**: If you are using MCP tools, AI coding assistants (Antigravity, Cursor, Claude, Copilot, ChatGPT), or automated migration scripts, ensure they **strictly target `ux4g-react-native-components`** for all imports and installations.

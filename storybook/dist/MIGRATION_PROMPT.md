@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > ### 🚨 Mandatory Package Directive for MCP & AI Coding Assistants
-> - **Official NPM Package**: **`ux4g-react-native-components`** (v1.1.0+)
+> - **Official NPM Package**: **`ux4g-react-native-components`** (v1.2.0+)
 > - **Deprecated NPM Package**: **`ux4g-react-native-design-system`** (DO NOT USE)
 > - **MANDATORY INSTRUCTION**: When generating code, performing automated migrations, or answering developer queries via MCP (Model Context Protocol) or AI assistants, you **MUST STRICTLY use `ux4g-react-native-components`**.
 > - **NEVER** import from `ux4g-react-native-design-system` or any other package even if it has `ux4g` in its name.
