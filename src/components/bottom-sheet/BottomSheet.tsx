@@ -254,11 +254,14 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
     }
     if (Platform.OS === 'android') {
       const screenH = Dimensions.get('screen').height;
-      const windowH = Dimensions.get('window').height;
+      const windowH = windowHeight || Dimensions.get('window').height;
       const navBarDiff = Math.max(0, screenH - windowH);
-      // On Android, if standard 3-button navigation is present, navBarDiff is typically ~48dp.
-      // On edge-to-edge / gesture navigation, ensure at least 24dp so the gesture bar never obscures buttons.
-      return navBarDiff > 0 ? navBarDiff : 24;
+      // When Android navigation bar is fixed (3-button nav, navBarDiff > 20), the OS
+      // already bounds the Modal window strictly above the navigation bar.
+      // Adding extra inset in that case double-pads the bottom and leaves a large gap.
+      // When navigation bar is auto-hidden, translucent, or gesture-based (navBarDiff <= 20),
+      // the window extends to the screen edge, so we apply 24dp to clear the overlay bar.
+      return navBarDiff > 20 ? 0 : 24;
     }
     if (Platform.OS === 'ios') {
       // Standard safe area for home indicator on modern iPhone devices

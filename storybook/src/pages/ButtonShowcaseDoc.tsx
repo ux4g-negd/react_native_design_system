@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   }
 });`;
 
-  const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Showcase&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.2.1,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
+  const snackUrl = `https://snack.expo.dev/embedded?platform=android&supportedPlatforms=ios,android&theme=${isDark ? 'dark' : 'light'}&name=Ux4gButton%20Showcase&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&dependencies=ux4g-react-native-components@1.2.2,react-native-svg@*&code=${encodeURIComponent(snackCodeString)}`;
 
   return (
     <div className="wb-page">

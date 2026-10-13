@@ -195,7 +195,13 @@ export interface Ux4gFabProps {
    */
   bottomNavOffset?: boolean | number;
   /**
-   * Whether to automatically apply safe-area bottom inset for device navigation.
+   * Alignment of speed-dial menu items relative to the FAB button.
+   * If omitted, automatically aligns to `'end'` (right-aligned) for `'menu-labelled'` and right-positioned FABs,
+   * `'start'` for left-positioned FABs, or `'center'`.
+   */
+  alignment?: 'start' | 'center' | 'end' | 'left' | 'right';
+  /**
+   * Whether to automatically detect and respect safe area insets (e.g. system navigation bar)
    * @default true
    */
   useSafeArea?: boolean;
@@ -246,6 +252,7 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
   onToggle,
   onPress,
   position = 'none',
+  alignment,
   offset,
   aboveBottomNav = false,
   bottomNavOffset,
@@ -275,8 +282,18 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
     variant === 'menu-labelled';
 
   const isFloating = position !== 'none';
-  const isRightAligned = position === 'bottom-right' || position === 'top-right';
-  const isLeftAligned = position === 'bottom-left' || position === 'top-left';
+  const isRightAligned =
+    alignment === 'end' ||
+    alignment === 'right' ||
+    (alignment === undefined &&
+      (position === 'bottom-right' ||
+        position === 'top-right' ||
+        (position === 'none' && variant === 'menu-labelled')));
+  const isLeftAligned =
+    alignment === 'start' ||
+    alignment === 'left' ||
+    (alignment === undefined &&
+      (position === 'bottom-left' || position === 'top-left'));
 
 
   // Animation values
@@ -381,7 +398,7 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
 
   // Standard UX4G dimensions for sequential bottom nav stacking
   const DEFAULT_BOTTOM_OFFSET = 24;
-  const DEFAULT_BOTTOM_NAV_HEIGHT = 72; // Ux4gBottomNavigationBar standard height (52 + 8 + 12)
+  const DEFAULT_BOTTOM_NAV_HEIGHT = 80; // Ux4gBottomNavigationBar standard height (58 content + 8 top + 12 bottom = 78dp)
   const DEFAULT_BOTTOM_NAV_GAP = 16;     // Clean spacing between Bottom Nav and FAB
 
   const isAboveBottomNav = aboveBottomNav || bottomNavOffset === true || typeof bottomNavOffset === 'number';
@@ -396,10 +413,11 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
     if (isAboveBottomNav) {
       // FAB is sequentially positioned above the Bottom Navigation Bar
       const gap = userOffset ?? DEFAULT_BOTTOM_NAV_GAP;
+      // On iOS, BottomNavigationBar uses SafeAreaView which adds 34dp on modern iPhones,
+      // so FAB must also add 34dp to float cleanly above the elevated bar.
+      // On Android, BottomNavigationBar sits at the bottom of the window/screen, so no extra inset is needed.
       const safeInset = useSafeArea
-        ? (Platform.OS === 'android'
-            ? Math.max(0, Dimensions.get('screen').height - Dimensions.get('window').height)
-            : Platform.OS === 'ios'
+        ? (Platform.OS === 'ios'
             ? 34
             : 0)
         : 0;
@@ -413,8 +431,14 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
     }
     const safeInset = Platform.OS === 'android'
       ? (() => {
-          const diff = Math.max(0, Dimensions.get('screen').height - Dimensions.get('window').height);
-          return diff > 0 ? diff : 16;
+          const screenH = Dimensions.get('screen').height;
+          const windowH = Dimensions.get('window').height;
+          const navBarDiff = Math.max(0, screenH - windowH);
+          // When Android navigation bar is fixed (navBarDiff > 20), the window is already
+          // bounded strictly above the navigation bar (navBarDiff > 20), so safeInset is 0.
+          // When navigation bar is auto-hidden or gesture-based (navBarDiff <= 20),
+          // apply 16dp to keep the FAB safely above the gesture pill / screen edge.
+          return navBarDiff > 20 ? 0 : 16;
         })()
       : Platform.OS === 'ios'
       ? 34
@@ -671,6 +695,13 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
       <View
         style={[
           styles.rootContainer,
+          {
+            alignItems: isRightAligned
+              ? 'flex-end'
+              : isLeftAligned
+                ? 'flex-start'
+                : 'center',
+          },
           getPositionStyle(),
           containerStyle,
         ]}
@@ -681,6 +712,13 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
           <View
             style={[
               styles.menuWrapper,
+              {
+                alignItems: isRightAligned
+                  ? 'flex-end'
+                  : isLeftAligned
+                    ? 'flex-start'
+                    : 'center',
+              },
               isFloating && {
                 position: 'absolute',
                 bottom: (isLabelledVariant ? mainButtonHeight * 0.86 : mainButtonHeight) + 12,
@@ -717,14 +755,14 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
             !isBrand && styles.surfaceBorder,
             isLabelledVariant
               ? {
-                  height: mainButtonHeight * 0.86,
-                  borderRadius: (mainButtonHeight * 0.86) / 2,
-                }
+                height: mainButtonHeight * 0.86,
+                borderRadius: (mainButtonHeight * 0.86) / 2,
+              }
               : {
-                  width: mainButtonWidth,
-                  height: mainButtonHeight,
-                  borderRadius: mainButtonWidth / 2,
-                },
+                width: mainButtonWidth,
+                height: mainButtonHeight,
+                borderRadius: mainButtonWidth / 2,
+              },
             pressed && styles.mainPressed,
             disabled && styles.disabled,
             style,
@@ -738,9 +776,9 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
                 {
                   scale: isMenuVariant
                     ? animValue.interpolate({
-                        inputRange: [0, 0.5, 1],
-                        outputRange: [1, 0.8, 1],
-                      })
+                      inputRange: [0, 0.5, 1],
+                      outputRange: [1, 0.8, 1],
+                    })
                     : 1,
                 },
               ],
@@ -773,10 +811,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   menuWrapper: {
-    alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: 12,
-    minWidth: 180,
   },
   mainCircleButton: {
     alignItems: 'center',

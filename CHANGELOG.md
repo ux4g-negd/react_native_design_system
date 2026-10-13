@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2] - 2026-10-13
+
+### Fixed & Enhanced
+- **Bottom Sheet (`Ux4gBottomSheet`)**:
+  - Refined Android navigation bar detection for devices with fixed 3-button navigation bars, eliminating excessive bottom padding while preserving clearance on gesture-navigation devices.
+- **Floating Action Button (`Ux4gFab`)**:
+  - Refined Android safe area inset detection to prevent excessive bottom gap on devices with fixed navigation bars.
+  - Aligned floating position when used with `Ux4gBottomNavigationBar` (`aboveBottomNav={true}`) with an optimal 80dp baseline offset.
+  - Corrected `menu-labelled` variant UI alignment to align items to the right side (matching UX4G design system specification), and added customizable `alignment` prop (`'start' | 'center' | 'end'`).
+- **Storybook & Snack Integration**:
+  - Updated Quick Start documentation and all interactive Expo Snack preview dependencies to `ux4g-react-native-components@1.2.2`.
+
 ## [1.2.1] - 2026-10-13
 
 ### Fixed & Enhanced
