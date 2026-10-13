@@ -109,4 +109,16 @@ describe('Ux4gBottomSheet', () => {
       expect(toJSON()).toBeTruthy();
     });
   });
+
+  it('respects useSafeArea and custom bottomInset props', () => {
+    const { toJSON: withInset } = renderWithTheme(
+      <Ux4gBottomSheet visible onDismiss={jest.fn()} bottomInset={48} title="Safe Sheet" />
+    );
+    expect(withInset()).toBeTruthy();
+
+    const { toJSON: withoutSafeArea } = renderWithTheme(
+      <Ux4gBottomSheet visible onDismiss={jest.fn()} useSafeArea={false} title="No Safe Area" />
+    );
+    expect(withoutSafeArea()).toBeTruthy();
+  });
 });

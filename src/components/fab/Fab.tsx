@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Animated,
   Easing,
   Platform,
+  Dimensions,
   TouchableWithoutFeedback,
   GestureResponderEvent,
 } from 'react-native';
@@ -181,6 +182,23 @@ export interface Ux4gFabProps {
     right?: number;
     left?: number;
   };
+  /**
+   * Whether this FAB is positioned above a Bottom Navigation Bar (`Ux4gBottomNavigationBar`).
+   * When true, automatically offsets the FAB's bottom position (defaulting to 72dp nav height + 16dp spacing = 88dp)
+   * so it floats sequentially above the bottom navigation bar without overlapping any tabs.
+   * @default false
+   */
+  aboveBottomNav?: boolean;
+  /**
+   * Alias or custom height override for the bottom navigation bar.
+   * Can accept `true` (uses default 72dp bottom nav height) or an explicit number in pixels (e.g. 64 or 80).
+   */
+  bottomNavOffset?: boolean | number;
+  /**
+   * Whether to automatically apply safe-area bottom inset for device navigation.
+   * @default true
+   */
+  useSafeArea?: boolean;
   /** Whether to show a semi-transparent backdrop scrim when menu is open. Defaults to false. */
   showBackdrop?: boolean;
   /** Callback when backdrop scrim is pressed */
@@ -229,6 +247,9 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
   onPress,
   position = 'none',
   offset,
+  aboveBottomNav = false,
+  bottomNavOffset,
+  useSafeArea = true,
   showBackdrop = false,
   onBackdropPress,
   disabled = false,
@@ -358,32 +379,75 @@ export const Ux4gFab: React.FC<Ux4gFabProps> = ({
   // Main trigger icon: if menu is open, show activeIcon (e.g. 'close'), else normal icon
   const currentIconProp = isMenuVariant && isMenuOpen ? activeIcon : icon;
 
+  // Standard UX4G dimensions for sequential bottom nav stacking
+  const DEFAULT_BOTTOM_OFFSET = 24;
+  const DEFAULT_BOTTOM_NAV_HEIGHT = 72; // Ux4gBottomNavigationBar standard height (52 + 8 + 12)
+  const DEFAULT_BOTTOM_NAV_GAP = 16;     // Clean spacing between Bottom Nav and FAB
+
+  const isAboveBottomNav = aboveBottomNav || bottomNavOffset === true || typeof bottomNavOffset === 'number';
+
+  const resolvedBottomNavHeight = typeof bottomNavOffset === 'number'
+    ? bottomNavOffset
+    : DEFAULT_BOTTOM_NAV_HEIGHT;
+
+  const resolvedBottomOffset = useMemo(() => {
+    const userOffset = offset?.bottom;
+
+    if (isAboveBottomNav) {
+      // FAB is sequentially positioned above the Bottom Navigation Bar
+      const gap = userOffset ?? DEFAULT_BOTTOM_NAV_GAP;
+      const safeInset = useSafeArea
+        ? (Platform.OS === 'android'
+            ? Math.max(0, Dimensions.get('screen').height - Dimensions.get('window').height)
+            : Platform.OS === 'ios'
+            ? 34
+            : 0)
+        : 0;
+      return resolvedBottomNavHeight + gap + safeInset;
+    }
+
+    // Normal floating FAB (anchored near screen bottom)
+    const baseOffset = userOffset ?? DEFAULT_BOTTOM_OFFSET;
+    if (!useSafeArea) {
+      return baseOffset;
+    }
+    const safeInset = Platform.OS === 'android'
+      ? (() => {
+          const diff = Math.max(0, Dimensions.get('screen').height - Dimensions.get('window').height);
+          return diff > 0 ? diff : 16;
+        })()
+      : Platform.OS === 'ios'
+      ? 34
+      : 0;
+    return baseOffset + safeInset;
+  }, [offset?.bottom, isAboveBottomNav, resolvedBottomNavHeight, useSafeArea]);
+
   // Position styles
   const getPositionStyle = (): ViewStyle => {
     if (!isFloating) return {};
     const pos: ViewStyle = { position: 'absolute', zIndex: 9999 };
-    const defaultOffset = 24;
+    const defaultSideOffset = 24;
 
     switch (position) {
       case 'bottom-right':
-        pos.bottom = offset?.bottom ?? defaultOffset;
-        pos.right = offset?.right ?? defaultOffset;
+        pos.bottom = resolvedBottomOffset;
+        pos.right = offset?.right ?? defaultSideOffset;
         break;
       case 'bottom-left':
-        pos.bottom = offset?.bottom ?? defaultOffset;
-        pos.left = offset?.left ?? defaultOffset;
+        pos.bottom = resolvedBottomOffset;
+        pos.left = offset?.left ?? defaultSideOffset;
         break;
       case 'bottom-center':
-        pos.bottom = offset?.bottom ?? defaultOffset;
+        pos.bottom = resolvedBottomOffset;
         pos.alignSelf = 'center';
         break;
       case 'top-right':
-        pos.top = offset?.top ?? defaultOffset;
-        pos.right = offset?.right ?? defaultOffset;
+        pos.top = offset?.top ?? defaultSideOffset;
+        pos.right = offset?.right ?? defaultSideOffset;
         break;
       case 'top-left':
-        pos.top = offset?.top ?? defaultOffset;
-        pos.left = offset?.left ?? defaultOffset;
+        pos.top = offset?.top ?? defaultSideOffset;
+        pos.left = offset?.left ?? defaultSideOffset;
         break;
     }
     return pos;

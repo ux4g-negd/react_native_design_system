@@ -278,6 +278,20 @@ const styles = StyleSheet.create({
       required: false,
     },
     {
+      name: 'useSafeArea',
+      type: 'boolean',
+      default: 'true',
+      desc: 'Whether to automatically elevate the sheet and footer buttons above the device navigation bar (Android 3-button/gesture bar, iOS home bar).',
+      required: false,
+    },
+    {
+      name: 'bottomInset',
+      type: 'number',
+      default: 'auto',
+      desc: 'Custom bottom safe-area padding in pixels. When omitted and useSafeArea is true, automatically detects device navigation bar height.',
+      required: false,
+    },
+    {
       name: 'children',
       type: 'ReactNode',
       default: 'undefined',

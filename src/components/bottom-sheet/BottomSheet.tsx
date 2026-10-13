@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Animated,
   BackHandler,
+  Dimensions,
   Easing,
   Modal,
   PanResponder,
@@ -147,7 +148,9 @@ export interface Ux4gBottomSheetProps {
   showBackdrop?: boolean;
   /** Dismiss when the backdrop scrim is tapped. @default true */
   dismissOnBackdropPress?: boolean;
-  /** Bottom safe-area padding in pixels. @default 0 */
+  /** Whether to automatically apply bottom safe-area padding for device navigation bar (Android navigation buttons/gesture bar, iOS home bar). @default true */
+  useSafeArea?: boolean;
+  /** Bottom safe-area padding in pixels. When omitted and `useSafeArea` is true, automatically calculates device navigation bar height so bottom buttons are never obscured. Pass explicit number to override. */
   bottomInset?: number;
 
   /* ── Styling Overrides ── */
@@ -222,7 +225,8 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
   showDragHandle = true,
   showBackdrop = true,
   dismissOnBackdropPress = true,
-  bottomInset = 0,
+  useSafeArea = true,
+  bottomInset,
 
   backgroundColor,
   scrimColor,
@@ -239,6 +243,29 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
 
   const effectiveSize: Ux4gBottomSheetSize = snapPoint ?? size ?? 'half';
   const canDrag = draggable && isDraggable;
+
+  // Compute resolved bottom inset for device navigation bar / home indicator
+  const resolvedBottomInset = useMemo(() => {
+    if (bottomInset !== undefined) {
+      return Math.max(0, bottomInset);
+    }
+    if (!useSafeArea) {
+      return 0;
+    }
+    if (Platform.OS === 'android') {
+      const screenH = Dimensions.get('screen').height;
+      const windowH = Dimensions.get('window').height;
+      const navBarDiff = Math.max(0, screenH - windowH);
+      // On Android, if standard 3-button navigation is present, navBarDiff is typically ~48dp.
+      // On edge-to-edge / gesture navigation, ensure at least 24dp so the gesture bar never obscures buttons.
+      return navBarDiff > 0 ? navBarDiff : 24;
+    }
+    if (Platform.OS === 'ios') {
+      // Standard safe area for home indicator on modern iPhone devices
+      return 34;
+    }
+    return 0;
+  }, [bottomInset, useSafeArea, windowHeight]);
 
   // Compute allowed snap points
   const activeSnapPoints: Ux4gBottomSheetSize[] = useMemo(() => {
@@ -306,7 +333,7 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
 
   const animateIn = useCallback(() => {
     animatedHeight.setValue(targetInitialHeight);
-    translateY.setValue(targetInitialHeight + 50);
+    translateY.setValue(targetInitialHeight + resolvedBottomInset + 50);
     currentHeightRef.current = targetInitialHeight;
 
     Animated.parallel([
@@ -329,7 +356,7 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
     (done?: () => void) => {
       Animated.parallel([
         Animated.timing(translateY, {
-          toValue: currentHeightRef.current + 60,
+          toValue: currentHeightRef.current + resolvedBottomInset + 60,
           duration: CLOSE_DURATION,
           easing: Easing.in(Easing.cubic),
           useNativeDriver: false,
@@ -529,8 +556,8 @@ export const Ux4gBottomSheet: React.FC<Ux4gBottomSheetProps> = ({
           style={[
             styles.sheet,
             {
-              height: Animated.add(animatedHeight, bottomInset),
-              paddingBottom: bottomInset,
+              height: Animated.add(animatedHeight, resolvedBottomInset),
+              paddingBottom: resolvedBottomInset,
               backgroundColor: surfaceColor,
               borderTopLeftRadius: cornerRadius,
               borderTopRightRadius: cornerRadius,

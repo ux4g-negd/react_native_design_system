@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2026-10-13
+
+### Fixed & Enhanced
+- **Bottom Sheet (`Ux4gBottomSheet`)**:
+  - Added automatic device navigation bar detection and safe-area padding (`useSafeArea` default `true`).
+  - Elevated bottom sheet action buttons above system navigation bars (Android 3-button/gesture bar, iOS home bar) so buttons are never hidden or obstructed.
+  - Added explicit `bottomInset` override support.
+- **Floating Action Button (`Ux4gFab`)**:
+  - Added `aboveBottomNav` and `bottomNavOffset` support to float cleanly and sequentially above `Ux4gBottomNavigationBar` without overlapping navigation tabs.
+  - Added safe area offset coordination for floating FAB anchors.
+- **Documentation & Storybook Previews**:
+  - Updated all component documentation interactive Snack previews and dependencies targeting `v1.2.1`.
+
 ## [1.2.0] - 2026-10-12
 
 ### Added & Enhanced

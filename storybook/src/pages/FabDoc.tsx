@@ -217,6 +217,20 @@ const styles = StyleSheet.create({
       required: false,
     },
     {
+      name: 'aboveBottomNav',
+      type: 'boolean',
+      default: 'false',
+      desc: 'Automatically offsets bottom anchor (88dp = 72dp nav + 16dp gap) so the FAB floats sequentially above BottomNavigationBar without overlapping.',
+      required: false,
+    },
+    {
+      name: 'bottomNavOffset',
+      type: 'boolean | number',
+      default: 'undefined',
+      desc: 'Alias or custom height override in pixels for the bottom navigation bar to fine-tune spacing.',
+      required: false,
+    },
+    {
       name: 'label',
       type: 'string',
       default: 'undefined',
