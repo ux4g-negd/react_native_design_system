@@ -24,9 +24,9 @@ export const Introduction: React.FC<IntroductionProps> = ({ isDark, onNavigate }
               className="version-badge"
               onClick={() => onNavigate('changelog')}
               style={{ cursor: 'pointer' }}
-              title="Click to view v1.2.2 Changes Logs"
+              title="Click to view 3.0 Changes Logs"
             >
-              v1.2.2
+              3.0
             </div>
             <div className="beta-badge">BETA</div>
 
