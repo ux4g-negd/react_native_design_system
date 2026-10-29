@@ -43,16 +43,6 @@ export const Introduction: React.FC<IntroductionProps> = ({ isDark, onNavigate }
               <button className="btn-hero-primary" onClick={() => onNavigate('quickstart')}>
                 Get Started
               </button>
-              <button
-                className="btn-hero-secondary"
-                onClick={() => onNavigate('changelog')}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
-                  history
-                </span>
-                Changes Logs
-              </button>
               <button className="btn-hero-secondary" onClick={() => onNavigate('accordion-basic')}>
                 Component Library
               </button>
