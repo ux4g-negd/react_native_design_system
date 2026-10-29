@@ -6,9 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed & Enhanced
 - **Bottom Sheet (`Ux4gBottomSheet`)**:
-  - Refined Android navigation bar detection for devices with fixed 3-button navigation bars, eliminating excessive bottom padding while preserving clearance on gesture-navigation devices.
+  - Refined device navigation bar detection for devices with fixed navigation bars, eliminating excessive bottom padding while preserving clearance on gesture-navigation devices.
 - **Floating Action Button (`Ux4gFab`)**:
-  - Refined Android safe area inset detection to prevent excessive bottom gap on devices with fixed navigation bars.
+  - Refined safe area inset detection to prevent excessive bottom gap on devices with fixed navigation bars.
   - Aligned floating position when used with `Ux4gBottomNavigationBar` (`aboveBottomNav={true}`) with an optimal 80dp baseline offset.
   - Corrected `menu-labelled` variant UI alignment to align items to the right side (matching UX4G design system specification), and added customizable `alignment` prop (`'start' | 'center' | 'end'`).
 - **Storybook & Snack Integration**:
@@ -19,7 +19,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed & Enhanced
 - **Bottom Sheet (`Ux4gBottomSheet`)**:
   - Added automatic device navigation bar detection and safe-area padding (`useSafeArea` default `true`).
-  - Elevated bottom sheet action buttons above system navigation bars (Android 3-button/gesture bar, iOS home bar) so buttons are never hidden or obstructed.
+  - Elevated bottom sheet action buttons above system navigation bars (gesture bars and hardware navigation bars) so buttons are never hidden or obstructed.
   - Added explicit `bottomInset` override support.
 - **Floating Action Button (`Ux4gFab`)**:
   - Added `aboveBottomNav` and `bottomNavOffset` support to float cleanly and sequentially above `Ux4gBottomNavigationBar` without overlapping navigation tabs.
@@ -103,9 +103,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0] - Initial Release
+## [1.0.0] - 2026-08-01
 
 ### Added
-- Initial release of UX4G React Native Design System.
-- Design tokens and theme architecture.
-- Component library with React Native and TypeScript support.
+- **Component Library (40+ Core Components)**:
+  - Initial foundation release introducing 40+ accessible React Native components: Buttons (Button, IconButton), Form Inputs (InputField, Dropdown, DatePicker, TimePicker, TextArea, Checkbox, RadioButton, Switch, Slider, SearchField, FileUpload), Display & Structural (AppHeader, Avatar, Badge, Card, Chips, ChipGroup, Divider, ProgressIndicator, Spinner, StatusBanner, StatusPipeline, Stepper, Tag, TimeSlot, Accordion, AccordionGroup, Carousel, JourneyTimeline, Link, Pagination, ResultList), and Feedback (Toast, Tooltip, Modal, Popover, EmptyState, FeedbackStar, FeedbackCsat, FeedbackNps).
+  - *Note: Navigation components (`Ux4gBottomNavigationBar`, `Ux4gBottomSheet`, `Ux4gSideMenu`, and `Ux4gFab`) were excluded from v1.0.0 and subsequently released in v1.1.0.*
+- **Design Tokens & Theming**:
+  - Full token architecture for Colors, Typography, Dimensions, and Elevation Shadows conforming to the official UX4G specification.
+  - `Ux4gThemeProvider` supporting light & dark theme modes with runtime token context.
+- **Initial Citizen UI Patterns**:
+  - Foundational patterns for Government Form Validation, Sign-In & OTP Authentication, Dashboard & Application lists, and Service Discovery.
+  - *Note: Remaining advanced patterns (Eligibility Check Wizard, Document Verification, Lifecycle Tracker, and Payment checkout) were subsequently released in v1.1.0.*

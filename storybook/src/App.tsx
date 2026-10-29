@@ -3,6 +3,7 @@ import { Sidebar } from './components/Sidebar';
 import { Introduction } from './pages/Introduction';
 import { QuickStart } from './pages/QuickStart';
 import { ComponentMappingDoc } from './pages/ComponentMappingDoc';
+import { ChangelogDoc } from './pages/ChangelogDoc';
 import { ButtonDoc } from './pages/ButtonDoc';
 import { ButtonShowcaseDoc } from './pages/ButtonShowcaseDoc';
 import { IconButtonDoc } from './pages/IconButtonDoc';
@@ -199,6 +200,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page === 'introduction') return 'Introduction';
   if (page === 'quickstart') return 'Quick Start Guide';
   if (page === 'component-mapping' || page === 'migration') return 'Migration';
+  if (page === 'changelog' || page === 'changes-logs' || page === 'getting-started-changes-logs') return 'Changes Logs';
   if (page.startsWith('colors-')) {
     const s = page.replace('colors-', '');
     return `Token / Colors / ${s.charAt(0).toUpperCase() + s.slice(1)}`;
@@ -1474,8 +1476,15 @@ export const App: React.FC = () => {
     if (activePage === 'patterns-feedback' || activePage === 'feedback') {
       return <PatternsFeedbackDoc isDark={isDark} />;
     }
+    if (activePage === 'changelog' || activePage === 'changes-logs' || activePage.includes('changes-logs') || activePage.includes('changelog')) {
+      return <ChangelogDoc isDark={isDark} onNavigate={handleNavigate} />;
+    }
 
     switch (activePage) {
+      case 'changelog':
+      case 'changes-logs':
+      case 'getting-started-changes-logs':
+        return <ChangelogDoc isDark={isDark} onNavigate={handleNavigate} />;
       case 'introduction':
         return <Introduction isDark={isDark} onNavigate={handleNavigate} />;
       case 'quickstart':

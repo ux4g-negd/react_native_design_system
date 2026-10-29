@@ -20,7 +20,14 @@ export const Introduction: React.FC<IntroductionProps> = ({ isDark, onNavigate }
               React Native Documentation |<br />
               UX4G Design System
             </h1>
-            <div className="version-badge">3.0</div>
+            <div
+              className="version-badge"
+              onClick={() => onNavigate('changelog')}
+              style={{ cursor: 'pointer' }}
+              title="Click to view v1.2.2 Changes Logs"
+            >
+              v1.2.2
+            </div>
             <div className="beta-badge">BETA</div>
 
             <h2 className="hero-tagline">
@@ -35,6 +42,16 @@ export const Introduction: React.FC<IntroductionProps> = ({ isDark, onNavigate }
             <div className="hero-actions">
               <button className="btn-hero-primary" onClick={() => onNavigate('quickstart')}>
                 Get Started
+              </button>
+              <button
+                className="btn-hero-secondary"
+                onClick={() => onNavigate('changelog')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+                  history
+                </span>
+                Changes Logs
               </button>
               <button className="btn-hero-secondary" onClick={() => onNavigate('accordion-basic')}>
                 Component Library

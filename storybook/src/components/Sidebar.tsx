@@ -20,6 +20,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'introduction', label: 'Introduction', icon: 'bookmark' },
   { id: 'quickstart', label: 'Quick Start Guide', icon: 'bookmark' },
   { id: 'component-mapping', label: 'Migration', icon: 'bookmark' },
+  { id: 'changelog', label: 'Changes Logs', icon: 'bookmark' },
   {
     id: 'tokens',
     label: 'Token',

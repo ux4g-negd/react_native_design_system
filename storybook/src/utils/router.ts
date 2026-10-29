@@ -5,6 +5,10 @@ const PAGE_TO_PATH: Record<string, string> = {
   'component-mapping': 'component-mapping',
   migration: 'component-mapping',
   'getting-started-migration': 'component-mapping',
+  changelog: 'getting-started/changes-logs',
+  'changes-logs': 'getting-started/changes-logs',
+  'getting-started-changes-logs': 'getting-started/changes-logs',
+  'getting-started-changes-logs--changes-logs': 'getting-started/changes-logs',
   'pattern-government-form-with-validation': 'patterns/application-and-submission/government-form-with-validation/government-form-with-validation',
   'pattern-government-form-with-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-errors',
   'pattern-government-form-with-multiple-errors': 'patterns/application-and-submission/government-form-with-validation/government-form-with-multiple-errors',
@@ -546,6 +550,15 @@ export function getPathFromPage(page: string): string {
 
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+  if (
+    cleanPath.includes('changes-logs') ||
+    cleanPath.includes('changelog') ||
+    cleanPath.includes('change-log') ||
+    cleanPath.includes('release-notes')
+  ) {
+    return 'changelog';
+  }
 
   if (cleanPath.startsWith('components/switch') || cleanPath.startsWith('switch')) {
     if (cleanPath.includes('label')) return 'switch-labels';
@@ -1264,6 +1277,15 @@ export function getPageFromPath(path: string): string {
 }
 
 export function getPageFromUrl(): string {
+  // Support standard query params e.g. ?path=/story/getting-started-changes-logs--changes-logs
+  if (typeof window !== 'undefined' && window.location.search) {
+    const searchParams = new URLSearchParams(window.location.search);
+    const searchPath = searchParams.get('path');
+    if (searchPath) {
+      return getPageFromPath(searchPath);
+    }
+  }
+
   const hash = window.location.hash;
   if (!hash) return 'introduction';
 
