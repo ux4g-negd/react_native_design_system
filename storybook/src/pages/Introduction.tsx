@@ -28,7 +28,6 @@ export const Introduction: React.FC<IntroductionProps> = ({ isDark, onNavigate }
             >
               3.0
             </div>
-            <div className="beta-badge">BETA</div>
 
             <h2 className="hero-tagline">
               Government-grade UI foundations for trusted public digital experiences.
