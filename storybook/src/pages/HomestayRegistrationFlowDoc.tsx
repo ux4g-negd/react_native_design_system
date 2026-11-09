@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = '95IJtbFvF4dkOE77bO7E1';
+const SNACK_ID = '0FZOWr1TUkn1-HDjQphO2';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -34,6 +34,7 @@ import {
   StatusBar,
   Platform,
   TextInput,
+  PanResponder,
 } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
 import {
@@ -47,6 +48,7 @@ import {
   Ux4gOtpInput,
   Ux4gPanInputField,
   Ux4gAadhaarInputField,
+  Ux4gSlider,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -449,8 +451,9 @@ const AREA_TYPES = [
   { id: 'semi_urban', label: 'Semi-Urban / Cantonment Board' },
 ];
 
+
 export default function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [savedTime, setSavedTime] = useState('3:14 PM');
 
   // Form state
@@ -526,6 +529,20 @@ export default function App() {
     sameAsPermanent: false,
     addressOutsideState: false,
     applyingCapacity: 'owner',
+
+    // Step 4: Management & Staff
+    ownerRunsPersonally: false,
+    managerName: '',
+    managerRelationship: 'family_member',
+    managerMobile: '',
+    managerPinCode: '',
+    managerStateUT: [],
+    managerDistrict: [],
+    managerHouseStreet: '',
+    totalStaff: '5',
+    hiredLocally: 2,
+    isRenewal: false,
+    previousRegNumber: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -600,7 +617,30 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    alert('Step 3 validated successfully! Ready for Step 4.');
+    setStep(4);
+  };
+
+  const handleContinueStep4 = () => {
+    const errs = {};
+    if (!formData.ownerRunsPersonally) {
+      if (!formData.managerName.trim()) errs.managerName = 'Manager or caretaker name is required';
+      if (!formData.managerRelationship) errs.managerRelationship = 'Relationship to the owner is required';
+      if (!formData.managerMobile.trim()) errs.managerMobile = 'Mobile number is required';
+      if (!formData.managerPinCode.trim()) errs.managerPinCode = 'PIN code is required';
+      if (!formData.managerStateUT.length) errs.managerStateUT = 'State / UT is required';
+      if (!formData.managerDistrict.length) errs.managerDistrict = 'District is required';
+      if (!formData.managerHouseStreet.trim()) errs.managerHouseStreet = 'House or building number is required';
+    }
+    if (!formData.totalStaff.trim()) errs.totalStaff = 'Total number of staff is required';
+    if (formData.isRenewal && !formData.previousRegNumber.trim()) {
+      errs.previousRegNumber = 'Previous registration number is required for renewals';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Step 4 validated successfully! Ready for Step 5.');
   };
 
   return (
@@ -648,8 +688,8 @@ export default function App() {
               totalSteps={10}
               currentStep={step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
@@ -674,6 +714,7 @@ export default function App() {
                 if (step === 1) handleContinueStep1();
                 else if (step === 2) handleContinueStep2();
                 else if (step === 3) handleContinueStep3();
+                else if (step === 4) handleContinueStep4();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -1938,6 +1979,267 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 4 ? (
+              /* ======================================================== */
+              /* SCREEN 4: MANAGEMENT & STAFF (PIXEL-PERFECT MATCH)       */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                {/* 1. Manager Details */}
+                <Text style={styles.sectionHeading}>Manager Details</Text>
+
+                <View style={{ marginBottom: 16 }}>
+                  <Ux4gCheckbox
+                    value={formData.ownerRunsPersonally}
+                    onChanged={(val) => updateField('ownerRunsPersonally', !!val)}
+                    label="The owner runs the property personally"
+                    description="Ticking this hides the manager block below."
+                    size="medium"
+                    activeColor="#4A2BC2"
+                  />
+                </View>
+
+                {/* Conditional Manager Details Block */}
+                {!formData.ownerRunsPersonally && (
+                  <>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Manager or caretaker name"
+                        required
+                        size="large"
+                        value={formData.managerName}
+                        onValueChange={(v) => updateField('managerName', v)}
+                        placeholder="Full name"
+                        status={errors.managerName ? 'error' : 'defaultStatus'}
+                        caption={errors.managerName}
+                      />
+                    </View>
+
+                    {/* Relationship to the owner */}
+                    <View style={styles.fieldSpacing}>
+                      <Text style={styles.radioGroupLabel}>
+                        Relationship to the owner<Text style={{ color: '#EF4444' }}>*</Text>
+                      </Text>
+                      <View style={{ marginTop: 8, gap: 10 }}>
+                        <Ux4gRadioButton
+                          value="self"
+                          groupValue={formData.managerRelationship}
+                          onChanged={(val) => updateField('managerRelationship', val)}
+                          label="Self"
+                          size="medium"
+                          color="#4A2BC2"
+                        />
+                        <Ux4gRadioButton
+                          value="family_member"
+                          groupValue={formData.managerRelationship}
+                          onChanged={(val) => updateField('managerRelationship', val)}
+                          label="Family member"
+                          size="medium"
+                          color="#4A2BC2"
+                        />
+                        <Ux4gRadioButton
+                          value="employee"
+                          groupValue={formData.managerRelationship}
+                          onChanged={(val) => updateField('managerRelationship', val)}
+                          label="Employee"
+                          size="medium"
+                          color="#4A2BC2"
+                        />
+                        <Ux4gRadioButton
+                          value="agent"
+                          groupValue={formData.managerRelationship}
+                          onChanged={(val) => updateField('managerRelationship', val)}
+                          label="Agent"
+                          size="medium"
+                          color="#4A2BC2"
+                        />
+                      </View>
+                      {errors.managerRelationship && (
+                        <Text style={styles.errorCaption}>{errors.managerRelationship}</Text>
+                      )}
+                    </View>
+
+                    {/* Mobile number with +91 prefix */}
+                    <View style={styles.fieldSpacing}>
+                      <Text style={styles.fieldLabelWithAsterisk}>
+                        Mobile number<Text style={{ color: '#EF4444' }}>*</Text>
+                      </Text>
+                      <View style={[styles.inlineInputBox, errors.managerMobile && styles.inputBoxError]}>
+                        <Text style={styles.prefixText}>+91</Text>
+                        <TextInput
+                          style={styles.inlineInput}
+                          placeholder="Reachable during an inspection"
+                          placeholderTextColor="#94A3B8"
+                          value={formData.managerMobile}
+                          onChangeText={(v) => updateField('managerMobile', v)}
+                          keyboardType="phone-pad"
+                          maxLength={10}
+                        />
+                      </View>
+                      {errors.managerMobile && (
+                        <Text style={styles.errorCaption}>{errors.managerMobile}</Text>
+                      )}
+                    </View>
+
+                    {/* 2. Address of the Manager */}
+                    <Text style={[styles.sectionHeading, { marginTop: 8 }]}>
+                      Address of the Manager
+                    </Text>
+
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="PIN code"
+                        required
+                        size="large"
+                        value={formData.managerPinCode}
+                        onValueChange={(v) => updateField('managerPinCode', v)}
+                        placeholder="6 digits"
+                        keyboardType="numeric"
+                        maxLength={6}
+                        status={errors.managerPinCode ? 'error' : 'defaultStatus'}
+                        caption={errors.managerPinCode}
+                      />
+                    </View>
+
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gSelectionDropdown
+                        label="State / UT"
+                        required
+                        size="l"
+                        options={STATES_AND_UTS}
+                        selectedOptionIds={formData.managerStateUT}
+                        onSelectionChange={(ids) => updateField('managerStateUT', ids)}
+                        placeholder="Select state or union territory"
+                        status={errors.managerStateUT ? 'error' : 'defaultStatus'}
+                        caption={errors.managerStateUT}
+                      />
+                    </View>
+
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gSelectionDropdown
+                        label="District"
+                        required
+                        size="l"
+                        options={DISTRICTS_UTTARAKHAND}
+                        selectedOptionIds={formData.managerDistrict}
+                        onSelectionChange={(ids) => updateField('managerDistrict', ids)}
+                        placeholder="Select district"
+                        status={errors.managerDistrict ? 'error' : 'defaultStatus'}
+                        caption={errors.managerDistrict}
+                      />
+                    </View>
+
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="House or building number and street"
+                        required
+                        size="large"
+                        value={formData.managerHouseStreet}
+                        onValueChange={(v) => updateField('managerHouseStreet', v)}
+                        placeholder="As it would be written on a letter"
+                        status={errors.managerHouseStreet ? 'error' : 'defaultStatus'}
+                        caption={errors.managerHouseStreet}
+                      />
+                    </View>
+                  </>
+                )}
+
+                {/* 3. Staff Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>Staff Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Total number of staff"
+                    required
+                    size="large"
+                    value={formData.totalStaff}
+                    onValueChange={(v) => updateField('totalStaff', v)}
+                    placeholder="0"
+                    keyboardType="numeric"
+                    status={errors.totalStaff ? 'error' : 'defaultStatus'}
+                    caption={errors.totalStaff}
+                  />
+                </View>
+
+                {/* Of whom, hired locally Ux4gSlider */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSlider
+                    label="Of whom, hired locally"
+                    isRequired={true}
+                    labelIcon={<InfoOutlineIcon size={14} color="#64748B" />}
+                    min={0}
+                    max={Math.max(1, parseInt(formData.totalStaff) || 5)}
+                    steps={Math.max(1, parseInt(formData.totalStaff) || 5) > 1 ? ((Math.max(1, parseInt(formData.totalStaff) || 5)) - 1) : 1}
+                    value={formData.hiredLocally}
+                    onValueChange={(val) => updateField('hiredLocally', Math.round(val))}
+                    showMarksAndValues={true}
+                    size="medium"
+                    caption={'0 to ' + (parseInt(formData.totalStaff) || 5) + ' — the total you entered'}
+                    rightLabelElement={
+                      <View style={styles.sliderBadgeBox}>
+                        <Text style={styles.sliderBadgeValue}>{formData.hiredLocally}</Text>
+                      </View>
+                    }
+                  />
+                </View>
+
+                {/* 4. Previous Registration Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 14 }]}>
+                  Previous Registration Details
+                </Text>
+
+                <View style={{ marginBottom: 14 }}>
+                  <Ux4gCheckbox
+                    value={formData.isRenewal}
+                    onChanged={(val) => updateField('isRenewal', !!val)}
+                    label="This is a renewal of an existing registration"
+                    size="medium"
+                    activeColor="#4A2BC2"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Previous registration number"
+                    size="large"
+                    value={formData.previousRegNumber}
+                    onValueChange={(v) => updateField('previousRegNumber', v)}
+                    placeholder="Shown only when this is a renewal"
+                    readOnly={!formData.isRenewal}
+                    status={errors.previousRegNumber ? 'error' : 'defaultStatus'}
+                    caption={errors.previousRegNumber}
+                  />
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep4}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
         </ScrollView>
@@ -2404,6 +2706,106 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1E293B',
   },
+  rangeSliderWrapper: {
+    width: '100%',
+  },
+  sliderLabelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  sliderLabelText: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  sliderBadgeBox: {
+    width: 44,
+    height: 40,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sliderBadgeValue: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#0F172A',
+  },
+  sliderTrackContainer: {
+    width: '100%',
+    height: 24,
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  sliderTrackLine: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#CBD5E1',
+  },
+  sliderThumb: {
+    position: 'absolute',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#CBD5E1',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  sliderTicksContainer: {
+    position: 'relative',
+    height: 24,
+    marginTop: 2,
+  },
+  tickMarkWrap: {
+    position: 'absolute',
+    top: 0,
+    alignItems: 'center',
+    transform: [{ translateX: -8 }],
+    width: 16,
+  },
+  tickBar: {
+    width: 1,
+    backgroundColor: '#CBD5E1',
+  },
+  tickNumberText: {
+    fontSize: 12,
+    fontWeight: '500',
+    marginTop: 3,
+  },
+  sliderCaptionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  sliderCaptionText: {
+    fontSize: 12,
+    color: '#64748B',
+    marginLeft: 5,
+  },
+  sliderValueBadge: {
+    width: 44,
+    height: 38,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sliderValueText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#0F172A',
+  },
   actionButtonContainer: {
     marginTop: 26,
     paddingTop: 16,
@@ -2487,7 +2889,8 @@ const styles = StyleSheet.create({
         '## Screens Included\n' +
         '- **Step 1**: Unit & Property details (Unit Details, Property Details, Category of Registration, Website and Social Media, Nearby Landmarks, Activities Offered)\n' +
         '- **Step 2**: Location (Property Location, GPS Current Location, Interactive Geo Location Map with entrance pin, PIN Code, State/District/Tehsil/City LGD selectors, Street Address & Landmark)\n' +
-        '- **Step 3**: Owner / Applicant Details (Applicant Details, PAN & Aadhaar Identity Details, Contact Details with Phone & OTP verification, Email verification, Permanent Address, Address for Correspondence & Capacity in which applying)\n\n' +
+        '- **Step 3**: Owner / Applicant Details (Applicant Details, PAN & Aadhaar Identity Details, Contact Details with Phone & OTP verification, Email verification, Permanent Address, Address for Correspondence & Capacity in which applying)\n' +
+        '- **Step 4**: Management & Staff (Manager Details with personal run toggle, Address of Manager, Staff Details with interactive hired locally slider, Previous Registration Details)\n\n' +
         '## Getting Started\n\n' +
         'npm install\n' +
         'npx expo start\n'
