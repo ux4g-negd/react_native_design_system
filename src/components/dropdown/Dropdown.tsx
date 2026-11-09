@@ -282,6 +282,8 @@ export interface Ux4gSelectionDropdownProps {
    * Optional label text displayed above the selection box.
    */
   label?: string;
+  /** Whether field is required (renders red asterisk) */
+  required?: boolean;
   /**
    * Optional helper or error description text displayed below the selection box.
    */
@@ -350,6 +352,7 @@ export const Ux4gSelectionDropdown: React.FC<Ux4gSelectionDropdownProps> = ({
   selectedOptionIds,
   onSelectionChange,
   label,
+  required,
   description,
   placeholder = 'Please select..',
   size = 'm',
@@ -491,21 +494,25 @@ export const Ux4gSelectionDropdown: React.FC<Ux4gSelectionDropdownProps> = ({
 
   return (
     <View testID={testID} style={[styles.containerOuter, containerStyle]}>
-      {label && (
-        <Text
-          style={[
-            labelTextStyle ?? typography.lL_default,
-            {
-              color:
-                status === 'disabled'
-                  ? addOpacityToHex(onSurfaceColor, 0.38)
-                  : onSurfaceColor,
-              marginBottom: Ux4gSpace.space4,
-            },
-          ]}
-        >
-          {label}
-        </Text>
+            {label && (
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Ux4gSpace.space4 }}>
+          <Text
+            style={[
+              labelTextStyle ?? typography.lL_default,
+              {
+                color:
+                  status === 'disabled'
+                    ? addOpacityToHex(onSurfaceColor, 0.38)
+                    : onSurfaceColor,
+              },
+            ]}
+          >
+            {label.endsWith('*') ? label.slice(0, -1).trim() : label}
+          </Text>
+          {(required || label.endsWith('*')) && (
+            <Text style={{ color: '#DC2626', marginLeft: 2, fontSize: 13, fontWeight: '600' }}>*</Text>
+          )}
+        </View>
       )}
 
       <Pressable

@@ -7,8 +7,8 @@ interface HomestayRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID with SafeArea / StatusBar Inset, Ux4gCompactStepper, National Emblem, Union.svg, and right-aligned status banner
-const SNACK_ID = 'PddYCb-noene3sAhKOV7L';
+// Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
+const SNACK_ID = 'Y9qcRgDwA09XJzX5_p2TB';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -21,7 +21,7 @@ export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocPr
     }, 3500);
   };
 
-  // 100% complete, production-ready React Native code matching the exact UI in the screenshots
+  // 100% complete, production-ready React Native code containing Step 1 and Step 2
   const fullAppCodeString = useMemo(() => {
     return `import React, { useState } from 'react';
 import {
@@ -34,7 +34,7 @@ import {
   StatusBar,
   Platform,
 } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path, Circle } from 'react-native-svg';
 import {
   Ux4gInputField,
   Ux4gSelectionDropdown,
@@ -42,7 +42,6 @@ import {
   Ux4gCheckbox,
   Ux4gButton,
   Ux4gDivider,
-  Ux4gCompactStepper,
   Ux4gDatePicker,
   Ux4gThemeProvider,
   UX4GColors,
@@ -59,8 +58,7 @@ const UnionLogo = () => (
   </Svg>
 );
 
-
-// Material Outline Trash / Delete icon matching user screenshot
+// Material Outline Trash / Delete icon
 const TrashOutlineIcon = ({ size = 20, color = '#1E293B' }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
@@ -101,6 +99,232 @@ const TrashOutlineIcon = ({ size = 20, color = '#1E293B' }) => (
   </Svg>
 );
 
+// GPS Crosshairs Icon matching Screen 2
+const CrosshairsGpsIcon = ({ size = 18, color = '#1E293B' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="12" cy="12" r="7.5" stroke={color} strokeWidth="1.8" />
+    <Path
+      d="M12 2V5.5M12 18.5V22M2 12H5.5M18.5 12H22"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+    />
+    <Circle cx="12" cy="12" r="2.8" fill={color} />
+  </Svg>
+);
+
+// Official UX4G Status Banner Component
+const Ux4gStatusBanner = ({
+  variant = 'successLight',
+  title,
+  subtitle,
+  leadingIcon,
+  trailingIcon,
+  backgroundColor,
+  borderColor,
+  marginStyle,
+  paddingStyle,
+  containerStyle,
+  titleStyle,
+  contentAlignment = 'left',
+}) => {
+  const isRight = contentAlignment === 'right';
+  const bg = backgroundColor || (variant === 'successLight' ? '#ECFDF5' : '#F1F5F9');
+  const border = borderColor || (variant === 'successLight' ? '#D1FAE5' : '#E2E8F0');
+  const textColor = variant === 'successLight' ? '#065F46' : '#0F172A';
+
+  const defaultIcon = variant === 'successLight' ? (
+    <View
+      style={{
+        width: 13,
+        height: 13,
+        borderRadius: 6.5,
+        backgroundColor: '#10B981',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 5,
+      }}
+    >
+      <Text style={{ color: '#FFFFFF', fontSize: 8.5, fontWeight: 'bold', marginTop: -1 }}>✓</Text>
+    </View>
+  ) : null;
+
+  const icon = leadingIcon !== undefined ? leadingIcon : defaultIcon;
+
+  return (
+    <View
+      style={[
+        {
+          width: '100%',
+          backgroundColor: bg,
+          borderWidth: 1,
+          borderColor: border,
+          borderRadius: 6,
+          paddingVertical: 6,
+          paddingHorizontal: 10,
+          marginBottom: 8,
+          justifyContent: 'center',
+        },
+        marginStyle,
+        paddingStyle,
+        containerStyle,
+      ]}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: isRight ? 'flex-end' : 'flex-start',
+        }}
+      >
+        {icon}
+        {title ? (
+          <Text
+            style={[
+              {
+                fontSize: 11.5,
+                fontWeight: '600',
+                color: textColor,
+              },
+              titleStyle,
+            ]}
+          >
+            {title}
+          </Text>
+        ) : null}
+        {trailingIcon}
+      </View>
+    </View>
+  );
+};
+
+// UX4G Compact Stepper Component strictly implementing UX4G Design System
+const Ux4gCompactStepper = ({
+  totalSteps = 10,
+  currentStep = 1,
+  stepLabel,
+  title,
+  description,
+  subtitle,
+  onPrevious,
+  onBackPress,
+  onNext,
+  onNextPress,
+  cumulative = true,
+  style,
+}) => {
+  const resolvedLabel = stepLabel || title || '';
+  const resolvedDesc = description || subtitle;
+  const handlePrev = onPrevious || onBackPress || (() => {});
+  const handleNext = onNext || onNextPress || (() => {});
+
+  return (
+    <View style={[{ paddingVertical: 4, paddingHorizontal: 2 }, style]}>
+      {/* 10 Equal Width Capsule Progress Indicators */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+        {Array.from({ length: totalSteps }).map((_, i) => {
+          const isActive = cumulative ? i + 1 <= currentStep : i + 1 === currentStep;
+          return (
+            <View
+              key={i}
+              style={{
+                flex: 1,
+                height: 5,
+                marginRight: i === totalSteps - 1 ? 0 : 5,
+                borderRadius: 2.5,
+                backgroundColor: isActive ? '#4A2BC2' : '#CBD5E1',
+              }}
+            />
+          );
+        })}
+      </View>
+
+      <View style={{ height: 16 }} />
+
+      {/* Step Counter */}
+      <Text style={{ textAlign: 'center', fontSize: 13, fontWeight: '700', color: '#0F172A' }}>
+        {'Step ' + currentStep + ' of ' + totalSteps}
+      </Text>
+
+      <View style={{ height: 6 }} />
+
+      {/* Navigation Row: Left Circle Button | Title + Subtitle | Right Circle Button */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        {/* Previous Button (Left Arrow) */}
+        <TouchableOpacity
+          disabled={currentStep <= 1}
+          onPress={handlePrev}
+          activeOpacity={0.7}
+          style={{
+            width: 38,
+            height: 38,
+            borderRadius: 19,
+            backgroundColor: '#FFFFFF',
+            borderWidth: 1.2,
+            borderColor: currentStep > 1 ? '#E2E8F0' : '#F1F5F9',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: currentStep > 1 ? 1 : 0.4,
+          }}
+        >
+          <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+              fill={currentStep > 1 ? '#475569' : '#94A3B8'}
+            />
+          </Svg>
+        </TouchableOpacity>
+
+        {/* Center: Step Title & Subtitle */}
+        <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 6 }}>
+          <Text style={{ fontSize: 15.5, fontWeight: '700', color: '#4A2BC2', textAlign: 'center' }}>
+            {resolvedLabel}
+          </Text>
+          {resolvedDesc ? (
+            <Text
+              style={{
+                fontSize: 12,
+                lineHeight: 16,
+                color: '#64748B',
+                textAlign: 'center',
+                marginTop: 3,
+                maxWidth: 230,
+              }}
+            >
+              {resolvedDesc}
+            </Text>
+          ) : null}
+        </View>
+
+        {/* Next Button (Right Arrow) */}
+        <TouchableOpacity
+          disabled={currentStep >= totalSteps}
+          onPress={handleNext}
+          activeOpacity={0.7}
+          style={{
+            width: 38,
+            height: 38,
+            borderRadius: 19,
+            backgroundColor: '#FFFFFF',
+            borderWidth: 1.5,
+            borderColor: currentStep < totalSteps ? '#818CF8' : '#E2E8F0',
+            justifyContent: 'center',
+            alignItems: 'center',
+            opacity: currentStep < totalSteps ? 1 : 0.4,
+          }}
+        >
+          <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+            <Path
+              d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"
+              fill={currentStep < totalSteps ? '#4A2BC2' : '#94A3B8'}
+            />
+          </Svg>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 const ORGANISATION_TYPES = [
   { id: 'ind', label: 'Individual / Sole Proprietorship' },
   { id: 'part', label: 'Partnership Firm' },
@@ -125,159 +349,172 @@ const LANDMARK_PLACE_OPTIONS = {
   '4': [{ id: 'max_hosp', label: 'Max Super Speciality Hospital' }, { id: 'doon_hosp', label: 'Government Doon Hospital' }],
 };
 
-const DISTANCE_UNITS = [
-  { id: 'km', label: 'km' },
-  { id: 'm', label: 'm' },
+const STATES_AND_UTS = [
+  { id: 'uk', label: 'Uttarakhand' },
+  { id: 'hp', label: 'Himachal Pradesh' },
+  { id: 'up', label: 'Uttar Pradesh' },
+  { id: 'dl', label: 'Delhi' },
+  { id: 'rj', label: 'Rajasthan' },
+  { id: 'ga', label: 'Goa' },
+  { id: 'kl', label: 'Kerala' },
 ];
 
-const STATUSBAR_HEIGHT = Platform.OS === 'android' ? 20 : 0;
+const DISTRICTS_UTTARAKHAND = [
+  { id: 'ddn', label: 'Dehradun' },
+  { id: 'ntl', label: 'Nainital' },
+  { id: 'hdw', label: 'Haridwar' },
+  { id: 'pgr', label: 'Pauri Garhwal' },
+  { id: 'tgr', label: 'Tehri Garhwal' },
+  { id: 'utk', label: 'Uttarkashi' },
+  { id: 'cml', label: 'Chamoli' },
+];
+
+const TEHSILS_DEHRADUN = [
+  { id: 'mus', label: 'Mussoorie' },
+  { id: 'ddn_c', label: 'Dehradun Sadar' },
+  { id: 'rsh', label: 'Rishikesh' },
+  { id: 'vkn', label: 'Vikasnagar' },
+  { id: 'chk', label: 'Chakrata' },
+];
+
+const CITIES_MUSSOORIE = [
+  { id: 'mus_mb', label: 'Mussoorie (MB)' },
+  { id: 'landour', label: 'Landour (CB)' },
+  { id: 'kempty_v', label: 'Kempty Village' },
+  { id: 'barlow', label: 'Barlowganj' },
+  { id: 'jharipani', label: 'Jharipani' },
+];
+
+const AREA_TYPES = [
+  { id: 'urban', label: 'Urban — from the LGD record for this town' },
+  { id: 'rural', label: 'Rural — Gram Panchayat jurisdiction' },
+  { id: 'semi_urban', label: 'Semi-Urban / Cantonment Board' },
+];
 
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [savedTime, setSavedTime] = useState('3:14 PM');
 
-  // Complete Form State
+  // Form state
   const [formData, setFormData] = useState({
+    // Step 1: Unit & Property details
     unitName: '',
     brandName: '',
     legalEntityName: '',
     promoterName: '',
     orgType: [],
     firmRegNumber: '',
-    commencementDate: '',
-
-    landUnit: ['sq_m'],
-    landArea: '',
+    dateOfCommencement: '',
+    unitOfMeasurement: ['sq_m'],
+    totalLandArea: '',
+    builtUpUnit: ['sq_m'],
     builtUpArea: '',
-    lettableRooms: '4',
-    ownership: 'Owned',
-    planApproved: 'Yes',
-    roadWidthUnit: ['mtr'],
-    roadWidth: '',
-
-    locationType: 'Municipal Corporation or Council',
-
-    websiteUrl: '',
-    bookingLink: '',
-
+    totalLettableRooms: '4',
+    ownership: 'owned',
+    buildingPlanApproved: 'yes',
+    approachRoadUnit: ['mtr'],
+    approachRoadWidth: '',
+    locationType: 'municipal',
+    unitWebsite: '',
+    roomBookingLink: '',
     landmarks: [
-      { id: '1', type: 'Bus stand', selectedPlace: ['kempty_bus'], dist: '0', unit: ['km'], removable: false, placeholder: 'Select bus stand' },
-      { id: '2', type: 'Railway station', selectedPlace: ['dehradun'], dist: '0', unit: ['km'], removable: false, placeholder: 'Select station' },
-      { id: '3', type: 'Tourist attraction', selectedPlace: ['kempty_falls'], dist: '0', unit: ['km'], removable: false, placeholder: 'Select attraction' },
-      { id: '4', type: 'Hospital', selectedPlace: [], dist: '0', unit: ['km'], removable: true, placeholder: 'Start typing a hospital name' },
+      { id: '1', type: 'Bus stand', place: ['kempty_bus'], distance: '0', unit: ['km'] },
+      { id: '2', type: 'Railway station', place: ['dehradun'], distance: '0', unit: ['km'] },
+      { id: '3', type: 'Tourist attraction', place: ['kempty_falls'], distance: '0', unit: ['km'] },
+      { id: '4', type: 'Hospital', place: [], distance: '0', unit: ['km'] },
     ],
+    tourismActivities: [],
+    tourismOtherText: '',
+    adventureActivities: [],
+    adventureOtherText: '',
+    entertainmentActivities: [],
+    entertainmentOtherText: '',
 
-    tourism: ['Guided local tours'],
-    otherTourism: '',
-    adventure: [],
-    otherAdventure: '',
-    entertainment: [],
-    otherEntertainment: '',
+    // Step 2: Location
+    whereIsProperty: '',
+    pinPlaced: true,
+    latitude: '30.4598° N',
+    longitude: '78.0644° E',
+    pinCode: '',
+    stateUT: ['uk'],
+    district: ['ddn'],
+    subDistrict: ['mus'],
+    cityVillage: ['mus_mb'],
+    areaType: ['urban'],
+    houseStreet: '',
+    landmarkText: '',
   });
 
   const [errors, setErrors] = useState({});
-  const [isDrafting, setIsDrafting] = useState(false);
 
-  const updateField = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const toggleActivity = (category, activity) => {
-    setFormData((prev) => {
-      const currentList = prev[category] || [];
-      const updated = currentList.includes(activity)
-        ? currentList.filter((a) => a !== activity)
-        : [...currentList, activity];
-      return { ...prev, [category]: updated };
-    });
-  };
-
-  const updateLandmark = (id, field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      landmarks: prev.landmarks.map((lm) => (lm.id === id ? { ...lm, [field]: value } : lm)),
-    }));
-  };
-
-  const removeLandmark = (id) => {
-    setFormData((prev) => ({
-      ...prev,
-      landmarks: prev.landmarks.filter((lm) => lm.id !== id),
-    }));
-  };
-
-  const addLandmark = () => {
-    const newId = String(Date.now());
-    setFormData((prev) => ({
-      ...prev,
-      landmarks: [
-        ...prev.landmarks,
-        {
-          id: newId,
-          type: 'Tourist attraction',
-          selectedPlace: [],
-          dist: '0',
-          unit: ['km'],
-          removable: true,
-          placeholder: 'Select or search place name',
-        },
-      ],
-    }));
-  };
-
-  const handleContinue = () => {
-    const newErrors = {};
-    if (!formData.unitName.trim()) newErrors.unitName = 'Name of the unit is required';
-    if (!formData.legalEntityName.trim()) newErrors.legalEntityName = 'Legal entity name is required';
-    if (!formData.promoterName.trim()) newErrors.promoterName = 'Name of promoter / owner is required';
-    if (!formData.orgType.length) newErrors.orgType = 'Please select organisation type';
-    if (!formData.commencementDate.trim()) newErrors.commencementDate = 'Date of commencement is required';
-    if (!formData.landArea.trim() || Number(formData.landArea) <= 0) {
-      newErrors.landArea = 'Valid total land area is required';
-    }
-    if (!formData.lettableRooms.trim() || Number(formData.lettableRooms) < 1) {
-      newErrors.lettableRooms = 'Must have at least 1 lettable room';
-    }
-    if (!formData.ownership) newErrors.ownership = 'Ownership status is required';
-    if (!formData.planApproved) newErrors.planApproved = 'Approval status is required';
-    if (!formData.locationType) newErrors.locationType = 'Location category is required';
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      setStep(2);
+  const updateField = (key, value) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      });
     }
   };
 
-  const handleSaveDraft = () => {
-    setIsDrafting(true);
-    setTimeout(() => {
-      const now = new Date();
-      setSavedTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-      setIsDrafting(false);
-    }, 400);
+  const handleSetLocationPin = () => {
+    updateField('pinPlaced', true);
+    updateField('latitude', '30.4598° N');
+    updateField('longitude', '78.0644° E');
+    if (!formData.whereIsProperty) {
+      updateField('whereIsProperty', 'https://maps.google.com/?q=30.4598,78.0644');
+    }
+  };
+
+  const handleContinueStep1 = () => {
+    const errs = {};
+    if (!formData.unitName.trim()) errs.unitName = 'Name of the unit is required';
+    if (!formData.legalEntityName.trim()) errs.legalEntityName = 'Legal entity name is required';
+    if (!formData.promoterName.trim()) errs.promoterName = 'Promoter name is required';
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(2);
+  };
+
+  const handleContinueStep2 = () => {
+    const errs = {};
+    if (!formData.whereIsProperty.trim()) errs.whereIsProperty = 'Property location link is required';
+    if (!formData.pinCode.trim()) errs.pinCode = 'PIN code is required';
+    if (!formData.stateUT.length) errs.stateUT = 'State / UT is required';
+    if (!formData.district.length) errs.district = 'District is required';
+    if (!formData.subDistrict.length) errs.subDistrict = 'Sub-district is required';
+    if (!formData.cityVillage.length) errs.cityVillage = 'City / Town / Village is required';
+    if (!formData.houseStreet.trim()) errs.houseStreet = 'House or building number and street is required';
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Step 2 validated successfully! Ready for Step 3.');
   };
 
   return (
-    <Ux4gThemeProvider isDark={false}>
-      {/* SafeAreaView with explicit Android StatusBar inset */}
+    <Ux4gThemeProvider>
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" translucent={false} />
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-        {/* --- Top App Header (Cleanly positioned below status bar) --- */}
+        {/* Government App Header matching screenshot */}
         <View style={styles.headerBar}>
-          <View style={styles.headerBrandRow}>
-            {/* National Emblem SVG */}
-            <NationalEmblem width={24} height={40} />
-            {/* UX4G Union Logo SVG */}
+          <View style={styles.headerLeft}>
+            <NationalEmblem width={32} height={36} />
+            <View style={{ width: 8 }} />
             <UnionLogo />
           </View>
-
-          {/* Hamburger Menu Button */}
-          <TouchableOpacity style={styles.hamburgerBtn} activeOpacity={0.7}>
-            <View style={styles.hamburgerLine} />
-            <View style={styles.hamburgerLine} />
-            <View style={styles.hamburgerLine} />
+          <TouchableOpacity style={styles.menuButton} activeOpacity={0.7}>
+            <View style={styles.menuIconContainer}>
+              <View style={styles.menuBar} />
+              <View style={styles.menuBar} />
+              <View style={styles.menuBar} />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -286,398 +523,907 @@ export default function App() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Main Card */}
-          <View style={styles.card}>
-            {/* Status Banner - Aligned to Right as per image */}
-            <View style={styles.savedBannerContainer}>
-              <View style={styles.savedBannerContent}>
-                <View style={styles.savedCheckCircle}>
-                  <Text style={styles.savedCheckIcon}>✓</Text>
-                </View>
-                <Text style={styles.savedBannerText}>Saved {savedTime}</Text>
-              </View>
-            </View>
+          {/* Main Card Container */}
+          <View style={styles.mainCard}>
+            {/* Auto-saved banner using UX4G Status Banner Component */}
+            <Ux4gStatusBanner
+              variant="successLight"
+              title={'Saved ' + savedTime}
+              contentAlignment="right"
+              backgroundColor="#ECFDF5"
+              borderColor="transparent"
+              containerStyle={{ borderRadius: 6, marginBottom: 8 }}
+              paddingStyle={{ paddingVertical: 6, paddingHorizontal: 10 }}
+              titleStyle={{ fontSize: 11.5, fontWeight: '600', color: '#065F46' }}
+            />
 
-            {/* Official Ux4gCompactStepper component (layout: centeredBetween) */}
+            {/* Stepper with centered title & back/next navigation */}
             <Ux4gCompactStepper
               totalSteps={10}
               currentStep={step}
-              stepLabel={step === 1 ? 'Unit / Property details' : 'Step ' + step + ' of 10'}
+              layout="centeredBetween"
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : 'Step ' + step}
+              subtitle={
+                step === 1
+                  ? 'Identity of the property and of the legal entity behind it.'
+                  : step === 2
+                  ? 'Where the property physically is, to the depth this jurisdiction requires.'
+                  : 'Multi-step registration workflow.'
+              }
               description={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
-                  : 'Awaiting Screen 2 from user.'
+                  : step === 2
+                  ? 'Where the property physically is, to the depth this jurisdiction requires.'
+                  : 'Multi-step registration workflow.'
               }
-              layout="centeredBetween"
-              onNext={handleContinue}
-              onPrevious={() => setStep((p) => Math.max(1, p - 1))}
+              onBackPress={() => {
+                if (step > 1) setStep(step - 1);
+              }}
+              onPrevious={() => {
+                if (step > 1) setStep(step - 1);
+              }}
+              onNextPress={() => {
+                if (step === 1) handleContinueStep1();
+                else if (step === 2) handleContinueStep2();
+              }}
+              onNext={() => {
+                if (step === 1) handleContinueStep1();
+                else if (step === 2) handleContinueStep2();
+              }}
+              cumulative={true}
+              style={{ marginVertical: 4 }}
             />
 
-            <Ux4gDivider style={{ marginVertical: 16 }} />
+            {/* Subtle Divider below stepper matching screenshot */}
+            <View style={styles.stepperBottomDivider} />
 
+            {/* ======================================================== */}
+            {/* SCREEN 1: UNIT / PROPERTY DETAILS                        */}
+            {/* ======================================================== */}
             {step === 1 ? (
               <View style={styles.formContainer}>
                 {/* 1. Unit Details */}
                 <Text style={styles.sectionHeading}>Unit Details</Text>
 
-                <Ux4gInputField
-                  label="Name of the unit"
-                  required
-                  value={formData.unitName}
-                  onValueChange={(v) => updateField('unitName', v)}
-                  placeholder="Enter the name your guests will see"
-                  status={errors.unitName ? 'error' : 'defaultStatus'}
-                  caption={errors.unitName}
-                />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Name of the unit"
+                    required
+                    size="large"
+                    value={formData.unitName}
+                    onValueChange={(v) => updateField('unitName', v)}
+                    placeholder="Enter the name your guests will see"
+                    status={errors.unitName ? 'error' : 'defaultStatus'}
+                    caption={errors.unitName}
+                  />
+                </View>
 
-                <Ux4gInputField
-                  label="Brand name (optional)"
-                  value={formData.brandName}
-                  onValueChange={(v) => updateField('brandName', v)}
-                  placeholder="If the unit trades under a brand"
-                />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Brand name (optional)"
+                    size="large"
+                    value={formData.brandName}
+                    onValueChange={(v) => updateField('brandName', v)}
+                    placeholder="If the unit trades under a brand"
+                  />
+                </View>
 
-                <Ux4gInputField
-                  label="Legal entity name"
-                  required
-                  value={formData.legalEntityName}
-                  onValueChange={(v) => updateField('legalEntityName', v)}
-                  placeholder="Exactly as printed on the PAN"
-                  status={errors.legalEntityName ? 'error' : 'defaultStatus'}
-                  caption={errors.legalEntityName}
-                />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Legal entity name"
+                    required
+                    size="large"
+                    value={formData.legalEntityName}
+                    onValueChange={(v) => updateField('legalEntityName', v)}
+                    placeholder="Exactly as printed on the PAN"
+                    status={errors.legalEntityName ? 'error' : 'defaultStatus'}
+                    caption={errors.legalEntityName}
+                  />
+                </View>
 
-                <Ux4gInputField
-                  label="Name of the promoter / owner"
-                  required
-                  value={formData.promoterName}
-                  onValueChange={(v) => updateField('promoterName', v)}
-                  placeholder="Full name"
-                  status={errors.promoterName ? 'error' : 'defaultStatus'}
-                  caption={errors.promoterName}
-                />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Name of the promoter / owner"
+                    required
+                    size="large"
+                    value={formData.promoterName}
+                    onValueChange={(v) => updateField('promoterName', v)}
+                    placeholder="Full name"
+                    status={errors.promoterName ? 'error' : 'defaultStatus'}
+                    caption={errors.promoterName}
+                  />
+                </View>
 
-                <Ux4gSelectionDropdown
-                  label="Organisation type *"
-                  options={ORGANISATION_TYPES}
-                  selectedOptionIds={formData.orgType}
-                  onSelectionChange={(v) => updateField('orgType', v)}
-                  size="l"
-                />
-                {errors.orgType && <Text style={styles.errorCaption}>{errors.orgType}</Text>}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Organisation type *"
+                    options={ORGANISATION_TYPES}
+                    selectedOptionIds={formData.orgType}
+                    onSelectionChange={(v) => updateField('orgType', v)}
+                    placeholder="Select organisation type"
+                    size="l"
+                  />
+                </View>
 
-                <Ux4gInputField
-                  label="Firm registration number"
-                  value={formData.firmRegNumber}
-                  onValueChange={(v) => updateField('firmRegNumber', v)}
-                  placeholder="Required for a firm or company"
-                />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Firm registration number"
+                    size="large"
+                    value={formData.firmRegNumber}
+                    onValueChange={(v) => updateField('firmRegNumber', v)}
+                    placeholder="Required for a firm or company"
+                  />
+                </View>
 
-                <Ux4gDatePicker
-                  label="Date of commencement"
-                  isRequired
-                  placeholder="Select date"
-                  onDateSelected={(date) => {
-                    const d = String(date.getDate()).padStart(2, '0');
-                    const m = String(date.getMonth() + 1).padStart(2, '0');
-                    const y = date.getFullYear();
-                    updateField('commencementDate', d + '/' + m + '/' + y);
-                  }}
-                  status={errors.commencementDate ? 'error' : 'defaultStatus'}
-                  description={errors.commencementDate || ''}
-                />
+                {/* Official UX4G DatePicker */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gDatePicker
+                    label="Date of commencement *"
+                    value={formData.dateOfCommencement}
+                    onValueChange={(v) => updateField('dateOfCommencement', v)}
+                    placeholder="Select date"
+                    size="l"
+                  />
+                </View>
 
-                <Ux4gDivider style={{ marginVertical: 16 }} />
+                <View style={{ height: 20 }} />
 
                 {/* 2. Property Details */}
                 <Text style={styles.sectionHeading}>Property Details</Text>
 
-                <Ux4gSelectionDropdown
-                  label="Unit of measurement *"
-                  options={LAND_UNITS}
-                  selectedOptionIds={formData.landUnit}
-                  onSelectionChange={(v) => updateField('landUnit', v)}
-                  size="l"
-                />
-
-                <Ux4gInputField
-                  label="Total land area"
-                  required
-                  type="number"
-                  value={formData.landArea}
-                  onValueChange={(v) => updateField('landArea', v)}
-                  placeholder="Numbers only"
-                  status={errors.landArea ? 'error' : 'defaultStatus'}
-                  caption={errors.landArea}
-                />
-
-                <Ux4gSelectionDropdown
-                  label="Unit of measurement"
-                  options={[{ id: 'sq_m', label: 'Sq. m. - same as land area' }]}
-                  selectedOptionIds={['sq_m']}
-                  onSelectionChange={() => {}}
-                  size="l"
-                />
-
-                <Ux4gInputField
-                  label="Built-up area"
-                  type="number"
-                  value={formData.builtUpArea}
-                  onValueChange={(v) => updateField('builtUpArea', v)}
-                  placeholder="Numbers only"
-                />
-
-                <Ux4gInputField
-                  label="Total number of lettable rooms"
-                  required
-                  type="number"
-                  value={formData.lettableRooms}
-                  onValueChange={(v) => updateField('lettableRooms', v)}
-                  placeholder="4"
-                  status={errors.lettableRooms ? 'error' : 'defaultStatus'}
-                  caption={errors.lettableRooms}
-                />
-
-                <Text style={styles.fieldLabel}>Ownership of Property *</Text>
-                {['Owned', 'Leased', 'Jointly owned', 'Other'].map((opt) => (
-                  <Ux4gRadioButton
-                    key={opt}
-                    label={opt}
-                    value={opt}
-                    groupValue={formData.ownership}
-                    onChanged={(v) => updateField('ownership', v)}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Unit of measurement *"
+                    options={LAND_UNITS}
+                    selectedOptionIds={formData.unitOfMeasurement}
+                    onSelectionChange={(v) => updateField('unitOfMeasurement', v)}
+                    size="l"
                   />
-                ))}
+                </View>
 
-                <Text style={styles.fieldLabel}>Whether Building Plan Approved *</Text>
-                {['Yes', 'No', 'Not applicable'].map((opt) => (
-                  <Ux4gRadioButton
-                    key={opt}
-                    label={opt}
-                    value={opt}
-                    groupValue={formData.planApproved}
-                    onChanged={(v) => updateField('planApproved', v)}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Total land area"
+                    required
+                    size="large"
+                    type="number"
+                    value={formData.totalLandArea}
+                    onValueChange={(v) => updateField('totalLandArea', v)}
+                    placeholder="Numbers only"
                   />
-                ))}
+                </View>
 
-                <Ux4gSelectionDropdown
-                  label="Unit of measurement"
-                  options={[{ id: 'mtr', label: 'mtr' }]}
-                  selectedOptionIds={['mtr']}
-                  onSelectionChange={() => {}}
-                  size="l"
-                />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Unit of measurement"
+                    options={[
+                      { id: 'sq_m', label: 'Sq. m. - same as land area' },
+                      { id: 'sq_ft', label: 'Sq. ft.' },
+                    ]}
+                    selectedOptionIds={formData.builtUpUnit}
+                    onSelectionChange={(v) => updateField('builtUpUnit', v)}
+                    size="l"
+                  />
+                </View>
 
-                <Ux4gInputField
-                  label="Width of the approach road"
-                  type="number"
-                  value={formData.roadWidth}
-                  onValueChange={(v) => updateField('roadWidth', v)}
-                  placeholder="Numbers only"
-                />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Built-up area"
+                    size="large"
+                    type="number"
+                    value={formData.builtUpArea}
+                    onValueChange={(v) => updateField('builtUpArea', v)}
+                    placeholder="Numbers only"
+                  />
+                </View>
 
-                <Ux4gDivider style={{ marginVertical: 16 }} />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Total number of lettable rooms"
+                    required
+                    size="large"
+                    type="number"
+                    value={formData.totalLettableRooms}
+                    onValueChange={(v) => updateField('totalLettableRooms', v)}
+                  />
+                </View>
+
+                {/* Ownership Radio Group */}
+                <View style={styles.radioGroup}>
+                  <Text style={styles.radioGroupLabel}>Ownership of Property*</Text>
+                  <View style={{ marginTop: 8 }}>
+                    <Ux4gRadioButton
+                      label="Owned"
+                      selected={formData.ownership === 'owned'}
+                      onSelect={() => updateField('ownership', 'owned')}
+                    />
+                    <Ux4gRadioButton
+                      label="Leased"
+                      selected={formData.ownership === 'leased'}
+                      onSelect={() => updateField('ownership', 'leased')}
+                    />
+                    <Ux4gRadioButton
+                      label="Jointly owned"
+                      selected={formData.ownership === 'jointly'}
+                      onSelect={() => updateField('ownership', 'jointly')}
+                    />
+                    <Ux4gRadioButton
+                      label="Other"
+                      selected={formData.ownership === 'other'}
+                      onSelect={() => updateField('ownership', 'other')}
+                    />
+                  </View>
+                </View>
+
+                {/* Building Plan Approved */}
+                <View style={styles.radioGroup}>
+                  <Text style={styles.radioGroupLabel}>Whether Building Plan Approved*</Text>
+                  <View style={{ marginTop: 8 }}>
+                    <Ux4gRadioButton
+                      label="Yes"
+                      selected={formData.buildingPlanApproved === 'yes'}
+                      onSelect={() => updateField('buildingPlanApproved', 'yes')}
+                    />
+                    <Ux4gRadioButton
+                      label="No"
+                      selected={formData.buildingPlanApproved === 'no'}
+                      onSelect={() => updateField('buildingPlanApproved', 'no')}
+                    />
+                    <Ux4gRadioButton
+                      label="Not applicable"
+                      selected={formData.buildingPlanApproved === 'na'}
+                      onSelect={() => updateField('buildingPlanApproved', 'na')}
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Unit of measurement"
+                    options={[
+                      { id: 'mtr', label: 'mtr' },
+                      { id: 'ft', label: 'ft' },
+                    ]}
+                    selectedOptionIds={formData.approachRoadUnit}
+                    onSelectionChange={(v) => updateField('approachRoadUnit', v)}
+                    size="l"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Width of the approach road"
+                    size="large"
+                    type="number"
+                    value={formData.approachRoadWidth}
+                    onValueChange={(v) => updateField('approachRoadWidth', v)}
+                    placeholder="Numbers only"
+                  />
+                </View>
+
+                <View style={{ height: 20 }} />
 
                 {/* 3. Category of Registration */}
                 <Text style={styles.sectionHeading}>Category of Registration</Text>
-                <Text style={styles.fieldLabel}>Type of Location *</Text>
-                {[
-                  'Municipal Corporation or Council',
-                  'Town & Country Planning, SADA or Nagar Panchayat',
-                  'Gram Panchayat',
-                  'Other',
-                ].map((opt) => (
-                  <Ux4gRadioButton
-                    key={opt}
-                    label={opt}
-                    value={opt}
-                    groupValue={formData.locationType}
-                    onChanged={(v) => updateField('locationType', v)}
-                  />
-                ))}
 
-                <Ux4gDivider style={{ marginVertical: 16 }} />
+                <View style={styles.radioGroup}>
+                  <Text style={styles.radioGroupLabel}>Type of Location*</Text>
+                  <View style={{ marginTop: 8 }}>
+                    <Ux4gRadioButton
+                      label="Municipal Corporation or Council"
+                      selected={formData.locationType === 'municipal'}
+                      onSelect={() => updateField('locationType', 'municipal')}
+                    />
+                    <Ux4gRadioButton
+                      label="Town & Country Planning, SADA or Nagar Panchayat"
+                      selected={formData.locationType === 'town_planning'}
+                      onSelect={() => updateField('locationType', 'town_planning')}
+                    />
+                    <Ux4gRadioButton
+                      label="Gram Panchayat"
+                      selected={formData.locationType === 'gram'}
+                      onSelect={() => updateField('locationType', 'gram')}
+                    />
+                    <Ux4gRadioButton
+                      label="Other"
+                      selected={formData.locationType === 'other_loc'}
+                      onSelect={() => updateField('locationType', 'other_loc')}
+                    />
+                  </View>
+                </View>
+
+                <View style={{ height: 20 }} />
 
                 {/* 4. Website and Social Media Details */}
                 <Text style={styles.sectionHeading}>Website and Social Media Details</Text>
-                <Ux4gInputField
-                  label="Unit website (optional)"
-                  value={formData.websiteUrl}
-                  onValueChange={(v) => updateField('websiteUrl', v)}
-                  placeholder="https://"
-                />
-                <Ux4gInputField
-                  label="Room booking link (optional)"
-                  value={formData.bookingLink}
-                  onValueChange={(v) => updateField('bookingLink', v)}
-                  placeholder="https://"
-                />
 
-                <Ux4gDivider style={{ marginVertical: 16 }} />
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Unit website (optional)"
+                    size="large"
+                    value={formData.unitWebsite}
+                    onValueChange={(v) => updateField('unitWebsite', v)}
+                    placeholder="https://"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Room booking link (optional)"
+                    size="large"
+                    value={formData.roomBookingLink}
+                    onValueChange={(v) => updateField('roomBookingLink', v)}
+                    placeholder="https://"
+                  />
+                </View>
+
+                <View style={{ height: 20 }} />
 
                 {/* 5. Nearby Landmarks */}
                 <Text style={styles.sectionHeading}>Nearby Landmarks</Text>
-                {formData.landmarks.map((lm, index) => (
-                  <View key={lm.id} style={styles.landmarkItem}>
-                    {/* Type row */}
-                    <Text style={styles.landmarkFieldLabel}>Type</Text>
-                    <View style={styles.landmarkTypeRow}>
-                      <View style={styles.landmarkTypeBox}>
-                        <Text style={styles.landmarkTypeLabel}>{lm.type}</Text>
-                      </View>
-                      {lm.removable && (
-                        <TouchableOpacity
-                          onPress={() => removeLandmark(lm.id)}
-                          style={styles.trashBtn}
-                          activeOpacity={0.7}
-                        >
-                          <TrashOutlineIcon size={20} color="#1E293B" />
-                        </TouchableOpacity>
-                      )}
-                    </View>
 
-                    {/* Name of the place dropdown */}
-                    <Ux4gSelectionDropdown
-                      label="Name of the place *"
-                      options={LANDMARK_PLACE_OPTIONS[lm.id] || [
-                        { id: 'custom', label: lm.type }
-                      ]}
-                      selectedOptionIds={lm.selectedPlace}
-                      onSelectionChange={(v) => updateLandmark(lm.id, 'selectedPlace', v)}
-                      placeholder={lm.placeholder || 'Select place'}
-                      size="l"
-                    />
-
-                    {/* Distance & Unit */}
-                    <View style={styles.distanceRow}>
-                      <View style={{ flex: 1 }}>
-                        <Ux4gInputField
-                          label="Distance *"
-                          value={lm.dist}
-                          onValueChange={(v) => updateLandmark(lm.id, 'dist', v)}
-                          placeholder="0"
-                        />
+                {formData.landmarks.map((lm, idx) => {
+                  const placeOptions = LANDMARK_PLACE_OPTIONS[lm.id] || [
+                    { id: 'custom', label: lm.type },
+                  ];
+                  return (
+                    <View key={lm.id} style={styles.landmarkCard}>
+                      <View style={styles.landmarkTypeHeader}>
+                        <View style={styles.landmarkTypeBox}>
+                          <Text style={styles.landmarkTypeLabel}>Type</Text>
+                          <Text style={styles.landmarkTypeValue}>{lm.type}</Text>
+                        </View>
+                        {idx >= 3 && (
+                          <TouchableOpacity
+                            style={styles.deleteIconButton}
+                            onPress={() => {
+                              const updated = formData.landmarks.filter((item) => item.id !== lm.id);
+                              updateField('landmarks', updated);
+                            }}
+                            activeOpacity={0.7}
+                          >
+                            <TrashOutlineIcon size={20} color="#1E293B" />
+                          </TouchableOpacity>
+                        )}
                       </View>
-                      <View style={{ width: 120 }}>
+
+                      <View style={{ marginTop: 12 }}>
                         <Ux4gSelectionDropdown
-                          label="Unit"
-                          options={DISTANCE_UNITS}
-                          selectedOptionIds={lm.unit}
-                          onSelectionChange={(v) => updateLandmark(lm.id, 'unit', v)}
+                          label="Name of the place *"
+                          options={placeOptions}
+                          selectedOptionIds={lm.place}
+                          onSelectionChange={(val) => {
+                            const updated = [...formData.landmarks];
+                            updated[idx].place = val;
+                            updateField('landmarks', updated);
+                          }}
+                          placeholder={
+                            lm.type === 'Hospital'
+                              ? 'Start typing a hospital name'
+                              : 'Select ' + lm.type.toLowerCase()
+                          }
                           size="l"
                         />
                       </View>
-                    </View>
 
-                    {index < formData.landmarks.length - 1 && (
-                      <View style={styles.landmarkDivider} />
-                    )}
-                  </View>
-                ))}
+                      <View style={styles.distanceRow}>
+                        <View style={{ flex: 1.2, marginRight: 10 }}>
+                          <Ux4gInputField
+                            label="Distance *"
+                            size="large"
+                            type="number"
+                            value={lm.distance}
+                            onValueChange={(val) => {
+                              const updated = [...formData.landmarks];
+                              updated[idx].distance = val;
+                              updateField('landmarks', updated);
+                            }}
+                          />
+                        </View>
+                        <View style={{ flex: 0.9 }}>
+                          <Ux4gSelectionDropdown
+                            label="Unit"
+                            options={[
+                              { id: 'km', label: 'km' },
+                              { id: 'mtr', label: 'mtr' },
+                            ]}
+                            selectedOptionIds={lm.unit}
+                            onSelectionChange={(val) => {
+                              const updated = [...formData.landmarks];
+                              updated[idx].unit = val;
+                              updateField('landmarks', updated);
+                            }}
+                            size="l"
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  );
+                })}
 
                 <TouchableOpacity
-                  style={styles.addLandmarkOutlineBtn}
-                  onPress={addLandmark}
-                  activeOpacity={0.7}
+                  style={styles.addLandmarkButton}
+                  onPress={() => {
+                    const newId = String(Date.now());
+                    updateField('landmarks', [
+                      ...formData.landmarks,
+                      { id: newId, type: 'Landmark', place: [], distance: '0', unit: ['km'] },
+                    ]);
+                  }}
+                  activeOpacity={0.8}
                 >
-                  <Text style={styles.addLandmarkOutlineBtnText}>+ Add another landmark</Text>
+                  <Text style={styles.addLandmarkText}>+ Add another landmark</Text>
                 </TouchableOpacity>
 
-                <Ux4gDivider style={{ marginVertical: 16 }} />
+                <View style={{ height: 20 }} />
 
                 {/* 6. Activities Offered */}
                 <Text style={styles.sectionHeading}>Activities Offered</Text>
 
-                <Text style={styles.subCategoryHeading}>Tourism Activities</Text>
-                {['Guided local tours', 'Cultural programmes', 'Regional cuisine', 'Other'].map((act) => (
+                <Text style={styles.activitySubheading}>Tourism Activities</Text>
+                <View style={{ marginTop: 8 }}>
                   <Ux4gCheckbox
-                    key={act}
-                    label={act}
-                    value={formData.tourism.includes(act)}
-                    onChanged={() => toggleActivity('tourism', act)}
+                    label="Guided local tours"
+                    checked={formData.tourismActivities.includes('guided')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.tourismActivities;
+                      updateField(
+                        'tourismActivities',
+                        chk ? [...cur, 'guided'] : cur.filter((x) => x !== 'guided')
+                      );
+                    }}
                   />
-                ))}
-                {formData.tourism.includes('Other') && (
-                  <Ux4gInputField
-                    label="Shown when Other is ticked"
-                    value={formData.otherTourism}
-                    onValueChange={(v) => updateField('otherTourism', v)}
-                    placeholder="Separate several with commas"
+                  <Ux4gCheckbox
+                    label="Cultural programmes"
+                    checked={formData.tourismActivities.includes('cultural')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.tourismActivities;
+                      updateField(
+                        'tourismActivities',
+                        chk ? [...cur, 'cultural'] : cur.filter((x) => x !== 'cultural')
+                      );
+                    }}
                   />
+                  <Ux4gCheckbox
+                    label="Regional cuisine"
+                    checked={formData.tourismActivities.includes('cuisine')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.tourismActivities;
+                      updateField(
+                        'tourismActivities',
+                        chk ? [...cur, 'cuisine'] : cur.filter((x) => x !== 'cuisine')
+                      );
+                    }}
+                  />
+                  <Ux4gCheckbox
+                    label="Other"
+                    checked={formData.tourismActivities.includes('other')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.tourismActivities;
+                      updateField(
+                        'tourismActivities',
+                        chk ? [...cur, 'other'] : cur.filter((x) => x !== 'other')
+                      );
+                    }}
+                  />
+                </View>
+
+                {formData.tourismActivities.includes('other') && (
+                  <View style={{ marginTop: 10 }}>
+                    <Ux4gInputField
+                      label="Shown when Other is ticked"
+                      size="large"
+                      value={formData.tourismOtherText}
+                      onValueChange={(v) => updateField('tourismOtherText', v)}
+                      placeholder="Separate several with commas"
+                    />
+                  </View>
                 )}
 
-                <Text style={[styles.subCategoryHeading, { marginTop: 14 }]}>Adventure Activities</Text>
-                {['Trekking', 'Water sports', 'Camping', 'Other'].map((act) => (
+                <Text style={[styles.activitySubheading, { marginTop: 16 }]}>Adventure Activities</Text>
+                <View style={{ marginTop: 8 }}>
                   <Ux4gCheckbox
-                    key={act}
-                    label={act}
-                    value={formData.adventure.includes(act)}
-                    onChanged={() => toggleActivity('adventure', act)}
+                    label="Trekking"
+                    checked={formData.adventureActivities.includes('trekking')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.adventureActivities;
+                      updateField(
+                        'adventureActivities',
+                        chk ? [...cur, 'trekking'] : cur.filter((x) => x !== 'trekking')
+                      );
+                    }}
                   />
-                ))}
-                {formData.adventure.includes('Other') && (
-                  <Ux4gInputField
-                    label="Shown when Other is ticked"
-                    value={formData.otherAdventure}
-                    onValueChange={(v) => updateField('otherAdventure', v)}
-                    placeholder="Separate several with commas"
+                  <Ux4gCheckbox
+                    label="Water sports"
+                    checked={formData.adventureActivities.includes('water')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.adventureActivities;
+                      updateField(
+                        'adventureActivities',
+                        chk ? [...cur, 'water'] : cur.filter((x) => x !== 'water')
+                      );
+                    }}
                   />
+                  <Ux4gCheckbox
+                    label="Camping"
+                    checked={formData.adventureActivities.includes('camping')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.adventureActivities;
+                      updateField(
+                        'adventureActivities',
+                        chk ? [...cur, 'camping'] : cur.filter((x) => x !== 'camping')
+                      );
+                    }}
+                  />
+                  <Ux4gCheckbox
+                    label="Other"
+                    checked={formData.adventureActivities.includes('other')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.adventureActivities;
+                      updateField(
+                        'adventureActivities',
+                        chk ? [...cur, 'other'] : cur.filter((x) => x !== 'other')
+                      );
+                    }}
+                  />
+                </View>
+
+                {formData.adventureActivities.includes('other') && (
+                  <View style={{ marginTop: 10 }}>
+                    <Ux4gInputField
+                      label="Shown when Other is ticked"
+                      size="large"
+                      value={formData.adventureOtherText}
+                      onValueChange={(v) => updateField('adventureOtherText', v)}
+                      placeholder="Separate several with commas"
+                    />
+                  </View>
                 )}
 
-                <Text style={[styles.subCategoryHeading, { marginTop: 14 }]}>Entertainment Activities</Text>
-                {['Indoor games', 'Outdoor games', 'Live music', 'Other'].map((act) => (
+                <Text style={[styles.activitySubheading, { marginTop: 16 }]}>Entertainment Activities</Text>
+                <View style={{ marginTop: 8 }}>
                   <Ux4gCheckbox
-                    key={act}
-                    label={act}
-                    value={formData.entertainment.includes(act)}
-                    onChanged={() => toggleActivity('entertainment', act)}
+                    label="Indoor games"
+                    checked={formData.entertainmentActivities.includes('indoor')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.entertainmentActivities;
+                      updateField(
+                        'entertainmentActivities',
+                        chk ? [...cur, 'indoor'] : cur.filter((x) => x !== 'indoor')
+                      );
+                    }}
                   />
-                ))}
-                {formData.entertainment.includes('Other') && (
-                  <Ux4gInputField
-                    label="Shown when Other is ticked"
-                    value={formData.otherEntertainment}
-                    onValueChange={(v) => updateField('otherEntertainment', v)}
-                    placeholder="Separate several with commas"
+                  <Ux4gCheckbox
+                    label="Outdoor games"
+                    checked={formData.entertainmentActivities.includes('outdoor')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.entertainmentActivities;
+                      updateField(
+                        'entertainmentActivities',
+                        chk ? [...cur, 'outdoor'] : cur.filter((x) => x !== 'outdoor')
+                      );
+                    }}
                   />
+                  <Ux4gCheckbox
+                    label="Live music"
+                    checked={formData.entertainmentActivities.includes('music')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.entertainmentActivities;
+                      updateField(
+                        'entertainmentActivities',
+                        chk ? [...cur, 'music'] : cur.filter((x) => x !== 'music')
+                      );
+                    }}
+                  />
+                  <Ux4gCheckbox
+                    label="Other"
+                    checked={formData.entertainmentActivities.includes('other')}
+                    onCheckChange={(chk) => {
+                      const cur = formData.entertainmentActivities;
+                      updateField(
+                        'entertainmentActivities',
+                        chk ? [...cur, 'other'] : cur.filter((x) => x !== 'other')
+                      );
+                    }}
+                  />
+                </View>
+
+                {formData.entertainmentActivities.includes('other') && (
+                  <View style={{ marginTop: 10 }}>
+                    <Ux4gInputField
+                      label="Shown when Other is ticked"
+                      size="large"
+                      value={formData.entertainmentOtherText}
+                      onValueChange={(v) => updateField('entertainmentOtherText', v)}
+                      placeholder="Separate several with commas"
+                    />
+                  </View>
                 )}
 
-                <Ux4gDivider style={{ marginVertical: 20 }} />
-
-                {/* Action Buttons */}
-                <View style={styles.actionBtnStack}>
+                <View style={styles.actionButtonContainer}>
                   <Ux4gButton
                     text="Continue"
+                    variant="primary"
                     size="large"
-                    onPress={handleContinue}
-                    backgroundColor="#4F46E5"
-                    style={{ borderRadius: 8 }}
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep1}
+                    style={{ width: '100%' }}
                   />
+                  <View style={{ height: 10 }} />
                   <Ux4gButton
-                    variant="outline"
                     text="Save as Draft"
+                    variant="outline"
                     size="large"
-                    isLoading={isDrafting}
-                    onPress={handleSaveDraft}
-                    style={{ borderRadius: 8, borderColor: '#CBD5E1' }}
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:15 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
                   />
                 </View>
               </View>
-            ) : (
-              <View style={styles.stepSuccessCard}>
-                <Text style={styles.stepSuccessTitle}>Step {step} of 10</Text>
-                <Text style={styles.stepSuccessDesc}>
-                  Step 1 (Unit / Property details) data has been completely validated and stored!
-                  Ready to connect Screen 2 as soon as you provide it.
-                </Text>
-                <Ux4gButton
-                  text="← Back to Step 1 (Unit / Property details)"
-                  size="medium"
-                  onPress={() => setStep(1)}
-                  style={{ marginTop: 18 }}
-                />
+            ) : step === 2 ? (
+              /* ======================================================== */
+              /* SCREEN 2: LOCATION (PIXEL-PERFECT MATCHING USER SCREENSHOT)*/
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                {/* 1. Property Location */}
+                <Text style={styles.sectionHeading}>Property Location</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Where is the property?"
+                    required
+                    size="large"
+                    value={formData.whereIsProperty}
+                    onValueChange={(v) => updateField('whereIsProperty', v)}
+                    placeholder="Paste a Google Maps or Apple Maps link to t..."
+                    status={errors.whereIsProperty ? 'error' : 'defaultStatus'}
+                    caption={errors.whereIsProperty}
+                  />
+                </View>
+
+                {/* Use my current location clickable link */}
+                <TouchableOpacity
+                  style={styles.gpsLocationRow}
+                  onPress={handleSetLocationPin}
+                  activeOpacity={0.7}
+                >
+                  <CrosshairsGpsIcon size={18} color="#1E293B" />
+                  <Text style={styles.gpsLocationText}>Use my current location</Text>
+                </TouchableOpacity>
+
+                {/* 2. Geo Location */}
+                <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Geo Location</Text>
+
+                {/* Illustrative Map Canvas */}
+                <TouchableOpacity
+                  style={styles.mapContainer}
+                  activeOpacity={0.9}
+                  onPress={handleSetLocationPin}
+                >
+                  <Svg width="100%" height={210} viewBox="0 0 340 210">
+                    <Path d="M0 0h340v210H0z" fill="#EDE8DF" />
+
+                    {/* Water Body (Top Left Curved Lake) */}
+                    <Path
+                      d="M0 0h145c0 30-15 55-45 55H0V0z"
+                      fill="#93C5FD"
+                    />
+
+                    {/* Park Green Area (Top Right) */}
+                    <Path
+                      d="M175 10h155v50H175z"
+                      fill="#C8E6C9"
+                    />
+
+                    {/* Building Blocks */}
+                    <Path d="M15 15h35v30H15z" fill="#DCD6CB" rx={2} />
+                    <Path d="M60 15h40v30H60z" fill="#DCD6CB" rx={2} />
+                    <Path d="M15 75h55v30H15z" fill="#DCD6CB" rx={2} />
+                    <Path d="M80 75h50v30H80z" fill="#DCD6CB" rx={2} />
+                    <Path d="M15 120h45v35H15z" fill="#DCD6CB" rx={2} />
+                    <Path d="M70 120h60v35H70z" fill="#DCD6CB" rx={2} />
+
+                    <Path d="M175 75h60v30H175z" fill="#DCD6CB" rx={2} />
+                    <Path d="M245 75h60v30H245z" fill="#DCD6CB" rx={2} />
+                    <Path d="M175 120h50v35H175z" fill="#DCD6CB" rx={2} />
+                    <Path d="M235 120h70v35H235z" fill="#DCD6CB" rx={2} />
+
+                    {/* Roads Network */}
+                    <Path d="M0 60h340v12H0z" fill="#FFFFFF" />
+                    <Path d="M0 110h340v10H0z" fill="#FFFFFF" />
+                    <Path d="M145 0v210h14V0z" fill="#FFFFFF" />
+                    <Path d="M0 160l340 25v10L0 170z" fill="#FFFFFF" />
+
+                    {/* Purple Location Pin on Road Center */}
+                    <Path
+                      d="M142 85C136 85 131 90 131 96c0 8 11 19 11 19s11-11 11-19c0-6-5-11-11-11z"
+                      fill="#4A2BC2"
+                    />
+                    <Circle cx="142" cy="96" r="3.5" fill="#FFFFFF" />
+
+                    {/* Zoom Buttons Controls (Top Right) */}
+                    <Path d="M295 15h25v50h-25z" fill="#FFFFFF" rx={4} />
+                    <Path d="M295 40h25v1h-25z" fill="#E2E8F0" />
+                    <Path d="M304 27h7m-3.5-3.5v7" stroke="#475569" strokeWidth="1.5" strokeLinecap="round" />
+                    <Path d="M304 52h7" stroke="#475569" strokeWidth="1.5" strokeLinecap="round" />
+                  </Svg>
+
+                  {/* Bottom Map Overlay Pill */}
+                  <View style={styles.mapOverlayPill}>
+                    <Text style={styles.mapOverlayPillText}>
+                      Illustrative map — drag the pin to set the exact entrance
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                {/* Latitude Disabled Box */}
+                <Text style={styles.geoCoordLabel}>Latitude — set by the map</Text>
+                <View style={styles.geoCoordBox}>
+                  <Text style={[styles.geoCoordText, formData.pinPlaced && styles.geoCoordActiveText]}>
+                    {formData.pinPlaced ? formData.latitude : 'Set when you place the pin'}
+                  </Text>
+                </View>
+
+                {/* Longitude Disabled Box */}
+                <Text style={styles.geoCoordLabel}>Longitude — set by the map</Text>
+                <View style={styles.geoCoordBox}>
+                  <Text style={[styles.geoCoordText, formData.pinPlaced && styles.geoCoordActiveText]}>
+                    {formData.pinPlaced ? formData.longitude : 'Set when you place the pin'}
+                  </Text>
+                </View>
+
+                {/* Symmetrical divider with center label */}
+                <View style={styles.orDividerContainer}>
+                  <View style={styles.orDividerLine} />
+                  <Text style={styles.orDividerText}>Or enter the location yourself</Text>
+                  <View style={styles.orDividerLine} />
+                </View>
+
+                {/* PIN Code */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="PIN code"
+                    required
+                    type="number"
+                    size="large"
+                    value={formData.pinCode}
+                    onValueChange={(v) => updateField('pinCode', v.slice(0, 6))}
+                    placeholder="6 digits"
+                    status={errors.pinCode ? 'error' : 'defaultStatus'}
+                    caption={errors.pinCode}
+                  />
+                </View>
+
+                {/* 3. Location Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Location Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="State / UT *"
+                    options={STATES_AND_UTS}
+                    selectedOptionIds={formData.stateUT}
+                    onSelectionChange={(v) => updateField('stateUT', v)}
+                    placeholder="Select state or union territory"
+                    size="l"
+                  />
+                  {errors.stateUT && <Text style={styles.errorCaption}>{errors.stateUT}</Text>}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="District *"
+                    options={DISTRICTS_UTTARAKHAND}
+                    selectedOptionIds={formData.district}
+                    onSelectionChange={(v) => updateField('district', v)}
+                    placeholder="Select district"
+                    size="l"
+                  />
+                  {errors.district && <Text style={styles.errorCaption}>{errors.district}</Text>}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Sub-district / Tehsil *"
+                    options={TEHSILS_DEHRADUN}
+                    selectedOptionIds={formData.subDistrict}
+                    onSelectionChange={(v) => updateField('subDistrict', v)}
+                    placeholder="Select sub-district or tehsil"
+                    size="l"
+                  />
+                  {errors.subDistrict && <Text style={styles.errorCaption}>{errors.subDistrict}</Text>}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="City / Town / Village *"
+                    options={CITIES_MUSSOORIE}
+                    selectedOptionIds={formData.cityVillage}
+                    onSelectionChange={(v) => updateField('cityVillage', v)}
+                    placeholder="Select city, town or village"
+                    size="l"
+                  />
+                  {errors.cityVillage && <Text style={styles.errorCaption}>{errors.cityVillage}</Text>}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Area type — set from the town or village you chose"
+                    options={AREA_TYPES}
+                    selectedOptionIds={formData.areaType}
+                    onSelectionChange={(v) => updateField('areaType', v)}
+                    placeholder="Urban — from the LGD record for this to..."
+                    size="l"
+                  />
+                </View>
+
+                {/* 4. Address of the Property */}
+                <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Address of the Property</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="House or building number and street"
+                    required
+                    size="large"
+                    value={formData.houseStreet}
+                    onValueChange={(v) => updateField('houseStreet', v)}
+                    placeholder="As it would be written on a letter"
+                    status={errors.houseStreet ? 'error' : 'defaultStatus'}
+                    caption={errors.houseStreet}
+                  />
+                </View>
+
+                <View style={{ marginBottom: 28 }}>
+                  <Ux4gInputField
+                    label="Landmark"
+                    size="large"
+                    value={formData.landmarkText}
+                    onValueChange={(v) => updateField('landmarkText', v)}
+                    placeholder="Something a visitor would recognise"
+                  />
+                </View>
+
+                {/* Action Buttons matching screenshot */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep2}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:15 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
               </View>
-            )}
+            ) : null}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -685,215 +1431,294 @@ export default function App() {
   );
 }
 
+const STATUSBAR_HEIGHT = Platform.OS === 'android' ? 20 : 0;
+
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingTop: STATUSBAR_HEIGHT, // Inset to prevent Android status bar from overlapping
+    backgroundColor: '#F8FAFC',
+    paddingTop: STATUSBAR_HEIGHT,
   },
   headerBar: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingTop: 6,
     paddingBottom: 10,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: '#F1F5F9',
   },
-  headerBrandRow: {
+  headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
   },
-  hamburgerBtn: {
+  menuButton: {
     width: 36,
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
     borderColor: '#C7D2FE',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 7,
-    gap: 4,
     backgroundColor: '#F5F3FF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  hamburgerLine: {
+  menuIconContainer: {
+    width: 18,
+    height: 14,
+    justifyContent: 'space-between',
+  },
+  menuBar: {
     width: '100%',
-    height: 2,
-    backgroundColor: '#4F46E5',
+    height: 2.2,
+    backgroundColor: '#4A2BC2',
     borderRadius: 1,
   },
   scrollView: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   scrollContent: {
-    padding: 14,
+    padding: 12,
     paddingBottom: 36,
   },
-  card: {
+  mainCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     padding: 16,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
     shadowRadius: 8,
     elevation: 2,
   },
-  savedBannerContainer: {
+  savedBannerRow: {
     width: '100%',
-    backgroundColor: '#F0FDF4',
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    marginBottom: 14,
-    alignItems: 'flex-end', // Right-aligned as per user image
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#DCFCE7',
+    backgroundColor: '#ECFDF5',
+    borderRadius: 6,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    alignItems: 'flex-end',
+    marginBottom: 8,
   },
   savedBannerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
   },
   savedCheckCircle: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#16A34A',
-    alignItems: 'center',
+    width: 13,
+    height: 13,
+    borderRadius: 6.5,
+    backgroundColor: '#10B981',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 5,
   },
   savedCheckIcon: {
-    fontSize: 10,
     color: '#FFFFFF',
-    fontWeight: '800',
+    fontSize: 8.5,
+    fontWeight: 'bold',
+    marginTop: -1,
   },
   savedBannerText: {
-    fontSize: 12,
+    fontSize: 11.5,
     fontWeight: '600',
-    color: '#15803D',
+    color: '#065F46',
+  },
+  stepperBottomDivider: {
+    height: 1,
+    backgroundColor: '#F1F5F9',
+    marginTop: 14,
+    marginBottom: 16,
+    width: '100%',
   },
   formContainer: {
-    gap: 12,
-    marginTop: 6,
+    marginTop: 2,
   },
   sectionHeading: {
-    fontSize: 16,
+    fontSize: 15.5,
     fontWeight: '700',
     color: '#0F172A',
-    marginTop: 4,
+    marginBottom: 12,
   },
-  subCategoryHeading: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#334155',
-    marginTop: 4,
+  fieldSpacing: {
+    marginBottom: 16,
   },
-  fieldLabel: {
-    fontSize: 13,
+  radioGroup: {
+    marginVertical: 8,
+  },
+  radioGroupLabel: {
+    fontSize: 13.5,
     fontWeight: '600',
-    color: '#0F172A',
-    marginTop: 4,
+    color: '#1E293B',
   },
-  errorCaption: {
-    fontSize: 12,
-    color: '#DC2626',
-    marginTop: -4,
+  landmarkCard: {
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 14,
+    backgroundColor: '#FAFAFA',
   },
-  landmarkItem: {
-    gap: 10,
-    marginBottom: 8,
-  },
-  landmarkFieldLabel: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#0F172A',
-    marginBottom: -4,
-  },
-  landmarkTypeRow: {
+  landmarkTypeHeader: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 8,
   },
   landmarkTypeBox: {
     flex: 1,
     backgroundColor: '#F1F5F9',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 8,
-    minHeight: 44,
-    justifyContent: 'center',
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   landmarkTypeLabel: {
-    fontSize: 14,
+    fontSize: 11,
+    color: '#64748B',
     fontWeight: '500',
-    color: '#1E293B',
   },
-  trashBtn: {
-    width: 44,
-    height: 44,
+  landmarkTypeValue: {
+    fontSize: 13,
+    color: '#0F172A',
+    fontWeight: '600',
+    marginTop: 2,
+  },
+  deleteIconButton: {
+    marginLeft: 12,
+    padding: 8,
     borderRadius: 8,
-    backgroundColor: '#F8FAFC',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    alignItems: 'center',
+    backgroundColor: '#F1F5F9',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   distanceRow: {
     flexDirection: 'row',
-    gap: 12,
-  },
-  landmarkDivider: {
-    height: 1,
-    backgroundColor: '#F1F5F9',
+    alignItems: 'flex-end',
     marginTop: 10,
-    marginBottom: 6,
   },
-  addLandmarkOutlineBtn: {
-    width: '100%',
+  addLandmarkButton: {
     borderWidth: 1.5,
-    borderColor: '#C7D2FE',
+    borderColor: '#818CF8',
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    marginTop: 6,
-  },
-  addLandmarkOutlineBtnText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#4F46E5',
-  },
-  actionBtnStack: {
-    marginTop: 10,
-    gap: 12,
-  },
-  stepSuccessCard: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  stepSuccessTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#4F46E5',
+    backgroundColor: '#F5F3FF',
+    marginTop: 4,
     marginBottom: 8,
   },
-  stepSuccessDesc: {
-    fontSize: 13,
-    color: '#64748B',
-    textAlign: 'center',
-    lineHeight: 20,
-    maxWidth: 320,
+  addLandmarkText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4A2BC2',
   },
-});`;
+  activitySubheading: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#334155',
+    marginTop: 6,
+  },
+  gpsLocationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: -8,
+    marginBottom: 16,
+    paddingVertical: 4,
+  },
+  gpsLocationText: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#1E293B',
+    marginLeft: 8,
+  },
+  mapContainer: {
+    width: '100%',
+    height: 210,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    overflow: 'hidden',
+    position: 'relative',
+    marginBottom: 16,
+  },
+  mapOverlayPill: {
+    position: 'absolute',
+    bottom: 8,
+    left: 10,
+    right: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  mapOverlayPillText: {
+    fontSize: 11,
+    color: '#334155',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  geoCoordLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#334155',
+    marginBottom: 6,
+  },
+  geoCoordBox: {
+    height: 48,
+    backgroundColor: '#D9DDE2',
+    borderRadius: 8,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    marginBottom: 14,
+  },
+  geoCoordText: {
+    fontSize: 13.5,
+    color: '#475569',
+  },
+  geoCoordActiveText: {
+    color: '#0F172A',
+    fontWeight: '600',
+  },
+  orDividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 22,
+  },
+  orDividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E2E8F0',
+  },
+  orDividerText: {
+    marginHorizontal: 12,
+    fontSize: 12.5,
+    color: '#64748B',
+    fontWeight: '400',
+  },
+  errorCaption: {
+    color: '#DC2626',
+    fontSize: 12,
+    marginTop: -10,
+    marginBottom: 6,
+    marginLeft: 2,
+  },
+  actionButtonContainer: {
+    marginTop: 26,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+    marginBottom: 8,
+  },
+});
+`;
   }, []);
 
   // Direct Expo Snack embed URL using official Snack ID (Status 200 guaranteed)
@@ -963,26 +1788,14 @@ const styles = StyleSheet.create({
 
       zip.file(
         'README.md',
-        `# Homestay Registration Flow (UX4G React Native)
-
-A complete government service pattern for registering a homestay or hospitality unit using UX4G Design System components.
-
-## Features
-- **SafeArea Inset**: Cleanly positioned below device status bar / toolbar
-- **App Header**: National Emblem (Ashoka Pillar) + UX4G Union swirl logo and hamburger toggle
-- **Status Banner**: Right-aligned \`Saved 3:14 PM\` indicator
-- **CompactStepper**: \`Ux4gCompactStepper\` (\`layout="centeredBetween"\`) with 10 progress segments
-- **Form Fields**: Built with official \`Ux4gInputField\`, \`Ux4gSelectionDropdown\`, \`Ux4gRadioButton\`, \`Ux4gCheckbox\`, \`Ux4gButton\`, \`Ux4gDivider\`
-- **Validation**: Strict client-side validation checks
-- **Nearby Landmarks**: Dynamic landmark management (+ Add, Remove)
-- **Activities**: Multi-category selection with conditional inputs
-
-## Getting Started
-\`\`\`bash
-npm install
-npx expo start
-\`\`\`
-`
+        '# Homestay Registration Flow (UX4G React Native)\n\n' +
+        'A complete government service pattern for registering a homestay or hospitality unit using UX4G Design System components.\n\n' +
+        '## Screens Included\n' +
+        '- **Step 1**: Unit & Property details (Unit Details, Property Details, Category of Registration, Website and Social Media, Nearby Landmarks, Activities Offered)\n' +
+        '- **Step 2**: Location (Property Location, GPS Current Location, Interactive Geo Location Map with entrance pin, PIN Code, State/District/Tehsil/City LGD selectors, Street Address & Landmark)\n\n' +
+        '## Getting Started\n\n' +
+        'npm install\n' +
+        'npx expo start\n'
       );
 
       zip.file('App.tsx', fullAppCodeString);
@@ -991,16 +1804,16 @@ npx expo start
       const downloadUrl = URL.createObjectURL(content);
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.download = 'ux4g-homestay-registration-flow.zip';
+      link.download = 'Homestay-Registration-Flow-UX4G.zip';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(downloadUrl);
 
-      triggerToast('Complete code ZIP downloaded successfully!');
-    } catch (err) {
-      console.error(err);
-      triggerToast('Error generating ZIP package.');
+      triggerToast('Complete 2-Screen Homestay Registration Flow application downloaded successfully!');
+    } catch (error) {
+      console.error('Failed to create ZIP package:', error);
+      triggerToast('Error generating ZIP file. Please try again.');
     } finally {
       setIsDownloadingZip(false);
     }
@@ -1008,80 +1821,67 @@ npx expo start
 
   return (
     <Ux4gThemeProvider isDark={isDark}>
-      <div className="wb-page" style={{ padding: '24px 32px' }}>
-        {/* Top Header */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px 20px' }}>
+        {/* Breadcrumb & Header Row */}
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
             justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: 24,
             flexWrap: 'wrap',
             gap: 16,
-            marginBottom: 20,
-            paddingBottom: 16,
-            borderBottom: `1px solid ${isDark ? '#334155' : '#E2E8F0'}`,
           }}
         >
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <h1 className="wb-title" style={{ margin: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <h1
+                style={{
+                  fontSize: 28,
+                  fontWeight: 800,
+                  margin: 0,
+                  color: isDark ? '#F1F5F9' : '#0F172A',
+                  letterSpacing: '-0.5px',
+                }}
+              >
                 Homestay Registration flow
               </h1>
               <span
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
+                  display: 'inline-block',
                   padding: '3px 10px',
                   borderRadius: 12,
                   fontSize: 12,
                   fontWeight: 600,
-                  backgroundColor: isDark ? 'rgba(99, 102, 241, 0.2)' : '#EEF2FF',
-                  color: isDark ? '#A5B4FC' : '#4F46E5',
-                  border: `1px solid ${isDark ? '#4F46E5' : '#C7D2FE'}`,
+                  backgroundColor: isDark ? '#312E81' : '#EEF2FF',
+                  color: UX4GColors.primary600,
+                  border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 10 Steps
+                Service Pattern • 10 Steps (Steps 1 & 2 Active)
               </span>
             </div>
-            <p className="wb-subtitle" style={{ margin: '6px 0 0 0', maxWidth: 700 }}>
+            <p
+              style={{
+                fontSize: 14,
+                margin: 0,
+                color: isDark ? '#94A3B8' : '#64748B',
+                maxWidth: 680,
+                lineHeight: 1.5,
+              }}
+            >
               Complete end-to-end citizen service registration flow for homestay hosts and hospitality promoters.
               Rendered with Expo Snack and built with UX4G React Native components.
             </p>
           </div>
 
-          {/* Action Buttons: Open in Snack & Download ZIP */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <a
-              href={`https://snack.expo.dev/@snack/${SNACK_ID}`}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '9px 16px',
-                borderRadius: 8,
-                fontSize: 13,
-                fontWeight: 600,
-                backgroundColor: 'transparent',
-                color: isDark ? '#A5B4FC' : UX4GColors.primary600,
-                border: `1.5px solid ${isDark ? '#4F46E5' : '#C7D2FE'}`,
-                textDecoration: 'none',
-              }}
-              title="Open full interactive project on snack.expo.dev"
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
-                open_in_new
-              </span>
-              Open in Expo Snack
-            </a>
-
+          {/* Action Buttons */}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <button
               onClick={handleDownloadZip}
               disabled={isDownloadingZip}
-              type="button"
               style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
                 gap: 8,
                 padding: '10px 20px',
@@ -1136,7 +1936,7 @@ npx expo start
             padding: 0,
             overflow: 'hidden',
             borderRadius: 8,
-            minHeight: 850,
+            minHeight: 880,
             backgroundColor: isDark ? '#1E293B' : '#F8FAFC',
             border: `1px solid ${isDark ? '#334155' : '#E2E8F0'}`,
           }}
@@ -1145,7 +1945,7 @@ npx expo start
             src={snackUrl}
             style={{
               width: '100%',
-              height: '850px',
+              height: '880px',
               border: 'none',
               borderRadius: '8px',
               display: 'block',

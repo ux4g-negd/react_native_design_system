@@ -96,6 +96,11 @@ export interface Ux4gStatusBannerProps {
    */
   borderColor?: string;
   /**
+   * Horizontal alignment for the banner content ('left', 'center', or 'right').
+   * @default 'left'
+   */
+  contentAlignment?: 'left' | 'center' | 'right';
+  /**
    * Alignment for bottom actions row. Defaults to `'start'`.
    */
   actionsAlignment?: Ux4gActionsAlignment;
@@ -195,6 +200,7 @@ export const Ux4gStatusBanner: React.FC<Ux4gStatusBannerProps> = ({
   onDismiss,
   backgroundColor,
   borderColor,
+  contentAlignment = 'left',
   actionsAlignment = 'start',
   width,
   height,
@@ -314,7 +320,10 @@ export const Ux4gStatusBanner: React.FC<Ux4gStatusBannerProps> = ({
       <View
         style={[
           styles.headerRow,
-          { alignItems: hasSubtitle ? 'flex-start' : 'center' },
+          {
+            alignItems: hasSubtitle ? 'flex-start' : 'center',
+            justifyContent: contentAlignment === 'right' ? 'flex-end' : contentAlignment === 'center' ? 'center' : 'flex-start',
+          },
         ]}
       >
         {effectiveLeadingIcon && (

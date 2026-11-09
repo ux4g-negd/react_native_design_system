@@ -18,7 +18,7 @@ import { Ux4gSpinner } from '../spinner/Spinner';
 
 export type Ux4gButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
 
-export type Ux4gButtonSize = 'small' | 'medium' | 'large';
+export type Ux4gButtonSize = 'small' | 'medium' | 'large' | 's' | 'm' | 'l';
 
 export type Ux4gIconProp =
   | React.ReactNode
@@ -28,6 +28,10 @@ export interface Ux4gButtonProps
   extends Omit<PressableProps, 'style' | 'children' | 'disabled'> {
   /** Text label inside the button */
   text?: string;
+  /** Alias for text */
+  label?: string;
+  /** Alias for variant */
+  type?: Ux4gButtonVariant;
   /** Custom child content overriding or supplementing `text` */
   children?: React.ReactNode;
   /** Visual button style variant. Defaults to `'primary'`. */
@@ -77,37 +81,45 @@ export interface Ux4gButtonProps
   textStyle?: StyleProp<TextStyle>;
 }
 
-const SIZE_CONFIG: Record<
-  Ux4gButtonSize,
-  {
-    horizontalPadding: number;
-    verticalPadding: number;
-    defaultHeight: number;
-    typographyKey: 'lL_default' | 'lXL_default';
-    defaultIconSize: number;
-  }
-> = {
-  small: {
-    horizontalPadding: 16,
-    verticalPadding: 7,
-    defaultHeight: 32,
-    typographyKey: 'lL_default',
-    defaultIconSize: 16,
-  },
-  medium: {
-    horizontalPadding: 20,
-    verticalPadding: 10,
-    defaultHeight: 40,
-    typographyKey: 'lXL_default',
-    defaultIconSize: 18,
-  },
-  large: {
-    horizontalPadding: 24,
-    verticalPadding: 14,
-    defaultHeight: 48,
-    typographyKey: 'lXL_default',
-    defaultIconSize: 20,
-  },
+interface ButtonSizeItem {
+  horizontalPadding: number;
+  verticalPadding: number;
+  defaultHeight: number;
+  typographyKey: 'lL_default' | 'lXL_default';
+  defaultIconSize: number;
+}
+
+const SMALL_CONFIG: ButtonSizeItem = {
+  horizontalPadding: 16,
+  verticalPadding: 7,
+  defaultHeight: 32,
+  typographyKey: 'lL_default',
+  defaultIconSize: 16,
+};
+
+const MEDIUM_CONFIG: ButtonSizeItem = {
+  horizontalPadding: 20,
+  verticalPadding: 10,
+  defaultHeight: 40,
+  typographyKey: 'lXL_default',
+  defaultIconSize: 18,
+};
+
+const LARGE_CONFIG: ButtonSizeItem = {
+  horizontalPadding: 24,
+  verticalPadding: 14,
+  defaultHeight: 48,
+  typographyKey: 'lXL_default',
+  defaultIconSize: 20,
+};
+
+const SIZE_CONFIG: Record<Ux4gButtonSize, ButtonSizeItem> = {
+  small: SMALL_CONFIG,
+  s: SMALL_CONFIG,
+  medium: MEDIUM_CONFIG,
+  m: MEDIUM_CONFIG,
+  large: LARGE_CONFIG,
+  l: LARGE_CONFIG,
 };
 
 /**
@@ -151,7 +163,10 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
   ...restProps
 }) => {
   const theme = useUx4gTheme();
-  const sizeCfg = SIZE_CONFIG[size];
+  const normalizedSize = size === 's' ? 'small' : size === 'm' ? 'medium' : size === 'l' ? 'large' : (size || 'medium');
+  const sizeCfg = (SIZE_CONFIG as any)[normalizedSize] || SIZE_CONFIG.medium;
+  const effectiveVariant = variant || (restProps as any).type || 'primary';
+  const effectiveText = text ?? (restProps as any).label;
 
   // 1. Resolve base theme colors by variant
   let baseBgColor = theme.colors.primary;
@@ -159,7 +174,7 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
   let baseBorderColor = 'transparent';
   let baseBorderWidth = 0;
 
-  switch (variant) {
+  switch (effectiveVariant) {
     case 'primary':
       baseBgColor = theme.colors.primary;
       baseContentColor = theme.colors.onPrimary;
@@ -185,19 +200,19 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
 
   // When button is outlinebutton, border and text color should be same as per the flutter button component (if not explicitly overridden)
   const outlineSharedColor =
-    variant === 'outline'
+    effectiveVariant === 'outline'
       ? (contentColor ?? borderColor ?? baseContentColor)
       : undefined;
 
   const effectiveBgColor = isInteractive
     ? backgroundColor ?? baseBgColor
     : disabledBackgroundColor ??
-    (variant === 'primary' || variant === 'secondary'
+    (effectiveVariant === 'primary' || effectiveVariant === 'secondary'
       ? getHexWithAlpha(theme.colors.onSurface, '1F') // 12% alpha
       : 'transparent');
 
   const defaultDisabledContentColor =
-    variant === 'ghost' && !theme.isDark
+    effectiveVariant === 'ghost' && !theme.isDark
       ? UX4GColors.neutral400
       : getHexWithAlpha(theme.colors.onSurface, '61');
 
@@ -218,7 +233,7 @@ export const Ux4gButton: React.FC<Ux4gButtonProps> = ({
   const effectiveIconSize = iconSize ?? sizeCfg.defaultIconSize;
 
   // 3. Resolve typography
-  const typoStyle = theme.typography[sizeCfg.typographyKey];
+  const typoStyle = theme.typography[sizeCfg.typographyKey as 'lL_default' | 'lXL_default'];
   const resolvedTextStyle: StyleProp<TextStyle> = [
     {
       fontSize: typoStyle.fontSize,

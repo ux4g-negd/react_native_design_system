@@ -31,14 +31,19 @@ export type Ux4gCompactStepperLayout =
 export interface Ux4gCompactStepperProps {
   totalSteps: number;
   currentStep: number;
-  stepLabel: string;
+  stepLabel?: string;
+  title?: string;
   description?: string;
+  subtitle?: string;
   onNext?: () => void;
+  onNextPress?: () => void;
   onPrevious?: () => void;
+  onBackPress?: () => void;
   layout?: Ux4gCompactStepperLayout;
   labelAlignment?: 'flex-start' | 'center' | 'flex-end';
   activeColor?: string;
   inactiveColor?: string;
+  cumulative?: boolean;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -48,13 +53,18 @@ export const Ux4gCompactStepper: React.FC<Ux4gCompactStepperProps> = ({
   totalSteps,
   currentStep,
   stepLabel,
+  title,
   description,
-  onNext = () => { },
-  onPrevious = () => { },
+  subtitle,
+  onNext,
+  onNextPress,
+  onPrevious,
+  onBackPress,
   layout = 'linear',
   labelAlignment = 'flex-start',
   activeColor,
   inactiveColor,
+  cumulative = true,
   style,
 }) => {
   const theme = useUx4gTheme();
@@ -67,17 +77,22 @@ export const Ux4gCompactStepper: React.FC<Ux4gCompactStepperProps> = ({
   const onSurface = theme.colors.onSurface;
 
   const resolvedActiveColor = activeColor || primary;
-  const resolvedInactiveColor = inactiveColor || `${onSurface}33`; // 0.2 opacity
+  const resolvedInactiveColor = inactiveColor || (onSurface + '33');
+  const resolvedStepLabel = stepLabel || title || '';
+  const resolvedDescription = description || subtitle;
+  const resolvedOnNext = onNext || onNextPress || (() => {});
+  const resolvedOnPrevious = onPrevious || onBackPress || (() => {});
 
   const commonProps = {
     totalSteps,
     currentStep,
-    stepLabel,
-    description,
-    onNext,
-    onPrevious,
+    stepLabel: resolvedStepLabel,
+    description: resolvedDescription,
+    onNext: resolvedOnNext,
+    onPrevious: resolvedOnPrevious,
     activeColor: resolvedActiveColor,
     inactiveColor: resolvedInactiveColor,
+    cumulative,
   };
 
   let content: React.ReactElement;
@@ -119,6 +134,7 @@ interface CapsuleIndicatorProps {
   activeColor: string;
   inactiveColor: string;
   expand?: boolean;
+  cumulative?: boolean;
 }
 
 const CapsuleIndicator: React.FC<CapsuleIndicatorProps> = ({
@@ -127,6 +143,7 @@ const CapsuleIndicator: React.FC<CapsuleIndicatorProps> = ({
   activeColor,
   inactiveColor,
   expand,
+  cumulative = false,
 }) => {
   return (
     <View
@@ -139,7 +156,7 @@ const CapsuleIndicator: React.FC<CapsuleIndicatorProps> = ({
       {Array.from({ length: totalSteps }).map((_, i) => (
         <CapsuleItem
           key={i}
-          isActive={i + 1 === currentStep}
+          isActive={cumulative ? i + 1 <= currentStep : i + 1 === currentStep}
           activeColor={activeColor}
           inactiveColor={inactiveColor}
           marginRight={i === totalSteps - 1 ? 0 : totalSteps > 8 ? 4 : 6}
@@ -228,12 +245,14 @@ interface StepperIconButtonProps {
   direction: 'left' | 'right';
   enabled: boolean;
   onPress: () => void;
+  iconType?: 'chevron' | 'arrow';
 }
 
 const StepperIconButton: React.FC<StepperIconButtonProps> = ({
   direction,
   enabled,
   onPress,
+  iconType = 'chevron',
 }) => {
   const theme = useUx4gTheme();
 
@@ -241,12 +260,22 @@ const StepperIconButton: React.FC<StepperIconButtonProps> = ({
   const onSurface = theme.colors.onSurface;
   const surface = theme.colors.surface;
 
-  const contentColor = enabled ? primary : `${onSurface}4D`; // 0.3 opacity
-  const borderColor = enabled ? `${primary}1F` : `${onSurface}33`; // 0.12 / 0.2 opacity
+  let contentColor = enabled ? primary : (onSurface + '4D');
+  let borderColor = enabled ? (primary + '1F') : (onSurface + '33');
 
-  const IconComponent = direction === 'left'
-    ? Ux4gIcons.chevronLeft
-    : Ux4gIcons.chevronRight;
+  if (iconType === 'arrow') {
+    if (direction === 'left') {
+      contentColor = enabled ? '#475569' : (onSurface + '4D');
+      borderColor = enabled ? '#E2E8F0' : (onSurface + '33');
+    } else {
+      contentColor = enabled ? primary : (onSurface + '4D');
+      borderColor = enabled ? (primary + '80') : (onSurface + '33');
+    }
+  }
+
+  const IconComponent = iconType === 'arrow'
+    ? (direction === 'left' ? Ux4gIcons.arrowBack : Ux4gIcons.arrowForward)
+    : (direction === 'left' ? Ux4gIcons.chevronLeft : Ux4gIcons.chevronRight);
 
   return (
     <TouchableOpacity
@@ -258,7 +287,7 @@ const StepperIconButton: React.FC<StepperIconButtonProps> = ({
         height: 40,
         borderRadius: 20,
         backgroundColor: surface,
-        borderWidth: 1,
+        borderWidth: 1.5,
         borderColor,
         justifyContent: 'center',
         alignItems: 'center',
@@ -281,6 +310,7 @@ interface LayoutProps {
   onPrevious: () => void;
   activeColor: string;
   inactiveColor: string;
+  cumulative?: boolean;
 }
 
 interface LinearLayoutProps extends LayoutProps {
@@ -459,6 +489,7 @@ const CenteredBetweenLayout: React.FC<LayoutProps> = ({
   onPrevious,
   activeColor,
   inactiveColor,
+  cumulative = true,
 }) => {
   const theme = useUx4gTheme();
 
@@ -470,35 +501,35 @@ const CenteredBetweenLayout: React.FC<LayoutProps> = ({
         currentStep={currentStep}
         activeColor={activeColor}
         inactiveColor={inactiveColor}
-        expand
+        cumulative={cumulative}
       />
 
       <View style={{ height: 16 }} />
 
       {/* Step counter */}
-      <Text style={[theme.typography.lM_strong, { color: theme.colors.onSurface }]}>
+      <Text style={[theme.typography.lM_strong, { color: theme.colors.onSurface, fontWeight: '700' }]}>
         Step {currentStep} of {totalSteps}
       </Text>
 
-      <View style={{ height: 4 }} />
+      <View style={{ height: 6 }} />
 
       {/* Row: LeftArrow | Label+Desc | RightArrow */}
       <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-        <StepperIconButton direction="left" enabled={currentStep > 1} onPress={onPrevious} />
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={[theme.typography.lL_strong, { color: theme.colors.primary, textAlign: 'center' }]}>
+        <StepperIconButton direction="left" enabled={currentStep > 1} onPress={onPrevious} iconType="arrow" />
+        <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 6 }}>
+          <Text style={[theme.typography.lL_strong, { color: activeColor || theme.colors.primary, textAlign: 'center', fontWeight: '700' }]}>
             {stepLabel}
           </Text>
           {description != null && (
             <>
               <View style={{ height: 4 }} />
-              <Text style={[theme.typography.lM_default, { color: `${theme.colors.onSurface}80`, textAlign: 'center' }]}>
+              <Text style={[theme.typography.lM_default, { color: '#64748B', textAlign: 'center', fontSize: 13, lineHeight: 18, maxWidth: 240 }]}>
                 {description}
               </Text>
             </>
           )}
         </View>
-        <StepperIconButton direction="right" enabled={currentStep < totalSteps} onPress={onNext} />
+        <StepperIconButton direction="right" enabled={currentStep < totalSteps} onPress={onNext} iconType="arrow" />
       </View>
     </View>
   );
