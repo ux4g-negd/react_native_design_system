@@ -1,5 +1,8 @@
 // Helper mapping between activePage ID and clean URL path string
 const PAGE_TO_PATH: Record<string, string> = {
+  'service-pattern-homestay-registration': 'service-patterns/homestay-registration-flow',
+  'homestay-registration-flow': 'service-patterns/homestay-registration-flow',
+  'homestay-registration': 'service-patterns/homestay-registration-flow',
   introduction: 'introduction',
   quickstart: 'quickstart',
   'component-mapping': 'component-mapping',
@@ -550,6 +553,14 @@ export function getPathFromPage(page: string): string {
 
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+  if (
+    cleanPath.includes('homestay') ||
+    cleanPath.includes('service-patterns') ||
+    cleanPath.includes('service-pattern')
+  ) {
+    return 'service-pattern-homestay-registration';
+  }
 
   if (
     cleanPath.includes('changes-logs') ||

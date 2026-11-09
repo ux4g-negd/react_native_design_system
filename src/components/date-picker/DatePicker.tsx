@@ -50,6 +50,8 @@ export interface Ux4gDatePickerProps {
   required?: boolean;
   /** Status variant controlling border & caption color. Defaults to `'defaultStatus'`. */
   status?: Ux4gInputFieldStatus;
+  /** Custom right-hand icon override. */
+  icon?: React.ReactNode;
   /** Custom container style override. */
   style?: StyleProp<ViewStyle>;
 }
@@ -76,6 +78,7 @@ export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
   isRequired = false,
   required = false,
   status = 'defaultStatus',
+  icon,
   style,
 }) => {
   const { colors, typography } = useUx4gTheme();
@@ -176,7 +179,7 @@ export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
         >
           {text}
         </Text>
-        {Ux4gIcons.calendar({ size: 20, color: iconColor })}
+        {icon !== undefined ? icon : Ux4gIcons.calendar({ size: 20, color: iconColor })}
       </View>
     );
   };

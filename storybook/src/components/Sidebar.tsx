@@ -1554,6 +1554,18 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
+  {
+    id: 'service-patterns',
+    label: 'Service Patterns',
+    icon: 'folder',
+    children: [
+      {
+        id: 'service-pattern-homestay-registration',
+        label: 'Homestay Registration flow',
+        icon: 'layers',
+      },
+    ],
+  },
 ];
 
 // Sort the Components group alphabetically by label (sub-sections keep their own order)
@@ -1587,6 +1599,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (page.startsWith('typography')) return ['tokens', 'typography'];
     if (page.startsWith('shadow')) return ['tokens', 'shadow'];
     if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return ['tokens', 'dimensions'];
+    if (page.startsWith('service-pattern-') || page.includes('homestay')) return ['service-patterns'];
     if (
       page === 'pattern-save-and-resume' ||
       page === 'pattern-continue-application' ||

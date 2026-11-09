@@ -191,12 +191,16 @@ import { LanguageSwitcherDoc } from './pages/LanguageSwitcherDoc';
 import { InlineLanguageToggleDoc } from './pages/InlineLanguageToggleDoc';
 import { TranslationUnavailableDoc } from './pages/TranslationUnavailableDoc';
 import { AllScheduledLanguagesDoc } from './pages/AllScheduledLanguagesDoc';
+import { HomestayRegistrationFlowDoc } from './pages/HomestayRegistrationFlowDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
 } from './utils/router';
 
 const getMobileBreadcrumb = (page: string) => {
+  if (page.startsWith('service-pattern-') || page.includes('homestay')) {
+    return 'Service Patterns / Homestay Registration flow';
+  }
   if (page === 'introduction') return 'Introduction';
   if (page === 'quickstart') return 'Quick Start Guide';
   if (page === 'component-mapping' || page === 'migration') return 'Migration';
@@ -1476,11 +1480,20 @@ export const App: React.FC = () => {
     if (activePage === 'patterns-feedback' || activePage === 'feedback') {
       return <PatternsFeedbackDoc isDark={isDark} />;
     }
+    if (
+      activePage === 'service-pattern-homestay-registration' ||
+      activePage.includes('homestay-registration') ||
+      activePage.includes('homestay')
+    ) {
+      return <HomestayRegistrationFlowDoc isDark={isDark} />;
+    }
     if (activePage === 'changelog' || activePage === 'changes-logs' || activePage.includes('changes-logs') || activePage.includes('changelog')) {
       return <ChangelogDoc isDark={isDark} onNavigate={handleNavigate} />;
     }
 
     switch (activePage) {
+      case 'service-pattern-homestay-registration':
+        return <HomestayRegistrationFlowDoc isDark={isDark} />;
       case 'changelog':
       case 'changes-logs':
       case 'getting-started-changes-logs':
