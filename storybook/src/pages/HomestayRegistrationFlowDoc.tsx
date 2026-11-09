@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = 'Y9qcRgDwA09XJzX5_p2TB';
+const SNACK_ID = '95IJtbFvF4dkOE77bO7E1';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -33,6 +33,7 @@ import {
   SafeAreaView,
   StatusBar,
   Platform,
+  TextInput,
 } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
 import {
@@ -43,6 +44,9 @@ import {
   Ux4gButton,
   Ux4gDivider,
   Ux4gDatePicker,
+  Ux4gOtpInput,
+  Ux4gPanInputField,
+  Ux4gAadhaarInputField,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -110,6 +114,52 @@ const CrosshairsGpsIcon = ({ size = 18, color = '#1E293B' }) => (
       strokeLinecap="round"
     />
     <Circle cx="12" cy="12" r="2.8" fill={color} />
+  </Svg>
+);
+
+// Screen 3 Material Outline Icons
+const InfoOutlineIcon = ({ size = 13, color = '#64748B' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="12" cy="12" r="10" stroke={color} strokeWidth="2" />
+    <Path d="M12 16V12M12 8H12.01" stroke={color} strokeWidth="2" strokeLinecap="round" />
+  </Svg>
+);
+
+const CalendarOutlineIcon = ({ size = 18, color = '#64748B' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path d="M16 2V6M8 2V6M3 10H21" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </Svg>
+);
+
+const EyeOutlineIcon = ({ size = 18, color = '#64748B' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8-11-8-11-8z"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Circle cx="12" cy="12" r="3" stroke={color} strokeWidth="2" />
+  </Svg>
+);
+
+const EyeOffOutlineIcon = ({ size = 18, color = '#64748B' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </Svg>
 );
 
@@ -349,6 +399,14 @@ const LANDMARK_PLACE_OPTIONS = {
   '4': [{ id: 'max_hosp', label: 'Max Super Speciality Hospital' }, { id: 'doon_hosp', label: 'Government Doon Hospital' }],
 };
 
+const RELATIONSHIP_OPTIONS = [
+  { id: 'father', label: 'Father' },
+  { id: 'mother', label: 'Mother' },
+  { id: 'spouse', label: 'Spouse' },
+  { id: 'guardian', label: 'Guardian' },
+  { id: 'other', label: 'Other' },
+];
+
 const STATES_AND_UTS = [
   { id: 'uk', label: 'Uttarakhand' },
   { id: 'hp', label: 'Himachal Pradesh' },
@@ -392,7 +450,7 @@ const AREA_TYPES = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(3);
   const [savedTime, setSavedTime] = useState('3:14 PM');
 
   // Form state
@@ -443,6 +501,31 @@ export default function App() {
     areaType: ['urban'],
     houseStreet: '',
     landmarkText: '',
+
+    // Step 3: Owner / Applicant Details
+    firstName: '',
+    lastName: '',
+    gender: 'male',
+    dateOfBirth: '',
+    relationship: [],
+    relationshipFullName: '',
+    panNumber: '',
+    aadhaarNumber: '',
+    showAadhaar: false,
+    mobileNumber: '',
+    otpSent: false,
+    otp: '',
+    resendTimer: 17,
+    emailAddress: '',
+    landline: '',
+    permPinCode: '',
+    permStateUT: [],
+    permDistrict: [],
+    permSubDistrict: [],
+    permHouseStreet: '',
+    sameAsPermanent: false,
+    addressOutsideState: false,
+    applyingCapacity: 'owner',
   });
 
   const [errors, setErrors] = useState({});
@@ -494,7 +577,30 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    alert('Step 2 validated successfully! Ready for Step 3.');
+    setStep(3);
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = {};
+    if (!formData.firstName.trim()) errs.firstName = 'First name is required';
+    if (!formData.lastName.trim()) errs.lastName = 'Last name is required';
+    if (!formData.gender) errs.gender = 'Gender is required';
+    if (!formData.relationship.length) errs.relationship = 'Relationship is required';
+    if (!formData.relationshipFullName.trim()) errs.relationshipFullName = 'Their full name is required';
+    if (!formData.panNumber.trim()) errs.panNumber = 'PAN is required';
+    if (!formData.mobileNumber.trim()) errs.mobileNumber = 'Mobile number is required';
+    if (!formData.emailAddress.trim()) errs.emailAddress = 'Email address is required';
+    if (!formData.permPinCode.trim()) errs.permPinCode = 'PIN code is required';
+    if (!formData.permStateUT.length) errs.permStateUT = 'State / UT is required';
+    if (!formData.permDistrict.length) errs.permDistrict = 'District is required';
+    if (!formData.permSubDistrict.length) errs.permSubDistrict = 'Sub-district is required';
+    if (!formData.permHouseStreet.trim()) errs.permHouseStreet = 'House or building number is required';
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Step 3 validated successfully! Ready for Step 4.');
   };
 
   return (
@@ -542,8 +648,8 @@ export default function App() {
               totalSteps={10}
               currentStep={step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
@@ -567,6 +673,7 @@ export default function App() {
               onNextPress={() => {
                 if (step === 1) handleContinueStep1();
                 else if (step === 2) handleContinueStep2();
+                else if (step === 3) handleContinueStep3();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -1423,6 +1530,414 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 3 ? (
+              /* ======================================================== */
+              /* SCREEN 3: OWNER / APPLICANT DETAILS (PIXEL-PERFECT MATCH)*/
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                {/* 1. Applicant Details */}
+                <Text style={styles.sectionHeading}>Applicant Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="First name"
+                    required
+                    size="large"
+                    value={formData.firstName}
+                    onValueChange={(v) => updateField('firstName', v)}
+                    placeholder="As on your PAN"
+                    status={errors.firstName ? 'error' : 'defaultStatus'}
+                    caption={errors.firstName}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Last name"
+                    required
+                    size="large"
+                    value={formData.lastName}
+                    onValueChange={(v) => updateField('lastName', v)}
+                    placeholder="As on your PAN"
+                    status={errors.lastName ? 'error' : 'defaultStatus'}
+                    caption={errors.lastName}
+                  />
+                </View>
+
+                {/* Read-only Full Name field as it will print on the certificate */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.readOnlyLabel}>
+                    Full name — as it will print on the certificate
+                  </Text>
+                  <View style={styles.readOnlyBox}>
+                    <Text style={styles.readOnlyText}>
+                      {(formData.firstName + ' ' + formData.lastName).trim() || 'Filled in from your first and last name'}
+                    </Text>
+                  </View>
+                  <View style={styles.helperRow}>
+                    <InfoOutlineIcon size={13} color="#64748B" />
+                    <Text style={styles.helperText}>Must match your PAN letter for letter</Text>
+                  </View>
+                </View>
+
+                {/* Gender Radio Buttons */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.radioGroupLabel}>
+                    Gender<Text style={{ color: '#EF4444' }}>*</Text>
+                  </Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    <Ux4gRadioButton
+                      checked={formData.gender === 'male'}
+                      onPress={() => updateField('gender', 'male')}
+                      label="Male"
+                      activeColor="#4A2BC2"
+                    />
+                    <Ux4gRadioButton
+                      checked={formData.gender === 'female'}
+                      onPress={() => updateField('gender', 'female')}
+                      label="Female"
+                      activeColor="#4A2BC2"
+                    />
+                    <Ux4gRadioButton
+                      checked={formData.gender === 'others'}
+                      onPress={() => updateField('gender', 'others')}
+                      label="Others"
+                      activeColor="#4A2BC2"
+                    />
+                    <Ux4gRadioButton
+                      checked={formData.gender === 'prefer_not_to_say'}
+                      onPress={() => updateField('gender', 'prefer_not_to_say')}
+                      label="Prefer not to say"
+                      activeColor="#4A2BC2"
+                    />
+                  </View>
+                  {errors.gender && <Text style={styles.errorCaption}>{errors.gender}</Text>}
+                </View>
+
+                {/* Date of Birth using official UX4G DatePicker */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gDatePicker
+                    label="Date of birth"
+                    required
+                    placeholder="Select date"
+                    initialDate={formData.dateOfBirth ? new Date(formData.dateOfBirth) : undefined}
+                    onDateSelected={(d) => {
+                      const formatted = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+                      updateField('dateOfBirth', formatted);
+                    }}
+                    status={errors.dateOfBirth ? 'error' : 'defaultStatus'}
+                    description={errors.dateOfBirth}
+                  />
+                </View>
+
+                {/* Relationship Dropdown */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Relationship"
+                    required
+                    size="l"
+                    options={RELATIONSHIP_OPTIONS}
+                    selectedOptionIds={formData.relationship}
+                    onSelectionChange={(ids) => updateField('relationship', ids)}
+                    placeholder="Select"
+                    status={errors.relationship ? 'error' : 'defaultStatus'}
+                    caption={errors.relationship}
+                  />
+                </View>
+
+                {/* Their full name */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Their full name"
+                    required
+                    size="large"
+                    value={formData.relationshipFullName}
+                    onValueChange={(v) => updateField('relationshipFullName', v)}
+                    placeholder="Appears on the registration certificate"
+                    status={errors.relationshipFullName ? 'error' : 'defaultStatus'}
+                    caption={errors.relationshipFullName}
+                  />
+                </View>
+
+                {/* 2. Identity Details using official UX4G PanInputField and AadhaarInputField */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>Identity Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gPanInputField
+                    label="PAN"
+                    required
+                    size="large"
+                    value={formData.panNumber}
+                    onValueChange={(v) => updateField('panNumber', v)}
+                    placeholder="ABCDE1234F"
+                    caption="Description"
+                    status={errors.panNumber ? 'error' : 'defaultStatus'}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gAadhaarInputField
+                    label="Aadhaar number"
+                    size="large"
+                    value={formData.aadhaarNumber}
+                    onValueChange={(v) => updateField('aadhaarNumber', v)}
+                    placeholder="XXXX XXXX XXXX"
+                    caption="Description"
+                    showMaskToggle={true}
+                    maskAll={true}
+                    status={errors.aadhaarNumber ? 'error' : 'defaultStatus'}
+                  />
+                </View>
+
+                {/* 3. Contact Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>Contact Details</Text>
+
+                {/* Mobile Number with +91 prefix and Verify button */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.fieldLabelWithAsterisk}>
+                    Mobile number<Text style={{ color: '#EF4444' }}>*</Text>
+                  </Text>
+                  <View style={[styles.inlineInputBox, errors.mobileNumber && styles.inputBoxError]}>
+                    <Text style={styles.prefixText}>+91</Text>
+                    <TextInput
+                      style={styles.inlineInput}
+                      placeholder="10 digits"
+                      placeholderTextColor="#94A3B8"
+                      value={formData.mobileNumber}
+                      onChangeText={(v) => updateField('mobileNumber', v)}
+                      keyboardType="phone-pad"
+                      maxLength={10}
+                    />
+                    <TouchableOpacity
+                      style={styles.verifyButton}
+                      onPress={() => {
+                        if (!formData.mobileNumber.trim()) {
+                          setErrors((prev) => ({ ...prev, mobileNumber: 'Please enter a valid 10-digit mobile number' }));
+                          return;
+                        }
+                        updateField('otpSent', true);
+                        updateField('resendTimer', 17);
+                      }}
+                    >
+                      <Text style={styles.verifyButtonText}>Verify</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {errors.mobileNumber && <Text style={styles.errorCaption}>{errors.mobileNumber}</Text>}
+
+                  {/* OTP 6-digit verification block using official UX4G OtpInput Component */}
+                  {formData.otpSent && (
+                    <View style={{ marginTop: 14 }}>
+                      <Ux4gOtpInput
+                        length={6}
+                        value={formData.otp}
+                        onChanged={(val) => updateField('otp', val)}
+                        label="Enter the 6-digit code sent to that number"
+                        boxSize={44}
+                        gap={8}
+                        autoCountdownSeconds={17}
+                        captionVariant="resendTimer"
+                        captionLeadingText="Didn't receive OTP? "
+                        captionTrailingText="Resend in"
+                        onCaptionTrailingTap={() => {
+                          alert('New OTP sent to +91 ' + formData.mobileNumber);
+                        }}
+                      />
+                    </View>
+                  )}
+                </View>
+
+                {/* Email Address with inline Verify */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.fieldLabelWithAsterisk}>
+                    Email address<Text style={{ color: '#EF4444' }}>*</Text>
+                  </Text>
+                  <View style={[styles.inlineInputBox, errors.emailAddress && styles.inputBoxError]}>
+                    <TextInput
+                      style={styles.inlineInput}
+                      placeholder="name@example.com"
+                      placeholderTextColor="#94A3B8"
+                      value={formData.emailAddress}
+                      onChangeText={(v) => updateField('emailAddress', v)}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                    />
+                    <TouchableOpacity
+                      style={styles.verifyButton}
+                      onPress={() => alert('Verification email sent to ' + (formData.emailAddress || 'email'))}
+                    >
+                      <Text style={styles.verifyButtonText}>Verify</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {errors.emailAddress && <Text style={styles.errorCaption}>{errors.emailAddress}</Text>}
+                </View>
+
+                {/* Landline (optional) */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Landline (optional)"
+                    size="large"
+                    value={formData.landline}
+                    onValueChange={(v) => updateField('landline', v)}
+                    placeholder="STD code + number, e.g. 0651 2560001"
+                  />
+                </View>
+
+                {/* 4. Permanent Address */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>Permanent Address</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="PIN code"
+                    required
+                    size="large"
+                    value={formData.permPinCode}
+                    onValueChange={(v) => updateField('permPinCode', v)}
+                    placeholder="6 digits"
+                    keyboardType="numeric"
+                    maxLength={6}
+                    status={errors.permPinCode ? 'error' : 'defaultStatus'}
+                    caption={errors.permPinCode}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="State / UT"
+                    required
+                    size="l"
+                    options={STATES_AND_UTS}
+                    selectedOptionIds={formData.permStateUT}
+                    onSelectionChange={(ids) => updateField('permStateUT', ids)}
+                    placeholder="Select state or union territory"
+                    status={errors.permStateUT ? 'error' : 'defaultStatus'}
+                    caption={errors.permStateUT}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="District"
+                    required
+                    size="l"
+                    options={DISTRICTS_UTTARAKHAND}
+                    selectedOptionIds={formData.permDistrict}
+                    onSelectionChange={(ids) => updateField('permDistrict', ids)}
+                    placeholder="Select district"
+                    status={errors.permDistrict ? 'error' : 'defaultStatus'}
+                    caption={errors.permDistrict}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Sub-district / Tehsil"
+                    required
+                    size="l"
+                    options={TEHSILS_DEHRADUN}
+                    selectedOptionIds={formData.permSubDistrict}
+                    onSelectionChange={(ids) => updateField('permSubDistrict', ids)}
+                    placeholder="Select sub-district or tehsil"
+                    status={errors.permSubDistrict ? 'error' : 'defaultStatus'}
+                    caption={errors.permSubDistrict}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="House or building number and street"
+                    required
+                    size="large"
+                    value={formData.permHouseStreet}
+                    onValueChange={(v) => updateField('permHouseStreet', v)}
+                    placeholder="As it would be written on a letter"
+                    status={errors.permHouseStreet ? 'error' : 'defaultStatus'}
+                    caption={errors.permHouseStreet}
+                  />
+                </View>
+
+                {/* 5. Address for Correspondence */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>
+                  Address for Correspondence
+                </Text>
+
+                <View style={{ marginBottom: 12 }}>
+                  <Ux4gCheckbox
+                    checked={formData.sameAsPermanent}
+                    onPress={() => updateField('sameAsPermanent', !formData.sameAsPermanent)}
+                    label="Same as my permanent address *"
+                    activeColor="#4A2BC2"
+                  />
+                </View>
+
+                <View style={{ marginBottom: 16 }}>
+                  <Ux4gCheckbox
+                    checked={formData.addressOutsideState}
+                    onPress={() => updateField('addressOutsideState', !formData.addressOutsideState)}
+                    label="My current address is outside this State *"
+                    activeColor="#4A2BC2"
+                  />
+                  <Text style={styles.checkboxSubHelperText}>
+                    Opens a State field on the current-address block.
+                  </Text>
+                </View>
+
+                {/* Capacity in which applying */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.capacityLabel}>
+                    Capacity in which you are applying<Text style={{ color: '#EF4444' }}>*</Text>
+                  </Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    <Ux4gRadioButton
+                      checked={formData.applyingCapacity === 'owner'}
+                      onPress={() => updateField('applyingCapacity', 'owner')}
+                      label="Owner of the property"
+                      activeColor="#4A2BC2"
+                    />
+                    <Ux4gRadioButton
+                      checked={formData.applyingCapacity === 'family_member'}
+                      onPress={() => updateField('applyingCapacity', 'family_member')}
+                      label="Family member managing the unit"
+                      activeColor="#4A2BC2"
+                    />
+                    <Ux4gRadioButton
+                      checked={formData.applyingCapacity === 'authorised_rep'}
+                      onPress={() => updateField('applyingCapacity', 'authorised_rep')}
+                      label="Authorised representative of the owner"
+                      activeColor="#4A2BC2"
+                    />
+                  </View>
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep3}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
         </ScrollView>
@@ -1431,7 +1946,7 @@ export default function App() {
   );
 }
 
-const STATUSBAR_HEIGHT = Platform.OS === 'android' ? 20 : 0;
+const STATUSBAR_HEIGHT = Platform.OS === 'android' ? (StatusBar.currentHeight ? StatusBar.currentHeight + 6 : 40) : 0;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -1444,8 +1959,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 6,
-    paddingBottom: 10,
+    paddingTop: 12,
+    paddingBottom: 12,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#F1F5F9',
@@ -1710,6 +2225,185 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     marginLeft: 2,
   },
+  readOnlyLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#0F172A',
+    marginBottom: 6,
+  },
+  readOnlyBox: {
+    height: 48,
+    backgroundColor: '#E2E8F0',
+    borderRadius: 8,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+  },
+  readOnlyText: {
+    fontSize: 13.5,
+    color: '#475569',
+  },
+  helperRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+    marginLeft: 2,
+  },
+  helperText: {
+    fontSize: 11.5,
+    color: '#64748B',
+    marginLeft: 4,
+  },
+  fieldLabelWithAsterisk: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#0F172A',
+    marginBottom: 6,
+  },
+  datePickerBox: {
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+  },
+  datePickerPlaceholderText: {
+    fontSize: 14,
+    color: '#94A3B8',
+  },
+  datePickerValueText: {
+    fontSize: 14,
+    color: '#0F172A',
+    fontWeight: '500',
+  },
+  aadhaarInputContainer: {
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  aadhaarTextInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#0F172A',
+    height: '100%',
+  },
+  eyeIconButton: {
+    padding: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inlineInputBox: {
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  inputBoxError: {
+    borderColor: '#DC2626',
+  },
+  prefixText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#0F172A',
+    marginRight: 8,
+  },
+  inlineInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#0F172A',
+    height: '100%',
+  },
+  verifyButton: {
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  verifyButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#4A2BC2',
+  },
+  otpBlockContainer: {
+    marginTop: 12,
+  },
+  otpHeadingLabel: {
+    fontSize: 12.5,
+    fontWeight: '500',
+    color: '#334155',
+    marginBottom: 8,
+  },
+  otpBoxesRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  otpBox: {
+    flex: 1,
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  otpBoxActive: {
+    borderColor: '#4A2BC2',
+    borderWidth: 1.5,
+  },
+  otpCursorText: {
+    fontSize: 20,
+    color: '#4A2BC2',
+    fontWeight: '300',
+    marginTop: -2,
+  },
+  otpDashText: {
+    fontSize: 18,
+    color: '#94A3B8',
+  },
+  otpCharText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  resendTimerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  resendGrayText: {
+    fontSize: 12,
+    color: '#64748B',
+  },
+  resendActiveTimer: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#475569',
+  },
+  checkboxSubHelperText: {
+    fontSize: 11.5,
+    color: '#64748B',
+    marginLeft: 32,
+    marginTop: 3,
+  },
+  capacityLabel: {
+    fontSize: 12.5,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
   actionButtonContainer: {
     marginTop: 26,
     paddingTop: 16,
@@ -1792,7 +2486,8 @@ const styles = StyleSheet.create({
         'A complete government service pattern for registering a homestay or hospitality unit using UX4G Design System components.\n\n' +
         '## Screens Included\n' +
         '- **Step 1**: Unit & Property details (Unit Details, Property Details, Category of Registration, Website and Social Media, Nearby Landmarks, Activities Offered)\n' +
-        '- **Step 2**: Location (Property Location, GPS Current Location, Interactive Geo Location Map with entrance pin, PIN Code, State/District/Tehsil/City LGD selectors, Street Address & Landmark)\n\n' +
+        '- **Step 2**: Location (Property Location, GPS Current Location, Interactive Geo Location Map with entrance pin, PIN Code, State/District/Tehsil/City LGD selectors, Street Address & Landmark)\n' +
+        '- **Step 3**: Owner / Applicant Details (Applicant Details, PAN & Aadhaar Identity Details, Contact Details with Phone & OTP verification, Email verification, Permanent Address, Address for Correspondence & Capacity in which applying)\n\n' +
         '## Getting Started\n\n' +
         'npm install\n' +
         'npx expo start\n'
