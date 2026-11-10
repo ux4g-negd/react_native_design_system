@@ -330,7 +330,7 @@ export const Ux4gStatusBanner: React.FC<Ux4gStatusBannerProps> = ({
           <View style={styles.leadingContainer}>{effectiveLeadingIcon}</View>
         )}
 
-        <View style={styles.contentColumn}>
+        <View style={[styles.contentColumn, contentAlignment !== 'left' && { flex: 0, flexShrink: 1 }]}>
           <View style={styles.titleWrap}>
             <Text
               numberOfLines={titleNumberOfLines}

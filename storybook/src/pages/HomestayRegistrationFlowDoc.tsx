@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = 'mSGm0nx5S0AZEWGxo1TTB';
+const SNACK_ID = '1r_9Zcn4lManjZbPdcC5k';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -671,7 +671,7 @@ const DocumentUploadSlot = ({
 };
 
 export default function App() {
-  const [step, setStep] = useState(9);
+  const [step, setStep] = useState(10);
   const [copyDropdownRoomIdx, setCopyDropdownRoomIdx] = useState(null);
   const [categorySlideIndex, setCategorySlideIndex] = useState(0);
   const [savedTime, setSavedTime] = useState('3:14 PM');
@@ -881,6 +881,9 @@ export default function App() {
     // Step 9: Review & Declaration
     declTrueKnowledge: false,
     declPhysicalInspection: false,
+
+    // Step 10: Payment
+    feeNonRefundableConfirmed: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -1240,7 +1243,21 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    alert('Step 9 (Review) validated successfully! Ready for Step 10.');
+    setStep(10);
+  };
+
+
+  const handleContinueStep10 = () => {
+    const errs = {};
+    if (!formData.feeNonRefundableConfirmed) {
+      errs.feeNonRefundableConfirmed =
+        'Please confirm that the fee is non-refundable before proceeding.';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Proceeding to payment gateway for Homestay Registration HS-2026-000000 (₹3,000)...');
   };
 
   return (
@@ -1271,18 +1288,41 @@ export default function App() {
         >
           {/* Main Card Container */}
           <View style={styles.mainCard}>
-            {/* Auto-saved banner using UX4G Status Banner Component */}
+            {/* Auto-saved banner using official UX4G Status Banner Component */}
             <Ux4gStatusBanner
               variant="successLight"
-              title={'Saved ' + savedTime}
+              title=""
+              leadingIcon={<View />}
+              trailingIcon={
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
+                    <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
+                    <Path
+                      d="M8.5 12.2L10.8 14.5L15.8 9.5"
+                      stroke={UX4GColors.green}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.green800 }}>
+                    {'Saved ' + savedTime}
+                  </Text>
+                </View>
+              }
               contentAlignment="right"
               backgroundColor={UX4GColors.green50}
-              borderColor="transparent"
+              borderColor={UX4GColors.transparent}
               height={34}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-              containerStyle={{ borderRadius: 6, marginBottom: 8 }}
-              paddingStyle={{ paddingVertical: 4, paddingHorizontal: 10 }}
-              titleStyle={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.green800 }}
+              containerStyle={{
+                borderRadius: 6,
+                marginBottom: 8,
+                elevation: 0,
+                shadowOpacity: 0,
+                justifyContent: 'center',
+              }}
+              paddingStyle={{ paddingVertical: 1, paddingHorizontal: 12 }}
             />
 
             {/* Stepper with centered title & back/next navigation */}
@@ -1290,8 +1330,8 @@ export default function App() {
               totalSteps={10}
               currentStep={step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : step === 10 ? 'Payment' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : step === 10 ? 'Payment' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
@@ -1311,6 +1351,8 @@ export default function App() {
                   ? 'Evidence, with per-slot format, size and count rules.'
                   : step === 9
                   ? 'Read back everything before committing.'
+                  : step === 10
+                  ? 'Fee calculation and transaction.'
                   : 'Multi-step registration workflow.'
               }
               description={
@@ -1332,6 +1374,8 @@ export default function App() {
                   ? 'Evidence, with per-slot format, size and count rules.'
                   : step === 9
                   ? 'Read back everything before committing.'
+                  : step === 10
+                  ? 'Fee calculation and transaction.'
                   : 'Multi-step registration workflow.'
               }
               onBackPress={() => {
@@ -1350,6 +1394,7 @@ export default function App() {
                 else if (step === 7) handleContinueStep7();
                 else if (step === 8) handleContinueStep8();
                 else if (step === 9) handleContinueStep9();
+                else if (step === 10) handleContinueStep10();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -3216,7 +3261,7 @@ export default function App() {
                         <Text style={styles.tierPrice}>{activeCat.range}</Text>
                         <Text style={styles.tierSub}>{activeCat.subtitle}</Text>
 
-                        <Ux4gDivider style={{ marginVertical: 10 }} />
+                        <Ux4gDivider style="solid" color={UX4GColors.neutral200} thickness={1} containerStyle={{ marginVertical: 10, paddingVertical: 1 }} />
 
                         <Text style={styles.tierSpecs}>{activeCat.specs}</Text>
                         <Text style={styles.tierAmenities}>{activeCat.amenities}</Text>
@@ -4395,6 +4440,99 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 10 ? (
+              /* ======================================================== */
+              /* SCREEN 10: PAYMENT (PIXEL-PERFECT MATCH)                 */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                <Text style={styles.sectionHeading}>Fee Details</Text>
+
+                {/* Fee Details Summary Card using official Ux4gCard & Ux4gDivider */}
+                <Ux4gCard
+                  cornerRadius={12}
+                  backgroundColor={UX4GColors.white}
+                  borderColor={UX4GColors.neutral200}
+                  borderWidth={1}
+                  elevation={0}
+                  style={{ padding: 16, marginBottom: 18 }}
+                >
+                  <Text style={styles.feeAppNumberHeading}>
+                    {'Homestay registration ·\nHS-2026-000000'}
+                  </Text>
+
+                  <View style={styles.feeRow}>
+                    <View style={{ flex: 1, paddingRight: 16 }}>
+                      <Text style={styles.feeLineDescription}>
+                        {'Registration fee — ' +
+                          autoCategory.displayName +
+                          ' category, Gram Panchayat area'}
+                      </Text>
+                    </View>
+                    <Text style={styles.feeLineAmount}>₹3,000</Text>
+                  </View>
+
+                  <Ux4gDivider style="solid" color={UX4GColors.neutral200} thickness={1} containerStyle={{ marginVertical: 12, paddingVertical: 1 }} />
+
+                  <View style={styles.feeTotalRow}>
+                    <Text style={styles.feeTotalLabel}>Total payable</Text>
+                    <Text style={styles.feeTotalAmount}>₹3,000</Text>
+                  </View>
+                </Ux4gCard>
+
+                {/* Non-refundable Confirmation Checkbox using official Ux4gCheckbox */}
+                <View style={{ marginBottom: 4 }}>
+                  <Ux4gCheckbox
+                    value={formData.feeNonRefundableConfirmed}
+                    onChanged={(val) =>
+                      updateField('feeNonRefundableConfirmed', !!val)
+                    }
+                    label="I understand the fee is non-refundable once the application is submitted"
+                    isRequired={true}
+                    hasError={!!errors.feeNonRefundableConfirmed}
+                    size="medium"
+                    activeColor={UX4GColors.primary}
+                    labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                  />
+                  {errors.feeNonRefundableConfirmed && (
+                    <View style={styles.groupErrorRow}>
+                      <InfoOutlineIcon size={13} color={UX4GColors.red} />
+                      <Text style={styles.groupErrorText}>
+                        {errors.feeNonRefundableConfirmed}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+
+                {/* Bottom Action Buttons using official Ux4gButton */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue to payment"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
+                    borderRadius={8}
+                    onPress={handleContinueStep10}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
         </ScrollView>
@@ -5227,6 +5365,43 @@ const styles = StyleSheet.create({
     backgroundColor: UX4GColors.green,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  feeAppNumberHeading: {
+    fontSize: 15,
+    fontWeight: '700',
+    lineHeight: 22,
+    color: UX4GColors.neutral900,
+    marginBottom: 14,
+  },
+  feeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feeLineDescription: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: UX4GColors.neutral700,
+  },
+  feeLineAmount: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  feeTotalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feeTotalLabel: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  feeTotalAmount: {
+    fontSize: 14.5,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
   },
   actionButtonContainer: {
     marginTop: 26,
