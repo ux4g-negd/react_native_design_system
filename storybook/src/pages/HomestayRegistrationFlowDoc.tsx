@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = '1r_9Zcn4lManjZbPdcC5k';
+const SNACK_ID = 'q46ZEQoZpR3DflXKC5lBn';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -670,8 +670,25 @@ const DocumentUploadSlot = ({
   );
 };
 
+
+const PAYMENT_MODES = [
+  { id: 'upi', title: 'UPI', subtitle: 'Pay with any UPI app' },
+  { id: 'card', title: 'Debit / Credit Card', subtitle: 'Visa, MasterCard, RuPay' },
+  { id: 'netbanking', title: 'Net Banking', subtitle: '60+ banks supported' },
+];
+
+const NETBANKING_BANKS = [
+  { id: 'airtel', label: 'Airtel Payments Bank' },
+  { id: 'axis', label: 'Axis Bank' },
+  { id: 'hdfc', label: 'HDFC Bank' },
+  { id: 'icici', label: 'ICICI Bank' },
+  { id: 'kotak', label: 'Kotak Mahindra Bank' },
+  { id: 'sbi', label: 'State Bank of India' },
+  { id: 'bob', label: 'Bank of Baroda' },
+];
+
 export default function App() {
-  const [step, setStep] = useState(10);
+  const [step, setStep] = useState(11);
   const [copyDropdownRoomIdx, setCopyDropdownRoomIdx] = useState(null);
   const [categorySlideIndex, setCategorySlideIndex] = useState(0);
   const [savedTime, setSavedTime] = useState('3:14 PM');
@@ -884,6 +901,15 @@ export default function App() {
 
     // Step 10: Payment
     feeNonRefundableConfirmed: false,
+
+    // Screen 11: Payment Mode
+    paymentMode: 'netbanking',
+    upiId: '',
+    selectedBank: [],
+    cardHolderName: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvv: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -1257,7 +1283,40 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    alert('Proceeding to payment gateway for Homestay Registration HS-2026-000000 (₹3,000)...');
+    setStep(11);
+  };
+
+
+  const handlePayNow = () => {
+    const errs = {};
+    if (formData.paymentMode === 'upi') {
+      if (!formData.upiId.trim() || !formData.upiId.includes('@')) {
+        errs.upiId = 'Please enter a valid UPI ID (e.g. name@upi)';
+      }
+    } else if (formData.paymentMode === 'netbanking') {
+      if (!formData.selectedBank || formData.selectedBank.length === 0) {
+        errs.selectedBank = 'Please select your bank';
+      }
+    } else if (formData.paymentMode === 'card') {
+      if (!formData.cardHolderName || !formData.cardHolderName.trim()) {
+        errs.cardHolderName = 'Name on card is required';
+      }
+      if (!formData.cardNumber || formData.cardNumber.replace(/\D/g, '').length < 12) {
+        errs.cardNumber = 'Please enter a valid card number';
+      }
+      if (!formData.cardExpiry || !formData.cardExpiry.trim()) {
+        errs.cardExpiry = 'Expiry date is required';
+      }
+      if (!formData.cardCvv || formData.cardCvv.trim().length < 3) {
+        errs.cardCvv = 'Security code is required';
+      }
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Payment of ₹3,000 initiated successfully for Homestay Registration HS-2026-000000!');
   };
 
   return (
@@ -1328,10 +1387,10 @@ export default function App() {
             {/* Stepper with centered title & back/next navigation */}
             <Ux4gCompactStepper
               totalSteps={10}
-              currentStep={step}
+              currentStep={step > 10 ? 10 : step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : step === 10 ? 'Payment' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : step === 10 ? 'Payment' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : step >= 10 ? 'Payment' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : step >= 10 ? 'Payment' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
@@ -1351,7 +1410,7 @@ export default function App() {
                   ? 'Evidence, with per-slot format, size and count rules.'
                   : step === 9
                   ? 'Read back everything before committing.'
-                  : step === 10
+                  : step >= 10
                   ? 'Fee calculation and transaction.'
                   : 'Multi-step registration workflow.'
               }
@@ -1374,7 +1433,7 @@ export default function App() {
                   ? 'Evidence, with per-slot format, size and count rules.'
                   : step === 9
                   ? 'Read back everything before committing.'
-                  : step === 10
+                  : step >= 10
                   ? 'Fee calculation and transaction.'
                   : 'Multi-step registration workflow.'
               }
@@ -1395,6 +1454,7 @@ export default function App() {
                 else if (step === 8) handleContinueStep8();
                 else if (step === 9) handleContinueStep9();
                 else if (step === 10) handleContinueStep10();
+                else if (step === 11) handlePayNow();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -4533,6 +4593,192 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 11 ? (
+              /* ======================================================== */
+              /* SCREEN 11: MODE OF PAYMENT (PIXEL-PERFECT MATCH)         */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                <Text style={styles.sectionHeading}>Mode of Payment</Text>
+                <Text style={styles.paymentSubtitleText}>
+                  ₹3,000 payable for HS-2026-000000.
+                </Text>
+
+                {/* Payment Mode Cards using official Ux4gCard & Ux4gRadioButton */}
+                <View style={{ gap: 10, marginBottom: 22 }}>
+                  {PAYMENT_MODES.map((mode) => {
+                    const isSelected = formData.paymentMode === mode.id;
+                    return (
+                      <Ux4gCard
+                        key={mode.id}
+                        cornerRadius={10}
+                        backgroundColor={
+                          isSelected ? UX4GColors.primary50 : UX4GColors.neutral50
+                        }
+                        borderColor={
+                          isSelected ? UX4GColors.primary200 : UX4GColors.neutral200
+                        }
+                        borderWidth={1}
+                        elevation={0}
+                        isClickable={true}
+                        onPress={() => updateField('paymentMode', mode.id)}
+                        style={{ paddingVertical: 14, paddingHorizontal: 14 }}
+                      >
+                        <View style={styles.paymentModeRow}>
+                          <Ux4gRadioButton
+                            value={mode.id}
+                            groupValue={formData.paymentMode}
+                            onChanged={(val) => updateField('paymentMode', val)}
+                            size="medium"
+                            color={UX4GColors.primary}
+                          />
+                          <View style={{ marginLeft: 10, flex: 1 }}>
+                            <Text
+                              style={[
+                                styles.paymentModeTitle,
+                                isSelected && { color: UX4GColors.primary },
+                              ]}
+                            >
+                              {mode.title}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.paymentModeDesc,
+                                isSelected && { color: UX4GColors.primary },
+                              ]}
+                            >
+                              {mode.subtitle}
+                            </Text>
+                          </View>
+                        </View>
+                      </Ux4gCard>
+                    );
+                  })}
+                </View>
+
+                {/* Conditional Payment Input Details */}
+                {formData.paymentMode === 'upi' ? (
+                  <View>
+                    <Text style={styles.sectionHeading}>Enter UPI ID</Text>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="UPI ID"
+                        required
+                        size="large"
+                        value={formData.upiId}
+                        onValueChange={(v) => updateField('upiId', v)}
+                        placeholder="e.g. name@upi"
+                        status={errors.upiId ? 'error' : 'defaultStatus'}
+                        caption={errors.upiId}
+                      />
+                    </View>
+                  </View>
+                ) : formData.paymentMode === 'netbanking' ? (
+                  <View>
+                    <Text style={styles.sectionHeading}>Choose Your Bank</Text>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gSelectionDropdown
+                        label="Bank"
+                        required
+                        size="l"
+                        options={NETBANKING_BANKS}
+                        selectedOptionIds={formData.selectedBank}
+                        onSelectionChange={(ids) => updateField('selectedBank', ids)}
+                        placeholder="Select your bank"
+                        status={errors.selectedBank ? 'error' : 'defaultStatus'}
+                        caption={errors.selectedBank}
+                      />
+                    </View>
+                  </View>
+                ) : (
+                  <View>
+                    <Text style={styles.sectionHeading}>Enter Card Details</Text>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Name on card"
+                        required
+                        size="large"
+                        value={formData.cardHolderName}
+                        onValueChange={(v) => updateField('cardHolderName', v)}
+                        placeholder="As printed on the card"
+                        status={errors.cardHolderName ? 'error' : 'defaultStatus'}
+                        caption={errors.cardHolderName}
+                      />
+                    </View>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Card number"
+                        required
+                        size="large"
+                        type="number"
+                        maxLength={19}
+                        value={formData.cardNumber}
+                        onValueChange={(v) => updateField('cardNumber', v)}
+                        placeholder="XXXX - XXXX - XXXX - XXXX"
+                        status={errors.cardNumber ? 'error' : 'defaultStatus'}
+                        caption={errors.cardNumber}
+                      />
+                    </View>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Expiry date"
+                        required
+                        size="large"
+                        value={formData.cardExpiry}
+                        onValueChange={(v) => updateField('cardExpiry', v)}
+                        placeholder="MM/YY"
+                        maxLength={5}
+                        status={errors.cardExpiry ? 'error' : 'defaultStatus'}
+                        caption={errors.cardExpiry}
+                      />
+                    </View>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Security code"
+                        required
+                        size="large"
+                        type="number"
+                        secureTextEntry={true}
+                        value={formData.cardCvv}
+                        onValueChange={(v) => updateField('cardCvv', v)}
+                        placeholder="XXX"
+                        maxLength={4}
+                        status={errors.cardCvv ? 'error' : 'defaultStatus'}
+                        caption={errors.cardCvv}
+                      />
+                    </View>
+                  </View>
+                )}
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text={formData.paymentMode === 'netbanking' ? 'Continue to bank' : 'Pay ₹3,000'}
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
+                    borderRadius={8}
+                    onPress={handlePayNow}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
         </ScrollView>
@@ -5402,6 +5648,25 @@ const styles = StyleSheet.create({
     fontSize: 14.5,
     fontWeight: '700',
     color: UX4GColors.neutral900,
+  },
+  paymentSubtitleText: {
+    fontSize: 12.5,
+    color: UX4GColors.neutral600,
+    marginBottom: 14,
+  },
+  paymentModeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paymentModeTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  paymentModeDesc: {
+    fontSize: 12.5,
+    color: UX4GColors.neutral600,
+    marginTop: 2,
   },
   actionButtonContainer: {
     marginTop: 26,
