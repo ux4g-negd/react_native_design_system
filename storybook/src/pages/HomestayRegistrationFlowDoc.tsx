@@ -2,13 +2,14 @@ import React, { useState, useMemo } from 'react';
 import JSZip from 'jszip';
 import { UX4GColors } from '../../../src/foundation/colors';
 import { Ux4gThemeProvider } from '../../../src/theme/Ux4gThemeContext';
+import { buildHomestayModularProject } from '../utils/homestayModularZip';
 
 interface HomestayRegistrationFlowDocProps {
   isDark: boolean;
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = 'q46ZEQoZpR3DflXKC5lBn';
+const SNACK_ID = 'z5JwvvoM-9t94lYOxo8PL';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -23,7 +24,7 @@ export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocPr
 
   // 100% complete, production-ready React Native code containing Step 1 and Step 2
   const fullAppCodeString = useMemo(() => {
-    return `import React, { useState } from 'react';
+    return `import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -54,6 +55,8 @@ import {
   Ux4gTextArea,
   Ux4gStatusBanner,
   Ux4gFileUpload,
+  Ux4gModal,
+  Ux4gSpinner,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -673,8 +676,9 @@ const DocumentUploadSlot = ({
 
 const PAYMENT_MODES = [
   { id: 'upi', title: 'UPI', subtitle: 'Pay with any UPI app' },
-  { id: 'card', title: 'Debit / Credit Card', subtitle: 'Visa, MasterCard, RuPay' },
   { id: 'netbanking', title: 'Net Banking', subtitle: '60+ banks supported' },
+  { id: 'card', title: 'Debit / Credit Card', subtitle: 'Visa, MasterCard, RuPay' },
+  { id: 'offline', title: 'Already paid offline', subtitle: 'Demand draft or counter payment' },
 ];
 
 const NETBANKING_BANKS = [
@@ -688,10 +692,13 @@ const NETBANKING_BANKS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(11);
+  const [step, setStep] = useState(1);
   const [copyDropdownRoomIdx, setCopyDropdownRoomIdx] = useState(null);
   const [categorySlideIndex, setCategorySlideIndex] = useState(0);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
+  const scrollViewRef = useRef(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -754,6 +761,8 @@ export default function App() {
     showAadhaar: false,
     mobileNumber: '',
     otpSent: false,
+    mobileVerified: false,
+    emailVerified: false,
     otp: '',
     resendTimer: 17,
     emailAddress: '',
@@ -903,19 +912,89 @@ export default function App() {
     feeNonRefundableConfirmed: false,
 
     // Screen 11: Payment Mode
-    paymentMode: 'netbanking',
+    paymentMode: 'upi',
     upiId: '',
     selectedBank: [],
     cardHolderName: '',
     cardNumber: '',
     cardExpiry: '',
     cardCvv: '',
+    offlineRef: '',
   });
 
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    setErrors({});
+    if (scrollViewRef.current && scrollViewRef.current.scrollTo) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    }
+  }, [step]);
+
+  useEffect(() => {
+    if (!isRedirecting) return;
+    const timer = setTimeout(() => {
+      setIsRedirecting(false);
+      setPaymentCompleted(true);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [isRedirecting]);
+
+  const handleSaveDraft = () => {
+    try {
+      const now = new Date();
+      const hrs = now.getHours();
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const ampm = hrs >= 12 ? 'PM' : 'AM';
+      const h12 = hrs % 12 || 12;
+      setSavedTime(h12 + ':' + mins + ' ' + ampm);
+    } catch (_e) {
+      setSavedTime('Just now');
+    }
+    alert('Draft saved successfully at Step ' + (step > 10 ? 10 : step) + '!');
+  };
+
   const updateField = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
+    setFormData((prev) => {
+      const next = { ...prev, [key]: value };
+      if (key === 'totalLettableRooms') {
+        const count = Math.max(1, Math.min(10, parseInt(value, 10) || 1));
+        const curRooms = prev.rooms || [];
+        if (count !== curRooms.length) {
+          const syncedRooms = [];
+          for (let i = 0; i < count; i++) {
+            if (curRooms[i]) {
+              syncedRooms.push(curRooms[i]);
+            } else {
+              syncedRooms.push({
+                id: String(i + 1),
+                expanded: i === 0,
+                name: '',
+                roomType: '',
+                beds: [],
+                tariff: '',
+                unit: ['sqft'],
+                roomArea: '',
+                bathrooms: ['1'],
+                bathroomUnit: ['sqft'],
+                bathroomAreas: [''],
+                toilets: ['1'],
+                toiletUnit: ['sqft'],
+                toiletAreas: [''],
+                facilities: [],
+              });
+            }
+          }
+          next.rooms = syncedRooms;
+        }
+      } else if (key === 'totalStaff') {
+        const maxS = Math.max(1, parseInt(value, 10) || 1);
+        if ((prev.hiredLocally || 0) > maxS) {
+          next.hiredLocally = maxS;
+        }
+      }
+      return next;
+    });
     if (errors[key]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -939,6 +1018,10 @@ export default function App() {
     if (!formData.unitName.trim()) errs.unitName = 'Name of the unit is required';
     if (!formData.legalEntityName.trim()) errs.legalEntityName = 'Legal entity name is required';
     if (!formData.promoterName.trim()) errs.promoterName = 'Promoter name is required';
+    const roomCnt = parseInt(formData.totalLettableRooms, 10);
+    if (formData.totalLettableRooms.trim() && (isNaN(roomCnt) || roomCnt < 1 || roomCnt > 20)) {
+      errs.totalLettableRooms = 'Enter a valid room count between 1 and 20';
+    }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
@@ -950,7 +1033,7 @@ export default function App() {
   const handleContinueStep2 = () => {
     const errs = {};
     if (!formData.whereIsProperty.trim()) errs.whereIsProperty = 'Property location link is required';
-    if (!formData.pinCode.trim()) errs.pinCode = 'PIN code is required';
+    if (!/^\d{6}$/.test(formData.pinCode.trim())) errs.pinCode = 'Enter a valid 6-digit PIN code';
     if (!formData.stateUT.length) errs.stateUT = 'State / UT is required';
     if (!formData.district.length) errs.district = 'District is required';
     if (!formData.subDistrict.length) errs.subDistrict = 'Sub-district is required';
@@ -971,10 +1054,21 @@ export default function App() {
     if (!formData.gender) errs.gender = 'Gender is required';
     if (!formData.relationship.length) errs.relationship = 'Relationship is required';
     if (!formData.relationshipFullName.trim()) errs.relationshipFullName = 'Their full name is required';
-    if (!formData.panNumber.trim()) errs.panNumber = 'PAN is required';
-    if (!formData.mobileNumber.trim()) errs.mobileNumber = 'Mobile number is required';
-    if (!formData.emailAddress.trim()) errs.emailAddress = 'Email address is required';
-    if (!formData.permPinCode.trim()) errs.permPinCode = 'PIN code is required';
+    if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/i.test(formData.panNumber.trim())) {
+      errs.panNumber = 'Enter a valid 10-character PAN (e.g. ABCDE1234F)';
+    }
+    if (formData.aadhaarNumber.trim() && !/^\d{12}$/.test(formData.aadhaarNumber.replace(/\s/g, ''))) {
+      errs.aadhaarNumber = 'Aadhaar number must be 12 digits';
+    }
+    if (!/^\d{10}$/.test(formData.mobileNumber.trim())) {
+      errs.mobileNumber = 'Enter a valid 10-digit mobile number';
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.emailAddress.trim())) {
+      errs.emailAddress = 'Enter a valid email address';
+    }
+    if (!/^\d{6}$/.test(formData.permPinCode.trim())) {
+      errs.permPinCode = 'Enter a valid 6-digit PIN code';
+    }
     if (!formData.permStateUT.length) errs.permStateUT = 'State / UT is required';
     if (!formData.permDistrict.length) errs.permDistrict = 'District is required';
     if (!formData.permSubDistrict.length) errs.permSubDistrict = 'Sub-district is required';
@@ -992,13 +1086,16 @@ export default function App() {
     if (!formData.ownerRunsPersonally) {
       if (!formData.managerName.trim()) errs.managerName = 'Manager or caretaker name is required';
       if (!formData.managerRelationship) errs.managerRelationship = 'Relationship to the owner is required';
-      if (!formData.managerMobile.trim()) errs.managerMobile = 'Mobile number is required';
-      if (!formData.managerPinCode.trim()) errs.managerPinCode = 'PIN code is required';
+      if (!/^\d{10}$/.test(formData.managerMobile.trim())) errs.managerMobile = 'Enter a valid 10-digit mobile number';
+      if (!/^\d{6}$/.test(formData.managerPinCode.trim())) errs.managerPinCode = 'Enter a valid 6-digit PIN code';
       if (!formData.managerStateUT.length) errs.managerStateUT = 'State / UT is required';
       if (!formData.managerDistrict.length) errs.managerDistrict = 'District is required';
       if (!formData.managerHouseStreet.trim()) errs.managerHouseStreet = 'House or building number is required';
     }
-    if (!formData.totalStaff.trim()) errs.totalStaff = 'Total number of staff is required';
+    const staffNum = parseInt(formData.totalStaff, 10);
+    if (!formData.totalStaff.trim() || isNaN(staffNum) || staffNum < 1) {
+      errs.totalStaff = 'Enter total staff count (minimum 1)';
+    }
     if (formData.isRenewal && !formData.previousRegNumber.trim()) {
       errs.previousRegNumber = 'Previous registration number is required for renewals';
     }
@@ -1009,7 +1106,6 @@ export default function App() {
     }
     setStep(5);
   };
-
 
   const toggleRoomExpanded = (roomIdx) => {
     setFormData((prev) => {
@@ -1046,6 +1142,15 @@ export default function App() {
       });
       return { ...prev, rooms: nextRooms };
     });
+    const suffix = field === 'roomType' ? 'type' : field === 'roomArea' ? 'area' : field;
+    const errKey = 'room_' + roomIdx + '_' + suffix;
+    if (errors[errKey]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[errKey];
+        return next;
+      });
+    }
   };
 
   const updateRoomSubArea = (roomIdx, kind, subIdx, val) => {
@@ -1127,6 +1232,9 @@ export default function App() {
   };
 
   const highestTariff = getHighestTariff();
+  const totalBeds = (formData.rooms || []).reduce((acc, r) => {
+    return acc + (parseInt((r.beds && r.beds[0]) || '0', 10) || 0);
+  }, 0);
   const autoCategory =
     highestTariff >= 6000
       ? HOMESTAY_CATEGORIES[2]
@@ -1134,7 +1242,52 @@ export default function App() {
       ? HOMESTAY_CATEGORIES[1]
       : HOMESTAY_CATEGORIES[0];
 
+  const areaTypeId = (formData.areaType && formData.areaType[0]) || 'rural';
+  const areaTypeDisplay =
+    areaTypeId === 'urban'
+      ? 'Urban Municipal area'
+      : areaTypeId === 'semi_urban'
+      ? 'Semi-Urban area'
+      : 'Gram Panchayat area';
+
+  const payableFee =
+    autoCategory.id === 'diamond' ? 8000 : autoCategory.id === 'gold' ? 5000 : 3000;
+  const formattedFee = '₹' + payableFee.toLocaleString('en-IN');
+
   const handleContinueStep5 = () => {
+    const errs = {};
+    let firstInvalidRoomIdx = -1;
+    (formData.rooms || []).forEach((room, idx) => {
+      if (!room.name || !room.name.trim()) {
+        errs['room_' + idx + '_name'] = 'Room name or number is required';
+        if (firstInvalidRoomIdx === -1) firstInvalidRoomIdx = idx;
+      }
+      if (!room.roomType) {
+        errs['room_' + idx + '_type'] = 'Select a room type';
+        if (firstInvalidRoomIdx === -1) firstInvalidRoomIdx = idx;
+      }
+      if (!room.tariff || parseInt(room.tariff, 10) <= 0) {
+        errs['room_' + idx + '_tariff'] = 'Enter a valid tariff per night';
+        if (firstInvalidRoomIdx === -1) firstInvalidRoomIdx = idx;
+      }
+      if (!room.roomArea || parseInt(room.roomArea, 10) <= 0) {
+        errs['room_' + idx + '_area'] = 'Enter valid room area';
+        if (firstInvalidRoomIdx === -1) firstInvalidRoomIdx = idx;
+      }
+    });
+
+    if (Object.keys(errs).length > 0) {
+      if (firstInvalidRoomIdx !== -1) {
+        setFormData((prev) => ({
+          ...prev,
+          rooms: prev.rooms.map((r, i) =>
+            i === firstInvalidRoomIdx ? { ...r, expanded: true } : r
+          ),
+        }));
+      }
+      setErrors(errs);
+      return;
+    }
     setStep(6);
   };
 
@@ -1162,6 +1315,12 @@ export default function App() {
     if (!formData.foodProvided) errs.foodProvided = 'Please select a food option';
     if (!formData.drinkingWater || formData.drinkingWater.length === 0) {
       errs.drinkingWater = 'Please select at least one drinking water option';
+    }
+    if (formData.hasLobby && (!formData.lobbyArea.trim() || parseInt(formData.lobbyArea, 10) <= 0)) {
+      errs.lobbyArea = 'Enter lobby area';
+    }
+    if (formData.hasDiningArea && (!formData.diningArea.trim() || parseInt(formData.diningArea, 10) <= 0)) {
+      errs.diningArea = 'Enter dining area';
     }
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
@@ -1287,6 +1446,24 @@ export default function App() {
   };
 
 
+  const handleStepperNext = () => {
+    if (step === 1) handleContinueStep1();
+    else if (step === 2) handleContinueStep2();
+    else if (step === 3) handleContinueStep3();
+    else if (step === 4) handleContinueStep4();
+    else if (step === 5) handleContinueStep5();
+    else if (step === 6) handleContinueStep6();
+    else if (step === 7) handleContinueStep7();
+    else if (step === 8) handleContinueStep8();
+    else if (step === 9) handleContinueStep9();
+    else if (step === 10) handleContinueStep10();
+    else if (step === 11) handlePayNow();
+  };
+
+  const handleStepperBack = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
   const handlePayNow = () => {
     const errs = {};
     if (formData.paymentMode === 'upi') {
@@ -1310,13 +1487,17 @@ export default function App() {
       if (!formData.cardCvv || formData.cardCvv.trim().length < 3) {
         errs.cardCvv = 'Security code is required';
       }
+    } else if (formData.paymentMode === 'offline') {
+      if (!formData.offlineRef || !formData.offlineRef.trim()) {
+        errs.offlineRef = 'DD / Challan reference number is required';
+      }
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
     }
-    alert('Payment of ₹3,000 initiated successfully for Homestay Registration HS-2026-000000!');
+    setIsRedirecting(true);
   };
 
   return (
@@ -1341,6 +1522,7 @@ export default function App() {
         </View>
 
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
@@ -1437,29 +1619,10 @@ export default function App() {
                   ? 'Fee calculation and transaction.'
                   : 'Multi-step registration workflow.'
               }
-              onBackPress={() => {
-                if (step > 1) setStep(step - 1);
-              }}
-              onPrevious={() => {
-                if (step > 1) setStep(step - 1);
-              }}
-              onNextPress={() => {
-                if (step === 1) handleContinueStep1();
-                else if (step === 2) handleContinueStep2();
-                else if (step === 3) handleContinueStep3();
-                else if (step === 4) handleContinueStep4();
-                else if (step === 5) handleContinueStep5();
-                else if (step === 6) handleContinueStep6();
-                else if (step === 7) handleContinueStep7();
-                else if (step === 8) handleContinueStep8();
-                else if (step === 9) handleContinueStep9();
-                else if (step === 10) handleContinueStep10();
-                else if (step === 11) handlePayNow();
-              }}
-              onNext={() => {
-                if (step === 1) handleContinueStep1();
-                else if (step === 2) handleContinueStep2();
-              }}
+              onBackPress={handleStepperBack}
+              onPrevious={handleStepperBack}
+              onNextPress={handleStepperNext}
+              onNext={handleStepperNext}
               cumulative={true}
               style={{ marginVertical: 4 }}
             />
@@ -2497,6 +2660,7 @@ export default function App() {
                           return;
                         }
                         updateField('otpSent', true);
+                        updateField('mobileVerified', true);
                         updateField('resendTimer', 17);
                       }}
                     >
@@ -2544,7 +2708,14 @@ export default function App() {
                     />
                     <TouchableOpacity
                       style={styles.verifyButton}
-                      onPress={() => alert('Verification email sent to ' + (formData.emailAddress || 'email'))}
+                      onPress={() => {
+                        if (!/^\S+@\S+\.\S+$/.test(formData.emailAddress.trim())) {
+                          setErrors((prev) => ({ ...prev, emailAddress: 'Enter a valid email address first' }));
+                          return;
+                        }
+                        updateField('emailVerified', true);
+                        alert('Verification link sent and email verified for ' + formData.emailAddress);
+                      }}
                     >
                       <Text style={styles.verifyButtonText}>Verify</Text>
                     </TouchableOpacity>
@@ -2711,10 +2882,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -2972,10 +3140,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -3081,6 +3246,8 @@ export default function App() {
                               value={room.name}
                               onValueChange={(v) => updateRoomField(roomIdx, 'name', v)}
                               placeholder="Guests will see this"
+                              status={errors['room_' + roomIdx + '_name'] ? 'error' : 'defaultStatus'}
+                              caption={errors['room_' + roomIdx + '_name']}
                             />
                           </View>
 
@@ -3103,6 +3270,14 @@ export default function App() {
                                 </View>
                               ))}
                             </View>
+                            {errors['room_' + roomIdx + '_type'] && (
+                              <View style={styles.groupErrorRow}>
+                                <InfoOutlineIcon size={13} color={UX4GColors.red} />
+                                <Text style={styles.groupErrorText}>
+                                  {errors['room_' + roomIdx + '_type']}
+                                </Text>
+                              </View>
+                            )}
                           </View>
 
                           {/* Beds in this room */}
@@ -3130,6 +3305,8 @@ export default function App() {
                               size="large"
                               value={room.tariff}
                               onValueChange={(v) => updateRoomField(roomIdx, 'tariff', v)}
+                              status={errors['room_' + roomIdx + '_tariff'] ? 'error' : 'defaultStatus'}
+                              caption={errors['room_' + roomIdx + '_tariff']}
                             />
                           </View>
 
@@ -3156,6 +3333,8 @@ export default function App() {
                               onValueChange={(v) => updateRoomField(roomIdx, 'roomArea', v)}
                               placeholder="Numbers only"
                               type="number"
+                              status={errors['room_' + roomIdx + '_area'] ? 'error' : 'defaultStatus'}
+                              caption={errors['room_' + roomIdx + '_area']}
                             />
                           </View>
 
@@ -3366,10 +3545,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -3470,6 +3646,8 @@ export default function App() {
                     onValueChange={(v) => updateField('lobbyArea', v)}
                     placeholder="Numbers only"
                     type="number"
+                    status={errors.lobbyArea ? 'error' : 'defaultStatus'}
+                    caption={errors.lobbyArea}
                   />
                 </View>
 
@@ -3503,6 +3681,8 @@ export default function App() {
                     onValueChange={(v) => updateField('diningArea', v)}
                     placeholder="Numbers only"
                     type="number"
+                    status={errors.diningArea ? 'error' : 'defaultStatus'}
+                    caption={errors.diningArea}
                   />
                 </View>
 
@@ -3652,10 +3832,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -3836,10 +4013,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -4255,10 +4429,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -4307,7 +4478,12 @@ export default function App() {
                         ? formData.firstName.trim() +
                           (formData.lastName ? ' ' + formData.lastName.trim() : '')
                         : 'Applicant name') +
-                      ' · PAN verified · mobile verified · email verified',
+                      ' · ' +
+                      (formData.panNumber ? 'PAN entered' : 'PAN pending') +
+                      ' · ' +
+                      (formData.mobileVerified ? 'mobile verified' : 'mobile pending') +
+                      ' · ' +
+                      (formData.emailVerified ? 'email verified' : 'email pending'),
                   },
                   {
                     stepNum: 4,
@@ -4326,7 +4502,10 @@ export default function App() {
                     stepNum: 5,
                     title: 'Step 5 · Rooms / Accommodation',
                     subtitle:
-                      '2 rooms · 4 beds · highest tariff ₹' +
+                      (formData.rooms ? formData.rooms.length : 4) +
+                      ' rooms · ' +
+                      totalBeds +
+                      ' beds · highest tariff ₹' +
                       (highestTariff > 0 ? highestTariff.toLocaleString('en-IN') : '2,000') +
                       ' · within the 6 room and 12 bed caps',
                   },
@@ -4383,43 +4562,70 @@ export default function App() {
                   </View>
                 ))}
 
-                {/* Step 8 Warning Review Card */}
-                <View style={{ marginBottom: 18 }}>
-                  <Ux4gStatusBanner
-                    variant="warningLight"
-                    title="Step 8 · Documents"
-                    subtitle="6 of 8 uploaded · 2 still outstanding"
-                    titleNumberOfLines={2}
-                    subtitleNumberOfLines={3}
-                    backgroundColor={UX4GColors.orange50}
-                    borderColor={UX4GColors.orange200}
-                    marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                    paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
-                    containerStyle={{ borderRadius: 10 }}
-                    titleStyle={{
-                      fontSize: 13.5,
-                      fontWeight: '700',
-                      color: UX4GColors.orange800,
-                      lineHeight: 19,
-                    }}
-                    subtitleStyle={{
-                      fontSize: 12,
-                      lineHeight: 17,
-                      color: UX4GColors.orange800,
-                      marginTop: 3,
-                    }}
-                    trailingIcon={
-                      <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => setStep(8)}
-                        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                        style={{ padding: 2 }}
-                      >
-                        <PencilOutlineIcon size={17} color={UX4GColors.neutral800} />
-                      </TouchableOpacity>
-                    }
-                  />
-                </View>
+                {/* Step 8 Dynamic Review Card (Green if complete, Amber if docs missing) */}
+                {(() => {
+                  const df = formData.docFiles || {};
+                  const totalSlots = 8;
+                  const uploadedSlots = [
+                    (df.ownership_proof || []).length > 0,
+                    (df.building_map || []).length > 0 || formData.byeLawsNotApplicable,
+                    (df.solvency_affidavit || []).length > 0,
+                    (df.undertaking || []).length > 0,
+                    (df.pledge || []).length > 0,
+                    (df.identity_proof || []).length > 0,
+                    (df.exterior_photo || []).length > 0,
+                    (df.room2_photo || []).length >= 2,
+                  ].filter(Boolean).length;
+                  const remainingSlots = Math.max(0, totalSlots - uploadedSlots);
+                  const allDocsDone = remainingSlots === 0;
+                  return (
+                    <View style={{ marginBottom: 18 }}>
+                      <Ux4gStatusBanner
+                        variant={allDocsDone ? 'successLight' : 'warningLight'}
+                        title="Step 8 · Documents"
+                        subtitle={
+                          allDocsDone
+                            ? totalSlots + ' of ' + totalSlots + ' uploaded · all complete'
+                            : uploadedSlots +
+                              ' of ' +
+                              totalSlots +
+                              ' uploaded · ' +
+                              remainingSlots +
+                              ' still outstanding'
+                        }
+                        titleNumberOfLines={2}
+                        subtitleNumberOfLines={3}
+                        backgroundColor={allDocsDone ? UX4GColors.green50 : UX4GColors.orange50}
+                        borderColor={allDocsDone ? UX4GColors.green200 : UX4GColors.orange200}
+                        marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                        paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                        containerStyle={{ borderRadius: 10 }}
+                        titleStyle={{
+                          fontSize: 13.5,
+                          fontWeight: '700',
+                          color: allDocsDone ? UX4GColors.green700 : UX4GColors.orange800,
+                          lineHeight: 19,
+                        }}
+                        subtitleStyle={{
+                          fontSize: 12,
+                          lineHeight: 17,
+                          color: allDocsDone ? UX4GColors.green : UX4GColors.orange800,
+                          marginTop: 3,
+                        }}
+                        trailingIcon={
+                          <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={() => setStep(8)}
+                            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                            style={{ padding: 2 }}
+                          >
+                            <PencilOutlineIcon size={17} color={UX4GColors.neutral800} />
+                          </TouchableOpacity>
+                        }
+                      />
+                    </View>
+                  );
+                })()}
 
                 {/* Declaration Section */}
                 <Text style={styles.sectionHeading}>Declaration</Text>
@@ -4492,10 +4698,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -4525,17 +4728,18 @@ export default function App() {
                       <Text style={styles.feeLineDescription}>
                         {'Registration fee — ' +
                           autoCategory.displayName +
-                          ' category, Gram Panchayat area'}
+                          ' category, ' +
+                          areaTypeDisplay}
                       </Text>
                     </View>
-                    <Text style={styles.feeLineAmount}>₹3,000</Text>
+                    <Text style={styles.feeLineAmount}>{formattedFee}</Text>
                   </View>
 
                   <Ux4gDivider style="solid" color={UX4GColors.neutral200} thickness={1} containerStyle={{ marginVertical: 12, paddingVertical: 1 }} />
 
                   <View style={styles.feeTotalRow}>
                     <Text style={styles.feeTotalLabel}>Total payable</Text>
-                    <Text style={styles.feeTotalAmount}>₹3,000</Text>
+                    <Text style={styles.feeTotalAmount}>{formattedFee}</Text>
                   </View>
                 </Ux4gCard>
 
@@ -4585,10 +4789,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -4600,7 +4801,7 @@ export default function App() {
               <View style={styles.formContainer}>
                 <Text style={styles.sectionHeading}>Mode of Payment</Text>
                 <Text style={styles.paymentSubtitleText}>
-                  ₹3,000 payable for HS-2026-000000.
+                  {formattedFee + ' payable for HS-2026-000000.'}
                 </Text>
 
                 {/* Payment Mode Cards using official Ux4gCard & Ux4gRadioButton */}
@@ -4689,6 +4890,22 @@ export default function App() {
                       />
                     </View>
                   </View>
+                ) : formData.paymentMode === 'offline' ? (
+                  <View>
+                    <Text style={styles.sectionHeading}>Offline Payment Reference</Text>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="DD / Challan / Receipt number"
+                        required
+                        size="large"
+                        value={formData.offlineRef}
+                        onValueChange={(v) => updateField('offlineRef', v)}
+                        placeholder="Enter reference number"
+                        status={errors.offlineRef ? 'error' : 'defaultStatus'}
+                        caption={errors.offlineRef}
+                      />
+                    </View>
+                  </View>
                 ) : (
                   <View>
                     <Text style={styles.sectionHeading}>Enter Card Details</Text>
@@ -4752,7 +4969,7 @@ export default function App() {
                 {/* Bottom Action Buttons */}
                 <View style={styles.actionButtonContainer}>
                   <Ux4gButton
-                    text={formData.paymentMode === 'netbanking' ? 'Continue to bank' : 'Pay ₹3,000'}
+                    text={formData.paymentMode === 'netbanking' ? 'Continue to bank' : 'Pay ' + formattedFee}
                     variant="primary"
                     size="large"
                     backgroundColor={UX4GColors.primary}
@@ -4771,10 +4988,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={() => {
-                      setSavedTime('3:14 PM');
-                      alert('Draft saved successfully!');
-                    }}
+                    onPress={handleSaveDraft}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -4782,6 +4996,85 @@ export default function App() {
             ) : null}
           </View>
         </ScrollView>
+
+        {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
+        <Ux4gModal
+          visible={step === 11 && isRedirecting}
+          onDismiss={() => setIsRedirecting(false)}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={44}
+              strokeWidth={4}
+              color={UX4GColors.primary}
+              gradientColors={[
+                UX4GColors.primary100,
+                UX4GColors.primary300,
+                UX4GColors.primary,
+              ]}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={12}
+          backgroundColor={UX4GColors.white}
+        />
+
+        {/* Payment Success & Application Submitted Modal */}
+        <Ux4gModal
+          visible={paymentCompleted}
+          onDismiss={() => setPaymentCompleted(false)}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 24,
+                backgroundColor: UX4GColors.green50,
+                borderWidth: 2,
+                borderColor: UX4GColors.green,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CheckSmallIcon size={22} color={UX4GColors.green} />
+            </View>
+          }
+          showHeader={true}
+          headerTitle="Payment Successful!"
+          showDescription={true}
+          descriptionText={
+            'Your payment of ' +
+            formattedFee +
+            ' has been received. Application HS-2026-000000 (' +
+            (formData.unitName.trim() || 'Homestay Unit') +
+            ') is submitted for departmental review.'
+          }
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={true}
+          footerButtons="oneButton"
+          footerAlign="center"
+          primaryButtonText="Back to Step 1"
+          onPrimaryClick={() => {
+            setPaymentCompleted(false);
+            setStep(1);
+          }}
+          showCloseButton={false}
+          cornerRadius={12}
+          backgroundColor={UX4GColors.white}
+        />
       </SafeAreaView>
     </Ux4gThemeProvider>
   );
@@ -5686,79 +5979,16 @@ const styles = StyleSheet.create({
     }`;
   }, [isDark]);
 
-  // ZIP Downloader for the complete standalone application
+  // ZIP Downloader for the complete modular standalone application
   const handleDownloadZip = async () => {
     setIsDownloadingZip(true);
     try {
       const zip = new JSZip();
+      const modularFiles = buildHomestayModularProject(fullAppCodeString);
 
-      zip.file(
-        'package.json',
-        JSON.stringify(
-          {
-            name: 'ux4g-homestay-registration-flow',
-            version: '1.0.0',
-            description: 'Complete multi-step Homestay Registration flow built with UX4G React Native components',
-            main: 'index.js',
-            scripts: {
-              start: 'expo start',
-              android: 'expo start --android',
-              ios: 'expo start --ios',
-              web: 'expo start --web',
-            },
-            dependencies: {
-              expo: '~51.0.0',
-              react: '18.2.0',
-              'react-native': '0.74.5',
-              'react-native-svg': '15.2.0',
-              'ux4g-react-native-components': '^1.2.2',
-            },
-            devDependencies: {
-              '@babel/core': '^7.20.0',
-              typescript: '~5.3.3',
-            },
-          },
-          null,
-          2
-        )
-      );
-
-      zip.file(
-        'app.json',
-        JSON.stringify(
-          {
-            expo: {
-              name: 'Homestay Registration Flow',
-              slug: 'ux4g-homestay-registration-flow',
-              version: '1.0.0',
-              orientation: 'portrait',
-              userInterfaceStyle: 'light',
-              splash: {
-                resizeMode: 'contain',
-                backgroundColor: '#ffffff',
-              },
-            },
-          },
-          null,
-          2
-        )
-      );
-
-      zip.file(
-        'README.md',
-        '# Homestay Registration Flow (UX4G React Native)\n\n' +
-        'A complete government service pattern for registering a homestay or hospitality unit using UX4G Design System components.\n\n' +
-        '## Screens Included\n' +
-        '- **Step 1**: Unit & Property details (Unit Details, Property Details, Category of Registration, Website and Social Media, Nearby Landmarks, Activities Offered)\n' +
-        '- **Step 2**: Location (Property Location, GPS Current Location, Interactive Geo Location Map with entrance pin, PIN Code, State/District/Tehsil/City LGD selectors, Street Address & Landmark)\n' +
-        '- **Step 3**: Owner / Applicant Details (Applicant Details, PAN & Aadhaar Identity Details, Contact Details with Phone & OTP verification, Email verification, Permanent Address, Address for Correspondence & Capacity in which applying)\n' +
-        '- **Step 4**: Management & Staff (Manager Details with personal run toggle, Address of Manager, Staff Details with interactive hired locally slider, Previous Registration Details)\n\n' +
-        '## Getting Started\n\n' +
-        'npm install\n' +
-        'npx expo start\n'
-      );
-
-      zip.file('App.tsx', fullAppCodeString);
+      Object.entries(modularFiles).forEach(([filePath, fileContent]) => {
+        zip.file(filePath, fileContent);
+      });
 
       const content = await zip.generateAsync({ type: 'blob' });
       const downloadUrl = URL.createObjectURL(content);
@@ -5770,7 +6000,9 @@ const styles = StyleSheet.create({
       document.body.removeChild(link);
       URL.revokeObjectURL(downloadUrl);
 
-      triggerToast('Complete 2-Screen Homestay Registration Flow application downloaded successfully!');
+      triggerToast(
+        'Complete 10-Step (11-Screen) modular Homestay Registration Flow ZIP downloaded successfully!'
+      );
     } catch (error) {
       console.error('Failed to create ZIP package:', error);
       triggerToast('Error generating ZIP file. Please try again.');
@@ -5818,7 +6050,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 10 Steps (Steps 1 & 2 Active)
+                Service Pattern • Complete 10-Step Flow (11 Screens)
               </span>
             </div>
             <p
