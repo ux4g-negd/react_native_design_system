@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = 'qjJh0I70gHc3Drb-IEoRv';
+const SNACK_ID = 'JkLTM1UIr1HDkn6TKiJ_R';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -608,8 +608,37 @@ const ADDITIONAL_COMFORT_OPTIONS = [
   { id: 'other', label: 'Other' },
 ];
 
+
+const VERIFIED_BY_DEPT_ITEMS = [
+  'Application form complete',
+  'Documents list complete',
+  'Minimum room and bathroom sizes met',
+  'Room and bed caps respected',
+];
+
+const SAFETY_DECLARATION_OPTIONS = [
+  { id: 'cctv', label: 'CCTV surveillance at entry points' },
+  { id: 'fire_safety', label: 'Fire safety equipment' },
+  { id: 'emergency_exit', label: 'Emergency exit' },
+  { id: 'first_aid', label: 'First aid kit' },
+];
+
+const BUILDING_SERVICES_OPTIONS = [
+  { id: 'local_byelaws', label: 'Building complies with local bye-laws' },
+  { id: 'potable_water', label: 'Potable water supply' },
+  { id: 'power_backup', label: 'Uninterrupted power or backup' },
+  { id: 'sewage_system', label: 'Sewage connection or septic system' },
+];
+
+const GUEST_SAFETY_OPTIONS = [
+  { id: 'visitor_register', label: 'Visitor register maintained' },
+  { id: 'staff_police_verified', label: 'Staff police-verified' },
+  { id: 'emergency_board', label: 'Emergency contact board displayed' },
+  { id: 'insurance_cover', label: 'Insurance cover in force' },
+];
+
 export default function App() {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(7);
   const [copyDropdownRoomIdx, setCopyDropdownRoomIdx] = useState(null);
   const [categorySlideIndex, setCategorySlideIndex] = useState(0);
   const [savedTime, setSavedTime] = useState('3:14 PM');
@@ -788,6 +817,12 @@ export default function App() {
     additionalServices: [],
     additionalComfort: [],
     ecoFriendlyPractices: '',
+    // Step 7: Compliance & Safety Checklist
+    safetyDeclarations: [],
+    buildingServicesDeclarations: [],
+    guestSafetyDeclarations: [],
+    fireSafetyDetails: '',
+    complianceConfirmed: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -1045,7 +1080,23 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    alert('Step 6 (Amenities, Facilities & Distances) validated successfully! Ready for Step 7.');
+    setStep(7);
+  };
+
+
+  const handleContinueStep7 = () => {
+    const errs = {};
+    if (!formData.fireSafetyDetails || formData.fireSafetyDetails.trim().length < 10) {
+      errs.fireSafetyDetails = 'Please describe installed fire safety equipment (at least 10 characters).';
+    }
+    if (!formData.complianceConfirmed) {
+      errs.complianceConfirmed = 'Please confirm the declaration above to continue.';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Step 7 (Compliance & Safety Checklist) validated successfully! Ready for Step 8.');
   };
 
   return (
@@ -1093,8 +1144,8 @@ export default function App() {
               totalSteps={10}
               currentStep={step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
@@ -1108,6 +1159,8 @@ export default function App() {
                   ? 'The lettable inventory.'
                   : step === 6
                   ? 'What the property offers, and how far it is from things.'
+                  : step === 7
+                  ? 'The statutory minimums. Some are verified for you; the rest you confirm.'
                   : 'Multi-step registration workflow.'
               }
               description={
@@ -1123,6 +1176,8 @@ export default function App() {
                   ? 'The lettable inventory.'
                   : step === 6
                   ? 'What the property offers, and how far it is from things.'
+                  : step === 7
+                  ? 'The statutory minimums. Some are verified for you; the rest you confirm.'
                   : 'Multi-step registration workflow.'
               }
               onBackPress={() => {
@@ -1138,6 +1193,7 @@ export default function App() {
                 else if (step === 4) handleContinueStep4();
                 else if (step === 5) handleContinueStep5();
                 else if (step === 6) handleContinueStep6();
+                else if (step === 7) handleContinueStep7();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -3343,6 +3399,190 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 7 ? (
+              /* ======================================================== */
+              /* SCREEN 7: COMPLIANCE & SAFETY CHECKLIST                  */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                {/* 1. Verified by the Department */}
+                <Text style={styles.sectionHeading}>Verified by the Department</Text>
+                <Text style={styles.complianceHelperBody}>
+                  Checked automatically from what you have already entered. Nothing to do here.
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Already satisfied</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {VERIFIED_BY_DEPT_ITEMS.map((itemLabel, idx) => (
+                      <Ux4gCheckbox
+                        key={'dept-' + idx}
+                        value={true}
+                        enabled={false}
+                        label={itemLabel}
+                        size="medium"
+                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* 2. Declarations */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>Declarations</Text>
+
+                <View style={{ marginBottom: 16 }}>
+                  <Ux4gStatusBanner
+                    variant="warningLight"
+                    title="These are physically verified during the departmental inspection. Confirming something you do not have will fail the inspection, not the form."
+                    subtitle=""
+                    titleNumberOfLines={5}
+                    backgroundColor="#FFF7ED"
+                    borderColor="#FDBA74"
+                    marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                    paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                    containerStyle={{ borderRadius: 10 }}
+                    titleStyle={{
+                      fontSize: 12.5,
+                      lineHeight: 18,
+                      fontWeight: '500',
+                      color: '#B45309',
+                    }}
+                  />
+                </View>
+
+                {/* Safety */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Safety</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {SAFETY_DECLARATION_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.safetyDeclarations || []).includes(opt.id)}
+                        onChanged={() => toggleArrayItem('safetyDeclarations', opt.id)}
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* Building and services */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Building and services</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {BUILDING_SERVICES_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.buildingServicesDeclarations || []).includes(opt.id)}
+                        onChanged={() =>
+                          toggleArrayItem('buildingServicesDeclarations', opt.id)
+                        }
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* Guest safety */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Guest safety</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {GUEST_SAFETY_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.guestSafetyDeclarations || []).includes(opt.id)}
+                        onChanged={() =>
+                          toggleArrayItem('guestSafetyDeclarations', opt.id)
+                        }
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* 3. Fire Safety Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 10 }]}>
+                  Fire Safety Details
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gTextArea
+                    label="What fire safety equipment is installed?"
+                    required={true}
+                    value={formData.fireSafetyDetails}
+                    onValueChange={(v) => updateField('fireSafetyDetails', v)}
+                    placeholder="For example: two 5 kg ABC powder extinguishers in the kitchen and lobby, smoke detectors in every room"
+                    maxLength={200}
+                    caption={
+                      errors.fireSafetyDetails ||
+                      'Shown because you ticked Fire safety equipment above. At least 10 characters.'
+                    }
+                    status={errors.fireSafetyDetails ? 'error' : 'defaultStatus'}
+                    showCaptionIcon={true}
+                    minHeight="medium"
+                    size="large"
+                  />
+                </View>
+
+                {/* Final Confirmation Checkbox */}
+                <View style={{ marginTop: 2, marginBottom: 6 }}>
+                  <Ux4gCheckbox
+                    value={formData.complianceConfirmed}
+                    onChanged={(val) => updateField('complianceConfirmed', !!val)}
+                    label="I confirm the above is true and understand that a false confirmation may void the registration"
+                    isRequired={true}
+                    hasError={!!errors.complianceConfirmed}
+                    size="medium"
+                    activeColor="#4A2BC2"
+                    labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                  />
+                  {errors.complianceConfirmed && (
+                    <View style={styles.groupErrorRow}>
+                      <InfoOutlineIcon size={13} color="#DC2626" />
+                      <Text style={styles.groupErrorText}>
+                        {errors.complianceConfirmed}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep7}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
         </ScrollView>
@@ -4051,6 +4291,12 @@ const styles = StyleSheet.create({
     color: '#64748B',
     marginTop: 4,
     lineHeight: 15,
+  },
+  complianceHelperBody: {
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: '#475569',
+    marginBottom: 14,
   },
   subGroupHeading: {
     fontSize: 13,
