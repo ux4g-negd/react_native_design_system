@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = '0FZOWr1TUkn1-HDjQphO2';
+const SNACK_ID = 'qjJh0I70gHc3Drb-IEoRv';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -49,6 +49,9 @@ import {
   Ux4gPanInputField,
   Ux4gAadhaarInputField,
   Ux4gSlider,
+  Ux4gCard,
+  Ux4gPaginationDotted,
+  Ux4gTextArea,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -116,6 +119,39 @@ const CrosshairsGpsIcon = ({ size = 18, color = '#1E293B' }) => (
       strokeLinecap="round"
     />
     <Circle cx="12" cy="12" r="2.8" fill={color} />
+  </Svg>
+);
+
+
+// Screen 5 Material Outline Icons
+const CopyOutlineIcon = ({ size = 14, color = '#475569' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M8 4v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7.242a2 2 0 0 0-.602-1.43L16.083 2.57A2 2 0 0 0 14.685 2H10a2 2 0 0 0-2 2z"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M16 18v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const ChevronUpIcon = ({ size = 18, color = '#475569' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M18 15l-6-6-6 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </Svg>
+);
+
+const ChevronDownIcon = ({ size = 18, color = '#475569' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path d="M6 9l6 6 6-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 );
 
@@ -452,8 +488,130 @@ const AREA_TYPES = [
 ];
 
 
+
+const ROOM_TYPES = [
+  { id: 'single', label: 'Single' },
+  { id: 'double', label: 'Double' },
+  { id: 'suite', label: 'Suite' },
+  { id: 'dormitory', label: 'Dormitory' },
+];
+
+const BEDS_OPTIONS = [
+  { id: '1', label: '1' },
+  { id: '2', label: '2' },
+  { id: '3', label: '3' },
+  { id: '4', label: '4' },
+];
+
+const AREA_UNITS = [
+  { id: 'sqft', label: 'Sq. ft.' },
+  { id: 'sqm', label: 'Sq. m.' },
+];
+
+const COUNT_OPTIONS = [
+  { id: '0', label: '0' },
+  { id: '1', label: '1' },
+  { id: '2', label: '2' },
+  { id: '3', label: '3' },
+  { id: '4', label: '4' },
+];
+
+const FACILITY_OPTIONS = [
+  { id: 'ac', label: 'Air conditioning' },
+  { id: 'western_toilet', label: 'Attached western-style toilet' },
+  { id: 'hot_water', label: 'Hot water' },
+  { id: 'other', label: 'Other' },
+];
+
+const HOMESTAY_CATEGORIES = [
+  {
+    id: 'silver',
+    name: 'SILVER',
+    displayName: 'Silver',
+    range: '₹1 – ₹2,999',
+    subtitle: 'per night, highest room',
+    specs: 'Room 120 sq. ft. · bathroom 30 · toilet 30',
+    amenities: 'Crockery, furniture, waste disposal, emergency bound, guest register',
+  },
+  {
+    id: 'gold',
+    name: 'GOLD',
+    displayName: 'Gold',
+    range: '₹3,000 – ₹5,999',
+    subtitle: 'per night, highest room',
+    specs: 'Room 150 sq. ft. · bathroom 36 · toilet 36',
+    amenities: 'AC / heating, linen change, first aid, fire extinguisher, dining area',
+  },
+  {
+    id: 'diamond',
+    name: 'DIAMOND',
+    displayName: 'Diamond',
+    range: '₹6,000+',
+    subtitle: 'per night, highest room',
+    specs: 'Room 180 sq. ft. · bathroom 45 · toilet 45',
+    amenities: 'En-suite luxury fittings, 24x7 concierge, Wi-Fi, backup power, parking',
+  },
+];
+
+
+const FOOD_OPTIONS = [
+  { id: 'vegetarian', label: 'Vegetarian' },
+  { id: 'non_vegetarian', label: 'Non-vegetarian' },
+  { id: 'both', label: 'Both' },
+  { id: 'no_food', label: 'No food' },
+];
+
+const DRINKING_WATER_OPTIONS = [
+  { id: 'ro', label: 'RO' },
+  { id: 'aqua_guard', label: 'Aqua Guard' },
+  { id: 'mineral_water', label: 'Mineral water' },
+  { id: 'other', label: 'Other' },
+];
+
+const PARKING_CAPACITY_OPTIONS = Array.from({ length: 21 }, (_, i) => ({
+  id: String(i),
+  label: i === 1 ? '1 vehicle' : i + ' vehicles',
+}));
+
+const MANDATORY_CLEANLINESS_OPTIONS = [
+  { id: 'smoke_free_kitchen', label: 'Smoke-free sanitised kitchen' },
+  { id: 'proper_drainage', label: 'Proper drainage' },
+  { id: 'garbage_disposal', label: 'Garbage disposal' },
+  { id: 'waste_segregation', label: 'Waste segregation' },
+];
+
+const MANDATORY_GUEST_QUALITY_OPTIONS = [
+  { id: 'good_crockery', label: 'Good quality crockery and cutlery' },
+  { id: 'good_furniture', label: 'Good quality furniture' },
+  { id: 'chairs_tables', label: 'Quality chairs and writing tables' },
+  { id: 'well_maintained', label: 'Property well maintained' },
+];
+
+const MANDATORY_RECORDS_OPTIONS = [
+  { id: 'guest_register', label: 'Guest record register' },
+  { id: 'emergency_contacts', label: 'Board displaying emergency contacts' },
+  { id: 'firefighting_equipment', label: 'Firefighting equipment' },
+  { id: 'access_main_room', label: 'Access to the main room' },
+];
+
+const ADDITIONAL_SERVICES_OPTIONS = [
+  { id: 'wifi', label: 'Wi-Fi' },
+  { id: 'online_payment', label: 'Online payment' },
+  { id: 'laundry', label: 'Laundry' },
+  { id: 'luggage_assistance', label: 'Luggage assistance' },
+];
+
+const ADDITIONAL_COMFORT_OPTIONS = [
+  { id: 'security_guard', label: 'Security guard or attendant' },
+  { id: 'washing_machine', label: 'Washing machine' },
+  { id: 'disabled_friendly', label: 'Disabled-friendly access' },
+  { id: 'other', label: 'Other' },
+];
+
 export default function App() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(6);
+  const [copyDropdownRoomIdx, setCopyDropdownRoomIdx] = useState(null);
+  const [categorySlideIndex, setCategorySlideIndex] = useState(0);
   const [savedTime, setSavedTime] = useState('3:14 PM');
 
   // Form state
@@ -543,6 +701,93 @@ export default function App() {
     hiredLocally: 2,
     isRenewal: false,
     previousRegNumber: '',
+    // Step 5: Rooms / Accommodation
+    rooms: [
+      {
+        id: '1',
+        expanded: true,
+        name: '',
+        roomType: '',
+        beds: [],
+        tariff: '',
+        unit: ['sqft'],
+        roomArea: '',
+        bathrooms: ['2'],
+        bathroomUnit: ['sqft'],
+        bathroomAreas: ['', ''],
+        toilets: ['1'],
+        toiletUnit: ['sqft'],
+        toiletAreas: [''],
+        facilities: [],
+      },
+      {
+        id: '2',
+        expanded: false,
+        name: 'Deodar',
+        roomType: 'double',
+        beds: ['2'],
+        tariff: '2000',
+        unit: ['sqft'],
+        roomArea: '140',
+        bathrooms: ['1'],
+        bathroomUnit: ['sqft'],
+        bathroomAreas: ['35'],
+        toilets: ['1'],
+        toiletUnit: ['sqft'],
+        toiletAreas: ['32'],
+        facilities: ['ac', 'western_toilet', 'hot_water'],
+      },
+      {
+        id: '3',
+        expanded: false,
+        name: '',
+        roomType: '',
+        beds: [],
+        tariff: '',
+        unit: ['sqft'],
+        roomArea: '',
+        bathrooms: ['1'],
+        bathroomUnit: ['sqft'],
+        bathroomAreas: [''],
+        toilets: ['1'],
+        toiletUnit: ['sqft'],
+        toiletAreas: [''],
+        facilities: [],
+      },
+      {
+        id: '4',
+        expanded: true,
+        name: '',
+        roomType: '',
+        beds: [],
+        tariff: '',
+        unit: ['sqft'],
+        roomArea: '',
+        bathrooms: ['1'],
+        bathroomUnit: ['sqft'],
+        bathroomAreas: [''],
+        toilets: ['1'],
+        toiletUnit: ['sqft'],
+        toiletAreas: [''],
+        facilities: [],
+      },
+    ],
+    // Step 6: Amenities, Facilities & Distances
+    foodProvided: '',
+    drinkingWater: [],
+    hasLobby: false,
+    lobbyUnit: ['sqft'],
+    lobbyArea: '',
+    hasDiningArea: false,
+    diningUnit: ['sqft'],
+    diningArea: '',
+    parkingCapacity: [],
+    mandatoryCleanliness: [],
+    mandatoryGuestQuality: [],
+    mandatoryRecords: [],
+    additionalServices: [],
+    additionalComfort: [],
+    ecoFriendlyPractices: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -640,7 +885,167 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    alert('Step 4 validated successfully! Ready for Step 5.');
+    setStep(5);
+  };
+
+
+  const toggleRoomExpanded = (roomIdx) => {
+    setFormData((prev) => {
+      const nextRooms = prev.rooms.map((r, i) =>
+        i === roomIdx ? { ...r, expanded: !r.expanded } : r
+      );
+      return { ...prev, rooms: nextRooms };
+    });
+  };
+
+  const updateRoomField = (roomIdx, field, val) => {
+    setFormData((prev) => {
+      const nextRooms = prev.rooms.map((r, i) => {
+        if (i !== roomIdx) return r;
+        const updated = { ...r, [field]: val };
+        if (field === 'bathrooms') {
+          const count = parseInt(val && val[0], 10) || 0;
+          const prevAreas = r.bathroomAreas || [];
+          const resized = [];
+          for (let k = 0; k < count; k++) {
+            resized.push(prevAreas[k] !== undefined ? prevAreas[k] : '');
+          }
+          updated.bathroomAreas = resized;
+        } else if (field === 'toilets') {
+          const count = parseInt(val && val[0], 10) || 0;
+          const prevAreas = r.toiletAreas || [];
+          const resized = [];
+          for (let k = 0; k < count; k++) {
+            resized.push(prevAreas[k] !== undefined ? prevAreas[k] : '');
+          }
+          updated.toiletAreas = resized;
+        }
+        return updated;
+      });
+      return { ...prev, rooms: nextRooms };
+    });
+  };
+
+  const updateRoomSubArea = (roomIdx, kind, subIdx, val) => {
+    setFormData((prev) => {
+      const nextRooms = prev.rooms.map((r, i) => {
+        if (i !== roomIdx) return r;
+        const arrKey = kind === 'bathroom' ? 'bathroomAreas' : 'toiletAreas';
+        const nextArr = [...(r[arrKey] || [])];
+        nextArr[subIdx] = val;
+        return { ...r, [arrKey]: nextArr };
+      });
+      return { ...prev, rooms: nextRooms };
+    });
+  };
+
+  const toggleRoomFacility = (roomIdx, facilityId) => {
+    setFormData((prev) => {
+      const nextRooms = prev.rooms.map((r, i) => {
+        if (i !== roomIdx) return r;
+        const cur = r.facilities || [];
+        const exists = cur.includes(facilityId);
+        return {
+          ...r,
+          facilities: exists ? cur.filter((f) => f !== facilityId) : [...cur, facilityId],
+        };
+      });
+      return { ...prev, rooms: nextRooms };
+    });
+  };
+
+  const copyRoomFrom = (targetIdx, sourceIdx) => {
+    setFormData((prev) => {
+      const src = prev.rooms[sourceIdx];
+      if (!src) return prev;
+      const nextRooms = prev.rooms.map((r, i) => {
+        if (i !== targetIdx) return r;
+        return {
+          ...r,
+          roomType: src.roomType,
+          beds: [...(src.beds || [])],
+          tariff: src.tariff,
+          unit: [...(src.unit || ['sqft'])],
+          roomArea: src.roomArea,
+          bathrooms: [...(src.bathrooms || ['1'])],
+          bathroomUnit: [...(src.bathroomUnit || ['sqft'])],
+          bathroomAreas: [...(src.bathroomAreas || [])],
+          toilets: [...(src.toilets || ['1'])],
+          toiletUnit: [...(src.toiletUnit || ['sqft'])],
+          toiletAreas: [...(src.toiletAreas || [])],
+          facilities: [...(src.facilities || [])],
+        };
+      });
+      return { ...prev, rooms: nextRooms };
+    });
+    setCopyDropdownRoomIdx(null);
+  };
+
+  const getRoomSummary = (room) => {
+    const parts = [];
+    if (room.name && room.name.trim()) parts.push(room.name.trim());
+    if (room.roomType) {
+      const found = ROOM_TYPES.find((rt) => rt.id === room.roomType);
+      if (found) parts.push(found.label);
+    }
+    if (room.tariff && room.tariff.trim()) {
+      const num = parseInt(room.tariff, 10);
+      parts.push('₹' + (isNaN(num) ? room.tariff : num.toLocaleString('en-IN')) + ' per night');
+    }
+    return parts.length > 0 ? parts.join('  •  ') : 'Not filled in yet';
+  };
+
+  const getHighestTariff = () => {
+    let highest = 0;
+    (formData.rooms || []).forEach((r) => {
+      const t = parseInt(r.tariff, 10);
+      if (!isNaN(t) && t > highest) highest = t;
+    });
+    return highest;
+  };
+
+  const highestTariff = getHighestTariff();
+  const autoCategory =
+    highestTariff >= 6000
+      ? HOMESTAY_CATEGORIES[2]
+      : highestTariff >= 3000
+      ? HOMESTAY_CATEGORIES[1]
+      : HOMESTAY_CATEGORIES[0];
+
+  const handleContinueStep5 = () => {
+    setStep(6);
+  };
+
+
+  const toggleArrayItem = (field, itemId) => {
+    setFormData((prev) => {
+      const current = prev[field] || [];
+      const exists = current.includes(itemId);
+      return {
+        ...prev,
+        [field]: exists ? current.filter((x) => x !== itemId) : [...current, itemId],
+      };
+    });
+    if (errors[field]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const handleContinueStep6 = () => {
+    const errs = {};
+    if (!formData.foodProvided) errs.foodProvided = 'Please select a food option';
+    if (!formData.drinkingWater || formData.drinkingWater.length === 0) {
+      errs.drinkingWater = 'Please select at least one drinking water option';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Step 6 (Amenities, Facilities & Distances) validated successfully! Ready for Step 7.');
   };
 
   return (
@@ -688,13 +1093,21 @@ export default function App() {
               totalSteps={10}
               currentStep={step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
                   : step === 2
                   ? 'Where the property physically is, to the depth this jurisdiction requires.'
+                  : step === 3
+                  ? 'The person or entity applying, and their addresses.'
+                  : step === 4
+                  ? 'Who runs the property day to day.'
+                  : step === 5
+                  ? 'The lettable inventory.'
+                  : step === 6
+                  ? 'What the property offers, and how far it is from things.'
                   : 'Multi-step registration workflow.'
               }
               description={
@@ -702,6 +1115,14 @@ export default function App() {
                   ? 'Identity of the property and of the legal entity behind it.'
                   : step === 2
                   ? 'Where the property physically is, to the depth this jurisdiction requires.'
+                  : step === 3
+                  ? 'The person or entity applying, and their addresses.'
+                  : step === 4
+                  ? 'Who runs the property day to day.'
+                  : step === 5
+                  ? 'The lettable inventory.'
+                  : step === 6
+                  ? 'What the property offers, and how far it is from things.'
                   : 'Multi-step registration workflow.'
               }
               onBackPress={() => {
@@ -715,6 +1136,8 @@ export default function App() {
                 else if (step === 2) handleContinueStep2();
                 else if (step === 3) handleContinueStep3();
                 else if (step === 4) handleContinueStep4();
+                else if (step === 5) handleContinueStep5();
+                else if (step === 6) handleContinueStep6();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -2240,6 +2663,686 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 5 ? (
+              /* ======================================================== */
+              /* SCREEN 5: ROOMS / ACCOMMODATION (PIXEL-PERFECT MATCH)    */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                <Text style={styles.sectionHeading}>Accommodation Details</Text>
+
+                {/* Dynamic Accordion Cards for Rooms 1..4 */}
+                {(formData.rooms || []).map((room, roomIdx) => {
+                  const unitLabel =
+                    room.unit && room.unit[0] === 'sqm' ? 'sq. m.' : 'sq. ft.';
+                  const bathUnitLabel =
+                    room.bathroomUnit && room.bathroomUnit[0] === 'sqm'
+                      ? 'sq. m.'
+                      : 'sq. ft.';
+                  const toiletUnitLabel =
+                    room.toiletUnit && room.toiletUnit[0] === 'sqm'
+                      ? 'sq. m.'
+                      : 'sq. ft.';
+                  const isCopyMenuOpen = copyDropdownRoomIdx === roomIdx;
+
+                  return (
+                    <Ux4gCard
+                      key={room.id}
+                      cornerRadius={12}
+                      backgroundColor="#FFFFFF"
+                      borderColor="#E2E8F0"
+                      borderWidth={1}
+                      elevation={0}
+                      style={{ marginBottom: 14, padding: 14 }}
+                    >
+                      {/* Room Card Header */}
+                      <TouchableOpacity
+                        activeOpacity={0.75}
+                        onPress={() => toggleRoomExpanded(roomIdx)}
+                        style={styles.roomCardHeader}
+                      >
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.roomCardTitle}>{'Room ' + (roomIdx + 1)}</Text>
+                          {!room.expanded && (
+                            <Text style={styles.roomSummaryText}>
+                              {getRoomSummary(room)}
+                            </Text>
+                          )}
+                        </View>
+                        {room.expanded ? (
+                          <ChevronUpIcon size={20} color="#475569" />
+                        ) : (
+                          <ChevronDownIcon size={20} color="#475569" />
+                        )}
+                      </TouchableOpacity>
+
+                      {/* "Copy from..." pill on Rooms 2, 3, 4 */}
+                      {roomIdx > 0 && (
+                        <View style={{ marginTop: 10, marginBottom: room.expanded ? 14 : 2 }}>
+                          <TouchableOpacity
+                            activeOpacity={0.75}
+                            onPress={() =>
+                              setCopyDropdownRoomIdx(isCopyMenuOpen ? null : roomIdx)
+                            }
+                            style={styles.copyFromPill}
+                          >
+                            <CopyOutlineIcon size={14} color="#334155" />
+                            <Text style={styles.copyFromText}>Copy from...</Text>
+                            <ChevronDownIcon size={15} color="#475569" />
+                          </TouchableOpacity>
+
+                          {isCopyMenuOpen && (
+                            <View style={styles.copyMenuBox}>
+                              {(formData.rooms || []).map((otherRoom, otherIdx) => {
+                                if (otherIdx === roomIdx) return null;
+                                return (
+                                  <TouchableOpacity
+                                    key={otherRoom.id}
+                                    activeOpacity={0.7}
+                                    onPress={() => copyRoomFrom(roomIdx, otherIdx)}
+                                    style={styles.copyMenuItem}
+                                  >
+                                    <Text style={styles.copyMenuItemText}>
+                                      {'Room ' + (otherIdx + 1) + (otherRoom.name ? ' (' + otherRoom.name + ')' : '')}
+                                    </Text>
+                                  </TouchableOpacity>
+                                );
+                              })}
+                            </View>
+                          )}
+                        </View>
+                      )}
+
+                      {/* Expanded Room Form Fields */}
+                      {room.expanded && (
+                        <View style={{ marginTop: roomIdx > 0 ? 0 : 14 }}>
+                          {/* Room name or number */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gInputField
+                              label="Room name or number"
+                              required
+                              size="large"
+                              value={room.name}
+                              onValueChange={(v) => updateRoomField(roomIdx, 'name', v)}
+                              placeholder="Guests will see this"
+                            />
+                          </View>
+
+                          {/* Room type Radio Buttons (3 + 1 wrap grid) */}
+                          <View style={styles.fieldSpacing}>
+                            <Text style={styles.radioGroupLabel}>
+                              Room type<Text style={{ color: '#EF4444' }}>*</Text>
+                            </Text>
+                            <View style={styles.roomTypeWrapGrid}>
+                              {ROOM_TYPES.map((rt) => (
+                                <View key={rt.id} style={{ minWidth: 88 }}>
+                                  <Ux4gRadioButton
+                                    value={rt.id}
+                                    groupValue={room.roomType}
+                                    onChanged={(val) => updateRoomField(roomIdx, 'roomType', val)}
+                                    label={rt.label}
+                                    size="small"
+                                    color="#4A2BC2"
+                                  />
+                                </View>
+                              ))}
+                            </View>
+                          </View>
+
+                          {/* Beds in this room */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gSelectionDropdown
+                              label="Beds in this room"
+                              required
+                              size="l"
+                              options={BEDS_OPTIONS}
+                              selectedOptionIds={room.beds}
+                              onSelectionChange={(ids) => updateRoomField(roomIdx, 'beds', ids)}
+                              placeholder="Select — 1 to 4"
+                            />
+                          </View>
+
+                          {/* Tariff per night with ₹ prefix and info icon */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gInputField
+                              label="Tariff per night"
+                              required
+                              trailingIconLabel={<InfoOutlineIcon size={14} color="#64748B" />}
+                              prefixText="₹"
+                              placeholder="Digits only"
+                              type="number"
+                              size="large"
+                              value={room.tariff}
+                              onValueChange={(v) => updateRoomField(roomIdx, 'tariff', v)}
+                            />
+                          </View>
+
+                          {/* Unit */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gSelectionDropdown
+                              label="Unit"
+                              required
+                              size="l"
+                              options={AREA_UNITS}
+                              selectedOptionIds={room.unit}
+                              onSelectionChange={(ids) => updateRoomField(roomIdx, 'unit', ids)}
+                              placeholder="Sq. ft."
+                            />
+                          </View>
+
+                          {/* Room area */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gInputField
+                              label="Room area"
+                              required
+                              size="large"
+                              value={room.roomArea}
+                              onValueChange={(v) => updateRoomField(roomIdx, 'roomArea', v)}
+                              placeholder="Numbers only"
+                              type="number"
+                            />
+                          </View>
+
+                          {/* Bathrooms */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gSelectionDropdown
+                              label="Bathrooms"
+                              required
+                              size="l"
+                              options={COUNT_OPTIONS}
+                              selectedOptionIds={room.bathrooms}
+                              onSelectionChange={(ids) => updateRoomField(roomIdx, 'bathrooms', ids)}
+                              placeholder="Select"
+                            />
+                          </View>
+
+                          {/* Unit for all bathrooms */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gSelectionDropdown
+                              label="Unit for all bathrooms"
+                              required
+                              size="l"
+                              options={AREA_UNITS}
+                              selectedOptionIds={room.bathroomUnit}
+                              onSelectionChange={(ids) => updateRoomField(roomIdx, 'bathroomUnit', ids)}
+                              placeholder="Sq. ft."
+                            />
+                          </View>
+
+                          {/* Dynamic Indented Bathroom Rows */}
+                          {(room.bathroomAreas || []).length > 0 && (
+                            <View style={styles.indentedSubAreaGroup}>
+                              {(room.bathroomAreas || []).map((bArea, bIdx) => (
+                                <View key={'bath-' + bIdx} style={styles.indentedSubAreaRow}>
+                                  <View style={{ flex: 0.44 }}>
+                                    <Text style={styles.indentedSubLabel}>
+                                      {'Bathroom ' + (bIdx + 1)}
+                                      <Text style={{ color: '#EF4444' }}>*</Text>
+                                    </Text>
+                                  </View>
+                                  <View style={{ flex: 0.56 }}>
+                                    <Ux4gInputField
+                                      size="medium"
+                                      value={bArea}
+                                      onValueChange={(v) =>
+                                        updateRoomSubArea(roomIdx, 'bathroom', bIdx, v)
+                                      }
+                                      placeholder={'Area in ' + bathUnitLabel}
+                                      type="number"
+                                    />
+                                  </View>
+                                </View>
+                              ))}
+                            </View>
+                          )}
+
+                          {/* Toilets */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gSelectionDropdown
+                              label="Toilets"
+                              required
+                              size="l"
+                              options={COUNT_OPTIONS}
+                              selectedOptionIds={room.toilets}
+                              onSelectionChange={(ids) => updateRoomField(roomIdx, 'toilets', ids)}
+                              placeholder="Select"
+                            />
+                          </View>
+
+                          {/* Unit for all toilets */}
+                          <View style={styles.fieldSpacing}>
+                            <Ux4gSelectionDropdown
+                              label="Unit for all toilets"
+                              required
+                              size="l"
+                              options={AREA_UNITS}
+                              selectedOptionIds={room.toiletUnit}
+                              onSelectionChange={(ids) => updateRoomField(roomIdx, 'toiletUnit', ids)}
+                              placeholder="Sq. ft."
+                            />
+                          </View>
+
+                          {/* Dynamic Indented Toilet Rows */}
+                          {(room.toiletAreas || []).length > 0 && (
+                            <View style={styles.indentedSubAreaGroup}>
+                              {(room.toiletAreas || []).map((tArea, tIdx) => (
+                                <View key={'toilet-' + tIdx} style={styles.indentedSubAreaRow}>
+                                  <View style={{ flex: 0.44 }}>
+                                    <Text style={styles.indentedSubLabel}>
+                                      {'Toilet ' + (tIdx + 1)}
+                                      <Text style={{ color: '#EF4444' }}>*</Text>
+                                    </Text>
+                                  </View>
+                                  <View style={{ flex: 0.56 }}>
+                                    <Ux4gInputField
+                                      size="medium"
+                                      value={tArea}
+                                      onValueChange={(v) =>
+                                        updateRoomSubArea(roomIdx, 'toilet', tIdx, v)
+                                      }
+                                      placeholder={'Area in ' + toiletUnitLabel}
+                                      type="number"
+                                    />
+                                  </View>
+                                </View>
+                              ))}
+                            </View>
+                          )}
+
+                          {/* In-room facilities Checkboxes */}
+                          <View style={{ marginTop: 4 }}>
+                            <Text style={styles.facilitiesHeading}>In-room facilities</Text>
+                            <View style={{ marginTop: 8, gap: 8 }}>
+                              {FACILITY_OPTIONS.map((fac) => (
+                                <Ux4gCheckbox
+                                  key={fac.id}
+                                  value={(room.facilities || []).includes(fac.id)}
+                                  onChanged={() => toggleRoomFacility(roomIdx, fac.id)}
+                                  label={fac.label}
+                                  size="medium"
+                                  activeColor="#4A2BC2"
+                                />
+                              ))}
+                            </View>
+                          </View>
+                        </View>
+                      )}
+                    </Ux4gCard>
+                  );
+                })}
+
+                {/* "Your category" Lavender Card Carousel Section */}
+                <View style={styles.categoryBannerContainer}>
+                  <Text style={styles.categoryBannerHeading}>Your category</Text>
+                  <Text style={styles.categoryBannerBody}>
+                    {'Your highest room tariff is ₹' +
+                      (highestTariff > 0 ? highestTariff.toLocaleString('en-IN') : '2,000') +
+                      ' per night, so this homestay registers as '}
+                    <Text style={{ fontWeight: '700', color: '#4A2BC2' }}>
+                      {autoCategory.displayName + '.'}
+                    </Text>
+                  </Text>
+
+                  {/* Category Tier Card */}
+                  {(() => {
+                    const activeCat =
+                      HOMESTAY_CATEGORIES[categorySlideIndex] || HOMESTAY_CATEGORIES[0];
+                    const isMatchedCat = activeCat.id === autoCategory.id;
+                    return (
+                      <Ux4gCard
+                        cornerRadius={10}
+                        backgroundColor="#FFFFFF"
+                        borderColor={isMatchedCat ? '#4A2BC2' : '#CBD5E1'}
+                        borderWidth={isMatchedCat ? 1.5 : 1}
+                        elevation={0}
+                        style={{ marginTop: 12, padding: 14 }}
+                        isClickable={true}
+                        onPress={() =>
+                          setCategorySlideIndex((categorySlideIndex + 1) % HOMESTAY_CATEGORIES.length)
+                        }
+                      >
+                        <Text style={styles.tierLabel}>{activeCat.name}</Text>
+                        <Text style={styles.tierPrice}>{activeCat.range}</Text>
+                        <Text style={styles.tierSub}>{activeCat.subtitle}</Text>
+
+                        <Ux4gDivider style={{ marginVertical: 10 }} />
+
+                        <Text style={styles.tierSpecs}>{activeCat.specs}</Text>
+                        <Text style={styles.tierAmenities}>{activeCat.amenities}</Text>
+                      </Ux4gCard>
+                    );
+                  })()}
+
+                  {/* Carousel Dots using Ux4gPaginationDotted */}
+                  <View style={{ alignItems: 'center', marginTop: 12 }}>
+                    <Ux4gPaginationDotted
+                      totalPageCount={HOMESTAY_CATEGORIES.length}
+                      currentPageIndex={categorySlideIndex}
+                      onPageChange={(idx) => setCategorySlideIndex(idx)}
+                      showArrows={false}
+                      variant="capsule"
+                      size="small"
+                      activeColor="#4A2BC2"
+                      inactiveColor="#CBD5E1"
+                    />
+                  </View>
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep5}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
+            ) : step === 6 ? (
+              /* ======================================================== */
+              /* SCREEN 6: AMENITIES, FACILITIES & DISTANCES              */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                {/* 1. Food and Water Facilities */}
+                <Text style={styles.sectionHeading}>Food and Water Facilities</Text>
+
+                {/* Food provided* */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.radioGroupLabel}>
+                    Food provided<Text style={{ color: '#EF4444' }}>*</Text>
+                  </Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {FOOD_OPTIONS.map((opt) => (
+                      <Ux4gRadioButton
+                        key={opt.id}
+                        value={opt.id}
+                        groupValue={formData.foodProvided}
+                        onChanged={(val) => updateField('foodProvided', val)}
+                        label={opt.label}
+                        status={errors.foodProvided ? 'error' : 'defaultStatus'}
+                        size="medium"
+                        color="#4A2BC2"
+                      />
+                    ))}
+                  </View>
+                  {errors.foodProvided && (
+                    <View style={styles.groupErrorRow}>
+                      <InfoOutlineIcon size={13} color="#DC2626" />
+                      <Text style={styles.groupErrorText}>{errors.foodProvided}</Text>
+                    </View>
+                  )}
+                </View>
+
+                {/* Drinking water* */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.radioGroupLabel}>
+                    Drinking water<Text style={{ color: '#EF4444' }}>*</Text>
+                  </Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {DRINKING_WATER_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.drinkingWater || []).includes(opt.id)}
+                        onChanged={() => toggleArrayItem('drinkingWater', opt.id)}
+                        label={opt.label}
+                        hasError={!!errors.drinkingWater}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                      />
+                    ))}
+                  </View>
+                  {errors.drinkingWater && (
+                    <View style={styles.groupErrorRow}>
+                      <InfoOutlineIcon size={13} color="#DC2626" />
+                      <Text style={styles.groupErrorText}>{errors.drinkingWater}</Text>
+                    </View>
+                  )}
+                </View>
+
+                {/* 2. Common Area Facilities */}
+                <Text style={[styles.sectionHeading, { marginTop: 10 }]}>
+                  Common Area Facilities
+                </Text>
+
+                {/* Lobby Checkbox + Unit + Lobby area */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gCheckbox
+                    value={formData.hasLobby}
+                    onChanged={(val) => updateField('hasLobby', !!val)}
+                    label="The property has a lobby or lounge with seating"
+                    size="medium"
+                    activeColor="#4A2BC2"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Unit"
+                    size="l"
+                    options={AREA_UNITS}
+                    selectedOptionIds={formData.lobbyUnit}
+                    onSelectionChange={(ids) => updateField('lobbyUnit', ids)}
+                    placeholder="Sq. ft."
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Lobby area"
+                    size="large"
+                    value={formData.lobbyArea}
+                    onValueChange={(v) => updateField('lobbyArea', v)}
+                    placeholder="Numbers only"
+                    type="number"
+                  />
+                </View>
+
+                {/* Dining area Checkbox + Unit + Dining area */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gCheckbox
+                    value={formData.hasDiningArea}
+                    onChanged={(val) => updateField('hasDiningArea', !!val)}
+                    label="The property has a dining area with seating"
+                    size="medium"
+                    activeColor="#4A2BC2"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Unit"
+                    size="l"
+                    options={AREA_UNITS}
+                    selectedOptionIds={formData.diningUnit}
+                    onSelectionChange={(ids) => updateField('diningUnit', ids)}
+                    placeholder="Sq. ft."
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Dining area"
+                    size="large"
+                    value={formData.diningArea}
+                    onValueChange={(v) => updateField('diningArea', v)}
+                    placeholder="Numbers only"
+                    type="number"
+                  />
+                </View>
+
+                {/* Parking capacity */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Parking capacity"
+                    size="l"
+                    options={PARKING_CAPACITY_OPTIONS}
+                    selectedOptionIds={formData.parkingCapacity}
+                    onSelectionChange={(ids) => updateField('parkingCapacity', ids)}
+                    placeholder="Select — 0 to 20 vehicles"
+                  />
+                </View>
+
+                {/* 3. Mandatory Facilities */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>
+                  Mandatory Facilities
+                </Text>
+
+                {/* Cleanliness and safety */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Cleanliness and safety</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {MANDATORY_CLEANLINESS_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.mandatoryCleanliness || []).includes(opt.id)}
+                        onChanged={() => toggleArrayItem('mandatoryCleanliness', opt.id)}
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* Guest facing quality */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Guest facing quality</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {MANDATORY_GUEST_QUALITY_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.mandatoryGuestQuality || []).includes(opt.id)}
+                        onChanged={() => toggleArrayItem('mandatoryGuestQuality', opt.id)}
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* Records and emergencies */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Records and emergencies</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {MANDATORY_RECORDS_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.mandatoryRecords || []).includes(opt.id)}
+                        onChanged={() => toggleArrayItem('mandatoryRecords', opt.id)}
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* 4. Additional Facilities */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>
+                  Additional Facilities
+                </Text>
+
+                {/* Services */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Services</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {ADDITIONAL_SERVICES_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.additionalServices || []).includes(opt.id)}
+                        onChanged={() => toggleArrayItem('additionalServices', opt.id)}
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* Comfort */}
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.subGroupHeading}>Comfort</Text>
+                  <View style={{ marginTop: 8, gap: 10 }}>
+                    {ADDITIONAL_COMFORT_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={(formData.additionalComfort || []).includes(opt.id)}
+                        onChanged={() => toggleArrayItem('additionalComfort', opt.id)}
+                        label={opt.label}
+                        size="medium"
+                        activeColor="#4A2BC2"
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* 5. Other Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 12 }]}>Other Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gTextArea
+                    label="Eco-friendly practices at the property (optional)"
+                    value={formData.ecoFriendlyPractices}
+                    onValueChange={(v) => updateField('ecoFriendlyPractices', v)}
+                    placeholder="Solar water heating, rainwater harvesting, composting — anything you would want a guest to know"
+                    maxLength={200}
+                    caption="Description"
+                    showCaptionIcon={true}
+                    minHeight="medium"
+                    size="large"
+                  />
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep6}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
         </ScrollView>
@@ -2520,11 +3623,26 @@ const styles = StyleSheet.create({
     color: '#64748B',
     fontWeight: '400',
   },
+  groupErrorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 4,
+    marginLeft: 2,
+    gap: 5,
+  },
+  groupErrorText: {
+    color: '#DC2626',
+    fontSize: 12,
+    lineHeight: 16,
+    flex: 1,
+  },
   errorCaption: {
     color: '#DC2626',
     fontSize: 12,
-    marginTop: -10,
-    marginBottom: 6,
+    lineHeight: 16,
+    marginTop: 6,
+    marginBottom: 4,
     marginLeft: 2,
   },
   readOnlyLabel: {
@@ -2805,6 +3923,139 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     color: '#0F172A',
+  },
+  roomCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  roomCardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  roomSummaryText: {
+    fontSize: 12,
+    color: '#64748B',
+    marginTop: 4,
+  },
+  copyFromPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    gap: 6,
+  },
+  copyFromText: {
+    fontSize: 12.5,
+    fontWeight: '500',
+    color: '#334155',
+  },
+  copyMenuBox: {
+    marginTop: 6,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 8,
+    backgroundColor: '#F8FAFC',
+    paddingVertical: 4,
+  },
+  copyMenuItem: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  copyMenuItemText: {
+    fontSize: 12.5,
+    color: '#1E293B',
+    fontWeight: '500',
+  },
+  roomTypeWrapGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    columnGap: 14,
+    rowGap: 8,
+    marginTop: 8,
+  },
+  indentedSubAreaGroup: {
+    borderLeftWidth: 2,
+    borderLeftColor: '#E2E8F0',
+    paddingLeft: 12,
+    marginTop: 2,
+    marginBottom: 14,
+    gap: 10,
+  },
+  indentedSubAreaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  indentedSubLabel: {
+    fontSize: 12.5,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  facilitiesHeading: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  categoryBannerContainer: {
+    backgroundColor: '#F5F3FF',
+    borderRadius: 12,
+    padding: 14,
+    marginTop: 4,
+  },
+  categoryBannerHeading: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  categoryBannerBody: {
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: '#334155',
+    marginTop: 4,
+  },
+  tierLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.6,
+    color: '#64748B',
+  },
+  tierPrice: {
+    fontSize: 19,
+    fontWeight: '700',
+    color: '#0F172A',
+    marginTop: 4,
+  },
+  tierSub: {
+    fontSize: 11.5,
+    color: '#64748B',
+    marginTop: 2,
+  },
+  tierSpecs: {
+    fontSize: 11.5,
+    fontWeight: '700',
+    color: '#1E293B',
+    lineHeight: 16,
+  },
+  tierAmenities: {
+    fontSize: 11,
+    color: '#64748B',
+    marginTop: 4,
+    lineHeight: 15,
+  },
+  subGroupHeading: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#334155',
   },
   actionButtonContainer: {
     marginTop: 26,
