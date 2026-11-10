@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = 'JkLTM1UIr1HDkn6TKiJ_R';
+const SNACK_ID = '9i-FvD8Xi6y04DCQ38gZF';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -36,7 +36,7 @@ import {
   TextInput,
   PanResponder,
 } from 'react-native';
-import Svg, { Path, Circle } from 'react-native-svg';
+import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import {
   Ux4gInputField,
   Ux4gSelectionDropdown,
@@ -52,6 +52,8 @@ import {
   Ux4gCard,
   Ux4gPaginationDotted,
   Ux4gTextArea,
+  Ux4gStatusBanner,
+  Ux4gFileUpload,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -122,6 +124,38 @@ const CrosshairsGpsIcon = ({ size = 18, color = '#1E293B' }) => (
   </Svg>
 );
 
+
+
+const CloudUploadOutlineIcon = ({ size = 24, color = '#4A2BC2' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M16 16l-4-4-4 4M12 12v9"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const CheckSmallIcon = ({ size = 11, color = '#FFFFFF' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M20 6L9 17L4 12"
+      stroke={color}
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
 
 // Screen 5 Material Outline Icons
 const CopyOutlineIcon = ({ size = 14, color = '#475569' }) => (
@@ -200,91 +234,6 @@ const EyeOffOutlineIcon = ({ size = 18, color = '#64748B' }) => (
     />
   </Svg>
 );
-
-// Official UX4G Status Banner Component
-const Ux4gStatusBanner = ({
-  variant = 'successLight',
-  title,
-  subtitle,
-  leadingIcon,
-  trailingIcon,
-  backgroundColor,
-  borderColor,
-  marginStyle,
-  paddingStyle,
-  containerStyle,
-  titleStyle,
-  contentAlignment = 'left',
-}) => {
-  const isRight = contentAlignment === 'right';
-  const bg = backgroundColor || (variant === 'successLight' ? '#ECFDF5' : '#F1F5F9');
-  const border = borderColor || (variant === 'successLight' ? '#D1FAE5' : '#E2E8F0');
-  const textColor = variant === 'successLight' ? '#065F46' : '#0F172A';
-
-  const defaultIcon = variant === 'successLight' ? (
-    <View
-      style={{
-        width: 13,
-        height: 13,
-        borderRadius: 6.5,
-        backgroundColor: '#10B981',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 5,
-      }}
-    >
-      <Text style={{ color: '#FFFFFF', fontSize: 8.5, fontWeight: 'bold', marginTop: -1 }}>✓</Text>
-    </View>
-  ) : null;
-
-  const icon = leadingIcon !== undefined ? leadingIcon : defaultIcon;
-
-  return (
-    <View
-      style={[
-        {
-          width: '100%',
-          backgroundColor: bg,
-          borderWidth: 1,
-          borderColor: border,
-          borderRadius: 6,
-          paddingVertical: 6,
-          paddingHorizontal: 10,
-          marginBottom: 8,
-          justifyContent: 'center',
-        },
-        marginStyle,
-        paddingStyle,
-        containerStyle,
-      ]}
-    >
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: isRight ? 'flex-end' : 'flex-start',
-        }}
-      >
-        {icon}
-        {title ? (
-          <Text
-            style={[
-              {
-                fontSize: 11.5,
-                fontWeight: '600',
-                color: textColor,
-              },
-              titleStyle,
-            ]}
-          >
-            {title}
-          </Text>
-        ) : null}
-        {trailingIcon}
-      </View>
-    </View>
-  );
-};
 
 // UX4G Compact Stepper Component strictly implementing UX4G Design System
 const Ux4gCompactStepper = ({
@@ -637,8 +586,72 @@ const GUEST_SAFETY_OPTIONS = [
   { id: 'insurance_cover', label: 'Insurance cover in force' },
 ];
 
+
+const DocumentUploadSlot = ({
+  title,
+  required = false,
+  ruleText,
+  downloadLinkText,
+  onDownloadFormat,
+  uploadedFiles = [],
+  allowedExtensions = ['pdf', 'jpg', 'png'],
+  maxFiles = 1,
+  onFilesChanged,
+  disabled = false,
+}) => {
+  const isUploaded = uploadedFiles.length > 0;
+  return (
+    <View style={[styles.docSlotWrapper, disabled && { opacity: 0.55 }]}>
+      {/* Slot Heading with Circular Status Indicator */}
+      <View style={styles.docSlotHeaderRow}>
+        <View
+          style={[
+            styles.statusCircle,
+            isUploaded ? styles.statusCircleDone : styles.statusCircleEmpty,
+          ]}
+        >
+          {isUploaded && <CheckSmallIcon size={10} color="#FFFFFF" />}
+        </View>
+        <Text style={styles.docSlotTitle}>
+          {title}
+          {required && <Text style={{ color: '#EF4444' }}>*</Text>}
+        </Text>
+      </View>
+
+      {/* Optional Download Format Link */}
+      {downloadLinkText && (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={onDownloadFormat}
+          style={{ marginLeft: 26, marginTop: 2 }}
+        >
+          <Text style={styles.downloadFormatLink}>{downloadLinkText}</Text>
+        </TouchableOpacity>
+      )}
+
+      {/* Rule Text */}
+      <Text style={styles.docSlotRuleText}>{ruleText}</Text>
+
+      {/* Official UX4G FileUpload Component */}
+      <View pointerEvents={disabled ? 'none' : 'auto'}>
+        <Ux4gFileUpload
+          maxFiles={maxFiles}
+          maxFileSize={5 * 1024 * 1024}
+          allowedExtensions={allowedExtensions}
+          borderStyle="dashed"
+          buttonColor="#4A2BC2"
+          buttonBorderColor="#6D28D9"
+          buttonBorderRadius={8}
+          initialFiles={uploadedFiles}
+          onFilesChanged={(files) => onFilesChanged && onFilesChanged(files)}
+        />
+      </View>
+    </View>
+  );
+};
+
 export default function App() {
-  const [step, setStep] = useState(7);
+  const [step, setStep] = useState(8);
   const [copyDropdownRoomIdx, setCopyDropdownRoomIdx] = useState(null);
   const [categorySlideIndex, setCategorySlideIndex] = useState(0);
   const [savedTime, setSavedTime] = useState('3:14 PM');
@@ -823,6 +836,28 @@ export default function App() {
     guestSafetyDeclarations: [],
     fireSafetyDetails: '',
     complianceConfirmed: false,
+    // Step 8: Documents Upload
+    byeLawsNotApplicable: false,
+    docSectionsExpanded: {
+      ownership: true,
+      declarations: false,
+      identity: false,
+      photographs: false,
+    },
+    docFiles: {
+      ownership_proof: [],
+      building_map: [],
+      bye_laws_affidavit: [],
+      solvency_affidavit: [{ id: 's1', name: 'affidavit_solvency_signed.pdf', fileSize: 1258291, status: 'success', progress: 1 }],
+      undertaking: [],
+      pledge: [],
+      identity_proof: [],
+      pan_tax: [],
+      exterior_photo: [],
+      room1_photo: [],
+      room2_photo: [],
+      common_photo: [],
+    },
   });
 
   const [errors, setErrors] = useState({});
@@ -1096,7 +1131,77 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    alert('Step 7 (Compliance & Safety Checklist) validated successfully! Ready for Step 8.');
+    setStep(8);
+  };
+
+
+  const toggleDocSection = (secKey) => {
+    setFormData((prev) => ({
+      ...prev,
+      docSectionsExpanded: {
+        ...prev.docSectionsExpanded,
+        [secKey]: !prev.docSectionsExpanded[secKey],
+      },
+    }));
+  };
+
+  const setDocSlotFiles = (slotKey, files) => {
+    setFormData((prev) => ({
+      ...prev,
+      docFiles: {
+        ...prev.docFiles,
+        [slotKey]: files || [],
+      },
+    }));
+  };
+
+  const simulateDocUpload = (slotKey, defaultFileName) => {
+    setFormData((prev) => {
+      const existing = prev.docFiles[slotKey] || [];
+      const nextIndex = existing.length + 1;
+      const newFile = {
+        id: slotKey + '_' + Date.now(),
+        name: defaultFileName.replace('.pdf', '_' + nextIndex + '.pdf'),
+        size: '1.4 MB',
+      };
+      return {
+        ...prev,
+        docFiles: {
+          ...prev.docFiles,
+          [slotKey]: [...existing, newFile],
+        },
+      };
+    });
+  };
+
+  const removeDocFile = (slotKey, fileIdx) => {
+    setFormData((prev) => {
+      const existing = prev.docFiles[slotKey] || [];
+      return {
+        ...prev,
+        docFiles: {
+          ...prev.docFiles,
+          [slotKey]: existing.filter((_, i) => i !== fileIdx),
+        },
+      };
+    });
+  };
+
+  const getMissingDocsText = () => {
+    const df = formData.docFiles || {};
+    const missing = [];
+    if (!df.ownership_proof || df.ownership_proof.length === 0) missing.push('Proof of ownership or lease');
+    if (!df.solvency_affidavit || df.solvency_affidavit.length === 0) missing.push('Affidavit of solvency');
+    if (!df.undertaking || df.undertaking.length === 0) missing.push('Undertaking');
+    if (!df.pledge || df.pledge.length === 0) missing.push('Pledge');
+    if (!df.identity_proof || df.identity_proof.length === 0) missing.push('Identity proof');
+    const r2Count = (df.room2_photo || []).length;
+    if (r2Count < 2) missing.push('Room 2 photographs (' + r2Count + ' of 2)');
+    return missing.join('  •  ');
+  };
+
+  const handleContinueStep8 = () => {
+    alert('Step 8 (Documents Upload) validated! Ready for Step 9.');
   };
 
   return (
@@ -1134,8 +1239,10 @@ export default function App() {
               contentAlignment="right"
               backgroundColor="#ECFDF5"
               borderColor="transparent"
+              height={34}
+              marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
               containerStyle={{ borderRadius: 6, marginBottom: 8 }}
-              paddingStyle={{ paddingVertical: 6, paddingHorizontal: 10 }}
+              paddingStyle={{ paddingVertical: 4, paddingHorizontal: 10 }}
               titleStyle={{ fontSize: 11.5, fontWeight: '600', color: '#065F46' }}
             />
 
@@ -1144,8 +1251,8 @@ export default function App() {
               totalSteps={10}
               currentStep={step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
@@ -1161,6 +1268,8 @@ export default function App() {
                   ? 'What the property offers, and how far it is from things.'
                   : step === 7
                   ? 'The statutory minimums. Some are verified for you; the rest you confirm.'
+                  : step === 8
+                  ? 'Evidence, with per-slot format, size and count rules.'
                   : 'Multi-step registration workflow.'
               }
               description={
@@ -1178,6 +1287,8 @@ export default function App() {
                   ? 'What the property offers, and how far it is from things.'
                   : step === 7
                   ? 'The statutory minimums. Some are verified for you; the rest you confirm.'
+                  : step === 8
+                  ? 'Evidence, with per-slot format, size and count rules.'
                   : 'Multi-step registration workflow.'
               }
               onBackPress={() => {
@@ -1194,6 +1305,7 @@ export default function App() {
                 else if (step === 5) handleContinueStep5();
                 else if (step === 6) handleContinueStep6();
                 else if (step === 7) handleContinueStep7();
+                else if (step === 8) handleContinueStep8();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -3583,6 +3695,425 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 8 ? (
+              /* ======================================================== */
+              /* SCREEN 8: DOCUMENTS UPLOAD (PIXEL-PERFECT MATCH)         */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                {/* Cyan Info Banner */}
+                <View style={{ marginBottom: 14 }}>
+                  <Ux4gStatusBanner
+                    variant="infoLight"
+                    title="PDF, JPG or PNG · up to 25 MB each · photographs are optimised on upload. Stated once, here, rather than repeated in every row."
+                    subtitle=""
+                    titleNumberOfLines={5}
+                    backgroundColor="#ECFEFF"
+                    borderColor="#67E8F9"
+                    marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                    paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                    containerStyle={{ borderRadius: 10 }}
+                    titleStyle={{
+                      fontSize: 12.5,
+                      lineHeight: 18,
+                      fontWeight: '500',
+                      color: '#0E7490',
+                    }}
+                  />
+                </View>
+
+                {/* 1. Ownership and land Card */}
+                <Ux4gCard
+                  cornerRadius={12}
+                  backgroundColor="#FFFFFF"
+                  borderColor="#E2E8F0"
+                  borderWidth={1}
+                  elevation={0}
+                  style={{ marginBottom: 14, padding: 14 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.75}
+                    onPress={() => toggleDocSection('ownership')}
+                    style={styles.roomCardHeader}
+                  >
+                    <Text style={styles.roomCardTitle}>Ownership and land</Text>
+                    {formData.docSectionsExpanded.ownership ? (
+                      <ChevronUpIcon size={20} color="#475569" />
+                    ) : (
+                      <ChevronDownIcon size={20} color="#475569" />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.ownership && (
+                    <View style={{ marginTop: 14, gap: 18 }}>
+                      <DocumentUploadSlot
+                        title="Proof of ownership or lease"
+                        required={true}
+                        ruleText="PDF only · 1 to 2 files · revenue records showing title"
+                        allowedExtensions={['pdf']}
+                        maxFiles={2}
+                        uploadedFiles={formData.docFiles.ownership_proof}
+                        onFilesChanged={(files) => setDocSlotFiles('ownership_proof', files)}
+                      />
+
+                      <DocumentUploadSlot
+                        title="Approved building map"
+                        required={true}
+                        disabled={formData.byeLawsNotApplicable}
+                        ruleText="PDF, PNG or JPG · 1 file"
+                        allowedExtensions={['pdf', 'png', 'jpg']}
+                        maxFiles={1}
+                        uploadedFiles={formData.docFiles.building_map}
+                        onFilesChanged={(files) => setDocSlotFiles('building_map', files)}
+                      />
+
+                      {/* Not applicable checkbox */}
+                      <View>
+                        <Ux4gCheckbox
+                          value={formData.byeLawsNotApplicable}
+                          onChanged={(val) =>
+                            updateField('byeLawsNotApplicable', !!val)
+                          }
+                          label="Not applicable to this property"
+                          size="medium"
+                          activeColor="#4A2BC2"
+                          labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                        />
+                        <Text style={styles.checkboxSubHelperText}>
+                          Say why below — do not upload a blank form in its place.
+                        </Text>
+                      </View>
+
+                      <DocumentUploadSlot
+                        title="Affidavit of no building bye-laws"
+                        required={false}
+                        downloadLinkText="Download the format"
+                        onDownloadFormat={() =>
+                          alert('Downloading Affidavit of No Building Bye-Laws format (PDF)...')
+                        }
+                        ruleText="PDF only · 1 file · required only if the map is not applicable"
+                        allowedExtensions={['pdf']}
+                        maxFiles={1}
+                        uploadedFiles={formData.docFiles.bye_laws_affidavit}
+                        onFilesChanged={(files) => setDocSlotFiles('bye_laws_affidavit', files)}
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+
+                {/* 2. Declarations Accordion Card */}
+                {(() => {
+                  const df = formData.docFiles || {};
+                  const slots = [
+                    (df.solvency_affidavit || []).length > 0,
+                    (df.undertaking || []).length > 0,
+                    (df.pledge || []).length > 0,
+                  ];
+                  const uploadedCount = slots.filter(Boolean).length;
+                  return (
+                    <Ux4gCard
+                      cornerRadius={12}
+                      backgroundColor="#FFFFFF"
+                      borderColor="#E2E8F0"
+                      borderWidth={1}
+                      elevation={0}
+                      style={{ marginBottom: 14, padding: 14 }}
+                    >
+                      <TouchableOpacity
+                        activeOpacity={0.75}
+                        onPress={() => toggleDocSection('declarations')}
+                        style={styles.roomCardHeader}
+                      >
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.roomCardTitle}>Declarations</Text>
+                          <Text style={styles.roomSummaryText}>
+                            {'3 documents · ' + (uploadedCount > 0 ? uploadedCount + ' uploaded' : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {slots.map((done, i) => (
+                              <View
+                                key={'decl-' + i}
+                                style={[
+                                  styles.statusCircle,
+                                  done ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {done && <CheckSmallIcon size={10} color="#FFFFFF" />}
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                        {formData.docSectionsExpanded.declarations ? (
+                          <ChevronUpIcon size={20} color="#475569" />
+                        ) : (
+                          <ChevronDownIcon size={20} color="#475569" />
+                        )}
+                      </TouchableOpacity>
+
+                      {formData.docSectionsExpanded.declarations && (
+                        <View style={{ marginTop: 14, gap: 18 }}>
+                          <DocumentUploadSlot
+                            title="Affidavit of solvency"
+                            required={true}
+                            ruleText="PDF only · 1 file"
+                            allowedExtensions={['pdf']}
+                            maxFiles={1}
+                            uploadedFiles={formData.docFiles.solvency_affidavit}
+                            onFilesChanged={(files) => setDocSlotFiles('solvency_affidavit', files)}
+                          />
+                          <DocumentUploadSlot
+                            title="Undertaking"
+                            required={true}
+                            ruleText="PDF only · 1 file"
+                            allowedExtensions={['pdf']}
+                            maxFiles={1}
+                            uploadedFiles={formData.docFiles.undertaking}
+                            onFilesChanged={(files) => setDocSlotFiles('undertaking', files)}
+                          />
+                          <DocumentUploadSlot
+                            title="Pledge"
+                            required={true}
+                            ruleText="PDF only · 1 file"
+                            allowedExtensions={['pdf']}
+                            maxFiles={1}
+                            uploadedFiles={formData.docFiles.pledge}
+                            onFilesChanged={(files) => setDocSlotFiles('pledge', files)}
+                          />
+                        </View>
+                      )}
+                    </Ux4gCard>
+                  );
+                })()}
+
+                {/* 3. Identity and tax Accordion Card */}
+                {(() => {
+                  const df = formData.docFiles || {};
+                  const slots = [
+                    (df.identity_proof || []).length > 0,
+                    (df.pan_tax || []).length > 0,
+                  ];
+                  const uploadedCount = slots.filter(Boolean).length;
+                  return (
+                    <Ux4gCard
+                      cornerRadius={12}
+                      backgroundColor="#FFFFFF"
+                      borderColor="#E2E8F0"
+                      borderWidth={1}
+                      elevation={0}
+                      style={{ marginBottom: 14, padding: 14 }}
+                    >
+                      <TouchableOpacity
+                        activeOpacity={0.75}
+                        onPress={() => toggleDocSection('identity')}
+                        style={styles.roomCardHeader}
+                      >
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.roomCardTitle}>Identity and tax</Text>
+                          <Text style={styles.roomSummaryText}>
+                            {'2 documents · ' + (uploadedCount > 0 ? uploadedCount + ' uploaded' : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {slots.map((done, i) => (
+                              <View
+                                key={'ident-' + i}
+                                style={[
+                                  styles.statusCircle,
+                                  done ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {done && <CheckSmallIcon size={10} color="#FFFFFF" />}
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                        {formData.docSectionsExpanded.identity ? (
+                          <ChevronUpIcon size={20} color="#475569" />
+                        ) : (
+                          <ChevronDownIcon size={20} color="#475569" />
+                        )}
+                      </TouchableOpacity>
+
+                      {formData.docSectionsExpanded.identity && (
+                        <View style={{ marginTop: 14, gap: 18 }}>
+                          <DocumentUploadSlot
+                            title="Identity proof"
+                            required={true}
+                            ruleText="PDF, JPG or PNG · Aadhaar / Voter ID / Passport"
+                            allowedExtensions={['pdf', 'jpg', 'png']}
+                            maxFiles={1}
+                            uploadedFiles={formData.docFiles.identity_proof}
+                            onFilesChanged={(files) => setDocSlotFiles('identity_proof', files)}
+                          />
+                          <DocumentUploadSlot
+                            title="PAN / Property tax receipt"
+                            required={false}
+                            ruleText="PDF, JPG or PNG · 1 file"
+                            allowedExtensions={['pdf', 'jpg', 'png']}
+                            maxFiles={1}
+                            uploadedFiles={formData.docFiles.pan_tax}
+                            onFilesChanged={(files) => setDocSlotFiles('pan_tax', files)}
+                          />
+                        </View>
+                      )}
+                    </Ux4gCard>
+                  );
+                })()}
+
+                {/* 4. Photographs Accordion Card */}
+                {(() => {
+                  const df = formData.docFiles || {};
+                  const slots = [
+                    (df.exterior_photo || []).length > 0,
+                    (df.room1_photo || []).length > 0,
+                    (df.room2_photo || []).length >= 2,
+                    (df.common_photo || []).length > 0,
+                  ];
+                  const uploadedCount = slots.filter(Boolean).length;
+                  return (
+                    <Ux4gCard
+                      cornerRadius={12}
+                      backgroundColor="#FFFFFF"
+                      borderColor="#E2E8F0"
+                      borderWidth={1}
+                      elevation={0}
+                      style={{ marginBottom: 14, padding: 14 }}
+                    >
+                      <TouchableOpacity
+                        activeOpacity={0.75}
+                        onPress={() => toggleDocSection('photographs')}
+                        style={styles.roomCardHeader}
+                      >
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.roomCardTitle}>Photographs</Text>
+                          <Text style={styles.roomSummaryText}>
+                            {'4 documents · ' + (uploadedCount > 0 ? uploadedCount + ' uploaded' : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {slots.map((done, i) => (
+                              <View
+                                key={'photo-' + i}
+                                style={[
+                                  styles.statusCircle,
+                                  done ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {done && <CheckSmallIcon size={10} color="#FFFFFF" />}
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                        {formData.docSectionsExpanded.photographs ? (
+                          <ChevronUpIcon size={20} color="#475569" />
+                        ) : (
+                          <ChevronDownIcon size={20} color="#475569" />
+                        )}
+                      </TouchableOpacity>
+
+                      {formData.docSectionsExpanded.photographs && (
+                        <View style={{ marginTop: 14, gap: 18 }}>
+                          <DocumentUploadSlot
+                            title="Exterior front view"
+                            required={true}
+                            ruleText="JPG or PNG · 1 file"
+                            allowedExtensions={['jpg', 'png']}
+                            maxFiles={1}
+                            uploadedFiles={formData.docFiles.exterior_photo}
+                            onFilesChanged={(files) => setDocSlotFiles('exterior_photo', files)}
+                          />
+                          <DocumentUploadSlot
+                            title="Room 1 photographs"
+                            required={true}
+                            ruleText="JPG or PNG · 1 to 2 files"
+                            allowedExtensions={['jpg', 'png']}
+                            maxFiles={2}
+                            uploadedFiles={formData.docFiles.room1_photo}
+                            onFilesChanged={(files) => setDocSlotFiles('room1_photo', files)}
+                          />
+                          <DocumentUploadSlot
+                            title="Room 2 photographs"
+                            required={true}
+                            ruleText="JPG or PNG · 2 files required"
+                            allowedExtensions={['jpg', 'png']}
+                            maxFiles={2}
+                            uploadedFiles={formData.docFiles.room2_photo}
+                            onFilesChanged={(files) => setDocSlotFiles('room2_photo', files)}
+                          />
+                          <DocumentUploadSlot
+                            title="Common areas & bathroom"
+                            required={false}
+                            ruleText="JPG or PNG · 1 to 2 files"
+                            allowedExtensions={['jpg', 'png']}
+                            maxFiles={2}
+                            uploadedFiles={formData.docFiles.common_photo}
+                            onFilesChanged={(files) => setDocSlotFiles('common_photo', files)}
+                          />
+                        </View>
+                      )}
+                    </Ux4gCard>
+                  );
+                })()}
+
+                {/* Still Missing Summary Warning Banner */}
+                {(() => {
+                  const missingText = getMissingDocsText();
+                  if (!missingText) return null;
+                  return (
+                    <View style={{ marginBottom: 4 }}>
+                      <Ux4gStatusBanner
+                        variant="warningLight"
+                        title="Still missing"
+                        subtitle={missingText}
+                        subtitleNumberOfLines={6}
+                        backgroundColor="#FFF7ED"
+                        borderColor="#FDBA74"
+                        marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                        paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                        containerStyle={{ borderRadius: 10 }}
+                        titleStyle={{
+                          fontSize: 13,
+                          fontWeight: '700',
+                          color: '#B45309',
+                        }}
+                        subtitleStyle={{
+                          fontSize: 12,
+                          lineHeight: 18,
+                          color: '#B45309',
+                          marginTop: 3,
+                        }}
+                      />
+                    </View>
+                  );
+                })()}
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor="#4A2BC2"
+                    contentColor="#FFFFFF"
+                    borderRadius={8}
+                    onPress={handleContinueStep8}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor="#4A2BC2"
+                    borderColor="#C2B6FB"
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : null}
           </View>
         </ScrollView>
@@ -4302,6 +4833,119 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     color: '#334155',
+  },
+  docSlotWrapper: {
+    width: '100%',
+  },
+  docSlotHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  docSlotTitle: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    color: '#0F172A',
+    flex: 1,
+  },
+  downloadFormatLink: {
+    fontSize: 12.5,
+    fontWeight: '600',
+    color: '#4A2BC2',
+    textDecorationLine: 'underline',
+  },
+  docSlotRuleText: {
+    fontSize: 11.5,
+    color: '#64748B',
+    marginTop: 4,
+    marginBottom: 10,
+  },
+  dashedDropZone: {
+    position: 'relative',
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    overflow: 'hidden',
+  },
+  dropZoneContent: {
+    paddingVertical: 18,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dropZoneTitle: {
+    fontSize: 14.5,
+    fontWeight: '700',
+    color: '#0F172A',
+    marginTop: 8,
+  },
+  dropZoneSubtitle: {
+    fontSize: 11.5,
+    color: '#64748B',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  dropZoneOrRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '85%',
+    marginVertical: 12,
+  },
+  dropZoneOrLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E2E8F0',
+  },
+  dropZoneOrText: {
+    fontSize: 11.5,
+    color: '#64748B',
+    marginHorizontal: 10,
+  },
+  uploadedFilePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#F8FAFC',
+  },
+  uploadedFileName: {
+    fontSize: 12.5,
+    fontWeight: '600',
+    color: '#0F172A',
+  },
+  uploadedFileSize: {
+    fontSize: 11,
+    color: '#64748B',
+  },
+  docStatusDotRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 8,
+  },
+  statusCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusCircleEmpty: {
+    borderWidth: 1.5,
+    borderColor: '#CBD5E1',
+    backgroundColor: '#FFFFFF',
+  },
+  statusCircleDone: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#15803D',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   actionButtonContainer: {
     marginTop: 26,
