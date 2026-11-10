@@ -8,7 +8,7 @@ interface HomestayRegistrationFlowDocProps {
 }
 
 // Official Snack ID with Multi-Step Flow (Step 1: Unit & Property Details, Step 2: Location)
-const SNACK_ID = '9i-FvD8Xi6y04DCQ38gZF';
+const SNACK_ID = 'mSGm0nx5S0AZEWGxo1TTB';
 
 export const HomestayRegistrationFlowDoc: React.FC<HomestayRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -64,13 +64,13 @@ const UnionLogo = () => (
   <Svg width={36} height={36} viewBox="0 0 40 40" fill="none">
     <Path
       d="M5.85059 34.2637C7.72048 34.1583 9.59495 34.1583 11.4648 34.2637C15.1962 34.4138 19.3146 35.089 23.4326 35.4141C26.7822 35.6892 30.1618 35.6794 33.3105 34.9141C29.5061 38.2986 24.5517 40.1148 19.4521 39.9942C14.3524 39.8734 9.48932 37.8246 5.85059 34.2637ZM3.76172 22.7647C6.67001 21.8966 9.72795 21.6388 12.7412 22.0088C16.1158 22.359 19.7919 23.4248 23.4326 24.3301C27.0735 25.2355 30.7448 25.9604 34.1045 25.5752C36.0384 25.3889 37.9173 24.8268 39.6338 23.9199C39.3117 25.5465 38.7848 27.1265 38.0664 28.6221C37.0142 29.1907 35.9026 29.6437 34.752 29.9727C31.2316 31.013 27.319 30.8223 23.417 30.2471C19.5151 29.6719 15.5982 28.7163 12.083 28.2461C9.04791 27.8043 5.97725 27.652 2.91309 27.791C2.3808 27.8261 1.87828 27.8262 1.40625 27.8262C0.894651 26.6003 0.505956 25.3266 0.246094 24.0244C1.22033 23.6593 2.41088 23.1648 3.76172 22.7647ZM5.76562 10.7139C8.31822 9.4568 11.2249 9.10423 14.0059 9.71389C17.019 10.2691 20.2236 11.7797 23.4326 13.3203C26.6416 14.861 29.8609 16.4215 32.874 17.0518C35.1426 17.6051 37.5198 17.531 39.749 16.8369C39.9066 17.8298 39.9904 18.8328 40 19.8379C38.0088 20.919 35.7745 21.4787 33.5068 21.4639C30.333 21.5089 26.8324 20.4784 23.3975 19.253C19.9624 18.0275 16.5174 16.6212 13.3535 15.9209C10.5966 15.2104 7.71373 15.1324 4.92188 15.6914C3.21225 16.1055 1.55924 16.7253 0 17.5371C0.105071 16.6264 0.272632 15.7238 0.501953 14.836C1.99816 13.1633 3.78068 11.7674 5.76562 10.7139ZM19.9121 2.51716e-05C24.0578 -0.00157692 28.1024 1.27476 31.4912 3.65335C34.8799 6.03187 37.4469 9.39617 38.8398 13.2852C36.744 13.9628 34.4987 14.0397 32.3613 13.5059C29.529 12.9006 26.4909 11.3695 23.4326 9.63381C20.3744 7.8982 17.3161 6.0477 14.5039 4.86721C12.6733 4.03008 10.7035 3.53465 8.69336 3.40628C12.0074 1.18013 15.9149 -0.00630153 19.9121 2.51716e-05Z"
-      fill="#4A2BC2"
+      fill={UX4GColors.primary}
     />
   </Svg>
 );
 
 // Material Outline Trash / Delete icon
-const TrashOutlineIcon = ({ size = 20, color = '#1E293B' }) => (
+const TrashOutlineIcon = ({ size = 20, color = UX4GColors.neutral800 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
       d="M3 6H21"
@@ -111,7 +111,7 @@ const TrashOutlineIcon = ({ size = 20, color = '#1E293B' }) => (
 );
 
 // GPS Crosshairs Icon matching Screen 2
-const CrosshairsGpsIcon = ({ size = 18, color = '#1E293B' }) => (
+const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Circle cx="12" cy="12" r="7.5" stroke={color} strokeWidth="1.8" />
     <Path
@@ -126,7 +126,27 @@ const CrosshairsGpsIcon = ({ size = 18, color = '#1E293B' }) => (
 
 
 
-const CloudUploadOutlineIcon = ({ size = 24, color = '#4A2BC2' }) => (
+
+const PencilOutlineIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M15 5l4 4"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const CloudUploadOutlineIcon = ({ size = 24, color = UX4GColors.primary }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
       d="M16 16l-4-4-4 4M12 12v9"
@@ -145,7 +165,7 @@ const CloudUploadOutlineIcon = ({ size = 24, color = '#4A2BC2' }) => (
   </Svg>
 );
 
-const CheckSmallIcon = ({ size = 11, color = '#FFFFFF' }) => (
+const CheckSmallIcon = ({ size = 11, color = UX4GColors.white }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
       d="M20 6L9 17L4 12"
@@ -158,7 +178,7 @@ const CheckSmallIcon = ({ size = 11, color = '#FFFFFF' }) => (
 );
 
 // Screen 5 Material Outline Icons
-const CopyOutlineIcon = ({ size = 14, color = '#475569' }) => (
+const CopyOutlineIcon = ({ size = 14, color = UX4GColors.neutral600 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
       d="M8 4v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7.242a2 2 0 0 0-.602-1.43L16.083 2.57A2 2 0 0 0 14.685 2H10a2 2 0 0 0-2 2z"
@@ -177,27 +197,27 @@ const CopyOutlineIcon = ({ size = 14, color = '#475569' }) => (
   </Svg>
 );
 
-const ChevronUpIcon = ({ size = 18, color = '#475569' }) => (
+const ChevronUpIcon = ({ size = 18, color = UX4GColors.neutral600 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path d="M18 15l-6-6-6 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 );
 
-const ChevronDownIcon = ({ size = 18, color = '#475569' }) => (
+const ChevronDownIcon = ({ size = 18, color = UX4GColors.neutral600 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path d="M6 9l6 6 6-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </Svg>
 );
 
 // Screen 3 Material Outline Icons
-const InfoOutlineIcon = ({ size = 13, color = '#64748B' }) => (
+const InfoOutlineIcon = ({ size = 13, color = UX4GColors.neutral500 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Circle cx="12" cy="12" r="10" stroke={color} strokeWidth="2" />
     <Path d="M12 16V12M12 8H12.01" stroke={color} strokeWidth="2" strokeLinecap="round" />
   </Svg>
 );
 
-const CalendarOutlineIcon = ({ size = 18, color = '#64748B' }) => (
+const CalendarOutlineIcon = ({ size = 18, color = UX4GColors.neutral500 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
       d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
@@ -210,7 +230,7 @@ const CalendarOutlineIcon = ({ size = 18, color = '#64748B' }) => (
   </Svg>
 );
 
-const EyeOutlineIcon = ({ size = 18, color = '#64748B' }) => (
+const EyeOutlineIcon = ({ size = 18, color = UX4GColors.neutral500 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
       d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8-11-8-11-8z"
@@ -223,7 +243,7 @@ const EyeOutlineIcon = ({ size = 18, color = '#64748B' }) => (
   </Svg>
 );
 
-const EyeOffOutlineIcon = ({ size = 18, color = '#64748B' }) => (
+const EyeOffOutlineIcon = ({ size = 18, color = UX4GColors.neutral500 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
       d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"
@@ -269,7 +289,7 @@ const Ux4gCompactStepper = ({
                 height: 5,
                 marginRight: i === totalSteps - 1 ? 0 : 5,
                 borderRadius: 2.5,
-                backgroundColor: isActive ? '#4A2BC2' : '#CBD5E1',
+                backgroundColor: isActive ? UX4GColors.primary : UX4GColors.neutral300,
               }}
             />
           );
@@ -279,7 +299,7 @@ const Ux4gCompactStepper = ({
       <View style={{ height: 16 }} />
 
       {/* Step Counter */}
-      <Text style={{ textAlign: 'center', fontSize: 13, fontWeight: '700', color: '#0F172A' }}>
+      <Text style={{ textAlign: 'center', fontSize: 13, fontWeight: '700', color: UX4GColors.neutral900 }}>
         {'Step ' + currentStep + ' of ' + totalSteps}
       </Text>
 
@@ -296,9 +316,9 @@ const Ux4gCompactStepper = ({
             width: 38,
             height: 38,
             borderRadius: 19,
-            backgroundColor: '#FFFFFF',
+            backgroundColor: UX4GColors.white,
             borderWidth: 1.2,
-            borderColor: currentStep > 1 ? '#E2E8F0' : '#F1F5F9',
+            borderColor: currentStep > 1 ? UX4GColors.neutral200 : UX4GColors.neutral100,
             justifyContent: 'center',
             alignItems: 'center',
             opacity: currentStep > 1 ? 1 : 0.4,
@@ -307,14 +327,14 @@ const Ux4gCompactStepper = ({
           <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
             <Path
               d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-              fill={currentStep > 1 ? '#475569' : '#94A3B8'}
+              fill={currentStep > 1 ? UX4GColors.neutral600 : UX4GColors.neutral400}
             />
           </Svg>
         </TouchableOpacity>
 
         {/* Center: Step Title & Subtitle */}
         <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 6 }}>
-          <Text style={{ fontSize: 15.5, fontWeight: '700', color: '#4A2BC2', textAlign: 'center' }}>
+          <Text style={{ fontSize: 15.5, fontWeight: '700', color: UX4GColors.primary, textAlign: 'center' }}>
             {resolvedLabel}
           </Text>
           {resolvedDesc ? (
@@ -322,7 +342,7 @@ const Ux4gCompactStepper = ({
               style={{
                 fontSize: 12,
                 lineHeight: 16,
-                color: '#64748B',
+                color: UX4GColors.neutral500,
                 textAlign: 'center',
                 marginTop: 3,
                 maxWidth: 230,
@@ -342,9 +362,9 @@ const Ux4gCompactStepper = ({
             width: 38,
             height: 38,
             borderRadius: 19,
-            backgroundColor: '#FFFFFF',
+            backgroundColor: UX4GColors.white,
             borderWidth: 1.5,
-            borderColor: currentStep < totalSteps ? '#818CF8' : '#E2E8F0',
+            borderColor: currentStep < totalSteps ? UX4GColors.primary400 : UX4GColors.neutral200,
             justifyContent: 'center',
             alignItems: 'center',
             opacity: currentStep < totalSteps ? 1 : 0.4,
@@ -353,7 +373,7 @@ const Ux4gCompactStepper = ({
           <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
             <Path
               d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"
-              fill={currentStep < totalSteps ? '#4A2BC2' : '#94A3B8'}
+              fill={currentStep < totalSteps ? UX4GColors.primary : UX4GColors.neutral400}
             />
           </Svg>
         </TouchableOpacity>
@@ -610,11 +630,11 @@ const DocumentUploadSlot = ({
             isUploaded ? styles.statusCircleDone : styles.statusCircleEmpty,
           ]}
         >
-          {isUploaded && <CheckSmallIcon size={10} color="#FFFFFF" />}
+          {isUploaded && <CheckSmallIcon size={10} color={UX4GColors.white} />}
         </View>
         <Text style={styles.docSlotTitle}>
           {title}
-          {required && <Text style={{ color: '#EF4444' }}>*</Text>}
+          {required && <Text style={{ color: UX4GColors.red }}>*</Text>}
         </Text>
       </View>
 
@@ -639,8 +659,8 @@ const DocumentUploadSlot = ({
           maxFileSize={5 * 1024 * 1024}
           allowedExtensions={allowedExtensions}
           borderStyle="dashed"
-          buttonColor="#4A2BC2"
-          buttonBorderColor="#6D28D9"
+          buttonColor={UX4GColors.primary}
+          buttonBorderColor={UX4GColors.purple700}
           buttonBorderRadius={8}
           initialFiles={uploadedFiles}
           onFilesChanged={(files) => onFilesChanged && onFilesChanged(files)}
@@ -651,7 +671,7 @@ const DocumentUploadSlot = ({
 };
 
 export default function App() {
-  const [step, setStep] = useState(8);
+  const [step, setStep] = useState(9);
   const [copyDropdownRoomIdx, setCopyDropdownRoomIdx] = useState(null);
   const [categorySlideIndex, setCategorySlideIndex] = useState(0);
   const [savedTime, setSavedTime] = useState('3:14 PM');
@@ -858,6 +878,9 @@ export default function App() {
       room2_photo: [],
       common_photo: [],
     },
+    // Step 9: Review & Declaration
+    declTrueKnowledge: false,
+    declPhysicalInspection: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -1201,13 +1224,29 @@ export default function App() {
   };
 
   const handleContinueStep8 = () => {
-    alert('Step 8 (Documents Upload) validated! Ready for Step 9.');
+    setStep(9);
+  };
+
+
+  const handleContinueStep9 = () => {
+    const errs = {};
+    if (!formData.declTrueKnowledge) {
+      errs.declTrueKnowledge = 'Please confirm that everything entered is true.';
+    }
+    if (!formData.declPhysicalInspection) {
+      errs.declPhysicalInspection = 'Please agree to a physical inspection of the property.';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    alert('Step 9 (Review) validated successfully! Ready for Step 10.');
   };
 
   return (
     <Ux4gThemeProvider>
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+        <StatusBar barStyle="dark-content" backgroundColor={UX4GColors.white} />
 
         {/* Government App Header matching screenshot */}
         <View style={styles.headerBar}>
@@ -1237,13 +1276,13 @@ export default function App() {
               variant="successLight"
               title={'Saved ' + savedTime}
               contentAlignment="right"
-              backgroundColor="#ECFDF5"
+              backgroundColor={UX4GColors.green50}
               borderColor="transparent"
               height={34}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
               containerStyle={{ borderRadius: 6, marginBottom: 8 }}
               paddingStyle={{ paddingVertical: 4, paddingHorizontal: 10 }}
-              titleStyle={{ fontSize: 11.5, fontWeight: '600', color: '#065F46' }}
+              titleStyle={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.green800 }}
             />
 
             {/* Stepper with centered title & back/next navigation */}
@@ -1251,8 +1290,8 @@ export default function App() {
               totalSteps={10}
               currentStep={step}
               layout="centeredBetween"
-              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : 'Step ' + step}
-              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : 'Step ' + step}
+              title={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : 'Step ' + step}
+              stepLabel={step === 1 ? 'Unit / Property details' : step === 2 ? 'Location' : step === 3 ? 'Owner / Applicant Details' : step === 4 ? 'Management & Staff' : step === 5 ? 'Rooms / Accommodation' : step === 6 ? 'Amenities, Facilities & Distances' : step === 7 ? 'Compliance & Safety Checklist' : step === 8 ? 'Documents Upload' : step === 9 ? 'Review' : 'Step ' + step}
               subtitle={
                 step === 1
                   ? 'Identity of the property and of the legal entity behind it.'
@@ -1270,6 +1309,8 @@ export default function App() {
                   ? 'The statutory minimums. Some are verified for you; the rest you confirm.'
                   : step === 8
                   ? 'Evidence, with per-slot format, size and count rules.'
+                  : step === 9
+                  ? 'Read back everything before committing.'
                   : 'Multi-step registration workflow.'
               }
               description={
@@ -1289,6 +1330,8 @@ export default function App() {
                   ? 'The statutory minimums. Some are verified for you; the rest you confirm.'
                   : step === 8
                   ? 'Evidence, with per-slot format, size and count rules.'
+                  : step === 9
+                  ? 'Read back everything before committing.'
                   : 'Multi-step registration workflow.'
               }
               onBackPress={() => {
@@ -1306,6 +1349,7 @@ export default function App() {
                 else if (step === 6) handleContinueStep6();
                 else if (step === 7) handleContinueStep7();
                 else if (step === 8) handleContinueStep8();
+                else if (step === 9) handleContinueStep9();
               }}
               onNext={() => {
                 if (step === 1) handleContinueStep1();
@@ -1623,7 +1667,7 @@ export default function App() {
                             }}
                             activeOpacity={0.7}
                           >
-                            <TrashOutlineIcon size={20} color="#1E293B" />
+                            <TrashOutlineIcon size={20} color={UX4GColors.neutral800} />
                           </TouchableOpacity>
                         )}
                       </View>
@@ -1886,8 +1930,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep1}
                     style={{ width: '100%' }}
@@ -1898,8 +1942,8 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -1937,7 +1981,7 @@ export default function App() {
                   onPress={handleSetLocationPin}
                   activeOpacity={0.7}
                 >
-                  <CrosshairsGpsIcon size={18} color="#1E293B" />
+                  <CrosshairsGpsIcon size={18} color={UX4GColors.neutral800} />
                   <Text style={styles.gpsLocationText}>Use my current location</Text>
                 </TouchableOpacity>
 
@@ -1951,51 +1995,51 @@ export default function App() {
                   onPress={handleSetLocationPin}
                 >
                   <Svg width="100%" height={210} viewBox="0 0 340 210">
-                    <Path d="M0 0h340v210H0z" fill="#EDE8DF" />
+                    <Path d="M0 0h340v210H0z" fill={UX4GColors.neutral100} />
 
                     {/* Water Body (Top Left Curved Lake) */}
                     <Path
                       d="M0 0h145c0 30-15 55-45 55H0V0z"
-                      fill="#93C5FD"
+                      fill={UX4GColors.blue300}
                     />
 
                     {/* Park Green Area (Top Right) */}
                     <Path
                       d="M175 10h155v50H175z"
-                      fill="#C8E6C9"
+                      fill={UX4GColors.green100}
                     />
 
                     {/* Building Blocks */}
-                    <Path d="M15 15h35v30H15z" fill="#DCD6CB" rx={2} />
-                    <Path d="M60 15h40v30H60z" fill="#DCD6CB" rx={2} />
-                    <Path d="M15 75h55v30H15z" fill="#DCD6CB" rx={2} />
-                    <Path d="M80 75h50v30H80z" fill="#DCD6CB" rx={2} />
-                    <Path d="M15 120h45v35H15z" fill="#DCD6CB" rx={2} />
-                    <Path d="M70 120h60v35H70z" fill="#DCD6CB" rx={2} />
+                    <Path d="M15 15h35v30H15z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M60 15h40v30H60z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M15 75h55v30H15z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M80 75h50v30H80z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M15 120h45v35H15z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M70 120h60v35H70z" fill={UX4GColors.neutral200} rx={2} />
 
-                    <Path d="M175 75h60v30H175z" fill="#DCD6CB" rx={2} />
-                    <Path d="M245 75h60v30H245z" fill="#DCD6CB" rx={2} />
-                    <Path d="M175 120h50v35H175z" fill="#DCD6CB" rx={2} />
-                    <Path d="M235 120h70v35H235z" fill="#DCD6CB" rx={2} />
+                    <Path d="M175 75h60v30H175z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M245 75h60v30H245z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M175 120h50v35H175z" fill={UX4GColors.neutral200} rx={2} />
+                    <Path d="M235 120h70v35H235z" fill={UX4GColors.neutral200} rx={2} />
 
                     {/* Roads Network */}
-                    <Path d="M0 60h340v12H0z" fill="#FFFFFF" />
-                    <Path d="M0 110h340v10H0z" fill="#FFFFFF" />
-                    <Path d="M145 0v210h14V0z" fill="#FFFFFF" />
-                    <Path d="M0 160l340 25v10L0 170z" fill="#FFFFFF" />
+                    <Path d="M0 60h340v12H0z" fill={UX4GColors.white} />
+                    <Path d="M0 110h340v10H0z" fill={UX4GColors.white} />
+                    <Path d="M145 0v210h14V0z" fill={UX4GColors.white} />
+                    <Path d="M0 160l340 25v10L0 170z" fill={UX4GColors.white} />
 
                     {/* Purple Location Pin on Road Center */}
                     <Path
                       d="M142 85C136 85 131 90 131 96c0 8 11 19 11 19s11-11 11-19c0-6-5-11-11-11z"
-                      fill="#4A2BC2"
+                      fill={UX4GColors.primary}
                     />
-                    <Circle cx="142" cy="96" r="3.5" fill="#FFFFFF" />
+                    <Circle cx="142" cy="96" r="3.5" fill={UX4GColors.white} />
 
                     {/* Zoom Buttons Controls (Top Right) */}
-                    <Path d="M295 15h25v50h-25z" fill="#FFFFFF" rx={4} />
-                    <Path d="M295 40h25v1h-25z" fill="#E2E8F0" />
-                    <Path d="M304 27h7m-3.5-3.5v7" stroke="#475569" strokeWidth="1.5" strokeLinecap="round" />
-                    <Path d="M304 52h7" stroke="#475569" strokeWidth="1.5" strokeLinecap="round" />
+                    <Path d="M295 15h25v50h-25z" fill={UX4GColors.white} rx={4} />
+                    <Path d="M295 40h25v1h-25z" fill={UX4GColors.neutral200} />
+                    <Path d="M304 27h7m-3.5-3.5v7" stroke={UX4GColors.neutral600} strokeWidth="1.5" strokeLinecap="round" />
+                    <Path d="M304 52h7" stroke={UX4GColors.neutral600} strokeWidth="1.5" strokeLinecap="round" />
                   </Svg>
 
                   {/* Bottom Map Overlay Pill */}
@@ -2138,8 +2182,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep2}
                     style={{ width: '100%' }}
@@ -2150,8 +2194,8 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -2207,7 +2251,7 @@ export default function App() {
                     </Text>
                   </View>
                   <View style={styles.helperRow}>
-                    <InfoOutlineIcon size={13} color="#64748B" />
+                    <InfoOutlineIcon size={13} color={UX4GColors.neutral500} />
                     <Text style={styles.helperText}>Must match your PAN letter for letter</Text>
                   </View>
                 </View>
@@ -2215,32 +2259,32 @@ export default function App() {
                 {/* Gender Radio Buttons */}
                 <View style={styles.fieldSpacing}>
                   <Text style={styles.radioGroupLabel}>
-                    Gender<Text style={{ color: '#EF4444' }}>*</Text>
+                    Gender<Text style={{ color: UX4GColors.red }}>*</Text>
                   </Text>
                   <View style={{ marginTop: 8, gap: 10 }}>
                     <Ux4gRadioButton
                       checked={formData.gender === 'male'}
                       onPress={() => updateField('gender', 'male')}
                       label="Male"
-                      activeColor="#4A2BC2"
+                      activeColor={UX4GColors.primary}
                     />
                     <Ux4gRadioButton
                       checked={formData.gender === 'female'}
                       onPress={() => updateField('gender', 'female')}
                       label="Female"
-                      activeColor="#4A2BC2"
+                      activeColor={UX4GColors.primary}
                     />
                     <Ux4gRadioButton
                       checked={formData.gender === 'others'}
                       onPress={() => updateField('gender', 'others')}
                       label="Others"
-                      activeColor="#4A2BC2"
+                      activeColor={UX4GColors.primary}
                     />
                     <Ux4gRadioButton
                       checked={formData.gender === 'prefer_not_to_say'}
                       onPress={() => updateField('gender', 'prefer_not_to_say')}
                       label="Prefer not to say"
-                      activeColor="#4A2BC2"
+                      activeColor={UX4GColors.primary}
                     />
                   </View>
                   {errors.gender && <Text style={styles.errorCaption}>{errors.gender}</Text>}
@@ -2327,14 +2371,14 @@ export default function App() {
                 {/* Mobile Number with +91 prefix and Verify button */}
                 <View style={styles.fieldSpacing}>
                   <Text style={styles.fieldLabelWithAsterisk}>
-                    Mobile number<Text style={{ color: '#EF4444' }}>*</Text>
+                    Mobile number<Text style={{ color: UX4GColors.red }}>*</Text>
                   </Text>
                   <View style={[styles.inlineInputBox, errors.mobileNumber && styles.inputBoxError]}>
                     <Text style={styles.prefixText}>+91</Text>
                     <TextInput
                       style={styles.inlineInput}
                       placeholder="10 digits"
-                      placeholderTextColor="#94A3B8"
+                      placeholderTextColor={UX4GColors.neutral400}
                       value={formData.mobileNumber}
                       onChangeText={(v) => updateField('mobileNumber', v)}
                       keyboardType="phone-pad"
@@ -2381,13 +2425,13 @@ export default function App() {
                 {/* Email Address with inline Verify */}
                 <View style={styles.fieldSpacing}>
                   <Text style={styles.fieldLabelWithAsterisk}>
-                    Email address<Text style={{ color: '#EF4444' }}>*</Text>
+                    Email address<Text style={{ color: UX4GColors.red }}>*</Text>
                   </Text>
                   <View style={[styles.inlineInputBox, errors.emailAddress && styles.inputBoxError]}>
                     <TextInput
                       style={styles.inlineInput}
                       placeholder="name@example.com"
-                      placeholderTextColor="#94A3B8"
+                      placeholderTextColor={UX4GColors.neutral400}
                       value={formData.emailAddress}
                       onChangeText={(v) => updateField('emailAddress', v)}
                       keyboardType="email-address"
@@ -2497,7 +2541,7 @@ export default function App() {
                     checked={formData.sameAsPermanent}
                     onPress={() => updateField('sameAsPermanent', !formData.sameAsPermanent)}
                     label="Same as my permanent address *"
-                    activeColor="#4A2BC2"
+                    activeColor={UX4GColors.primary}
                   />
                 </View>
 
@@ -2506,7 +2550,7 @@ export default function App() {
                     checked={formData.addressOutsideState}
                     onPress={() => updateField('addressOutsideState', !formData.addressOutsideState)}
                     label="My current address is outside this State *"
-                    activeColor="#4A2BC2"
+                    activeColor={UX4GColors.primary}
                   />
                   <Text style={styles.checkboxSubHelperText}>
                     Opens a State field on the current-address block.
@@ -2516,26 +2560,26 @@ export default function App() {
                 {/* Capacity in which applying */}
                 <View style={styles.fieldSpacing}>
                   <Text style={styles.capacityLabel}>
-                    Capacity in which you are applying<Text style={{ color: '#EF4444' }}>*</Text>
+                    Capacity in which you are applying<Text style={{ color: UX4GColors.red }}>*</Text>
                   </Text>
                   <View style={{ marginTop: 8, gap: 10 }}>
                     <Ux4gRadioButton
                       checked={formData.applyingCapacity === 'owner'}
                       onPress={() => updateField('applyingCapacity', 'owner')}
                       label="Owner of the property"
-                      activeColor="#4A2BC2"
+                      activeColor={UX4GColors.primary}
                     />
                     <Ux4gRadioButton
                       checked={formData.applyingCapacity === 'family_member'}
                       onPress={() => updateField('applyingCapacity', 'family_member')}
                       label="Family member managing the unit"
-                      activeColor="#4A2BC2"
+                      activeColor={UX4GColors.primary}
                     />
                     <Ux4gRadioButton
                       checked={formData.applyingCapacity === 'authorised_rep'}
                       onPress={() => updateField('applyingCapacity', 'authorised_rep')}
                       label="Authorised representative of the owner"
-                      activeColor="#4A2BC2"
+                      activeColor={UX4GColors.primary}
                     />
                   </View>
                 </View>
@@ -2546,8 +2590,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep3}
                     style={{ width: '100%' }}
@@ -2558,8 +2602,8 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -2585,7 +2629,7 @@ export default function App() {
                     label="The owner runs the property personally"
                     description="Ticking this hides the manager block below."
                     size="medium"
-                    activeColor="#4A2BC2"
+                    activeColor={UX4GColors.primary}
                   />
                 </View>
 
@@ -2608,7 +2652,7 @@ export default function App() {
                     {/* Relationship to the owner */}
                     <View style={styles.fieldSpacing}>
                       <Text style={styles.radioGroupLabel}>
-                        Relationship to the owner<Text style={{ color: '#EF4444' }}>*</Text>
+                        Relationship to the owner<Text style={{ color: UX4GColors.red }}>*</Text>
                       </Text>
                       <View style={{ marginTop: 8, gap: 10 }}>
                         <Ux4gRadioButton
@@ -2617,7 +2661,7 @@ export default function App() {
                           onChanged={(val) => updateField('managerRelationship', val)}
                           label="Self"
                           size="medium"
-                          color="#4A2BC2"
+                          color={UX4GColors.primary}
                         />
                         <Ux4gRadioButton
                           value="family_member"
@@ -2625,7 +2669,7 @@ export default function App() {
                           onChanged={(val) => updateField('managerRelationship', val)}
                           label="Family member"
                           size="medium"
-                          color="#4A2BC2"
+                          color={UX4GColors.primary}
                         />
                         <Ux4gRadioButton
                           value="employee"
@@ -2633,7 +2677,7 @@ export default function App() {
                           onChanged={(val) => updateField('managerRelationship', val)}
                           label="Employee"
                           size="medium"
-                          color="#4A2BC2"
+                          color={UX4GColors.primary}
                         />
                         <Ux4gRadioButton
                           value="agent"
@@ -2641,7 +2685,7 @@ export default function App() {
                           onChanged={(val) => updateField('managerRelationship', val)}
                           label="Agent"
                           size="medium"
-                          color="#4A2BC2"
+                          color={UX4GColors.primary}
                         />
                       </View>
                       {errors.managerRelationship && (
@@ -2652,14 +2696,14 @@ export default function App() {
                     {/* Mobile number with +91 prefix */}
                     <View style={styles.fieldSpacing}>
                       <Text style={styles.fieldLabelWithAsterisk}>
-                        Mobile number<Text style={{ color: '#EF4444' }}>*</Text>
+                        Mobile number<Text style={{ color: UX4GColors.red }}>*</Text>
                       </Text>
                       <View style={[styles.inlineInputBox, errors.managerMobile && styles.inputBoxError]}>
                         <Text style={styles.prefixText}>+91</Text>
                         <TextInput
                           style={styles.inlineInput}
                           placeholder="Reachable during an inspection"
-                          placeholderTextColor="#94A3B8"
+                          placeholderTextColor={UX4GColors.neutral400}
                           value={formData.managerMobile}
                           onChangeText={(v) => updateField('managerMobile', v)}
                           keyboardType="phone-pad"
@@ -2756,7 +2800,7 @@ export default function App() {
                   <Ux4gSlider
                     label="Of whom, hired locally"
                     isRequired={true}
-                    labelIcon={<InfoOutlineIcon size={14} color="#64748B" />}
+                    labelIcon={<InfoOutlineIcon size={14} color={UX4GColors.neutral500} />}
                     min={0}
                     max={Math.max(1, parseInt(formData.totalStaff) || 5)}
                     steps={Math.max(1, parseInt(formData.totalStaff) || 5) > 1 ? ((Math.max(1, parseInt(formData.totalStaff) || 5)) - 1) : 1}
@@ -2784,7 +2828,7 @@ export default function App() {
                     onChanged={(val) => updateField('isRenewal', !!val)}
                     label="This is a renewal of an existing registration"
                     size="medium"
-                    activeColor="#4A2BC2"
+                    activeColor={UX4GColors.primary}
                   />
                 </View>
 
@@ -2807,8 +2851,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep4}
                     style={{ width: '100%' }}
@@ -2819,8 +2863,8 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -2856,8 +2900,8 @@ export default function App() {
                     <Ux4gCard
                       key={room.id}
                       cornerRadius={12}
-                      backgroundColor="#FFFFFF"
-                      borderColor="#E2E8F0"
+                      backgroundColor={UX4GColors.white}
+                      borderColor={UX4GColors.neutral200}
                       borderWidth={1}
                       elevation={0}
                       style={{ marginBottom: 14, padding: 14 }}
@@ -2877,9 +2921,9 @@ export default function App() {
                           )}
                         </View>
                         {room.expanded ? (
-                          <ChevronUpIcon size={20} color="#475569" />
+                          <ChevronUpIcon size={20} color={UX4GColors.neutral600} />
                         ) : (
-                          <ChevronDownIcon size={20} color="#475569" />
+                          <ChevronDownIcon size={20} color={UX4GColors.neutral600} />
                         )}
                       </TouchableOpacity>
 
@@ -2893,9 +2937,9 @@ export default function App() {
                             }
                             style={styles.copyFromPill}
                           >
-                            <CopyOutlineIcon size={14} color="#334155" />
+                            <CopyOutlineIcon size={14} color={UX4GColors.neutral700} />
                             <Text style={styles.copyFromText}>Copy from...</Text>
-                            <ChevronDownIcon size={15} color="#475569" />
+                            <ChevronDownIcon size={15} color={UX4GColors.neutral600} />
                           </TouchableOpacity>
 
                           {isCopyMenuOpen && (
@@ -2938,7 +2982,7 @@ export default function App() {
                           {/* Room type Radio Buttons (3 + 1 wrap grid) */}
                           <View style={styles.fieldSpacing}>
                             <Text style={styles.radioGroupLabel}>
-                              Room type<Text style={{ color: '#EF4444' }}>*</Text>
+                              Room type<Text style={{ color: UX4GColors.red }}>*</Text>
                             </Text>
                             <View style={styles.roomTypeWrapGrid}>
                               {ROOM_TYPES.map((rt) => (
@@ -2949,7 +2993,7 @@ export default function App() {
                                     onChanged={(val) => updateRoomField(roomIdx, 'roomType', val)}
                                     label={rt.label}
                                     size="small"
-                                    color="#4A2BC2"
+                                    color={UX4GColors.primary}
                                   />
                                 </View>
                               ))}
@@ -2974,7 +3018,7 @@ export default function App() {
                             <Ux4gInputField
                               label="Tariff per night"
                               required
-                              trailingIconLabel={<InfoOutlineIcon size={14} color="#64748B" />}
+                              trailingIconLabel={<InfoOutlineIcon size={14} color={UX4GColors.neutral500} />}
                               prefixText="₹"
                               placeholder="Digits only"
                               type="number"
@@ -3044,7 +3088,7 @@ export default function App() {
                                   <View style={{ flex: 0.44 }}>
                                     <Text style={styles.indentedSubLabel}>
                                       {'Bathroom ' + (bIdx + 1)}
-                                      <Text style={{ color: '#EF4444' }}>*</Text>
+                                      <Text style={{ color: UX4GColors.red }}>*</Text>
                                     </Text>
                                   </View>
                                   <View style={{ flex: 0.56 }}>
@@ -3097,7 +3141,7 @@ export default function App() {
                                   <View style={{ flex: 0.44 }}>
                                     <Text style={styles.indentedSubLabel}>
                                       {'Toilet ' + (tIdx + 1)}
-                                      <Text style={{ color: '#EF4444' }}>*</Text>
+                                      <Text style={{ color: UX4GColors.red }}>*</Text>
                                     </Text>
                                   </View>
                                   <View style={{ flex: 0.56 }}>
@@ -3127,7 +3171,7 @@ export default function App() {
                                   onChanged={() => toggleRoomFacility(roomIdx, fac.id)}
                                   label={fac.label}
                                   size="medium"
-                                  activeColor="#4A2BC2"
+                                  activeColor={UX4GColors.primary}
                                 />
                               ))}
                             </View>
@@ -3145,7 +3189,7 @@ export default function App() {
                     {'Your highest room tariff is ₹' +
                       (highestTariff > 0 ? highestTariff.toLocaleString('en-IN') : '2,000') +
                       ' per night, so this homestay registers as '}
-                    <Text style={{ fontWeight: '700', color: '#4A2BC2' }}>
+                    <Text style={{ fontWeight: '700', color: UX4GColors.primary }}>
                       {autoCategory.displayName + '.'}
                     </Text>
                   </Text>
@@ -3158,8 +3202,8 @@ export default function App() {
                     return (
                       <Ux4gCard
                         cornerRadius={10}
-                        backgroundColor="#FFFFFF"
-                        borderColor={isMatchedCat ? '#4A2BC2' : '#CBD5E1'}
+                        backgroundColor={UX4GColors.white}
+                        borderColor={isMatchedCat ? UX4GColors.primary : UX4GColors.neutral300}
                         borderWidth={isMatchedCat ? 1.5 : 1}
                         elevation={0}
                         style={{ marginTop: 12, padding: 14 }}
@@ -3189,8 +3233,8 @@ export default function App() {
                       showArrows={false}
                       variant="capsule"
                       size="small"
-                      activeColor="#4A2BC2"
-                      inactiveColor="#CBD5E1"
+                      activeColor={UX4GColors.primary}
+                      inactiveColor={UX4GColors.neutral300}
                     />
                   </View>
                 </View>
@@ -3201,8 +3245,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep5}
                     style={{ width: '100%' }}
@@ -3213,8 +3257,8 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -3236,7 +3280,7 @@ export default function App() {
                 {/* Food provided* */}
                 <View style={styles.fieldSpacing}>
                   <Text style={styles.radioGroupLabel}>
-                    Food provided<Text style={{ color: '#EF4444' }}>*</Text>
+                    Food provided<Text style={{ color: UX4GColors.red }}>*</Text>
                   </Text>
                   <View style={{ marginTop: 8, gap: 10 }}>
                     {FOOD_OPTIONS.map((opt) => (
@@ -3248,13 +3292,13 @@ export default function App() {
                         label={opt.label}
                         status={errors.foodProvided ? 'error' : 'defaultStatus'}
                         size="medium"
-                        color="#4A2BC2"
+                        color={UX4GColors.primary}
                       />
                     ))}
                   </View>
                   {errors.foodProvided && (
                     <View style={styles.groupErrorRow}>
-                      <InfoOutlineIcon size={13} color="#DC2626" />
+                      <InfoOutlineIcon size={13} color={UX4GColors.red} />
                       <Text style={styles.groupErrorText}>{errors.foodProvided}</Text>
                     </View>
                   )}
@@ -3263,7 +3307,7 @@ export default function App() {
                 {/* Drinking water* */}
                 <View style={styles.fieldSpacing}>
                   <Text style={styles.radioGroupLabel}>
-                    Drinking water<Text style={{ color: '#EF4444' }}>*</Text>
+                    Drinking water<Text style={{ color: UX4GColors.red }}>*</Text>
                   </Text>
                   <View style={{ marginTop: 8, gap: 10 }}>
                     {DRINKING_WATER_OPTIONS.map((opt) => (
@@ -3274,13 +3318,13 @@ export default function App() {
                         label={opt.label}
                         hasError={!!errors.drinkingWater}
                         size="medium"
-                        activeColor="#4A2BC2"
+                        activeColor={UX4GColors.primary}
                       />
                     ))}
                   </View>
                   {errors.drinkingWater && (
                     <View style={styles.groupErrorRow}>
-                      <InfoOutlineIcon size={13} color="#DC2626" />
+                      <InfoOutlineIcon size={13} color={UX4GColors.red} />
                       <Text style={styles.groupErrorText}>{errors.drinkingWater}</Text>
                     </View>
                   )}
@@ -3298,7 +3342,7 @@ export default function App() {
                     onChanged={(val) => updateField('hasLobby', !!val)}
                     label="The property has a lobby or lounge with seating"
                     size="medium"
-                    activeColor="#4A2BC2"
+                    activeColor={UX4GColors.primary}
                   />
                 </View>
 
@@ -3331,7 +3375,7 @@ export default function App() {
                     onChanged={(val) => updateField('hasDiningArea', !!val)}
                     label="The property has a dining area with seating"
                     size="medium"
-                    activeColor="#4A2BC2"
+                    activeColor={UX4GColors.primary}
                   />
                 </View>
 
@@ -3385,7 +3429,7 @@ export default function App() {
                         onChanged={() => toggleArrayItem('mandatoryCleanliness', opt.id)}
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
+                        activeColor={UX4GColors.primary}
                       />
                     ))}
                   </View>
@@ -3402,7 +3446,7 @@ export default function App() {
                         onChanged={() => toggleArrayItem('mandatoryGuestQuality', opt.id)}
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
+                        activeColor={UX4GColors.primary}
                       />
                     ))}
                   </View>
@@ -3419,7 +3463,7 @@ export default function App() {
                         onChanged={() => toggleArrayItem('mandatoryRecords', opt.id)}
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
+                        activeColor={UX4GColors.primary}
                       />
                     ))}
                   </View>
@@ -3441,7 +3485,7 @@ export default function App() {
                         onChanged={() => toggleArrayItem('additionalServices', opt.id)}
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
+                        activeColor={UX4GColors.primary}
                       />
                     ))}
                   </View>
@@ -3458,7 +3502,7 @@ export default function App() {
                         onChanged={() => toggleArrayItem('additionalComfort', opt.id)}
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
+                        activeColor={UX4GColors.primary}
                       />
                     ))}
                   </View>
@@ -3487,8 +3531,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep6}
                     style={{ width: '100%' }}
@@ -3499,8 +3543,8 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -3532,7 +3576,7 @@ export default function App() {
                         enabled={false}
                         label={itemLabel}
                         size="medium"
-                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                        labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
                       />
                     ))}
                   </View>
@@ -3547,8 +3591,8 @@ export default function App() {
                     title="These are physically verified during the departmental inspection. Confirming something you do not have will fail the inspection, not the form."
                     subtitle=""
                     titleNumberOfLines={5}
-                    backgroundColor="#FFF7ED"
-                    borderColor="#FDBA74"
+                    backgroundColor={UX4GColors.orange50}
+                    borderColor={UX4GColors.orange200}
                     marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
                     paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
                     containerStyle={{ borderRadius: 10 }}
@@ -3556,7 +3600,7 @@ export default function App() {
                       fontSize: 12.5,
                       lineHeight: 18,
                       fontWeight: '500',
-                      color: '#B45309',
+                      color: UX4GColors.orange800,
                     }}
                   />
                 </View>
@@ -3572,8 +3616,8 @@ export default function App() {
                         onChanged={() => toggleArrayItem('safetyDeclarations', opt.id)}
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
-                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                        activeColor={UX4GColors.primary}
+                        labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
                       />
                     ))}
                   </View>
@@ -3592,8 +3636,8 @@ export default function App() {
                         }
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
-                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                        activeColor={UX4GColors.primary}
+                        labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
                       />
                     ))}
                   </View>
@@ -3612,8 +3656,8 @@ export default function App() {
                         }
                         label={opt.label}
                         size="medium"
-                        activeColor="#4A2BC2"
-                        labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                        activeColor={UX4GColors.primary}
+                        labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
                       />
                     ))}
                   </View>
@@ -3652,12 +3696,12 @@ export default function App() {
                     isRequired={true}
                     hasError={!!errors.complianceConfirmed}
                     size="medium"
-                    activeColor="#4A2BC2"
-                    labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                    activeColor={UX4GColors.primary}
+                    labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
                   />
                   {errors.complianceConfirmed && (
                     <View style={styles.groupErrorRow}>
-                      <InfoOutlineIcon size={13} color="#DC2626" />
+                      <InfoOutlineIcon size={13} color={UX4GColors.red} />
                       <Text style={styles.groupErrorText}>
                         {errors.complianceConfirmed}
                       </Text>
@@ -3671,8 +3715,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep7}
                     style={{ width: '100%' }}
@@ -3683,8 +3727,8 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -3707,8 +3751,8 @@ export default function App() {
                     title="PDF, JPG or PNG · up to 25 MB each · photographs are optimised on upload. Stated once, here, rather than repeated in every row."
                     subtitle=""
                     titleNumberOfLines={5}
-                    backgroundColor="#ECFEFF"
-                    borderColor="#67E8F9"
+                    backgroundColor={UX4GColors.cyan50}
+                    borderColor={UX4GColors.cyan200}
                     marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
                     paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
                     containerStyle={{ borderRadius: 10 }}
@@ -3716,7 +3760,7 @@ export default function App() {
                       fontSize: 12.5,
                       lineHeight: 18,
                       fontWeight: '500',
-                      color: '#0E7490',
+                      color: UX4GColors.cyan800,
                     }}
                   />
                 </View>
@@ -3724,8 +3768,8 @@ export default function App() {
                 {/* 1. Ownership and land Card */}
                 <Ux4gCard
                   cornerRadius={12}
-                  backgroundColor="#FFFFFF"
-                  borderColor="#E2E8F0"
+                  backgroundColor={UX4GColors.white}
+                  borderColor={UX4GColors.neutral200}
                   borderWidth={1}
                   elevation={0}
                   style={{ marginBottom: 14, padding: 14 }}
@@ -3737,9 +3781,9 @@ export default function App() {
                   >
                     <Text style={styles.roomCardTitle}>Ownership and land</Text>
                     {formData.docSectionsExpanded.ownership ? (
-                      <ChevronUpIcon size={20} color="#475569" />
+                      <ChevronUpIcon size={20} color={UX4GColors.neutral600} />
                     ) : (
-                      <ChevronDownIcon size={20} color="#475569" />
+                      <ChevronDownIcon size={20} color={UX4GColors.neutral600} />
                     )}
                   </TouchableOpacity>
 
@@ -3775,8 +3819,8 @@ export default function App() {
                           }
                           label="Not applicable to this property"
                           size="medium"
-                          activeColor="#4A2BC2"
-                          labelStyle={{ fontWeight: '600', color: '#1E293B' }}
+                          activeColor={UX4GColors.primary}
+                          labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
                         />
                         <Text style={styles.checkboxSubHelperText}>
                           Say why below — do not upload a blank form in its place.
@@ -3812,8 +3856,8 @@ export default function App() {
                   return (
                     <Ux4gCard
                       cornerRadius={12}
-                      backgroundColor="#FFFFFF"
-                      borderColor="#E2E8F0"
+                      backgroundColor={UX4GColors.white}
+                      borderColor={UX4GColors.neutral200}
                       borderWidth={1}
                       elevation={0}
                       style={{ marginBottom: 14, padding: 14 }}
@@ -3837,15 +3881,15 @@ export default function App() {
                                   done ? styles.statusCircleDone : styles.statusCircleEmpty,
                                 ]}
                               >
-                                {done && <CheckSmallIcon size={10} color="#FFFFFF" />}
+                                {done && <CheckSmallIcon size={10} color={UX4GColors.white} />}
                               </View>
                             ))}
                           </View>
                         </View>
                         {formData.docSectionsExpanded.declarations ? (
-                          <ChevronUpIcon size={20} color="#475569" />
+                          <ChevronUpIcon size={20} color={UX4GColors.neutral600} />
                         ) : (
-                          <ChevronDownIcon size={20} color="#475569" />
+                          <ChevronDownIcon size={20} color={UX4GColors.neutral600} />
                         )}
                       </TouchableOpacity>
 
@@ -3895,8 +3939,8 @@ export default function App() {
                   return (
                     <Ux4gCard
                       cornerRadius={12}
-                      backgroundColor="#FFFFFF"
-                      borderColor="#E2E8F0"
+                      backgroundColor={UX4GColors.white}
+                      borderColor={UX4GColors.neutral200}
                       borderWidth={1}
                       elevation={0}
                       style={{ marginBottom: 14, padding: 14 }}
@@ -3920,15 +3964,15 @@ export default function App() {
                                   done ? styles.statusCircleDone : styles.statusCircleEmpty,
                                 ]}
                               >
-                                {done && <CheckSmallIcon size={10} color="#FFFFFF" />}
+                                {done && <CheckSmallIcon size={10} color={UX4GColors.white} />}
                               </View>
                             ))}
                           </View>
                         </View>
                         {formData.docSectionsExpanded.identity ? (
-                          <ChevronUpIcon size={20} color="#475569" />
+                          <ChevronUpIcon size={20} color={UX4GColors.neutral600} />
                         ) : (
-                          <ChevronDownIcon size={20} color="#475569" />
+                          <ChevronDownIcon size={20} color={UX4GColors.neutral600} />
                         )}
                       </TouchableOpacity>
 
@@ -3971,8 +4015,8 @@ export default function App() {
                   return (
                     <Ux4gCard
                       cornerRadius={12}
-                      backgroundColor="#FFFFFF"
-                      borderColor="#E2E8F0"
+                      backgroundColor={UX4GColors.white}
+                      borderColor={UX4GColors.neutral200}
                       borderWidth={1}
                       elevation={0}
                       style={{ marginBottom: 14, padding: 14 }}
@@ -3996,15 +4040,15 @@ export default function App() {
                                   done ? styles.statusCircleDone : styles.statusCircleEmpty,
                                 ]}
                               >
-                                {done && <CheckSmallIcon size={10} color="#FFFFFF" />}
+                                {done && <CheckSmallIcon size={10} color={UX4GColors.white} />}
                               </View>
                             ))}
                           </View>
                         </View>
                         {formData.docSectionsExpanded.photographs ? (
-                          <ChevronUpIcon size={20} color="#475569" />
+                          <ChevronUpIcon size={20} color={UX4GColors.neutral600} />
                         ) : (
-                          <ChevronDownIcon size={20} color="#475569" />
+                          <ChevronDownIcon size={20} color={UX4GColors.neutral600} />
                         )}
                       </TouchableOpacity>
 
@@ -4063,20 +4107,20 @@ export default function App() {
                         title="Still missing"
                         subtitle={missingText}
                         subtitleNumberOfLines={6}
-                        backgroundColor="#FFF7ED"
-                        borderColor="#FDBA74"
+                        backgroundColor={UX4GColors.orange50}
+                        borderColor={UX4GColors.orange200}
                         marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
                         paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
                         containerStyle={{ borderRadius: 10 }}
                         titleStyle={{
                           fontSize: 13,
                           fontWeight: '700',
-                          color: '#B45309',
+                          color: UX4GColors.orange800,
                         }}
                         subtitleStyle={{
                           fontSize: 12,
                           lineHeight: 18,
-                          color: '#B45309',
+                          color: UX4GColors.orange800,
                           marginTop: 3,
                         }}
                       />
@@ -4090,8 +4134,8 @@ export default function App() {
                     text="Continue"
                     variant="primary"
                     size="large"
-                    backgroundColor="#4A2BC2"
-                    contentColor="#FFFFFF"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
                     borderRadius={8}
                     onPress={handleContinueStep8}
                     style={{ width: '100%' }}
@@ -4102,8 +4146,245 @@ export default function App() {
                     variant="outline"
                     size="large"
                     backgroundColor="transparent"
-                    contentColor="#4A2BC2"
-                    borderColor="#C2B6FB"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={() => {
+                      setSavedTime('3:14 PM');
+                      alert('Draft saved successfully!');
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
+            ) : step === 9 ? (
+              /* ======================================================== */
+              /* SCREEN 9: REVIEW (PIXEL-PERFECT MATCH)                   */
+              /* ======================================================== */
+              <View style={styles.formContainer}>
+                <Text style={styles.sectionHeading}>Preview Your Application</Text>
+
+                {/* Review Summary Banners using official Ux4gStatusBanner */}
+                {[
+                  {
+                    stepNum: 1,
+                    title: 'Step 1 · Unit / Property Details',
+                    subtitle:
+                      (formData.unitName && formData.unitName.trim()
+                        ? formData.unitName.trim()
+                        : 'Property name') +
+                      ' · legal entity · proprietary · ' +
+                      (formData.builtUpArea && formData.builtUpArea.trim()
+                        ? formData.builtUpArea.trim()
+                        : '2,500') +
+                      ' sq ft · 2 lettable rooms · ' +
+                      autoCategory.displayName,
+                  },
+                  {
+                    stepNum: 2,
+                    title: 'Step 2 · Location',
+                    subtitle:
+                      (formData.houseStreet && formData.houseStreet.trim()
+                        ? formData.houseStreet.trim()
+                        : 'Street address') +
+                      ' · district · tehsil · ' +
+                      (formData.pinCode && formData.pinCode.trim()
+                        ? formData.pinCode.trim()
+                        : 'PIN') +
+                      ' · pin placed on the map',
+                  },
+                  {
+                    stepNum: 3,
+                    title: 'Step 3 · Owner / Applicant Details',
+                    subtitle:
+                      (formData.firstName && formData.firstName.trim()
+                        ? formData.firstName.trim() +
+                          (formData.lastName ? ' ' + formData.lastName.trim() : '')
+                        : 'Applicant name') +
+                      ' · PAN verified · mobile verified · email verified',
+                  },
+                  {
+                    stepNum: 4,
+                    title: 'Step 4 · Management & Staff',
+                    subtitle:
+                      (formData.ownerRunsPersonally
+                        ? 'Owner runs the property personally'
+                        : 'Manager assigned') +
+                      ' · ' +
+                      (formData.totalStaff || '3') +
+                      ' staff, ' +
+                      formData.hiredLocally +
+                      ' hired locally',
+                  },
+                  {
+                    stepNum: 5,
+                    title: 'Step 5 · Rooms / Accommodation',
+                    subtitle:
+                      '2 rooms · 4 beds · highest tariff ₹' +
+                      (highestTariff > 0 ? highestTariff.toLocaleString('en-IN') : '2,000') +
+                      ' · within the 6 room and 12 bed caps',
+                  },
+                  {
+                    stepNum: 6,
+                    title: 'Step 6 · Amenities, Facilities & Distances',
+                    subtitle:
+                      'Food ' +
+                      (formData.foodProvided || 'both') +
+                      ' · RO water · 12 facilities confirmed · 6 distances recorded',
+                  },
+                  {
+                    stepNum: 7,
+                    title: 'Step 7 · Compliance & Safety',
+                    subtitle:
+                      '3 verified automatically · 12 of 12 confirmed · fire safety detail given',
+                  },
+                ].map((item) => (
+                  <View key={'rev-' + item.stepNum} style={{ marginBottom: 12 }}>
+                    <Ux4gStatusBanner
+                      variant="successLight"
+                      title={item.title}
+                      subtitle={item.subtitle}
+                      titleNumberOfLines={2}
+                      subtitleNumberOfLines={4}
+                      backgroundColor={UX4GColors.green50}
+                      borderColor={UX4GColors.green200}
+                      marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                      paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                      containerStyle={{ borderRadius: 10 }}
+                      titleStyle={{
+                        fontSize: 13.5,
+                        fontWeight: '700',
+                        color: UX4GColors.green700,
+                        lineHeight: 19,
+                      }}
+                      subtitleStyle={{
+                        fontSize: 12,
+                        lineHeight: 17,
+                        color: UX4GColors.green,
+                        marginTop: 3,
+                      }}
+                      trailingIcon={
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => setStep(item.stepNum)}
+                          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                          style={{ padding: 2 }}
+                        >
+                          <PencilOutlineIcon size={17} color={UX4GColors.neutral800} />
+                        </TouchableOpacity>
+                      }
+                    />
+                  </View>
+                ))}
+
+                {/* Step 8 Warning Review Card */}
+                <View style={{ marginBottom: 18 }}>
+                  <Ux4gStatusBanner
+                    variant="warningLight"
+                    title="Step 8 · Documents"
+                    subtitle="6 of 8 uploaded · 2 still outstanding"
+                    titleNumberOfLines={2}
+                    subtitleNumberOfLines={3}
+                    backgroundColor={UX4GColors.orange50}
+                    borderColor={UX4GColors.orange200}
+                    marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                    paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                    containerStyle={{ borderRadius: 10 }}
+                    titleStyle={{
+                      fontSize: 13.5,
+                      fontWeight: '700',
+                      color: UX4GColors.orange800,
+                      lineHeight: 19,
+                    }}
+                    subtitleStyle={{
+                      fontSize: 12,
+                      lineHeight: 17,
+                      color: UX4GColors.orange800,
+                      marginTop: 3,
+                    }}
+                    trailingIcon={
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => setStep(8)}
+                        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                        style={{ padding: 2 }}
+                      >
+                        <PencilOutlineIcon size={17} color={UX4GColors.neutral800} />
+                      </TouchableOpacity>
+                    }
+                  />
+                </View>
+
+                {/* Declaration Section */}
+                <Text style={styles.sectionHeading}>Declaration</Text>
+
+                <View style={{ gap: 12 }}>
+                  <View>
+                    <Ux4gCheckbox
+                      value={formData.declTrueKnowledge}
+                      onChanged={(val) => updateField('declTrueKnowledge', !!val)}
+                      label="Everything I have entered is true to the best of my knowledge"
+                      isRequired={true}
+                      hasError={!!errors.declTrueKnowledge}
+                      size="medium"
+                      activeColor={UX4GColors.primary}
+                      labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                    />
+                    {errors.declTrueKnowledge && (
+                      <View style={styles.groupErrorRow}>
+                        <InfoOutlineIcon size={13} color={UX4GColors.red} />
+                        <Text style={styles.groupErrorText}>
+                          {errors.declTrueKnowledge}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+
+                  <View>
+                    <Ux4gCheckbox
+                      value={formData.declPhysicalInspection}
+                      onChanged={(val) =>
+                        updateField('declPhysicalInspection', !!val)
+                      }
+                      label="I agree to a physical inspection of the property"
+                      isRequired={true}
+                      hasError={!!errors.declPhysicalInspection}
+                      size="medium"
+                      activeColor={UX4GColors.primary}
+                      labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                    />
+                    {errors.declPhysicalInspection && (
+                      <View style={styles.groupErrorRow}>
+                        <InfoOutlineIcon size={13} color={UX4GColors.red} />
+                        <Text style={styles.groupErrorText}>
+                          {errors.declPhysicalInspection}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    contentColor={UX4GColors.white}
+                    borderRadius={8}
+                    onPress={handleContinueStep9}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor="transparent"
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
                     onPress={() => {
@@ -4127,7 +4408,7 @@ const STATUSBAR_HEIGHT = Platform.OS === 'android' ? (StatusBar.currentHeight ? 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: UX4GColors.neutral50,
     paddingTop: STATUSBAR_HEIGHT,
   },
   headerBar: {
@@ -4137,9 +4418,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 12,
     paddingBottom: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: UX4GColors.neutral100,
   },
   headerLeft: {
     flexDirection: 'row',
@@ -4150,8 +4431,8 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: '#C7D2FE',
-    backgroundColor: '#F5F3FF',
+    borderColor: UX4GColors.primary100,
+    backgroundColor: UX4GColors.primary50,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -4163,7 +4444,7 @@ const styles = StyleSheet.create({
   menuBar: {
     width: '100%',
     height: 2.2,
-    backgroundColor: '#4A2BC2',
+    backgroundColor: UX4GColors.primary,
     borderRadius: 1,
   },
   scrollView: {
@@ -4174,19 +4455,19 @@ const styles = StyleSheet.create({
     paddingBottom: 36,
   },
   mainCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: UX4GColors.neutral200,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOpacity: 0.03,
     shadowRadius: 8,
     elevation: 2,
   },
   savedBannerRow: {
     width: '100%',
-    backgroundColor: '#ECFDF5',
+    backgroundColor: UX4GColors.green50,
     borderRadius: 6,
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -4201,13 +4482,13 @@ const styles = StyleSheet.create({
     width: 13,
     height: 13,
     borderRadius: 6.5,
-    backgroundColor: '#10B981',
+    backgroundColor: UX4GColors.green,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 5,
   },
   savedCheckIcon: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 8.5,
     fontWeight: 'bold',
     marginTop: -1,
@@ -4215,11 +4496,11 @@ const styles = StyleSheet.create({
   savedBannerText: {
     fontSize: 11.5,
     fontWeight: '600',
-    color: '#065F46',
+    color: UX4GColors.green800,
   },
   stepperBottomDivider: {
     height: 1,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: UX4GColors.neutral100,
     marginTop: 14,
     marginBottom: 16,
     width: '100%',
@@ -4230,7 +4511,7 @@ const styles = StyleSheet.create({
   sectionHeading: {
     fontSize: 15.5,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     marginBottom: 12,
   },
   fieldSpacing: {
@@ -4242,15 +4523,15 @@ const styles = StyleSheet.create({
   radioGroupLabel: {
     fontSize: 13.5,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   landmarkCard: {
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 10,
     padding: 14,
     marginBottom: 14,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: UX4GColors.neutral50,
   },
   landmarkTypeHeader: {
     flexDirection: 'row',
@@ -4259,19 +4540,19 @@ const styles = StyleSheet.create({
   },
   landmarkTypeBox: {
     flex: 1,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: UX4GColors.neutral100,
     borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
   landmarkTypeLabel: {
     fontSize: 11,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     fontWeight: '500',
   },
   landmarkTypeValue: {
     fontSize: 13,
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     fontWeight: '600',
     marginTop: 2,
   },
@@ -4279,7 +4560,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     padding: 8,
     borderRadius: 8,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: UX4GColors.neutral100,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -4290,24 +4571,24 @@ const styles = StyleSheet.create({
   },
   addLandmarkButton: {
     borderWidth: 1.5,
-    borderColor: '#818CF8',
+    borderColor: UX4GColors.primary400,
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F3FF',
+    backgroundColor: UX4GColors.primary50,
     marginTop: 4,
     marginBottom: 8,
   },
   addLandmarkText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#4A2BC2',
+    color: UX4GColors.primary,
   },
   activitySubheading: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#334155',
+    color: UX4GColors.neutral700,
     marginTop: 6,
   },
   gpsLocationRow: {
@@ -4320,7 +4601,7 @@ const styles = StyleSheet.create({
   gpsLocationText: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     marginLeft: 8,
   },
   mapContainer: {
@@ -4328,7 +4609,7 @@ const styles = StyleSheet.create({
     height: 210,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     overflow: 'hidden',
     position: 'relative',
     marginBottom: 16,
@@ -4338,33 +4619,33 @@ const styles = StyleSheet.create({
     bottom: 8,
     left: 10,
     right: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     paddingVertical: 5,
     paddingHorizontal: 8,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 2,
   },
   mapOverlayPillText: {
     fontSize: 11,
-    color: '#334155',
+    color: UX4GColors.neutral700,
     fontWeight: '500',
     textAlign: 'center',
   },
   geoCoordLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#334155',
+    color: UX4GColors.neutral700,
     marginBottom: 6,
   },
   geoCoordBox: {
     height: 48,
-    backgroundColor: '#D9DDE2',
+    backgroundColor: UX4GColors.neutral300,
     borderRadius: 8,
     justifyContent: 'center',
     paddingHorizontal: 12,
@@ -4372,10 +4653,10 @@ const styles = StyleSheet.create({
   },
   geoCoordText: {
     fontSize: 13.5,
-    color: '#475569',
+    color: UX4GColors.neutral600,
   },
   geoCoordActiveText: {
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     fontWeight: '600',
   },
   orDividerContainer: {
@@ -4386,12 +4667,12 @@ const styles = StyleSheet.create({
   orDividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: UX4GColors.neutral200,
   },
   orDividerText: {
     marginHorizontal: 12,
     fontSize: 12.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     fontWeight: '400',
   },
   groupErrorRow: {
@@ -4403,13 +4684,13 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   groupErrorText: {
-    color: '#DC2626',
+    color: UX4GColors.red,
     fontSize: 12,
     lineHeight: 16,
     flex: 1,
   },
   errorCaption: {
-    color: '#DC2626',
+    color: UX4GColors.red,
     fontSize: 12,
     lineHeight: 16,
     marginTop: 6,
@@ -4419,19 +4700,19 @@ const styles = StyleSheet.create({
   readOnlyLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     marginBottom: 6,
   },
   readOnlyBox: {
     height: 48,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: UX4GColors.neutral200,
     borderRadius: 8,
     justifyContent: 'center',
     paddingHorizontal: 12,
   },
   readOnlyText: {
     fontSize: 13.5,
-    color: '#475569',
+    color: UX4GColors.neutral600,
   },
   helperRow: {
     flexDirection: 'row',
@@ -4441,21 +4722,21 @@ const styles = StyleSheet.create({
   },
   helperText: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginLeft: 4,
   },
   fieldLabelWithAsterisk: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     marginBottom: 6,
   },
   datePickerBox: {
     height: 48,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -4463,19 +4744,19 @@ const styles = StyleSheet.create({
   },
   datePickerPlaceholderText: {
     fontSize: 14,
-    color: '#94A3B8',
+    color: UX4GColors.neutral400,
   },
   datePickerValueText: {
     fontSize: 14,
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     fontWeight: '500',
   },
   aadhaarInputContainer: {
     height: 48,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -4483,7 +4764,7 @@ const styles = StyleSheet.create({
   aadhaarTextInput: {
     flex: 1,
     fontSize: 14,
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     height: '100%',
   },
   eyeIconButton: {
@@ -4495,25 +4776,25 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
   },
   inputBoxError: {
-    borderColor: '#DC2626',
+    borderColor: UX4GColors.red,
   },
   prefixText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     marginRight: 8,
   },
   inlineInput: {
     flex: 1,
     fontSize: 14,
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     height: '100%',
   },
   verifyButton: {
@@ -4525,7 +4806,7 @@ const styles = StyleSheet.create({
   verifyButtonText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#4A2BC2',
+    color: UX4GColors.primary,
   },
   otpBlockContainer: {
     marginTop: 12,
@@ -4533,7 +4814,7 @@ const styles = StyleSheet.create({
   otpHeadingLabel: {
     fontSize: 12.5,
     fontWeight: '500',
-    color: '#334155',
+    color: UX4GColors.neutral700,
     marginBottom: 8,
   },
   otpBoxesRow: {
@@ -4546,29 +4827,29 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   otpBoxActive: {
-    borderColor: '#4A2BC2',
+    borderColor: UX4GColors.primary,
     borderWidth: 1.5,
   },
   otpCursorText: {
     fontSize: 20,
-    color: '#4A2BC2',
+    color: UX4GColors.primary,
     fontWeight: '300',
     marginTop: -2,
   },
   otpDashText: {
     fontSize: 18,
-    color: '#94A3B8',
+    color: UX4GColors.neutral400,
   },
   otpCharText: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
   },
   resendTimerRow: {
     flexDirection: 'row',
@@ -4577,23 +4858,23 @@ const styles = StyleSheet.create({
   },
   resendGrayText: {
     fontSize: 12,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
   },
   resendActiveTimer: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#475569',
+    color: UX4GColors.neutral600,
   },
   checkboxSubHelperText: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginLeft: 32,
     marginTop: 3,
   },
   capacityLabel: {
     fontSize: 12.5,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   rangeSliderWrapper: {
     width: '100%',
@@ -4607,22 +4888,22 @@ const styles = StyleSheet.create({
   sliderLabelText: {
     fontSize: 13.5,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   sliderBadgeBox: {
     width: 44,
     height: 40,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   sliderBadgeValue: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
   },
   sliderTrackContainer: {
     width: '100%',
@@ -4633,17 +4914,17 @@ const styles = StyleSheet.create({
   sliderTrackLine: {
     height: 4,
     borderRadius: 2,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: UX4GColors.neutral300,
   },
   sliderThumb: {
     position: 'absolute',
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
-    shadowColor: '#000',
+    borderColor: UX4GColors.neutral300,
+    shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.15,
     shadowRadius: 2,
@@ -4663,7 +4944,7 @@ const styles = StyleSheet.create({
   },
   tickBar: {
     width: 1,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: UX4GColors.neutral300,
   },
   tickNumberText: {
     fontSize: 12,
@@ -4677,7 +4958,7 @@ const styles = StyleSheet.create({
   },
   sliderCaptionText: {
     fontSize: 12,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginLeft: 5,
   },
   sliderValueBadge: {
@@ -4685,15 +4966,15 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   sliderValueText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
   },
   roomCardHeader: {
     flexDirection: 'row',
@@ -4703,11 +4984,11 @@ const styles = StyleSheet.create({
   roomCardTitle: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
   },
   roomSummaryText: {
     fontSize: 12,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 4,
   },
   copyFromPill: {
@@ -4715,9 +4996,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     paddingHorizontal: 10,
     paddingVertical: 6,
     gap: 6,
@@ -4725,25 +5006,25 @@ const styles = StyleSheet.create({
   copyFromText: {
     fontSize: 12.5,
     fontWeight: '500',
-    color: '#334155',
+    color: UX4GColors.neutral700,
   },
   copyMenuBox: {
     marginTop: 6,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: UX4GColors.neutral50,
     paddingVertical: 4,
   },
   copyMenuItem: {
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: UX4GColors.neutral100,
   },
   copyMenuItemText: {
     fontSize: 12.5,
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     fontWeight: '500',
   },
   roomTypeWrapGrid: {
@@ -4755,7 +5036,7 @@ const styles = StyleSheet.create({
   },
   indentedSubAreaGroup: {
     borderLeftWidth: 2,
-    borderLeftColor: '#E2E8F0',
+    borderLeftColor: UX4GColors.neutral200,
     paddingLeft: 12,
     marginTop: 2,
     marginBottom: 14,
@@ -4770,15 +5051,15 @@ const styles = StyleSheet.create({
   indentedSubLabel: {
     fontSize: 12.5,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   facilitiesHeading: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   categoryBannerContainer: {
-    backgroundColor: '#F5F3FF',
+    backgroundColor: UX4GColors.primary50,
     borderRadius: 12,
     padding: 14,
     marginTop: 4,
@@ -4786,53 +5067,53 @@ const styles = StyleSheet.create({
   categoryBannerHeading: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
   },
   categoryBannerBody: {
     fontSize: 12.5,
     lineHeight: 18,
-    color: '#334155',
+    color: UX4GColors.neutral700,
     marginTop: 4,
   },
   tierLabel: {
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.6,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
   },
   tierPrice: {
     fontSize: 19,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     marginTop: 4,
   },
   tierSub: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 2,
   },
   tierSpecs: {
     fontSize: 11.5,
     fontWeight: '700',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     lineHeight: 16,
   },
   tierAmenities: {
     fontSize: 11,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 4,
     lineHeight: 15,
   },
   complianceHelperBody: {
     fontSize: 12.5,
     lineHeight: 18,
-    color: '#475569',
+    color: UX4GColors.neutral600,
     marginBottom: 14,
   },
   subGroupHeading: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#334155',
+    color: UX4GColors.neutral700,
   },
   docSlotWrapper: {
     width: '100%',
@@ -4845,25 +5126,25 @@ const styles = StyleSheet.create({
   docSlotTitle: {
     fontSize: 13.5,
     fontWeight: '600',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     flex: 1,
   },
   downloadFormatLink: {
     fontSize: 12.5,
     fontWeight: '600',
-    color: '#4A2BC2',
+    color: UX4GColors.primary,
     textDecorationLine: 'underline',
   },
   docSlotRuleText: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 4,
     marginBottom: 10,
   },
   dashedDropZone: {
     position: 'relative',
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     overflow: 'hidden',
   },
   dropZoneContent: {
@@ -4875,12 +5156,12 @@ const styles = StyleSheet.create({
   dropZoneTitle: {
     fontSize: 14.5,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     marginTop: 8,
   },
   dropZoneSubtitle: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 4,
     textAlign: 'center',
   },
@@ -4893,11 +5174,11 @@ const styles = StyleSheet.create({
   dropZoneOrLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: UX4GColors.neutral200,
   },
   dropZoneOrText: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginHorizontal: 10,
   },
   uploadedFilePill: {
@@ -4909,17 +5190,17 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#F8FAFC',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.neutral50,
   },
   uploadedFileName: {
     fontSize: 12.5,
     fontWeight: '600',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
   },
   uploadedFileSize: {
     fontSize: 11,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
   },
   docStatusDotRow: {
     flexDirection: 'row',
@@ -4936,14 +5217,14 @@ const styles = StyleSheet.create({
   },
   statusCircleEmpty: {
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
   },
   statusCircleDone: {
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: '#15803D',
+    backgroundColor: UX4GColors.green,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -4951,7 +5232,7 @@ const styles = StyleSheet.create({
     marginTop: 26,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#F1F5F9',
+    borderTopColor: UX4GColors.neutral100,
     marginBottom: 8,
   },
 });
