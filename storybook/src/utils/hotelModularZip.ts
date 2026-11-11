@@ -154,7 +154,37 @@ export interface HotelFormData {
   waterSupplySource: string[];
   solidWasteDisposal: string[];
   additionalComplianceNotes: string;
+
+  // Step 6: Documents
+  docSectionsExpanded: DocSectionExpansionState;
+  docFiles: DocFilesState;
 }
+
+export type DocSectionKey = 'premises' | 'clearances' | 'identity_tariff';
+
+export type DocSlotKey =
+  | 'premises_ownership'
+  | 'premises_occupancy'
+  | 'premises_site_plan'
+  | 'clearance_fire'
+  | 'clearance_pollution'
+  | 'clearance_insurance'
+  | 'identity_pan_entity'
+  | 'identity_tariff_card';
+
+export interface UploadedDocFile {
+  id: string;
+  name: string;
+  fileSize: number;
+  status: string;
+  progress: number;
+  errorMessage?: string;
+  uri?: string;
+}
+
+export type DocSectionExpansionState = Record<DocSectionKey, boolean>;
+
+export type DocFilesState = Record<DocSlotKey, UploadedDocFile[]>;
 
 export type HotelFormErrors = Record<string, string | undefined>;
 `;
@@ -181,13 +211,25 @@ function buildIconsFile(appCode: string): string {
   const iconsSlice = sliceBetween(
     appCode,
     'const CrosshairsGpsIcon =',
-    'export default function App()',
+    'const DocumentUploadSlot =',
     'hotelIcons'
   )
     .trim()
     .replace(
       'const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (',
       'export const CrosshairsGpsIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral800 }: IconProps) => ('
+    )
+    .replace(
+      'const CheckSmallIcon = ({ size = 11, color = UX4GColors.white }) => (',
+      'export const CheckSmallIcon: React.FC<IconProps> = ({ size = 11, color = UX4GColors.white }: IconProps) => ('
+    )
+    .replace(
+      'const ChevronUpIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (',
+      'export const ChevronUpIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }: IconProps) => ('
+    )
+    .replace(
+      'const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (',
+      'export const ChevronDownIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }: IconProps) => ('
     );
 
   return `import React from 'react';
@@ -200,6 +242,69 @@ export interface IconProps {
 }
 
 ${iconsSlice}
+`;
+}
+
+function buildDocumentUploadSlotFile(): string {
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import { Ux4gFileUpload, UX4GColors } from 'ux4g-react-native-components';
+import { CheckSmallIcon } from './Icons';
+import { UploadedDocFile } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+type Ux4gUploadFileList = NonNullable<React.ComponentProps<typeof Ux4gFileUpload>['initialFiles']>;
+
+export interface DocumentUploadSlotProps {
+  title: string;
+  required?: boolean;
+  ruleText: string;
+  files: UploadedDocFile[];
+  onFilesChanged: (files: UploadedDocFile[]) => void;
+  maxFiles?: number;
+  maxFileSize?: number;
+  allowedExtensions?: string[];
+  isLast?: boolean;
+}
+
+export const DocumentUploadSlot: React.FC<DocumentUploadSlotProps> = ({
+  title,
+  required = false,
+  ruleText,
+  files,
+  onFilesChanged,
+  maxFiles = 3,
+  maxFileSize = 5 * 1024 * 1024,
+  allowedExtensions = ['pdf', 'jpg', 'png'],
+  isLast = false,
+}) => {
+  const hasFile = files && files.length > 0;
+  return (
+    <View style={[styles.docSlotWrapper, isLast && { marginBottom: 0 }]}>
+      <View style={styles.docSlotHeaderRow}>
+        <View style={[styles.statusCircle, hasFile ? styles.statusCircleDone : styles.statusCircleEmpty]}>
+          {hasFile ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+        </View>
+        <Text style={styles.docSlotTitle}>
+          {title}
+          {required ? <Text style={styles.requiredStar}>*</Text> : null}
+        </Text>
+      </View>
+      <Text style={styles.docSlotRuleText}>{ruleText}</Text>
+      <Ux4gFileUpload
+        maxFiles={maxFiles}
+        maxFileSize={maxFileSize}
+        initialFiles={files as unknown as Ux4gUploadFileList}
+        onFilesChanged={(nextFiles) => onFilesChanged(nextFiles as unknown as UploadedDocFile[])}
+        allowedExtensions={allowedExtensions}
+        borderStyle="dashed"
+        buttonBorderRadius={8}
+        buttonColor={UX4GColors.primary}
+        buttonBorderColor={UX4GColors.purple700}
+      />
+    </View>
+  );
+};
 `;
 }
 
@@ -807,7 +912,7 @@ function buildStep5ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 5 ? (',
-    ') : (',
+    ') : step === 6 ? (',
     'Hotel Step 5'
   );
 
@@ -844,6 +949,47 @@ export const Step5FacilitiesComplianceScreen: React.FC<Step5FacilitiesCompliance
   updateField,
   toggleServiceOffered,
   handleContinueStep5,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep6ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 6 ? (',
+    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    'Hotel Step 6'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Ux4gCard, Ux4gButton, UX4GColors } from 'ux4g-react-native-components';
+import { ChevronUpIcon, ChevronDownIcon, CheckSmallIcon } from '../components/Icons';
+import { DocumentUploadSlot } from '../components/DocumentUploadSlot';
+import {
+  HotelFormData,
+  DocSectionKey,
+  DocSlotKey,
+  UploadedDocFile,
+} from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step6DocumentsScreenProps {
+  formData: HotelFormData;
+  toggleDocSection: (secKey: DocSectionKey) => void;
+  setDocSlotFiles: (slotKey: DocSlotKey, files: UploadedDocFile[]) => void;
+  handleContinueStep6: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step6DocumentsScreen: React.FC<Step6DocumentsScreenProps> = ({
+  formData,
+  toggleDocSection,
+  setDocSlotFiles,
+  handleContinueStep6,
   handleSaveDraft,
 }) => (
 ${jsx}
@@ -987,7 +1133,13 @@ import UnionLogo from './src/assets/UnionLogo';
 import { STEP_METADATA } from './src/constants/formOptions';
 import { createInitialHotelFormData } from './src/constants/initialFormData';
 import { styles } from './src/styles/commonStyles';
-import { HotelFormData, HotelFormErrors } from './src/types/hotel';
+import {
+  HotelFormData,
+  HotelFormErrors,
+  DocSectionKey,
+  DocSlotKey,
+  UploadedDocFile,
+} from './src/types/hotel';
 import {
   getConvertedSqMetres,
   getEligibilityBannerSummary,
@@ -1003,6 +1155,7 @@ import { Step2ApplicantEntityScreen } from './src/screens/Step2ApplicantEntitySc
 import { Step3UnitIdentityLocationScreen } from './src/screens/Step3UnitIdentityLocationScreen';
 import { Step4RoomsAccommodationScreen } from './src/screens/Step4RoomsAccommodationScreen';
 import { Step5FacilitiesComplianceScreen } from './src/screens/Step5FacilitiesComplianceScreen';
+import { Step6DocumentsScreen } from './src/screens/Step6DocumentsScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
@@ -1177,6 +1330,30 @@ export default function App() {
     setStep(6);
   };
 
+  const toggleDocSection = (secKey: DocSectionKey) => {
+    setFormData((prev) => ({
+      ...prev,
+      docSectionsExpanded: {
+        ...prev.docSectionsExpanded,
+        [secKey]: !prev.docSectionsExpanded[secKey],
+      },
+    }));
+  };
+
+  const setDocSlotFiles = (slotKey: DocSlotKey, files: UploadedDocFile[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      docFiles: {
+        ...prev.docFiles,
+        [slotKey]: files,
+      },
+    }));
+  };
+
+  const handleContinueStep6 = () => {
+    setStep(7);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -1188,6 +1365,8 @@ export default function App() {
       handleContinueStep4();
     } else if (step === 5) {
       handleContinueStep5();
+    } else if (step === 6) {
+      handleContinueStep6();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -1332,6 +1511,14 @@ export default function App() {
                 handleContinueStep5={handleContinueStep5}
                 handleSaveDraft={handleSaveDraft}
               />
+            ) : step === 6 ? (
+              <Step6DocumentsScreen
+                formData={formData}
+                toggleDocSection={toggleDocSection}
+                setDocSlotFiles={setDocSlotFiles}
+                handleContinueStep6={handleContinueStep6}
+                handleSaveDraft={handleSaveDraft}
+              />
             ) : (
               <UpcomingStepScreen
                 step={step}
@@ -1444,7 +1631,8 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '    │   ├── NationalEmblem.tsx               # Official Government of India Emblem SVG',
       '    │   └── UnionLogo.tsx                    # Portal Union.svg brand mark SVG',
       '    ├── components/',
-      '    │   └── Icons.tsx                        # Shared vector outline icons (GPS crosshairs, etc.)',
+      '    │   ├── DocumentUploadSlot.tsx         # Reusable document slot wrapper around Ux4gFileUpload',
+      '    │   └── Icons.tsx                        # Shared vector outline icons (GPS crosshairs, check, chevrons)',
       '    ├── constants/',
       '    │   ├── formOptions.ts                   # Categories, LGD location lists, Eligibility options & STEP_METADATA',
       '    │   └── initialFormData.ts               # Initial HotelFormData state factory',
@@ -1460,7 +1648,8 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step3UnitIdentityLocationScreen.tsx # Step 3 of 9: Unit Details, Location, Land & Premises, Contact Details',
       '        ├── Step4RoomsAccommodationScreen.tsx   # Step 4 of 9: Accommodation, Tariff, Public Areas & Facilities',
       '        ├── Step5FacilitiesComplianceScreen.tsx # Step 5 of 9: Services Offered, Compliance & Safety Details',
-      '        └── UpcomingStepScreen.tsx              # Steps 6-9 scaffold synced with stepper & draft state',
+      '        ├── Step6DocumentsScreen.tsx            # Step 6 of 9: Categorised Document Upload Accordions',
+      '        └── UpcomingStepScreen.tsx              # Steps 7-9 scaffold synced with stepper & draft state',
       '```',
       '',
       '## Getting Started',
@@ -1475,6 +1664,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/assets/NationalEmblem.tsx': NATIONAL_EMBLEM_SOURCE,
     'src/assets/UnionLogo.tsx': buildUnionLogoFile(normalizedCode),
     'src/components/Icons.tsx': buildIconsFile(normalizedCode),
+    'src/components/DocumentUploadSlot.tsx': buildDocumentUploadSlotFile(),
     'src/types/hotel.ts': buildTypesFile(),
     'src/constants/formOptions.ts': buildFormOptionsFile(normalizedCode),
     'src/constants/initialFormData.ts': buildInitialFormDataFile(normalizedCode),
@@ -1485,6 +1675,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step3UnitIdentityLocationScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'src/screens/Step4RoomsAccommodationScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'src/screens/Step5FacilitiesComplianceScreen.tsx': buildStep5ScreenFile(normalizedCode),
+    'src/screens/Step6DocumentsScreen.tsx': buildStep6ScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };
