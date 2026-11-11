@@ -9,7 +9,7 @@ interface HotelRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = 'hGvUJH9eoq7F68GciCD9k';
+const SNACK_ID = 'uaHLHWwT-lSQKYvVWXBQk';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -51,6 +51,8 @@ import {
   Ux4gButton,
   Ux4gFileUpload,
   Ux4gDivider,
+  Ux4gModal,
+  Ux4gSpinner,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -255,6 +257,22 @@ const SOLID_WASTE_DISPOSAL_METHODS = [
   { id: 'licensed_agency', label: 'Contracted ULB / licensed waste agency' },
 ];
 
+const PAYMENT_MODES = [
+  { id: 'netbanking', title: 'Net Banking', subtitle: '60+ banks supported' },
+  { id: 'upi', title: 'UPI', subtitle: 'Pay with any UPI app' },
+  { id: 'card', title: 'Debit / Credit Card', subtitle: 'Visa, MasterCard, RuPay' },
+];
+
+const NETBANKING_BANKS = [
+  { id: 'airtel', label: 'Airtel Payments Bank' },
+  { id: 'axis', label: 'Axis Bank' },
+  { id: 'hdfc', label: 'HDFC Bank' },
+  { id: 'icici', label: 'ICICI Bank' },
+  { id: 'kotak', label: 'Kotak Mahindra Bank' },
+  { id: 'sbi', label: 'State Bank of India' },
+  { id: 'bob', label: 'Bank of Baroda' },
+];
+
 const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Circle cx="12" cy="12" r="7" stroke={color} strokeWidth="1.8" />
@@ -318,6 +336,14 @@ const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) => (
       strokeLinecap="round"
       strokeLinejoin="round"
     />
+  </Svg>
+);
+
+const InfoOutlineIcon = ({ size = 16, color = UX4GColors.neutral600 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="12" cy="12" r="9.5" stroke={color} strokeWidth="1.8" />
+    <Path d="M12 11V16" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+    <Circle cx="12" cy="8" r="1" fill={color} />
   </Svg>
 );
 
@@ -518,6 +544,8 @@ const getHotelFeeSummary = (fd) => {
 
 export default function App() {
   const [step, setStep] = useState(8);
+  const [isPaymentModeView, setIsPaymentModeView] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -642,6 +670,15 @@ export default function App() {
 
     // Step 7: Review & declaration
     declarationConfirmed: false,
+
+    // Step 8: Mode of Payment
+    paymentMode: 'upi',
+    upiId: '',
+    selectedBank: [],
+    cardHolderName: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvv: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -651,7 +688,16 @@ export default function App() {
     if (scrollViewRef.current && scrollViewRef.current.scrollTo) {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
     }
-  }, [step]);
+  }, [step, isPaymentModeView]);
+
+  useEffect(() => {
+    if (!isRedirecting) return;
+    const timer = setTimeout(() => {
+      setIsRedirecting(false);
+      setStep(9);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [isRedirecting]);
 
   const handleSaveDraft = () => {
     try {
@@ -1107,11 +1153,44 @@ export default function App() {
       });
       return;
     }
+    setIsPaymentModeView(false);
     setStep(8);
   };
 
   const handleContinueStep8 = () => {
-    setStep(9);
+    setIsPaymentModeView(true);
+  };
+
+  const handlePayNow = () => {
+    const errs = {};
+    if (formData.paymentMode === 'upi') {
+      if (!formData.upiId.trim() || !formData.upiId.includes('@')) {
+        errs.upiId = 'Please enter a valid UPI ID (e.g. name@upi)';
+      }
+    } else if (formData.paymentMode === 'netbanking') {
+      if (!formData.selectedBank || formData.selectedBank.length === 0) {
+        errs.selectedBank = 'Please select your bank';
+      }
+    } else if (formData.paymentMode === 'card') {
+      if (!formData.cardHolderName || !formData.cardHolderName.trim()) {
+        errs.cardHolderName = 'Name on card is required';
+      }
+      const cardDigits = (formData.cardNumber || '').replace(/[^0-9]/g, '');
+      if (cardDigits.length < 12) {
+        errs.cardNumber = 'Please enter a valid card number';
+      }
+      if (!formData.cardExpiry || !formData.cardExpiry.trim()) {
+        errs.cardExpiry = 'Expiry date is required';
+      }
+      if (!formData.cardCvv || formData.cardCvv.trim().length < 3) {
+        errs.cardCvv = 'Security code is required';
+      }
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setIsRedirecting(true);
   };
 
   const handleStepperNext = () => {
@@ -1130,14 +1209,22 @@ export default function App() {
     } else if (step === 7) {
       handleContinueStep7();
     } else if (step === 8) {
-      handleContinueStep8();
+      if (!isPaymentModeView) {
+        handleContinueStep8();
+      } else {
+        handlePayNow();
+      }
     } else if (step < 9) {
       setStep(step + 1);
     }
   };
 
   const handleStepperBack = () => {
-    if (step > 1) setStep(step - 1);
+    if (step === 8 && isPaymentModeView) {
+      setIsPaymentModeView(false);
+    } else if (step > 1) {
+      setStep(step - 1);
+    }
   };
 
   const activeMeta = STEP_METADATA[step] || {
@@ -3227,7 +3314,7 @@ export default function App() {
                   />
                 </View>
               </View>
-            ) : step === 8 ? (
+            ) : step === 8 && !isPaymentModeView ? (
               <View style={styles.formContainer}>
                 <Text style={styles.sectionHeading}>Fee Details</Text>
 
@@ -3274,6 +3361,195 @@ export default function App() {
                     backgroundColor={UX4GColors.primary}
                     borderRadius={8}
                     onPress={handleContinueStep8}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor={UX4GColors.transparent}
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={handleSaveDraft}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
+            ) : step === 8 && isPaymentModeView ? (
+              <View style={styles.formContainer}>
+                <Text style={styles.sectionHeading}>Mode of Payment</Text>
+                <Text style={styles.paymentSubtitleText}>
+                  {feeSummary.formattedAmount + ' payable for HT/2026/HP/0007744.'}
+                </Text>
+
+                {/* Payment Mode Radio Cards */}
+                <View style={{ gap: 10, marginBottom: 22 }}>
+                  {PAYMENT_MODES.map((mode) => {
+                    const isSelected = formData.paymentMode === mode.id;
+                    return (
+                      <Ux4gCard
+                        key={mode.id}
+                        cornerRadius={10}
+                        backgroundColor={isSelected ? UX4GColors.primary50 : UX4GColors.neutral50}
+                        borderColor={isSelected ? UX4GColors.primary200 : UX4GColors.neutral200}
+                        borderWidth={1}
+                        elevation={0}
+                        isClickable={true}
+                        onPress={() => updateField('paymentMode', mode.id)}
+                        style={{ paddingVertical: 14, paddingHorizontal: 14 }}
+                      >
+                        <View style={styles.paymentModeRow}>
+                          <Ux4gRadioButton
+                            value={mode.id}
+                            groupValue={formData.paymentMode}
+                            onChanged={(val) => updateField('paymentMode', val)}
+                            size="medium"
+                            color={UX4GColors.primary}
+                          />
+                          <View style={{ marginLeft: 10, flex: 1 }}>
+                            <Text
+                              style={[
+                                styles.paymentModeTitle,
+                                isSelected && { color: UX4GColors.primary },
+                              ]}
+                            >
+                              {mode.title}
+                            </Text>
+                            <Text
+                              style={[
+                                styles.paymentModeDesc,
+                                isSelected && { color: UX4GColors.primary },
+                              ]}
+                            >
+                              {mode.subtitle}
+                            </Text>
+                          </View>
+                        </View>
+                      </Ux4gCard>
+                    );
+                  })}
+                </View>
+
+                {/* Conditional Payment Input Fields */}
+                {formData.paymentMode === 'upi' ? (
+                  <View>
+                    <Text style={styles.sectionHeading}>Enter Your UPI ID</Text>
+                    <View style={{ marginBottom: 8 }}>
+                      <Ux4gInputField
+                        label="UPI ID"
+                        required
+                        size="large"
+                        value={formData.upiId}
+                        onValueChange={(v) => updateField('upiId', v)}
+                        placeholder="e.g. name@upi"
+                        status={errors.upiId ? 'error' : 'defaultStatus'}
+                        caption={errors.upiId}
+                      />
+                    </View>
+                    <View style={styles.paymentInfoRow}>
+                      <View style={{ marginTop: 1 }}>
+                        <InfoOutlineIcon size={16} color={UX4GColors.neutral600} />
+                      </View>
+                      <Text style={styles.paymentInfoText}>
+                        {'You will get a request in your UPI app to approve ' +
+                          feeSummary.formattedAmount +
+                          '.'}
+                      </Text>
+                    </View>
+                  </View>
+                ) : formData.paymentMode === 'netbanking' ? (
+                  <View>
+                    <Text style={styles.sectionHeading}>Choose Your Bank</Text>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gSelectionDropdown
+                        label="Bank"
+                        required
+                        size="l"
+                        options={NETBANKING_BANKS}
+                        selectedOptionIds={formData.selectedBank}
+                        onSelectionChange={(ids) => updateField('selectedBank', ids)}
+                        placeholder="Select your bank"
+                        status={errors.selectedBank ? 'error' : 'defaultStatus'}
+                        description={errors.selectedBank}
+                      />
+                    </View>
+                  </View>
+                ) : (
+                  <View>
+                    <Text style={styles.sectionHeading}>Enter Card Details</Text>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Name on card"
+                        required
+                        size="large"
+                        value={formData.cardHolderName}
+                        onValueChange={(v) => updateField('cardHolderName', v)}
+                        placeholder="As printed on the card"
+                        status={errors.cardHolderName ? 'error' : 'defaultStatus'}
+                        caption={errors.cardHolderName}
+                      />
+                    </View>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Card number"
+                        required
+                        size="large"
+                        type="number"
+                        maxLength={19}
+                        value={formData.cardNumber}
+                        onValueChange={(v) => updateField('cardNumber', v)}
+                        placeholder="XXXX - XXXX - XXXX - XXXX"
+                        status={errors.cardNumber ? 'error' : 'defaultStatus'}
+                        caption={errors.cardNumber}
+                      />
+                    </View>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Expiry date"
+                        required
+                        size="large"
+                        value={formData.cardExpiry}
+                        onValueChange={(v) => updateField('cardExpiry', v)}
+                        placeholder="MM/YY"
+                        maxLength={5}
+                        status={errors.cardExpiry ? 'error' : 'defaultStatus'}
+                        caption={errors.cardExpiry}
+                      />
+                    </View>
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Security code"
+                        required
+                        size="large"
+                        type="number"
+                        secureTextEntry={true}
+                        value={formData.cardCvv}
+                        onValueChange={(v) => updateField('cardCvv', v)}
+                        placeholder="XXX"
+                        maxLength={4}
+                        status={errors.cardCvv ? 'error' : 'defaultStatus'}
+                        caption={errors.cardCvv}
+                      />
+                    </View>
+                  </View>
+                )}
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text={
+                      formData.paymentMode === 'netbanking'
+                        ? 'Continue to bank'
+                        : 'Pay ' + feeSummary.formattedAmount
+                    }
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    borderRadius={8}
+                    onPress={handlePayNow}
                     style={{ width: '100%' }}
                   />
                   <View style={{ height: 10 }} />
@@ -3373,6 +3649,37 @@ export default function App() {
             )}
           </View>
         </ScrollView>
+
+        {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
+        <Ux4gModal
+          visible={step === 8 && isPaymentModeView && isRedirecting}
+          onDismiss={() => setIsRedirecting(false)}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={44}
+              strokeWidth={4}
+              color={UX4GColors.primary}
+              gradientColors={[
+                UX4GColors.primary100,
+                UX4GColors.primary300,
+                UX4GColors.primary,
+              ]}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={12}
+          backgroundColor={UX4GColors.white}
+        />
       </SafeAreaView>
     </Ux4gThemeProvider>
   );
@@ -3610,6 +3917,38 @@ const styles = StyleSheet.create({
     fontSize: 15.5,
     fontWeight: '700',
     color: UX4GColors.neutral900,
+  },
+  paymentSubtitleText: {
+    fontSize: 12.5,
+    color: UX4GColors.neutral600,
+    marginBottom: 14,
+  },
+  paymentModeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paymentModeTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  paymentModeDesc: {
+    fontSize: 12.5,
+    color: UX4GColors.neutral600,
+    marginTop: 2,
+  },
+  paymentInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    marginTop: 2,
+    marginBottom: 4,
+  },
+  paymentInfoText: {
+    flex: 1,
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: UX4GColors.neutral600,
   },
   actionButtonContainer: {
     marginTop: 22,

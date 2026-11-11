@@ -161,6 +161,15 @@ export interface HotelFormData {
 
   // Step 7: Review & declaration
   declarationConfirmed: boolean;
+
+  // Step 8: Mode of Payment
+  paymentMode: string;
+  upiId: string;
+  selectedBank: string[];
+  cardHolderName: string;
+  cardNumber: string;
+  cardExpiry: string;
+  cardCvv: string;
 }
 
 export interface HotelReviewItem {
@@ -251,6 +260,10 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) => (',
       'export const PencilOutlineIcon: React.FC<IconProps> = ({ size = 17, color = UX4GColors.neutral800 }: IconProps) => ('
+    )
+    .replace(
+      'const InfoOutlineIcon = ({ size = 16, color = UX4GColors.neutral600 }) => (',
+      'export const InfoOutlineIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral600 }: IconProps) => ('
     );
 
   return `import React from 'react';
@@ -872,6 +885,34 @@ export function getHotelFeeSummary(fd: HotelFormData): HotelFeeSummary {
     lineDescription: 'Registration fee — hotel, ' + slabLabel + ' (yours: ' + roomsCount + ')',
   };
 }
+
+export function validateHotelPayment(formData: HotelFormData): HotelFormErrors {
+  const errs: HotelFormErrors = {};
+  if (formData.paymentMode === 'upi') {
+    if (!formData.upiId.trim() || !formData.upiId.includes('@')) {
+      errs.upiId = 'Please enter a valid UPI ID (e.g. name@upi)';
+    }
+  } else if (formData.paymentMode === 'netbanking') {
+    if (!formData.selectedBank || formData.selectedBank.length === 0) {
+      errs.selectedBank = 'Please select your bank';
+    }
+  } else if (formData.paymentMode === 'card') {
+    if (!formData.cardHolderName || !formData.cardHolderName.trim()) {
+      errs.cardHolderName = 'Name on card is required';
+    }
+    const cardDigits = (formData.cardNumber || '').replace(/[^0-9]/g, '');
+    if (cardDigits.length < 12) {
+      errs.cardNumber = 'Please enter a valid card number';
+    }
+    if (!formData.cardExpiry || !formData.cardExpiry.trim()) {
+      errs.cardExpiry = 'Expiry date is required';
+    }
+    if (!formData.cardCvv || formData.cardCvv.trim().length < 3) {
+      errs.cardCvv = 'Security code is required';
+    }
+  }
+  return errs;
+}
 `;
 }
 
@@ -1201,7 +1242,7 @@ function buildStep7ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 7 ? (',
-    ') : step === 8 ? (',
+    ') : step === 8 && !isPaymentModeView ? (',
     'Hotel Step 7'
   );
 
@@ -1244,9 +1285,9 @@ ${jsx}
 function buildStep8ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
-    ') : step === 8 ? (',
-    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
-    'Hotel Step 8'
+    ') : step === 8 && !isPaymentModeView ? (',
+    ') : step === 8 && isPaymentModeView ? (',
+    'Hotel Step 8 Fee Details'
   );
 
   return `import React from 'react';
@@ -1264,6 +1305,51 @@ export interface Step8FeePaymentScreenProps {
 export const Step8FeePaymentScreen: React.FC<Step8FeePaymentScreenProps> = ({
   feeSummary,
   handleContinueStep8,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep8ModeOfPaymentScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 8 && isPaymentModeView ? (',
+    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    'Hotel Step 8 Mode of Payment'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import {
+  Ux4gCard,
+  Ux4gRadioButton,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
+  Ux4gButton,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { InfoOutlineIcon } from '../components/Icons';
+import { PAYMENT_MODES, NETBANKING_BANKS } from '../constants/formOptions';
+import { HotelFormData, HotelFormErrors, HotelFeeSummary } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step8ModeOfPaymentScreenProps {
+  formData: HotelFormData;
+  errors: HotelFormErrors;
+  feeSummary: HotelFeeSummary;
+  updateField: <K extends keyof HotelFormData>(key: K, value: HotelFormData[K]) => void;
+  handlePayNow: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step8ModeOfPaymentScreen: React.FC<Step8ModeOfPaymentScreenProps> = ({
+  formData,
+  errors,
+  feeSummary,
+  updateField,
+  handlePayNow,
   handleSaveDraft,
 }) => (
 ${jsx}
@@ -1398,6 +1484,8 @@ import Svg, { Path, Circle } from 'react-native-svg';
 import {
   Ux4gStatusBanner,
   Ux4gCompactStepper,
+  Ux4gModal,
+  Ux4gSpinner,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -1428,6 +1516,7 @@ import {
   validateHotelStep4,
   validateHotelStep5,
   validateHotelStep7,
+  validateHotelPayment,
 } from './src/utils/validators';
 import { Step1BeforeYouStartScreen } from './src/screens/Step1BeforeYouStartScreen';
 import { Step2ApplicantEntityScreen } from './src/screens/Step2ApplicantEntityScreen';
@@ -1437,10 +1526,13 @@ import { Step5FacilitiesComplianceScreen } from './src/screens/Step5FacilitiesCo
 import { Step6DocumentsScreen } from './src/screens/Step6DocumentsScreen';
 import { Step7ReviewDeclarationScreen } from './src/screens/Step7ReviewDeclarationScreen';
 import { Step8FeePaymentScreen } from './src/screens/Step8FeePaymentScreen';
+import { Step8ModeOfPaymentScreen } from './src/screens/Step8ModeOfPaymentScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
   const [step, setStep] = useState<number>(1);
+  const [isPaymentModeView, setIsPaymentModeView] = useState<boolean>(false);
+  const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -1452,7 +1544,16 @@ export default function App() {
     if (scrollViewRef.current && scrollViewRef.current.scrollTo) {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
     }
-  }, [step]);
+  }, [step, isPaymentModeView]);
+
+  useEffect(() => {
+    if (!isRedirecting) return;
+    const timer = setTimeout(() => {
+      setIsRedirecting(false);
+      setStep(9);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [isRedirecting]);
 
   const handleSaveDraft = () => {
     try {
@@ -1644,11 +1745,21 @@ export default function App() {
       setErrors(errs);
       return;
     }
+    setIsPaymentModeView(false);
     setStep(8);
   };
 
   const handleContinueStep8 = () => {
-    setStep(9);
+    setIsPaymentModeView(true);
+  };
+
+  const handlePayNow = () => {
+    const errs = validateHotelPayment(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setIsRedirecting(true);
   };
 
   const handleStepperNext = () => {
@@ -1667,14 +1778,22 @@ export default function App() {
     } else if (step === 7) {
       handleContinueStep7();
     } else if (step === 8) {
-      handleContinueStep8();
+      if (!isPaymentModeView) {
+        handleContinueStep8();
+      } else {
+        handlePayNow();
+      }
     } else if (step < 9) {
       setStep(step + 1);
     }
   };
 
   const handleStepperBack = () => {
-    if (step > 1) setStep(step - 1);
+    if (step === 8 && isPaymentModeView) {
+      setIsPaymentModeView(false);
+    } else if (step > 1) {
+      setStep(step - 1);
+    }
   };
 
   const activeMeta = STEP_METADATA[step] || {
@@ -1830,10 +1949,19 @@ export default function App() {
                 handleContinueStep7={handleContinueStep7}
                 handleSaveDraft={handleSaveDraft}
               />
-            ) : step === 8 ? (
+            ) : step === 8 && !isPaymentModeView ? (
               <Step8FeePaymentScreen
                 feeSummary={feeSummary}
                 handleContinueStep8={handleContinueStep8}
+                handleSaveDraft={handleSaveDraft}
+              />
+            ) : step === 8 && isPaymentModeView ? (
+              <Step8ModeOfPaymentScreen
+                formData={formData}
+                errors={errors}
+                feeSummary={feeSummary}
+                updateField={updateField}
+                handlePayNow={handlePayNow}
                 handleSaveDraft={handleSaveDraft}
               />
             ) : (
@@ -1848,6 +1976,37 @@ export default function App() {
             )}
           </View>
         </ScrollView>
+
+        {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
+        <Ux4gModal
+          visible={step === 8 && isPaymentModeView && isRedirecting}
+          onDismiss={() => setIsRedirecting(false)}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={44}
+              strokeWidth={4}
+              color={UX4GColors.primary}
+              gradientColors={[
+                UX4GColors.primary100,
+                UX4GColors.primary300,
+                UX4GColors.primary,
+              ]}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={12}
+          backgroundColor={UX4GColors.white}
+        />
       </SafeAreaView>
     </Ux4gThemeProvider>
   );
@@ -1967,7 +2126,8 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step5FacilitiesComplianceScreen.tsx # Step 5 of 9: Services Offered, Compliance & Safety Details',
       '        ├── Step6DocumentsScreen.tsx            # Step 6 of 9: Categorised Document Upload Accordions',
       '        ├── Step7ReviewDeclarationScreen.tsx    # Step 7 of 9: Editable Review Summary & Declaration',
-      '        ├── Step8FeePaymentScreen.tsx           # Step 8 of 9: Registration Fee Summary & Payment',
+      '        ├── Step8FeePaymentScreen.tsx           # Step 8 of 9: Registration Fee Summary',
+      '        ├── Step8ModeOfPaymentScreen.tsx        # Step 8 of 9: Mode of Payment (UPI / Bank / Card)',
       '        └── UpcomingStepScreen.tsx              # Step 9 scaffold synced with stepper & draft state',
       '```',
       '',
@@ -1997,6 +2157,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step6DocumentsScreen.tsx': buildStep6ScreenFile(normalizedCode),
     'src/screens/Step7ReviewDeclarationScreen.tsx': buildStep7ScreenFile(normalizedCode),
     'src/screens/Step8FeePaymentScreen.tsx': buildStep8ScreenFile(normalizedCode),
+    'src/screens/Step8ModeOfPaymentScreen.tsx': buildStep8ModeOfPaymentScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };
