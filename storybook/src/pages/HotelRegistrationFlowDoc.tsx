@@ -9,7 +9,7 @@ interface HotelRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = 'yrF_Yu2ErMzU1507EQCuC';
+const SNACK_ID = 'BgSdbJ-I--jX6PXbnVHxp';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -40,6 +40,7 @@ import {
   Ux4gRadioButton,
   Ux4gSelectionDropdown,
   Ux4gInputField,
+  Ux4gTextArea,
   Ux4gDatePicker,
   Ux4gPanInputField,
   Ux4gAadhaarInputField,
@@ -77,8 +78,8 @@ const STEP_METADATA = {
     subtitle: 'What the unit is, where it stands, and how much land it sits on.',
   },
   4: {
-    title: 'Rooms & Tariff',
-    subtitle: 'Total guest rooms, suite classifications, and nightly rates.',
+    title: 'Rooms & accommodation',
+    subtitle: 'What the unit can actually accommodate, and what it charges.',
   },
   5: {
     title: 'Facilities & Services',
@@ -215,6 +216,21 @@ const LAND_AREA_UNITS = [
   { id: 'nali', label: 'Nali' },
 ];
 
+const TARIFF_INCLUDES_OPTIONS = [
+  { id: 'room_only', label: 'Room only' },
+  { id: 'room_breakfast', label: 'Room & breakfast' },
+  { id: 'half_board', label: 'Half board (Breakfast & dinner)' },
+  { id: 'full_board', label: 'Full board (All meals)' },
+  { id: 'taxes_included', label: 'All meals, Wi-Fi & parking' },
+];
+
+const FACILITIES_AVAILABLE_OPTIONS = [
+  { id: 'lift', label: 'Lift' },
+  { id: 'power_backup', label: 'Power backup' },
+  { id: 'wifi', label: 'Wi-Fi throughout' },
+  { id: 'accessible', label: 'Step-free access and an accessible room' },
+];
+
 const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Circle cx="12" cy="12" r="7" stroke={color} strokeWidth="1.8" />
@@ -227,7 +243,7 @@ const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
 );
 
 export default function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -297,6 +313,21 @@ export default function App() {
     unitTelephone: '',
     unitFax: '',
     unitEmail: '',
+
+    // Step 4: Rooms & accommodation
+    singleBedRooms: '',
+    doubleBedRooms: '',
+    familySuites: '',
+    dormitoryBeds: '',
+    lowestTariff: '',
+    highestTariff: '',
+    tariffIncludes: [],
+    receptionLoungeArea: '',
+    diningHallArea: '',
+    parkingSpaces: '',
+    conferenceHallCapacity: '',
+    facilitiesAvailable: [],
+    otherAccommodationFacilities: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -619,6 +650,69 @@ export default function App() {
     setStep(4);
   };
 
+  const getTotalRoomsDisplay = () => {
+    const hasAnyInput =
+      formData.singleBedRooms.trim() !== '' ||
+      formData.doubleBedRooms.trim() !== '' ||
+      formData.familySuites.trim() !== '';
+    if (!hasAnyInput) {
+      return '24';
+    }
+    const s = parseInt(formData.singleBedRooms, 10) || 0;
+    const d = parseInt(formData.doubleBedRooms, 10) || 0;
+    const f = parseInt(formData.familySuites, 10) || 0;
+    return String(s + d + f);
+  };
+
+  const totalRoomsDisplay = getTotalRoomsDisplay();
+
+  const toggleFacilityAvailable = (id) => {
+    setFormData((prev) => {
+      const exists = prev.facilitiesAvailable.includes(id);
+      return {
+        ...prev,
+        facilitiesAvailable: exists
+          ? prev.facilitiesAvailable.filter((x) => x !== id)
+          : [...prev.facilitiesAvailable, id],
+      };
+    });
+  };
+
+  const handleContinueStep4 = () => {
+    const errs = {};
+    if (formData.singleBedRooms.trim() === '' || isNaN(parseInt(formData.singleBedRooms, 10))) {
+      errs.singleBedRooms = 'Enter number of single-bed rooms (0 if none)';
+    }
+    if (formData.doubleBedRooms.trim() === '' || isNaN(parseInt(formData.doubleBedRooms, 10))) {
+      errs.doubleBedRooms = 'Enter number of double-bed rooms (0 if none)';
+    }
+    if (formData.familySuites.trim() === '' || isNaN(parseInt(formData.familySuites, 10))) {
+      errs.familySuites = 'Enter number of family suites (0 if none)';
+    }
+    const low = parseInt(formData.lowestTariff, 10);
+    const high = parseInt(formData.highestTariff, 10);
+    if (!formData.lowestTariff.trim() || isNaN(low) || low <= 0) {
+      errs.lowestTariff = 'Enter valid lowest tariff per night';
+    }
+    if (!formData.highestTariff.trim() || isNaN(high) || high <= 0) {
+      errs.highestTariff = 'Enter valid highest tariff per night';
+    } else if (!isNaN(low) && high < low) {
+      errs.highestTariff = 'Highest tariff cannot be less than lowest tariff';
+    }
+    if (!formData.receptionLoungeArea.trim() || parseFloat(formData.receptionLoungeArea) <= 0) {
+      errs.receptionLoungeArea = 'Enter reception and lounge area in Sq. m.';
+    }
+    if (formData.parkingSpaces.trim() === '' || isNaN(parseInt(formData.parkingSpaces, 10))) {
+      errs.parkingSpaces = 'Enter number of parking spaces (0 if none)';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(5);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -626,6 +720,8 @@ export default function App() {
       handleContinueStep2();
     } else if (step === 3) {
       handleContinueStep3();
+    } else if (step === 4) {
+      handleContinueStep4();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -1810,6 +1906,222 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 4 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Accommodation Details */}
+                <Text style={styles.sectionHeading}>Accommodation Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Number of single-bed rooms"
+                    required
+                    size="large"
+                    value={formData.singleBedRooms}
+                    onValueChange={(v) => updateField('singleBedRooms', v)}
+                    placeholder="0"
+                    type="number"
+                    status={errors.singleBedRooms ? 'error' : 'defaultStatus'}
+                    caption={errors.singleBedRooms}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Number of double-bed rooms"
+                    required
+                    size="large"
+                    value={formData.doubleBedRooms}
+                    onValueChange={(v) => updateField('doubleBedRooms', v)}
+                    placeholder="0"
+                    type="number"
+                    status={errors.doubleBedRooms ? 'error' : 'defaultStatus'}
+                    caption={errors.doubleBedRooms}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Number of family suites (4 beds)"
+                    required
+                    size="large"
+                    value={formData.familySuites}
+                    onValueChange={(v) => updateField('familySuites', v)}
+                    placeholder="0"
+                    type="number"
+                    status={errors.familySuites ? 'error' : 'defaultStatus'}
+                    caption={errors.familySuites}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Number of dormitory beds"
+                    size="large"
+                    value={formData.dormitoryBeds}
+                    onValueChange={(v) => updateField('dormitoryBeds', v)}
+                    placeholder="0"
+                    type="number"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.fieldGroupLabel}>Total number of rooms</Text>
+                  <View style={styles.computedGreyBox}>
+                    <Text style={styles.computedGreyText}>{totalRoomsDisplay}</Text>
+                  </View>
+                </View>
+
+                {/* 2. Tariff Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>Tariff Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Lowest tariff per night"
+                    required
+                    size="large"
+                    prefixText="₹"
+                    value={formData.lowestTariff}
+                    onValueChange={(v) => updateField('lowestTariff', v)}
+                    placeholder="Digits only"
+                    type="number"
+                    status={errors.lowestTariff ? 'error' : 'defaultStatus'}
+                    caption={errors.lowestTariff}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Highest tariff per night"
+                    required
+                    size="large"
+                    prefixText="₹"
+                    value={formData.highestTariff}
+                    onValueChange={(v) => updateField('highestTariff', v)}
+                    placeholder="Digits only"
+                    type="number"
+                    status={errors.highestTariff ? 'error' : 'defaultStatus'}
+                    caption={errors.highestTariff}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Tariff includes"
+                    size="l"
+                    options={TARIFF_INCLUDES_OPTIONS}
+                    selectedOptionIds={formData.tariffIncludes}
+                    onSelectionChange={(ids) => updateField('tariffIncludes', ids)}
+                    placeholder="Select what the tariff includes"
+                  />
+                </View>
+
+                {/* 3. Public Areas and Facilities */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>
+                  Public Areas and Facilities
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Reception and lounge — area (Sq. m.)"
+                    required
+                    size="large"
+                    value={formData.receptionLoungeArea}
+                    onValueChange={(v) => updateField('receptionLoungeArea', v)}
+                    placeholder="Numbers only"
+                    type="number"
+                    status={errors.receptionLoungeArea ? 'error' : 'defaultStatus'}
+                    caption={errors.receptionLoungeArea}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Dining hall — area (Sq. m.)"
+                    size="large"
+                    value={formData.diningHallArea}
+                    onValueChange={(v) => updateField('diningHallArea', v)}
+                    placeholder="Numbers only"
+                    type="number"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Parking spaces"
+                    required
+                    size="large"
+                    value={formData.parkingSpaces}
+                    onValueChange={(v) => updateField('parkingSpaces', v)}
+                    placeholder="Number of four-wheeler spaces"
+                    type="number"
+                    status={errors.parkingSpaces ? 'error' : 'defaultStatus'}
+                    caption={errors.parkingSpaces}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Conference or banquet hall — capacity"
+                    size="large"
+                    value={formData.conferenceHallCapacity}
+                    onValueChange={(v) => updateField('conferenceHallCapacity', v)}
+                    placeholder="Number of persons"
+                    type="number"
+                  />
+                </View>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>Facilities available</Text>
+                  <View style={styles.checkboxStack}>
+                    {FACILITIES_AVAILABLE_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={formData.facilitiesAvailable.includes(opt.id)}
+                        onChanged={() => toggleFacilityAvailable(opt.id)}
+                        label={opt.label}
+                        size="small"
+                        activeColor={UX4GColors.primary}
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gTextArea
+                    label="Any other accommodation or facilities"
+                    value={formData.otherAccommodationFacilities}
+                    onValueChange={(v) => updateField('otherAccommodationFacilities', v)}
+                    placeholder="Solar water heating, rainwater harvesting, composting — anything you would want a guest to know"
+                    maxLength={200}
+                  />
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    borderRadius={8}
+                    onPress={handleContinueStep4}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor={UX4GColors.transparent}
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={handleSaveDraft}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -2115,7 +2427,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 9 Steps (Steps 1–3 Active)
+                Service Pattern • 9 Steps (Steps 1–4 Active)
               </span>
             </div>
             <p

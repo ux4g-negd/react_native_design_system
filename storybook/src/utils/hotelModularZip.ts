@@ -127,6 +127,21 @@ export interface HotelFormData {
   unitTelephone: string;
   unitFax: string;
   unitEmail: string;
+
+  // Step 4: Rooms & accommodation
+  singleBedRooms: string;
+  doubleBedRooms: string;
+  familySuites: string;
+  dormitoryBeds: string;
+  lowestTariff: string;
+  highestTariff: string;
+  tariffIncludes: string[];
+  receptionLoungeArea: string;
+  diningHallArea: string;
+  parkingSpaces: string;
+  conferenceHallCapacity: string;
+  facilitiesAvailable: string[];
+  otherAccommodationFacilities: string;
 }
 
 export type HotelFormErrors = Record<string, string | undefined>;
@@ -202,7 +217,9 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const DESIGNATION_OPTIONS =', 'export const DESIGNATION_OPTIONS: DropdownOption[] =')
     .replace('export const RELATIONSHIP_OPTIONS =', 'export const RELATIONSHIP_OPTIONS: DropdownOption[] =')
     .replace('export const HOTEL_CLASS_OPTIONS =', 'export const HOTEL_CLASS_OPTIONS: DropdownOption[] =')
-    .replace('export const LAND_AREA_UNITS =', 'export const LAND_AREA_UNITS: DropdownOption[] =');
+    .replace('export const LAND_AREA_UNITS =', 'export const LAND_AREA_UNITS: DropdownOption[] =')
+    .replace('export const TARIFF_INCLUDES_OPTIONS =', 'export const TARIFF_INCLUDES_OPTIONS: DropdownOption[] =')
+    .replace('export const FACILITIES_AVAILABLE_OPTIONS =', 'export const FACILITIES_AVAILABLE_OPTIONS: DropdownOption[] =');
 
   return `import { DropdownOption, EligibilityOption, StepMeta } from '../types/hotel';
 
@@ -462,6 +479,50 @@ export function validateHotelStep3(formData: HotelFormData): HotelFormErrors {
   }
   return errs;
 }
+
+export function getTotalRoomsDisplay(formData: HotelFormData): string {
+  const hasAnyInput =
+    formData.singleBedRooms.trim() !== '' ||
+    formData.doubleBedRooms.trim() !== '' ||
+    formData.familySuites.trim() !== '';
+  if (!hasAnyInput) {
+    return '24';
+  }
+  const s = parseInt(formData.singleBedRooms, 10) || 0;
+  const d = parseInt(formData.doubleBedRooms, 10) || 0;
+  const f = parseInt(formData.familySuites, 10) || 0;
+  return String(s + d + f);
+}
+
+export function validateHotelStep4(formData: HotelFormData): HotelFormErrors {
+  const errs: HotelFormErrors = {};
+  if (formData.singleBedRooms.trim() === '' || isNaN(parseInt(formData.singleBedRooms, 10))) {
+    errs.singleBedRooms = 'Enter number of single-bed rooms (0 if none)';
+  }
+  if (formData.doubleBedRooms.trim() === '' || isNaN(parseInt(formData.doubleBedRooms, 10))) {
+    errs.doubleBedRooms = 'Enter number of double-bed rooms (0 if none)';
+  }
+  if (formData.familySuites.trim() === '' || isNaN(parseInt(formData.familySuites, 10))) {
+    errs.familySuites = 'Enter number of family suites (0 if none)';
+  }
+  const low = parseInt(formData.lowestTariff, 10);
+  const high = parseInt(formData.highestTariff, 10);
+  if (!formData.lowestTariff.trim() || isNaN(low) || low <= 0) {
+    errs.lowestTariff = 'Enter valid lowest tariff per night';
+  }
+  if (!formData.highestTariff.trim() || isNaN(high) || high <= 0) {
+    errs.highestTariff = 'Enter valid highest tariff per night';
+  } else if (!isNaN(low) && high < low) {
+    errs.highestTariff = 'Highest tariff cannot be less than lowest tariff';
+  }
+  if (!formData.receptionLoungeArea.trim() || parseFloat(formData.receptionLoungeArea) <= 0) {
+    errs.receptionLoungeArea = 'Enter reception and lounge area in Sq. m.';
+  }
+  if (formData.parkingSpaces.trim() === '' || isNaN(parseInt(formData.parkingSpaces, 10))) {
+    errs.parkingSpaces = 'Enter number of parking spaces (0 if none)';
+  }
+  return errs;
+}
 `;
 }
 
@@ -591,7 +652,7 @@ function buildStep3ScreenFile(appCode: string): string {
   let jsx = extractScreenJsx(
     appCode,
     ') : step === 3 ? (',
-    ') : (',
+    ') : step === 4 ? (',
     'Hotel Step 3'
   );
 
@@ -642,6 +703,55 @@ export const Step3UnitIdentityLocationScreen: React.FC<Step3UnitIdentityLocation
   updateField,
   handleUseCurrentLocation,
   handleContinueStep3,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep4ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 4 ? (',
+    ') : (',
+    'Hotel Step 4'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import {
+  Ux4gSelectionDropdown,
+  Ux4gInputField,
+  Ux4gTextArea,
+  Ux4gCheckbox,
+  Ux4gButton,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import {
+  TARIFF_INCLUDES_OPTIONS,
+  FACILITIES_AVAILABLE_OPTIONS,
+} from '../constants/formOptions';
+import { HotelFormData, HotelFormErrors } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step4RoomsAccommodationScreenProps {
+  formData: HotelFormData;
+  errors: HotelFormErrors;
+  totalRoomsDisplay: string;
+  updateField: <K extends keyof HotelFormData>(key: K, value: HotelFormData[K]) => void;
+  toggleFacilityAvailable: (id: string) => void;
+  handleContinueStep4: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step4RoomsAccommodationScreen: React.FC<Step4RoomsAccommodationScreenProps> = ({
+  formData,
+  errors,
+  totalRoomsDisplay,
+  updateField,
+  toggleFacilityAvailable,
+  handleContinueStep4,
   handleSaveDraft,
 }) => (
 ${jsx}
@@ -789,13 +899,16 @@ import { HotelFormData, HotelFormErrors } from './src/types/hotel';
 import {
   getConvertedSqMetres,
   getEligibilityBannerSummary,
+  getTotalRoomsDisplay,
   validateHotelStep1,
   validateHotelStep2,
   validateHotelStep3,
+  validateHotelStep4,
 } from './src/utils/validators';
 import { Step1BeforeYouStartScreen } from './src/screens/Step1BeforeYouStartScreen';
 import { Step2ApplicantEntityScreen } from './src/screens/Step2ApplicantEntityScreen';
 import { Step3UnitIdentityLocationScreen } from './src/screens/Step3UnitIdentityLocationScreen';
+import { Step4RoomsAccommodationScreen } from './src/screens/Step4RoomsAccommodationScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
@@ -926,6 +1039,29 @@ export default function App() {
     setStep(4);
   };
 
+  const totalRoomsDisplay = getTotalRoomsDisplay(formData);
+
+  const toggleFacilityAvailable = (id: string) => {
+    setFormData((prev) => {
+      const exists = prev.facilitiesAvailable.includes(id);
+      return {
+        ...prev,
+        facilitiesAvailable: exists
+          ? prev.facilitiesAvailable.filter((x) => x !== id)
+          : [...prev.facilitiesAvailable, id],
+      };
+    });
+  };
+
+  const handleContinueStep4 = () => {
+    const errs = validateHotelStep4(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(5);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -933,6 +1069,8 @@ export default function App() {
       handleContinueStep2();
     } else if (step === 3) {
       handleContinueStep3();
+    } else if (step === 4) {
+      handleContinueStep4();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -1056,6 +1194,16 @@ export default function App() {
                 updateField={updateField}
                 handleUseCurrentLocation={handleUseCurrentLocation}
                 handleContinueStep3={handleContinueStep3}
+                handleSaveDraft={handleSaveDraft}
+              />
+            ) : step === 4 ? (
+              <Step4RoomsAccommodationScreen
+                formData={formData}
+                errors={errors}
+                totalRoomsDisplay={totalRoomsDisplay}
+                updateField={updateField}
+                toggleFacilityAvailable={toggleFacilityAvailable}
+                handleContinueStep4={handleContinueStep4}
                 handleSaveDraft={handleSaveDraft}
               />
             ) : (
@@ -1184,7 +1332,8 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step1BeforeYouStartScreen.tsx       # Step 1 of 9: Service Required, Existing Reg, Location, Eligibility',
       '        ├── Step2ApplicantEntityScreen.tsx      # Step 2 of 9: Applicant & Entity, Identity, Contact, Address, Authorised Person',
       '        ├── Step3UnitIdentityLocationScreen.tsx # Step 3 of 9: Unit Details, Location, Land & Premises, Contact Details',
-      '        └── UpcomingStepScreen.tsx              # Steps 4-9 scaffold synced with stepper & draft state',
+      '        ├── Step4RoomsAccommodationScreen.tsx   # Step 4 of 9: Accommodation, Tariff, Public Areas & Facilities',
+      '        └── UpcomingStepScreen.tsx              # Steps 5-9 scaffold synced with stepper & draft state',
       '```',
       '',
       '## Getting Started',
@@ -1207,6 +1356,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step1BeforeYouStartScreen.tsx': buildStep1ScreenFile(normalizedCode),
     'src/screens/Step2ApplicantEntityScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'src/screens/Step3UnitIdentityLocationScreen.tsx': buildStep3ScreenFile(normalizedCode),
+    'src/screens/Step4RoomsAccommodationScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };
