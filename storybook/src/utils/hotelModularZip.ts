@@ -158,6 +158,15 @@ export interface HotelFormData {
   // Step 6: Documents
   docSectionsExpanded: DocSectionExpansionState;
   docFiles: DocFilesState;
+
+  // Step 7: Review & declaration
+  declarationConfirmed: boolean;
+}
+
+export interface HotelReviewItem {
+  stepNum: number;
+  title: string;
+  subtitle: string;
 }
 
 export type DocSectionKey = 'premises' | 'clearances' | 'identity_tariff';
@@ -230,6 +239,10 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (',
       'export const ChevronDownIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }: IconProps) => ('
+    )
+    .replace(
+      'const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) => (',
+      'export const PencilOutlineIcon: React.FC<IconProps> = ({ size = 17, color = UX4GColors.neutral800 }: IconProps) => ('
     );
 
   return `import React from 'react';
@@ -381,8 +394,14 @@ ${stylesSlice}
 }
 
 function buildValidatorsFile(): string {
-  return `import { ELIGIBILITY_STATEMENTS } from '../constants/formOptions';
-import { HotelFormData, HotelFormErrors } from '../types/hotel';
+  return `import {
+  ELIGIBILITY_STATEMENTS,
+  UNIT_CATEGORIES,
+  CITIES_VILLAGES,
+  LEGAL_ENTITY_TYPES,
+  HOTEL_CLASS_OPTIONS,
+} from '../constants/formOptions';
+import { HotelFormData, HotelFormErrors, HotelReviewItem, DocSlotKey } from '../types/hotel';
 
 export function getEligibilityBannerSummary(tickedIds: string[]): {
   isPermanentEligible: boolean;
@@ -672,6 +691,145 @@ export function validateHotelStep5(formData: HotelFormData): HotelFormErrors {
   }
   return errs;
 }
+
+export function validateHotelStep7(formData: HotelFormData): HotelFormErrors {
+  const errs: HotelFormErrors = {};
+  if (!formData.declarationConfirmed) {
+    errs.declarationConfirmed = 'Please confirm the declaration above before submitting.';
+  }
+  return errs;
+}
+
+export function getHotelReviewItems(fd: HotelFormData): HotelReviewItem[] {
+  const findLabel = (arr: { id: string; label: string }[], id?: string) =>
+    (arr.find((x) => x.id === id) || {}).label;
+  const appTypeMap: Record<string, string> = {
+    new: 'New registration',
+    renewal: 'Renewal',
+    amendment: 'Amendment',
+  };
+  const appTypeText = appTypeMap[fd.applicationType] || 'New registration';
+  const unitCatText = findLabel(UNIT_CATEGORIES, (fd.unitCategory || [])[0]) || 'Hotel';
+  const eligText =
+    fd.eligibilityCriteria && fd.eligibilityCriteria.length > 0
+      ? fd.eligibilityCriteria.length >= 4
+        ? 'Permanent'
+        : 'Temporary (1 year)'
+      : 'Permanent';
+  const cityText = findLabel(CITIES_VILLAGES, (fd.cityVillage || [])[0]) || 'Shimla (M Corp.)';
+  const pinText = (fd.pinCode || '').trim() || '171001';
+
+  const entityText =
+    findLabel(LEGAL_ENTITY_TYPES, (fd.legalEntityType || [])[0]) || 'Private limited company';
+  const orgOrName =
+    (fd.firmCompanyName || '').trim() || (fd.applicantFullName || '').trim() || 'Saksham Hospitality Pvt Ltd';
+  const panText = ((fd.panNumber || '').trim() || 'ABCDE1234F').toUpperCase();
+
+  const uName = (fd.unitName || '').trim() || 'Hotel Devdar';
+  const mealsText =
+    fd.servesMeals === 'without_boarding' ? 'without boarding' : 'with boarding';
+  const gradeText =
+    findLabel(HOTEL_CLASS_OPTIONS, (fd.unitClassGrade || [])[0]) || 'Hotel B — Medium';
+  const ownershipText =
+    fd.premisesOwnership === 'owned'
+      ? 'owned'
+      : (fd.premisesOwnership || 'leased') + ' to ' + ((fd.leaseExpiryDate || '').trim() || '31 Mar 2031');
+
+  const sRooms = parseInt(fd.singleBedRooms, 10);
+  const dRooms = parseInt(fd.doubleBedRooms, 10);
+  const fRooms = parseInt(fd.familySuites, 10);
+  const sCount = isNaN(sRooms) ? 8 : sRooms;
+  const dCount = isNaN(dRooms) ? 12 : dRooms;
+  const fCount = isNaN(fRooms) ? 4 : fRooms;
+  const totalR = isNaN(sRooms) && isNaN(dRooms) && isNaN(fRooms) ? 24 : sCount + dCount + fCount;
+  const lowT = parseInt(fd.lowestTariff, 10);
+  const highT = parseInt(fd.highestTariff, 10);
+  const lowDisp = isNaN(lowT) ? '2,400' : lowT.toLocaleString('en-IN');
+  const highDisp = isNaN(highT) ? '6,500' : highT.toLocaleString('en-IN');
+  const parkText = ((fd.parkingSpaces || '').trim() || '18') + ' parking spaces';
+
+  const services = fd.servicesOffered || [];
+  const restText =
+    services.length === 0 || services.includes('restaurant_non_residents')
+      ? 'Restaurant'
+      : 'No non-resident restaurant';
+  const barText = services.includes('bar_excise') ? ', bar' : ', no bar';
+  const stpText =
+    fd.hasSewagePlant === 'no'
+      ? 'No STP'
+      : fd.hasSewagePlant === 'na'
+        ? 'STP N/A'
+        : fd.sewagePlantWorking === 'no'
+          ? 'STP not working'
+          : 'STP working';
+  const fireText =
+    fd.fireSafetyClearanceStatus === 'obtained'
+      ? 'fire clearance obtained'
+      : fd.fireSafetyClearanceStatus === 'na'
+        ? 'fire clearance N/A'
+        : 'fire clearance applied for';
+  const polText =
+    fd.pollutionBoardConsent === 'applied'
+      ? 'pollution consent applied for'
+      : fd.pollutionBoardConsent === 'na'
+        ? 'pollution consent N/A'
+        : 'pollution consent obtained';
+
+  const df = fd.docFiles;
+  const uploadedSlots = (Object.keys(df) as DocSlotKey[]).filter(
+    (k) => df[k] && df[k].length > 0
+  ).length;
+  const docsSub =
+    uploadedSlots <= 1
+      ? '8 of 8 supplied · 3 reused, 4 uploaded, 1 from DigiLocker'
+      : uploadedSlots + ' of 8 supplied · ' + uploadedSlots + ' uploaded';
+
+  return [
+    {
+      stepNum: 1,
+      title: 'Step 1 · Before you start',
+      subtitle: appTypeText + ' · ' + unitCatText + ' · ' + eligText + ' · ' + cityText + ', PIN ' + pinText,
+    },
+    {
+      stepNum: 2,
+      title: 'Step 2 · Applicant & entity',
+      subtitle: entityText + ' · ' + orgOrName + ' · PAN ' + panText,
+    },
+    {
+      stepNum: 3,
+      title: 'Step 3 · Unit identity & location',
+      subtitle: uName + ' · ' + mealsText + ' · ' + gradeText + ' · ' + ownershipText,
+    },
+    {
+      stepNum: 4,
+      title: 'Step 4 · Rooms & accommodation',
+      subtitle:
+        totalR +
+        ' rooms · ' +
+        sCount +
+        ' single, ' +
+        dCount +
+        ' double, ' +
+        fCount +
+        ' suites · ₹' +
+        lowDisp +
+        '–₹' +
+        highDisp +
+        ' · ' +
+        parkText,
+    },
+    {
+      stepNum: 5,
+      title: 'Step 5 · Facilities, services & compliance',
+      subtitle: restText + barText + ' · ' + stpText + ' · ' + fireText + ' · ' + polText,
+    },
+    {
+      stepNum: 6,
+      title: 'Step 6 · Documents',
+      subtitle: docsSub,
+    },
+  ];
+}
 `;
 }
 
@@ -960,7 +1118,7 @@ function buildStep6ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 6 ? (',
-    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    ') : step === 7 ? (',
     'Hotel Step 6'
   );
 
@@ -990,6 +1148,50 @@ export const Step6DocumentsScreen: React.FC<Step6DocumentsScreenProps> = ({
   toggleDocSection,
   setDocSlotFiles,
   handleContinueStep6,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep7ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 7 ? (',
+    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    'Hotel Step 7'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  Ux4gStatusBanner,
+  Ux4gCheckbox,
+  Ux4gButton,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { PencilOutlineIcon } from '../components/Icons';
+import { HotelFormData, HotelFormErrors, HotelReviewItem } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step7ReviewDeclarationScreenProps {
+  formData: HotelFormData;
+  errors: HotelFormErrors;
+  reviewItems: HotelReviewItem[];
+  updateField: <K extends keyof HotelFormData>(key: K, value: HotelFormData[K]) => void;
+  setStep: (stepNum: number) => void;
+  handleContinueStep7: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step7ReviewDeclarationScreen: React.FC<Step7ReviewDeclarationScreenProps> = ({
+  formData,
+  errors,
+  reviewItems,
+  updateField,
+  setStep,
+  handleContinueStep7,
   handleSaveDraft,
 }) => (
 ${jsx}
@@ -1136,6 +1338,7 @@ import { styles } from './src/styles/commonStyles';
 import {
   HotelFormData,
   HotelFormErrors,
+  HotelReviewItem,
   DocSectionKey,
   DocSlotKey,
   UploadedDocFile,
@@ -1144,11 +1347,13 @@ import {
   getConvertedSqMetres,
   getEligibilityBannerSummary,
   getTotalRoomsDisplay,
+  getHotelReviewItems,
   validateHotelStep1,
   validateHotelStep2,
   validateHotelStep3,
   validateHotelStep4,
   validateHotelStep5,
+  validateHotelStep7,
 } from './src/utils/validators';
 import { Step1BeforeYouStartScreen } from './src/screens/Step1BeforeYouStartScreen';
 import { Step2ApplicantEntityScreen } from './src/screens/Step2ApplicantEntityScreen';
@@ -1156,6 +1361,7 @@ import { Step3UnitIdentityLocationScreen } from './src/screens/Step3UnitIdentity
 import { Step4RoomsAccommodationScreen } from './src/screens/Step4RoomsAccommodationScreen';
 import { Step5FacilitiesComplianceScreen } from './src/screens/Step5FacilitiesComplianceScreen';
 import { Step6DocumentsScreen } from './src/screens/Step6DocumentsScreen';
+import { Step7ReviewDeclarationScreen } from './src/screens/Step7ReviewDeclarationScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
@@ -1354,6 +1560,17 @@ export default function App() {
     setStep(7);
   };
 
+  const reviewItems: HotelReviewItem[] = getHotelReviewItems(formData);
+
+  const handleContinueStep7 = () => {
+    const errs = validateHotelStep7(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(8);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -1367,6 +1584,8 @@ export default function App() {
       handleContinueStep5();
     } else if (step === 6) {
       handleContinueStep6();
+    } else if (step === 7) {
+      handleContinueStep7();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -1519,6 +1738,16 @@ export default function App() {
                 handleContinueStep6={handleContinueStep6}
                 handleSaveDraft={handleSaveDraft}
               />
+            ) : step === 7 ? (
+              <Step7ReviewDeclarationScreen
+                formData={formData}
+                errors={errors}
+                reviewItems={reviewItems}
+                updateField={updateField}
+                setStep={setStep}
+                handleContinueStep7={handleContinueStep7}
+                handleSaveDraft={handleSaveDraft}
+              />
             ) : (
               <UpcomingStepScreen
                 step={step}
@@ -1649,7 +1878,8 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step4RoomsAccommodationScreen.tsx   # Step 4 of 9: Accommodation, Tariff, Public Areas & Facilities',
       '        ├── Step5FacilitiesComplianceScreen.tsx # Step 5 of 9: Services Offered, Compliance & Safety Details',
       '        ├── Step6DocumentsScreen.tsx            # Step 6 of 9: Categorised Document Upload Accordions',
-      '        └── UpcomingStepScreen.tsx              # Steps 7-9 scaffold synced with stepper & draft state',
+      '        ├── Step7ReviewDeclarationScreen.tsx    # Step 7 of 9: Editable Review Summary & Declaration',
+      '        └── UpcomingStepScreen.tsx              # Steps 8-9 scaffold synced with stepper & draft state',
       '```',
       '',
       '## Getting Started',
@@ -1676,6 +1906,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step4RoomsAccommodationScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'src/screens/Step5FacilitiesComplianceScreen.tsx': buildStep5ScreenFile(normalizedCode),
     'src/screens/Step6DocumentsScreen.tsx': buildStep6ScreenFile(normalizedCode),
+    'src/screens/Step7ReviewDeclarationScreen.tsx': buildStep7ScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };

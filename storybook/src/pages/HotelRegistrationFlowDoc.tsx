@@ -9,7 +9,7 @@ interface HotelRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = 'AC20ty04YeEsaQq5hbu-x';
+const SNACK_ID = 'AfRNuJjVGxYMOHUDnrNnm';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -91,16 +91,16 @@ const STEP_METADATA = {
     subtitle: 'Only the documents your answers actually call for.',
   },
   7: {
-    title: 'Documents Upload',
-    subtitle: 'Required certificates, clearances, and property photographs.',
+    title: 'Review & declaration',
+    subtitle: 'Everything you have entered, in one place, each part still editable.',
   },
   8: {
-    title: 'Review & Declaration',
-    subtitle: 'Verify all entered details before fee calculation.',
-  },
-  9: {
     title: 'Fee & Payment',
     subtitle: 'Registration fee summary and online transaction.',
+  },
+  9: {
+    title: 'Acknowledgement',
+    subtitle: 'Application receipt and tracking reference.',
   },
 };
 
@@ -301,6 +301,25 @@ const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (
   </Svg>
 );
 
+const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M15 5l4 4"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
 const DocumentUploadSlot = ({
   title,
   required,
@@ -340,8 +359,136 @@ const DocumentUploadSlot = ({
   );
 };
 
+const getHotelReviewItems = (fd) => {
+  const findLabel = (arr, id) => (arr.find((x) => x.id === id) || {}).label;
+  const appTypeMap = {
+    new: 'New registration',
+    renewal: 'Renewal',
+    amendment: 'Amendment',
+  };
+  const appTypeText = appTypeMap[fd.applicationType] || 'New registration';
+  const unitCatText = findLabel(UNIT_CATEGORIES, (fd.unitCategory || [])[0]) || 'Hotel';
+  const eligText =
+    fd.eligibilityCriteria && fd.eligibilityCriteria.length > 0
+      ? fd.eligibilityCriteria.length >= 4
+        ? 'Permanent'
+        : 'Temporary (1 year)'
+      : 'Permanent';
+  const cityText = findLabel(CITIES_VILLAGES, (fd.cityVillage || [])[0]) || 'Shimla (M Corp.)';
+  const pinText = (fd.pinCode || '').trim() || '171001';
+
+  const entityText =
+    findLabel(LEGAL_ENTITY_TYPES, (fd.legalEntityType || [])[0]) || 'Private limited company';
+  const orgOrName =
+    (fd.firmCompanyName || '').trim() || (fd.applicantFullName || '').trim() || 'Saksham Hospitality Pvt Ltd';
+  const panText = ((fd.panNumber || '').trim() || 'ABCDE1234F').toUpperCase();
+
+  const uName = (fd.unitName || '').trim() || 'Hotel Devdar';
+  const mealsText =
+    fd.servesMeals === 'without_boarding' ? 'without boarding' : 'with boarding';
+  const gradeText =
+    findLabel(HOTEL_CLASS_OPTIONS, (fd.unitClassGrade || [])[0]) || 'Hotel B — Medium';
+  const ownershipText =
+    fd.premisesOwnership === 'owned'
+      ? 'owned'
+      : (fd.premisesOwnership || 'leased') + ' to ' + ((fd.leaseExpiryDate || '').trim() || '31 Mar 2031');
+
+  const sRooms = parseInt(fd.singleBedRooms, 10);
+  const dRooms = parseInt(fd.doubleBedRooms, 10);
+  const fRooms = parseInt(fd.familySuites, 10);
+  const sCount = isNaN(sRooms) ? 8 : sRooms;
+  const dCount = isNaN(dRooms) ? 12 : dRooms;
+  const fCount = isNaN(fRooms) ? 4 : fRooms;
+  const totalR = isNaN(sRooms) && isNaN(dRooms) && isNaN(fRooms) ? 24 : sCount + dCount + fCount;
+  const lowT = parseInt(fd.lowestTariff, 10);
+  const highT = parseInt(fd.highestTariff, 10);
+  const lowDisp = isNaN(lowT) ? '2,400' : lowT.toLocaleString('en-IN');
+  const highDisp = isNaN(highT) ? '6,500' : highT.toLocaleString('en-IN');
+  const parkText = ((fd.parkingSpaces || '').trim() || '18') + ' parking spaces';
+
+  const services = fd.servicesOffered || [];
+  const restText =
+    services.length === 0 || services.includes('restaurant_non_residents')
+      ? 'Restaurant'
+      : 'No non-resident restaurant';
+  const barText = services.includes('bar_excise') ? ', bar' : ', no bar';
+  const stpText =
+    fd.hasSewagePlant === 'no'
+      ? 'No STP'
+      : fd.hasSewagePlant === 'na'
+        ? 'STP N/A'
+        : fd.sewagePlantWorking === 'no'
+          ? 'STP not working'
+          : 'STP working';
+  const fireText =
+    fd.fireSafetyClearanceStatus === 'obtained'
+      ? 'fire clearance obtained'
+      : fd.fireSafetyClearanceStatus === 'na'
+        ? 'fire clearance N/A'
+        : 'fire clearance applied for';
+  const polText =
+    fd.pollutionBoardConsent === 'applied'
+      ? 'pollution consent applied for'
+      : fd.pollutionBoardConsent === 'na'
+        ? 'pollution consent N/A'
+        : 'pollution consent obtained';
+
+  const df = fd.docFiles || {};
+  const uploadedSlots = Object.keys(df).filter((k) => df[k] && df[k].length > 0).length;
+  const docsSub =
+    uploadedSlots <= 1
+      ? '8 of 8 supplied · 3 reused, 4 uploaded, 1 from DigiLocker'
+      : uploadedSlots + ' of 8 supplied · ' + uploadedSlots + ' uploaded';
+
+  return [
+    {
+      stepNum: 1,
+      title: 'Step 1 · Before you start',
+      subtitle: appTypeText + ' · ' + unitCatText + ' · ' + eligText + ' · ' + cityText + ', PIN ' + pinText,
+    },
+    {
+      stepNum: 2,
+      title: 'Step 2 · Applicant & entity',
+      subtitle: entityText + ' · ' + orgOrName + ' · PAN ' + panText,
+    },
+    {
+      stepNum: 3,
+      title: 'Step 3 · Unit identity & location',
+      subtitle: uName + ' · ' + mealsText + ' · ' + gradeText + ' · ' + ownershipText,
+    },
+    {
+      stepNum: 4,
+      title: 'Step 4 · Rooms & accommodation',
+      subtitle:
+        totalR +
+        ' rooms · ' +
+        sCount +
+        ' single, ' +
+        dCount +
+        ' double, ' +
+        fCount +
+        ' suites · ₹' +
+        lowDisp +
+        '–₹' +
+        highDisp +
+        ' · ' +
+        parkText,
+    },
+    {
+      stepNum: 5,
+      title: 'Step 5 · Facilities, services & compliance',
+      subtitle: restText + barText + ' · ' + stpText + ' · ' + fireText + ' · ' + polText,
+    },
+    {
+      stepNum: 6,
+      title: 'Step 6 · Documents',
+      subtitle: docsSub,
+    },
+  ];
+};
+
 export default function App() {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(7);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -463,6 +610,9 @@ export default function App() {
       identity_pan_entity: [],
       identity_tariff_card: [],
     },
+
+    // Step 7: Review & declaration
+    declarationConfirmed: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -918,6 +1068,18 @@ export default function App() {
     setStep(7);
   };
 
+  const reviewItems = getHotelReviewItems(formData);
+
+  const handleContinueStep7 = () => {
+    if (!formData.declarationConfirmed) {
+      setErrors({
+        declarationConfirmed: 'Please confirm the declaration above before submitting.',
+      });
+      return;
+    }
+    setStep(8);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -931,6 +1093,8 @@ export default function App() {
       handleContinueStep5();
     } else if (step === 6) {
       handleContinueStep6();
+    } else if (step === 7) {
+      handleContinueStep7();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -2939,6 +3103,94 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 7 ? (
+              <View style={styles.formContainer}>
+                {reviewItems.map((item, idx) => (
+                  <View
+                    key={'review-' + item.stepNum}
+                    style={{ marginBottom: idx === reviewItems.length - 1 ? 18 : 12 }}
+                  >
+                    <Ux4gStatusBanner
+                      variant="successLight"
+                      title={item.title}
+                      subtitle={item.subtitle}
+                      titleNumberOfLines={2}
+                      subtitleNumberOfLines={4}
+                      backgroundColor={UX4GColors.green50}
+                      borderColor={UX4GColors.green200}
+                      marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                      paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                      containerStyle={{ borderRadius: 10 }}
+                      titleStyle={{
+                        fontSize: 13.5,
+                        fontWeight: '700',
+                        color: UX4GColors.green700,
+                        lineHeight: 19,
+                      }}
+                      subtitleStyle={{
+                        fontSize: 12,
+                        lineHeight: 17,
+                        color: UX4GColors.green,
+                        marginTop: 3,
+                      }}
+                      trailingIcon={
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => setStep(item.stepNum)}
+                          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                          style={{ padding: 2 }}
+                        >
+                          <PencilOutlineIcon size={17} color={UX4GColors.neutral800} />
+                        </TouchableOpacity>
+                      }
+                    />
+                  </View>
+                ))}
+
+                {/* Declaration */}
+                <Text style={styles.sectionHeading}>Declaration</Text>
+                <View style={styles.fieldSpacing}>
+                  <Ux4gCheckbox
+                    value={formData.declarationConfirmed}
+                    onChanged={(val) => updateField('declarationConfirmed', !!val)}
+                    label="I declare that the information given above is true to the best of my knowledge"
+                    isRequired={true}
+                    hasError={!!errors.declarationConfirmed}
+                    size="medium"
+                    activeColor={UX4GColors.primary}
+                    labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                  />
+                  {errors.declarationConfirmed && (
+                    <Text style={styles.inlineErrorText}>{errors.declarationConfirmed}</Text>
+                  )}
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Submit application"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    borderRadius={8}
+                    onPress={handleContinueStep7}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor={UX4GColors.transparent}
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={handleSaveDraft}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -3308,7 +3560,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 9 Steps (Steps 1–6 Active)
+                Service Pattern • 9 Steps (Steps 1–7 Active)
               </span>
             </div>
             <p
