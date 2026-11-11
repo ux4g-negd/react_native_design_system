@@ -9,7 +9,7 @@ interface HotelRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = 'AfRNuJjVGxYMOHUDnrNnm';
+const SNACK_ID = 'hGvUJH9eoq7F68GciCD9k';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -50,6 +50,7 @@ import {
   Ux4gCard,
   Ux4gButton,
   Ux4gFileUpload,
+  Ux4gDivider,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
@@ -95,8 +96,8 @@ const STEP_METADATA = {
     subtitle: 'Everything you have entered, in one place, each part still editable.',
   },
   8: {
-    title: 'Fee & Payment',
-    subtitle: 'Registration fee summary and online transaction.',
+    title: 'Fee & payment',
+    subtitle: 'What it costs, how that figure was reached, and when it falls due.',
   },
   9: {
     title: 'Acknowledgement',
@@ -487,8 +488,36 @@ const getHotelReviewItems = (fd) => {
   ];
 };
 
+const getHotelFeeSummary = (fd) => {
+  const sRooms = parseInt(fd.singleBedRooms, 10);
+  const dRooms = parseInt(fd.doubleBedRooms, 10);
+  const fRooms = parseInt(fd.familySuites, 10);
+  const roomsCount =
+    isNaN(sRooms) && isNaN(dRooms) && isNaN(fRooms)
+      ? 24
+      : (isNaN(sRooms) ? 0 : sRooms) + (isNaN(dRooms) ? 0 : dRooms) + (isNaN(fRooms) ? 0 : fRooms);
+
+  let slabLabel = '11 to 30 rooms';
+  let amount = 2500;
+  if (roomsCount <= 10) {
+    slabLabel = 'up to 10 rooms';
+    amount = 1500;
+  } else if (roomsCount > 30) {
+    slabLabel = 'above 30 rooms';
+    amount = 5000;
+  }
+  const formattedAmount = '₹' + amount.toLocaleString('en-IN');
+  return {
+    applicationRef: 'Hotel registration · HT/2026/HP/0007744',
+    roomsCount,
+    slabLabel,
+    formattedAmount,
+    lineDescription: 'Registration fee — hotel, ' + slabLabel + ' (yours: ' + roomsCount + ')',
+  };
+};
+
 export default function App() {
-  const [step, setStep] = useState(7);
+  const [step, setStep] = useState(8);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -1069,6 +1098,7 @@ export default function App() {
   };
 
   const reviewItems = getHotelReviewItems(formData);
+  const feeSummary = getHotelFeeSummary(formData);
 
   const handleContinueStep7 = () => {
     if (!formData.declarationConfirmed) {
@@ -1078,6 +1108,10 @@ export default function App() {
       return;
     }
     setStep(8);
+  };
+
+  const handleContinueStep8 = () => {
+    setStep(9);
   };
 
   const handleStepperNext = () => {
@@ -1095,6 +1129,8 @@ export default function App() {
       handleContinueStep6();
     } else if (step === 7) {
       handleContinueStep7();
+    } else if (step === 8) {
+      handleContinueStep8();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -3191,6 +3227,70 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 8 ? (
+              <View style={styles.formContainer}>
+                <Text style={styles.sectionHeading}>Fee Details</Text>
+
+                <Ux4gCard
+                  cornerRadius={12}
+                  backgroundColor={UX4GColors.white}
+                  borderColor={UX4GColors.neutral200}
+                  borderWidth={1}
+                  elevation={0}
+                  style={{ padding: 16, marginBottom: 4 }}
+                >
+                  <Text style={styles.feeAppNumberHeading}>
+                    {feeSummary.applicationRef}
+                  </Text>
+
+                  <View style={styles.feeRow}>
+                    <View style={{ flex: 1, paddingRight: 16 }}>
+                      <Text style={styles.feeLineDescription}>
+                        {feeSummary.lineDescription}
+                      </Text>
+                    </View>
+                    <Text style={styles.feeLineAmount}>{feeSummary.formattedAmount}</Text>
+                  </View>
+
+                  <Ux4gDivider
+                    style="solid"
+                    color={UX4GColors.neutral200}
+                    thickness={1}
+                    containerStyle={{ marginVertical: 14, paddingVertical: 1 }}
+                  />
+
+                  <View style={styles.feeTotalRow}>
+                    <Text style={styles.feeTotalLabel}>Total payable</Text>
+                    <Text style={styles.feeTotalAmount}>{feeSummary.formattedAmount}</Text>
+                  </View>
+                </Ux4gCard>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue to payment"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    borderRadius={8}
+                    onPress={handleContinueStep8}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as Draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor={UX4GColors.transparent}
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={handleSaveDraft}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -3474,6 +3574,43 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral600,
     marginBottom: 10,
   },
+  feeAppNumberHeading: {
+    fontSize: 15,
+    fontWeight: '700',
+    lineHeight: 22,
+    color: UX4GColors.neutral900,
+    marginBottom: 14,
+  },
+  feeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feeLineDescription: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: UX4GColors.neutral700,
+  },
+  feeLineAmount: {
+    fontSize: 14.5,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  feeTotalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feeTotalLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  feeTotalAmount: {
+    fontSize: 15.5,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
   actionButtonContainer: {
     marginTop: 22,
     paddingTop: 16,
@@ -3560,7 +3697,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 9 Steps (Steps 1–7 Active)
+                Service Pattern • 9 Steps (Steps 1–8 Active)
               </span>
             </div>
             <p

@@ -169,6 +169,14 @@ export interface HotelReviewItem {
   subtitle: string;
 }
 
+export interface HotelFeeSummary {
+  applicationRef: string;
+  roomsCount: number;
+  slabLabel: string;
+  formattedAmount: string;
+  lineDescription: string;
+}
+
 export type DocSectionKey = 'premises' | 'clearances' | 'identity_tariff';
 
 export type DocSlotKey =
@@ -401,7 +409,13 @@ function buildValidatorsFile(): string {
   LEGAL_ENTITY_TYPES,
   HOTEL_CLASS_OPTIONS,
 } from '../constants/formOptions';
-import { HotelFormData, HotelFormErrors, HotelReviewItem, DocSlotKey } from '../types/hotel';
+import {
+  HotelFormData,
+  HotelFormErrors,
+  HotelReviewItem,
+  HotelFeeSummary,
+  DocSlotKey,
+} from '../types/hotel';
 
 export function getEligibilityBannerSummary(tickedIds: string[]): {
   isPermanentEligible: boolean;
@@ -830,6 +844,34 @@ export function getHotelReviewItems(fd: HotelFormData): HotelReviewItem[] {
     },
   ];
 }
+
+export function getHotelFeeSummary(fd: HotelFormData): HotelFeeSummary {
+  const sRooms = parseInt(fd.singleBedRooms, 10);
+  const dRooms = parseInt(fd.doubleBedRooms, 10);
+  const fRooms = parseInt(fd.familySuites, 10);
+  const roomsCount =
+    isNaN(sRooms) && isNaN(dRooms) && isNaN(fRooms)
+      ? 24
+      : (isNaN(sRooms) ? 0 : sRooms) + (isNaN(dRooms) ? 0 : dRooms) + (isNaN(fRooms) ? 0 : fRooms);
+
+  let slabLabel = '11 to 30 rooms';
+  let amount = 2500;
+  if (roomsCount <= 10) {
+    slabLabel = 'up to 10 rooms';
+    amount = 1500;
+  } else if (roomsCount > 30) {
+    slabLabel = 'above 30 rooms';
+    amount = 5000;
+  }
+  const formattedAmount = '₹' + amount.toLocaleString('en-IN');
+  return {
+    applicationRef: 'Hotel registration · HT/2026/HP/0007744',
+    roomsCount,
+    slabLabel,
+    formattedAmount,
+    lineDescription: 'Registration fee — hotel, ' + slabLabel + ' (yours: ' + roomsCount + ')',
+  };
+}
 `;
 }
 
@@ -1159,7 +1201,7 @@ function buildStep7ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 7 ? (',
-    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    ') : step === 8 ? (',
     'Hotel Step 7'
   );
 
@@ -1192,6 +1234,36 @@ export const Step7ReviewDeclarationScreen: React.FC<Step7ReviewDeclarationScreen
   updateField,
   setStep,
   handleContinueStep7,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep8ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 8 ? (',
+    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    'Hotel Step 8'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import { Ux4gCard, Ux4gDivider, Ux4gButton, UX4GColors } from 'ux4g-react-native-components';
+import { HotelFeeSummary } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step8FeePaymentScreenProps {
+  feeSummary: HotelFeeSummary;
+  handleContinueStep8: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step8FeePaymentScreen: React.FC<Step8FeePaymentScreenProps> = ({
+  feeSummary,
+  handleContinueStep8,
   handleSaveDraft,
 }) => (
 ${jsx}
@@ -1339,6 +1411,7 @@ import {
   HotelFormData,
   HotelFormErrors,
   HotelReviewItem,
+  HotelFeeSummary,
   DocSectionKey,
   DocSlotKey,
   UploadedDocFile,
@@ -1348,6 +1421,7 @@ import {
   getEligibilityBannerSummary,
   getTotalRoomsDisplay,
   getHotelReviewItems,
+  getHotelFeeSummary,
   validateHotelStep1,
   validateHotelStep2,
   validateHotelStep3,
@@ -1362,6 +1436,7 @@ import { Step4RoomsAccommodationScreen } from './src/screens/Step4RoomsAccommoda
 import { Step5FacilitiesComplianceScreen } from './src/screens/Step5FacilitiesComplianceScreen';
 import { Step6DocumentsScreen } from './src/screens/Step6DocumentsScreen';
 import { Step7ReviewDeclarationScreen } from './src/screens/Step7ReviewDeclarationScreen';
+import { Step8FeePaymentScreen } from './src/screens/Step8FeePaymentScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
@@ -1561,6 +1636,7 @@ export default function App() {
   };
 
   const reviewItems: HotelReviewItem[] = getHotelReviewItems(formData);
+  const feeSummary: HotelFeeSummary = getHotelFeeSummary(formData);
 
   const handleContinueStep7 = () => {
     const errs = validateHotelStep7(formData);
@@ -1569,6 +1645,10 @@ export default function App() {
       return;
     }
     setStep(8);
+  };
+
+  const handleContinueStep8 = () => {
+    setStep(9);
   };
 
   const handleStepperNext = () => {
@@ -1586,6 +1666,8 @@ export default function App() {
       handleContinueStep6();
     } else if (step === 7) {
       handleContinueStep7();
+    } else if (step === 8) {
+      handleContinueStep8();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -1748,6 +1830,12 @@ export default function App() {
                 handleContinueStep7={handleContinueStep7}
                 handleSaveDraft={handleSaveDraft}
               />
+            ) : step === 8 ? (
+              <Step8FeePaymentScreen
+                feeSummary={feeSummary}
+                handleContinueStep8={handleContinueStep8}
+                handleSaveDraft={handleSaveDraft}
+              />
             ) : (
               <UpcomingStepScreen
                 step={step}
@@ -1879,7 +1967,8 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step5FacilitiesComplianceScreen.tsx # Step 5 of 9: Services Offered, Compliance & Safety Details',
       '        ├── Step6DocumentsScreen.tsx            # Step 6 of 9: Categorised Document Upload Accordions',
       '        ├── Step7ReviewDeclarationScreen.tsx    # Step 7 of 9: Editable Review Summary & Declaration',
-      '        └── UpcomingStepScreen.tsx              # Steps 8-9 scaffold synced with stepper & draft state',
+      '        ├── Step8FeePaymentScreen.tsx           # Step 8 of 9: Registration Fee Summary & Payment',
+      '        └── UpcomingStepScreen.tsx              # Step 9 scaffold synced with stepper & draft state',
       '```',
       '',
       '## Getting Started',
@@ -1907,6 +1996,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step5FacilitiesComplianceScreen.tsx': buildStep5ScreenFile(normalizedCode),
     'src/screens/Step6DocumentsScreen.tsx': buildStep6ScreenFile(normalizedCode),
     'src/screens/Step7ReviewDeclarationScreen.tsx': buildStep7ScreenFile(normalizedCode),
+    'src/screens/Step8FeePaymentScreen.tsx': buildStep8ScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };
