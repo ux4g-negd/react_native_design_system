@@ -186,6 +186,13 @@ export interface HotelFeeSummary {
   lineDescription: string;
 }
 
+export interface HotelAcknowledgementInfo {
+  maskedMobile: string;
+  maskedEmail: string;
+  authPersonName: string;
+  maskedAuthMobile: string;
+}
+
 export type DocSectionKey = 'premises' | 'clearances' | 'identity_tariff';
 
 export type DocSlotKey =
@@ -427,6 +434,7 @@ import {
   HotelFormErrors,
   HotelReviewItem,
   HotelFeeSummary,
+  HotelAcknowledgementInfo,
   DocSlotKey,
 } from '../types/hotel';
 
@@ -913,6 +921,26 @@ export function validateHotelPayment(formData: HotelFormData): HotelFormErrors {
   }
   return errs;
 }
+
+export function getHotelAcknowledgementInfo(fd: HotelFormData): HotelAcknowledgementInfo {
+  const rawMob = (fd.applicantMobile || '').trim();
+  const maskedMobile = rawMob.length >= 4 ? '••••• •' + rawMob.slice(-4) : '••••• •5568';
+  const rawEmail = (fd.applicantEmail || '').trim();
+  let maskedEmail = 'sa•••••@gmail.com';
+  if (rawEmail.includes('@')) {
+    const parts = rawEmail.split('@');
+    maskedEmail = (parts[0].slice(0, 2) || 'sa') + '•••••@' + (parts[1] || 'gmail.com');
+  }
+  const authPersonName = (fd.authPersonName || '').trim() || 'Ravi Kumar';
+  const rawAuthMob = (fd.authPersonMobile || '').trim();
+  const maskedAuthMobile = rawAuthMob.length >= 4 ? '••••• •' + rawAuthMob.slice(-4) : '••••• •5568';
+  return {
+    maskedMobile,
+    maskedEmail,
+    authPersonName,
+    maskedAuthMobile,
+  };
+}
 `;
 }
 
@@ -1361,7 +1389,7 @@ function buildStep8PaymentSuccessScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 8 && paymentCompleted ? (',
-    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    '\n            ) : (\n              <View style={styles.formContainer}>\n                {/* 1. Acknowledgement */}',
     'Hotel Step 8 Payment Successful'
   );
 
@@ -1390,116 +1418,35 @@ ${jsx}
 `;
 }
 
-function buildUpcomingStepScreenFile(): string {
+function buildStep9AcknowledgementScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : (\n              <View style={styles.formContainer}>\n                {/* 1. Acknowledgement */}',
+    '\n            )}\n          </View>\n        </ScrollView>',
+    'Hotel Step 9 Acknowledgement'
+  );
+
   return `import React from 'react';
-import { View, Text } from 'react-native';
-import {
-  Ux4gCard,
-  Ux4gStatusBanner,
-  Ux4gButton,
-  UX4GColors,
-} from 'ux4g-react-native-components';
-import { STEP_METADATA } from '../constants/formOptions';
-import { HotelFormData } from '../types/hotel';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Ux4gStatusBanner, Ux4gButton, UX4GColors } from 'ux4g-react-native-components';
+import { HotelFeeSummary, HotelAcknowledgementInfo } from '../types/hotel';
 import { styles } from '../styles/commonStyles';
 
-export interface UpcomingStepScreenProps {
-  step: number;
-  formData: HotelFormData;
-  eligibilityPermanent: boolean;
-  onPrevious: () => void;
-  onNext: () => void;
-  onSaveDraft: () => void;
+export interface Step9AcknowledgementScreenProps {
+  feeSummary: HotelFeeSummary;
+  ackInfo: HotelAcknowledgementInfo;
+  handleGoToApplications: () => void;
+  handleDownloadAcknowledgement: () => void;
 }
 
-export const UpcomingStepScreen: React.FC<UpcomingStepScreenProps> = ({
-  step,
-  formData,
-  eligibilityPermanent,
-  onPrevious,
-  onNext,
-  onSaveDraft,
-}) => {
-  const meta = STEP_METADATA[step] || { title: 'Step ' + step, subtitle: '' };
-  return (
-    <View style={styles.formContainer}>
-      <Ux4gStatusBanner
-        variant="infoLight"
-        title={'Step ' + step + ' of 9 — ' + meta.title}
-        subtitle={
-          meta.subtitle +
-          ' Your Step 1 selections (' +
-          (eligibilityPermanent ? 'Permanent eligible' : 'Temporary 1-year eligible') +
-          (formData.pinCode ? ' • PIN ' + formData.pinCode : '') +
-          ') are preserved in the draft.'
-        }
-        titleNumberOfLines={2}
-        subtitleNumberOfLines={4}
-        backgroundColor={UX4GColors.primary50}
-        borderColor={UX4GColors.primary200}
-        marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-        paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
-        containerStyle={{ borderRadius: 10, marginBottom: 16 }}
-      />
-
-      <Ux4gCard
-        cornerRadius={10}
-        borderWidth={1}
-        borderColor={UX4GColors.neutral200}
-        backgroundColor={UX4GColors.neutral50}
-        elevation={0}
-        style={{ padding: 14 }}
-      >
-        <Text style={styles.sectionHeading}>{meta.title}</Text>
-        <Text style={styles.helperNoteText}>
-          This step screen is synced with the 9-step Hotel Registration workflow stepper and draft state.
-        </Text>
-      </Ux4gCard>
-
-      <View style={styles.actionButtonContainer}>
-        {step < 9 && (
-          <>
-            <Ux4gButton
-              text="Continue"
-              variant="primary"
-              size="large"
-              backgroundColor={UX4GColors.primary}
-              borderRadius={8}
-              onPress={onNext}
-              style={{ width: '100%' }}
-            />
-            <View style={{ height: 10 }} />
-          </>
-        )}
-        <Ux4gButton
-          text="Back"
-          variant="outline"
-          size="large"
-          backgroundColor={UX4GColors.transparent}
-          contentColor={UX4GColors.primary}
-          borderColor={UX4GColors.primary200}
-          borderWidth={1}
-          borderRadius={8}
-          onPress={onPrevious}
-          style={{ width: '100%' }}
-        />
-        <View style={{ height: 10 }} />
-        <Ux4gButton
-          text="Save as draft"
-          variant="outline"
-          size="large"
-          backgroundColor={UX4GColors.transparent}
-          contentColor={UX4GColors.primary}
-          borderColor={UX4GColors.primary200}
-          borderWidth={1}
-          borderRadius={8}
-          onPress={onSaveDraft}
-          style={{ width: '100%' }}
-        />
-      </View>
-    </View>
-  );
-};
+export const Step9AcknowledgementScreen: React.FC<Step9AcknowledgementScreenProps> = ({
+  feeSummary,
+  ackInfo,
+  handleGoToApplications,
+  handleDownloadAcknowledgement,
+}) => (
+${jsx}
+);
 `;
 }
 
@@ -1533,6 +1480,7 @@ import {
   HotelFormErrors,
   HotelReviewItem,
   HotelFeeSummary,
+  HotelAcknowledgementInfo,
   DocSectionKey,
   DocSlotKey,
   UploadedDocFile,
@@ -1543,6 +1491,7 @@ import {
   getTotalRoomsDisplay,
   getHotelReviewItems,
   getHotelFeeSummary,
+  getHotelAcknowledgementInfo,
   validateHotelStep1,
   validateHotelStep2,
   validateHotelStep3,
@@ -1561,7 +1510,7 @@ import { Step7ReviewDeclarationScreen } from './src/screens/Step7ReviewDeclarati
 import { Step8FeePaymentScreen } from './src/screens/Step8FeePaymentScreen';
 import { Step8ModeOfPaymentScreen } from './src/screens/Step8ModeOfPaymentScreen';
 import { Step8PaymentSuccessScreen } from './src/screens/Step8PaymentSuccessScreen';
-import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
+import { Step9AcknowledgementScreen } from './src/screens/Step9AcknowledgementScreen';
 
 export default function App() {
   const [step, setStep] = useState<number>(1);
@@ -1773,6 +1722,7 @@ export default function App() {
 
   const reviewItems: HotelReviewItem[] = getHotelReviewItems(formData);
   const feeSummary: HotelFeeSummary = getHotelFeeSummary(formData);
+  const ackInfo: HotelAcknowledgementInfo = getHotelAcknowledgementInfo(formData);
 
   const paymentMethodLabel = (() => {
     if (formData.paymentMode === 'netbanking') {
@@ -1806,6 +1756,14 @@ export default function App() {
 
   const handleDownloadReceipt = () => {
     alert('Payment receipt (PG2026HP07744TX) downloaded successfully!');
+  };
+
+  const handleDownloadAcknowledgement = () => {
+    alert('Acknowledgement PDF (HT/2026/HP/0007744) downloaded successfully!');
+  };
+
+  const handleGoToApplications = () => {
+    alert('Navigating to My Applications (HT/2026/HP/0007744)...');
   };
 
   const handlePayNow = () => {
@@ -2038,13 +1996,11 @@ export default function App() {
                 handleDownloadReceipt={handleDownloadReceipt}
               />
             ) : (
-              <UpcomingStepScreen
-                step={step}
-                formData={formData}
-                eligibilityPermanent={eligibilitySummary.isPermanentEligible}
-                onPrevious={handleStepperBack}
-                onNext={handleStepperNext}
-                onSaveDraft={handleSaveDraft}
+              <Step9AcknowledgementScreen
+                feeSummary={feeSummary}
+                ackInfo={ackInfo}
+                handleGoToApplications={handleGoToApplications}
+                handleDownloadAcknowledgement={handleDownloadAcknowledgement}
               />
             )}
           </View>
@@ -2202,7 +2158,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step8FeePaymentScreen.tsx           # Step 8 of 9: Registration Fee Summary',
       '        ├── Step8ModeOfPaymentScreen.tsx        # Step 8 of 9: Mode of Payment (UPI / Bank / Card)',
       '        ├── Step8PaymentSuccessScreen.tsx       # Step 8 of 9: Payment Confirmation & Receipt',
-      '        └── UpcomingStepScreen.tsx              # Step 9 scaffold synced with stepper & draft state',
+      '        └── Step9AcknowledgementScreen.tsx      # Step 9 of 9: Acknowledgement, Timeline & Next Steps',
       '```',
       '',
       '## Getting Started',
@@ -2233,7 +2189,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step8FeePaymentScreen.tsx': buildStep8ScreenFile(normalizedCode),
     'src/screens/Step8ModeOfPaymentScreen.tsx': buildStep8ModeOfPaymentScreenFile(normalizedCode),
     'src/screens/Step8PaymentSuccessScreen.tsx': buildStep8PaymentSuccessScreenFile(normalizedCode),
-    'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
+    'src/screens/Step9AcknowledgementScreen.tsx': buildStep9AcknowledgementScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }

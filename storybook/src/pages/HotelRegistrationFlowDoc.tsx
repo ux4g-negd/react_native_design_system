@@ -9,7 +9,7 @@ interface HotelRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = 'WPrwlkMEVoJpoGJzV2SrO';
+const SNACK_ID = 'vYhPHN845LJWxwMINKP7B';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -103,7 +103,7 @@ const STEP_METADATA = {
   },
   9: {
     title: 'Acknowledgement',
-    subtitle: 'Application receipt and tracking reference.',
+    subtitle: 'What happens now, who is deciding, and by when.',
   },
 };
 
@@ -542,8 +542,28 @@ const getHotelFeeSummary = (fd) => {
   };
 };
 
+const getHotelAcknowledgementInfo = (fd) => {
+  const rawMob = (fd.applicantMobile || '').trim();
+  const maskedMobile = rawMob.length >= 4 ? '••••• •' + rawMob.slice(-4) : '••••• •5568';
+  const rawEmail = (fd.applicantEmail || '').trim();
+  let maskedEmail = 'sa•••••@gmail.com';
+  if (rawEmail.includes('@')) {
+    const parts = rawEmail.split('@');
+    maskedEmail = (parts[0].slice(0, 2) || 'sa') + '•••••@' + (parts[1] || 'gmail.com');
+  }
+  const authPersonName = (fd.authPersonName || '').trim() || 'Ravi Kumar';
+  const rawAuthMob = (fd.authPersonMobile || '').trim();
+  const maskedAuthMobile = rawAuthMob.length >= 4 ? '••••• •' + rawAuthMob.slice(-4) : '••••• •5568';
+  return {
+    maskedMobile,
+    maskedEmail,
+    authPersonName,
+    maskedAuthMobile,
+  };
+};
+
 export default function App() {
-  const [step, setStep] = useState(8);
+  const [step, setStep] = useState(9);
   const [isPaymentModeView, setIsPaymentModeView] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(true);
@@ -1146,6 +1166,7 @@ export default function App() {
 
   const reviewItems = getHotelReviewItems(formData);
   const feeSummary = getHotelFeeSummary(formData);
+  const ackInfo = getHotelAcknowledgementInfo(formData);
 
   const paymentMethodLabel = (() => {
     if (formData.paymentMode === 'netbanking') {
@@ -1180,6 +1201,14 @@ export default function App() {
 
   const handleDownloadReceipt = () => {
     alert('Payment receipt (PG2026HP07744TX) downloaded successfully!');
+  };
+
+  const handleDownloadAcknowledgement = () => {
+    alert('Acknowledgement PDF (HT/2026/HP/0007744) downloaded successfully!');
+  };
+
+  const handleGoToApplications = () => {
+    alert('Navigating to My Applications (HT/2026/HP/0007744)...');
   };
 
   const handlePayNow = () => {
@@ -3673,71 +3702,98 @@ export default function App() {
               </View>
             ) : (
               <View style={styles.formContainer}>
+                {/* 1. Acknowledgement */}
+                <Text style={styles.sectionHeading}>Acknowledgement</Text>
                 <Ux4gStatusBanner
-                  variant="infoLight"
-                  title={'Step ' + step + ' of 9 — ' + activeMeta.title}
-                  subtitle={
-                    activeMeta.subtitle +
-                    ' Your Step 1 selections (' +
-                    (eligibilitySummary.isPermanentEligible
-                      ? 'Permanent eligible'
-                      : 'Temporary 1-year eligible') +
-                    (formData.pinCode ? ' • PIN ' + formData.pinCode : '') +
-                    ') are preserved in the draft.'
+                  variant="successLight"
+                  title={
+                    'Application HT/2026/HP/0007744 received on 14 September 2026. ' +
+                    feeSummary.formattedAmount +
+                    ' paid. A copy has gone to ' +
+                    ackInfo.maskedMobile +
+                    ' and ' +
+                    ackInfo.maskedEmail +
+                    '.'
                   }
-                  titleNumberOfLines={2}
-                  subtitleNumberOfLines={4}
-                  backgroundColor={UX4GColors.primary50}
-                  borderColor={UX4GColors.primary200}
+                  subtitle=""
+                  titleNumberOfLines={5}
+                  backgroundColor={UX4GColors.green50}
+                  borderColor={UX4GColors.green200}
                   marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
                   paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
-                  containerStyle={{ borderRadius: 10, marginBottom: 16 }}
+                  containerStyle={{ borderRadius: 10, marginBottom: 14 }}
+                  titleStyle={{
+                    fontSize: 13.5,
+                    lineHeight: 20,
+                    fontWeight: '500',
+                    color: UX4GColors.green800,
+                  }}
                 />
 
-                <Ux4gCard
-                  cornerRadius={10}
-                  borderWidth={1}
-                  borderColor={UX4GColors.neutral200}
-                  backgroundColor={UX4GColors.neutral50}
-                  elevation={0}
-                  style={{ padding: 14 }}
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleDownloadAcknowledgement}
+                  style={styles.ackDownloadLinkBtn}
                 >
-                  <Text style={styles.sectionHeading}>{activeMeta.title}</Text>
-                  <Text style={styles.helperNoteText}>
-                    This step screen is synced with the 9-step Hotel Registration workflow stepper and draft state.
+                  <Text style={styles.ackDownloadLinkText}>
+                    Download the acknowledgement (PDF)
                   </Text>
-                </Ux4gCard>
+                </TouchableOpacity>
 
+                {/* 2. Expected Date of Decision */}
+                <Text style={styles.sectionHeading}>Expected Date of Decision</Text>
+                <Ux4gStatusBanner
+                  variant="infoLight"
+                  title="Decision due by 14 October 2026 — 30 days, 0 elapsed. If no department acts within 30 days the application is DEEMED APPROVED."
+                  subtitle=""
+                  titleNumberOfLines={6}
+                  backgroundColor={UX4GColors.cyan50}
+                  borderColor={UX4GColors.cyan200}
+                  marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                  paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
+                  containerStyle={{ borderRadius: 10, marginBottom: 20 }}
+                  titleStyle={{
+                    fontSize: 13.5,
+                    lineHeight: 20,
+                    fontWeight: '500',
+                    color: UX4GColors.cyan800,
+                  }}
+                />
+
+                {/* 3. What Happens Next */}
+                <Text style={styles.sectionHeading}>What Happens Next</Text>
+                <View style={styles.ackBulletList}>
+                  <Text style={styles.ackBulletText}>
+                    1. The department checks the application is complete. If something is missing
+                    you will be told here and by SMS, and the clock stops until you answer.
+                  </Text>
+                  <Text style={styles.ackBulletText}>
+                    {'2. An inspection may be arranged with the authorised person named in Step 2 — ' +
+                      ackInfo.authPersonName +
+                      ', ' +
+                      ackInfo.maskedAuthMobile +
+                      '.'}
+                  </Text>
+                  <Text style={styles.ackBulletText}>
+                    3. On approval the certificate lands in your portal inbox and is downloadable
+                    from here.
+                  </Text>
+                </View>
+
+                {/* Bottom Action Buttons */}
                 <View style={styles.actionButtonContainer}>
-                  {step < 9 && (
-                    <>
-                      <Ux4gButton
-                        text="Continue"
-                        variant="primary"
-                        size="large"
-                        backgroundColor={UX4GColors.primary}
-                        borderRadius={8}
-                        onPress={handleStepperNext}
-                        style={{ width: '100%' }}
-                      />
-                      <View style={{ height: 10 }} />
-                    </>
-                  )}
                   <Ux4gButton
-                    text="Back"
-                    variant="outline"
+                    text="Go to my applications"
+                    variant="primary"
                     size="large"
-                    backgroundColor={UX4GColors.transparent}
-                    contentColor={UX4GColors.primary}
-                    borderColor={UX4GColors.primary200}
-                    borderWidth={1}
+                    backgroundColor={UX4GColors.primary}
                     borderRadius={8}
-                    onPress={handleStepperBack}
+                    onPress={handleGoToApplications}
                     style={{ width: '100%' }}
                   />
                   <View style={{ height: 10 }} />
                   <Ux4gButton
-                    text="Save as draft"
+                    text="Download acknowledgement"
                     variant="outline"
                     size="large"
                     backgroundColor={UX4GColors.transparent}
@@ -3745,7 +3801,7 @@ export default function App() {
                     borderColor={UX4GColors.primary200}
                     borderWidth={1}
                     borderRadius={8}
-                    onPress={handleSaveDraft}
+                    onPress={handleDownloadAcknowledgement}
                     style={{ width: '100%' }}
                   />
                 </View>
@@ -4108,6 +4164,25 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     flexShrink: 1,
   },
+  ackDownloadLinkBtn: {
+    marginBottom: 22,
+    paddingVertical: 2,
+    alignSelf: 'flex-start',
+  },
+  ackDownloadLinkText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.primary,
+  },
+  ackBulletList: {
+    gap: 8,
+    marginBottom: 4,
+  },
+  ackBulletText: {
+    fontSize: 13.5,
+    lineHeight: 20,
+    color: UX4GColors.neutral800,
+  },
   actionButtonContainer: {
     marginTop: 22,
     paddingTop: 16,
@@ -4194,7 +4269,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 9 Steps (Steps 1–8 Active)
+                Service Pattern • 9 Steps (All 9 Steps Complete)
               </span>
             </div>
             <p
