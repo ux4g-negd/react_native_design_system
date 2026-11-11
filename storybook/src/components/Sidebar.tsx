@@ -1564,6 +1564,11 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Homestay Registration flow',
         icon: 'layers',
       },
+      {
+        id: 'service-pattern-hotel-registration',
+        label: 'Hotel Registration flow',
+        icon: 'layers',
+      },
     ],
   },
 ];

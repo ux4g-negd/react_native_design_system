@@ -192,12 +192,16 @@ import { InlineLanguageToggleDoc } from './pages/InlineLanguageToggleDoc';
 import { TranslationUnavailableDoc } from './pages/TranslationUnavailableDoc';
 import { AllScheduledLanguagesDoc } from './pages/AllScheduledLanguagesDoc';
 import { HomestayRegistrationFlowDoc } from './pages/HomestayRegistrationFlowDoc';
+import { HotelRegistrationFlowDoc } from './pages/HotelRegistrationFlowDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
 } from './utils/router';
 
 const getMobileBreadcrumb = (page: string) => {
+  if (page === 'service-pattern-hotel-registration' || page.includes('hotel')) {
+    return 'Service Patterns / Hotel Registration flow';
+  }
   if (page.startsWith('service-pattern-') || page.includes('homestay')) {
     return 'Service Patterns / Homestay Registration flow';
   }
@@ -1481,6 +1485,13 @@ export const App: React.FC = () => {
       return <PatternsFeedbackDoc isDark={isDark} />;
     }
     if (
+      activePage === 'service-pattern-hotel-registration' ||
+      activePage.includes('hotel-registration') ||
+      activePage.includes('hotel')
+    ) {
+      return <HotelRegistrationFlowDoc isDark={isDark} />;
+    }
+    if (
       activePage === 'service-pattern-homestay-registration' ||
       activePage.includes('homestay-registration') ||
       activePage.includes('homestay')
@@ -1492,6 +1503,8 @@ export const App: React.FC = () => {
     }
 
     switch (activePage) {
+      case 'service-pattern-hotel-registration':
+        return <HotelRegistrationFlowDoc isDark={isDark} />;
       case 'service-pattern-homestay-registration':
         return <HomestayRegistrationFlowDoc isDark={isDark} />;
       case 'changelog':
