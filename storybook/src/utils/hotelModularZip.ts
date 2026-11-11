@@ -75,6 +75,58 @@ export interface HotelFormData {
 
   // Eligibility Criteria
   eligibilityCriteria: string[];
+
+  // Step 2: Applicant & entity
+  legalEntityType: string[];
+  applyingOnBehalfOf: string;
+  applicantFullName: string;
+  firmCompanyName: string;
+  incorporationNumber: string;
+  incorporationDate: string;
+  panNumber: string;
+  aadhaarNumber: string;
+  applicantMobile: string;
+  applicantEmail: string;
+  applicantLandline: string;
+  sameAsUnitAddress: boolean;
+  applicantHouseStreet: string;
+  applicantLocalityLandmark: string;
+  applicantPinCode: string;
+  applicantStateUT: string[];
+  applicantDistrict: string[];
+  applicantSubDistrict: string[];
+  applicantCityVillage: string[];
+  authSameAsApplicant: boolean;
+  authPersonName: string;
+  authPersonDesignation: string[];
+  authPersonRelationship: string[];
+  authPersonMobile: string;
+  authPersonEmail: string;
+
+  // Step 3: Unit identity & location
+  unitName: string;
+  servesMeals: string;
+  unitClassGrade: string[];
+  premisesOwnership: string;
+  leaseExpiryDate: string;
+  yearOfCommencement: string;
+  unitMapLink: string;
+  unitHouseStreet: string;
+  unitLocalityLandmark: string;
+  unitPinCode: string;
+  unitStateUT: string[];
+  unitDistrict: string[];
+  unitCircleSubOffice: string[];
+  unitSubDistrict: string[];
+  unitCityVillage: string[];
+  unitWardPanchayat: string[];
+  coastalRegulationZone: boolean;
+  landAreaUnit: string[];
+  totalExtentLand: string;
+  builtUpAreaSqm: string;
+  unitTelephone: string;
+  unitFax: string;
+  unitEmail: string;
 }
 
 export type HotelFormErrors = Record<string, string | undefined>;
@@ -98,11 +150,37 @@ export default UnionLogo;
 `;
 }
 
+function buildIconsFile(appCode: string): string {
+  const iconsSlice = sliceBetween(
+    appCode,
+    'const CrosshairsGpsIcon =',
+    'export default function App()',
+    'hotelIcons'
+  )
+    .trim()
+    .replace(
+      'const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (',
+      'export const CrosshairsGpsIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral800 }: IconProps) => ('
+    );
+
+  return `import React from 'react';
+import Svg, { Path, Circle } from 'react-native-svg';
+import { UX4GColors } from 'ux4g-react-native-components';
+
+export interface IconProps {
+  size?: number;
+  color?: string;
+}
+
+${iconsSlice}
+`;
+}
+
 function buildFormOptionsFile(appCode: string): string {
   const rawBlock = sliceBetween(
     appCode,
     'const STEP_METADATA =',
-    'export default function App()',
+    'const CrosshairsGpsIcon =',
     'hotelFormOptions'
   ).trim();
 
@@ -119,7 +197,12 @@ function buildFormOptionsFile(appCode: string): string {
     .replace(
       'export const ELIGIBILITY_STATEMENTS =',
       'export const ELIGIBILITY_STATEMENTS: EligibilityOption[] ='
-    );
+    )
+    .replace('export const LEGAL_ENTITY_TYPES =', 'export const LEGAL_ENTITY_TYPES: DropdownOption[] =')
+    .replace('export const DESIGNATION_OPTIONS =', 'export const DESIGNATION_OPTIONS: DropdownOption[] =')
+    .replace('export const RELATIONSHIP_OPTIONS =', 'export const RELATIONSHIP_OPTIONS: DropdownOption[] =')
+    .replace('export const HOTEL_CLASS_OPTIONS =', 'export const HOTEL_CLASS_OPTIONS: DropdownOption[] =')
+    .replace('export const LAND_AREA_UNITS =', 'export const LAND_AREA_UNITS: DropdownOption[] =');
 
   return `import { DropdownOption, EligibilityOption, StepMeta } from '../types/hotel';
 
@@ -226,6 +309,159 @@ export function validateHotelStep1(formData: HotelFormData): HotelFormErrors {
   }
   return errs;
 }
+
+export function validateHotelStep2(formData: HotelFormData): HotelFormErrors {
+  const errs: HotelFormErrors = {};
+  if (!formData.legalEntityType.length) {
+    errs.legalEntityType = 'Please select the type of legal entity';
+  }
+  if (!formData.applyingOnBehalfOf) {
+    errs.applyingOnBehalfOf = 'Please select who you are applying on behalf of';
+  }
+  if (!formData.applicantFullName.trim()) {
+    errs.applicantFullName = 'Full name of the applicant is required';
+  }
+  if (formData.legalEntityType[0] !== 'individual') {
+    if (!formData.firmCompanyName.trim()) {
+      errs.firmCompanyName = 'Name of the firm, company or society is required';
+    }
+    if (!formData.incorporationNumber.trim()) {
+      errs.incorporationNumber = 'Registration or incorporation number is required';
+    }
+    if (!formData.incorporationDate.trim()) {
+      errs.incorporationDate = 'Date of incorporation or registration is required';
+    }
+  }
+  if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/i.test(formData.panNumber.trim())) {
+    errs.panNumber = 'Enter a valid 10-character PAN (e.g. ABCDE1234F)';
+  }
+  if (
+    formData.aadhaarNumber.trim() &&
+    !/^\\d{12}$/.test(formData.aadhaarNumber.replace(/\\s/g, ''))
+  ) {
+    errs.aadhaarNumber = 'Aadhaar number must be 12 digits';
+  }
+  if (!/^\\d{10}$/.test(formData.applicantMobile.trim())) {
+    errs.applicantMobile = 'Enter a valid 10-digit mobile number';
+  }
+  if (!/^\\S+@\\S+\\.\\S+$/.test(formData.applicantEmail.trim())) {
+    errs.applicantEmail = 'Enter a valid email address';
+  }
+  if (!formData.applicantHouseStreet.trim()) {
+    errs.applicantHouseStreet = 'House or building number and street is required';
+  }
+  if (!/^\\d{6}$/.test(formData.applicantPinCode.trim())) {
+    errs.applicantPinCode = 'Enter a valid 6-digit PIN code';
+  }
+  if (!formData.applicantStateUT.length) {
+    errs.applicantStateUT = 'State / UT is required';
+  }
+  if (!formData.applicantDistrict.length) {
+    errs.applicantDistrict = 'District is required';
+  }
+  if (!formData.applicantSubDistrict.length) {
+    errs.applicantSubDistrict = 'Sub-district is required';
+  }
+  if (!formData.applicantCityVillage.length) {
+    errs.applicantCityVillage = 'City / Town / Village is required';
+  }
+  if (!formData.authPersonName.trim()) {
+    errs.authPersonName = 'Name of the authorised person is required';
+  }
+  if (!formData.authPersonDesignation.length) {
+    errs.authPersonDesignation = 'Please select a designation';
+  }
+  if (!formData.authPersonRelationship.length) {
+    errs.authPersonRelationship = 'Please select relationship to the applicant';
+  }
+  if (!/^\\d{10}$/.test(formData.authPersonMobile.trim())) {
+    errs.authPersonMobile = 'Enter a valid 10-digit mobile number';
+  }
+  if (!/^\\S+@\\S+\\.\\S+$/.test(formData.authPersonEmail.trim())) {
+    errs.authPersonEmail = 'Enter a valid email address';
+  }
+  return errs;
+}
+
+export function getConvertedSqMetres(totalExtentLand: string, landAreaUnit: string[]): string {
+  const rawVal = parseFloat(totalExtentLand);
+  if (isNaN(rawVal) || rawVal <= 0) {
+    return '2,023.43';
+  }
+  const unitId = landAreaUnit[0] || 'acres';
+  const factorMap: Record<string, number> = {
+    acres: 4046.8564224,
+    hectares: 10000,
+    sq_m: 1,
+    sq_ft: 0.092903,
+    sq_yd: 0.836127,
+    nali: 200.67,
+  };
+  const sqM = rawVal * (factorMap[unitId] || 1);
+  return sqM.toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+export function validateHotelStep3(formData: HotelFormData): HotelFormErrors {
+  const errs: HotelFormErrors = {};
+  if (!formData.unitName.trim()) {
+    errs.unitName = 'Name of the unit is required';
+  }
+  if (!formData.unitClassGrade.length) {
+    errs.unitClassGrade = 'Please select the class or grade of the unit';
+  }
+  if (!formData.premisesOwnership) {
+    errs.premisesOwnership = 'Please select ownership of the premises';
+  }
+  if (
+    (formData.premisesOwnership === 'leased' || formData.premisesOwnership === 'rented') &&
+    !formData.leaseExpiryDate.trim()
+  ) {
+    errs.leaseExpiryDate = 'Lease or rent expiry date is required';
+  }
+  if (!formData.unitMapLink.trim()) {
+    errs.unitMapLink = 'Location link is required';
+  }
+  if (!formData.unitHouseStreet.trim()) {
+    errs.unitHouseStreet = 'House or building number and street is required';
+  }
+  if (!/^[0-9]{6}$/.test(formData.unitPinCode.trim())) {
+    errs.unitPinCode = 'Enter a valid 6-digit PIN code';
+  }
+  if (!formData.unitStateUT.length) {
+    errs.unitStateUT = 'State / UT is required';
+  }
+  if (!formData.unitDistrict.length) {
+    errs.unitDistrict = 'District is required';
+  }
+  if (!formData.unitCircleSubOffice.length) {
+    errs.unitCircleSubOffice = 'Circle / sub-office is required';
+  }
+  if (!formData.unitSubDistrict.length) {
+    errs.unitSubDistrict = 'Sub-district is required';
+  }
+  if (!formData.unitCityVillage.length) {
+    errs.unitCityVillage = 'City / Town / Village is required';
+  }
+  if (!formData.landAreaUnit.length) {
+    errs.landAreaUnit = 'Please select unit of measurement';
+  }
+  if (!formData.totalExtentLand.trim() || parseFloat(formData.totalExtentLand) <= 0) {
+    errs.totalExtentLand = 'Enter total extent of land';
+  }
+  if (!formData.builtUpAreaSqm.trim() || parseFloat(formData.builtUpAreaSqm) <= 0) {
+    errs.builtUpAreaSqm = 'Enter valid built-up area in Sq. m.';
+  }
+  if (!formData.unitTelephone.trim()) {
+    errs.unitTelephone = 'Telephone number of the unit is required';
+  }
+  if (!/^[^@ ]+@[^@ ]+[.][^@ ]+$/.test(formData.unitEmail.trim())) {
+    errs.unitEmail = 'Enter a valid unit email address';
+  }
+  return errs;
+}
 `;
 }
 
@@ -233,7 +469,7 @@ function buildStep1ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     '{step === 1 ? (',
-    ') : (',
+    ') : step === 2 ? (',
     'Hotel Step 1'
   );
 
@@ -281,6 +517,131 @@ export const Step1BeforeYouStartScreen: React.FC<Step1BeforeYouStartScreenProps>
   updateField,
   toggleEligibilityItem,
   handleContinueStep1,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep2ScreenFile(appCode: string): string {
+  let jsx = extractScreenJsx(
+    appCode,
+    ') : step === 2 ? (',
+    ') : step === 3 ? (',
+    'Hotel Step 2'
+  );
+
+  // Provide explicit Date parameter type for strict TypeScript
+  jsx = jsx.replace(
+    'onDateSelected={(d) =>',
+    'onDateSelected={(d: Date) =>'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import {
+  Ux4gSelectionDropdown,
+  Ux4gRadioButton,
+  Ux4gInputField,
+  Ux4gDatePicker,
+  Ux4gPanInputField,
+  Ux4gAadhaarInputField,
+  Ux4gCheckbox,
+  Ux4gButton,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import {
+  LEGAL_ENTITY_TYPES,
+  STATES_AND_UTS,
+  DISTRICTS_OPTIONS,
+  SUB_DISTRICTS,
+  CITIES_VILLAGES,
+  DESIGNATION_OPTIONS,
+  RELATIONSHIP_OPTIONS,
+} from '../constants/formOptions';
+import { HotelFormData, HotelFormErrors } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step2ApplicantEntityScreenProps {
+  formData: HotelFormData;
+  errors: HotelFormErrors;
+  updateField: <K extends keyof HotelFormData>(key: K, value: HotelFormData[K]) => void;
+  toggleSameAsUnitAddress: (checked: boolean) => void;
+  toggleAuthSameAsApplicant: (checked: boolean) => void;
+  handleContinueStep2: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step2ApplicantEntityScreen: React.FC<Step2ApplicantEntityScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  toggleSameAsUnitAddress,
+  toggleAuthSameAsApplicant,
+  handleContinueStep2,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep3ScreenFile(appCode: string): string {
+  let jsx = extractScreenJsx(
+    appCode,
+    ') : step === 3 ? (',
+    ') : (',
+    'Hotel Step 3'
+  );
+
+  jsx = jsx.replace(
+    'onDateSelected={(d) =>',
+    'onDateSelected={(d: Date) =>'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  Ux4gSelectionDropdown,
+  Ux4gRadioButton,
+  Ux4gInputField,
+  Ux4gDatePicker,
+  Ux4gCheckbox,
+  Ux4gButton,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { CrosshairsGpsIcon } from '../components/Icons';
+import {
+  HOTEL_CLASS_OPTIONS,
+  STATES_AND_UTS,
+  DISTRICTS_OPTIONS,
+  CIRCLE_SUB_OFFICES,
+  SUB_DISTRICTS,
+  CITIES_VILLAGES,
+  WARDS_PANCHAYATS,
+  LAND_AREA_UNITS,
+} from '../constants/formOptions';
+import { HotelFormData, HotelFormErrors } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step3UnitIdentityLocationScreenProps {
+  formData: HotelFormData;
+  errors: HotelFormErrors;
+  computedSqMetresDisplay: string;
+  updateField: <K extends keyof HotelFormData>(key: K, value: HotelFormData[K]) => void;
+  handleUseCurrentLocation: () => void;
+  handleContinueStep3: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step3UnitIdentityLocationScreen: React.FC<Step3UnitIdentityLocationScreenProps> = ({
+  formData,
+  errors,
+  computedSqMetresDisplay,
+  updateField,
+  handleUseCurrentLocation,
+  handleContinueStep3,
   handleSaveDraft,
 }) => (
 ${jsx}
@@ -425,8 +786,16 @@ import { STEP_METADATA } from './src/constants/formOptions';
 import { createInitialHotelFormData } from './src/constants/initialFormData';
 import { styles } from './src/styles/commonStyles';
 import { HotelFormData, HotelFormErrors } from './src/types/hotel';
-import { getEligibilityBannerSummary, validateHotelStep1 } from './src/utils/validators';
+import {
+  getConvertedSqMetres,
+  getEligibilityBannerSummary,
+  validateHotelStep1,
+  validateHotelStep2,
+  validateHotelStep3,
+} from './src/utils/validators';
 import { Step1BeforeYouStartScreen } from './src/screens/Step1BeforeYouStartScreen';
+import { Step2ApplicantEntityScreen } from './src/screens/Step2ApplicantEntityScreen';
+import { Step3UnitIdentityLocationScreen } from './src/screens/Step3UnitIdentityLocationScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
@@ -495,9 +864,75 @@ export default function App() {
     setStep(2);
   };
 
+  const toggleSameAsUnitAddress = (checked: boolean) => {
+    setFormData((prev) => {
+      if (!checked) return { ...prev, sameAsUnitAddress: false };
+      return {
+        ...prev,
+        sameAsUnitAddress: true,
+        applicantPinCode: prev.pinCode || prev.applicantPinCode,
+        applicantStateUT: prev.stateUT.length ? [...prev.stateUT] : prev.applicantStateUT,
+        applicantDistrict: prev.district.length ? [...prev.district] : prev.applicantDistrict,
+        applicantSubDistrict: prev.subDistrict.length
+          ? [...prev.subDistrict]
+          : prev.applicantSubDistrict,
+        applicantCityVillage: prev.cityVillage.length
+          ? [...prev.cityVillage]
+          : prev.applicantCityVillage,
+      };
+    });
+  };
+
+  const toggleAuthSameAsApplicant = (checked: boolean) => {
+    setFormData((prev) => {
+      if (!checked) return { ...prev, authSameAsApplicant: false };
+      return {
+        ...prev,
+        authSameAsApplicant: true,
+        authPersonName: prev.applicantFullName || prev.authPersonName,
+        authPersonMobile: prev.applicantMobile || prev.authPersonMobile,
+        authPersonEmail: prev.applicantEmail || prev.authPersonEmail,
+        authPersonRelationship: prev.authPersonRelationship.length
+          ? prev.authPersonRelationship
+          : ['self'],
+      };
+    });
+  };
+
+  const handleContinueStep2 = () => {
+    const errs = validateHotelStep2(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(3);
+  };
+
+  const computedSqMetresDisplay = getConvertedSqMetres(
+    formData.totalExtentLand,
+    formData.landAreaUnit
+  );
+
+  const handleUseCurrentLocation = () => {
+    updateField('unitMapLink', 'https://maps.google.com/?q=30.4598,78.0644');
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = validateHotelStep3(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(4);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
+    } else if (step === 2) {
+      handleContinueStep2();
+    } else if (step === 3) {
+      handleContinueStep3();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -601,6 +1036,26 @@ export default function App() {
                 updateField={updateField}
                 toggleEligibilityItem={toggleEligibilityItem}
                 handleContinueStep1={handleContinueStep1}
+                handleSaveDraft={handleSaveDraft}
+              />
+            ) : step === 2 ? (
+              <Step2ApplicantEntityScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                toggleSameAsUnitAddress={toggleSameAsUnitAddress}
+                toggleAuthSameAsApplicant={toggleAuthSameAsApplicant}
+                handleContinueStep2={handleContinueStep2}
+                handleSaveDraft={handleSaveDraft}
+              />
+            ) : step === 3 ? (
+              <Step3UnitIdentityLocationScreen
+                formData={formData}
+                errors={errors}
+                computedSqMetresDisplay={computedSqMetresDisplay}
+                updateField={updateField}
+                handleUseCurrentLocation={handleUseCurrentLocation}
+                handleContinueStep3={handleContinueStep3}
                 handleSaveDraft={handleSaveDraft}
               />
             ) : (
@@ -714,18 +1169,22 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '    ├── assets/',
       '    │   ├── NationalEmblem.tsx               # Official Government of India Emblem SVG',
       '    │   └── UnionLogo.tsx                    # Portal Union.svg brand mark SVG',
+      '    ├── components/',
+      '    │   └── Icons.tsx                        # Shared vector outline icons (GPS crosshairs, etc.)',
       '    ├── constants/',
       '    │   ├── formOptions.ts                   # Categories, LGD location lists, Eligibility options & STEP_METADATA',
       '    │   └── initialFormData.ts               # Initial HotelFormData state factory',
       '    ├── types/',
       '    │   └── hotel.ts                         # TypeScript interfaces for form state & validation errors',
       '    ├── utils/',
-      '    │   └── validators.ts                    # Step 1 validation rules & live eligibility banner helper',
+      '    │   └── validators.ts                    # Step validation rules, land conversion & eligibility helper',
       '    ├── styles/',
       '    │   └── commonStyles.ts                  # Shared StyleSheet using UX4GColors tokens',
       '    └── screens/',
-      '        ├── Step1BeforeYouStartScreen.tsx    # Step 1 of 9: Service Required, Existing Reg, Location, Eligibility',
-      '        └── UpcomingStepScreen.tsx           # Steps 2-9 scaffold synced with stepper & draft state',
+      '        ├── Step1BeforeYouStartScreen.tsx       # Step 1 of 9: Service Required, Existing Reg, Location, Eligibility',
+      '        ├── Step2ApplicantEntityScreen.tsx      # Step 2 of 9: Applicant & Entity, Identity, Contact, Address, Authorised Person',
+      '        ├── Step3UnitIdentityLocationScreen.tsx # Step 3 of 9: Unit Details, Location, Land & Premises, Contact Details',
+      '        └── UpcomingStepScreen.tsx              # Steps 4-9 scaffold synced with stepper & draft state',
       '```',
       '',
       '## Getting Started',
@@ -739,12 +1198,15 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     ].join('\n'),
     'src/assets/NationalEmblem.tsx': NATIONAL_EMBLEM_SOURCE,
     'src/assets/UnionLogo.tsx': buildUnionLogoFile(normalizedCode),
+    'src/components/Icons.tsx': buildIconsFile(normalizedCode),
     'src/types/hotel.ts': buildTypesFile(),
     'src/constants/formOptions.ts': buildFormOptionsFile(normalizedCode),
     'src/constants/initialFormData.ts': buildInitialFormDataFile(normalizedCode),
     'src/utils/validators.ts': buildValidatorsFile(),
     'src/styles/commonStyles.ts': buildCommonStylesFile(normalizedCode),
     'src/screens/Step1BeforeYouStartScreen.tsx': buildStep1ScreenFile(normalizedCode),
+    'src/screens/Step2ApplicantEntityScreen.tsx': buildStep2ScreenFile(normalizedCode),
+    'src/screens/Step3UnitIdentityLocationScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };

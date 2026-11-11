@@ -9,7 +9,7 @@ interface HotelRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = '_-ZZZ_eGNovJN_sZwkmtV';
+const SNACK_ID = 'yrF_Yu2ErMzU1507EQCuC';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -40,6 +40,9 @@ import {
   Ux4gRadioButton,
   Ux4gSelectionDropdown,
   Ux4gInputField,
+  Ux4gDatePicker,
+  Ux4gPanInputField,
+  Ux4gAadhaarInputField,
   Ux4gCheckbox,
   Ux4gStatusBanner,
   Ux4gCompactStepper,
@@ -66,12 +69,12 @@ const STEP_METADATA = {
     subtitle: 'What you are registering, where it is, and what the application will need.',
   },
   2: {
-    title: 'Hotel & Unit Details',
-    subtitle: 'Identity of the hotel property and legal promoter details.',
+    title: 'Applicant & entity',
+    subtitle: 'Who is applying, in what legal form, and who the department will deal with.',
   },
   3: {
-    title: 'Owner & Management',
-    subtitle: 'Applicant, proprietor, and day-to-day management information.',
+    title: 'Unit identity & location',
+    subtitle: 'What the unit is, where it stands, and how much land it sits on.',
   },
   4: {
     title: 'Rooms & Tariff',
@@ -163,12 +166,73 @@ const ELIGIBILITY_STATEMENTS = [
   { id: 'no_litigation', label: 'There is no pending litigation on the land or premises' },
 ];
 
+const LEGAL_ENTITY_TYPES = [
+  { id: 'individual', label: 'Individual / Sole Proprietor' },
+  { id: 'partnership', label: 'Partnership Firm' },
+  { id: 'llp', label: 'Limited Liability Partnership (LLP)' },
+  { id: 'pvt_ltd', label: 'Private Limited Company' },
+  { id: 'public_ltd', label: 'Public Limited Company' },
+  { id: 'society_trust', label: 'Trust / Society' },
+];
+
+const DESIGNATION_OPTIONS = [
+  { id: 'proprietor', label: 'Proprietor / Owner' },
+  { id: 'partner', label: 'Managing Partner' },
+  { id: 'director', label: 'Director' },
+  { id: 'general_manager', label: 'General Manager' },
+  { id: 'auth_signatory', label: 'Authorised Signatory' },
+  { id: 'trustee', label: 'Trustee / Secretary' },
+];
+
+const RELATIONSHIP_OPTIONS = [
+  { id: 'self', label: 'Self' },
+  { id: 'partner', label: 'Business Partner' },
+  { id: 'director', label: 'Director / Board Member' },
+  { id: 'manager', label: 'Employee / General Manager' },
+  { id: 'legal_rep', label: 'Legal / Authorised Representative' },
+  { id: 'family', label: 'Spouse / Family Member' },
+];
+
+const HOTEL_CLASS_OPTIONS = [
+  { id: '1_star', label: '1 Star' },
+  { id: '2_star', label: '2 Star' },
+  { id: '3_star', label: '3 Star' },
+  { id: '4_star', label: '4 Star' },
+  { id: '5_star', label: '5 Star' },
+  { id: '5_star_deluxe', label: '5 Star Deluxe' },
+  { id: 'heritage', label: 'Heritage' },
+  { id: 'heritage_classic', label: 'Heritage Classic' },
+  { id: 'heritage_grand', label: 'Heritage Grand' },
+  { id: 'standard', label: 'Unclassified / Standard' },
+];
+
+const LAND_AREA_UNITS = [
+  { id: 'acres', label: 'Acres' },
+  { id: 'hectares', label: 'Hectares' },
+  { id: 'sq_m', label: 'Square metres' },
+  { id: 'sq_ft', label: 'Square feet' },
+  { id: 'sq_yd', label: 'Square yards' },
+  { id: 'nali', label: 'Nali' },
+];
+
+const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="12" cy="12" r="7" stroke={color} strokeWidth="1.8" />
+    <Circle cx="12" cy="12" r="2.2" fill={color} />
+    <Path d="M12 2V5" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+    <Path d="M12 19V22" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+    <Path d="M2 12H5" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+    <Path d="M19 12H22" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+  </Svg>
+);
+
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
   const [formData, setFormData] = useState({
+    // Step 1: Before you start
     applicationType: '',
     unitCategory: [],
     registrationSought: '',
@@ -181,6 +245,58 @@ export default function App() {
     wardPanchayat: [],
     pinCode: '',
     eligibilityCriteria: [],
+
+    // Step 2: Applicant & entity
+    legalEntityType: [],
+    applyingOnBehalfOf: '',
+    applicantFullName: '',
+    firmCompanyName: '',
+    incorporationNumber: '',
+    incorporationDate: '',
+    panNumber: '',
+    aadhaarNumber: '',
+    applicantMobile: '',
+    applicantEmail: '',
+    applicantLandline: '',
+    sameAsUnitAddress: false,
+    applicantHouseStreet: '',
+    applicantLocalityLandmark: '',
+    applicantPinCode: '',
+    applicantStateUT: [],
+    applicantDistrict: [],
+    applicantSubDistrict: [],
+    applicantCityVillage: [],
+    authSameAsApplicant: false,
+    authPersonName: '',
+    authPersonDesignation: [],
+    authPersonRelationship: [],
+    authPersonMobile: '',
+    authPersonEmail: '',
+
+    // Step 3: Unit identity & location
+    unitName: '',
+    servesMeals: '',
+    unitClassGrade: [],
+    premisesOwnership: '',
+    leaseExpiryDate: '',
+    yearOfCommencement: '',
+    unitMapLink: '',
+    unitHouseStreet: '',
+    unitLocalityLandmark: '',
+    unitPinCode: '',
+    unitStateUT: [],
+    unitDistrict: [],
+    unitCircleSubOffice: [],
+    unitSubDistrict: [],
+    unitCityVillage: [],
+    unitWardPanchayat: [],
+    coastalRegulationZone: false,
+    landAreaUnit: [],
+    totalExtentLand: '',
+    builtUpAreaSqm: '',
+    unitTelephone: '',
+    unitFax: '',
+    unitEmail: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -284,7 +400,7 @@ export default function App() {
     if (!formData.cityVillage.length) {
       errs.cityVillage = 'City / Town / Village is required';
     }
-    if (!/^\\d{6}$/.test(formData.pinCode.trim())) {
+    if (!/^[0-9]{6}$/.test(formData.pinCode.trim())) {
       errs.pinCode = 'Enter a valid 6-digit PIN code';
     }
 
@@ -295,9 +411,221 @@ export default function App() {
     setStep(2);
   };
 
+  const toggleSameAsUnitAddress = (checked) => {
+    setFormData((prev) => {
+      if (!checked) {
+        return { ...prev, sameAsUnitAddress: false };
+      }
+      return {
+        ...prev,
+        sameAsUnitAddress: true,
+        applicantPinCode: prev.pinCode || prev.applicantPinCode,
+        applicantStateUT: prev.stateUT.length ? [...prev.stateUT] : prev.applicantStateUT,
+        applicantDistrict: prev.district.length ? [...prev.district] : prev.applicantDistrict,
+        applicantSubDistrict: prev.subDistrict.length
+          ? [...prev.subDistrict]
+          : prev.applicantSubDistrict,
+        applicantCityVillage: prev.cityVillage.length
+          ? [...prev.cityVillage]
+          : prev.applicantCityVillage,
+      };
+    });
+  };
+
+  const toggleAuthSameAsApplicant = (checked) => {
+    setFormData((prev) => {
+      if (!checked) {
+        return { ...prev, authSameAsApplicant: false };
+      }
+      return {
+        ...prev,
+        authSameAsApplicant: true,
+        authPersonName: prev.applicantFullName || prev.authPersonName,
+        authPersonMobile: prev.applicantMobile || prev.authPersonMobile,
+        authPersonEmail: prev.applicantEmail || prev.authPersonEmail,
+        authPersonRelationship: prev.authPersonRelationship.length
+          ? prev.authPersonRelationship
+          : ['self'],
+      };
+    });
+  };
+
+  const handleContinueStep2 = () => {
+    const errs = {};
+    if (!formData.legalEntityType.length) {
+      errs.legalEntityType = 'Please select the type of legal entity';
+    }
+    if (!formData.applyingOnBehalfOf) {
+      errs.applyingOnBehalfOf = 'Please select who you are applying on behalf of';
+    }
+    if (!formData.applicantFullName.trim()) {
+      errs.applicantFullName = 'Full name of the applicant is required';
+    }
+    if (formData.legalEntityType[0] !== 'individual') {
+      if (!formData.firmCompanyName.trim()) {
+        errs.firmCompanyName = 'Name of the firm, company or society is required';
+      }
+      if (!formData.incorporationNumber.trim()) {
+        errs.incorporationNumber = 'Registration or incorporation number is required';
+      }
+      if (!formData.incorporationDate.trim()) {
+        errs.incorporationDate = 'Date of incorporation or registration is required';
+      }
+    }
+    if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/i.test(formData.panNumber.trim())) {
+      errs.panNumber = 'Enter a valid 10-character PAN (e.g. ABCDE1234F)';
+    }
+    if (
+      formData.aadhaarNumber.trim() &&
+      !/^[0-9]{12}$/.test(formData.aadhaarNumber.replace(/ /g, ''))
+    ) {
+      errs.aadhaarNumber = 'Aadhaar number must be 12 digits';
+    }
+    if (!/^[0-9]{10}$/.test(formData.applicantMobile.trim())) {
+      errs.applicantMobile = 'Enter a valid 10-digit mobile number';
+    }
+    if (!/^[^@ ]+@[^@ ]+[.][^@ ]+$/.test(formData.applicantEmail.trim())) {
+      errs.applicantEmail = 'Enter a valid email address';
+    }
+    if (!formData.applicantHouseStreet.trim()) {
+      errs.applicantHouseStreet = 'House or building number and street is required';
+    }
+    if (!/^[0-9]{6}$/.test(formData.applicantPinCode.trim())) {
+      errs.applicantPinCode = 'Enter a valid 6-digit PIN code';
+    }
+    if (!formData.applicantStateUT.length) {
+      errs.applicantStateUT = 'State / UT is required';
+    }
+    if (!formData.applicantDistrict.length) {
+      errs.applicantDistrict = 'District is required';
+    }
+    if (!formData.applicantSubDistrict.length) {
+      errs.applicantSubDistrict = 'Sub-district is required';
+    }
+    if (!formData.applicantCityVillage.length) {
+      errs.applicantCityVillage = 'City / Town / Village is required';
+    }
+    if (!formData.authPersonName.trim()) {
+      errs.authPersonName = 'Name of the authorised person is required';
+    }
+    if (!formData.authPersonDesignation.length) {
+      errs.authPersonDesignation = 'Please select a designation';
+    }
+    if (!formData.authPersonRelationship.length) {
+      errs.authPersonRelationship = 'Please select relationship to the applicant';
+    }
+    if (!/^[0-9]{10}$/.test(formData.authPersonMobile.trim())) {
+      errs.authPersonMobile = 'Enter a valid 10-digit mobile number';
+    }
+    if (!/^[^@ ]+@[^@ ]+[.][^@ ]+$/.test(formData.authPersonEmail.trim())) {
+      errs.authPersonEmail = 'Enter a valid email address';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(3);
+  };
+
+  const getConvertedSqMetres = () => {
+    const rawVal = parseFloat(formData.totalExtentLand);
+    if (isNaN(rawVal) || rawVal <= 0) {
+      return '2,023.43';
+    }
+    const unitId = formData.landAreaUnit[0] || 'acres';
+    const factorMap = {
+      acres: 4046.8564224,
+      hectares: 10000,
+      sq_m: 1,
+      sq_ft: 0.092903,
+      sq_yd: 0.836127,
+      nali: 200.67,
+    };
+    const sqM = rawVal * (factorMap[unitId] || 1);
+    return sqM.toLocaleString('en-IN', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const computedSqMetresDisplay = getConvertedSqMetres();
+
+  const handleUseCurrentLocation = () => {
+    updateField('unitMapLink', 'https://maps.google.com/?q=30.4598,78.0644');
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = {};
+    if (!formData.unitName.trim()) {
+      errs.unitName = 'Name of the unit is required';
+    }
+    if (!formData.unitClassGrade.length) {
+      errs.unitClassGrade = 'Please select the class or grade of the unit';
+    }
+    if (!formData.premisesOwnership) {
+      errs.premisesOwnership = 'Please select ownership of the premises';
+    }
+    if (
+      (formData.premisesOwnership === 'leased' || formData.premisesOwnership === 'rented') &&
+      !formData.leaseExpiryDate.trim()
+    ) {
+      errs.leaseExpiryDate = 'Lease or rent expiry date is required';
+    }
+    if (!formData.unitMapLink.trim()) {
+      errs.unitMapLink = 'Location link is required';
+    }
+    if (!formData.unitHouseStreet.trim()) {
+      errs.unitHouseStreet = 'House or building number and street is required';
+    }
+    if (!/^[0-9]{6}$/.test(formData.unitPinCode.trim())) {
+      errs.unitPinCode = 'Enter a valid 6-digit PIN code';
+    }
+    if (!formData.unitStateUT.length) {
+      errs.unitStateUT = 'State / UT is required';
+    }
+    if (!formData.unitDistrict.length) {
+      errs.unitDistrict = 'District is required';
+    }
+    if (!formData.unitCircleSubOffice.length) {
+      errs.unitCircleSubOffice = 'Circle / sub-office is required';
+    }
+    if (!formData.unitSubDistrict.length) {
+      errs.unitSubDistrict = 'Sub-district is required';
+    }
+    if (!formData.unitCityVillage.length) {
+      errs.unitCityVillage = 'City / Town / Village is required';
+    }
+    if (!formData.landAreaUnit.length) {
+      errs.landAreaUnit = 'Please select unit of measurement';
+    }
+    if (!formData.totalExtentLand.trim() || parseFloat(formData.totalExtentLand) <= 0) {
+      errs.totalExtentLand = 'Enter total extent of land';
+    }
+    if (!formData.builtUpAreaSqm.trim() || parseFloat(formData.builtUpAreaSqm) <= 0) {
+      errs.builtUpAreaSqm = 'Enter valid built-up area in Sq. m.';
+    }
+    if (!formData.unitTelephone.trim()) {
+      errs.unitTelephone = 'Telephone number of the unit is required';
+    }
+    if (!/^[^@ ]+@[^@ ]+[.][^@ ]+$/.test(formData.unitEmail.trim())) {
+      errs.unitEmail = 'Enter a valid unit email address';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(4);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
+    } else if (step === 2) {
+      handleContinueStep2();
+    } else if (step === 3) {
+      handleContinueStep3();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -673,6 +1001,815 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 2 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Applicant Details */}
+                <Text style={styles.sectionHeading}>Applicant Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Type of legal entity"
+                    required
+                    size="l"
+                    options={LEGAL_ENTITY_TYPES}
+                    selectedOptionIds={formData.legalEntityType}
+                    onSelectionChange={(ids) => updateField('legalEntityType', ids)}
+                    placeholder="Select the legal entity type"
+                    status={errors.legalEntityType ? 'error' : 'defaultStatus'}
+                    description={errors.legalEntityType}
+                  />
+                </View>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Applying on behalf of<Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="myself"
+                      groupValue={formData.applyingOnBehalfOf}
+                      onChanged={(val) => updateField('applyingOnBehalfOf', val)}
+                      label="Myself"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="firm"
+                      groupValue={formData.applyingOnBehalfOf}
+                      onChanged={(val) => updateField('applyingOnBehalfOf', val)}
+                      label="My firm or organisation"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="representative"
+                      groupValue={formData.applyingOnBehalfOf}
+                      onChanged={(val) => updateField('applyingOnBehalfOf', val)}
+                      label="Someone else, as their authorised representative"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.applyingOnBehalfOf && (
+                    <Text style={styles.inlineErrorText}>{errors.applyingOnBehalfOf}</Text>
+                  )}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Full name of the applicant"
+                    required
+                    size="large"
+                    value={formData.applicantFullName}
+                    onValueChange={(v) => updateField('applicantFullName', v)}
+                    placeholder="As it appears on the PAN card"
+                    status={errors.applicantFullName ? 'error' : 'defaultStatus'}
+                    caption={errors.applicantFullName}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Name of the firm, company or society"
+                    required
+                    size="large"
+                    value={formData.firmCompanyName}
+                    onValueChange={(v) => updateField('firmCompanyName', v)}
+                    placeholder="Shown only when the entity type is not individual"
+                    status={errors.firmCompanyName ? 'error' : 'defaultStatus'}
+                    caption={errors.firmCompanyName}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Registration or incorporation number"
+                    required
+                    size="large"
+                    value={formData.incorporationNumber}
+                    onValueChange={(v) => updateField('incorporationNumber', v)}
+                    placeholder="CIN, LLPIN, society or firm registration number"
+                    status={errors.incorporationNumber ? 'error' : 'defaultStatus'}
+                    caption={errors.incorporationNumber}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gDatePicker
+                    label="Date of incorporation or registration"
+                    required
+                    onDateSelected={(d) =>
+                      updateField('incorporationDate', d.toLocaleDateString('en-GB'))
+                    }
+                    placeholder="Select date"
+                    status={errors.incorporationDate ? 'error' : 'defaultStatus'}
+                    description={errors.incorporationDate}
+                  />
+                </View>
+
+                {/* 2. Identity Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>Identity Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gPanInputField
+                    label="PAN"
+                    required
+                    size="large"
+                    value={formData.panNumber}
+                    onValueChange={(v) => updateField('panNumber', v.toUpperCase())}
+                    placeholder="10 characters, e.g. ABCDE1234F"
+                    caption={
+                      errors.panNumber ||
+                      'Verified against the Income Tax database once you enter it.'
+                    }
+                    status={errors.panNumber ? 'error' : 'defaultStatus'}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gAadhaarInputField
+                    label="Aadhaar number"
+                    size="large"
+                    value={formData.aadhaarNumber}
+                    onValueChange={(v) => updateField('aadhaarNumber', v)}
+                    placeholder="XXXX XXXX XXXX"
+                    caption={
+                      errors.aadhaarNumber ||
+                      'Used only to confirm identity; not printed on the certificate.'
+                    }
+                    showMaskToggle={true}
+                    maskAll={true}
+                    status={errors.aadhaarNumber ? 'error' : 'defaultStatus'}
+                  />
+                </View>
+
+                {/* 3. Contact Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>Contact Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Mobile number"
+                    required
+                    size="large"
+                    prefixText="+91"
+                    value={formData.applicantMobile}
+                    onValueChange={(v) => updateField('applicantMobile', v)}
+                    placeholder="10-digit mobile number"
+                    type="number"
+                    maxLength={10}
+                    status={errors.applicantMobile ? 'error' : 'defaultStatus'}
+                    caption={errors.applicantMobile}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Email address"
+                    required
+                    size="large"
+                    value={formData.applicantEmail}
+                    onValueChange={(v) => updateField('applicantEmail', v)}
+                    placeholder="name@example.com"
+                    type="email"
+                    status={errors.applicantEmail ? 'error' : 'defaultStatus'}
+                    caption={errors.applicantEmail}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Landline (optional)"
+                    size="large"
+                    value={formData.applicantLandline}
+                    onValueChange={(v) => updateField('applicantLandline', v)}
+                    placeholder="STD code + number, e.g. 0151 2560001"
+                    type="number"
+                  />
+                </View>
+
+                {/* 4. Address Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>Address Details</Text>
+
+                <View style={styles.groupBlock}>
+                  <Ux4gCheckbox
+                    value={formData.sameAsUnitAddress}
+                    onChanged={(checked) => toggleSameAsUnitAddress(Boolean(checked))}
+                    label="Same as the address of the unit"
+                    size="small"
+                    activeColor={UX4GColors.primary}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="House or building number and street"
+                    required
+                    size="large"
+                    value={formData.applicantHouseStreet}
+                    onValueChange={(v) => updateField('applicantHouseStreet', v)}
+                    placeholder=""
+                    status={errors.applicantHouseStreet ? 'error' : 'defaultStatus'}
+                    caption={errors.applicantHouseStreet}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Locality, area or landmark"
+                    size="large"
+                    value={formData.applicantLocalityLandmark}
+                    onValueChange={(v) => updateField('applicantLocalityLandmark', v)}
+                    placeholder=""
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="PIN code"
+                    required
+                    size="large"
+                    value={formData.applicantPinCode}
+                    onValueChange={(v) => updateField('applicantPinCode', v)}
+                    placeholder="6 digits"
+                    type="number"
+                    maxLength={6}
+                    status={errors.applicantPinCode ? 'error' : 'defaultStatus'}
+                    caption={errors.applicantPinCode}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="State / UT"
+                    required
+                    size="l"
+                    options={STATES_AND_UTS}
+                    selectedOptionIds={formData.applicantStateUT}
+                    onSelectionChange={(ids) => updateField('applicantStateUT', ids)}
+                    placeholder="Select State / UT"
+                    status={errors.applicantStateUT ? 'error' : 'defaultStatus'}
+                    description={errors.applicantStateUT}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="District"
+                    required
+                    size="l"
+                    options={DISTRICTS_OPTIONS}
+                    selectedOptionIds={formData.applicantDistrict}
+                    onSelectionChange={(ids) => updateField('applicantDistrict', ids)}
+                    placeholder="Select District"
+                    status={errors.applicantDistrict ? 'error' : 'defaultStatus'}
+                    description={errors.applicantDistrict}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Sub-district — Tehsil / Mandal / Taluka"
+                    required
+                    size="l"
+                    options={SUB_DISTRICTS}
+                    selectedOptionIds={formData.applicantSubDistrict}
+                    onSelectionChange={(ids) => updateField('applicantSubDistrict', ids)}
+                    placeholder="Select Sub-district"
+                    status={errors.applicantSubDistrict ? 'error' : 'defaultStatus'}
+                    description={errors.applicantSubDistrict}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="City / Town / Village"
+                    required
+                    size="l"
+                    options={CITIES_VILLAGES}
+                    selectedOptionIds={formData.applicantCityVillage}
+                    onSelectionChange={(ids) => updateField('applicantCityVillage', ids)}
+                    placeholder="Select City, Town or Village"
+                    status={errors.applicantCityVillage ? 'error' : 'defaultStatus'}
+                    description={errors.applicantCityVillage}
+                  />
+                </View>
+
+                {/* 5. Authorised Person Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>
+                  Authorised Person Details
+                </Text>
+
+                <View style={styles.groupBlock}>
+                  <Ux4gCheckbox
+                    value={formData.authSameAsApplicant}
+                    onChanged={(checked) => toggleAuthSameAsApplicant(Boolean(checked))}
+                    label="Same as the applicant"
+                    size="small"
+                    activeColor={UX4GColors.primary}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Name of the authorised person"
+                    required
+                    size="large"
+                    value={formData.authPersonName}
+                    onValueChange={(v) => updateField('authPersonName', v)}
+                    placeholder=""
+                    status={errors.authPersonName ? 'error' : 'defaultStatus'}
+                    caption={errors.authPersonName}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Designation"
+                    required
+                    size="l"
+                    options={DESIGNATION_OPTIONS}
+                    selectedOptionIds={formData.authPersonDesignation}
+                    onSelectionChange={(ids) => updateField('authPersonDesignation', ids)}
+                    placeholder="Select a designation"
+                    status={errors.authPersonDesignation ? 'error' : 'defaultStatus'}
+                    description={errors.authPersonDesignation}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Relationship to the applicant"
+                    required
+                    size="l"
+                    options={RELATIONSHIP_OPTIONS}
+                    selectedOptionIds={formData.authPersonRelationship}
+                    onSelectionChange={(ids) => updateField('authPersonRelationship', ids)}
+                    placeholder="Select a relationship"
+                    status={errors.authPersonRelationship ? 'error' : 'defaultStatus'}
+                    description={errors.authPersonRelationship}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Mobile number"
+                    required
+                    size="large"
+                    prefixText="+91"
+                    value={formData.authPersonMobile}
+                    onValueChange={(v) => updateField('authPersonMobile', v)}
+                    placeholder=""
+                    type="number"
+                    maxLength={10}
+                    status={errors.authPersonMobile ? 'error' : 'defaultStatus'}
+                    caption={errors.authPersonMobile}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Email address"
+                    required
+                    size="large"
+                    value={formData.authPersonEmail}
+                    onValueChange={(v) => updateField('authPersonEmail', v)}
+                    placeholder=""
+                    type="email"
+                    status={errors.authPersonEmail ? 'error' : 'defaultStatus'}
+                    caption={errors.authPersonEmail}
+                  />
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    borderRadius={8}
+                    onPress={handleContinueStep2}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor={UX4GColors.transparent}
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={handleSaveDraft}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
+            ) : step === 3 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Unit Details */}
+                <Text style={styles.sectionHeading}>Unit Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Name of the unit"
+                    required
+                    size="large"
+                    value={formData.unitName}
+                    onValueChange={(v) => updateField('unitName', v)}
+                    placeholder="As it will appear on the certificate and the signboard"
+                    status={errors.unitName ? 'error' : 'defaultStatus'}
+                    caption={errors.unitName}
+                  />
+                </View>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Does the unit serve meals to its guests?
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="with_boarding"
+                      groupValue={formData.servesMeals}
+                      onChanged={(val) => updateField('servesMeals', val)}
+                      label="With boarding — the unit serves meals"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="without_boarding"
+                      groupValue={formData.servesMeals}
+                      onChanged={(val) => updateField('servesMeals', val)}
+                      label="Without boarding — rooms only"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Class or grade of the unit"
+                    required
+                    size="l"
+                    options={HOTEL_CLASS_OPTIONS}
+                    selectedOptionIds={formData.unitClassGrade}
+                    onSelectionChange={(ids) => updateField('unitClassGrade', ids)}
+                    placeholder="Select a class"
+                    status={errors.unitClassGrade ? 'error' : 'defaultStatus'}
+                    description={errors.unitClassGrade}
+                  />
+                </View>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Ownership of the premises<Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="owned"
+                      groupValue={formData.premisesOwnership}
+                      onChanged={(val) => updateField('premisesOwnership', val)}
+                      label="Owned"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="leased"
+                      groupValue={formData.premisesOwnership}
+                      onChanged={(val) => updateField('premisesOwnership', val)}
+                      label="Leased"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="rented"
+                      groupValue={formData.premisesOwnership}
+                      onChanged={(val) => updateField('premisesOwnership', val)}
+                      label="Rented"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="other"
+                      groupValue={formData.premisesOwnership}
+                      onChanged={(val) => updateField('premisesOwnership', val)}
+                      label="Other"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.premisesOwnership && (
+                    <Text style={styles.inlineErrorText}>{errors.premisesOwnership}</Text>
+                  )}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gDatePicker
+                    label="Lease or rent expiry date"
+                    required
+                    onDateSelected={(d) =>
+                      updateField('leaseExpiryDate', d.toLocaleDateString('en-GB'))
+                    }
+                    placeholder="Select date"
+                    status={errors.leaseExpiryDate ? 'error' : 'defaultStatus'}
+                    description={errors.leaseExpiryDate}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Year of commencement or expected opening"
+                    size="large"
+                    value={formData.yearOfCommencement}
+                    onValueChange={(v) => updateField('yearOfCommencement', v)}
+                    placeholder="YYYY"
+                    type="number"
+                    maxLength={4}
+                  />
+                </View>
+
+                {/* 2. Location Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>Location Details</Text>
+
+                <View style={{ marginBottom: 10 }}>
+                  <Ux4gInputField
+                    label="Where is the unit?"
+                    required
+                    size="large"
+                    value={formData.unitMapLink}
+                    onValueChange={(v) => updateField('unitMapLink', v)}
+                    placeholder="Paste a Google Maps or Apple Maps link to the entrance"
+                    status={errors.unitMapLink ? 'error' : 'defaultStatus'}
+                    caption={errors.unitMapLink}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  style={styles.gpsLinkButton}
+                  activeOpacity={0.7}
+                  onPress={handleUseCurrentLocation}
+                >
+                  <CrosshairsGpsIcon size={18} color={UX4GColors.neutral800} />
+                  <Text style={styles.gpsLinkText}>Use my current location</Text>
+                </TouchableOpacity>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="House or building number and street"
+                    required
+                    size="large"
+                    value={formData.unitHouseStreet}
+                    onValueChange={(v) => updateField('unitHouseStreet', v)}
+                    placeholder=""
+                    status={errors.unitHouseStreet ? 'error' : 'defaultStatus'}
+                    caption={errors.unitHouseStreet}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Locality, area or landmark"
+                    size="large"
+                    value={formData.unitLocalityLandmark}
+                    onValueChange={(v) => updateField('unitLocalityLandmark', v)}
+                    placeholder=""
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="PIN code"
+                    required
+                    size="large"
+                    value={formData.unitPinCode}
+                    onValueChange={(v) => updateField('unitPinCode', v)}
+                    placeholder="6 digits"
+                    type="number"
+                    maxLength={6}
+                    status={errors.unitPinCode ? 'error' : 'defaultStatus'}
+                    caption={errors.unitPinCode}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="State / UT"
+                    required
+                    size="l"
+                    options={STATES_AND_UTS}
+                    selectedOptionIds={formData.unitStateUT}
+                    onSelectionChange={(ids) => updateField('unitStateUT', ids)}
+                    placeholder="Select State / UT"
+                    status={errors.unitStateUT ? 'error' : 'defaultStatus'}
+                    description={errors.unitStateUT}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="District"
+                    required
+                    size="l"
+                    options={DISTRICTS_OPTIONS}
+                    selectedOptionIds={formData.unitDistrict}
+                    onSelectionChange={(ids) => updateField('unitDistrict', ids)}
+                    placeholder="Select District"
+                    status={errors.unitDistrict ? 'error' : 'defaultStatus'}
+                    description={errors.unitDistrict}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Circle / sub-office"
+                    required
+                    size="l"
+                    options={CIRCLE_SUB_OFFICES}
+                    selectedOptionIds={formData.unitCircleSubOffice}
+                    onSelectionChange={(ids) => updateField('unitCircleSubOffice', ids)}
+                    placeholder="Shown only where the department divides districts"
+                    status={errors.unitCircleSubOffice ? 'error' : 'defaultStatus'}
+                    description={errors.unitCircleSubOffice}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Sub-district — Tehsil / Mandal / Taluka"
+                    required
+                    size="l"
+                    options={SUB_DISTRICTS}
+                    selectedOptionIds={formData.unitSubDistrict}
+                    onSelectionChange={(ids) => updateField('unitSubDistrict', ids)}
+                    placeholder="Select Sub-district"
+                    status={errors.unitSubDistrict ? 'error' : 'defaultStatus'}
+                    description={errors.unitSubDistrict}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="City / Town / Village"
+                    required
+                    size="l"
+                    options={CITIES_VILLAGES}
+                    selectedOptionIds={formData.unitCityVillage}
+                    onSelectionChange={(ids) => updateField('unitCityVillage', ids)}
+                    placeholder="Select City, Town or Village"
+                    status={errors.unitCityVillage ? 'error' : 'defaultStatus'}
+                    description={errors.unitCityVillage}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Ward / Gram panchayat"
+                    size="l"
+                    options={WARDS_PANCHAYATS}
+                    selectedOptionIds={formData.unitWardPanchayat}
+                    onSelectionChange={(ids) => updateField('unitWardPanchayat', ids)}
+                    placeholder="Select Ward or Gram panchayat"
+                  />
+                </View>
+
+                <View style={styles.groupBlock}>
+                  <Ux4gCheckbox
+                    value={formData.coastalRegulationZone}
+                    onChanged={(checked) =>
+                      updateField('coastalRegulationZone', Boolean(checked))
+                    }
+                    label="The unit is in a Coastal Regulation Zone"
+                    size="small"
+                    activeColor={UX4GColors.primary}
+                  />
+                </View>
+
+                {/* 3. Land and Premises Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>
+                  Land and Premises Details
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Unit of measurement"
+                    required
+                    size="l"
+                    options={LAND_AREA_UNITS}
+                    selectedOptionIds={formData.landAreaUnit}
+                    onSelectionChange={(ids) => updateField('landAreaUnit', ids)}
+                    placeholder="Select a unit"
+                    status={errors.landAreaUnit ? 'error' : 'defaultStatus'}
+                    description={errors.landAreaUnit}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Total extent of land"
+                    required
+                    size="large"
+                    value={formData.totalExtentLand}
+                    onValueChange={(v) => updateField('totalExtentLand', v)}
+                    placeholder="0.5"
+                    type="number"
+                    status={errors.totalExtentLand ? 'error' : 'defaultStatus'}
+                    caption={errors.totalExtentLand}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Text style={styles.fieldGroupLabel}>In square metres</Text>
+                  <View style={styles.computedGreyBox}>
+                    <Text style={styles.computedGreyText}>{computedSqMetresDisplay}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Built-up area, including parking cellars (Sq. m.)"
+                    required
+                    size="large"
+                    value={formData.builtUpAreaSqm}
+                    onValueChange={(v) => updateField('builtUpAreaSqm', v)}
+                    placeholder="Numbers only"
+                    type="number"
+                    status={errors.builtUpAreaSqm ? 'error' : 'defaultStatus'}
+                    caption={errors.builtUpAreaSqm}
+                  />
+                </View>
+
+                {/* 4. Contact Details of the Unit */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>
+                  Contact Details of the Unit
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Telephone number"
+                    required
+                    size="large"
+                    value={formData.unitTelephone}
+                    onValueChange={(v) => updateField('unitTelephone', v)}
+                    placeholder="STD code + number, e.g. 0651 2560001"
+                    type="number"
+                    status={errors.unitTelephone ? 'error' : 'defaultStatus'}
+                    caption={errors.unitTelephone}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Fax number"
+                    size="large"
+                    value={formData.unitFax}
+                    onValueChange={(v) => updateField('unitFax', v)}
+                    placeholder="Optional"
+                    type="number"
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Email address of the unit"
+                    required
+                    size="large"
+                    value={formData.unitEmail}
+                    onValueChange={(v) => updateField('unitEmail', v)}
+                    placeholder=""
+                    type="email"
+                    status={errors.unitEmail ? 'error' : 'defaultStatus'}
+                    caption={errors.unitEmail}
+                  />
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    borderRadius={8}
+                    onPress={handleContinueStep3}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor={UX4GColors.transparent}
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={handleSaveDraft}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -868,6 +2005,30 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: UX4GColors.neutral600,
   },
+  gpsLinkButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingVertical: 6,
+    marginBottom: 14,
+  },
+  gpsLinkText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  computedGreyBox: {
+    height: 46,
+    borderRadius: 8,
+    backgroundColor: UX4GColors.neutral200,
+    paddingHorizontal: 14,
+    justifyContent: 'center',
+  },
+  computedGreyText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: UX4GColors.neutral900,
+  },
   actionButtonContainer: {
     marginTop: 22,
     paddingTop: 16,
@@ -954,7 +2115,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 9 Steps (Step 1 Active)
+                Service Pattern • 9 Steps (Steps 1–3 Active)
               </span>
             </div>
             <p
