@@ -143,7 +143,7 @@ const CapsuleIndicator: React.FC<CapsuleIndicatorProps> = ({
   activeColor,
   inactiveColor,
   expand,
-  cumulative = false,
+  cumulative = true,
 }) => {
   return (
     <View
@@ -327,6 +327,7 @@ const LinearLayout: React.FC<LinearLayoutProps> = ({
   labelAlignment,
   activeColor,
   inactiveColor,
+  cumulative = true,
 }) => {
   const theme = useUx4gTheme();
   const centered = labelAlignment === 'center';
@@ -344,6 +345,7 @@ const LinearLayout: React.FC<LinearLayoutProps> = ({
             currentStep={currentStep}
             activeColor={activeColor}
             inactiveColor={inactiveColor}
+            cumulative={cumulative}
           />
         </View>
         <View style={{ width: 12 }} />
@@ -382,6 +384,7 @@ const RightAlignedLayout: React.FC<LayoutProps> = ({
   onPrevious,
   activeColor,
   inactiveColor,
+  cumulative = true,
 }) => {
   const theme = useUx4gTheme();
 
@@ -397,6 +400,7 @@ const RightAlignedLayout: React.FC<LayoutProps> = ({
             currentStep={currentStep}
             activeColor={activeColor}
             inactiveColor={inactiveColor}
+            cumulative={cumulative}
           />
         </View>
         <View style={{ width: 12 }} />
@@ -437,6 +441,7 @@ const CenteredLayout: React.FC<LayoutProps> = ({
   onPrevious,
   activeColor,
   inactiveColor,
+  cumulative = true,
 }) => {
   const theme = useUx4gTheme();
 
@@ -449,6 +454,7 @@ const CenteredLayout: React.FC<LayoutProps> = ({
         activeColor={activeColor}
         inactiveColor={inactiveColor}
         expand
+        cumulative={cumulative}
       />
 
       <View style={{ height: 16 }} />
@@ -547,6 +553,7 @@ const SplitLayout: React.FC<LayoutProps> = ({
   onPrevious,
   activeColor,
   inactiveColor,
+  cumulative = true,
 }) => {
   const theme = useUx4gTheme();
 
@@ -559,6 +566,7 @@ const SplitLayout: React.FC<LayoutProps> = ({
         activeColor={activeColor}
         inactiveColor={inactiveColor}
         expand
+        cumulative={cumulative}
       />
 
       <View style={{ height: 16 }} />
