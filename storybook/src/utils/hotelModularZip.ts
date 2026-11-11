@@ -1242,7 +1242,7 @@ function buildStep7ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 7 ? (',
-    ') : step === 8 && !isPaymentModeView ? (',
+    ') : step === 8 && !isPaymentModeView && !paymentCompleted ? (',
     'Hotel Step 7'
   );
 
@@ -1285,8 +1285,8 @@ ${jsx}
 function buildStep8ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
-    ') : step === 8 && !isPaymentModeView ? (',
-    ') : step === 8 && isPaymentModeView ? (',
+    ') : step === 8 && !isPaymentModeView && !paymentCompleted ? (',
+    ') : step === 8 && isPaymentModeView && !paymentCompleted ? (',
     'Hotel Step 8 Fee Details'
   );
 
@@ -1315,8 +1315,8 @@ ${jsx}
 function buildStep8ModeOfPaymentScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
-    ') : step === 8 && isPaymentModeView ? (',
-    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    ') : step === 8 && isPaymentModeView && !paymentCompleted ? (',
+    ') : step === 8 && paymentCompleted ? (',
     'Hotel Step 8 Mode of Payment'
   );
 
@@ -1351,6 +1351,39 @@ export const Step8ModeOfPaymentScreen: React.FC<Step8ModeOfPaymentScreenProps> =
   updateField,
   handlePayNow,
   handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep8PaymentSuccessScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 8 && paymentCompleted ? (',
+    '\n            ) : (\n              <View style={styles.formContainer}>\n                <Ux4gStatusBanner',
+    'Hotel Step 8 Payment Successful'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import { Ux4gCard, Ux4gButton, UX4GColors } from 'ux4g-react-native-components';
+import { CheckSmallIcon } from '../components/Icons';
+import { HotelFeeSummary } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step8PaymentSuccessScreenProps {
+  feeSummary: HotelFeeSummary;
+  paymentMethodLabel: string;
+  setStep: (stepNum: number) => void;
+  handleDownloadReceipt: () => void;
+}
+
+export const Step8PaymentSuccessScreen: React.FC<Step8PaymentSuccessScreenProps> = ({
+  feeSummary,
+  paymentMethodLabel,
+  setStep,
+  handleDownloadReceipt,
 }) => (
 ${jsx}
 );
@@ -1492,7 +1525,7 @@ import {
 
 import NationalEmblem from './src/assets/NationalEmblem';
 import UnionLogo from './src/assets/UnionLogo';
-import { STEP_METADATA } from './src/constants/formOptions';
+import { STEP_METADATA, NETBANKING_BANKS } from './src/constants/formOptions';
 import { createInitialHotelFormData } from './src/constants/initialFormData';
 import { styles } from './src/styles/commonStyles';
 import {
@@ -1527,12 +1560,14 @@ import { Step6DocumentsScreen } from './src/screens/Step6DocumentsScreen';
 import { Step7ReviewDeclarationScreen } from './src/screens/Step7ReviewDeclarationScreen';
 import { Step8FeePaymentScreen } from './src/screens/Step8FeePaymentScreen';
 import { Step8ModeOfPaymentScreen } from './src/screens/Step8ModeOfPaymentScreen';
+import { Step8PaymentSuccessScreen } from './src/screens/Step8PaymentSuccessScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
   const [step, setStep] = useState<number>(1);
   const [isPaymentModeView, setIsPaymentModeView] = useState<boolean>(false);
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
+  const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -1544,13 +1579,13 @@ export default function App() {
     if (scrollViewRef.current && scrollViewRef.current.scrollTo) {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
     }
-  }, [step, isPaymentModeView]);
+  }, [step, isPaymentModeView, paymentCompleted]);
 
   useEffect(() => {
     if (!isRedirecting) return;
     const timer = setTimeout(() => {
       setIsRedirecting(false);
-      setStep(9);
+      setPaymentCompleted(true);
     }, 2200);
     return () => clearTimeout(timer);
   }, [isRedirecting]);
@@ -1739,18 +1774,38 @@ export default function App() {
   const reviewItems: HotelReviewItem[] = getHotelReviewItems(formData);
   const feeSummary: HotelFeeSummary = getHotelFeeSummary(formData);
 
+  const paymentMethodLabel = (() => {
+    if (formData.paymentMode === 'netbanking') {
+      const bank = NETBANKING_BANKS.find((b) => b.id === (formData.selectedBank || [])[0]);
+      return 'Net banking · ' + (bank ? bank.label.replace(' Bank', '') : 'HDFC');
+    }
+    if (formData.paymentMode === 'card') {
+      return 'Debit / Credit Card';
+    }
+    if ((formData.upiId || '').trim()) {
+      return 'UPI · ' + formData.upiId.trim();
+    }
+    return 'Net banking · HDFC';
+  })();
+
   const handleContinueStep7 = () => {
     const errs = validateHotelStep7(formData);
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
     }
+    setPaymentCompleted(false);
     setIsPaymentModeView(false);
     setStep(8);
   };
 
   const handleContinueStep8 = () => {
+    setPaymentCompleted(false);
     setIsPaymentModeView(true);
+  };
+
+  const handleDownloadReceipt = () => {
+    alert('Payment receipt (PG2026HP07744TX) downloaded successfully!');
   };
 
   const handlePayNow = () => {
@@ -1778,7 +1833,9 @@ export default function App() {
     } else if (step === 7) {
       handleContinueStep7();
     } else if (step === 8) {
-      if (!isPaymentModeView) {
+      if (paymentCompleted) {
+        setStep(9);
+      } else if (!isPaymentModeView) {
         handleContinueStep8();
       } else {
         handlePayNow();
@@ -1789,7 +1846,10 @@ export default function App() {
   };
 
   const handleStepperBack = () => {
-    if (step === 8 && isPaymentModeView) {
+    if (step === 8 && paymentCompleted) {
+      setPaymentCompleted(false);
+      setIsPaymentModeView(true);
+    } else if (step === 8 && isPaymentModeView) {
       setIsPaymentModeView(false);
     } else if (step > 1) {
       setStep(step - 1);
@@ -1830,41 +1890,43 @@ export default function App() {
         >
           <View style={styles.mainCard}>
             {/* Auto-saved Status Banner */}
-            <Ux4gStatusBanner
-              variant="successLight"
-              title=""
-              leadingIcon={<View />}
-              trailingIcon={
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
-                    <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
-                    <Path
-                      d="M8.5 12.2L10.8 14.5L15.8 9.5"
-                      stroke={UX4GColors.green}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Svg>
-                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.green800 }}>
-                    {'Saved ' + savedTime}
-                  </Text>
-                </View>
-              }
-              contentAlignment="right"
-              backgroundColor={UX4GColors.green50}
-              borderColor={UX4GColors.transparent}
-              height={34}
-              marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-              containerStyle={{
-                borderRadius: 6,
-                marginBottom: 8,
-                elevation: 0,
-                shadowOpacity: 0,
-                justifyContent: 'center',
-              }}
-              paddingStyle={{ paddingVertical: 1, paddingHorizontal: 12 }}
-            />
+            {!(step === 8 && paymentCompleted) && (
+              <Ux4gStatusBanner
+                variant="successLight"
+                title=""
+                leadingIcon={<View />}
+                trailingIcon={
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                    <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
+                      <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
+                      <Path
+                        d="M8.5 12.2L10.8 14.5L15.8 9.5"
+                        stroke={UX4GColors.green}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
+                    <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.green800 }}>
+                      {'Saved ' + savedTime}
+                    </Text>
+                  </View>
+                }
+                contentAlignment="right"
+                backgroundColor={UX4GColors.green50}
+                borderColor={UX4GColors.transparent}
+                height={34}
+                marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                containerStyle={{
+                  borderRadius: 6,
+                  marginBottom: 8,
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  justifyContent: 'center',
+                }}
+                paddingStyle={{ paddingVertical: 1, paddingHorizontal: 12 }}
+              />
+            )}
 
             {/* 9-Step Compact Stepper Header using official UX4G Component */}
             <Ux4gCompactStepper
@@ -1872,7 +1934,11 @@ export default function App() {
               currentStep={step}
               layout="centeredBetween"
               stepLabel={activeMeta.title}
-              description={activeMeta.subtitle}
+              description={
+                step === 8 && paymentCompleted
+                  ? 'Paid. Nothing further is needed from you today.'
+                  : activeMeta.subtitle
+              }
               onPrevious={handleStepperBack}
               onNext={handleStepperNext}
               activeColor={UX4GColors.primary}
@@ -1949,13 +2015,13 @@ export default function App() {
                 handleContinueStep7={handleContinueStep7}
                 handleSaveDraft={handleSaveDraft}
               />
-            ) : step === 8 && !isPaymentModeView ? (
+            ) : step === 8 && !isPaymentModeView && !paymentCompleted ? (
               <Step8FeePaymentScreen
                 feeSummary={feeSummary}
                 handleContinueStep8={handleContinueStep8}
                 handleSaveDraft={handleSaveDraft}
               />
-            ) : step === 8 && isPaymentModeView ? (
+            ) : step === 8 && isPaymentModeView && !paymentCompleted ? (
               <Step8ModeOfPaymentScreen
                 formData={formData}
                 errors={errors}
@@ -1963,6 +2029,13 @@ export default function App() {
                 updateField={updateField}
                 handlePayNow={handlePayNow}
                 handleSaveDraft={handleSaveDraft}
+              />
+            ) : step === 8 && paymentCompleted ? (
+              <Step8PaymentSuccessScreen
+                feeSummary={feeSummary}
+                paymentMethodLabel={paymentMethodLabel}
+                setStep={setStep}
+                handleDownloadReceipt={handleDownloadReceipt}
               />
             ) : (
               <UpcomingStepScreen
@@ -1979,7 +2052,7 @@ export default function App() {
 
         {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
         <Ux4gModal
-          visible={step === 8 && isPaymentModeView && isRedirecting}
+          visible={step === 8 && isPaymentModeView && !paymentCompleted && isRedirecting}
           onDismiss={() => setIsRedirecting(false)}
           alignment="centered"
           leadingItem="icon"
@@ -2128,6 +2201,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step7ReviewDeclarationScreen.tsx    # Step 7 of 9: Editable Review Summary & Declaration',
       '        ├── Step8FeePaymentScreen.tsx           # Step 8 of 9: Registration Fee Summary',
       '        ├── Step8ModeOfPaymentScreen.tsx        # Step 8 of 9: Mode of Payment (UPI / Bank / Card)',
+      '        ├── Step8PaymentSuccessScreen.tsx       # Step 8 of 9: Payment Confirmation & Receipt',
       '        └── UpcomingStepScreen.tsx              # Step 9 scaffold synced with stepper & draft state',
       '```',
       '',
@@ -2158,6 +2232,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step7ReviewDeclarationScreen.tsx': buildStep7ScreenFile(normalizedCode),
     'src/screens/Step8FeePaymentScreen.tsx': buildStep8ScreenFile(normalizedCode),
     'src/screens/Step8ModeOfPaymentScreen.tsx': buildStep8ModeOfPaymentScreenFile(normalizedCode),
+    'src/screens/Step8PaymentSuccessScreen.tsx': buildStep8PaymentSuccessScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };
