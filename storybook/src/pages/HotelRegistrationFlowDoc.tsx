@@ -9,7 +9,7 @@ interface HotelRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = 'BgSdbJ-I--jX6PXbnVHxp';
+const SNACK_ID = 'aif60XQ_G0WO3tJscqh_p';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -82,8 +82,8 @@ const STEP_METADATA = {
     subtitle: 'What the unit can actually accommodate, and what it charges.',
   },
   5: {
-    title: 'Facilities & Services',
-    subtitle: 'Dining, parking, accessibility, and mandatory hotel amenities.',
+    title: 'Facilities, services & compliance',
+    subtitle: 'What the unit provides, and what it has already been cleared for.',
   },
   6: {
     title: 'Safety & Statutory Compliance',
@@ -231,6 +231,28 @@ const FACILITIES_AVAILABLE_OPTIONS = [
   { id: 'accessible', label: 'Step-free access and an accessible room' },
 ];
 
+const SERVICES_OFFERED_OPTIONS = [
+  { id: 'restaurant_non_residents', label: 'Restaurant open to non-residents' },
+  { id: 'bar_excise', label: 'Bar — separate excise licence required' },
+  { id: 'room_service', label: 'Room service' },
+  { id: 'travel_desk', label: 'Travel desk or transport' },
+];
+
+const WATER_SUPPLY_SOURCES = [
+  { id: 'municipal', label: 'Municipal / piped supply' },
+  { id: 'borewell', label: 'Borewell / tube well' },
+  { id: 'tanker', label: 'Authorised tanker supply' },
+  { id: 'spring_surface', label: 'Natural spring / surface source' },
+  { id: 'mixed', label: 'Combination of municipal & borewell' },
+];
+
+const SOLID_WASTE_DISPOSAL_METHODS = [
+  { id: 'municipal', label: 'Municipal door-to-door collection' },
+  { id: 'composting_municipal', label: 'On-site wet-waste composting + municipal dry collection' },
+  { id: 'recycler', label: 'Segregation & authorised private recycler' },
+  { id: 'licensed_agency', label: 'Contracted ULB / licensed waste agency' },
+];
+
 const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Circle cx="12" cy="12" r="7" stroke={color} strokeWidth="1.8" />
@@ -243,7 +265,7 @@ const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
 );
 
 export default function App() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(5);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -328,6 +350,18 @@ export default function App() {
     conferenceHallCapacity: '',
     facilitiesAvailable: [],
     otherAccommodationFacilities: '',
+
+    // Step 5: Facilities, services & compliance
+    servicesOffered: [],
+    hasSewagePlant: '',
+    sewagePlantWorking: '',
+    fireSafetyClearanceStatus: '',
+    pollutionBoardConsent: '',
+    tradeLicenceStatus: '',
+    publicLiabilityInsurance: '',
+    waterSupplySource: [],
+    solidWasteDisposal: [],
+    additionalComplianceNotes: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -713,6 +747,52 @@ export default function App() {
     setStep(5);
   };
 
+  const toggleServiceOffered = (id) => {
+    setFormData((prev) => {
+      const exists = prev.servicesOffered.includes(id);
+      return {
+        ...prev,
+        servicesOffered: exists
+          ? prev.servicesOffered.filter((x) => x !== id)
+          : [...prev.servicesOffered, id],
+      };
+    });
+  };
+
+  const handleContinueStep5 = () => {
+    const errs = {};
+    if (!formData.hasSewagePlant) {
+      errs.hasSewagePlant = 'Please select whether a sewage treatment plant is present';
+    }
+    if (formData.hasSewagePlant === 'yes' && !formData.sewagePlantWorking) {
+      errs.sewagePlantWorking = 'Please indicate whether the sewage treatment plant is working';
+    }
+    if (!formData.fireSafetyClearanceStatus) {
+      errs.fireSafetyClearanceStatus = 'Please select fire safety clearance status';
+    }
+    if (!formData.pollutionBoardConsent) {
+      errs.pollutionBoardConsent = 'Please select pollution control board consent status';
+    }
+    if (!formData.tradeLicenceStatus) {
+      errs.tradeLicenceStatus = 'Please select trade or shops-and-establishments licence status';
+    }
+    if (!formData.publicLiabilityInsurance) {
+      errs.publicLiabilityInsurance = 'Please select public liability insurance status';
+    }
+    if (!formData.waterSupplySource.length) {
+      errs.waterSupplySource = 'Please select source of water supply';
+    }
+    if (!formData.solidWasteDisposal.length) {
+      errs.solidWasteDisposal = 'Please select solid waste disposal method';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(6);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -722,6 +802,8 @@ export default function App() {
       handleContinueStep3();
     } else if (step === 4) {
       handleContinueStep4();
+    } else if (step === 5) {
+      handleContinueStep5();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -2122,6 +2204,311 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 5 ? (
+              <View style={styles.formContainer}>
+                {/* Intro Header matching Step 5 layout */}
+                <View style={{ marginBottom: 18 }}>
+                  <Text style={[styles.sectionHeading, { fontSize: 16, marginBottom: 4 }]}>
+                    Facilities, services & compliance
+                  </Text>
+                  <Text style={styles.helperNoteText}>
+                    What the unit provides, and what it has already been cleared for.
+                  </Text>
+                </View>
+
+                {/* 1. Services offered */}
+                <Text style={styles.sectionHeading}>Services offered</Text>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>Services available to guests</Text>
+                  <View style={styles.checkboxStack}>
+                    {SERVICES_OFFERED_OPTIONS.map((opt) => (
+                      <Ux4gCheckbox
+                        key={opt.id}
+                        value={formData.servicesOffered.includes(opt.id)}
+                        onChanged={() => toggleServiceOffered(opt.id)}
+                        label={opt.label}
+                        size="small"
+                        activeColor={UX4GColors.primary}
+                      />
+                    ))}
+                  </View>
+                </View>
+
+                {/* 2. Compliance and Safety Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 8 }]}>
+                  Compliance and Safety Details
+                </Text>
+
+                {/* Sewage treatment plant */}
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Is there a sewage treatment plant?<Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="yes"
+                      groupValue={formData.hasSewagePlant}
+                      onChanged={(val) => updateField('hasSewagePlant', val)}
+                      label="Yes"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="no"
+                      groupValue={formData.hasSewagePlant}
+                      onChanged={(val) => updateField('hasSewagePlant', val)}
+                      label="No"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="na"
+                      groupValue={formData.hasSewagePlant}
+                      onChanged={(val) => updateField('hasSewagePlant', val)}
+                      label="Not applicable"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.hasSewagePlant && (
+                    <Text style={styles.inlineErrorText}>{errors.hasSewagePlant}</Text>
+                  )}
+                </View>
+
+                {/* Sewage treatment plant working */}
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Is the sewage treatment plant working?
+                    <Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="yes"
+                      groupValue={formData.sewagePlantWorking}
+                      onChanged={(val) => updateField('sewagePlantWorking', val)}
+                      label="Yes"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="no"
+                      groupValue={formData.sewagePlantWorking}
+                      onChanged={(val) => updateField('sewagePlantWorking', val)}
+                      label="No"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.sewagePlantWorking && (
+                    <Text style={styles.inlineErrorText}>{errors.sewagePlantWorking}</Text>
+                  )}
+                </View>
+
+                {/* Fire safety clearance */}
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Fire safety clearance<Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="obtained"
+                      groupValue={formData.fireSafetyClearanceStatus}
+                      onChanged={(val) => updateField('fireSafetyClearanceStatus', val)}
+                      label="Obtained"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="applied"
+                      groupValue={formData.fireSafetyClearanceStatus}
+                      onChanged={(val) => updateField('fireSafetyClearanceStatus', val)}
+                      label="Applied for, decision awaited"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="na"
+                      groupValue={formData.fireSafetyClearanceStatus}
+                      onChanged={(val) => updateField('fireSafetyClearanceStatus', val)}
+                      label="Not applicable to this unit"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.fireSafetyClearanceStatus && (
+                    <Text style={styles.inlineErrorText}>{errors.fireSafetyClearanceStatus}</Text>
+                  )}
+                </View>
+
+                {/* Pollution control board consent */}
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Pollution control board consent<Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="obtained"
+                      groupValue={formData.pollutionBoardConsent}
+                      onChanged={(val) => updateField('pollutionBoardConsent', val)}
+                      label="Obtained"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="applied"
+                      groupValue={formData.pollutionBoardConsent}
+                      onChanged={(val) => updateField('pollutionBoardConsent', val)}
+                      label="Applied for, decision awaited"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="na"
+                      groupValue={formData.pollutionBoardConsent}
+                      onChanged={(val) => updateField('pollutionBoardConsent', val)}
+                      label="Not applicable to this unit"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.pollutionBoardConsent && (
+                    <Text style={styles.inlineErrorText}>{errors.pollutionBoardConsent}</Text>
+                  )}
+                </View>
+
+                {/* Trade or shops-and-establishments licence */}
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Trade or shops-and-establishments licence
+                    <Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="obtained"
+                      groupValue={formData.tradeLicenceStatus}
+                      onChanged={(val) => updateField('tradeLicenceStatus', val)}
+                      label="Obtained"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="applied"
+                      groupValue={formData.tradeLicenceStatus}
+                      onChanged={(val) => updateField('tradeLicenceStatus', val)}
+                      label="Applied for, decision awaited"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="na"
+                      groupValue={formData.tradeLicenceStatus}
+                      onChanged={(val) => updateField('tradeLicenceStatus', val)}
+                      label="Not applicable to this unit"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.tradeLicenceStatus && (
+                    <Text style={styles.inlineErrorText}>{errors.tradeLicenceStatus}</Text>
+                  )}
+                </View>
+
+                {/* Public liability insurance */}
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Public liability insurance<Text style={{ color: UX4GColors.red }}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    <Ux4gRadioButton
+                      value="in_force"
+                      groupValue={formData.publicLiabilityInsurance}
+                      onChanged={(val) => updateField('publicLiabilityInsurance', val)}
+                      label="In force"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                    <Ux4gRadioButton
+                      value="not_taken"
+                      groupValue={formData.publicLiabilityInsurance}
+                      onChanged={(val) => updateField('publicLiabilityInsurance', val)}
+                      label="Not taken"
+                      size="small"
+                      color={UX4GColors.primary}
+                    />
+                  </View>
+                  {errors.publicLiabilityInsurance && (
+                    <Text style={styles.inlineErrorText}>{errors.publicLiabilityInsurance}</Text>
+                  )}
+                </View>
+
+                {/* Source of water supply */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Source of water supply"
+                    required
+                    size="l"
+                    options={WATER_SUPPLY_SOURCES}
+                    selectedOptionIds={formData.waterSupplySource}
+                    onSelectionChange={(ids) => updateField('waterSupplySource', ids)}
+                    placeholder="Select a source"
+                    status={errors.waterSupplySource ? 'error' : 'defaultStatus'}
+                    description={errors.waterSupplySource}
+                  />
+                </View>
+
+                {/* Solid waste disposal */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Solid waste disposal"
+                    required
+                    size="l"
+                    options={SOLID_WASTE_DISPOSAL_METHODS}
+                    selectedOptionIds={formData.solidWasteDisposal}
+                    onSelectionChange={(ids) => updateField('solidWasteDisposal', ids)}
+                    placeholder="Select a method"
+                    status={errors.solidWasteDisposal ? 'error' : 'defaultStatus'}
+                    description={errors.solidWasteDisposal}
+                  />
+                </View>
+
+                {/* Anything else the department should know */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gTextArea
+                    label="Anything else the department should know"
+                    value={formData.additionalComplianceNotes}
+                    onValueChange={(v) => updateField('additionalComplianceNotes', v)}
+                    placeholder="Anything not covered by the questions above"
+                    maxLength={200}
+                  />
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View style={styles.actionButtonContainer}>
+                  <Ux4gButton
+                    text="Continue"
+                    variant="primary"
+                    size="large"
+                    backgroundColor={UX4GColors.primary}
+                    borderRadius={8}
+                    onPress={handleContinueStep5}
+                    style={{ width: '100%' }}
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gButton
+                    text="Save as draft"
+                    variant="outline"
+                    size="large"
+                    backgroundColor={UX4GColors.transparent}
+                    contentColor={UX4GColors.primary}
+                    borderColor={UX4GColors.primary200}
+                    borderWidth={1}
+                    borderRadius={8}
+                    onPress={handleSaveDraft}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -2427,7 +2814,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 9 Steps (Steps 1–4 Active)
+                Service Pattern • 9 Steps (Steps 1–5 Active)
               </span>
             </div>
             <p

@@ -142,6 +142,18 @@ export interface HotelFormData {
   conferenceHallCapacity: string;
   facilitiesAvailable: string[];
   otherAccommodationFacilities: string;
+
+  // Step 5: Facilities, services & compliance
+  servicesOffered: string[];
+  hasSewagePlant: string;
+  sewagePlantWorking: string;
+  fireSafetyClearanceStatus: string;
+  pollutionBoardConsent: string;
+  tradeLicenceStatus: string;
+  publicLiabilityInsurance: string;
+  waterSupplySource: string[];
+  solidWasteDisposal: string[];
+  additionalComplianceNotes: string;
 }
 
 export type HotelFormErrors = Record<string, string | undefined>;
@@ -219,7 +231,10 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const HOTEL_CLASS_OPTIONS =', 'export const HOTEL_CLASS_OPTIONS: DropdownOption[] =')
     .replace('export const LAND_AREA_UNITS =', 'export const LAND_AREA_UNITS: DropdownOption[] =')
     .replace('export const TARIFF_INCLUDES_OPTIONS =', 'export const TARIFF_INCLUDES_OPTIONS: DropdownOption[] =')
-    .replace('export const FACILITIES_AVAILABLE_OPTIONS =', 'export const FACILITIES_AVAILABLE_OPTIONS: DropdownOption[] =');
+    .replace('export const FACILITIES_AVAILABLE_OPTIONS =', 'export const FACILITIES_AVAILABLE_OPTIONS: DropdownOption[] =')
+    .replace('export const SERVICES_OFFERED_OPTIONS =', 'export const SERVICES_OFFERED_OPTIONS: DropdownOption[] =')
+    .replace('export const WATER_SUPPLY_SOURCES =', 'export const WATER_SUPPLY_SOURCES: DropdownOption[] =')
+    .replace('export const SOLID_WASTE_DISPOSAL_METHODS =', 'export const SOLID_WASTE_DISPOSAL_METHODS: DropdownOption[] =');
 
   return `import { DropdownOption, EligibilityOption, StepMeta } from '../types/hotel';
 
@@ -523,6 +538,35 @@ export function validateHotelStep4(formData: HotelFormData): HotelFormErrors {
   }
   return errs;
 }
+
+export function validateHotelStep5(formData: HotelFormData): HotelFormErrors {
+  const errs: HotelFormErrors = {};
+  if (!formData.hasSewagePlant) {
+    errs.hasSewagePlant = 'Please select whether a sewage treatment plant is present';
+  }
+  if (formData.hasSewagePlant === 'yes' && !formData.sewagePlantWorking) {
+    errs.sewagePlantWorking = 'Please indicate whether the sewage treatment plant is working';
+  }
+  if (!formData.fireSafetyClearanceStatus) {
+    errs.fireSafetyClearanceStatus = 'Please select fire safety clearance status';
+  }
+  if (!formData.pollutionBoardConsent) {
+    errs.pollutionBoardConsent = 'Please select pollution control board consent status';
+  }
+  if (!formData.tradeLicenceStatus) {
+    errs.tradeLicenceStatus = 'Please select trade or shops-and-establishments licence status';
+  }
+  if (!formData.publicLiabilityInsurance) {
+    errs.publicLiabilityInsurance = 'Please select public liability insurance status';
+  }
+  if (!formData.waterSupplySource.length) {
+    errs.waterSupplySource = 'Please select source of water supply';
+  }
+  if (!formData.solidWasteDisposal.length) {
+    errs.solidWasteDisposal = 'Please select solid waste disposal method';
+  }
+  return errs;
+}
 `;
 }
 
@@ -714,7 +758,7 @@ function buildStep4ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 4 ? (',
-    ') : (',
+    ') : step === 5 ? (',
     'Hotel Step 4'
   );
 
@@ -752,6 +796,54 @@ export const Step4RoomsAccommodationScreen: React.FC<Step4RoomsAccommodationScre
   updateField,
   toggleFacilityAvailable,
   handleContinueStep4,
+  handleSaveDraft,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep5ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 5 ? (',
+    ') : (',
+    'Hotel Step 5'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import {
+  Ux4gCheckbox,
+  Ux4gRadioButton,
+  Ux4gSelectionDropdown,
+  Ux4gTextArea,
+  Ux4gButton,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import {
+  SERVICES_OFFERED_OPTIONS,
+  WATER_SUPPLY_SOURCES,
+  SOLID_WASTE_DISPOSAL_METHODS,
+} from '../constants/formOptions';
+import { HotelFormData, HotelFormErrors } from '../types/hotel';
+import { styles } from '../styles/commonStyles';
+
+export interface Step5FacilitiesComplianceScreenProps {
+  formData: HotelFormData;
+  errors: HotelFormErrors;
+  updateField: <K extends keyof HotelFormData>(key: K, value: HotelFormData[K]) => void;
+  toggleServiceOffered: (id: string) => void;
+  handleContinueStep5: () => void;
+  handleSaveDraft: () => void;
+}
+
+export const Step5FacilitiesComplianceScreen: React.FC<Step5FacilitiesComplianceScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  toggleServiceOffered,
+  handleContinueStep5,
   handleSaveDraft,
 }) => (
 ${jsx}
@@ -904,11 +996,13 @@ import {
   validateHotelStep2,
   validateHotelStep3,
   validateHotelStep4,
+  validateHotelStep5,
 } from './src/utils/validators';
 import { Step1BeforeYouStartScreen } from './src/screens/Step1BeforeYouStartScreen';
 import { Step2ApplicantEntityScreen } from './src/screens/Step2ApplicantEntityScreen';
 import { Step3UnitIdentityLocationScreen } from './src/screens/Step3UnitIdentityLocationScreen';
 import { Step4RoomsAccommodationScreen } from './src/screens/Step4RoomsAccommodationScreen';
+import { Step5FacilitiesComplianceScreen } from './src/screens/Step5FacilitiesComplianceScreen';
 import { UpcomingStepScreen } from './src/screens/UpcomingStepScreen';
 
 export default function App() {
@@ -1062,6 +1156,27 @@ export default function App() {
     setStep(5);
   };
 
+  const toggleServiceOffered = (id: string) => {
+    setFormData((prev) => {
+      const exists = prev.servicesOffered.includes(id);
+      return {
+        ...prev,
+        servicesOffered: exists
+          ? prev.servicesOffered.filter((x) => x !== id)
+          : [...prev.servicesOffered, id],
+      };
+    });
+  };
+
+  const handleContinueStep5 = () => {
+    const errs = validateHotelStep5(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(6);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -1071,6 +1186,8 @@ export default function App() {
       handleContinueStep3();
     } else if (step === 4) {
       handleContinueStep4();
+    } else if (step === 5) {
+      handleContinueStep5();
     } else if (step < 9) {
       setStep(step + 1);
     }
@@ -1206,6 +1323,15 @@ export default function App() {
                 handleContinueStep4={handleContinueStep4}
                 handleSaveDraft={handleSaveDraft}
               />
+            ) : step === 5 ? (
+              <Step5FacilitiesComplianceScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                toggleServiceOffered={toggleServiceOffered}
+                handleContinueStep5={handleContinueStep5}
+                handleSaveDraft={handleSaveDraft}
+              />
             ) : (
               <UpcomingStepScreen
                 step={step}
@@ -1333,7 +1459,8 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
       '        ├── Step2ApplicantEntityScreen.tsx      # Step 2 of 9: Applicant & Entity, Identity, Contact, Address, Authorised Person',
       '        ├── Step3UnitIdentityLocationScreen.tsx # Step 3 of 9: Unit Details, Location, Land & Premises, Contact Details',
       '        ├── Step4RoomsAccommodationScreen.tsx   # Step 4 of 9: Accommodation, Tariff, Public Areas & Facilities',
-      '        └── UpcomingStepScreen.tsx              # Steps 5-9 scaffold synced with stepper & draft state',
+      '        ├── Step5FacilitiesComplianceScreen.tsx # Step 5 of 9: Services Offered, Compliance & Safety Details',
+      '        └── UpcomingStepScreen.tsx              # Steps 6-9 scaffold synced with stepper & draft state',
       '```',
       '',
       '## Getting Started',
@@ -1357,6 +1484,7 @@ export function buildHotelModularProject(fullAppCodeString: string): Record<stri
     'src/screens/Step2ApplicantEntityScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'src/screens/Step3UnitIdentityLocationScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'src/screens/Step4RoomsAccommodationScreen.tsx': buildStep4ScreenFile(normalizedCode),
+    'src/screens/Step5FacilitiesComplianceScreen.tsx': buildStep5ScreenFile(normalizedCode),
     'src/screens/UpcomingStepScreen.tsx': buildUpcomingStepScreenFile(),
     'App.tsx': buildRootAppFile(),
   };
