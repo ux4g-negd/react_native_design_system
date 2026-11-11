@@ -8,8 +8,8 @@ interface HotelRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Hotel Registration Flow (9-Step Workflow, Step 1 Active)
-const SNACK_ID = 'vYhPHN845LJWxwMINKP7B';
+// Official Snack ID for Hotel Registration Flow (Complete 9-Step Workflow)
+const SNACK_ID = 'qPU1ZndR_csK7cia-XpSq';
 
 export const HotelRegistrationFlowDoc: React.FC<HotelRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -563,10 +563,10 @@ const getHotelAcknowledgementInfo = (fd) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(9);
-  const [isPaymentModeView, setIsPaymentModeView] = useState(true);
+  const [step, setStep] = useState(1);
+  const [isPaymentModeView, setIsPaymentModeView] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [paymentCompleted, setPaymentCompleted] = useState(true);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
