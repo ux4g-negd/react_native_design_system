@@ -123,6 +123,10 @@ export interface TourOperatorFormData {
     business: boolean;
   };
   docFiles: Record<string, UploadedFile[]>;
+
+  // Step 6: Review & declaration
+  declarationTruth: boolean;
+  declarationInspection: boolean;
 }
 
 export type TourOperatorFormErrors = Record<string, string | undefined>;
@@ -179,6 +183,10 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'export const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) =>',
       'export const ChevronDownIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }) =>'
+    )
+    .replace(
+      'export const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) =>',
+      'export const PencilOutlineIcon: React.FC<IconProps> = ({ size = 17, color = UX4GColors.neutral800 }) =>'
     );
 
   return `import React from 'react';
@@ -198,7 +206,7 @@ function buildDocumentUploadSlotFile(appCode: string): string {
   const slotSlice = sliceBetween(
     appCode,
     'const DocumentUploadSlot = ({',
-    'const parseDateString =',
+    'const getTourOperatorReviewItems =',
     'DocumentUploadSlot'
   ).trim();
 
@@ -301,6 +309,14 @@ ${stylesSlice}
 
 function buildValidatorsFile(): string {
   return `import {
+  TRADE_OPTIONS,
+  LEGAL_ENTITY_TYPES,
+  CITIES_VILLAGES,
+  STATES_AND_UTS,
+  OFFICE_HOLDING_OPTIONS,
+} from '../constants/formOptions';
+import {
+  RadioOption,
   TourOperatorFormData,
   TourOperatorFormErrors,
 } from '../types/tourOperator';
@@ -477,6 +493,91 @@ export function validateTourOperatorStep5(
     errs.documents = 'Please upload all required (*) documents before continuing.';
   }
   return errs;
+}
+
+export function validateTourOperatorStep6(
+  formData: TourOperatorFormData
+): TourOperatorFormErrors {
+  const errs: TourOperatorFormErrors = {};
+  if (!formData.declarationTruth) {
+    errs.declarationTruth = 'Please confirm that everything you have entered is true';
+  }
+  if (!formData.declarationInspection) {
+    errs.declarationInspection = 'Please agree to a physical inspection of the office';
+  }
+  return errs;
+}
+
+export interface TourOperatorReviewItem {
+  stepNum: number;
+  title: string;
+  subtitle: string;
+  isWarning: boolean;
+}
+
+export function getTourOperatorReviewItems(
+  fd: TourOperatorFormData
+): TourOperatorReviewItem[] {
+  const findLabel = (arr: RadioOption[], id: string) =>
+    (arr.find((x) => x.id === id) || {}).label;
+  const tradeLabel = findLabel(TRADE_OPTIONS, fd.tradeType) || 'Travel agent';
+  const step1Sub =
+    fd.applicationType === 'renewal'
+      ? tradeLabel + ' · renewal of ' + ((fd.existingRegNumber || '').trim() || 'TA/HP/2021/00412')
+      : tradeLabel + ' · New registration';
+
+  const applicantName = (fd.applicantFullName || '').trim() || 'Saksham Kharbanda';
+  const tradingName = (fd.tradingName || '').trim() || 'Kharbanda Travels';
+  const entityLabel =
+    findLabel(LEGAL_ENTITY_TYPES, (fd.legalEntityType || [])[0]) || 'partnership';
+  const step2Sub = applicantName + ' · ' + tradingName + ' · ' + entityLabel.toLowerCase();
+
+  const cityLabel = findLabel(CITIES_VILLAGES, (fd.cityVillage || [])[0]) || 'Shimla';
+  const stateLabel = findLabel(STATES_AND_UTS, (fd.stateUT || [])[0]) || 'Himachal Pradesh';
+  const holdingLabel = findLabel(OFFICE_HOLDING_OPTIONS, fd.officeHoldingType) || 'on lease';
+  const floorArea = (fd.officeFloorArea || '').trim() || '420';
+  const step3Sub =
+    cityLabel + ', ' + stateLabel + ' · ' + holdingLabel.toLowerCase() + ' · ' + floorArea + ' Sq. ft.';
+
+  const actText =
+    fd.activities && fd.activities.length > 0
+      ? fd.activities.length + ' activities'
+      : 'Six activities';
+  const staffText =
+    fd.staffMembers && fd.staffMembers.length > 0
+      ? fd.staffMembers.length + ' staff'
+      : 'four staff';
+  const expText = (fd.yearsExperienceInTrade || '').trim()
+    ? fd.yearsExperienceInTrade.trim() + ' years in the trade'
+    : 'seven years in the trade';
+  const step4Sub = actText + ' · ' + staffText + ' · ' + expText;
+
+  const df = fd.docFiles || {};
+  const allDocKeys = Object.keys(df);
+  const uploadedCount = allDocKeys.filter((k) => df[k] && df[k].length > 0).length;
+  const requiredDocKeys = [
+    'person_photo',
+    'person_pan',
+    'person_qualification',
+    'premises_ownership',
+    'business_reg',
+    'business_pan',
+    'business_bank_report',
+    'business_itr',
+  ];
+  const missingReq = requiredDocKeys.filter((k) => !df[k] || df[k].length === 0).length;
+  const docsComplete = missingReq === 0;
+  const step5Sub = docsComplete
+    ? 'All required documents attached (' + uploadedCount + ' of ' + allDocKeys.length + ' uploaded)'
+    : uploadedCount + ' of ' + allDocKeys.length + ' attached — ' + missingReq + ' required still missing';
+
+  return [
+    { stepNum: 1, title: 'Step 1 · Registration type', subtitle: step1Sub, isWarning: false },
+    { stepNum: 2, title: 'Step 2 · Applicant & firm', subtitle: step2Sub, isWarning: false },
+    { stepNum: 3, title: 'Step 3 · Office & premises', subtitle: step3Sub, isWarning: false },
+    { stepNum: 4, title: 'Step 4 · Services & capability', subtitle: step4Sub, isWarning: false },
+    { stepNum: 5, title: 'Step 5 · Documents', subtitle: step5Sub, isWarning: !docsComplete },
+  ];
 }
 `;
 }
@@ -686,7 +787,7 @@ function buildStep5ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 5 ? (',
-    ') : (',
+    ') : step === 6 ? (',
     'Tour Operator Step 5'
   );
 
@@ -720,6 +821,47 @@ export const Step5DocumentsScreen: React.FC<Step5DocumentsScreenProps> = ({
   errors,
   toggleDocSection,
   setDocSlotFiles,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep6ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 6 ? (',
+    ') : (',
+    'Tour Operator Step 6'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  Ux4gStatusBanner,
+  Ux4gCheckbox,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { PencilOutlineIcon } from '../components/Icons';
+import { getTourOperatorReviewItems } from '../utils/validators';
+import { TourOperatorFormData, TourOperatorFormErrors } from '../types/tourOperator';
+import { styles } from '../styles/commonStyles';
+
+export interface Step6ReviewDeclarationScreenProps {
+  formData: TourOperatorFormData;
+  errors: TourOperatorFormErrors;
+  updateField: <K extends keyof TourOperatorFormData>(
+    key: K,
+    value: TourOperatorFormData[K]
+  ) => void;
+  setStep: (step: number) => void;
+}
+
+export const Step6ReviewDeclarationScreen: React.FC<Step6ReviewDeclarationScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  setStep,
 }) => (
 ${jsx}
 );
@@ -764,6 +906,7 @@ import {
   validateTourOperatorStep3,
   validateTourOperatorStep4,
   validateTourOperatorStep5,
+  validateTourOperatorStep6,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1RegistrationTypeScreen } from './src/screens/Step1RegistrationTypeScreen';
@@ -771,9 +914,10 @@ import { Step2ApplicantFirmScreen } from './src/screens/Step2ApplicantFirmScreen
 import { Step3OfficePremisesScreen } from './src/screens/Step3OfficePremisesScreen';
 import { Step4ServicesCapabilityScreen } from './src/screens/Step4ServicesCapabilityScreen';
 import { Step5DocumentsScreen } from './src/screens/Step5DocumentsScreen';
+import { Step6ReviewDeclarationScreen } from './src/screens/Step6ReviewDeclarationScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(5);
+  const [step, setStep] = useState<number>(6);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -968,6 +1112,15 @@ export default function App() {
     setStep(6);
   };
 
+  const handleContinueStep6 = () => {
+    const errs = validateTourOperatorStep6(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(7);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -979,6 +1132,8 @@ export default function App() {
       handleContinueStep4();
     } else if (step === 5) {
       handleContinueStep5();
+    } else if (step === 6) {
+      handleContinueStep6();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -1113,6 +1268,13 @@ export default function App() {
                 toggleDocSection={toggleDocSection}
                 setDocSlotFiles={setDocSlotFiles}
               />
+            ) : step === 6 ? (
+              <Step6ReviewDeclarationScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                setStep={setStep}
+              />
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1145,7 +1307,7 @@ export default function App() {
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
           <Ux4gButton
-            text="Continue"
+            text={step === 6 ? 'Continue to payment' : 'Continue'}
             variant="primary"
             size="large"
             height={48}
@@ -1286,7 +1448,8 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '        ├── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details',
       '        ├── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details',
       '        ├── Step4ServicesCapabilityScreen.tsx  # Step 4 of 7: Activities, Scale of Operation & Staff Qualifications',
-      '        └── Step5DocumentsScreen.tsx           # Step 5 of 7: Grouped Document Uploads',
+      '        ├── Step5DocumentsScreen.tsx           # Step 5 of 7: Grouped Document Uploads',
+      '        └── Step6ReviewDeclarationScreen.tsx   # Step 6 of 7: Application Preview & Declaration',
       '```',
       '',
       '## Getting Started',
@@ -1312,6 +1475,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     'src/screens/Step3OfficePremisesScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'src/screens/Step4ServicesCapabilityScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'src/screens/Step5DocumentsScreen.tsx': buildStep5ScreenFile(normalizedCode),
+    'src/screens/Step6ReviewDeclarationScreen.tsx': buildStep6ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }
