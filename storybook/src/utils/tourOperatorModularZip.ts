@@ -49,6 +49,12 @@ export interface RadioOption {
   label: string;
 }
 
+export interface PaymentModeOption {
+  id: string;
+  title: string;
+  subtitle: string;
+}
+
 export interface StepMeta {
   title: string;
   subtitle: string;
@@ -130,6 +136,13 @@ export interface TourOperatorFormData {
 
   // Step 7: Fee & payment
   feeNonRefundable: boolean;
+  paymentMode: string;
+  upiId: string;
+  selectedNetBank: string[];
+  cardHolderName: string;
+  cardNumber: string;
+  cardExpiry: string;
+  cardCvv: string;
 }
 
 export type TourOperatorFormErrors = Record<string, string | undefined>;
@@ -190,6 +203,10 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'export const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) =>',
       'export const PencilOutlineIcon: React.FC<IconProps> = ({ size = 17, color = UX4GColors.neutral800 }) =>'
+    )
+    .replace(
+      'export const InfoOutlineIcon = ({ size = 16, color = UX4GColors.neutral600 }) =>',
+      'export const InfoOutlineIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral600 }) =>'
     );
 
   return `import React from 'react';
@@ -265,9 +282,10 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const BUILDING_TYPE_OPTIONS =', 'export const BUILDING_TYPE_OPTIONS: RadioOption[] =')
     .replace('export const OFFICE_FACILITIES_OPTIONS =', 'export const OFFICE_FACILITIES_OPTIONS: RadioOption[] =')
     .replace('export const FIRM_ACTIVITIES_OPTIONS =', 'export const FIRM_ACTIVITIES_OPTIONS: RadioOption[] =')
-    .replace('export const QUALIFICATION_OPTIONS =', 'export const QUALIFICATION_OPTIONS: RadioOption[] =');
+    .replace('export const QUALIFICATION_OPTIONS =', 'export const QUALIFICATION_OPTIONS: RadioOption[] =')
+    .replace('export const PAYMENT_MODES =', 'export const PAYMENT_MODES: PaymentModeOption[] =');
 
-  return `import { RadioOption, StepMeta } from '../types/tourOperator';
+  return `import { PaymentModeOption, RadioOption, StepMeta } from '../types/tourOperator';
 
 ${exported}
 `;
@@ -594,7 +612,37 @@ export function validateTourOperatorStep7(
   return errs;
 }
 
+export function validateTourOperatorPaymentMode(
+  formData: TourOperatorFormData
+): TourOperatorFormErrors {
+  const errs: TourOperatorFormErrors = {};
+  if (formData.paymentMode === 'upi') {
+    if (!formData.upiId.trim() || !formData.upiId.includes('@')) {
+      errs.upiId = 'Enter a valid UPI ID (e.g. name@upi)';
+    }
+  } else if (formData.paymentMode === 'netbanking') {
+    if (!formData.selectedNetBank.length) {
+      errs.selectedNetBank = 'Please select your bank';
+    }
+  } else {
+    if (!formData.cardHolderName.trim()) {
+      errs.cardHolderName = 'Name on card is required';
+    }
+    if (!/^[0-9]{12,19}$/.test(formData.cardNumber.replace(/\s+/g, ''))) {
+      errs.cardNumber = 'Enter a valid card number';
+    }
+    if (!/^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(formData.cardExpiry.trim())) {
+      errs.cardExpiry = 'Use MM/YY format';
+    }
+    if (!/^[0-9]{3,4}$/.test(formData.cardCvv.trim())) {
+      errs.cardCvv = 'Enter a valid CVV';
+    }
+  }
+  return errs;
+}
+
 export interface TourOperatorFeeSummary {
+  shortRef: string;
   applicationRef: string;
   description: string;
   formattedAmount: string;
@@ -604,6 +652,11 @@ export function getTourOperatorFeeSummary(
   fd: TourOperatorFormData
 ): TourOperatorFeeSummary {
   const trade = fd.tradeType || 'travel_agent';
+  const shortRefMap: Record<string, string> = {
+    travel_agent: 'TA-2026-000000',
+    tour_operator: 'TO-2026-000000',
+    tourist_transport_operator: 'TT-2026-000000',
+  };
   const refMap: Record<string, string> = {
     travel_agent: 'Travel agency registration · TA-2026-000000',
     tour_operator: 'Tour operator registration · TO-2026-000000',
@@ -620,6 +673,7 @@ export function getTourOperatorFeeSummary(
     tourist_transport_operator: '₹3,000',
   };
   return {
+    shortRef: shortRefMap[trade] || shortRefMap.travel_agent,
     applicationRef: refMap[trade] || refMap.travel_agent,
     description: labelMap[trade] || labelMap.travel_agent,
     formattedAmount: amountMap[trade] || '₹3,000',
@@ -915,21 +969,35 @@ ${jsx}
 }
 
 function buildStep7ScreenFile(appCode: string): string {
-  const jsx = extractScreenJsx(
+  const rawBlock = sliceBetween(
     appCode,
-    ') : (\n              <View style={styles.formContainer}>\n                <Text style={styles.sectionHeading}>Fee Details</Text>',
+    ') : step === 7 && !isPaymentModeView && !paymentCompleted ? (',
     '\n            )}\n          </View>\n        </ScrollView>',
     'Tour Operator Step 7'
   );
+
+  const jsx = rawBlock
+    .replace(
+      ') : step === 7 && !isPaymentModeView && !paymentCompleted ? (',
+      '  !isPaymentModeView && !paymentCompleted ? ('
+    )
+    .split('\n')
+    .map((line) => (line.startsWith('            ') ? '  ' + line.slice(12) : line))
+    .join('\n') + '\n  )';
 
   return `import React from 'react';
 import { View, Text } from 'react-native';
 import {
   Ux4gCard,
   Ux4gCheckbox,
+  Ux4gRadioButton,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
   Ux4gStatusBanner,
   UX4GColors,
 } from 'ux4g-react-native-components';
+import { InfoOutlineIcon } from '../components/Icons';
+import { BANK_OPTIONS, PAYMENT_MODES } from '../constants/formOptions';
 import { TourOperatorFeeSummary } from '../utils/validators';
 import { TourOperatorFormData, TourOperatorFormErrors } from '../types/tourOperator';
 import { styles } from '../styles/commonStyles';
@@ -942,6 +1010,7 @@ export interface Step7FeePaymentScreenProps {
     value: TourOperatorFormData[K]
   ) => void;
   feeSummary: TourOperatorFeeSummary;
+  isPaymentModeView: boolean;
   paymentCompleted: boolean;
 }
 
@@ -950,6 +1019,7 @@ export const Step7FeePaymentScreen: React.FC<Step7FeePaymentScreenProps> = ({
   errors,
   updateField,
   feeSummary,
+  isPaymentModeView,
   paymentCompleted,
 }) => (
 ${jsx}
@@ -997,6 +1067,7 @@ import {
   validateTourOperatorStep5,
   validateTourOperatorStep6,
   validateTourOperatorStep7,
+  validateTourOperatorPaymentMode,
   getTourOperatorFeeSummary,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
@@ -1011,6 +1082,7 @@ import { Step7FeePaymentScreen } from './src/screens/Step7FeePaymentScreen';
 export default function App() {
   const [step, setStep] = useState<number>(7);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
+  const [isPaymentModeView, setIsPaymentModeView] = useState<boolean>(true);
   const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -1215,7 +1287,21 @@ export default function App() {
   };
 
   const handleContinueStep7 = () => {
-    const errs = validateTourOperatorStep7(formData);
+    if (!isPaymentModeView) {
+      const errs = validateTourOperatorStep7(formData);
+      if (Object.keys(errs).length > 0) {
+        setErrors(errs);
+        return;
+      }
+      setErrors({});
+      setIsPaymentModeView(true);
+      if (scrollViewRef.current && scrollViewRef.current.scrollTo) {
+        scrollViewRef.current.scrollTo({ y: 0, animated: true });
+      }
+      return;
+    }
+
+    const errs = validateTourOperatorPaymentMode(formData);
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
@@ -1247,6 +1333,10 @@ export default function App() {
   };
 
   const handleStepperBack = () => {
+    if (step === 7 && isPaymentModeView && !paymentCompleted) {
+      setIsPaymentModeView(false);
+      return;
+    }
     if (step > 1) {
       setStep(step - 1);
     }
@@ -1327,7 +1417,11 @@ export default function App() {
               currentStep={step}
               layout="centeredBetween"
               stepLabel={activeMeta.title}
-              description={activeMeta.subtitle}
+              description={
+                step === 7 && isPaymentModeView && !paymentCompleted
+                  ? 'Choose how you would like to pay ' + feeSummary.formattedAmount + '.'
+                  : activeMeta.subtitle
+              }
               onPrevious={handleStepperBack}
               onNext={handleStepperNext}
               activeColor={UX4GColors.primary}
@@ -1389,6 +1483,7 @@ export default function App() {
                 errors={errors}
                 updateField={updateField}
                 feeSummary={feeSummary}
+                isPaymentModeView={isPaymentModeView}
                 paymentCompleted={paymentCompleted}
               />
             )}
