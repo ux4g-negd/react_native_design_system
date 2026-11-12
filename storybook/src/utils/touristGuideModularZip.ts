@@ -49,6 +49,12 @@ export interface RadioOption {
   label: string;
 }
 
+export interface PaymentModeOption {
+  id: string;
+  title: string;
+  subtitle: string;
+}
+
 export interface StepMeta {
   title: string;
   subtitle: string;
@@ -108,6 +114,13 @@ export interface TouristGuideFormData {
   // Step 6: Fee & payment
   concessionCategory: string;
   feeNonRefundable: boolean;
+  paymentMode: string;
+  upiId: string;
+  selectedNetBank: string[];
+  cardHolderName: string;
+  cardNumber: string;
+  cardExpiry: string;
+  cardCvv: string;
 }
 
 export type TouristGuideFormErrors = Record<string, string | undefined>;
@@ -164,6 +177,10 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'export const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) =>',
       'export const PencilOutlineIcon: React.FC<IconProps> = ({ size = 17, color = UX4GColors.neutral800 }) =>'
+    )
+    .replace(
+      'export const InfoOutlineIcon = ({ size = 16, color = UX4GColors.neutral600 }) =>',
+      'export const InfoOutlineIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral600 }) =>'
     );
 
   return `import React from 'react';
@@ -236,9 +253,11 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const LANGUAGE_OPTIONS =', 'export const LANGUAGE_OPTIONS: RadioOption[] =')
     .replace('export const SPECIALISM_OPTIONS =', 'export const SPECIALISM_OPTIONS: RadioOption[] =')
     .replace('export const OPERATION_DISTRICTS =', 'export const OPERATION_DISTRICTS: RadioOption[] =')
-    .replace('export const CONCESSION_CATEGORIES =', 'export const CONCESSION_CATEGORIES: RadioOption[] =');
+    .replace('export const CONCESSION_CATEGORIES =', 'export const CONCESSION_CATEGORIES: RadioOption[] =')
+    .replace('export const BANK_OPTIONS =', 'export const BANK_OPTIONS: RadioOption[] =')
+    .replace('export const PAYMENT_MODES =', 'export const PAYMENT_MODES: PaymentModeOption[] =');
 
-  return `import { RadioOption, StepMeta } from '../types/touristGuide';
+  return `import { PaymentModeOption, RadioOption, StepMeta } from '../types/touristGuide';
 
 ${exported}
 `;
@@ -499,6 +518,35 @@ export function validateTouristGuideStep6(
   if (!formData.feeNonRefundable) {
     errs.feeNonRefundable =
       'Please confirm that you understand the fee is non-refundable once submitted';
+  }
+  return errs;
+}
+
+export function validateTouristGuidePaymentMode(
+  formData: TouristGuideFormData
+): TouristGuideFormErrors {
+  const errs: TouristGuideFormErrors = {};
+  if (formData.paymentMode === 'upi') {
+    if (!formData.upiId.trim() || !formData.upiId.includes('@')) {
+      errs.upiId = 'Enter a valid UPI ID (e.g. name@upi)';
+    }
+  } else if (formData.paymentMode === 'netbanking') {
+    if (!formData.selectedNetBank.length) {
+      errs.selectedNetBank = 'Please select your bank';
+    }
+  } else {
+    if (!formData.cardHolderName.trim()) {
+      errs.cardHolderName = 'Name on card is required';
+    }
+    if (!/^[0-9]{12,19}$/.test(formData.cardNumber.replace(/\s+/g, ''))) {
+      errs.cardNumber = 'Enter a valid card number';
+    }
+    if (!/^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(formData.cardExpiry.trim())) {
+      errs.cardExpiry = 'Use MM/YY format';
+    }
+    if (!/^[0-9]{3,4}$/.test(formData.cardCvv.trim())) {
+      errs.cardCvv = 'Enter a valid CVV';
+    }
   }
   return errs;
 }
@@ -784,12 +832,21 @@ ${jsx}
 }
 
 function buildStep6ScreenFile(appCode: string): string {
-  const jsx = extractScreenJsx(
+  const rawBlock = sliceBetween(
     appCode,
-    ') : (\n              <View style={styles.formContainer}>\n                {paymentCompleted ? (',
+    ') : step === 6 && !isPaymentModeView && !paymentCompleted ? (',
     '\n            )}\n          </View>\n        </ScrollView>',
     'Tourist Guide Step 6'
   );
+
+  const jsx = rawBlock
+    .replace(
+      ') : step === 6 && !isPaymentModeView && !paymentCompleted ? (',
+      '  !isPaymentModeView && !paymentCompleted ? ('
+    )
+    .split('\n')
+    .map((line) => (line.startsWith('            ') ? '  ' + line.slice(12) : line))
+    .join('\n') + '\n  )';
 
   return `import React from 'react';
 import { View, Text } from 'react-native';
@@ -798,10 +855,17 @@ import {
   Ux4gRadioButton,
   Ux4gCard,
   Ux4gCheckbox,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
   Ux4gStatusBanner,
   UX4GColors,
 } from 'ux4g-react-native-components';
-import { CONCESSION_CATEGORIES } from '../constants/formOptions';
+import { InfoOutlineIcon } from '../components/Icons';
+import {
+  BANK_OPTIONS,
+  CONCESSION_CATEGORIES,
+  PAYMENT_MODES,
+} from '../constants/formOptions';
 import { TouristGuideFeeSummary } from '../utils/validators';
 import { TouristGuideFormData, TouristGuideFormErrors } from '../types/touristGuide';
 import { styles } from '../styles/commonStyles';
@@ -814,6 +878,7 @@ export interface Step6FeePaymentScreenProps {
     value: TouristGuideFormData[K]
   ) => void;
   feeSummary: TouristGuideFeeSummary;
+  isPaymentModeView: boolean;
   paymentCompleted: boolean;
 }
 
@@ -822,6 +887,7 @@ export const Step6FeePaymentScreen: React.FC<Step6FeePaymentScreenProps> = ({
   errors,
   updateField,
   feeSummary,
+  isPaymentModeView,
   paymentCompleted,
 }) => (
 ${jsx}
@@ -864,6 +930,7 @@ import {
   validateTouristGuideStep4,
   validateTouristGuideStep5,
   validateTouristGuideStep6,
+  validateTouristGuidePaymentMode,
   getTouristGuideFeeSummary,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
@@ -877,6 +944,7 @@ import { Step6FeePaymentScreen } from './src/screens/Step6FeePaymentScreen';
 export default function App() {
   const [step, setStep] = useState<number>(6);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
+  const [isPaymentModeView, setIsPaymentModeView] = useState<boolean>(true);
   const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -1081,7 +1149,21 @@ export default function App() {
   };
 
   const handleContinueStep6 = () => {
-    const errs = validateTouristGuideStep6(formData);
+    if (!isPaymentModeView) {
+      const errs = validateTouristGuideStep6(formData);
+      if (Object.keys(errs).length > 0) {
+        setErrors(errs);
+        return;
+      }
+      setErrors({});
+      setIsPaymentModeView(true);
+      if (scrollViewRef.current && scrollViewRef.current.scrollTo) {
+        scrollViewRef.current.scrollTo({ y: 0, animated: true });
+      }
+      return;
+    }
+
+    const errs = validateTouristGuidePaymentMode(formData);
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
@@ -1111,6 +1193,10 @@ export default function App() {
   };
 
   const handleStepperBack = () => {
+    if (step === 6 && isPaymentModeView && !paymentCompleted) {
+      setIsPaymentModeView(false);
+      return;
+    }
     if (step > 1) {
       setStep(step - 1);
     }
@@ -1185,7 +1271,11 @@ export default function App() {
               currentStep={step}
               layout="centeredBetween"
               stepLabel={activeMeta.title}
-              description={activeMeta.subtitle}
+              description={
+                step === 6 && isPaymentModeView && !paymentCompleted
+                  ? 'Choose how you would like to pay ' + feeSummary.formattedAmount + '.'
+                  : activeMeta.subtitle
+              }
               onPrevious={handleStepperBack}
               onNext={handleStepperNext}
               activeColor={UX4GColors.primary}
@@ -1240,6 +1330,7 @@ export default function App() {
                 errors={errors}
                 updateField={updateField}
                 feeSummary={feeSummary}
+                isPaymentModeView={isPaymentModeView}
                 paymentCompleted={paymentCompleted}
               />
             )}
