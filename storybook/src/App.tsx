@@ -194,12 +194,19 @@ import { AllScheduledLanguagesDoc } from './pages/AllScheduledLanguagesDoc';
 import { HomestayRegistrationFlowDoc } from './pages/HomestayRegistrationFlowDoc';
 import { HotelRegistrationFlowDoc } from './pages/HotelRegistrationFlowDoc';
 import { TourOperatorRegistrationFlowDoc } from './pages/TourOperatorRegistrationFlowDoc';
+import { TouristGuideRegistrationFlowDoc } from './pages/TouristGuideRegistrationFlowDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
 } from './utils/router';
 
 const getMobileBreadcrumb = (page: string) => {
+  if (
+    page === 'service-pattern-tourist-guide-registration' ||
+    page.includes('tourist-guide')
+  ) {
+    return 'Service Patterns / Tourist guide Registration Flow';
+  }
   if (
     page === 'service-pattern-tour-operator-registration' ||
     page.includes('tour-operator') ||
@@ -968,6 +975,12 @@ export const App: React.FC = () => {
       return <SideMenuDoc isDark={isDark} story={activePage} />;
     }
     if (
+      activePage === 'service-pattern-tourist-guide-registration' ||
+      activePage.includes('tourist-guide')
+    ) {
+      return <TouristGuideRegistrationFlowDoc isDark={isDark} />;
+    }
+    if (
       activePage === 'service-pattern-tour-operator-registration' ||
       activePage.includes('tour-operator') ||
       activePage.includes('travel-agency')
@@ -1518,6 +1531,8 @@ export const App: React.FC = () => {
     }
 
     switch (activePage) {
+      case 'service-pattern-tourist-guide-registration':
+        return <TouristGuideRegistrationFlowDoc isDark={isDark} />;
       case 'service-pattern-tour-operator-registration':
         return <TourOperatorRegistrationFlowDoc isDark={isDark} />;
       case 'service-pattern-hotel-registration':
