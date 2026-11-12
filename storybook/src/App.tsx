@@ -193,12 +193,20 @@ import { TranslationUnavailableDoc } from './pages/TranslationUnavailableDoc';
 import { AllScheduledLanguagesDoc } from './pages/AllScheduledLanguagesDoc';
 import { HomestayRegistrationFlowDoc } from './pages/HomestayRegistrationFlowDoc';
 import { HotelRegistrationFlowDoc } from './pages/HotelRegistrationFlowDoc';
+import { TourOperatorRegistrationFlowDoc } from './pages/TourOperatorRegistrationFlowDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
 } from './utils/router';
 
 const getMobileBreadcrumb = (page: string) => {
+  if (
+    page === 'service-pattern-tour-operator-registration' ||
+    page.includes('tour-operator') ||
+    page.includes('travel-agency')
+  ) {
+    return 'Service Patterns / Tour operator and Travel Agency Registration Flow';
+  }
   if (page === 'service-pattern-hotel-registration' || page.includes('hotel')) {
     return 'Service Patterns / Hotel Registration flow';
   }
@@ -216,7 +224,7 @@ const getMobileBreadcrumb = (page: string) => {
   if (page.startsWith('typography')) return 'Token / Typography';
   if (page.startsWith('shadow')) return 'Token / Shadow';
   if (page.startsWith('dimensions') || ['spacing', 'radius'].includes(page)) return 'Token / Dimensions';
-  if (page === 'pattern-operator-assisted-auth' || page.includes('operator-assisted') || page.includes('operator')) {
+  if (page === 'pattern-operator-assisted-auth' || page.includes('operator-assisted') || (page.includes('operator') && !page.includes('tour-operator'))) {
     return 'Patterns / Identity and Access / Aadhaar Authentication Gate / Operator-assisted authentication';
   }
   if (page === 'pattern-aadhaar-account-locked' || page.includes('aadhaar-account-locked') || page.includes('aadhaar-locked')) {
@@ -959,6 +967,27 @@ export const App: React.FC = () => {
     if (activePage.startsWith('side-menu') || activePage.startsWith('drawer')) {
       return <SideMenuDoc isDark={isDark} story={activePage} />;
     }
+    if (
+      activePage === 'service-pattern-tour-operator-registration' ||
+      activePage.includes('tour-operator') ||
+      activePage.includes('travel-agency')
+    ) {
+      return <TourOperatorRegistrationFlowDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'service-pattern-hotel-registration' ||
+      activePage.includes('hotel-registration') ||
+      activePage.includes('hotel')
+    ) {
+      return <HotelRegistrationFlowDoc isDark={isDark} />;
+    }
+    if (
+      activePage === 'service-pattern-homestay-registration' ||
+      activePage.includes('homestay-registration') ||
+      activePage.includes('homestay')
+    ) {
+      return <HomestayRegistrationFlowDoc isDark={isDark} />;
+    }
     if (activePage === 'pattern-signup-create-account' || (activePage.includes('signup') && activePage.includes('create-account'))) {
       return <SignUpCreateAccountDoc isDark={isDark} />;
     }
@@ -1388,7 +1417,7 @@ export const App: React.FC = () => {
     if (activePage === 'pattern-notification' || activePage.includes('notification')) {
       return <NotificationPatternDoc isDark={isDark} />;
     }
-    if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || activePage.includes('operator')) {
+    if (activePage === 'pattern-operator-assisted-auth' || activePage.includes('operator-assisted') || (activePage.includes('operator') && !activePage.includes('tour-operator'))) {
       return <OperatorAssistedAuthDoc isDark={isDark} />;
     }
     if (activePage === 'pattern-aadhaar-account-locked' || activePage.includes('aadhaar-account-locked') || activePage.includes('aadhaar-locked')) {
@@ -1484,25 +1513,13 @@ export const App: React.FC = () => {
     if (activePage === 'patterns-feedback' || activePage === 'feedback') {
       return <PatternsFeedbackDoc isDark={isDark} />;
     }
-    if (
-      activePage === 'service-pattern-hotel-registration' ||
-      activePage.includes('hotel-registration') ||
-      activePage.includes('hotel')
-    ) {
-      return <HotelRegistrationFlowDoc isDark={isDark} />;
-    }
-    if (
-      activePage === 'service-pattern-homestay-registration' ||
-      activePage.includes('homestay-registration') ||
-      activePage.includes('homestay')
-    ) {
-      return <HomestayRegistrationFlowDoc isDark={isDark} />;
-    }
     if (activePage === 'changelog' || activePage === 'changes-logs' || activePage.includes('changes-logs') || activePage.includes('changelog')) {
       return <ChangelogDoc isDark={isDark} onNavigate={handleNavigate} />;
     }
 
     switch (activePage) {
+      case 'service-pattern-tour-operator-registration':
+        return <TourOperatorRegistrationFlowDoc isDark={isDark} />;
       case 'service-pattern-hotel-registration':
         return <HotelRegistrationFlowDoc isDark={isDark} />;
       case 'service-pattern-homestay-registration':

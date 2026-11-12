@@ -1569,6 +1569,11 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Hotel Registration flow',
         icon: 'layers',
       },
+      {
+        id: 'service-pattern-tour-operator-registration',
+        label: 'Tour operator and Travel Agency Registration Flow',
+        icon: 'layers',
+      },
     ],
   },
 ];

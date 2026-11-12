@@ -1,5 +1,9 @@
 // Helper mapping between activePage ID and clean URL path string
 const PAGE_TO_PATH: Record<string, string> = {
+  'service-pattern-tour-operator-registration': 'service-patterns/tour-operator-registration-flow',
+  'tour-operator-registration-flow': 'service-patterns/tour-operator-registration-flow',
+  'tour-operator-registration': 'service-patterns/tour-operator-registration-flow',
+  'travel-agency-registration': 'service-patterns/tour-operator-registration-flow',
   'service-pattern-hotel-registration': 'service-patterns/hotel-registration-flow',
   'hotel-registration-flow': 'service-patterns/hotel-registration-flow',
   'hotel-registration': 'service-patterns/hotel-registration-flow',
@@ -557,6 +561,10 @@ export function getPathFromPage(page: string): string {
 export function getPageFromPath(path: string): string {
   const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
 
+  if (cleanPath.includes('tour-operator') || cleanPath.includes('travel-agency')) {
+    return 'service-pattern-tour-operator-registration';
+  }
+
   if (cleanPath.includes('hotel')) {
     return 'service-pattern-hotel-registration';
   }
@@ -905,7 +913,7 @@ export function getPageFromPath(path: string): string {
     if (cleanPath.includes('payment') || cleanPath.includes('payment-and-confirmation')) {
       return 'pattern-payment';
     }
-    if (cleanPath.includes('operator-assisted') || cleanPath.includes('operator')) {
+    if (cleanPath.includes('operator-assisted') || (cleanPath.includes('operator') && !cleanPath.includes('tour-operator'))) {
       return 'pattern-operator-assisted-auth';
     }
     if (cleanPath.includes('aadhaar-account-locked') || (cleanPath.includes('aadhaar') && cleanPath.includes('locked'))) {
