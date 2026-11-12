@@ -8,8 +8,8 @@ interface TouristGuideRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–5 Active)
-const SNACK_ID = 'outnMv5kUn8DVQ-YZ_321';
+// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, All 6 Steps Active)
+const SNACK_ID = '7OG_Bi4Rp_k8xWSpKKEks';
 
 export const TouristGuideRegistrationFlowDoc: React.FC<TouristGuideRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -85,7 +85,7 @@ const STEP_METADATA = {
   },
   6: {
     title: 'Fee & payment',
-    subtitle: 'What the fee is, what it was worked out from, and how long it lasts.',
+    subtitle: 'What the fee is, any concession that applies, and how long the licence lasts.',
   },
 };
 
@@ -186,6 +186,13 @@ const OPERATION_DISTRICTS = [
   { id: 'tehri_garhwal', label: 'Tehri Garhwal' },
   { id: 'udham_singh_nagar', label: 'Udham Singh Nagar' },
   { id: 'uttarkashi', label: 'Uttarkashi' },
+];
+
+const CONCESSION_CATEGORIES = [
+  { id: 'none', label: 'None — I pay the full fee' },
+  { id: 'woman', label: 'Woman applicant — half the fee' },
+  { id: 'sc_st', label: 'Scheduled Caste or Scheduled Tribe — no fee' },
+  { id: 'aspirational_district', label: 'Aspirational district — no fee' },
 ];
 
 const CheckSmallIcon = ({ size = 11, color = UX4GColors.white }) => (
@@ -356,6 +363,34 @@ const getTouristGuideReviewItems = (fd) => {
   ];
 };
 
+const getTouristGuideFeeSummary = (fd) => {
+  const catObj = GUIDE_CATEGORIES.find((c) => c.id === fd.guideCategory);
+  const guideLabel = (catObj && catObj.label) || 'General guide';
+  const baseFee =
+    fd.guideCategory === 'expert' || fd.guideCategory === 'expert_linguistic' ? 1000 : 500;
+  let payable = baseFee;
+  let bannerTitle = 'No concession claimed — you pay ₹' + payable;
+
+  if (fd.concessionCategory === 'woman') {
+    payable = Math.round(baseFee / 2);
+    bannerTitle = 'Woman applicant concession — you pay ₹' + payable;
+  } else if (fd.concessionCategory === 'sc_st') {
+    payable = 0;
+    bannerTitle = 'SC / ST concession — ₹0 payable';
+  } else if (fd.concessionCategory === 'aspirational_district') {
+    payable = 0;
+    bannerTitle = 'Aspirational district concession — ₹0 payable';
+  }
+
+  return {
+    shortRef: 'TG-2026-000000',
+    applicationRef: 'Tourist guide licence · TG-2026-000000',
+    description: 'Licence fee — ' + guideLabel + ', five-year term',
+    formattedAmount: '₹' + payable,
+    bannerTitle,
+  };
+};
+
 const parseDateString = (str) => {
   if (!str) return undefined;
   const parts = str.split('/');
@@ -380,8 +415,9 @@ const calculateAgeFromDob = (dobStr) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(6);
   const [savedTime, setSavedTime] = useState('3:14 PM');
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
   const scrollViewRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -445,6 +481,10 @@ export default function App() {
     // Step 5: Review & declaration
     declarationTruth: false,
     declarationPoliceVerification: false,
+
+    // Step 6: Fee & payment
+    concessionCategory: 'none',
+    feeNonRefundable: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -710,6 +750,27 @@ export default function App() {
     setStep(6);
   };
 
+  const handleContinueStep6 = () => {
+    const errs = {};
+    if (!formData.concessionCategory) {
+      errs.concessionCategory = 'Please select a concession category';
+    }
+    if (!formData.feeNonRefundable) {
+      errs.feeNonRefundable =
+        'Please confirm that you understand the fee is non-refundable once submitted';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setPaymentCompleted(true);
+    alert(
+      'Payment of ' +
+        getTouristGuideFeeSummary(formData).formattedAmount +
+        ' successful! Your application has been submitted.'
+    );
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -721,8 +782,8 @@ export default function App() {
       handleContinueStep4();
     } else if (step === 5) {
       handleContinueStep5();
-    } else if (step < 6) {
-      setStep(step + 1);
+    } else if (step === 6) {
+      handleContinueStep6();
     }
   };
 
@@ -736,6 +797,7 @@ export default function App() {
     title: 'Step ' + step,
     subtitle: 'Tourist guide registration workflow.',
   };
+  const feeSummary = getTouristGuideFeeSummary(formData);
 
   return (
     <Ux4gThemeProvider>
@@ -1809,18 +1871,131 @@ export default function App() {
               </View>
             ) : (
               <View style={styles.formContainer}>
-                <Ux4gStatusBanner
-                  variant="infoLight"
-                  title={'Step ' + step + ' of 6 — ' + activeMeta.title}
-                  subtitle={activeMeta.subtitle}
-                  titleNumberOfLines={3}
-                  subtitleNumberOfLines={5}
-                  backgroundColor={UX4GColors.blue50}
-                  borderColor={UX4GColors.blue200}
-                  marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                  paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
-                  containerStyle={{ borderRadius: 10 }}
-                />
+                {paymentCompleted ? (
+                  <Ux4gStatusBanner
+                    variant="successLight"
+                    title={'Payment of ' + feeSummary.formattedAmount + ' received'}
+                    subtitle={
+                      feeSummary.applicationRef +
+                      ' has been submitted successfully. Keep your application number for tracking.'
+                    }
+                    titleNumberOfLines={2}
+                    subtitleNumberOfLines={4}
+                    backgroundColor={UX4GColors.green50}
+                    borderColor={UX4GColors.green200}
+                    marginStyle={{ marginHorizontal: 0, marginTop: 0, marginBottom: 16 }}
+                    paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
+                    containerStyle={{ borderRadius: 10 }}
+                    titleStyle={{
+                      fontSize: 14,
+                      fontWeight: '700',
+                      color: UX4GColors.green700,
+                    }}
+                    subtitleStyle={{
+                      fontSize: 12.5,
+                      color: UX4GColors.green700,
+                      marginTop: 4,
+                    }}
+                  />
+                ) : null}
+
+                {/* 1. Concession Claimed */}
+                <Text style={styles.sectionHeading}>Concession Claimed</Text>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Concession category<Text style={styles.requiredStar}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    {CONCESSION_CATEGORIES.map((option) => (
+                      <Ux4gRadioButton
+                        key={option.id}
+                        value={option.id}
+                        groupValue={formData.concessionCategory}
+                        onChanged={(val) => updateField('concessionCategory', val)}
+                        label={option.label}
+                        size="medium"
+                        color={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                  {errors.concessionCategory ? (
+                    <Text style={styles.inlineErrorText}>{errors.concessionCategory}</Text>
+                  ) : null}
+                </View>
+
+                <View style={{ marginBottom: 18 }}>
+                  <Ux4gStatusBanner
+                    variant="infoLight"
+                    title={feeSummary.bannerTitle}
+                    subtitle="Pick a concession and the fee below changes before you pay, not after. A concession you claim must be proved: step 4 asks for the certificate."
+                    titleNumberOfLines={2}
+                    subtitleNumberOfLines={6}
+                    titleStyle={{ color: UX4GColors.cyan800, fontWeight: '600', fontSize: 13.5 }}
+                    subtitleStyle={{ color: UX4GColors.cyan800, fontSize: 13, lineHeight: 19, marginTop: 4 }}
+                    leadingIcon={
+                      <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                        <Circle cx="12" cy="12" r="10" fill={UX4GColors.cyan600} />
+                        <Path d="M12 11V16.5" stroke={UX4GColors.white} strokeWidth="2" strokeLinecap="round" />
+                        <Circle cx="12" cy="7.8" r="1.15" fill={UX4GColors.white} />
+                      </Svg>
+                    }
+                    backgroundColor={UX4GColors.cyan50}
+                    borderColor={UX4GColors.cyan200}
+                    marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                    containerStyle={{ borderRadius: 10 }}
+                  />
+                </View>
+
+                {/* 2. Fee Details */}
+                <Text style={styles.sectionHeading}>Fee Details</Text>
+
+                <Ux4gCard
+                  cornerRadius={12}
+                  backgroundColor={UX4GColors.white}
+                  borderColor={UX4GColors.neutral200}
+                  borderWidth={1}
+                  elevation={0}
+                  style={{ padding: 16, marginBottom: 16 }}
+                >
+                  <Text style={styles.feeAppNumberHeading}>
+                    {feeSummary.applicationRef}
+                  </Text>
+
+                  <View style={styles.feeRow}>
+                    <View style={{ flex: 1, paddingRight: 16 }}>
+                      <Text style={styles.feeLineDescription}>
+                        {feeSummary.description}
+                      </Text>
+                    </View>
+                    <Text style={styles.feeLineAmount}>{feeSummary.formattedAmount}</Text>
+                  </View>
+
+                  <View style={styles.feeCardDivider} />
+
+                  <View style={styles.feeTotalRow}>
+                    <Text style={styles.feeTotalLabel}>Total payable</Text>
+                    <Text style={styles.feeTotalAmount}>{feeSummary.formattedAmount}</Text>
+                  </View>
+                </Ux4gCard>
+
+                <View style={{ marginBottom: 4 }}>
+                  <Ux4gCheckbox
+                    value={formData.feeNonRefundable}
+                    onChanged={(val) => updateField('feeNonRefundable', !!val)}
+                    label="I understand the fee is non-refundable once the application is submitted"
+                    isRequired={true}
+                    hasError={!!errors.feeNonRefundable}
+                    size="medium"
+                    activeColor={UX4GColors.primary}
+                    labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                  />
+                  {errors.feeNonRefundable ? (
+                    <Text style={styles.inlineErrorText}>{errors.feeNonRefundable}</Text>
+                  ) : null}
+                </View>
               </View>
             )}
           </View>
@@ -1829,7 +2004,13 @@ export default function App() {
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
           <Ux4gButton
-            text={step === 5 ? 'Continue to payment' : 'Continue'}
+            text={
+              step === 5
+                ? 'Continue to payment'
+                : step === 6
+                  ? 'Pay ' + feeSummary.formattedAmount
+                  : 'Continue'
+            }
             variant="primary"
             size="large"
             height={48}
@@ -2172,6 +2353,48 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral600,
     marginBottom: 10,
   },
+  feeAppNumberHeading: {
+    fontSize: 15,
+    fontWeight: '700',
+    lineHeight: 22,
+    color: UX4GColors.neutral900,
+    marginBottom: 14,
+  },
+  feeRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  feeLineDescription: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: UX4GColors.neutral700,
+  },
+  feeLineAmount: {
+    fontSize: 14.5,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  feeCardDivider: {
+    height: 1,
+    backgroundColor: UX4GColors.neutral200,
+    marginVertical: 14,
+  },
+  feeTotalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feeTotalLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  feeTotalAmount: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
@@ -2260,7 +2483,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 6 Steps (Steps 1–5 Active)
+                Service Pattern • 6 Steps (All 6 Steps Active)
               </span>
             </div>
             <p

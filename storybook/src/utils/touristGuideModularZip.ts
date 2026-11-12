@@ -104,6 +104,10 @@ export interface TouristGuideFormData {
   // Step 5: Review & declaration
   declarationTruth: boolean;
   declarationPoliceVerification: boolean;
+
+  // Step 6: Fee & payment
+  concessionCategory: string;
+  feeNonRefundable: boolean;
 }
 
 export type TouristGuideFormErrors = Record<string, string | undefined>;
@@ -231,7 +235,8 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const HIGHEST_QUALIFICATIONS =', 'export const HIGHEST_QUALIFICATIONS: RadioOption[] =')
     .replace('export const LANGUAGE_OPTIONS =', 'export const LANGUAGE_OPTIONS: RadioOption[] =')
     .replace('export const SPECIALISM_OPTIONS =', 'export const SPECIALISM_OPTIONS: RadioOption[] =')
-    .replace('export const OPERATION_DISTRICTS =', 'export const OPERATION_DISTRICTS: RadioOption[] =');
+    .replace('export const OPERATION_DISTRICTS =', 'export const OPERATION_DISTRICTS: RadioOption[] =')
+    .replace('export const CONCESSION_CATEGORIES =', 'export const CONCESSION_CATEGORIES: RadioOption[] =');
 
   return `import { RadioOption, StepMeta } from '../types/touristGuide';
 
@@ -483,6 +488,58 @@ export function getTouristGuideReviewItems(
     { stepNum: 4, title: 'Step 4 · Documents', subtitle: step4Sub, isWarning: !docsComplete },
   ];
 }
+
+export function validateTouristGuideStep6(
+  formData: TouristGuideFormData
+): TouristGuideFormErrors {
+  const errs: TouristGuideFormErrors = {};
+  if (!formData.concessionCategory) {
+    errs.concessionCategory = 'Please select a concession category';
+  }
+  if (!formData.feeNonRefundable) {
+    errs.feeNonRefundable =
+      'Please confirm that you understand the fee is non-refundable once submitted';
+  }
+  return errs;
+}
+
+export interface TouristGuideFeeSummary {
+  shortRef: string;
+  applicationRef: string;
+  description: string;
+  formattedAmount: string;
+  bannerTitle: string;
+}
+
+export function getTouristGuideFeeSummary(
+  fd: TouristGuideFormData
+): TouristGuideFeeSummary {
+  const catObj = GUIDE_CATEGORIES.find((c) => c.id === fd.guideCategory);
+  const guideLabel = (catObj && catObj.label) || 'General guide';
+  const baseFee =
+    fd.guideCategory === 'expert' || fd.guideCategory === 'expert_linguistic' ? 1000 : 500;
+  let payable = baseFee;
+  let bannerTitle = 'No concession claimed — you pay ₹' + payable;
+
+  if (fd.concessionCategory === 'woman') {
+    payable = Math.round(baseFee / 2);
+    bannerTitle = 'Woman applicant concession — you pay ₹' + payable;
+  } else if (fd.concessionCategory === 'sc_st') {
+    payable = 0;
+    bannerTitle = 'SC / ST concession — ₹0 payable';
+  } else if (fd.concessionCategory === 'aspirational_district') {
+    payable = 0;
+    bannerTitle = 'Aspirational district concession — ₹0 payable';
+  }
+
+  return {
+    shortRef: 'TG-2026-000000',
+    applicationRef: 'Tourist guide licence · TG-2026-000000',
+    description: 'Licence fee — ' + guideLabel + ', five-year term',
+    formattedAmount: '₹' + payable,
+    bannerTitle,
+  };
+}
 `;
 }
 
@@ -726,6 +783,52 @@ ${jsx}
 `;
 }
 
+function buildStep6ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : (\n              <View style={styles.formContainer}>\n                {paymentCompleted ? (',
+    '\n            )}\n          </View>\n        </ScrollView>',
+    'Tourist Guide Step 6'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import Svg, { Path, Circle } from 'react-native-svg';
+import {
+  Ux4gRadioButton,
+  Ux4gCard,
+  Ux4gCheckbox,
+  Ux4gStatusBanner,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { CONCESSION_CATEGORIES } from '../constants/formOptions';
+import { TouristGuideFeeSummary } from '../utils/validators';
+import { TouristGuideFormData, TouristGuideFormErrors } from '../types/touristGuide';
+import { styles } from '../styles/commonStyles';
+
+export interface Step6FeePaymentScreenProps {
+  formData: TouristGuideFormData;
+  errors: TouristGuideFormErrors;
+  updateField: <K extends keyof TouristGuideFormData>(
+    key: K,
+    value: TouristGuideFormData[K]
+  ) => void;
+  feeSummary: TouristGuideFeeSummary;
+  paymentCompleted: boolean;
+}
+
+export const Step6FeePaymentScreen: React.FC<Step6FeePaymentScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  feeSummary,
+  paymentCompleted,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -760,6 +863,8 @@ import {
   validateTouristGuideStep3,
   validateTouristGuideStep4,
   validateTouristGuideStep5,
+  validateTouristGuideStep6,
+  getTouristGuideFeeSummary,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1AboutYouScreen } from './src/screens/Step1AboutYouScreen';
@@ -767,10 +872,12 @@ import { Step2CategoryEligibilityScreen } from './src/screens/Step2CategoryEligi
 import { Step3SkillsServiceAreaScreen } from './src/screens/Step3SkillsServiceAreaScreen';
 import { Step4DocumentsScreen } from './src/screens/Step4DocumentsScreen';
 import { Step5ReviewDeclarationScreen } from './src/screens/Step5ReviewDeclarationScreen';
+import { Step6FeePaymentScreen } from './src/screens/Step6FeePaymentScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(5);
+  const [step, setStep] = useState<number>(6);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
+  const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   const [formData, setFormData] = useState<TouristGuideFormData>(
@@ -973,6 +1080,20 @@ export default function App() {
     setStep(6);
   };
 
+  const handleContinueStep6 = () => {
+    const errs = validateTouristGuideStep6(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setPaymentCompleted(true);
+    alert(
+      'Payment of ' +
+        getTouristGuideFeeSummary(formData).formattedAmount +
+        ' successful! Your application has been submitted.'
+    );
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -984,8 +1105,8 @@ export default function App() {
       handleContinueStep4();
     } else if (step === 5) {
       handleContinueStep5();
-    } else if (step < 6) {
-      setStep(step + 1);
+    } else if (step === 6) {
+      handleContinueStep6();
     }
   };
 
@@ -999,6 +1120,7 @@ export default function App() {
     title: 'Step ' + step,
     subtitle: 'Tourist guide registration workflow.',
   };
+  const feeSummary = getTouristGuideFeeSummary(formData);
 
   return (
     <Ux4gThemeProvider>
@@ -1113,20 +1235,13 @@ export default function App() {
                 setStep={setStep}
               />
             ) : (
-              <View style={styles.formContainer}>
-                <Ux4gStatusBanner
-                  variant="infoLight"
-                  title={'Step ' + step + ' of 6 — ' + activeMeta.title}
-                  subtitle={activeMeta.subtitle}
-                  titleNumberOfLines={3}
-                  subtitleNumberOfLines={5}
-                  backgroundColor={UX4GColors.blue50}
-                  borderColor={UX4GColors.blue200}
-                  marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                  paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
-                  containerStyle={{ borderRadius: 10 }}
-                />
-              </View>
+              <Step6FeePaymentScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                feeSummary={feeSummary}
+                paymentCompleted={paymentCompleted}
+              />
             )}
           </View>
         </ScrollView>
@@ -1134,7 +1249,13 @@ export default function App() {
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
           <Ux4gButton
-            text={step === 5 ? 'Continue to payment' : 'Continue'}
+            text={
+              step === 5
+                ? 'Continue to payment'
+                : step === 6
+                  ? 'Pay ' + feeSummary.formattedAmount
+                  : 'Continue'
+            }
             variant="primary"
             size="large"
             height={48}
@@ -1275,7 +1396,8 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
       '        ├── Step2CategoryEligibilityScreen.tsx # Step 2 of 6: Category of Registration, Qualification & Eligibility',
       '        ├── Step3SkillsServiceAreaScreen.tsx   # Step 3 of 6: Languages Known, Specialisation & Districts',
       '        ├── Step4DocumentsScreen.tsx           # Step 4 of 6: Grouped Document Uploads',
-      '        └── Step5ReviewDeclarationScreen.tsx   # Step 5 of 6: Application Preview & Declaration',
+      '        ├── Step5ReviewDeclarationScreen.tsx   # Step 5 of 6: Application Preview & Declaration',
+      '        └── Step6FeePaymentScreen.tsx          # Step 6 of 6: Concession Claimed, Fee Details & Payment',
       '```',
       '',
       '## Getting Started',
@@ -1301,6 +1423,7 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
     'src/screens/Step3SkillsServiceAreaScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'src/screens/Step4DocumentsScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'src/screens/Step5ReviewDeclarationScreen.tsx': buildStep5ScreenFile(normalizedCode),
+    'src/screens/Step6FeePaymentScreen.tsx': buildStep6ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }
