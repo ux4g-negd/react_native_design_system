@@ -8,8 +8,8 @@ interface TouristGuideRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–4 Active)
-const SNACK_ID = 'c4nfZDpCMp39Wy-xEoiLQ';
+// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–5 Active)
+const SNACK_ID = 'outnMv5kUn8DVQ-YZ_321';
 
 export const TouristGuideRegistrationFlowDoc: React.FC<TouristGuideRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -246,6 +246,25 @@ const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (
   </Svg>
 );
 
+const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M15 5l4 4"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
 const DocumentUploadSlot = ({
   title,
   required,
@@ -285,6 +304,58 @@ const DocumentUploadSlot = ({
   );
 };
 
+const getTouristGuideReviewItems = (fd) => {
+  const findLabel = (arr, id) => (arr.find((x) => x.id === id) || {}).label;
+  const fullName = (fd.fullName || '').trim() || 'Saksham Kharbanda';
+  const dob = (fd.dateOfBirth || '').trim() || '15 Sep 1994';
+  const districtLabel = findLabel(DISTRICTS_OPTIONS, (fd.district || [])[0]) || 'Dehradun';
+  const stateLabel = findLabel(STATES_AND_UTS, (fd.stateUT || [])[0]) || 'Uttarakhand';
+  const step1Sub = fullName + ' · ' + dob + ' · ' + districtLabel + ', ' + stateLabel;
+
+  const catLabel = findLabel(GUIDE_CATEGORIES, fd.guideCategory) || 'General guide';
+  const qualLabel =
+    findLabel(HIGHEST_QUALIFICATIONS, (fd.highestQualification || [])[0]) || '10+2';
+  const step2Sub = catLabel + ' · ' + qualLabel + ' · meets every threshold';
+
+  const langCount = (fd.languagesKnown || []).length;
+  const specCount = (fd.specialisms || []).length;
+  const distCount = (fd.operationDistricts || []).length;
+  const step3Sub =
+    langCount +
+    ' language' +
+    (langCount === 1 ? '' : 's') +
+    ' · ' +
+    specCount +
+    ' specialism' +
+    (specCount === 1 ? '' : 's') +
+    ' · ' +
+    distCount +
+    ' district' +
+    (distCount === 1 ? '' : 's');
+
+  const df = fd.docFiles || {};
+  const allDocKeys = Object.keys(df);
+  const uploadedCount = allDocKeys.filter((k) => df[k] && df[k].length > 0).length;
+  const requiredKeys = [
+    'identity_proof',
+    'police_clearance',
+    'education_cert',
+    'signed_declaration',
+  ];
+  const missingReq = requiredKeys.filter((k) => !df[k] || df[k].length === 0).length;
+  const docsComplete = missingReq === 0;
+  const step4Sub = docsComplete
+    ? 'All required documents attached (' + uploadedCount + ' of ' + allDocKeys.length + ' uploaded)'
+    : uploadedCount + ' of ' + allDocKeys.length + ' attached — ' + missingReq + ' required still missing';
+
+  return [
+    { stepNum: 1, title: 'Step 1 · About you', subtitle: step1Sub, isWarning: false },
+    { stepNum: 2, title: 'Step 2 · Category & eligibility', subtitle: step2Sub, isWarning: false },
+    { stepNum: 3, title: 'Step 3 · Skills & service area', subtitle: step3Sub, isWarning: false },
+    { stepNum: 4, title: 'Step 4 · Documents', subtitle: step4Sub, isWarning: !docsComplete },
+  ];
+};
+
 const parseDateString = (str) => {
   if (!str) return undefined;
   const parts = str.split('/');
@@ -309,7 +380,7 @@ const calculateAgeFromDob = (dobStr) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(5);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -370,6 +441,10 @@ export default function App() {
       specialism_cert: [],
       signed_declaration: [],
     },
+
+    // Step 5: Review & declaration
+    declarationTruth: false,
+    declarationPoliceVerification: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -619,6 +694,22 @@ export default function App() {
     setStep(5);
   };
 
+  const handleContinueStep5 = () => {
+    const errs = {};
+    if (!formData.declarationTruth) {
+      errs.declarationTruth = 'Please confirm that everything you have entered is true';
+    }
+    if (!formData.declarationPoliceVerification) {
+      errs.declarationPoliceVerification =
+        'Please agree to police verification of the details you have given';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(6);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -628,6 +719,8 @@ export default function App() {
       handleContinueStep3();
     } else if (step === 4) {
       handleContinueStep4();
+    } else if (step === 5) {
+      handleContinueStep5();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -1631,6 +1724,89 @@ export default function App() {
                   )}
                 </Ux4gCard>
               </View>
+            ) : step === 5 ? (
+              <View style={styles.formContainer}>
+                <Text style={styles.sectionHeading}>Preview Your Application</Text>
+
+                {getTouristGuideReviewItems(formData).map((item, idx, arr) => (
+                  <View
+                    key={item.stepNum}
+                    style={{ marginBottom: idx === arr.length - 1 ? 18 : 12 }}
+                  >
+                    <Ux4gStatusBanner
+                      variant={item.isWarning ? 'warningLight' : 'successLight'}
+                      title={item.title}
+                      subtitle={item.subtitle}
+                      titleNumberOfLines={2}
+                      subtitleNumberOfLines={4}
+                      backgroundColor={item.isWarning ? UX4GColors.orange50 : UX4GColors.green50}
+                      borderColor={item.isWarning ? UX4GColors.orange200 : UX4GColors.green200}
+                      marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                      paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                      containerStyle={{ borderRadius: 10 }}
+                      titleStyle={{
+                        fontSize: 13.5,
+                        fontWeight: '700',
+                        color: item.isWarning ? UX4GColors.orange800 : UX4GColors.green700,
+                        lineHeight: 19,
+                      }}
+                      subtitleStyle={{
+                        fontSize: 12.5,
+                        lineHeight: 18,
+                        color: item.isWarning ? UX4GColors.orange800 : UX4GColors.green700,
+                        marginTop: 3,
+                      }}
+                      trailingIcon={
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => setStep(item.stepNum)}
+                          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                          style={{ padding: 2 }}
+                        >
+                          <PencilOutlineIcon size={17} color={UX4GColors.neutral800} />
+                        </TouchableOpacity>
+                      }
+                    />
+                  </View>
+                ))}
+
+                {/* Declaration */}
+                <Text style={styles.sectionHeading}>Declaration</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gCheckbox
+                    value={formData.declarationTruth}
+                    onChanged={(val) => updateField('declarationTruth', !!val)}
+                    label="Everything I have entered is true to the best of my knowledge"
+                    isRequired={true}
+                    hasError={!!errors.declarationTruth}
+                    size="medium"
+                    activeColor={UX4GColors.primary}
+                    labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                  />
+                  {errors.declarationTruth ? (
+                    <Text style={styles.inlineErrorText}>{errors.declarationTruth}</Text>
+                  ) : null}
+                </View>
+
+                <View style={{ marginBottom: 4 }}>
+                  <Ux4gCheckbox
+                    value={formData.declarationPoliceVerification}
+                    onChanged={(val) => updateField('declarationPoliceVerification', !!val)}
+                    label="I agree to police verification of the details I have given"
+                    isRequired={true}
+                    hasError={!!errors.declarationPoliceVerification}
+                    size="medium"
+                    activeColor={UX4GColors.primary}
+                    labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                  />
+                  {errors.declarationPoliceVerification ? (
+                    <Text style={styles.inlineErrorText}>
+                      {errors.declarationPoliceVerification}
+                    </Text>
+                  ) : null}
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1653,7 +1829,7 @@ export default function App() {
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
           <Ux4gButton
-            text="Continue"
+            text={step === 5 ? 'Continue to payment' : 'Continue'}
             variant="primary"
             size="large"
             height={48}
@@ -2084,7 +2260,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 6 Steps (Steps 1–4 Active)
+                Service Pattern • 6 Steps (Steps 1–5 Active)
               </span>
             </div>
             <p

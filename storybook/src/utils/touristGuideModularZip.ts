@@ -100,6 +100,10 @@ export interface TouristGuideFormData {
     declaration: boolean;
   };
   docFiles: Record<string, UploadedFile[]>;
+
+  // Step 5: Review & declaration
+  declarationTruth: boolean;
+  declarationPoliceVerification: boolean;
 }
 
 export type TouristGuideFormErrors = Record<string, string | undefined>;
@@ -152,6 +156,10 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'export const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) =>',
       'export const ChevronDownIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }) =>'
+    )
+    .replace(
+      'export const PencilOutlineIcon = ({ size = 17, color = UX4GColors.neutral800 }) =>',
+      'export const PencilOutlineIcon: React.FC<IconProps> = ({ size = 17, color = UX4GColors.neutral800 }) =>'
     );
 
   return `import React from 'react';
@@ -171,7 +179,7 @@ function buildDocumentUploadSlotFile(appCode: string): string {
   const slotSlice = sliceBetween(
     appCode,
     'const DocumentUploadSlot = ({',
-    'const parseDateString =',
+    'const getTouristGuideReviewItems =',
     'DocumentUploadSlot'
   ).trim();
 
@@ -270,6 +278,13 @@ ${stylesSlice}
 
 function buildValidatorsFile(): string {
   return `import {
+  DISTRICTS_OPTIONS,
+  STATES_AND_UTS,
+  GUIDE_CATEGORIES,
+  HIGHEST_QUALIFICATIONS,
+} from '../constants/formOptions';
+import {
+  RadioOption,
   TouristGuideFormData,
   TouristGuideFormErrors,
 } from '../types/touristGuide';
@@ -391,6 +406,82 @@ export function validateTouristGuideStep4(
     errs.documents = 'Please upload all required (*) documents before continuing.';
   }
   return errs;
+}
+
+export function validateTouristGuideStep5(
+  formData: TouristGuideFormData
+): TouristGuideFormErrors {
+  const errs: TouristGuideFormErrors = {};
+  if (!formData.declarationTruth) {
+    errs.declarationTruth = 'Please confirm that everything you have entered is true';
+  }
+  if (!formData.declarationPoliceVerification) {
+    errs.declarationPoliceVerification =
+      'Please agree to police verification of the details you have given';
+  }
+  return errs;
+}
+
+export interface TouristGuideReviewItem {
+  stepNum: number;
+  title: string;
+  subtitle: string;
+  isWarning: boolean;
+}
+
+export function getTouristGuideReviewItems(
+  fd: TouristGuideFormData
+): TouristGuideReviewItem[] {
+  const findLabel = (arr: RadioOption[], id: string) =>
+    (arr.find((x) => x.id === id) || {}).label;
+  const fullName = (fd.fullName || '').trim() || 'Saksham Kharbanda';
+  const dob = (fd.dateOfBirth || '').trim() || '15 Sep 1994';
+  const districtLabel = findLabel(DISTRICTS_OPTIONS, (fd.district || [])[0]) || 'Dehradun';
+  const stateLabel = findLabel(STATES_AND_UTS, (fd.stateUT || [])[0]) || 'Uttarakhand';
+  const step1Sub = fullName + ' · ' + dob + ' · ' + districtLabel + ', ' + stateLabel;
+
+  const catLabel = findLabel(GUIDE_CATEGORIES, fd.guideCategory) || 'General guide';
+  const qualLabel =
+    findLabel(HIGHEST_QUALIFICATIONS, (fd.highestQualification || [])[0]) || '10+2';
+  const step2Sub = catLabel + ' · ' + qualLabel + ' · meets every threshold';
+
+  const langCount = (fd.languagesKnown || []).length;
+  const specCount = (fd.specialisms || []).length;
+  const distCount = (fd.operationDistricts || []).length;
+  const step3Sub =
+    langCount +
+    ' language' +
+    (langCount === 1 ? '' : 's') +
+    ' · ' +
+    specCount +
+    ' specialism' +
+    (specCount === 1 ? '' : 's') +
+    ' · ' +
+    distCount +
+    ' district' +
+    (distCount === 1 ? '' : 's');
+
+  const df = fd.docFiles || {};
+  const allDocKeys = Object.keys(df);
+  const uploadedCount = allDocKeys.filter((k) => df[k] && df[k].length > 0).length;
+  const requiredKeys = [
+    'identity_proof',
+    'police_clearance',
+    'education_cert',
+    'signed_declaration',
+  ];
+  const missingReq = requiredKeys.filter((k) => !df[k] || df[k].length === 0).length;
+  const docsComplete = missingReq === 0;
+  const step4Sub = docsComplete
+    ? 'All required documents attached (' + uploadedCount + ' of ' + allDocKeys.length + ' uploaded)'
+    : uploadedCount + ' of ' + allDocKeys.length + ' attached — ' + missingReq + ' required still missing';
+
+  return [
+    { stepNum: 1, title: 'Step 1 · About you', subtitle: step1Sub, isWarning: false },
+    { stepNum: 2, title: 'Step 2 · Category & eligibility', subtitle: step2Sub, isWarning: false },
+    { stepNum: 3, title: 'Step 3 · Skills & service area', subtitle: step3Sub, isWarning: false },
+    { stepNum: 4, title: 'Step 4 · Documents', subtitle: step4Sub, isWarning: !docsComplete },
+  ];
 }
 `;
 }
@@ -554,7 +645,7 @@ function buildStep4ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 4 ? (',
-    '\n            ) : (\n              <View style={styles.formContainer}>',
+    ') : step === 5 ? (',
     'Tourist Guide Step 4'
   );
 
@@ -594,6 +685,47 @@ ${jsx}
 `;
 }
 
+function buildStep5ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 5 ? (',
+    ') : (',
+    'Tourist Guide Step 5'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  Ux4gStatusBanner,
+  Ux4gCheckbox,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { PencilOutlineIcon } from '../components/Icons';
+import { getTouristGuideReviewItems } from '../utils/validators';
+import { TouristGuideFormData, TouristGuideFormErrors } from '../types/touristGuide';
+import { styles } from '../styles/commonStyles';
+
+export interface Step5ReviewDeclarationScreenProps {
+  formData: TouristGuideFormData;
+  errors: TouristGuideFormErrors;
+  updateField: <K extends keyof TouristGuideFormData>(
+    key: K,
+    value: TouristGuideFormData[K]
+  ) => void;
+  setStep: (step: number) => void;
+}
+
+export const Step5ReviewDeclarationScreen: React.FC<Step5ReviewDeclarationScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  setStep,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -627,15 +759,17 @@ import {
   validateTouristGuideStep2,
   validateTouristGuideStep3,
   validateTouristGuideStep4,
+  validateTouristGuideStep5,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1AboutYouScreen } from './src/screens/Step1AboutYouScreen';
 import { Step2CategoryEligibilityScreen } from './src/screens/Step2CategoryEligibilityScreen';
 import { Step3SkillsServiceAreaScreen } from './src/screens/Step3SkillsServiceAreaScreen';
 import { Step4DocumentsScreen } from './src/screens/Step4DocumentsScreen';
+import { Step5ReviewDeclarationScreen } from './src/screens/Step5ReviewDeclarationScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(4);
+  const [step, setStep] = useState<number>(5);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -830,6 +964,15 @@ export default function App() {
     setStep(5);
   };
 
+  const handleContinueStep5 = () => {
+    const errs = validateTouristGuideStep5(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(6);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -839,6 +982,8 @@ export default function App() {
       handleContinueStep3();
     } else if (step === 4) {
       handleContinueStep4();
+    } else if (step === 5) {
+      handleContinueStep5();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -960,6 +1105,13 @@ export default function App() {
                 toggleDocSection={toggleDocSection}
                 setDocSlotFiles={setDocSlotFiles}
               />
+            ) : step === 5 ? (
+              <Step5ReviewDeclarationScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                setStep={setStep}
+              />
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -982,7 +1134,7 @@ export default function App() {
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
           <Ux4gButton
-            text="Continue"
+            text={step === 5 ? 'Continue to payment' : 'Continue'}
             variant="primary"
             size="large"
             height={48}
@@ -1122,7 +1274,8 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
       '        ├── Step1AboutYouScreen.tsx            # Step 1 of 6: Photograph, Applicant, Contact, Location & Address',
       '        ├── Step2CategoryEligibilityScreen.tsx # Step 2 of 6: Category of Registration, Qualification & Eligibility',
       '        ├── Step3SkillsServiceAreaScreen.tsx   # Step 3 of 6: Languages Known, Specialisation & Districts',
-      '        └── Step4DocumentsScreen.tsx           # Step 4 of 6: Grouped Document Uploads',
+      '        ├── Step4DocumentsScreen.tsx           # Step 4 of 6: Grouped Document Uploads',
+      '        └── Step5ReviewDeclarationScreen.tsx   # Step 5 of 6: Application Preview & Declaration',
       '```',
       '',
       '## Getting Started',
@@ -1147,6 +1300,7 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
     'src/screens/Step2CategoryEligibilityScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'src/screens/Step3SkillsServiceAreaScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'src/screens/Step4DocumentsScreen.tsx': buildStep4ScreenFile(normalizedCode),
+    'src/screens/Step5ReviewDeclarationScreen.tsx': buildStep5ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }
