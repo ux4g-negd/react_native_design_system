@@ -8,8 +8,8 @@ interface TouristGuideRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–3 Active)
-const SNACK_ID = 'fzP4FhdUk296lGl38pa5O';
+// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–4 Active)
+const SNACK_ID = 'c4nfZDpCMp39Wy-xEoiLQ';
 
 export const TouristGuideRegistrationFlowDoc: React.FC<TouristGuideRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -44,6 +44,8 @@ import {
   Ux4gDatePicker,
   Ux4gStatusBanner,
   Ux4gCompactStepper,
+  Ux4gCard,
+  Ux4gFileUpload,
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
@@ -75,7 +77,7 @@ const STEP_METADATA = {
   },
   4: {
     title: 'Documents',
-    subtitle: 'Supporting identity, qualification, and background documents.',
+    subtitle: 'What you attach, grouped by what each one proves.',
   },
   5: {
     title: 'Review & declaration',
@@ -220,6 +222,69 @@ const TrashCanIcon = ({ size = 18, color = UX4GColors.neutral700 }) => (
   </Svg>
 );
 
+const ChevronUpIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M18 15L12 9L6 15"
+      stroke={color}
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M6 9L12 15L18 9"
+      stroke={color}
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const DocumentUploadSlot = ({
+  title,
+  required,
+  ruleText,
+  files,
+  onFilesChanged,
+  maxFiles = 1,
+  maxFileSize = 2 * 1024 * 1024,
+  allowedExtensions = ['pdf', 'jpg', 'png'],
+  isLast = false,
+}) => {
+  const hasFile = files && files.length > 0;
+  return (
+    <View style={[styles.docSlotWrapper, isLast && { marginBottom: 0 }]}>
+      <View style={styles.docSlotHeaderRow}>
+        <View style={[styles.statusCircle, hasFile ? styles.statusCircleDone : styles.statusCircleEmpty]}>
+          {hasFile ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+        </View>
+        <Text style={styles.docSlotTitle}>
+          {title}
+          {required ? <Text style={styles.requiredStar}>*</Text> : null}
+        </Text>
+      </View>
+      <Text style={styles.docSlotRuleText}>{ruleText}</Text>
+      <Ux4gFileUpload
+        maxFiles={maxFiles}
+        maxFileSize={maxFileSize}
+        initialFiles={files}
+        onFilesChanged={onFilesChanged}
+        allowedExtensions={allowedExtensions}
+        borderStyle="dashed"
+        buttonBorderRadius={8}
+        buttonColor={UX4GColors.primary}
+        buttonBorderColor={UX4GColors.purple700}
+      />
+    </View>
+  );
+};
+
 const parseDateString = (str) => {
   if (!str) return undefined;
   const parts = str.split('/');
@@ -244,7 +309,7 @@ const calculateAgeFromDob = (dobStr) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -281,6 +346,30 @@ export default function App() {
     yearsGuiding: '',
     districtFilter: '',
     operationDistricts: ['dehradun', 'haridwar', 'tehri_garhwal'],
+
+    // Step 4: Documents
+    docSectionsExpanded: {
+      identity: true,
+      knowledge: false,
+      specialism: false,
+      declaration: false,
+    },
+    docFiles: {
+      identity_proof: [],
+      police_clearance: [],
+      education_cert: [
+        {
+          id: 'tg-doc-edu-1',
+          name: 'Class12_Marksheet.pdf',
+          fileSize: 824000,
+          status: 'success',
+          progress: 1,
+        },
+      ],
+      language_cert: [],
+      specialism_cert: [],
+      signed_declaration: [],
+    },
   });
 
   const [errors, setErrors] = useState({});
@@ -485,6 +574,51 @@ export default function App() {
     setStep(4);
   };
 
+  const toggleDocSection = (sectionKey) => {
+    setFormData((prev) => ({
+      ...prev,
+      docSectionsExpanded: {
+        ...prev.docSectionsExpanded,
+        [sectionKey]: !prev.docSectionsExpanded[sectionKey],
+      },
+    }));
+  };
+
+  const setDocSlotFiles = (slotKey, files) => {
+    setFormData((prev) => ({
+      ...prev,
+      docFiles: {
+        ...prev.docFiles,
+        [slotKey]: files,
+      },
+    }));
+    if (errors.documents) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.documents;
+        return next;
+      });
+    }
+  };
+
+  const handleContinueStep4 = () => {
+    const df = formData.docFiles || {};
+    const requiredKeys = [
+      'identity_proof',
+      'police_clearance',
+      'education_cert',
+      'signed_declaration',
+    ];
+    const missing = requiredKeys.some((k) => !df[k] || df[k].length === 0);
+    if (missing) {
+      setErrors({
+        documents: 'Please upload all required (*) documents before continuing.',
+      });
+      return;
+    }
+    setStep(5);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -492,6 +626,8 @@ export default function App() {
       handleContinueStep2();
     } else if (step === 3) {
       handleContinueStep3();
+    } else if (step === 4) {
+      handleContinueStep4();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -1175,6 +1311,326 @@ export default function App() {
                   ) : null}
                 </View>
               </View>
+            ) : step === 4 ? (
+              <View style={styles.formContainer}>
+                {/* Info Banner using official UX4G Component with UX4GColors cyan palette */}
+                <Ux4gStatusBanner
+                  variant="infoLight"
+                  title="PDF, JPG or PNG · up to 2 MB each · no password-protected files"
+                  titleNumberOfLines={2}
+                  titleStyle={{ color: UX4GColors.cyan800, fontWeight: '500', fontSize: 13.5 }}
+                  leadingIcon={
+                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                      <Circle cx="12" cy="12" r="10" fill={UX4GColors.cyan600} />
+                      <Path d="M12 11V16.5" stroke={UX4GColors.white} strokeWidth="2" strokeLinecap="round" />
+                      <Circle cx="12" cy="7.8" r="1.15" fill={UX4GColors.white} />
+                    </Svg>
+                  }
+                  backgroundColor={UX4GColors.cyan50}
+                  borderColor={UX4GColors.cyan200}
+                  marginStyle={{ marginHorizontal: 0, marginTop: 0, marginBottom: 14 }}
+                />
+
+                {errors.documents ? (
+                  <Text style={[styles.inlineErrorText, { marginBottom: 12 }]}>
+                    {errors.documents}
+                  </Text>
+                ) : null}
+
+                {/* Accordion 1: What proves who you are */}
+                <Ux4gCard
+                  cornerRadius={10}
+                  borderWidth={1}
+                  borderColor={UX4GColors.neutral200}
+                  backgroundColor={UX4GColors.white}
+                  elevation={0}
+                  style={{ padding: 14, marginBottom: 14 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => toggleDocSection('identity')}
+                    style={styles.docSectionCardHeader}
+                  >
+                    <View style={{ flex: 1, paddingRight: 8 }}>
+                      <Text style={styles.docSectionCardTitle}>What proves who you are</Text>
+                      {!formData.docSectionsExpanded.identity && (
+                        <>
+                          <Text style={styles.docSectionSummaryText}>
+                            {'2 documents · ' +
+                              ([
+                                formData.docFiles.identity_proof,
+                                formData.docFiles.police_clearance,
+                              ].filter((arr) => arr.length > 0).length > 0
+                                ? [
+                                    formData.docFiles.identity_proof,
+                                    formData.docFiles.police_clearance,
+                                  ].filter((arr) => arr.length > 0).length + ' uploaded'
+                                : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {[
+                              formData.docFiles.identity_proof,
+                              formData.docFiles.police_clearance,
+                            ].map((arr, idx) => (
+                              <View
+                                key={idx}
+                                style={[
+                                  styles.statusCircle,
+                                  arr.length > 0 ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {arr.length > 0 ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+                              </View>
+                            ))}
+                          </View>
+                        </>
+                      )}
+                    </View>
+                    {formData.docSectionsExpanded.identity ? (
+                      <ChevronUpIcon size={16} color={UX4GColors.neutral900} />
+                    ) : (
+                      <ChevronDownIcon size={16} color={UX4GColors.neutral900} />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.identity && (
+                    <View style={{ marginTop: 14 }}>
+                      <DocumentUploadSlot
+                        title="Identity and address proof"
+                        required
+                        ruleText="Aadhaar, Voter ID or Passport · 1 file"
+                        files={formData.docFiles.identity_proof}
+                        onFilesChanged={(f) => setDocSlotFiles('identity_proof', f)}
+                        maxFiles={1}
+                        maxFileSize={2 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Police clearance certificate"
+                        required
+                        ruleText="1 file · issued within the last six months"
+                        files={formData.docFiles.police_clearance}
+                        onFilesChanged={(f) => setDocSlotFiles('police_clearance', f)}
+                        maxFiles={1}
+                        maxFileSize={2 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                        isLast
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+
+                {/* Accordion 2: What proves what you know */}
+                <Ux4gCard
+                  cornerRadius={10}
+                  borderWidth={1}
+                  borderColor={UX4GColors.neutral200}
+                  backgroundColor={UX4GColors.white}
+                  elevation={0}
+                  style={{ padding: 14, marginBottom: 14 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => toggleDocSection('knowledge')}
+                    style={styles.docSectionCardHeader}
+                  >
+                    <View style={{ flex: 1, paddingRight: 8 }}>
+                      <Text style={styles.docSectionCardTitle}>What proves what you know</Text>
+                      {!formData.docSectionsExpanded.knowledge && (
+                        <>
+                          <Text style={styles.docSectionSummaryText}>
+                            {'2 documents · ' +
+                              ([
+                                formData.docFiles.education_cert,
+                                formData.docFiles.language_cert,
+                              ].filter((arr) => arr.length > 0).length > 0
+                                ? [
+                                    formData.docFiles.education_cert,
+                                    formData.docFiles.language_cert,
+                                  ].filter((arr) => arr.length > 0).length + ' uploaded'
+                                : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {[
+                              formData.docFiles.education_cert,
+                              formData.docFiles.language_cert,
+                            ].map((arr, idx) => (
+                              <View
+                                key={idx}
+                                style={[
+                                  styles.statusCircle,
+                                  arr.length > 0 ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {arr.length > 0 ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+                              </View>
+                            ))}
+                          </View>
+                        </>
+                      )}
+                    </View>
+                    {formData.docSectionsExpanded.knowledge ? (
+                      <ChevronUpIcon size={16} color={UX4GColors.neutral900} />
+                    ) : (
+                      <ChevronDownIcon size={16} color={UX4GColors.neutral900} />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.knowledge && (
+                    <View style={{ marginTop: 14 }}>
+                      <DocumentUploadSlot
+                        title="Educational qualification certificate"
+                        required
+                        ruleText="1 file · 10+2 / Degree marksheet or certificate"
+                        files={formData.docFiles.education_cert}
+                        onFilesChanged={(f) => setDocSlotFiles('education_cert', f)}
+                        maxFiles={1}
+                        maxFileSize={2 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Language proficiency / guide training certificate"
+                        ruleText="PDF, JPG or PNG · up to 2 files"
+                        files={formData.docFiles.language_cert}
+                        onFilesChanged={(f) => setDocSlotFiles('language_cert', f)}
+                        maxFiles={2}
+                        maxFileSize={2 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                        isLast
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+
+                {/* Accordion 3: What your specialism requires */}
+                <Ux4gCard
+                  cornerRadius={10}
+                  borderWidth={1}
+                  borderColor={UX4GColors.neutral200}
+                  backgroundColor={UX4GColors.white}
+                  elevation={0}
+                  style={{ padding: 14, marginBottom: 14 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => toggleDocSection('specialism')}
+                    style={styles.docSectionCardHeader}
+                  >
+                    <View style={{ flex: 1, paddingRight: 8 }}>
+                      <Text style={styles.docSectionCardTitle}>What your specialism requires</Text>
+                      {!formData.docSectionsExpanded.specialism && (
+                        <>
+                          <Text style={styles.docSectionSummaryText}>
+                            {'1 document · ' +
+                              (formData.docFiles.specialism_cert.length > 0
+                                ? '1 uploaded'
+                                : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            <View
+                              style={[
+                                styles.statusCircle,
+                                formData.docFiles.specialism_cert.length > 0
+                                  ? styles.statusCircleDone
+                                  : styles.statusCircleEmpty,
+                              ]}
+                            >
+                              {formData.docFiles.specialism_cert.length > 0 ? (
+                                <CheckSmallIcon size={11} color={UX4GColors.white} />
+                              ) : null}
+                            </View>
+                          </View>
+                        </>
+                      )}
+                    </View>
+                    {formData.docSectionsExpanded.specialism ? (
+                      <ChevronUpIcon size={16} color={UX4GColors.neutral900} />
+                    ) : (
+                      <ChevronDownIcon size={16} color={UX4GColors.neutral900} />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.specialism && (
+                    <View style={{ marginTop: 14 }}>
+                      <DocumentUploadSlot
+                        title="Adventure / specialism certification"
+                        ruleText="1 file · mountaineering, first-aid or relevant certificate"
+                        files={formData.docFiles.specialism_cert}
+                        onFilesChanged={(f) => setDocSlotFiles('specialism_cert', f)}
+                        maxFiles={1}
+                        maxFileSize={2 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                        isLast
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+
+                {/* Accordion 4: What you declare */}
+                <Ux4gCard
+                  cornerRadius={10}
+                  borderWidth={1}
+                  borderColor={UX4GColors.neutral200}
+                  backgroundColor={UX4GColors.white}
+                  elevation={0}
+                  style={{ padding: 14, marginBottom: 4 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => toggleDocSection('declaration')}
+                    style={styles.docSectionCardHeader}
+                  >
+                    <View style={{ flex: 1, paddingRight: 8 }}>
+                      <Text style={styles.docSectionCardTitle}>What you declare</Text>
+                      {!formData.docSectionsExpanded.declaration && (
+                        <>
+                          <Text style={styles.docSectionSummaryText}>
+                            {'1 document · ' +
+                              (formData.docFiles.signed_declaration.length > 0
+                                ? '1 uploaded'
+                                : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            <View
+                              style={[
+                                styles.statusCircle,
+                                formData.docFiles.signed_declaration.length > 0
+                                  ? styles.statusCircleDone
+                                  : styles.statusCircleEmpty,
+                              ]}
+                            >
+                              {formData.docFiles.signed_declaration.length > 0 ? (
+                                <CheckSmallIcon size={11} color={UX4GColors.white} />
+                              ) : null}
+                            </View>
+                          </View>
+                        </>
+                      )}
+                    </View>
+                    {formData.docSectionsExpanded.declaration ? (
+                      <ChevronUpIcon size={16} color={UX4GColors.neutral900} />
+                    ) : (
+                      <ChevronDownIcon size={16} color={UX4GColors.neutral900} />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.declaration && (
+                    <View style={{ marginTop: 14 }}>
+                      <DocumentUploadSlot
+                        title="Signed self-declaration / undertaking"
+                        required
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.signed_declaration}
+                        onFilesChanged={(f) => setDocSlotFiles('signed_declaration', f)}
+                        maxFiles={1}
+                        maxFileSize={2 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                        isLast
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1480,6 +1936,66 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 4,
   },
+  docSectionCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  docSectionCardTitle: {
+    fontSize: 14.5,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  docSectionSummaryText: {
+    fontSize: 12.5,
+    color: UX4GColors.neutral600,
+    marginTop: 4,
+  },
+  docStatusDotRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+  },
+  statusCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 1,
+  },
+  statusCircleEmpty: {
+    borderWidth: 1.5,
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
+  },
+  statusCircleDone: {
+    backgroundColor: UX4GColors.green,
+    borderWidth: 0,
+  },
+  docSlotWrapper: {
+    marginBottom: 18,
+  },
+  docSlotHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    marginBottom: 4,
+  },
+  docSlotTitle: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+    lineHeight: 20,
+  },
+  docSlotRuleText: {
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: UX4GColors.neutral600,
+    marginBottom: 10,
+  },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
@@ -1568,7 +2084,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 6 Steps (Steps 1–3 Active)
+                Service Pattern • 6 Steps (Steps 1–4 Active)
               </span>
             </div>
             <p

@@ -42,7 +42,9 @@ function extractScreenJsx(appCode: string, startMarker: string, endMarker: strin
 }
 
 function buildTypesFile(): string {
-  return `export interface RadioOption {
+  return `import { UploadedFile } from 'ux4g-react-native-components';
+
+export interface RadioOption {
   id: string;
   label: string;
 }
@@ -89,6 +91,15 @@ export interface TouristGuideFormData {
   yearsGuiding: string;
   districtFilter: string;
   operationDistricts: string[];
+
+  // Step 4: Documents
+  docSectionsExpanded: {
+    identity: boolean;
+    knowledge: boolean;
+    specialism: boolean;
+    declaration: boolean;
+  };
+  docFiles: Record<string, UploadedFile[]>;
 }
 
 export type TouristGuideFormErrors = Record<string, string | undefined>;
@@ -116,7 +127,7 @@ function buildIconsFile(appCode: string): string {
   const iconSlice = sliceBetween(
     appCode,
     'const CheckSmallIcon =',
-    'const parseDateString =',
+    'const DocumentUploadSlot =',
     'Icons'
   ).trim();
 
@@ -133,6 +144,14 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'export const TrashCanIcon = ({ size = 18, color = UX4GColors.neutral700 }) =>',
       'export const TrashCanIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral700 }) =>'
+    )
+    .replace(
+      'export const ChevronUpIcon = ({ size = 16, color = UX4GColors.neutral900 }) =>',
+      'export const ChevronUpIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }) =>'
+    )
+    .replace(
+      'export const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) =>',
+      'export const ChevronDownIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }) =>'
     );
 
   return `import React from 'react';
@@ -145,6 +164,41 @@ export interface IconProps {
 }
 
 ${exported}
+`;
+}
+
+function buildDocumentUploadSlotFile(appCode: string): string {
+  const slotSlice = sliceBetween(
+    appCode,
+    'const DocumentUploadSlot = ({',
+    'const parseDateString =',
+    'DocumentUploadSlot'
+  ).trim();
+
+  const typedSlot = slotSlice.replace(
+    'const DocumentUploadSlot = ({',
+    'export const DocumentUploadSlot: React.FC<DocumentUploadSlotProps> = ({'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import { Ux4gFileUpload, UX4GColors, UploadedFile } from 'ux4g-react-native-components';
+import { CheckSmallIcon } from './Icons';
+import { styles } from '../styles/commonStyles';
+
+export interface DocumentUploadSlotProps {
+  title: string;
+  required?: boolean;
+  ruleText: string;
+  files: UploadedFile[];
+  onFilesChanged: (files: UploadedFile[]) => void;
+  maxFiles?: number;
+  maxFileSize?: number;
+  allowedExtensions?: string[];
+  isLast?: boolean;
+}
+
+${typedSlot}
 `;
 }
 
@@ -186,9 +240,13 @@ function buildInitialFormDataFile(appCode: string): string {
   const objEnd = appCode.indexOf(endMarker, objStart);
   if (objEnd === -1) throw new Error('Could not find end of initial tourist guide formData state');
 
-  const rawObj = dedentBlock(appCode.slice(objStart, objEnd) + '\n  }', 2);
+  const rawObj = dedentBlock(appCode.slice(objStart, objEnd) + '\n  }', 2).replace(
+    /status: 'success'/g,
+    'status: UploadStatus.success'
+  );
 
-  return `import { TouristGuideFormData } from '../types/touristGuide';
+  return `import { UploadStatus } from 'ux4g-react-native-components';
+import { TouristGuideFormData } from '../types/touristGuide';
 
 export const createInitialTouristGuideFormData = (): TouristGuideFormData => (${rawObj});
 `;
@@ -316,6 +374,24 @@ export function validateTouristGuideStep3(
   }
   return errs;
 }
+
+export function validateTouristGuideStep4(
+  formData: TouristGuideFormData
+): TouristGuideFormErrors {
+  const errs: TouristGuideFormErrors = {};
+  const df = formData.docFiles || {};
+  const requiredKeys = [
+    'identity_proof',
+    'police_clearance',
+    'education_cert',
+    'signed_declaration',
+  ];
+  const missing = requiredKeys.some((k) => !df[k] || df[k].length === 0);
+  if (missing) {
+    errs.documents = 'Please upload all required (*) documents before continuing.';
+  }
+  return errs;
+}
 `;
 }
 
@@ -420,7 +496,7 @@ function buildStep3ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 3 ? (',
-    ') : (',
+    ') : step === 4 ? (',
     'Tourist Guide Step 3'
   );
 
@@ -474,6 +550,50 @@ ${jsx}
 `;
 }
 
+function buildStep4ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 4 ? (',
+    '\n            ) : (\n              <View style={styles.formContainer}>',
+    'Tourist Guide Step 4'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import Svg, { Path, Circle } from 'react-native-svg';
+import {
+  Ux4gCard,
+  Ux4gStatusBanner,
+  UX4GColors,
+  UploadedFile,
+} from 'ux4g-react-native-components';
+import {
+  CheckSmallIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from '../components/Icons';
+import { DocumentUploadSlot } from '../components/DocumentUploadSlot';
+import { TouristGuideFormData, TouristGuideFormErrors } from '../types/touristGuide';
+import { styles } from '../styles/commonStyles';
+
+export interface Step4DocumentsScreenProps {
+  formData: TouristGuideFormData;
+  errors: TouristGuideFormErrors;
+  toggleDocSection: (sectionKey: 'identity' | 'knowledge' | 'specialism' | 'declaration') => void;
+  setDocSlotFiles: (slotKey: string, files: UploadedFile[]) => void;
+}
+
+export const Step4DocumentsScreen: React.FC<Step4DocumentsScreenProps> = ({
+  formData,
+  errors,
+  toggleDocSection,
+  setDocSlotFiles,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -491,6 +611,7 @@ import {
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
+  UploadedFile,
 } from 'ux4g-react-native-components';
 import NationalEmblem from './src/assets/NationalEmblem';
 import UnionLogo from './src/assets/UnionLogo';
@@ -505,14 +626,16 @@ import {
   validateTouristGuideStep1,
   validateTouristGuideStep2,
   validateTouristGuideStep3,
+  validateTouristGuideStep4,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1AboutYouScreen } from './src/screens/Step1AboutYouScreen';
 import { Step2CategoryEligibilityScreen } from './src/screens/Step2CategoryEligibilityScreen';
 import { Step3SkillsServiceAreaScreen } from './src/screens/Step3SkillsServiceAreaScreen';
+import { Step4DocumentsScreen } from './src/screens/Step4DocumentsScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(4);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -669,6 +792,44 @@ export default function App() {
     setStep(4);
   };
 
+  const toggleDocSection = (
+    sectionKey: 'identity' | 'knowledge' | 'specialism' | 'declaration'
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      docSectionsExpanded: {
+        ...prev.docSectionsExpanded,
+        [sectionKey]: !prev.docSectionsExpanded[sectionKey],
+      },
+    }));
+  };
+
+  const setDocSlotFiles = (slotKey: string, files: UploadedFile[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      docFiles: {
+        ...prev.docFiles,
+        [slotKey]: files,
+      },
+    }));
+    if (errors.documents) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.documents;
+        return next;
+      });
+    }
+  };
+
+  const handleContinueStep4 = () => {
+    const errs = validateTouristGuideStep4(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(5);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -676,6 +837,8 @@ export default function App() {
       handleContinueStep2();
     } else if (step === 3) {
       handleContinueStep3();
+    } else if (step === 4) {
+      handleContinueStep4();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -789,6 +952,13 @@ export default function App() {
                 removeLanguage={removeLanguage}
                 toggleSpecialism={toggleSpecialism}
                 toggleOperationDistrict={toggleOperationDistrict}
+              />
+            ) : step === 4 ? (
+              <Step4DocumentsScreen
+                formData={formData}
+                errors={errors}
+                toggleDocSection={toggleDocSection}
+                setDocSlotFiles={setDocSlotFiles}
               />
             ) : (
               <View style={styles.formContainer}>
@@ -937,7 +1107,8 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
       '    │   ├── NationalEmblem.tsx                 # Official Government of India Emblem SVG',
       '    │   └── UnionLogo.tsx                      # Portal Union.svg brand mark SVG',
       '    ├── components/',
-      '    │   └── Icons.tsx                          # Checkmark and avatar placeholder SVGs',
+      '    │   ├── DocumentUploadSlot.tsx           # Document upload slot with status indicator',
+      '    │   └── Icons.tsx                          # SVG icons',
       '    ├── constants/',
       '    │   ├── formOptions.ts                     # Guidelines, gender, location options & STEP_METADATA',
       '    │   └── initialFormData.ts                 # Initial TouristGuideFormData state factory',
@@ -950,7 +1121,8 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
       '    └── screens/',
       '        ├── Step1AboutYouScreen.tsx            # Step 1 of 6: Photograph, Applicant, Contact, Location & Address',
       '        ├── Step2CategoryEligibilityScreen.tsx # Step 2 of 6: Category of Registration, Qualification & Eligibility',
-      '        └── Step3SkillsServiceAreaScreen.tsx   # Step 3 of 6: Languages Known, Specialisation & Districts',
+      '        ├── Step3SkillsServiceAreaScreen.tsx   # Step 3 of 6: Languages Known, Specialisation & Districts',
+      '        └── Step4DocumentsScreen.tsx           # Step 4 of 6: Grouped Document Uploads',
       '```',
       '',
       '## Getting Started',
@@ -964,6 +1136,7 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
     ].join('\n'),
     'src/assets/NationalEmblem.tsx': NATIONAL_EMBLEM_SOURCE,
     'src/assets/UnionLogo.tsx': buildUnionLogoFile(normalizedCode),
+    'src/components/DocumentUploadSlot.tsx': buildDocumentUploadSlotFile(normalizedCode),
     'src/components/Icons.tsx': buildIconsFile(normalizedCode),
     'src/types/touristGuide.ts': buildTypesFile(),
     'src/constants/formOptions.ts': buildFormOptionsFile(normalizedCode),
@@ -973,6 +1146,7 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
     'src/screens/Step1AboutYouScreen.tsx': buildStep1ScreenFile(normalizedCode),
     'src/screens/Step2CategoryEligibilityScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'src/screens/Step3SkillsServiceAreaScreen.tsx': buildStep3ScreenFile(normalizedCode),
+    'src/screens/Step4DocumentsScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }
