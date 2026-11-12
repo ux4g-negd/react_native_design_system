@@ -52,6 +52,13 @@ export interface StepMeta {
   subtitle: string;
 }
 
+export interface StaffMember {
+  name: string;
+  role: string;
+  qualification: string;
+  yearsInTrade: string;
+}
+
 export interface TourOperatorFormData {
   // Step 1: Registration type
   tradeType: string;
@@ -95,6 +102,17 @@ export interface TourOperatorFormData {
   receptionArea: string;
   buildingCategory: string;
   officeFacilities: string[];
+
+  // Step 4: Services & capability
+  activities: string[];
+  otherActivity: string;
+  paidUpCapital: string;
+  previousYearTurnover: string;
+  yearsExperienceInTrade: string;
+  employeesCount: string;
+  highestQualification: string[];
+  tourismTrainingExperience: string;
+  staffMembers: StaffMember[];
 }
 
 export type TourOperatorFormErrors = Record<string, string | undefined>;
@@ -123,8 +141,23 @@ function buildIconsFile(appCode: string): string {
     appCode,
     'const CrosshairsGpsIcon =',
     'const parseDateString =',
-    'CrosshairsGpsIcon'
+    'Icons'
   ).trim();
+
+  const exported = iconSlice
+    .replace(/^const /gm, 'export const ')
+    .replace(
+      'export const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) =>',
+      'export const CrosshairsGpsIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral800 }) =>'
+    )
+    .replace(
+      'export const TrashCanIcon = ({ size = 18, color = UX4GColors.neutral600 }) =>',
+      'export const TrashCanIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral600 }) =>'
+    )
+    .replace(
+      'export const PlusIcon = ({ size = 16, color = UX4GColors.primary }) =>',
+      'export const PlusIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.primary }) =>'
+    );
 
   return `import React from 'react';
 import Svg, { Path, Circle } from 'react-native-svg';
@@ -135,10 +168,7 @@ export interface IconProps {
   color?: string;
 }
 
-export ${iconSlice.replace(
-    'const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) =>',
-    'const CrosshairsGpsIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral800 }) =>'
-  )}
+${exported}
 `;
 }
 
@@ -165,7 +195,9 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const AREA_TYPES =', 'export const AREA_TYPES: RadioOption[] =')
     .replace('export const OFFICE_HOLDING_OPTIONS =', 'export const OFFICE_HOLDING_OPTIONS: RadioOption[] =')
     .replace('export const BUILDING_TYPE_OPTIONS =', 'export const BUILDING_TYPE_OPTIONS: RadioOption[] =')
-    .replace('export const OFFICE_FACILITIES_OPTIONS =', 'export const OFFICE_FACILITIES_OPTIONS: RadioOption[] =');
+    .replace('export const OFFICE_FACILITIES_OPTIONS =', 'export const OFFICE_FACILITIES_OPTIONS: RadioOption[] =')
+    .replace('export const FIRM_ACTIVITIES_OPTIONS =', 'export const FIRM_ACTIVITIES_OPTIONS: RadioOption[] =')
+    .replace('export const QUALIFICATION_OPTIONS =', 'export const QUALIFICATION_OPTIONS: RadioOption[] =');
 
   return `import { RadioOption, StepMeta } from '../types/tourOperator';
 
@@ -321,6 +353,48 @@ export function validateTourOperatorStep3(
   }
   return errs;
 }
+
+export function validateTourOperatorStep4(
+  formData: TourOperatorFormData
+): TourOperatorFormErrors {
+  const errs: TourOperatorFormErrors = {};
+  if (!formData.activities.length) {
+    errs.activities = 'Please select at least one activity undertaken by the firm';
+  }
+  if (!formData.paidUpCapital.trim()) {
+    errs.paidUpCapital = 'Paid-up capital is required';
+  }
+  if (!formData.previousYearTurnover.trim()) {
+    errs.previousYearTurnover = 'Turnover in the previous financial year is required';
+  }
+  if (!formData.yearsExperienceInTrade.trim()) {
+    errs.yearsExperienceInTrade = 'Years of experience in the trade is required';
+  }
+  if (!formData.employeesCount.trim()) {
+    errs.employeesCount = 'Number of employees is required';
+  }
+  if (!formData.highestQualification.length) {
+    errs.highestQualification = 'Please select the highest qualification of the person responsible';
+  }
+  if (!formData.tourismTrainingExperience.trim()) {
+    errs.tourismTrainingExperience = 'Training or experience in tourism is required';
+  }
+  (formData.staffMembers || []).forEach((staff, idx) => {
+    if (!staff.name.trim()) {
+      errs['staff_' + idx + '_name'] = 'Name is required';
+    }
+    if (!staff.role.trim()) {
+      errs['staff_' + idx + '_role'] = 'Role is required';
+    }
+    if (!staff.qualification.trim()) {
+      errs['staff_' + idx + '_qualification'] = 'Qualification is required';
+    }
+    if (!staff.yearsInTrade.trim()) {
+      errs['staff_' + idx + '_yearsInTrade'] = 'Years in the trade is required';
+    }
+  });
+  return errs;
+}
 `;
 }
 
@@ -417,7 +491,7 @@ function buildStep3ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 3 ? (',
-    ') : (',
+    ') : step === 4 ? (',
     'Tour Operator Step 3'
   );
 
@@ -470,6 +544,61 @@ ${jsx}
 `;
 }
 
+function buildStep4ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 4 ? (',
+    ') : (',
+    'Tour Operator Step 4'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  Ux4gCheckbox,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { TrashCanIcon, PlusIcon } from '../components/Icons';
+import {
+  FIRM_ACTIVITIES_OPTIONS,
+  QUALIFICATION_OPTIONS,
+} from '../constants/formOptions';
+import {
+  StaffMember,
+  TourOperatorFormData,
+  TourOperatorFormErrors,
+} from '../types/tourOperator';
+import { styles } from '../styles/commonStyles';
+
+export interface Step4ServicesCapabilityScreenProps {
+  formData: TourOperatorFormData;
+  errors: TourOperatorFormErrors;
+  updateField: <K extends keyof TourOperatorFormData>(
+    key: K,
+    value: TourOperatorFormData[K]
+  ) => void;
+  toggleActivity: (id: string) => void;
+  updateStaffMember: (index: number, field: keyof StaffMember, value: string) => void;
+  addStaffMember: () => void;
+  removeStaffMember: (index: number) => void;
+}
+
+export const Step4ServicesCapabilityScreen: React.FC<Step4ServicesCapabilityScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  toggleActivity,
+  updateStaffMember,
+  addStaffMember,
+  removeStaffMember,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -497,6 +626,7 @@ import {
 } from './src/constants/formOptions';
 import { createInitialTourOperatorFormData } from './src/constants/initialFormData';
 import {
+  StaffMember,
   TourOperatorFormData,
   TourOperatorFormErrors,
 } from './src/types/tourOperator';
@@ -504,14 +634,16 @@ import {
   validateTourOperatorStep1,
   validateTourOperatorStep2,
   validateTourOperatorStep3,
+  validateTourOperatorStep4,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1RegistrationTypeScreen } from './src/screens/Step1RegistrationTypeScreen';
 import { Step2ApplicantFirmScreen } from './src/screens/Step2ApplicantFirmScreen';
 import { Step3OfficePremisesScreen } from './src/screens/Step3OfficePremisesScreen';
+import { Step4ServicesCapabilityScreen } from './src/screens/Step4ServicesCapabilityScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(4);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -609,6 +741,67 @@ export default function App() {
     setStep(4);
   };
 
+  const toggleActivity = (id: string) => {
+    setFormData((prev) => {
+      const current = prev.activities || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        activities: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+    if (errors.activities) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.activities;
+        return next;
+      });
+    }
+  };
+
+  const updateStaffMember = (index: number, field: keyof StaffMember, value: string) => {
+    setFormData((prev) => {
+      const updated = (prev.staffMembers || []).map((item, idx) =>
+        idx === index ? { ...item, [field]: value } : item
+      );
+      return { ...prev, staffMembers: updated };
+    });
+    const errKey = 'staff_' + index + '_' + field;
+    if (errors[errKey]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[errKey];
+        return next;
+      });
+    }
+  };
+
+  const addStaffMember = () => {
+    setFormData((prev) => ({
+      ...prev,
+      staffMembers: [
+        ...(prev.staffMembers || []),
+        { name: '', role: '', qualification: '', yearsInTrade: '' },
+      ],
+    }));
+  };
+
+  const removeStaffMember = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      staffMembers: (prev.staffMembers || []).filter((_, idx) => idx !== index),
+    }));
+  };
+
+  const handleContinueStep4 = () => {
+    const errs = validateTourOperatorStep4(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(5);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -616,6 +809,8 @@ export default function App() {
       handleContinueStep2();
     } else if (step === 3) {
       handleContinueStep3();
+    } else if (step === 4) {
+      handleContinueStep4();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -732,6 +927,16 @@ export default function App() {
                 handleSetLocationPin={handleSetLocationPin}
                 handleCityVillageChange={handleCityVillageChange}
                 toggleOfficeFacility={toggleOfficeFacility}
+              />
+            ) : step === 4 ? (
+              <Step4ServicesCapabilityScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                toggleActivity={toggleActivity}
+                updateStaffMember={updateStaffMember}
+                addStaffMember={addStaffMember}
+                removeStaffMember={removeStaffMember}
               />
             ) : (
               <View style={styles.formContainer}>
@@ -903,7 +1108,8 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '    └── screens/',
       '        ├── Step1RegistrationTypeScreen.tsx    # Step 1 of 7: Service Required & Existing Registration Details',
       '        ├── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details',
-      '        └── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details',
+      '        ├── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details',
+      '        └── Step4ServicesCapabilityScreen.tsx  # Step 4 of 7: Activities, Scale of Operation & Staff Qualifications',
       '```',
       '',
       '## Getting Started',
@@ -926,6 +1132,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     'src/screens/Step1RegistrationTypeScreen.tsx': buildStep1ScreenFile(normalizedCode),
     'src/screens/Step2ApplicantFirmScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'src/screens/Step3OfficePremisesScreen.tsx': buildStep3ScreenFile(normalizedCode),
+    'src/screens/Step4ServicesCapabilityScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }

@@ -8,8 +8,8 @@ interface TourOperatorRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–3 Active)
-const SNACK_ID = 'ocC491N8PE5vZtgZapy07';
+// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–4 Active)
+const SNACK_ID = 'dQLZj3yVa0YZUoCpsMxFf';
 
 export const TourOperatorRegistrationFlowDoc: React.FC<TourOperatorRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -75,8 +75,8 @@ const STEP_METADATA = {
     subtitle: 'Where the office is, and what kind of premises it is.',
   },
   4: {
-    title: 'Staff & experience',
-    subtitle: 'Qualified staff, key personnel, and operational track record.',
+    title: 'Services & capability',
+    subtitle: 'What the agency does, the scale it works at, and the experience behind it.',
   },
   5: {
     title: 'Operations & fleet',
@@ -190,6 +190,28 @@ const OFFICE_FACILITIES_OPTIONS = [
   { id: 'cloak_room', label: 'A cloak room' },
 ];
 
+const FIRM_ACTIVITIES_OPTIONS = [
+  { id: 'air_ticketing', label: 'Air ticketing' },
+  { id: 'rail_bus_ticketing', label: 'Rail and bus ticketing' },
+  { id: 'hotel_booking', label: 'Hotel and accommodation booking' },
+  { id: 'domestic_packages', label: 'Domestic tour packages' },
+  { id: 'inbound_packages', label: 'Inbound tour packages for foreign tourists' },
+  { id: 'outbound_packages', label: 'Outbound tour packages' },
+  { id: 'passport_visa', label: 'Passport and visa assistance' },
+  { id: 'foreign_exchange', label: 'Foreign exchange' },
+  { id: 'car_coach_rental', label: 'Car or coach rental' },
+  { id: 'travel_insurance', label: 'Travel insurance' },
+  { id: 'other', label: 'Other — specify below' },
+];
+
+const QUALIFICATION_OPTIONS = [
+  { id: 'graduate', label: 'Graduate (Any discipline)' },
+  { id: 'post_graduate', label: 'Post Graduate / MBA (Tourism)' },
+  { id: 'diploma_tourism', label: 'Diploma / Degree in Travel & Tourism' },
+  { id: 'iata_certified', label: 'IATA / UFTAA Certified' },
+  { id: 'higher_secondary', label: 'Higher Secondary (10+2)' },
+];
+
 const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Circle cx="12" cy="12" r="7.5" stroke={color} strokeWidth="1.8" />
@@ -200,6 +222,29 @@ const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
       strokeLinecap="round"
     />
     <Circle cx="12" cy="12" r="2.8" fill={color} />
+  </Svg>
+);
+
+const TrashCanIcon = ({ size = 18, color = UX4GColors.neutral600 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 002 2h8a2 2 0 002-2l1-12M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const PlusIcon = ({ size = 16, color = UX4GColors.primary }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M12 5v14M5 12h14"
+      stroke={color}
+      strokeWidth="2.2"
+      strokeLinecap="round"
+    />
   </Svg>
 );
 
@@ -215,7 +260,7 @@ const parseDateString = (str) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -262,6 +307,21 @@ export default function App() {
     receptionArea: '',
     buildingCategory: '',
     officeFacilities: [],
+
+    // Step 4: Services & capability
+    activities: [],
+    otherActivity: '',
+    paidUpCapital: '',
+    previousYearTurnover: '',
+    yearsExperienceInTrade: '',
+    employeesCount: '3',
+    highestQualification: [],
+    tourismTrainingExperience: '',
+    staffMembers: [
+      { name: 'Neha Sharma', role: 'Counter executive', qualification: 'B.Com', yearsInTrade: '3' },
+      { name: 'Imran Qureshi', role: 'Tour coordinator', qualification: 'BA Tourism Studies', yearsInTrade: '5' },
+      { name: '', role: '', qualification: '', yearsInTrade: '' },
+    ],
   });
 
   const [errors, setErrors] = useState({});
@@ -433,6 +493,103 @@ export default function App() {
     setStep(4);
   };
 
+  const toggleActivity = (id) => {
+    setFormData((prev) => {
+      const current = prev.activities || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        activities: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+    if (errors.activities) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.activities;
+        return next;
+      });
+    }
+  };
+
+  const updateStaffMember = (index, field, value) => {
+    setFormData((prev) => {
+      const updated = (prev.staffMembers || []).map((item, idx) =>
+        idx === index ? { ...item, [field]: value } : item
+      );
+      return { ...prev, staffMembers: updated };
+    });
+    const errKey = 'staff_' + index + '_' + field;
+    if (errors[errKey]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[errKey];
+        return next;
+      });
+    }
+  };
+
+  const addStaffMember = () => {
+    setFormData((prev) => ({
+      ...prev,
+      staffMembers: [
+        ...(prev.staffMembers || []),
+        { name: '', role: '', qualification: '', yearsInTrade: '' },
+      ],
+    }));
+  };
+
+  const removeStaffMember = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      staffMembers: (prev.staffMembers || []).filter((_, idx) => idx !== index),
+    }));
+  };
+
+  const handleContinueStep4 = () => {
+    const errs = {};
+    if (!formData.activities.length) {
+      errs.activities = 'Please select at least one activity undertaken by the firm';
+    }
+    if (!formData.paidUpCapital.trim()) {
+      errs.paidUpCapital = 'Paid-up capital is required';
+    }
+    if (!formData.previousYearTurnover.trim()) {
+      errs.previousYearTurnover = 'Turnover in the previous financial year is required';
+    }
+    if (!formData.yearsExperienceInTrade.trim()) {
+      errs.yearsExperienceInTrade = 'Years of experience in the trade is required';
+    }
+    if (!formData.employeesCount.trim()) {
+      errs.employeesCount = 'Number of employees is required';
+    }
+    if (!formData.highestQualification.length) {
+      errs.highestQualification = 'Please select the highest qualification of the person responsible';
+    }
+    if (!formData.tourismTrainingExperience.trim()) {
+      errs.tourismTrainingExperience = 'Training or experience in tourism is required';
+    }
+    (formData.staffMembers || []).forEach((staff, idx) => {
+      if (!staff.name.trim()) {
+        errs['staff_' + idx + '_name'] = 'Name is required';
+      }
+      if (!staff.role.trim()) {
+        errs['staff_' + idx + '_role'] = 'Role is required';
+      }
+      if (!staff.qualification.trim()) {
+        errs['staff_' + idx + '_qualification'] = 'Qualification is required';
+      }
+      if (!staff.yearsInTrade.trim()) {
+        errs['staff_' + idx + '_yearsInTrade'] = 'Years in the trade is required';
+      }
+    });
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(5);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -440,6 +597,8 @@ export default function App() {
       handleContinueStep2();
     } else if (step === 3) {
       handleContinueStep3();
+    } else if (step === 4) {
+      handleContinueStep4();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -1229,6 +1388,261 @@ export default function App() {
                   </View>
                 </View>
               </View>
+            ) : step === 4 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Activities Undertaken by the Firm */}
+                <Text style={styles.sectionHeading}>Activities Undertaken by the Firm</Text>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Tick every activity the agency offers. At least one
+                    <Text style={styles.requiredStar}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    {FIRM_ACTIVITIES_OPTIONS.map((option) => (
+                      <Ux4gCheckbox
+                        key={option.id}
+                        value={formData.activities.includes(option.id)}
+                        onChanged={() => toggleActivity(option.id)}
+                        label={option.label}
+                        size="medium"
+                        activeColor={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                  {errors.activities && (
+                    <Text style={styles.inlineErrorText}>{errors.activities}</Text>
+                  )}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Other activity"
+                    size="large"
+                    value={formData.otherActivity}
+                    onValueChange={(v) => updateField('otherActivity', v)}
+                    placeholder="Name the activity — separate several with commas"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                  />
+                </View>
+
+                <Text style={styles.alternativeHintText}>
+                  ALTERNATIVE — the same question as a multi-select combobox
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Tick every activity the agency offers. At least one"
+                    required
+                    mode="multi"
+                    searchEnabled={true}
+                    size="l"
+                    options={FIRM_ACTIVITIES_OPTIONS}
+                    selectedOptionIds={formData.activities}
+                    onSelectionChange={(ids) => updateField('activities', ids)}
+                    placeholder="Start typing..."
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.activities ? 'error' : 'defaultStatus'}
+                    description={errors.activities}
+                  />
+                </View>
+
+                {/* 2. Scale of Operation */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>Scale of Operation</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Paid-up capital"
+                    required
+                    type="number"
+                    size="large"
+                    prefixText="₹"
+                    value={formData.paidUpCapital}
+                    onValueChange={(v) => updateField('paidUpCapital', v)}
+                    placeholder="Digits only"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.paidUpCapital ? 'error' : 'defaultStatus'}
+                    caption={errors.paidUpCapital}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Turnover in the previous financial year"
+                    required
+                    type="number"
+                    size="large"
+                    prefixText="₹"
+                    value={formData.previousYearTurnover}
+                    onValueChange={(v) => updateField('previousYearTurnover', v)}
+                    placeholder="Digits only"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.previousYearTurnover ? 'error' : 'defaultStatus'}
+                    caption={errors.previousYearTurnover}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Years of experience in the trade"
+                    required
+                    type="number"
+                    size="large"
+                    value={formData.yearsExperienceInTrade}
+                    onValueChange={(v) => updateField('yearsExperienceInTrade', v)}
+                    placeholder="Whole years"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.yearsExperienceInTrade ? 'error' : 'defaultStatus'}
+                    caption={errors.yearsExperienceInTrade}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="People you employ, not counting yourself"
+                    required
+                    type="number"
+                    size="large"
+                    value={formData.employeesCount}
+                    onValueChange={(v) => updateField('employeesCount', v)}
+                    placeholder="0"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.employeesCount ? 'error' : 'defaultStatus'}
+                    caption={errors.employeesCount}
+                  />
+                </View>
+
+                {/* 3. Staff Employed and Qualifications */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>
+                  Staff Employed and Qualifications
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Highest qualification of the person responsible"
+                    required
+                    size="l"
+                    options={QUALIFICATION_OPTIONS}
+                    selectedOptionIds={formData.highestQualification}
+                    onSelectionChange={(ids) => updateField('highestQualification', ids)}
+                    placeholder="Select the qualification"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.highestQualification ? 'error' : 'defaultStatus'}
+                    description={errors.highestQualification}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Training or experience in tourism"
+                    required
+                    size="large"
+                    value={formData.tourismTrainingExperience}
+                    onValueChange={(v) => updateField('tourismTrainingExperience', v)}
+                    placeholder="Course, employer or years in the trade"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.tourismTrainingExperience ? 'error' : 'defaultStatus'}
+                    caption={errors.tourismTrainingExperience}
+                  />
+                </View>
+
+                <Text style={[styles.fieldGroupLabel, { marginTop: 4, marginBottom: 10 }]}>
+                  Staff and what qualifies them
+                </Text>
+
+                {(formData.staffMembers || []).map((staff, idx) => (
+                  <View key={idx} style={styles.staffCard}>
+                    <View style={styles.staffCardHeader}>
+                      <Text style={styles.staffCardTitle}>{'Staff member ' + (idx + 1)}</Text>
+                      <TouchableOpacity
+                        onPress={() => removeStaffMember(idx)}
+                        activeOpacity={0.7}
+                        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                      >
+                        <TrashCanIcon size={18} color={UX4GColors.neutral600} />
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Name"
+                        required
+                        size="large"
+                        value={staff.name}
+                        onValueChange={(v) => updateStaffMember(idx, 'name', v)}
+                        placeholder="Full name"
+                        labelStyle={styles.inputLabelStyle}
+                        borderColor={UX4GColors.neutral300}
+                        status={errors['staff_' + idx + '_name'] ? 'error' : 'defaultStatus'}
+                        caption={errors['staff_' + idx + '_name']}
+                      />
+                    </View>
+
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Role"
+                        required
+                        size="large"
+                        value={staff.role}
+                        onValueChange={(v) => updateStaffMember(idx, 'role', v)}
+                        placeholder="What they do"
+                        labelStyle={styles.inputLabelStyle}
+                        borderColor={UX4GColors.neutral300}
+                        status={errors['staff_' + idx + '_role'] ? 'error' : 'defaultStatus'}
+                        caption={errors['staff_' + idx + '_role']}
+                      />
+                    </View>
+
+                    <View style={styles.fieldSpacing}>
+                      <Ux4gInputField
+                        label="Qualification"
+                        required
+                        size="large"
+                        value={staff.qualification}
+                        onValueChange={(v) => updateStaffMember(idx, 'qualification', v)}
+                        placeholder="Highest qualification"
+                        labelStyle={styles.inputLabelStyle}
+                        borderColor={UX4GColors.neutral300}
+                        status={errors['staff_' + idx + '_qualification'] ? 'error' : 'defaultStatus'}
+                        caption={errors['staff_' + idx + '_qualification']}
+                      />
+                    </View>
+
+                    <View style={{ marginBottom: 2 }}>
+                      <Ux4gInputField
+                        label="Years in the trade"
+                        required
+                        type="number"
+                        size="large"
+                        value={staff.yearsInTrade}
+                        onValueChange={(v) => updateStaffMember(idx, 'yearsInTrade', v)}
+                        placeholder="Whole years"
+                        labelStyle={styles.inputLabelStyle}
+                        borderColor={UX4GColors.neutral300}
+                        status={errors['staff_' + idx + '_yearsInTrade'] ? 'error' : 'defaultStatus'}
+                        caption={errors['staff_' + idx + '_yearsInTrade']}
+                      />
+                    </View>
+                  </View>
+                ))}
+
+                <TouchableOpacity
+                  style={styles.addStaffButton}
+                  onPress={addStaffMember}
+                  activeOpacity={0.7}
+                >
+                  <PlusIcon size={16} color={UX4GColors.primary} />
+                  <Text style={styles.addStaffButtonText}>Add another staff member</Text>
+                </TouchableOpacity>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1515,6 +1929,48 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral500,
     fontWeight: '400',
   },
+  alternativeHintText: {
+    fontSize: 11.5,
+    color: UX4GColors.neutral500,
+    marginTop: 2,
+    marginBottom: 8,
+  },
+  staffCard: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 14,
+  },
+  staffCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  staffCardTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  addStaffButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    height: 44,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary200,
+    backgroundColor: UX4GColors.white,
+    marginTop: 2,
+  },
+  addStaffButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
@@ -1603,7 +2059,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 7 Steps (Steps 1–3 Active)
+                Service Pattern • 7 Steps (Steps 1–4 Active)
               </span>
             </div>
             <p
