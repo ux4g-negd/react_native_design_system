@@ -82413,10 +82413,9 @@ import {
   Ux4gRadioButton,
   Ux4gInputField,
   Ux4gSelectionDropdown,
-  Ux4gStatusBanner,
   UX4GColors,
 } from 'ux4g-react-native-components';
-import { InfoOutlineIcon } from '../components/Icons';
+import { CheckSmallIcon, InfoOutlineIcon } from '../components/Icons';
 import { BANK_OPTIONS, PAYMENT_MODES } from '../constants/formOptions';
 import { TourOperatorFeeSummary } from '../utils/validators';
 import { TourOperatorFormData, TourOperatorFormErrors } from '../types/tourOperator';
@@ -82504,9 +82503,9 @@ import { Step6ReviewDeclarationScreen } from './src/screens/Step6ReviewDeclarati
 import { Step7FeePaymentScreen } from './src/screens/Step7FeePaymentScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(7);
+  const [step, setStep] = useState<number>(1);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
-  const [isPaymentModeView, setIsPaymentModeView] = useState<boolean>(true);
+  const [isPaymentModeView, setIsPaymentModeView] = useState<boolean>(false);
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
   const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
@@ -82811,33 +82810,35 @@ export default function App() {
           showsVerticalScrollIndicator={false}
         >
           {/* Floating Auto-saved Status Banner above the main card */}
-          <Ux4gStatusBanner
-            variant="successLight"
-            title=""
-            leadingIcon={<View />}
-            trailingIcon={
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <Svg width={17} height={17} viewBox="0 0 24 24" fill="none">
-                  <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
-                  <Path
-                    d="M8.5 12.2L10.8 14.5L15.8 9.5"
-                    stroke={UX4GColors.green}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </Svg>
-                <Text style={styles.savedBannerText}>{'Saved ' + savedTime}</Text>
-              </View>
-            }
-            contentAlignment="right"
-            backgroundColor={UX4GColors.green50}
-            borderColor={UX4GColors.transparent}
-            height={42}
-            marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-            containerStyle={styles.savedBannerContainer}
-            paddingStyle={{ paddingVertical: 2, paddingHorizontal: 14 }}
-          />
+          {!paymentCompleted && (
+            <Ux4gStatusBanner
+              variant="successLight"
+              title=""
+              leadingIcon={<View />}
+              trailingIcon={
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Svg width={17} height={17} viewBox="0 0 24 24" fill="none">
+                    <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
+                    <Path
+                      d="M8.5 12.2L10.8 14.5L15.8 9.5"
+                      stroke={UX4GColors.green}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                  <Text style={styles.savedBannerText}>{'Saved ' + savedTime}</Text>
+                </View>
+              }
+              contentAlignment="right"
+              backgroundColor={UX4GColors.green50}
+              borderColor={UX4GColors.transparent}
+              height={42}
+              marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+              containerStyle={styles.savedBannerContainer}
+              paddingStyle={{ paddingVertical: 2, paddingHorizontal: 14 }}
+            />
+          )}
 
           <View style={styles.mainCard}>
             {/* 7-Step Compact Stepper Header using official UX4G Component */}
@@ -82845,11 +82846,13 @@ export default function App() {
               totalSteps={7}
               currentStep={step}
               layout="centeredBetween"
-              stepLabel={activeMeta.title}
+              stepLabel={step === 7 && paymentCompleted ? 'Paid' : activeMeta.title}
               description={
-                step === 7 && isPaymentModeView && !paymentCompleted
-                  ? 'Choose how you would like to pay ' + feeSummary.formattedAmount + '.'
-                  : activeMeta.subtitle
+                step === 7 && paymentCompleted
+                  ? 'Your application is with the department. Keep the application number.'
+                  : step === 7 && isPaymentModeView && !paymentCompleted
+                    ? 'Choose how you would like to pay ' + feeSummary.formattedAmount + '.'
+                    : activeMeta.subtitle
               }
               onPrevious={handleStepperBack}
               onNext={handleStepperNext}
@@ -82921,37 +82924,57 @@ export default function App() {
 
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
-          <Ux4gButton
-            text={
-              step === 6
-                ? 'Continue to payment'
-                : step === 7
-                  ? 'Pay ' + feeSummary.formattedAmount
-                  : 'Continue'
-            }
-            variant="primary"
-            size="large"
-            height={48}
-            backgroundColor={UX4GColors.primary}
-            contentColor={UX4GColors.white}
-            borderRadius={8}
-            onPress={handleStepperNext}
-            style={{ width: '100%' }}
-          />
-          <View style={{ height: 10 }} />
-          <Ux4gButton
-            text="Save as draft"
-            variant="outline"
-            size="large"
-            height={48}
-            backgroundColor={UX4GColors.white}
-            contentColor={UX4GColors.primary}
-            borderColor={UX4GColors.primary200}
-            borderWidth={1}
-            borderRadius={8}
-            onPress={handleSaveDraft}
-            style={{ width: '100%' }}
-          />
+          {step === 7 && paymentCompleted ? (
+            <Ux4gButton
+              text="Go to my applications"
+              variant="primary"
+              size="large"
+              height={48}
+              backgroundColor={UX4GColors.primary}
+              contentColor={UX4GColors.white}
+              borderRadius={8}
+              onPress={() => {
+                setPaymentCompleted(false);
+                setIsPaymentModeView(false);
+                setStep(1);
+              }}
+              style={{ width: '100%' }}
+            />
+          ) : (
+            <>
+              <Ux4gButton
+                text={
+                  step === 6
+                    ? 'Continue to payment'
+                    : step === 7
+                      ? 'Pay ' + feeSummary.formattedAmount
+                      : 'Continue'
+                }
+                variant="primary"
+                size="large"
+                height={48}
+                backgroundColor={UX4GColors.primary}
+                contentColor={UX4GColors.white}
+                borderRadius={8}
+                onPress={handleStepperNext}
+                style={{ width: '100%' }}
+              />
+              <View style={{ height: 10 }} />
+              <Ux4gButton
+                text="Save as draft"
+                variant="outline"
+                size="large"
+                height={48}
+                backgroundColor={UX4GColors.white}
+                contentColor={UX4GColors.primary}
+                borderColor={UX4GColors.primary200}
+                borderWidth={1}
+                borderRadius={8}
+                onPress={handleSaveDraft}
+                style={{ width: '100%' }}
+              />
+            </>
+          )}
         </View>
 
         {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
@@ -82994,7 +83017,7 @@ import App from './App';
 
 registerRootComponent(App);
 `,"README.md":["# Tour operator and Travel Agency Registration Flow (UX4G React Native)","","A modular government service pattern for **Tour operator and Travel Agency Registration (7-Step Workflow, Screen 1)** built using official **UX4G Design System** React Native components.","","## Project Structure","","```text","├── App.tsx                                    # Root orchestrator, header, StatusBanner, 7-step stepper","├── index.js                                   # Expo entry point","├── package.json","├── tsconfig.json","├── app.json","└── src/","    ├── assets/","    │   ├── NationalEmblem.tsx                 # Official Government of India Emblem SVG","    │   └── UnionLogo.tsx                      # Portal Union.svg brand mark SVG","    ├── components/","    │   ├── DocumentUploadSlot.tsx           # Document upload slot with status indicator","    │   └── Icons.tsx                          # SVG icons","    ├── constants/","    │   ├── formOptions.ts                     # Trade types, location options & STEP_METADATA","    │   └── initialFormData.ts                 # Initial TourOperatorFormData state factory","    ├── types/","    │   └── tourOperator.ts                    # TypeScript interfaces for form state & validation errors","    ├── utils/","    │   └── validators.ts                      # Step validation rules","    ├── styles/","    │   └── commonStyles.ts                    # Shared StyleSheet using UX4GColors tokens","    └── screens/","        ├── Step1RegistrationTypeScreen.tsx    # Step 1 of 7: Service Required & Existing Registration Details","        ├── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details","        ├── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details","        ├── Step4ServicesCapabilityScreen.tsx  # Step 4 of 7: Activities, Scale of Operation & Staff Qualifications","        ├── Step5DocumentsScreen.tsx           # Step 5 of 7: Grouped Document Uploads","        ├── Step6ReviewDeclarationScreen.tsx   # Step 6 of 7: Application Preview & Declaration","        └── Step7FeePaymentScreen.tsx          # Step 7 of 7: Fee Details & Payment","```","","## Getting Started","","```bash","npm install","npm run typecheck","npx expo start","```",""].join(`
-`),"src/assets/NationalEmblem.tsx":jg,"src/assets/UnionLogo.tsx":JB(o),"src/components/DocumentUploadSlot.tsx":eI(o),"src/components/Icons.tsx":QB(o),"src/types/tourOperator.ts":ZB(),"src/constants/formOptions.ts":tI(o),"src/constants/initialFormData.ts":rI(o),"src/utils/validators.ts":iI(),"src/styles/commonStyles.ts":oI(o),"src/screens/Step1RegistrationTypeScreen.tsx":nI(o),"src/screens/Step2ApplicantFirmScreen.tsx":aI(o),"src/screens/Step3OfficePremisesScreen.tsx":sI(o),"src/screens/Step4ServicesCapabilityScreen.tsx":lI(o),"src/screens/Step5DocumentsScreen.tsx":dI(o),"src/screens/Step6ReviewDeclarationScreen.tsx":cI(o),"src/screens/Step7FeePaymentScreen.tsx":uI(o),"App.tsx":pI()}}const hI="WorqdfxgQmGql0J-giIRq",Tx=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`),"src/assets/NationalEmblem.tsx":jg,"src/assets/UnionLogo.tsx":JB(o),"src/components/DocumentUploadSlot.tsx":eI(o),"src/components/Icons.tsx":QB(o),"src/types/tourOperator.ts":ZB(),"src/constants/formOptions.ts":tI(o),"src/constants/initialFormData.ts":rI(o),"src/utils/validators.ts":iI(),"src/styles/commonStyles.ts":oI(o),"src/screens/Step1RegistrationTypeScreen.tsx":nI(o),"src/screens/Step2ApplicantFirmScreen.tsx":aI(o),"src/screens/Step3OfficePremisesScreen.tsx":sI(o),"src/screens/Step4ServicesCapabilityScreen.tsx":lI(o),"src/screens/Step5DocumentsScreen.tsx":dI(o),"src/screens/Step6ReviewDeclarationScreen.tsx":cI(o),"src/screens/Step7FeePaymentScreen.tsx":uI(o),"App.tsx":pI()}}const hI="tg_PAlDmZ4xlyD2trZn2v",Tx=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -83434,9 +83457,9 @@ const parseDateString = (str) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(7);
+  const [step, setStep] = useState(1);
   const [savedTime, setSavedTime] = useState('3:14 PM');
-  const [isPaymentModeView, setIsPaymentModeView] = useState(true);
+  const [isPaymentModeView, setIsPaymentModeView] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const scrollViewRef = useRef(null);
@@ -83998,33 +84021,35 @@ export default function App() {
           showsVerticalScrollIndicator={false}
         >
           {/* Floating Auto-saved Status Banner above the main card */}
-          <Ux4gStatusBanner
-            variant="successLight"
-            title=""
-            leadingIcon={<View />}
-            trailingIcon={
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <Svg width={17} height={17} viewBox="0 0 24 24" fill="none">
-                  <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
-                  <Path
-                    d="M8.5 12.2L10.8 14.5L15.8 9.5"
-                    stroke={UX4GColors.green}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </Svg>
-                <Text style={styles.savedBannerText}>{'Saved ' + savedTime}</Text>
-              </View>
-            }
-            contentAlignment="right"
-            backgroundColor={UX4GColors.green50}
-            borderColor={UX4GColors.transparent}
-            height={42}
-            marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-            containerStyle={styles.savedBannerContainer}
-            paddingStyle={{ paddingVertical: 2, paddingHorizontal: 14 }}
-          />
+          {!paymentCompleted && (
+            <Ux4gStatusBanner
+              variant="successLight"
+              title=""
+              leadingIcon={<View />}
+              trailingIcon={
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Svg width={17} height={17} viewBox="0 0 24 24" fill="none">
+                    <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
+                    <Path
+                      d="M8.5 12.2L10.8 14.5L15.8 9.5"
+                      stroke={UX4GColors.green}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                  <Text style={styles.savedBannerText}>{'Saved ' + savedTime}</Text>
+                </View>
+              }
+              contentAlignment="right"
+              backgroundColor={UX4GColors.green50}
+              borderColor={UX4GColors.transparent}
+              height={42}
+              marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+              containerStyle={styles.savedBannerContainer}
+              paddingStyle={{ paddingVertical: 2, paddingHorizontal: 14 }}
+            />
+          )}
 
           <View style={styles.mainCard}>
             {/* 7-Step Compact Stepper Header using official UX4G Component */}
@@ -84032,11 +84057,13 @@ export default function App() {
               totalSteps={7}
               currentStep={step}
               layout="centeredBetween"
-              stepLabel={activeMeta.title}
+              stepLabel={step === 7 && paymentCompleted ? 'Paid' : activeMeta.title}
               description={
-                step === 7 && isPaymentModeView && !paymentCompleted
-                  ? 'Choose how you would like to pay ' + feeSummary.formattedAmount + '.'
-                  : activeMeta.subtitle
+                step === 7 && paymentCompleted
+                  ? 'Your application is with the department. Keep the application number.'
+                  : step === 7 && isPaymentModeView && !paymentCompleted
+                    ? 'Choose how you would like to pay ' + feeSummary.formattedAmount + '.'
+                    : activeMeta.subtitle
               }
               onPrevious={handleStepperBack}
               onNext={handleStepperNext}
@@ -85648,31 +85675,54 @@ export default function App() {
               </View>
             ) : (
               <View style={styles.formContainer}>
-                <Ux4gStatusBanner
-                  variant="successLight"
-                  title={'Payment of ' + feeSummary.formattedAmount + ' received'}
-                  subtitle={
-                    feeSummary.applicationRef +
-                    ' has been submitted successfully. A confirmation receipt has been sent to your registered email.'
-                  }
-                  titleNumberOfLines={2}
-                  subtitleNumberOfLines={4}
+                <View style={styles.paidIconOuter}>
+                  <View style={styles.paidIconInner}>
+                    <CheckSmallIcon size={18} color={UX4GColors.white} />
+                  </View>
+                </View>
+
+                <Text style={styles.paidHeading}>Payment successful</Text>
+                <Text style={styles.paidSubtitle}>
+                  {feeSummary.formattedAmount +
+                    ' paid to the Department of Tourism. Your application is now with the department.'}
+                </Text>
+
+                <Ux4gCard
+                  cornerRadius={12}
                   backgroundColor={UX4GColors.green50}
                   borderColor={UX4GColors.green200}
-                  marginStyle={{ marginHorizontal: 0, marginTop: 0, marginBottom: 14 }}
-                  paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
-                  containerStyle={{ borderRadius: 10 }}
-                  titleStyle={{
-                    fontSize: 14,
-                    fontWeight: '700',
-                    color: UX4GColors.green700,
-                  }}
-                  subtitleStyle={{
-                    fontSize: 12.5,
-                    color: UX4GColors.green700,
-                    marginTop: 4,
-                  }}
-                />
+                  borderWidth={1}
+                  elevation={0}
+                  style={{ padding: 16, marginTop: 18, marginBottom: 4 }}
+                >
+                  <View style={styles.paidReceiptRow}>
+                    <Text style={styles.paidReceiptLabel}>Application number</Text>
+                    <Text style={styles.paidReceiptValue}>{feeSummary.shortRef}</Text>
+                  </View>
+                  <View style={styles.paidReceiptRow}>
+                    <Text style={styles.paidReceiptLabel}>Amount paid</Text>
+                    <Text style={styles.paidReceiptValue}>{feeSummary.formattedAmount}</Text>
+                  </View>
+                  <View style={styles.paidReceiptRow}>
+                    <Text style={styles.paidReceiptLabel}>Transaction ID</Text>
+                    <Text style={styles.paidReceiptValue}>PG2026TA04127TX</Text>
+                  </View>
+                  <View style={styles.paidReceiptRow}>
+                    <Text style={styles.paidReceiptLabel}>Method</Text>
+                    <Text style={styles.paidReceiptValue}>
+                      {formData.paymentMode === 'upi'
+                        ? 'UPI · ' + ((formData.upiId || '').trim() || 'ramesh@upi')
+                        : formData.paymentMode === 'netbanking'
+                          ? 'Net Banking'
+                          : 'Card ·••• ' +
+                            ((formData.cardNumber || '').replace(/D/g, '').slice(-4) || '4242')}
+                    </Text>
+                  </View>
+                  <View style={[styles.paidReceiptRow, { marginBottom: 0 }]}>
+                    <Text style={styles.paidReceiptLabel}>Date and time</Text>
+                    <Text style={styles.paidReceiptValue}>15 Sep 2026, 2:34 PM IST</Text>
+                  </View>
+                </Ux4gCard>
               </View>
             )}
           </View>
@@ -85680,37 +85730,57 @@ export default function App() {
 
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
-          <Ux4gButton
-            text={
-              step === 6
-                ? 'Continue to payment'
-                : step === 7
-                  ? 'Pay ' + feeSummary.formattedAmount
-                  : 'Continue'
-            }
-            variant="primary"
-            size="large"
-            height={48}
-            backgroundColor={UX4GColors.primary}
-            contentColor={UX4GColors.white}
-            borderRadius={8}
-            onPress={handleStepperNext}
-            style={{ width: '100%' }}
-          />
-          <View style={{ height: 10 }} />
-          <Ux4gButton
-            text="Save as draft"
-            variant="outline"
-            size="large"
-            height={48}
-            backgroundColor={UX4GColors.white}
-            contentColor={UX4GColors.primary}
-            borderColor={UX4GColors.primary200}
-            borderWidth={1}
-            borderRadius={8}
-            onPress={handleSaveDraft}
-            style={{ width: '100%' }}
-          />
+          {step === 7 && paymentCompleted ? (
+            <Ux4gButton
+              text="Go to my applications"
+              variant="primary"
+              size="large"
+              height={48}
+              backgroundColor={UX4GColors.primary}
+              contentColor={UX4GColors.white}
+              borderRadius={8}
+              onPress={() => {
+                setPaymentCompleted(false);
+                setIsPaymentModeView(false);
+                setStep(1);
+              }}
+              style={{ width: '100%' }}
+            />
+          ) : (
+            <>
+              <Ux4gButton
+                text={
+                  step === 6
+                    ? 'Continue to payment'
+                    : step === 7
+                      ? 'Pay ' + feeSummary.formattedAmount
+                      : 'Continue'
+                }
+                variant="primary"
+                size="large"
+                height={48}
+                backgroundColor={UX4GColors.primary}
+                contentColor={UX4GColors.white}
+                borderRadius={8}
+                onPress={handleStepperNext}
+                style={{ width: '100%' }}
+              />
+              <View style={{ height: 10 }} />
+              <Ux4gButton
+                text="Save as draft"
+                variant="outline"
+                size="large"
+                height={48}
+                backgroundColor={UX4GColors.white}
+                contentColor={UX4GColors.primary}
+                borderColor={UX4GColors.primary200}
+                borderWidth={1}
+                borderRadius={8}
+                onPress={handleSaveDraft}
+                style={{ width: '100%' }}
+              />
+            </>
+          )}
         </View>
 
         {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
@@ -86146,6 +86216,54 @@ const styles = StyleSheet.create({
     fontSize: 12.5,
     lineHeight: 18,
     color: UX4GColors.neutral600,
+  },
+  paidIconOuter: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    backgroundColor: UX4GColors.green100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 6,
+    marginBottom: 16,
+  },
+  paidIconInner: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: UX4GColors.green,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paidHeading: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  paidSubtitle: {
+    fontSize: 13.5,
+    lineHeight: 20,
+    color: UX4GColors.neutral700,
+    textAlign: 'center',
+    paddingHorizontal: 8,
+  },
+  paidReceiptRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  paidReceiptLabel: {
+    fontSize: 13,
+    color: UX4GColors.neutral700,
+  },
+  paidReceiptValue: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
   },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
