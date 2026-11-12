@@ -8,8 +8,8 @@ interface TourOperatorRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–2 Active)
-const SNACK_ID = 'E3jcGw6xKpLirKyNzg5Md';
+// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–3 Active)
+const SNACK_ID = 'ocC491N8PE5vZtgZapy07';
 
 export const TourOperatorRegistrationFlowDoc: React.FC<TourOperatorRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -35,14 +35,16 @@ import {
   StatusBar,
   Platform,
 } from 'react-native';
-import Svg, { Path, Circle } from 'react-native-svg';
+import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import {
   Ux4gRadioButton,
+  Ux4gCheckbox,
   Ux4gInputField,
   Ux4gPanInputField,
   Ux4gSelectionDropdown,
   Ux4gDatePicker,
   Ux4gStatusBanner,
+  Ux4gCompactStepper,
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
@@ -59,152 +61,6 @@ const UnionLogo = () => (
   </Svg>
 );
 
-// UX4G Compact Stepper (Centered Between layout with full-width capsules & arrow buttons)
-const Ux4gCompactStepper = ({
-  totalSteps = 7,
-  currentStep = 1,
-  stepLabel,
-  title,
-  description,
-  subtitle,
-  onPrevious,
-  onBackPress,
-  onNext,
-  onNextPress,
-  cumulative = true,
-  style,
-}) => {
-  const resolvedLabel = stepLabel || title || '';
-  const resolvedDesc = description || subtitle;
-  const handlePrev = onPrevious || onBackPress || (() => {});
-  const handleNext = onNext || onNextPress || (() => {});
-
-  return (
-    <View style={[{ paddingVertical: 2 }, style]}>
-      {/* Full-width equal-width capsule progress indicators */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-        {Array.from({ length: totalSteps }).map((_, i) => {
-          const isActive = cumulative ? i + 1 <= currentStep : i + 1 === currentStep;
-          return (
-            <View
-              key={i}
-              style={{
-                flex: 1,
-                height: 6,
-                marginRight: i === totalSteps - 1 ? 0 : 7,
-                borderRadius: 3,
-                backgroundColor: isActive ? UX4GColors.primary : UX4GColors.neutral300,
-              }}
-            />
-          );
-        })}
-      </View>
-
-      <View style={{ height: 18 }} />
-
-      {/* Step Counter */}
-      <Text
-        style={{
-          textAlign: 'center',
-          fontSize: 14,
-          fontWeight: '700',
-          color: UX4GColors.neutral900,
-        }}
-      >
-        {'Step ' + currentStep + ' of ' + totalSteps}
-      </Text>
-
-      <View style={{ height: 6 }} />
-
-      {/* Navigation Row: Left Circle Button | Title + Subtitle | Right Circle Button */}
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-      >
-        {/* Previous Button (Left Arrow) */}
-        <TouchableOpacity
-          disabled={currentStep <= 1}
-          onPress={handlePrev}
-          activeOpacity={0.7}
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: 19,
-            backgroundColor: UX4GColors.white,
-            borderWidth: 1,
-            borderColor: currentStep > 1 ? UX4GColors.primary400 : UX4GColors.neutral200,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Svg width={17} height={17} viewBox="0 0 24 24" fill="none">
-            <Path
-              d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
-              fill={currentStep > 1 ? UX4GColors.primary : UX4GColors.neutral400}
-            />
-          </Svg>
-        </TouchableOpacity>
-
-        {/* Center: Step Title & Subtitle */}
-        <View style={{ flex: 1, alignItems: 'center', paddingHorizontal: 8 }}>
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: '600',
-              color: UX4GColors.primary,
-              textAlign: 'center',
-            }}
-          >
-            {resolvedLabel}
-          </Text>
-          {resolvedDesc ? (
-            <Text
-              style={{
-                fontSize: 13.5,
-                lineHeight: 19,
-                color: UX4GColors.neutral800,
-                textAlign: 'center',
-                marginTop: 4,
-                maxWidth: 230,
-              }}
-            >
-              {resolvedDesc}
-            </Text>
-          ) : null}
-        </View>
-
-        {/* Next Button (Right Arrow) */}
-        <TouchableOpacity
-          disabled={currentStep >= totalSteps}
-          onPress={handleNext}
-          activeOpacity={0.7}
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: 19,
-            backgroundColor: UX4GColors.white,
-            borderWidth: 1.2,
-            borderColor: currentStep < totalSteps ? UX4GColors.primary400 : UX4GColors.neutral200,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Svg width={17} height={17} viewBox="0 0 24 24" fill="none">
-            <Path
-              d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"
-              fill={currentStep < totalSteps ? UX4GColors.primary : UX4GColors.neutral400}
-            />
-          </Svg>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
 const STEP_METADATA = {
   1: {
     title: 'Registration type',
@@ -216,7 +72,7 @@ const STEP_METADATA = {
   },
   3: {
     title: 'Office & premises',
-    subtitle: 'Where the agency or operator office is located and premises details.',
+    subtitle: 'Where the office is, and what kind of premises it is.',
   },
   4: {
     title: 'Staff & experience',
@@ -278,6 +134,75 @@ const BANK_OPTIONS = [
   { id: 'idfc', label: 'IDFC First Bank' },
 ];
 
+const STATES_AND_UTS = [
+  { id: 'hp', label: 'Himachal Pradesh' },
+  { id: 'uk', label: 'Uttarakhand' },
+  { id: 'dl', label: 'Delhi' },
+  { id: 'mh', label: 'Maharashtra' },
+  { id: 'rj', label: 'Rajasthan' },
+  { id: 'ga', label: 'Goa' },
+  { id: 'ka', label: 'Karnataka' },
+];
+
+const DISTRICTS_OPTIONS = [
+  { id: 'shimla', label: 'Shimla' },
+  { id: 'kullu', label: 'Kullu' },
+  { id: 'kangra', label: 'Kangra' },
+  { id: 'ddn', label: 'Dehradun' },
+  { id: 'nni', label: 'Nainital' },
+];
+
+const SUB_DISTRICTS = [
+  { id: 'shimla_urban', label: 'Shimla (Urban)' },
+  { id: 'manali', label: 'Manali' },
+  { id: 'dharamshala', label: 'Dharamshala' },
+  { id: 'mus', label: 'Mussoorie' },
+];
+
+const CITIES_VILLAGES = [
+  { id: 'shimla_mc', label: 'Shimla (M Corp.)' },
+  { id: 'manali_np', label: 'Manali (NP)' },
+  { id: 'mus_city', label: 'Mussoorie (Municipal Board)' },
+  { id: 'gp_kyarkuli', label: 'Kyarkuli Bhatta Gram Panchayat' },
+];
+
+const AREA_TYPES = [
+  { id: 'urban', label: 'Urban — from the LGD record for this town' },
+  { id: 'semi_urban', label: 'Semi-Urban — from the LGD record' },
+  { id: 'rural', label: 'Rural — Gram Panchayat LGD record' },
+];
+
+const OFFICE_HOLDING_OPTIONS = [
+  { id: 'owned', label: 'Owned by the firm' },
+  { id: 'lease', label: 'On lease' },
+  { id: 'rented', label: 'Rented' },
+  { id: 'partnership', label: 'Partnership premises' },
+];
+
+const BUILDING_TYPE_OPTIONS = [
+  { id: 'commercial', label: 'Commercial' },
+  { id: 'residential', label: 'Residential' },
+];
+
+const OFFICE_FACILITIES_OPTIONS = [
+  { id: 'separate_reception', label: 'A separate reception area' },
+  { id: 'toilet_facility', label: 'A toilet facility' },
+  { id: 'cloak_room', label: 'A cloak room' },
+];
+
+const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="12" cy="12" r="7.5" stroke={color} strokeWidth="1.8" />
+    <Path
+      d="M12 2V5.5M12 18.5V22M2 12H5.5M18.5 12H22"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+    />
+    <Circle cx="12" cy="12" r="2.8" fill={color} />
+  </Svg>
+);
+
 const parseDateString = (str) => {
   if (!str) return undefined;
   const parts = str.split('/');
@@ -290,7 +215,7 @@ const parseDateString = (str) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -318,6 +243,25 @@ export default function App() {
     website: '',
     bankName: [],
     bankBranch: '',
+
+    // Step 3: Office & premises
+    officeLocationLink: '',
+    pinPlaced: false,
+    latitude: '',
+    longitude: '',
+    pinCode: '',
+    stateUT: [],
+    district: [],
+    subDistrict: [],
+    cityVillage: [],
+    areaType: [],
+    officeHouseStreet: '',
+    officeLandmark: '',
+    officeHoldingType: '',
+    officeFloorArea: '',
+    receptionArea: '',
+    buildingCategory: '',
+    officeFacilities: [],
   });
 
   const [errors, setErrors] = useState({});
@@ -422,11 +366,80 @@ export default function App() {
     setStep(3);
   };
 
+  const handleSetLocationPin = () => {
+    updateField('pinPlaced', true);
+    updateField('latitude', '31.1048° N');
+    updateField('longitude', '77.1734° E');
+    if (!formData.officeLocationLink) {
+      updateField('officeLocationLink', 'https://maps.google.com/?q=31.1048,77.1734');
+    }
+  };
+
+  const handleCityVillageChange = (ids) => {
+    updateField('cityVillage', ids);
+    if (ids && ids.length > 0) {
+      updateField('areaType', ids[0] === 'gp_kyarkuli' ? ['rural'] : ['urban']);
+    }
+  };
+
+  const toggleOfficeFacility = (id) => {
+    setFormData((prev) => {
+      const current = prev.officeFacilities || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        officeFacilities: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = {};
+    if (!formData.officeLocationLink.trim()) {
+      errs.officeLocationLink = 'Please enter or select the office location link';
+    }
+    if (!/^[0-9]{6}$/.test(formData.pinCode.trim())) {
+      errs.pinCode = 'Enter a valid 6-digit PIN code';
+    }
+    if (!formData.stateUT.length) {
+      errs.stateUT = 'State / UT is required';
+    }
+    if (!formData.district.length) {
+      errs.district = 'District is required';
+    }
+    if (!formData.subDistrict.length) {
+      errs.subDistrict = 'Sub-district / Tehsil is required';
+    }
+    if (!formData.cityVillage.length) {
+      errs.cityVillage = 'City / Town / Village is required';
+    }
+    if (!formData.officeHouseStreet.trim()) {
+      errs.officeHouseStreet = 'House or building number and street is required';
+    }
+    if (!formData.officeHoldingType) {
+      errs.officeHoldingType = 'Please select how you hold the office';
+    }
+    if (!formData.officeFloorArea.trim() || parseFloat(formData.officeFloorArea) <= 0) {
+      errs.officeFloorArea = 'Enter a valid office floor area in Sq. ft.';
+    }
+    if (!formData.buildingCategory) {
+      errs.buildingCategory = 'Please select whether the building is commercial or residential';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(4);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
     } else if (step === 2) {
       handleContinueStep2();
+    } else if (step === 3) {
+      handleContinueStep3();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -506,16 +519,19 @@ export default function App() {
           />
 
           <View style={styles.mainCard}>
-            {/* 7-Step Compact Stepper Header */}
+            {/* 7-Step Compact Stepper Header using official UX4G Component */}
             <Ux4gCompactStepper
               totalSteps={7}
               currentStep={step}
+              layout="centeredBetween"
               stepLabel={activeMeta.title}
               description={activeMeta.subtitle}
               onPrevious={handleStepperBack}
               onNext={handleStepperNext}
+              activeColor={UX4GColors.primary}
+              inactiveColor={UX4GColors.neutral300}
               cumulative={true}
-              style={{ padding: 0, marginVertical: 2 }}
+              style={{ padding: 0, marginVertical: 4 }}
             />
 
             <View style={styles.stepperBottomDivider} />
@@ -864,6 +880,355 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 3 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Office Location */}
+                <Text style={styles.sectionHeading}>Office Location</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Where is the office?"
+                    required
+                    size="large"
+                    value={formData.officeLocationLink}
+                    onValueChange={(v) => updateField('officeLocationLink', v)}
+                    placeholder="Paste a Google Maps or Apple Maps link to t..."
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.officeLocationLink ? 'error' : 'defaultStatus'}
+                    caption={errors.officeLocationLink}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  style={styles.gpsLocationRow}
+                  onPress={handleSetLocationPin}
+                  activeOpacity={0.7}
+                >
+                  <CrosshairsGpsIcon size={18} color={UX4GColors.neutral800} />
+                  <Text style={styles.gpsLocationText}>Use my current location</Text>
+                </TouchableOpacity>
+
+                {/* 2. Geo Location */}
+                <Text style={[styles.sectionHeading, { marginTop: 4 }]}>Geo Location</Text>
+
+                <TouchableOpacity
+                  style={styles.mapContainer}
+                  activeOpacity={0.9}
+                  onPress={handleSetLocationPin}
+                >
+                  <Svg width="100%" height={210} viewBox="0 0 340 210">
+                    <Path d="M0 0h340v210H0z" fill={UX4GColors.neutral100} />
+
+                    {/* Water Body (Top Left Curved Lake) */}
+                    <Path
+                      d="M0 0h145c0 30-15 55-45 55H0V0z"
+                      fill={UX4GColors.blue300}
+                    />
+
+                    {/* Park Green Area (Right) */}
+                    <Rect
+                      x={175}
+                      y={68}
+                      width={155}
+                      height={42}
+                      fill={UX4GColors.green100}
+                    />
+
+                    {/* Building Blocks */}
+                    <Rect x={15} y={15} width={35} height={30} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={60} y={15} width={40} height={30} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={15} y={75} width={55} height={30} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={80} y={75} width={50} height={30} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={15} y={120} width={45} height={35} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={70} y={120} width={60} height={35} rx={2} fill={UX4GColors.neutral200} />
+
+                    <Rect x={175} y={15} width={60} height={38} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={245} y={15} width={45} height={38} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={175} y={120} width={50} height={35} rx={2} fill={UX4GColors.neutral200} />
+                    <Rect x={235} y={120} width={70} height={35} rx={2} fill={UX4GColors.neutral200} />
+
+                    {/* Roads Network */}
+                    <Path d="M0 60h340v12H0z" fill={UX4GColors.white} />
+                    <Path d="M0 110h340v10H0z" fill={UX4GColors.white} />
+                    <Path d="M145 0v210h14V0z" fill={UX4GColors.white} />
+                    <Path d="M0 160l340 25v10L0 170z" fill={UX4GColors.white} />
+
+                    {/* Purple Location Pin */}
+                    <Path
+                      d="M152 80C144 80 138 86 138 94c0 10 14 23 14 23s14-13 14-23c0-8-6-14-14-14z"
+                      fill={UX4GColors.primary}
+                    />
+                    <Circle cx="152" cy="94" r="4.5" fill={UX4GColors.white} />
+
+                    {/* Zoom Controls (Top Right) */}
+                    <Rect x={295} y={15} width={26} height={52} rx={4} fill={UX4GColors.white} />
+                    <Rect x={295} y={41} width={26} height={1} fill={UX4GColors.neutral200} />
+                    <Path
+                      d="M304.5 28h7M308 24.5v7"
+                      stroke={UX4GColors.neutral600}
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    />
+                    <Path
+                      d="M304.5 54h7"
+                      stroke={UX4GColors.neutral600}
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    />
+                  </Svg>
+
+                  <View style={styles.mapOverlayPill}>
+                    <Text style={styles.mapOverlayPillText}>
+                      Illustrative map — drag the pin to set the exact entrance
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                {/* Latitude & Longitude Read-only Boxes */}
+                <Text style={styles.geoCoordLabel}>Latitude — set by the map</Text>
+                <View style={styles.geoCoordBox}>
+                  <Text style={[styles.geoCoordText, formData.pinPlaced && styles.geoCoordActiveText]}>
+                    {formData.pinPlaced ? formData.latitude : 'Set when you place the pin'}
+                  </Text>
+                </View>
+
+                <Text style={styles.geoCoordLabel}>Longitude — set by the map</Text>
+                <View style={styles.geoCoordBox}>
+                  <Text style={[styles.geoCoordText, formData.pinPlaced && styles.geoCoordActiveText]}>
+                    {formData.pinPlaced ? formData.longitude : 'Set when you place the pin'}
+                  </Text>
+                </View>
+
+                {/* Divider */}
+                <View style={styles.orDividerContainer}>
+                  <View style={styles.orDividerLine} />
+                  <Text style={styles.orDividerText}>Or enter the location yourself</Text>
+                  <View style={styles.orDividerLine} />
+                </View>
+
+                {/* PIN Code */}
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="PIN code"
+                    required
+                    type="number"
+                    size="large"
+                    maxLength={6}
+                    value={formData.pinCode}
+                    onValueChange={(v) => updateField('pinCode', v.slice(0, 6))}
+                    placeholder="6 digits"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.pinCode ? 'error' : 'defaultStatus'}
+                    caption={errors.pinCode}
+                  />
+                </View>
+
+                {/* 3. Location Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>Location Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="State / UT"
+                    required
+                    size="l"
+                    options={STATES_AND_UTS}
+                    selectedOptionIds={formData.stateUT}
+                    onSelectionChange={(ids) => updateField('stateUT', ids)}
+                    placeholder="Select state or union territory"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.stateUT ? 'error' : 'defaultStatus'}
+                    description={errors.stateUT}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="District"
+                    required
+                    size="l"
+                    options={DISTRICTS_OPTIONS}
+                    selectedOptionIds={formData.district}
+                    onSelectionChange={(ids) => updateField('district', ids)}
+                    placeholder="Select district"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.district ? 'error' : 'defaultStatus'}
+                    description={errors.district}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Sub-district / Tehsil"
+                    required
+                    size="l"
+                    options={SUB_DISTRICTS}
+                    selectedOptionIds={formData.subDistrict}
+                    onSelectionChange={(ids) => updateField('subDistrict', ids)}
+                    placeholder="Select sub-district or tehsil"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.subDistrict ? 'error' : 'defaultStatus'}
+                    description={errors.subDistrict}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="City / Town / Village"
+                    required
+                    size="l"
+                    options={CITIES_VILLAGES}
+                    selectedOptionIds={formData.cityVillage}
+                    onSelectionChange={handleCityVillageChange}
+                    placeholder="Select city, town or village"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.cityVillage ? 'error' : 'defaultStatus'}
+                    description={errors.cityVillage}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Area type — set from the town or village you chose"
+                    size="l"
+                    options={AREA_TYPES}
+                    selectedOptionIds={formData.areaType}
+                    onSelectionChange={(ids) => updateField('areaType', ids)}
+                    placeholder="Urban — from the LGD record for this t..."
+                    labelTextStyle={styles.inputLabelStyle}
+                  />
+                </View>
+
+                {/* 4. Address of the Office */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>Address of the Office</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="House or building number and street"
+                    required
+                    size="large"
+                    value={formData.officeHouseStreet}
+                    onValueChange={(v) => updateField('officeHouseStreet', v)}
+                    placeholder="As it would be written on a letter"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.officeHouseStreet ? 'error' : 'defaultStatus'}
+                    caption={errors.officeHouseStreet}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Landmark"
+                    size="large"
+                    value={formData.officeLandmark}
+                    onValueChange={(v) => updateField('officeLandmark', v)}
+                    placeholder="Something a visitor would recognise"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                  />
+                </View>
+
+                {/* 5. Premises Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>Premises Details</Text>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    How do you hold the office?<Text style={styles.requiredStar}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    {OFFICE_HOLDING_OPTIONS.map((option) => (
+                      <Ux4gRadioButton
+                        key={option.id}
+                        value={option.id}
+                        groupValue={formData.officeHoldingType}
+                        onChanged={(val) => updateField('officeHoldingType', val)}
+                        label={option.label}
+                        size="medium"
+                        color={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                  {errors.officeHoldingType && (
+                    <Text style={styles.inlineErrorText}>{errors.officeHoldingType}</Text>
+                  )}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Office floor area, Sq. ft."
+                    required
+                    type="number"
+                    size="large"
+                    value={formData.officeFloorArea}
+                    onValueChange={(v) => updateField('officeFloorArea', v)}
+                    placeholder="Carpet area"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.officeFloorArea ? 'error' : 'defaultStatus'}
+                    caption={errors.officeFloorArea}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Reception area, Sq. ft."
+                    type="number"
+                    size="large"
+                    value={formData.receptionArea}
+                    onValueChange={(v) => updateField('receptionArea', v)}
+                    placeholder="If the office has one"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                  />
+                </View>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Is the office in a commercial or a residential building?
+                    <Text style={styles.requiredStar}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    {BUILDING_TYPE_OPTIONS.map((option) => (
+                      <Ux4gRadioButton
+                        key={option.id}
+                        value={option.id}
+                        groupValue={formData.buildingCategory}
+                        onChanged={(val) => updateField('buildingCategory', val)}
+                        label={option.label}
+                        size="medium"
+                        color={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                  {errors.buildingCategory && (
+                    <Text style={styles.inlineErrorText}>{errors.buildingCategory}</Text>
+                  )}
+                </View>
+
+                <View style={[styles.groupBlock, { marginBottom: 4 }]}>
+                  <Text style={styles.fieldGroupLabel}>The office has</Text>
+                  <View style={styles.radioStack}>
+                    {OFFICE_FACILITIES_OPTIONS.map((option) => (
+                      <Ux4gCheckbox
+                        key={option.id}
+                        value={formData.officeFacilities.includes(option.id)}
+                        onChanged={() => toggleOfficeFacility(option.id)}
+                        label={option.label}
+                        size="medium"
+                        activeColor={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1066,6 +1431,90 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontWeight: '500',
   },
+  gpsLocationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: -4,
+    marginBottom: 16,
+    paddingVertical: 4,
+  },
+  gpsLocationText: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    color: UX4GColors.neutral800,
+    marginLeft: 8,
+  },
+  mapContainer: {
+    width: '100%',
+    height: 210,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral300,
+    overflow: 'hidden',
+    position: 'relative',
+    marginBottom: 16,
+  },
+  mapOverlayPill: {
+    position: 'absolute',
+    bottom: 8,
+    left: 10,
+    right: 10,
+    backgroundColor: UX4GColors.white,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral300,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    alignItems: 'center',
+    shadowColor: UX4GColors.neutral1000black,
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  mapOverlayPillText: {
+    fontSize: 11,
+    color: UX4GColors.neutral700,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  geoCoordLabel: {
+    fontSize: 13.5,
+    fontWeight: '400',
+    color: UX4GColors.neutral800,
+    marginBottom: 6,
+  },
+  geoCoordBox: {
+    height: 48,
+    backgroundColor: UX4GColors.neutral300,
+    borderRadius: 8,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    marginBottom: 14,
+  },
+  geoCoordText: {
+    fontSize: 13.5,
+    color: UX4GColors.neutral600,
+  },
+  geoCoordActiveText: {
+    color: UX4GColors.neutral900,
+    fontWeight: '600',
+  },
+  orDividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  orDividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: UX4GColors.neutral200,
+  },
+  orDividerText: {
+    marginHorizontal: 12,
+    fontSize: 12.5,
+    color: UX4GColors.neutral500,
+    fontWeight: '400',
+  },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
@@ -1154,7 +1603,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 7 Steps (Steps 1–2 Active)
+                Service Pattern • 7 Steps (Steps 1–3 Active)
               </span>
             </div>
             <p

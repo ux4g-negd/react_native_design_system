@@ -76,6 +76,25 @@ export interface TourOperatorFormData {
   website: string;
   bankName: string[];
   bankBranch: string;
+
+  // Step 3: Office & premises
+  officeLocationLink: string;
+  pinPlaced: boolean;
+  latitude: string;
+  longitude: string;
+  pinCode: string;
+  stateUT: string[];
+  district: string[];
+  subDistrict: string[];
+  cityVillage: string[];
+  areaType: string[];
+  officeHouseStreet: string;
+  officeLandmark: string;
+  officeHoldingType: string;
+  officeFloorArea: string;
+  receptionArea: string;
+  buildingCategory: string;
+  officeFacilities: string[];
 }
 
 export type TourOperatorFormErrors = Record<string, string | undefined>;
@@ -86,7 +105,7 @@ function buildUnionLogoFile(appCode: string): string {
   const unionSlice = sliceBetween(
     appCode,
     'const UnionLogo = () => (',
-    '// UX4G Compact Stepper',
+    'const STEP_METADATA =',
     'UnionLogo'
   ).trim();
   return `import React from 'react';
@@ -99,40 +118,27 @@ export default UnionLogo;
 `;
 }
 
-function buildCompactStepperFile(appCode: string): string {
-  const stepperSlice = sliceBetween(
+function buildIconsFile(appCode: string): string {
+  const iconSlice = sliceBetween(
     appCode,
-    'const Ux4gCompactStepper = (',
-    'const STEP_METADATA =',
-    'Ux4gCompactStepper'
+    'const CrosshairsGpsIcon =',
+    'const parseDateString =',
+    'CrosshairsGpsIcon'
   ).trim();
 
   return `import React from 'react';
-import { View, Text, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path, Circle } from 'react-native-svg';
 import { UX4GColors } from 'ux4g-react-native-components';
 
-export interface CompactStepperProps {
-  totalSteps?: number;
-  currentStep?: number;
-  stepLabel?: string;
-  title?: string;
-  description?: string;
-  subtitle?: string;
-  onPrevious?: () => void;
-  onBackPress?: () => void;
-  onNext?: () => void;
-  onNextPress?: () => void;
-  cumulative?: boolean;
-  style?: StyleProp<ViewStyle>;
+export interface IconProps {
+  size?: number;
+  color?: string;
 }
 
-${stepperSlice.replace(
-  'const Ux4gCompactStepper = ({',
-  'export const Ux4gCompactStepper: React.FC<CompactStepperProps> = ({'
-)}
-
-export default Ux4gCompactStepper;
+export ${iconSlice.replace(
+    'const CrosshairsGpsIcon = ({ size = 18, color = UX4GColors.neutral800 }) =>',
+    'const CrosshairsGpsIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral800 }) =>'
+  )}
 `;
 }
 
@@ -140,7 +146,7 @@ function buildFormOptionsFile(appCode: string): string {
   const rawBlock = sliceBetween(
     appCode,
     'const STEP_METADATA =',
-    'const parseDateString =',
+    'const CrosshairsGpsIcon =',
     'tourOperatorFormOptions'
   ).trim();
 
@@ -151,7 +157,15 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const APPLICATION_TYPE_OPTIONS =', 'export const APPLICATION_TYPE_OPTIONS: RadioOption[] =')
     .replace('export const RELATION_TO_FIRM_OPTIONS =', 'export const RELATION_TO_FIRM_OPTIONS: RadioOption[] =')
     .replace('export const LEGAL_ENTITY_TYPES =', 'export const LEGAL_ENTITY_TYPES: RadioOption[] =')
-    .replace('export const BANK_OPTIONS =', 'export const BANK_OPTIONS: RadioOption[] =');
+    .replace('export const BANK_OPTIONS =', 'export const BANK_OPTIONS: RadioOption[] =')
+    .replace('export const STATES_AND_UTS =', 'export const STATES_AND_UTS: RadioOption[] =')
+    .replace('export const DISTRICTS_OPTIONS =', 'export const DISTRICTS_OPTIONS: RadioOption[] =')
+    .replace('export const SUB_DISTRICTS =', 'export const SUB_DISTRICTS: RadioOption[] =')
+    .replace('export const CITIES_VILLAGES =', 'export const CITIES_VILLAGES: RadioOption[] =')
+    .replace('export const AREA_TYPES =', 'export const AREA_TYPES: RadioOption[] =')
+    .replace('export const OFFICE_HOLDING_OPTIONS =', 'export const OFFICE_HOLDING_OPTIONS: RadioOption[] =')
+    .replace('export const BUILDING_TYPE_OPTIONS =', 'export const BUILDING_TYPE_OPTIONS: RadioOption[] =')
+    .replace('export const OFFICE_FACILITIES_OPTIONS =', 'export const OFFICE_FACILITIES_OPTIONS: RadioOption[] =');
 
   return `import { RadioOption, StepMeta } from '../types/tourOperator';
 
@@ -270,6 +284,43 @@ export function validateTourOperatorStep2(
   }
   return errs;
 }
+
+export function validateTourOperatorStep3(
+  formData: TourOperatorFormData
+): TourOperatorFormErrors {
+  const errs: TourOperatorFormErrors = {};
+  if (!formData.officeLocationLink.trim()) {
+    errs.officeLocationLink = 'Please enter or select the office location link';
+  }
+  if (!/^[0-9]{6}$/.test(formData.pinCode.trim())) {
+    errs.pinCode = 'Enter a valid 6-digit PIN code';
+  }
+  if (!formData.stateUT.length) {
+    errs.stateUT = 'State / UT is required';
+  }
+  if (!formData.district.length) {
+    errs.district = 'District is required';
+  }
+  if (!formData.subDistrict.length) {
+    errs.subDistrict = 'Sub-district / Tehsil is required';
+  }
+  if (!formData.cityVillage.length) {
+    errs.cityVillage = 'City / Town / Village is required';
+  }
+  if (!formData.officeHouseStreet.trim()) {
+    errs.officeHouseStreet = 'House or building number and street is required';
+  }
+  if (!formData.officeHoldingType) {
+    errs.officeHoldingType = 'Please select how you hold the office';
+  }
+  if (!formData.officeFloorArea.trim() || parseFloat(formData.officeFloorArea) <= 0) {
+    errs.officeFloorArea = 'Enter a valid office floor area in Sq. ft.';
+  }
+  if (!formData.buildingCategory) {
+    errs.buildingCategory = 'Please select whether the building is commercial or residential';
+  }
+  return errs;
+}
 `;
 }
 
@@ -318,7 +369,7 @@ function buildStep2ScreenFile(appCode: string): string {
   let jsx = extractScreenJsx(
     appCode,
     ') : step === 2 ? (',
-    ') : (',
+    ') : step === 3 ? (',
     'Tour Operator Step 2'
   );
 
@@ -362,6 +413,63 @@ ${jsx}
 `;
 }
 
+function buildStep3ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 3 ? (',
+    ') : (',
+    'Tour Operator Step 3'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import Svg, { Path, Circle, Rect } from 'react-native-svg';
+import {
+  Ux4gRadioButton,
+  Ux4gCheckbox,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { CrosshairsGpsIcon } from '../components/Icons';
+import {
+  STATES_AND_UTS,
+  DISTRICTS_OPTIONS,
+  SUB_DISTRICTS,
+  CITIES_VILLAGES,
+  AREA_TYPES,
+  OFFICE_HOLDING_OPTIONS,
+  BUILDING_TYPE_OPTIONS,
+  OFFICE_FACILITIES_OPTIONS,
+} from '../constants/formOptions';
+import { TourOperatorFormData, TourOperatorFormErrors } from '../types/tourOperator';
+import { styles } from '../styles/commonStyles';
+
+export interface Step3OfficePremisesScreenProps {
+  formData: TourOperatorFormData;
+  errors: TourOperatorFormErrors;
+  updateField: <K extends keyof TourOperatorFormData>(
+    key: K,
+    value: TourOperatorFormData[K]
+  ) => void;
+  handleSetLocationPin: () => void;
+  handleCityVillageChange: (ids: string[]) => void;
+  toggleOfficeFacility: (id: string) => void;
+}
+
+export const Step3OfficePremisesScreen: React.FC<Step3OfficePremisesScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  handleSetLocationPin,
+  handleCityVillageChange,
+  toggleOfficeFacility,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -375,13 +483,13 @@ import {
 import Svg, { Path, Circle } from 'react-native-svg';
 import {
   Ux4gStatusBanner,
+  Ux4gCompactStepper,
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
 import NationalEmblem from './src/assets/NationalEmblem';
 import UnionLogo from './src/assets/UnionLogo';
-import { Ux4gCompactStepper } from './src/components/CompactStepper';
 import {
   STEP_METADATA,
   TRADE_OPTIONS,
@@ -395,13 +503,15 @@ import {
 import {
   validateTourOperatorStep1,
   validateTourOperatorStep2,
+  validateTourOperatorStep3,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1RegistrationTypeScreen } from './src/screens/Step1RegistrationTypeScreen';
 import { Step2ApplicantFirmScreen } from './src/screens/Step2ApplicantFirmScreen';
+import { Step3OfficePremisesScreen } from './src/screens/Step3OfficePremisesScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = useState<number>(3);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -463,11 +573,49 @@ export default function App() {
     setStep(3);
   };
 
+  const handleSetLocationPin = () => {
+    updateField('pinPlaced', true);
+    updateField('latitude', '31.1048° N');
+    updateField('longitude', '77.1734° E');
+    if (!formData.officeLocationLink) {
+      updateField('officeLocationLink', 'https://maps.google.com/?q=31.1048,77.1734');
+    }
+  };
+
+  const handleCityVillageChange = (ids: string[]) => {
+    updateField('cityVillage', ids);
+    if (ids && ids.length > 0) {
+      updateField('areaType', ids[0] === 'gp_kyarkuli' ? ['rural'] : ['urban']);
+    }
+  };
+
+  const toggleOfficeFacility = (id: string) => {
+    setFormData((prev) => {
+      const current = prev.officeFacilities || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        officeFacilities: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = validateTourOperatorStep3(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(4);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
     } else if (step === 2) {
       handleContinueStep2();
+    } else if (step === 3) {
+      handleContinueStep3();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -547,16 +695,19 @@ export default function App() {
           />
 
           <View style={styles.mainCard}>
-            {/* 7-Step Compact Stepper Header */}
+            {/* 7-Step Compact Stepper Header using official UX4G Component */}
             <Ux4gCompactStepper
               totalSteps={7}
               currentStep={step}
+              layout="centeredBetween"
               stepLabel={activeMeta.title}
               description={activeMeta.subtitle}
               onPrevious={handleStepperBack}
               onNext={handleStepperNext}
+              activeColor={UX4GColors.primary}
+              inactiveColor={UX4GColors.neutral300}
               cumulative={true}
-              style={{ padding: 0, marginVertical: 2 }}
+              style={{ padding: 0, marginVertical: 4 }}
             />
 
             <View style={styles.stepperBottomDivider} />
@@ -572,6 +723,15 @@ export default function App() {
                 formData={formData}
                 errors={errors}
                 updateField={updateField}
+              />
+            ) : step === 3 ? (
+              <Step3OfficePremisesScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                handleSetLocationPin={handleSetLocationPin}
+                handleCityVillageChange={handleCityVillageChange}
+                toggleOfficeFacility={toggleOfficeFacility}
               />
             ) : (
               <View style={styles.formContainer}>
@@ -730,9 +890,9 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '    │   ├── NationalEmblem.tsx                 # Official Government of India Emblem SVG',
       '    │   └── UnionLogo.tsx                      # Portal Union.svg brand mark SVG',
       '    ├── components/',
-      '    │   └── CompactStepper.tsx                 # 7-step UX4G Compact Stepper header',
+      '    │   └── Icons.tsx                          # Crosshairs GPS icon SVG',
       '    ├── constants/',
-      '    │   ├── formOptions.ts                     # Trade types, application types & STEP_METADATA',
+      '    │   ├── formOptions.ts                     # Trade types, location options & STEP_METADATA',
       '    │   └── initialFormData.ts                 # Initial TourOperatorFormData state factory',
       '    ├── types/',
       '    │   └── tourOperator.ts                    # TypeScript interfaces for form state & validation errors',
@@ -742,7 +902,8 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '    │   └── commonStyles.ts                    # Shared StyleSheet using UX4GColors tokens',
       '    └── screens/',
       '        ├── Step1RegistrationTypeScreen.tsx    # Step 1 of 7: Service Required & Existing Registration Details',
-      '        └── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details',
+      '        ├── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details',
+      '        └── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details',
       '```',
       '',
       '## Getting Started',
@@ -756,7 +917,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     ].join('\n'),
     'src/assets/NationalEmblem.tsx': NATIONAL_EMBLEM_SOURCE,
     'src/assets/UnionLogo.tsx': buildUnionLogoFile(normalizedCode),
-    'src/components/CompactStepper.tsx': buildCompactStepperFile(normalizedCode),
+    'src/components/Icons.tsx': buildIconsFile(normalizedCode),
     'src/types/tourOperator.ts': buildTypesFile(),
     'src/constants/formOptions.ts': buildFormOptionsFile(normalizedCode),
     'src/constants/initialFormData.ts': buildInitialFormDataFile(normalizedCode),
@@ -764,6 +925,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     'src/styles/commonStyles.ts': buildCommonStylesFile(normalizedCode),
     'src/screens/Step1RegistrationTypeScreen.tsx': buildStep1ScreenFile(normalizedCode),
     'src/screens/Step2ApplicantFirmScreen.tsx': buildStep2ScreenFile(normalizedCode),
+    'src/screens/Step3OfficePremisesScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }
