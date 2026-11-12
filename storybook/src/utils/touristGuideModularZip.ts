@@ -69,6 +69,10 @@ export interface TouristGuideFormData {
   permanentHouseStreet: string;
   permanentLandmark: string;
   pinCode: string;
+
+  // Step 2: Category & eligibility
+  guideCategory: string;
+  highestQualification: string[];
 }
 
 export type TouristGuideFormErrors = Record<string, string | undefined>;
@@ -140,7 +144,9 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const STATES_AND_UTS =', 'export const STATES_AND_UTS: RadioOption[] =')
     .replace('export const DISTRICTS_OPTIONS =', 'export const DISTRICTS_OPTIONS: RadioOption[] =')
     .replace('export const SUB_DISTRICTS =', 'export const SUB_DISTRICTS: RadioOption[] =')
-    .replace('export const CITIES_VILLAGES =', 'export const CITIES_VILLAGES: RadioOption[] =');
+    .replace('export const CITIES_VILLAGES =', 'export const CITIES_VILLAGES: RadioOption[] =')
+    .replace('export const GUIDE_CATEGORIES =', 'export const GUIDE_CATEGORIES: RadioOption[] =')
+    .replace('export const HIGHEST_QUALIFICATIONS =', 'export const HIGHEST_QUALIFICATIONS: RadioOption[] =');
 
   return `import { RadioOption, StepMeta } from '../types/touristGuide';
 
@@ -198,6 +204,18 @@ export function parseDateString(str: string): Date | undefined {
   return new Date(y, m, d);
 }
 
+export function calculateAgeFromDob(dobStr: string): number {
+  const dob = parseDateString(dobStr);
+  if (!dob) return 32;
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const mDiff = today.getMonth() - dob.getMonth();
+  if (mDiff < 0 || (mDiff === 0 && today.getDate() < dob.getDate())) {
+    age -= 1;
+  }
+  return age > 0 ? age : 32;
+}
+
 export function validateTouristGuideStep1(
   formData: TouristGuideFormData
 ): TouristGuideFormErrors {
@@ -243,6 +261,19 @@ export function validateTouristGuideStep1(
   }
   return errs;
 }
+
+export function validateTouristGuideStep2(
+  formData: TouristGuideFormData
+): TouristGuideFormErrors {
+  const errs: TouristGuideFormErrors = {};
+  if (!formData.guideCategory) {
+    errs.guideCategory = 'Please select a guide category';
+  }
+  if (!formData.highestQualification.length) {
+    errs.highestQualification = 'Please select the highest qualification you hold';
+  }
+  return errs;
+}
 `;
 }
 
@@ -250,7 +281,7 @@ function buildStep1ScreenFile(appCode: string): string {
   let jsx = extractScreenJsx(
     appCode,
     '{step === 1 ? (',
-    '\n            ) : (\n              <View style={styles.formContainer}>',
+    ') : step === 2 ? (',
     'Tourist Guide Step 1'
   );
 
@@ -300,6 +331,49 @@ ${jsx}
 `;
 }
 
+function buildStep2ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 2 ? (',
+    ') : (',
+    'Tourist Guide Step 2'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import {
+  Ux4gRadioButton,
+  Ux4gSelectionDropdown,
+  Ux4gStatusBanner,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import {
+  GUIDE_CATEGORIES,
+  HIGHEST_QUALIFICATIONS,
+} from '../constants/formOptions';
+import { TouristGuideFormData, TouristGuideFormErrors } from '../types/touristGuide';
+import { calculateAgeFromDob } from '../utils/validators';
+import { styles } from '../styles/commonStyles';
+
+export interface Step2CategoryEligibilityScreenProps {
+  formData: TouristGuideFormData;
+  errors: TouristGuideFormErrors;
+  updateField: <K extends keyof TouristGuideFormData>(
+    key: K,
+    value: TouristGuideFormData[K]
+  ) => void;
+}
+
+export const Step2CategoryEligibilityScreen: React.FC<Step2CategoryEligibilityScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -326,12 +400,16 @@ import {
   TouristGuideFormData,
   TouristGuideFormErrors,
 } from './src/types/touristGuide';
-import { validateTouristGuideStep1 } from './src/utils/validators';
+import {
+  validateTouristGuideStep1,
+  validateTouristGuideStep2,
+} from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1AboutYouScreen } from './src/screens/Step1AboutYouScreen';
+import { Step2CategoryEligibilityScreen } from './src/screens/Step2CategoryEligibilityScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = useState<number>(2);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -389,9 +467,20 @@ export default function App() {
     setStep(2);
   };
 
+  const handleContinueStep2 = () => {
+    const errs = validateTouristGuideStep2(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(3);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
+    } else if (step === 2) {
+      handleContinueStep2();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -488,6 +577,12 @@ export default function App() {
                 errors={errors}
                 updateField={updateField}
                 handlePhotoAction={handlePhotoAction}
+              />
+            ) : step === 2 ? (
+              <Step2CategoryEligibilityScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
               />
             ) : (
               <View style={styles.formContainer}>
@@ -647,7 +742,8 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
       '    ├── styles/',
       '    │   └── commonStyles.ts                    # Shared StyleSheet using UX4GColors tokens',
       '    └── screens/',
-      '        └── Step1AboutYouScreen.tsx            # Step 1 of 6: Photograph, Applicant, Contact, Location & Address',
+      '        ├── Step1AboutYouScreen.tsx            # Step 1 of 6: Photograph, Applicant, Contact, Location & Address',
+      '        └── Step2CategoryEligibilityScreen.tsx # Step 2 of 6: Category of Registration, Qualification & Eligibility',
       '```',
       '',
       '## Getting Started',
@@ -668,6 +764,7 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
     'src/utils/validators.ts': buildValidatorsFile(),
     'src/styles/commonStyles.ts': buildCommonStylesFile(normalizedCode),
     'src/screens/Step1AboutYouScreen.tsx': buildStep1ScreenFile(normalizedCode),
+    'src/screens/Step2CategoryEligibilityScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }

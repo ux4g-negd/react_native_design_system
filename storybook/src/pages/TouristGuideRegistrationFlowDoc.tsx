@@ -8,8 +8,8 @@ interface TouristGuideRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Step 1 Active)
-const SNACK_ID = '0462uOBqXIx4YNVBIVZ53';
+// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–2 Active)
+const SNACK_ID = 'nWFvwy60gG2Mfs7t30GXm';
 
 export const TouristGuideRegistrationFlowDoc: React.FC<TouristGuideRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -65,8 +65,8 @@ const STEP_METADATA = {
     subtitle: 'Who you are, how the department reaches you, and where you live.',
   },
   2: {
-    title: 'Qualifications & languages',
-    subtitle: 'Your education, guide training, and the languages you guide in.',
+    title: 'Category & eligibility',
+    subtitle: 'What you are registering as, and what that category asks you to prove.',
   },
   3: {
     title: 'Guiding area & experience',
@@ -130,6 +130,21 @@ const CITIES_VILLAGES = [
   { id: 'gp_kyarkuli', label: 'Kyarkuli Bhatta (GP)' },
 ];
 
+const GUIDE_CATEGORIES = [
+  { id: 'general', label: 'General guide' },
+  { id: 'general_linguistic', label: 'General guide — linguistic' },
+  { id: 'expert', label: 'Expert guide' },
+  { id: 'expert_linguistic', label: 'Expert guide — linguistic' },
+];
+
+const HIGHEST_QUALIFICATIONS = [
+  { id: 'class_10', label: 'Class 10 (Matriculation)' },
+  { id: 'class_12', label: '10+2 (Higher Secondary)' },
+  { id: 'graduate', label: "Graduate (Bachelor's Degree)" },
+  { id: 'post_graduate', label: "Post Graduate / Master's Degree" },
+  { id: 'diploma_tourism', label: 'Diploma / Certificate in Tourism' },
+];
+
 const CheckSmallIcon = ({ size = 11, color = UX4GColors.white }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
@@ -163,8 +178,20 @@ const parseDateString = (str) => {
   return new Date(y, m, d);
 };
 
+const calculateAgeFromDob = (dobStr) => {
+  const dob = parseDateString(dobStr);
+  if (!dob) return 32;
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const mDiff = today.getMonth() - dob.getMonth();
+  if (mDiff < 0 || (mDiff === 0 && today.getDate() < dob.getDate())) {
+    age -= 1;
+  }
+  return age > 0 ? age : 32;
+};
+
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -185,6 +212,10 @@ export default function App() {
     permanentHouseStreet: '',
     permanentLandmark: '',
     pinCode: '',
+
+    // Step 2: Category & eligibility
+    guideCategory: 'general',
+    highestQualification: [],
   });
 
   const [errors, setErrors] = useState({});
@@ -275,9 +306,26 @@ export default function App() {
     setStep(2);
   };
 
+  const handleContinueStep2 = () => {
+    const errs = {};
+    if (!formData.guideCategory) {
+      errs.guideCategory = 'Please select a guide category';
+    }
+    if (!formData.highestQualification.length) {
+      errs.highestQualification = 'Please select the highest qualification you hold';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(3);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
+    } else if (step === 2) {
+      handleContinueStep2();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -666,6 +714,122 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 2 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Category of Registration */}
+                <Text style={styles.sectionHeading}>Category of Registration</Text>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Guide category<Text style={styles.requiredStar}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    {GUIDE_CATEGORIES.map((option) => (
+                      <Ux4gRadioButton
+                        key={option.id}
+                        value={option.id}
+                        groupValue={formData.guideCategory}
+                        onChanged={(val) => updateField('guideCategory', val)}
+                        label={option.label}
+                        size="medium"
+                        color={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                  {errors.guideCategory ? (
+                    <Text style={styles.inlineErrorText}>{errors.guideCategory}</Text>
+                  ) : null}
+                </View>
+
+                {/* 2. Educational Qualification */}
+                <Text style={[styles.sectionHeading, { marginTop: 4 }]}>
+                  Educational Qualification
+                </Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Highest qualification held"
+                    required
+                    size="l"
+                    options={HIGHEST_QUALIFICATIONS}
+                    selectedOptionIds={formData.highestQualification}
+                    onSelectionChange={(ids) => updateField('highestQualification', ids)}
+                    placeholder="Select the highest qualification you hold"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.highestQualification ? 'error' : 'defaultStatus'}
+                    description={errors.highestQualification}
+                  />
+                </View>
+
+                {/* 3. Eligibility Criteria */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>
+                  Eligibility Criteria
+                </Text>
+
+                <View style={{ marginBottom: 12 }}>
+                  <Ux4gStatusBanner
+                    variant="successLight"
+                    title={'Age — you are ' + calculateAgeFromDob(formData.dateOfBirth)}
+                    subtitle="The minimum is 18. Karnataka also sets an upper bound of 45, relaxed to 48 for SC, ST and widows."
+                    titleNumberOfLines={2}
+                    subtitleNumberOfLines={4}
+                    backgroundColor={UX4GColors.green50}
+                    borderColor={UX4GColors.green200}
+                    marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                    paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                    containerStyle={{ borderRadius: 10 }}
+                    titleStyle={{
+                      fontSize: 13.5,
+                      fontWeight: '700',
+                      color: UX4GColors.green700,
+                      lineHeight: 19,
+                    }}
+                    subtitleStyle={{
+                      fontSize: 12.5,
+                      lineHeight: 18,
+                      color: UX4GColors.green700,
+                      marginTop: 3,
+                    }}
+                  />
+                </View>
+
+                <View style={{ marginBottom: 4 }}>
+                  <Ux4gStatusBanner
+                    variant="successLight"
+                    title={
+                      'Education — ' +
+                      ((
+                        HIGHEST_QUALIFICATIONS.find(
+                          (q) => q.id === (formData.highestQualification || [])[0]
+                        ) || {}
+                      ).label || '10+2') +
+                      ', which meets the bar'
+                    }
+                    subtitle="A General guide under 40 must hold 10+2. At 40 and over the bar drops to Class 10."
+                    titleNumberOfLines={2}
+                    subtitleNumberOfLines={4}
+                    backgroundColor={UX4GColors.green50}
+                    borderColor={UX4GColors.green200}
+                    marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+                    paddingStyle={{ paddingVertical: 12, paddingHorizontal: 14 }}
+                    containerStyle={{ borderRadius: 10 }}
+                    titleStyle={{
+                      fontSize: 13.5,
+                      fontWeight: '700',
+                      color: UX4GColors.green700,
+                      lineHeight: 19,
+                    }}
+                    subtitleStyle={{
+                      fontSize: 12.5,
+                      lineHeight: 18,
+                      color: UX4GColors.green700,
+                      marginTop: 3,
+                    }}
+                  />
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1001,7 +1165,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 6 Steps (Step 1 Active)
+                Service Pattern • 6 Steps (Steps 1–2 Active)
               </span>
             </div>
             <p
