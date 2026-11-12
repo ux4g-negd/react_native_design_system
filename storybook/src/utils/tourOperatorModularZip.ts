@@ -127,6 +127,9 @@ export interface TourOperatorFormData {
   // Step 6: Review & declaration
   declarationTruth: boolean;
   declarationInspection: boolean;
+
+  // Step 7: Fee & payment
+  feeNonRefundable: boolean;
 }
 
 export type TourOperatorFormErrors = Record<string, string | undefined>;
@@ -579,6 +582,49 @@ export function getTourOperatorReviewItems(
     { stepNum: 5, title: 'Step 5 · Documents', subtitle: step5Sub, isWarning: !docsComplete },
   ];
 }
+
+export function validateTourOperatorStep7(
+  formData: TourOperatorFormData
+): TourOperatorFormErrors {
+  const errs: TourOperatorFormErrors = {};
+  if (!formData.feeNonRefundable) {
+    errs.feeNonRefundable =
+      'Please confirm that you understand the fee is non-refundable once submitted';
+  }
+  return errs;
+}
+
+export interface TourOperatorFeeSummary {
+  applicationRef: string;
+  description: string;
+  formattedAmount: string;
+}
+
+export function getTourOperatorFeeSummary(
+  fd: TourOperatorFormData
+): TourOperatorFeeSummary {
+  const trade = fd.tradeType || 'travel_agent';
+  const refMap: Record<string, string> = {
+    travel_agent: 'Travel agency registration · TA-2026-000000',
+    tour_operator: 'Tour operator registration · TO-2026-000000',
+    tourist_transport_operator: 'Tourist transport registration · TT-2026-000000',
+  };
+  const labelMap: Record<string, string> = {
+    travel_agent: 'Registration fee — travel agent, three-year term',
+    tour_operator: 'Registration fee — tour operator, three-year term',
+    tourist_transport_operator: 'Registration fee — tourist transport operator, three-year term',
+  };
+  const amountMap: Record<string, string> = {
+    travel_agent: '₹3,000',
+    tour_operator: '₹4,500',
+    tourist_transport_operator: '₹3,000',
+  };
+  return {
+    applicationRef: refMap[trade] || refMap.travel_agent,
+    description: labelMap[trade] || labelMap.travel_agent,
+    formattedAmount: amountMap[trade] || '₹3,000',
+  };
+}
 `;
 }
 
@@ -868,6 +914,49 @@ ${jsx}
 `;
 }
 
+function buildStep7ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : (\n              <View style={styles.formContainer}>\n                <Text style={styles.sectionHeading}>Fee Details</Text>',
+    '\n            )}\n          </View>\n        </ScrollView>',
+    'Tour Operator Step 7'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import {
+  Ux4gCard,
+  Ux4gCheckbox,
+  Ux4gStatusBanner,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { TourOperatorFeeSummary } from '../utils/validators';
+import { TourOperatorFormData, TourOperatorFormErrors } from '../types/tourOperator';
+import { styles } from '../styles/commonStyles';
+
+export interface Step7FeePaymentScreenProps {
+  formData: TourOperatorFormData;
+  errors: TourOperatorFormErrors;
+  updateField: <K extends keyof TourOperatorFormData>(
+    key: K,
+    value: TourOperatorFormData[K]
+  ) => void;
+  feeSummary: TourOperatorFeeSummary;
+  paymentCompleted: boolean;
+}
+
+export const Step7FeePaymentScreen: React.FC<Step7FeePaymentScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  feeSummary,
+  paymentCompleted,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -907,6 +996,8 @@ import {
   validateTourOperatorStep4,
   validateTourOperatorStep5,
   validateTourOperatorStep6,
+  validateTourOperatorStep7,
+  getTourOperatorFeeSummary,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1RegistrationTypeScreen } from './src/screens/Step1RegistrationTypeScreen';
@@ -915,10 +1006,12 @@ import { Step3OfficePremisesScreen } from './src/screens/Step3OfficePremisesScre
 import { Step4ServicesCapabilityScreen } from './src/screens/Step4ServicesCapabilityScreen';
 import { Step5DocumentsScreen } from './src/screens/Step5DocumentsScreen';
 import { Step6ReviewDeclarationScreen } from './src/screens/Step6ReviewDeclarationScreen';
+import { Step7FeePaymentScreen } from './src/screens/Step7FeePaymentScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(6);
+  const [step, setStep] = useState<number>(7);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
+  const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   const [formData, setFormData] = useState<TourOperatorFormData>(
@@ -1121,6 +1214,20 @@ export default function App() {
     setStep(7);
   };
 
+  const handleContinueStep7 = () => {
+    const errs = validateTourOperatorStep7(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setPaymentCompleted(true);
+    alert(
+      'Payment of ' +
+        getTourOperatorFeeSummary(formData).formattedAmount +
+        ' successful! Your application has been submitted.'
+    );
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -1134,8 +1241,8 @@ export default function App() {
       handleContinueStep5();
     } else if (step === 6) {
       handleContinueStep6();
-    } else if (step < 7) {
-      setStep(step + 1);
+    } else if (step === 7) {
+      handleContinueStep7();
     }
   };
 
@@ -1149,6 +1256,7 @@ export default function App() {
     title: 'Step ' + step,
     subtitle: 'Tour operator and travel agency registration workflow.',
   };
+  const feeSummary = getTourOperatorFeeSummary(formData);
 
   const selectedTradeLabel =
     (TRADE_OPTIONS.find((item) => item.id === formData.tradeType) || {}).label || 'Travel agent';
@@ -1276,30 +1384,13 @@ export default function App() {
                 setStep={setStep}
               />
             ) : (
-              <View style={styles.formContainer}>
-                <Ux4gStatusBanner
-                  variant="infoLight"
-                  title={'Step ' + step + ' of 7 — ' + activeMeta.title}
-                  subtitle={
-                    activeMeta.subtitle +
-                    ' Selected: ' +
-                    selectedTradeLabel +
-                    ' · ' +
-                    selectedAppTypeLabel +
-                    (formData.applicationType === 'renewal' && formData.existingRegNumber.trim()
-                      ? ' (' + formData.existingRegNumber.trim() + ')'
-                      : '') +
-                    '.'
-                  }
-                  titleNumberOfLines={3}
-                  subtitleNumberOfLines={5}
-                  backgroundColor={UX4GColors.blue50}
-                  borderColor={UX4GColors.blue200}
-                  marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                  paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
-                  containerStyle={{ borderRadius: 10 }}
-                />
-              </View>
+              <Step7FeePaymentScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                feeSummary={feeSummary}
+                paymentCompleted={paymentCompleted}
+              />
             )}
           </View>
         </ScrollView>
@@ -1307,7 +1398,13 @@ export default function App() {
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
           <Ux4gButton
-            text={step === 6 ? 'Continue to payment' : 'Continue'}
+            text={
+              step === 6
+                ? 'Continue to payment'
+                : step === 7
+                  ? 'Pay ' + feeSummary.formattedAmount
+                  : 'Continue'
+            }
             variant="primary"
             size="large"
             height={48}
@@ -1449,7 +1546,8 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '        ├── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details',
       '        ├── Step4ServicesCapabilityScreen.tsx  # Step 4 of 7: Activities, Scale of Operation & Staff Qualifications',
       '        ├── Step5DocumentsScreen.tsx           # Step 5 of 7: Grouped Document Uploads',
-      '        └── Step6ReviewDeclarationScreen.tsx   # Step 6 of 7: Application Preview & Declaration',
+      '        ├── Step6ReviewDeclarationScreen.tsx   # Step 6 of 7: Application Preview & Declaration',
+      '        └── Step7FeePaymentScreen.tsx          # Step 7 of 7: Fee Details & Payment',
       '```',
       '',
       '## Getting Started',
@@ -1476,6 +1574,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     'src/screens/Step4ServicesCapabilityScreen.tsx': buildStep4ScreenFile(normalizedCode),
     'src/screens/Step5DocumentsScreen.tsx': buildStep5ScreenFile(normalizedCode),
     'src/screens/Step6ReviewDeclarationScreen.tsx': buildStep6ScreenFile(normalizedCode),
+    'src/screens/Step7FeePaymentScreen.tsx': buildStep7ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }

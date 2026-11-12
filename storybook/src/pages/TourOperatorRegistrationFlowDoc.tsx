@@ -8,8 +8,8 @@ interface TourOperatorRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–6 Active)
-const SNACK_ID = 'WWIsw5f3iytda2eXa-jbM';
+// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, All 7 Steps Active)
+const SNACK_ID = '-k4pEmFbGA39m_bOmHZqA';
 
 export const TourOperatorRegistrationFlowDoc: React.FC<TourOperatorRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -89,8 +89,8 @@ const STEP_METADATA = {
     subtitle: 'Everything you have entered, read back before you commit to it.',
   },
   7: {
-    title: 'Review & submit',
-    subtitle: 'Verify all entered details, confirm declaration, and submit.',
+    title: 'Fee & payment',
+    subtitle: 'What the fee is, what it was worked out from, and how long it lasts.',
   },
 };
 
@@ -406,6 +406,30 @@ const getTourOperatorReviewItems = (fd) => {
   ];
 };
 
+const getTourOperatorFeeSummary = (fd) => {
+  const trade = fd.tradeType || 'travel_agent';
+  const refMap = {
+    travel_agent: 'Travel agency registration · TA-2026-000000',
+    tour_operator: 'Tour operator registration · TO-2026-000000',
+    tourist_transport_operator: 'Tourist transport registration · TT-2026-000000',
+  };
+  const labelMap = {
+    travel_agent: 'Registration fee — travel agent, three-year term',
+    tour_operator: 'Registration fee — tour operator, three-year term',
+    tourist_transport_operator: 'Registration fee — tourist transport operator, three-year term',
+  };
+  const amountMap = {
+    travel_agent: '₹3,000',
+    tour_operator: '₹4,500',
+    tourist_transport_operator: '₹3,000',
+  };
+  return {
+    applicationRef: refMap[trade] || refMap.travel_agent,
+    description: labelMap[trade] || labelMap.travel_agent,
+    formattedAmount: amountMap[trade] || '₹3,000',
+  };
+};
+
 const parseDateString = (str) => {
   if (!str) return undefined;
   const parts = str.split('/');
@@ -418,8 +442,9 @@ const parseDateString = (str) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(7);
   const [savedTime, setSavedTime] = useState('3:14 PM');
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
   const scrollViewRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -513,6 +538,9 @@ export default function App() {
     // Step 6: Review & declaration
     declarationTruth: false,
     declarationInspection: false,
+
+    // Step 7: Fee & payment
+    feeNonRefundable: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -845,6 +873,21 @@ export default function App() {
     setStep(7);
   };
 
+  const handleContinueStep7 = () => {
+    if (!formData.feeNonRefundable) {
+      setErrors({
+        feeNonRefundable: 'Please confirm that you understand the fee is non-refundable once submitted',
+      });
+      return;
+    }
+    setPaymentCompleted(true);
+    alert(
+      'Payment of ' +
+        getTourOperatorFeeSummary(formData).formattedAmount +
+        ' successful! Your application has been submitted.'
+    );
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -858,8 +901,8 @@ export default function App() {
       handleContinueStep5();
     } else if (step === 6) {
       handleContinueStep6();
-    } else if (step < 7) {
-      setStep(step + 1);
+    } else if (step === 7) {
+      handleContinueStep7();
     }
   };
 
@@ -873,6 +916,7 @@ export default function App() {
     title: 'Step ' + step,
     subtitle: 'Tour operator and travel agency registration workflow.',
   };
+  const feeSummary = getTourOperatorFeeSummary(formData);
 
   const selectedTradeLabel =
     (TRADE_OPTIONS.find((item) => item.id === formData.tradeType) || {}).label || 'Travel agent';
@@ -2334,28 +2378,80 @@ export default function App() {
               </View>
             ) : (
               <View style={styles.formContainer}>
-                <Ux4gStatusBanner
-                  variant="infoLight"
-                  title={'Step ' + step + ' of 7 — ' + activeMeta.title}
-                  subtitle={
-                    activeMeta.subtitle +
-                    ' Selected: ' +
-                    selectedTradeLabel +
-                    ' · ' +
-                    selectedAppTypeLabel +
-                    (formData.applicationType === 'renewal' && formData.existingRegNumber.trim()
-                      ? ' (' + formData.existingRegNumber.trim() + ')'
-                      : '') +
-                    '.'
-                  }
-                  titleNumberOfLines={3}
-                  subtitleNumberOfLines={5}
-                  backgroundColor={UX4GColors.blue50}
-                  borderColor={UX4GColors.blue200}
-                  marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
-                  paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
-                  containerStyle={{ borderRadius: 10 }}
-                />
+                <Text style={styles.sectionHeading}>Fee Details</Text>
+
+                {paymentCompleted ? (
+                  <Ux4gStatusBanner
+                    variant="successLight"
+                    title={'Payment of ' + feeSummary.formattedAmount + ' received'}
+                    subtitle={
+                      feeSummary.applicationRef +
+                      ' has been submitted successfully. A confirmation receipt has been sent to your registered email.'
+                    }
+                    titleNumberOfLines={2}
+                    subtitleNumberOfLines={4}
+                    backgroundColor={UX4GColors.green50}
+                    borderColor={UX4GColors.green200}
+                    marginStyle={{ marginHorizontal: 0, marginTop: 0, marginBottom: 14 }}
+                    paddingStyle={{ paddingVertical: 14, paddingHorizontal: 14 }}
+                    containerStyle={{ borderRadius: 10 }}
+                    titleStyle={{
+                      fontSize: 14,
+                      fontWeight: '700',
+                      color: UX4GColors.green700,
+                    }}
+                    subtitleStyle={{
+                      fontSize: 12.5,
+                      color: UX4GColors.green700,
+                      marginTop: 4,
+                    }}
+                  />
+                ) : null}
+
+                <Ux4gCard
+                  cornerRadius={12}
+                  backgroundColor={UX4GColors.white}
+                  borderColor={UX4GColors.neutral200}
+                  borderWidth={1}
+                  elevation={0}
+                  style={{ padding: 16, marginBottom: 16 }}
+                >
+                  <Text style={styles.feeAppNumberHeading}>
+                    {feeSummary.applicationRef}
+                  </Text>
+
+                  <View style={styles.feeRow}>
+                    <View style={{ flex: 1, paddingRight: 16 }}>
+                      <Text style={styles.feeLineDescription}>
+                        {feeSummary.description}
+                      </Text>
+                    </View>
+                    <Text style={styles.feeLineAmount}>{feeSummary.formattedAmount}</Text>
+                  </View>
+
+                  <View style={styles.feeCardDivider} />
+
+                  <View style={styles.feeTotalRow}>
+                    <Text style={styles.feeTotalLabel}>Total payable</Text>
+                    <Text style={styles.feeTotalAmount}>{feeSummary.formattedAmount}</Text>
+                  </View>
+                </Ux4gCard>
+
+                <View style={{ marginBottom: 4 }}>
+                  <Ux4gCheckbox
+                    value={formData.feeNonRefundable}
+                    onChanged={(val) => updateField('feeNonRefundable', !!val)}
+                    label="I understand the fee is non-refundable once the application is submitted"
+                    isRequired={true}
+                    hasError={!!errors.feeNonRefundable}
+                    size="medium"
+                    activeColor={UX4GColors.primary}
+                    labelStyle={{ fontWeight: '600', color: UX4GColors.neutral800 }}
+                  />
+                  {errors.feeNonRefundable ? (
+                    <Text style={styles.inlineErrorText}>{errors.feeNonRefundable}</Text>
+                  ) : null}
+                </View>
               </View>
             )}
           </View>
@@ -2364,7 +2460,13 @@ export default function App() {
         {/* Pinned Bottom Action Bar */}
         <View style={styles.bottomActionBar}>
           <Ux4gButton
-            text={step === 6 ? 'Continue to payment' : 'Continue'}
+            text={
+              step === 6
+                ? 'Continue to payment'
+                : step === 7
+                  ? 'Pay ' + feeSummary.formattedAmount
+                  : 'Continue'
+            }
             variant="primary"
             size="large"
             height={48}
@@ -2720,6 +2822,48 @@ const styles = StyleSheet.create({
     color: UX4GColors.neutral600,
     marginBottom: 10,
   },
+  feeAppNumberHeading: {
+    fontSize: 15,
+    fontWeight: '700',
+    lineHeight: 22,
+    color: UX4GColors.neutral900,
+    marginBottom: 14,
+  },
+  feeRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  feeLineDescription: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: UX4GColors.neutral700,
+  },
+  feeLineAmount: {
+    fontSize: 14.5,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  feeCardDivider: {
+    height: 1,
+    backgroundColor: UX4GColors.neutral200,
+    marginVertical: 14,
+  },
+  feeTotalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  feeTotalLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  feeTotalAmount: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
@@ -2808,7 +2952,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 7 Steps (Steps 1–6 Active)
+                Service Pattern • 7 Steps (All 7 Steps Active)
               </span>
             </div>
             <p
