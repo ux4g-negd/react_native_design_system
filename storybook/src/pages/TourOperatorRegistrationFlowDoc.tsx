@@ -8,8 +8,8 @@ interface TourOperatorRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–4 Active)
-const SNACK_ID = 'dQLZj3yVa0YZUoCpsMxFf';
+// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–5 Active)
+const SNACK_ID = 'v7wF5F8SmQ_NcluvS3amE';
 
 export const TourOperatorRegistrationFlowDoc: React.FC<TourOperatorRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -45,6 +45,8 @@ import {
   Ux4gDatePicker,
   Ux4gStatusBanner,
   Ux4gCompactStepper,
+  Ux4gCard,
+  Ux4gFileUpload,
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
@@ -79,8 +81,8 @@ const STEP_METADATA = {
     subtitle: 'What the agency does, the scale it works at, and the experience behind it.',
   },
   5: {
-    title: 'Operations & fleet',
-    subtitle: 'Services offered, vehicle fleet details, and statutory clearances.',
+    title: 'Documents',
+    subtitle: 'What you attach, grouped by what each one proves.',
   },
   6: {
     title: 'Documents',
@@ -248,6 +250,81 @@ const PlusIcon = ({ size = 16, color = UX4GColors.primary }) => (
   </Svg>
 );
 
+const CheckSmallIcon = ({ size = 11, color = UX4GColors.white }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M5 12.5L9.5 17L19 7.5"
+      stroke={color}
+      strokeWidth="2.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const ChevronUpIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M18 15L12 9L6 15"
+      stroke={color}
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M6 9L12 15L18 9"
+      stroke={color}
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const DocumentUploadSlot = ({
+  title,
+  required,
+  ruleText,
+  files,
+  onFilesChanged,
+  maxFiles = 1,
+  maxFileSize = 5 * 1024 * 1024,
+  allowedExtensions = ['pdf', 'jpg', 'png'],
+  isLast = false,
+}) => {
+  const hasFile = files && files.length > 0;
+  return (
+    <View style={[styles.docSlotWrapper, isLast && { marginBottom: 0 }]}>
+      <View style={styles.docSlotHeaderRow}>
+        <View style={[styles.statusCircle, hasFile ? styles.statusCircleDone : styles.statusCircleEmpty]}>
+          {hasFile ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+        </View>
+        <Text style={styles.docSlotTitle}>
+          {title}
+          {required ? <Text style={styles.requiredStar}>*</Text> : null}
+        </Text>
+      </View>
+      <Text style={styles.docSlotRuleText}>{ruleText}</Text>
+      <Ux4gFileUpload
+        maxFiles={maxFiles}
+        maxFileSize={maxFileSize}
+        initialFiles={files}
+        onFilesChanged={onFilesChanged}
+        allowedExtensions={allowedExtensions}
+        borderStyle="dashed"
+        buttonBorderRadius={8}
+        buttonColor={UX4GColors.primary}
+        buttonBorderColor={UX4GColors.purple700}
+      />
+    </View>
+  );
+};
+
 const parseDateString = (str) => {
   if (!str) return undefined;
   const parts = str.split('/');
@@ -260,7 +337,7 @@ const parseDateString = (str) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(5);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -322,6 +399,35 @@ export default function App() {
       { name: 'Imran Qureshi', role: 'Tour coordinator', qualification: 'BA Tourism Studies', yearsInTrade: '5' },
       { name: '', role: '', qualification: '', yearsInTrade: '' },
     ],
+
+    // Step 5: Documents
+    docSectionsExpanded: {
+      person: true,
+      premises: false,
+      business: false,
+    },
+    docFiles: {
+      person_photo: [],
+      person_pan: [],
+      person_qualification: [],
+      person_experience: [],
+      premises_ownership: [
+        {
+          id: 'doc-premises-1',
+          name: 'Office_Lease_Agreement.pdf',
+          fileSize: 1245000,
+          status: 'success',
+          progress: 1,
+        },
+      ],
+      premises_layout: [],
+      business_reg: [],
+      business_pan: [],
+      business_gst: [],
+      business_bank_report: [],
+      business_itr: [],
+      business_other: [],
+    },
   });
 
   const [errors, setErrors] = useState({});
@@ -590,6 +696,55 @@ export default function App() {
     setStep(5);
   };
 
+  const toggleDocSection = (sectionKey) => {
+    setFormData((prev) => ({
+      ...prev,
+      docSectionsExpanded: {
+        ...prev.docSectionsExpanded,
+        [sectionKey]: !prev.docSectionsExpanded[sectionKey],
+      },
+    }));
+  };
+
+  const setDocSlotFiles = (slotKey, files) => {
+    setFormData((prev) => ({
+      ...prev,
+      docFiles: {
+        ...prev.docFiles,
+        [slotKey]: files,
+      },
+    }));
+    if (errors.documents) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.documents;
+        return next;
+      });
+    }
+  };
+
+  const handleContinueStep5 = () => {
+    const df = formData.docFiles || {};
+    const requiredKeys = [
+      'person_photo',
+      'person_pan',
+      'person_qualification',
+      'premises_ownership',
+      'business_reg',
+      'business_pan',
+      'business_bank_report',
+      'business_itr',
+    ];
+    const missing = requiredKeys.some((k) => !df[k] || df[k].length === 0);
+    if (missing) {
+      setErrors({
+        documents: 'Please upload all required (*) documents before continuing.',
+      });
+      return;
+    }
+    setStep(6);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -599,6 +754,8 @@ export default function App() {
       handleContinueStep3();
     } else if (step === 4) {
       handleContinueStep4();
+    } else if (step === 5) {
+      handleContinueStep5();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -1643,6 +1800,355 @@ export default function App() {
                   <Text style={styles.addStaffButtonText}>Add another staff member</Text>
                 </TouchableOpacity>
               </View>
+            ) : step === 5 ? (
+              <View style={styles.formContainer}>
+                {/* Info Banner using official UX4G Component with UX4GColors cyan palette */}
+                <Ux4gStatusBanner
+                  variant="infoLight"
+                  title="PDF, JPG or PNG · up to 5 MB each · no password-protected files"
+                  titleNumberOfLines={2}
+                  titleStyle={{ color: UX4GColors.cyan800, fontWeight: '500', fontSize: 13.5 }}
+                  leadingIcon={
+                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                      <Circle cx="12" cy="12" r="10" fill={UX4GColors.cyan600} />
+                      <Path d="M12 11V16.5" stroke={UX4GColors.white} strokeWidth="2" strokeLinecap="round" />
+                      <Circle cx="12" cy="7.8" r="1.15" fill={UX4GColors.white} />
+                    </Svg>
+                  }
+                  backgroundColor={UX4GColors.cyan50}
+                  borderColor={UX4GColors.cyan200}
+                  marginStyle={{ marginHorizontal: 0, marginTop: 0, marginBottom: 14 }}
+                />
+
+                {errors.documents ? (
+                  <Text style={[styles.inlineErrorText, { marginBottom: 12 }]}>
+                    {errors.documents}
+                  </Text>
+                ) : null}
+
+                {/* Accordion 1: What proves the person */}
+                <Ux4gCard
+                  cornerRadius={10}
+                  borderWidth={1}
+                  borderColor={UX4GColors.neutral200}
+                  backgroundColor={UX4GColors.white}
+                  elevation={0}
+                  style={{ padding: 14, marginBottom: 14 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => toggleDocSection('person')}
+                    style={styles.docSectionCardHeader}
+                  >
+                    <View style={{ flex: 1, paddingRight: 8 }}>
+                      <Text style={styles.docSectionCardTitle}>What proves the person</Text>
+                      {!formData.docSectionsExpanded.person && (
+                        <>
+                          <Text style={styles.docSectionSummaryText}>
+                            {'4 documents · ' +
+                              ([
+                                formData.docFiles.person_photo,
+                                formData.docFiles.person_pan,
+                                formData.docFiles.person_qualification,
+                                formData.docFiles.person_experience,
+                              ].filter((arr) => arr.length > 0).length > 0
+                                ? [
+                                    formData.docFiles.person_photo,
+                                    formData.docFiles.person_pan,
+                                    formData.docFiles.person_qualification,
+                                    formData.docFiles.person_experience,
+                                  ].filter((arr) => arr.length > 0).length + ' uploaded'
+                                : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {[
+                              formData.docFiles.person_photo,
+                              formData.docFiles.person_pan,
+                              formData.docFiles.person_qualification,
+                              formData.docFiles.person_experience,
+                            ].map((arr, idx) => (
+                              <View
+                                key={idx}
+                                style={[
+                                  styles.statusCircle,
+                                  arr.length > 0 ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {arr.length > 0 ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+                              </View>
+                            ))}
+                          </View>
+                        </>
+                      )}
+                    </View>
+                    {formData.docSectionsExpanded.person ? (
+                      <ChevronUpIcon size={16} color={UX4GColors.neutral900} />
+                    ) : (
+                      <ChevronDownIcon size={16} color={UX4GColors.neutral900} />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.person && (
+                    <View style={{ marginTop: 14 }}>
+                      <DocumentUploadSlot
+                        title="Photograph of the applicant"
+                        required
+                        ruleText="JPG or PNG · 1 file"
+                        files={formData.docFiles.person_photo}
+                        onFilesChanged={(f) => setDocSlotFiles('person_photo', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="PAN of the person"
+                        required
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.person_pan}
+                        onFilesChanged={(f) => setDocSlotFiles('person_pan', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Qualification certificate"
+                        required
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.person_qualification}
+                        onFilesChanged={(f) => setDocSlotFiles('person_qualification', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Experience or training certificate"
+                        ruleText="PDF, JPG or PNG · up to 3 files"
+                        files={formData.docFiles.person_experience}
+                        onFilesChanged={(f) => setDocSlotFiles('person_experience', f)}
+                        maxFiles={3}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                        isLast
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+
+                {/* Accordion 2: What proves the premises */}
+                <Ux4gCard
+                  cornerRadius={10}
+                  borderWidth={1}
+                  borderColor={UX4GColors.neutral200}
+                  backgroundColor={UX4GColors.white}
+                  elevation={0}
+                  style={{ padding: 14, marginBottom: 14 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => toggleDocSection('premises')}
+                    style={styles.docSectionCardHeader}
+                  >
+                    <View style={{ flex: 1, paddingRight: 8 }}>
+                      <Text style={styles.docSectionCardTitle}>What proves the premises</Text>
+                      {!formData.docSectionsExpanded.premises && (
+                        <>
+                          <Text style={styles.docSectionSummaryText}>
+                            {'2 documents · ' +
+                              ([
+                                formData.docFiles.premises_ownership,
+                                formData.docFiles.premises_layout,
+                              ].filter((arr) => arr.length > 0).length > 0
+                                ? [
+                                    formData.docFiles.premises_ownership,
+                                    formData.docFiles.premises_layout,
+                                  ].filter((arr) => arr.length > 0).length + ' uploaded'
+                                : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {[
+                              formData.docFiles.premises_ownership,
+                              formData.docFiles.premises_layout,
+                            ].map((arr, idx) => (
+                              <View
+                                key={idx}
+                                style={[
+                                  styles.statusCircle,
+                                  arr.length > 0 ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {arr.length > 0 ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+                              </View>
+                            ))}
+                          </View>
+                        </>
+                      )}
+                    </View>
+                    {formData.docSectionsExpanded.premises ? (
+                      <ChevronUpIcon size={16} color={UX4GColors.neutral900} />
+                    ) : (
+                      <ChevronDownIcon size={16} color={UX4GColors.neutral900} />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.premises && (
+                    <View style={{ marginTop: 14 }}>
+                      <DocumentUploadSlot
+                        title="Proof of ownership or lease of the office"
+                        required
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.premises_ownership}
+                        onFilesChanged={(f) => setDocSlotFiles('premises_ownership', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Office photograph or layout plan"
+                        ruleText="PDF, JPG or PNG · up to 3 files"
+                        files={formData.docFiles.premises_layout}
+                        onFilesChanged={(f) => setDocSlotFiles('premises_layout', f)}
+                        maxFiles={3}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                        isLast
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+
+                {/* Accordion 3: What proves the business */}
+                <Ux4gCard
+                  cornerRadius={10}
+                  borderWidth={1}
+                  borderColor={UX4GColors.neutral200}
+                  backgroundColor={UX4GColors.white}
+                  elevation={0}
+                  style={{ padding: 14, marginBottom: 4 }}
+                >
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => toggleDocSection('business')}
+                    style={styles.docSectionCardHeader}
+                  >
+                    <View style={{ flex: 1, paddingRight: 8 }}>
+                      <Text style={styles.docSectionCardTitle}>What proves the business</Text>
+                      {!formData.docSectionsExpanded.business && (
+                        <>
+                          <Text style={styles.docSectionSummaryText}>
+                            {'6 documents · ' +
+                              ([
+                                formData.docFiles.business_reg,
+                                formData.docFiles.business_pan,
+                                formData.docFiles.business_gst,
+                                formData.docFiles.business_bank_report,
+                                formData.docFiles.business_itr,
+                                formData.docFiles.business_other,
+                              ].filter((arr) => arr.length > 0).length > 0
+                                ? [
+                                    formData.docFiles.business_reg,
+                                    formData.docFiles.business_pan,
+                                    formData.docFiles.business_gst,
+                                    formData.docFiles.business_bank_report,
+                                    formData.docFiles.business_itr,
+                                    formData.docFiles.business_other,
+                                  ].filter((arr) => arr.length > 0).length + ' uploaded'
+                                : 'none uploaded yet')}
+                          </Text>
+                          <View style={styles.docStatusDotRow}>
+                            {[
+                              formData.docFiles.business_reg,
+                              formData.docFiles.business_pan,
+                              formData.docFiles.business_gst,
+                              formData.docFiles.business_bank_report,
+                              formData.docFiles.business_itr,
+                              formData.docFiles.business_other,
+                            ].map((arr, idx) => (
+                              <View
+                                key={idx}
+                                style={[
+                                  styles.statusCircle,
+                                  arr.length > 0 ? styles.statusCircleDone : styles.statusCircleEmpty,
+                                ]}
+                              >
+                                {arr.length > 0 ? <CheckSmallIcon size={11} color={UX4GColors.white} /> : null}
+                              </View>
+                            ))}
+                          </View>
+                        </>
+                      )}
+                    </View>
+                    {formData.docSectionsExpanded.business ? (
+                      <ChevronUpIcon size={16} color={UX4GColors.neutral900} />
+                    ) : (
+                      <ChevronDownIcon size={16} color={UX4GColors.neutral900} />
+                    )}
+                  </TouchableOpacity>
+
+                  {formData.docSectionsExpanded.business && (
+                    <View style={{ marginTop: 14 }}>
+                      <DocumentUploadSlot
+                        title="Firm registration or incorporation certificate"
+                        required
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.business_reg}
+                        onFilesChanged={(f) => setDocSlotFiles('business_reg', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="PAN of the firm"
+                        required
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.business_pan}
+                        onFilesChanged={(f) => setDocSlotFiles('business_pan', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="GST registration certificate"
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.business_gst}
+                        onFilesChanged={(f) => setDocSlotFiles('business_gst', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Banker's confidential report / net worth certificate"
+                        required
+                        ruleText="PDF, JPG or PNG · 1 file"
+                        files={formData.docFiles.business_bank_report}
+                        onFilesChanged={(f) => setDocSlotFiles('business_bank_report', f)}
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Audited balance sheet / ITR of previous financial year"
+                        required
+                        ruleText="PDF, JPG or PNG · up to 2 files"
+                        files={formData.docFiles.business_itr}
+                        onFilesChanged={(f) => setDocSlotFiles('business_itr', f)}
+                        maxFiles={2}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                      />
+                      <DocumentUploadSlot
+                        title="Other supporting business document"
+                        ruleText="PDF, JPG or PNG · up to 3 files"
+                        files={formData.docFiles.business_other}
+                        onFilesChanged={(f) => setDocSlotFiles('business_other', f)}
+                        maxFiles={3}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['pdf', 'jpg', 'png']}
+                        isLast
+                      />
+                    </View>
+                  )}
+                </Ux4gCard>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1971,6 +2477,66 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: UX4GColors.primary,
   },
+  docSectionCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  docSectionCardTitle: {
+    fontSize: 14.5,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  docSectionSummaryText: {
+    fontSize: 12.5,
+    color: UX4GColors.neutral600,
+    marginTop: 4,
+  },
+  docStatusDotRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+  },
+  statusCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 1,
+  },
+  statusCircleEmpty: {
+    borderWidth: 1.5,
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
+  },
+  statusCircleDone: {
+    backgroundColor: UX4GColors.green,
+    borderWidth: 0,
+  },
+  docSlotWrapper: {
+    marginBottom: 18,
+  },
+  docSlotHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    marginBottom: 4,
+  },
+  docSlotTitle: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+    lineHeight: 20,
+  },
+  docSlotRuleText: {
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: UX4GColors.neutral600,
+    marginBottom: 10,
+  },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
@@ -2059,7 +2625,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 7 Steps (Steps 1–4 Active)
+                Service Pattern • 7 Steps (Steps 1–5 Active)
               </span>
             </div>
             <p

@@ -42,7 +42,9 @@ function extractScreenJsx(appCode: string, startMarker: string, endMarker: strin
 }
 
 function buildTypesFile(): string {
-  return `export interface RadioOption {
+  return `import { UploadedFile } from 'ux4g-react-native-components';
+
+export interface RadioOption {
   id: string;
   label: string;
 }
@@ -113,6 +115,14 @@ export interface TourOperatorFormData {
   highestQualification: string[];
   tourismTrainingExperience: string;
   staffMembers: StaffMember[];
+
+  // Step 5: Documents
+  docSectionsExpanded: {
+    person: boolean;
+    premises: boolean;
+    business: boolean;
+  };
+  docFiles: Record<string, UploadedFile[]>;
 }
 
 export type TourOperatorFormErrors = Record<string, string | undefined>;
@@ -140,7 +150,7 @@ function buildIconsFile(appCode: string): string {
   const iconSlice = sliceBetween(
     appCode,
     'const CrosshairsGpsIcon =',
-    'const parseDateString =',
+    'const DocumentUploadSlot =',
     'Icons'
   ).trim();
 
@@ -157,6 +167,18 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'export const PlusIcon = ({ size = 16, color = UX4GColors.primary }) =>',
       'export const PlusIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.primary }) =>'
+    )
+    .replace(
+      'export const CheckSmallIcon = ({ size = 11, color = UX4GColors.white }) =>',
+      'export const CheckSmallIcon: React.FC<IconProps> = ({ size = 11, color = UX4GColors.white }) =>'
+    )
+    .replace(
+      'export const ChevronUpIcon = ({ size = 16, color = UX4GColors.neutral900 }) =>',
+      'export const ChevronUpIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }) =>'
+    )
+    .replace(
+      'export const ChevronDownIcon = ({ size = 16, color = UX4GColors.neutral900 }) =>',
+      'export const ChevronDownIcon: React.FC<IconProps> = ({ size = 16, color = UX4GColors.neutral900 }) =>'
     );
 
   return `import React from 'react';
@@ -169,6 +191,41 @@ export interface IconProps {
 }
 
 ${exported}
+`;
+}
+
+function buildDocumentUploadSlotFile(appCode: string): string {
+  const slotSlice = sliceBetween(
+    appCode,
+    'const DocumentUploadSlot = ({',
+    'const parseDateString =',
+    'DocumentUploadSlot'
+  ).trim();
+
+  const typedSlot = slotSlice.replace(
+    'const DocumentUploadSlot = ({',
+    'export const DocumentUploadSlot: React.FC<DocumentUploadSlotProps> = ({'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import { Ux4gFileUpload, UX4GColors, UploadedFile } from 'ux4g-react-native-components';
+import { CheckSmallIcon } from './Icons';
+import { styles } from '../styles/commonStyles';
+
+export interface DocumentUploadSlotProps {
+  title: string;
+  required?: boolean;
+  ruleText: string;
+  files: UploadedFile[];
+  onFilesChanged: (files: UploadedFile[]) => void;
+  maxFiles?: number;
+  maxFileSize?: number;
+  allowedExtensions?: string[];
+  isLast?: boolean;
+}
+
+${typedSlot}
 `;
 }
 
@@ -214,9 +271,13 @@ function buildInitialFormDataFile(appCode: string): string {
   const objEnd = appCode.indexOf(endMarker, objStart);
   if (objEnd === -1) throw new Error('Could not find end of initial tour operator formData state');
 
-  const rawObj = dedentBlock(appCode.slice(objStart, objEnd) + '\n  }', 2);
+  const rawObj = dedentBlock(appCode.slice(objStart, objEnd) + '\n  }', 2).replace(
+    /status: 'success'/g,
+    'status: UploadStatus.success'
+  );
 
-  return `import { TourOperatorFormData } from '../types/tourOperator';
+  return `import { UploadStatus } from 'ux4g-react-native-components';
+import { TourOperatorFormData } from '../types/tourOperator';
 
 export const createInitialTourOperatorFormData = (): TourOperatorFormData => (${rawObj});
 `;
@@ -395,6 +456,28 @@ export function validateTourOperatorStep4(
   });
   return errs;
 }
+
+export function validateTourOperatorStep5(
+  formData: TourOperatorFormData
+): TourOperatorFormErrors {
+  const errs: TourOperatorFormErrors = {};
+  const df = formData.docFiles || {};
+  const requiredKeys = [
+    'person_photo',
+    'person_pan',
+    'person_qualification',
+    'premises_ownership',
+    'business_reg',
+    'business_pan',
+    'business_bank_report',
+    'business_itr',
+  ];
+  const missing = requiredKeys.some((k) => !df[k] || df[k].length === 0);
+  if (missing) {
+    errs.documents = 'Please upload all required (*) documents before continuing.';
+  }
+  return errs;
+}
 `;
 }
 
@@ -548,7 +631,7 @@ function buildStep4ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 4 ? (',
-    ') : (',
+    ') : step === 5 ? (',
     'Tour Operator Step 4'
   );
 
@@ -599,6 +682,50 @@ ${jsx}
 `;
 }
 
+function buildStep5ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 5 ? (',
+    ') : (',
+    'Tour Operator Step 5'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import Svg, { Path, Circle } from 'react-native-svg';
+import {
+  Ux4gCard,
+  Ux4gStatusBanner,
+  UX4GColors,
+  UploadedFile,
+} from 'ux4g-react-native-components';
+import {
+  CheckSmallIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from '../components/Icons';
+import { DocumentUploadSlot } from '../components/DocumentUploadSlot';
+import { TourOperatorFormData, TourOperatorFormErrors } from '../types/tourOperator';
+import { styles } from '../styles/commonStyles';
+
+export interface Step5DocumentsScreenProps {
+  formData: TourOperatorFormData;
+  errors: TourOperatorFormErrors;
+  toggleDocSection: (sectionKey: 'person' | 'premises' | 'business') => void;
+  setDocSlotFiles: (slotKey: string, files: UploadedFile[]) => void;
+}
+
+export const Step5DocumentsScreen: React.FC<Step5DocumentsScreenProps> = ({
+  formData,
+  errors,
+  toggleDocSection,
+  setDocSlotFiles,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -616,6 +743,7 @@ import {
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
+  UploadedFile,
 } from 'ux4g-react-native-components';
 import NationalEmblem from './src/assets/NationalEmblem';
 import UnionLogo from './src/assets/UnionLogo';
@@ -635,15 +763,17 @@ import {
   validateTourOperatorStep2,
   validateTourOperatorStep3,
   validateTourOperatorStep4,
+  validateTourOperatorStep5,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1RegistrationTypeScreen } from './src/screens/Step1RegistrationTypeScreen';
 import { Step2ApplicantFirmScreen } from './src/screens/Step2ApplicantFirmScreen';
 import { Step3OfficePremisesScreen } from './src/screens/Step3OfficePremisesScreen';
 import { Step4ServicesCapabilityScreen } from './src/screens/Step4ServicesCapabilityScreen';
+import { Step5DocumentsScreen } from './src/screens/Step5DocumentsScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(4);
+  const [step, setStep] = useState<number>(5);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -802,6 +932,42 @@ export default function App() {
     setStep(5);
   };
 
+  const toggleDocSection = (sectionKey: 'person' | 'premises' | 'business') => {
+    setFormData((prev) => ({
+      ...prev,
+      docSectionsExpanded: {
+        ...prev.docSectionsExpanded,
+        [sectionKey]: !prev.docSectionsExpanded[sectionKey],
+      },
+    }));
+  };
+
+  const setDocSlotFiles = (slotKey: string, files: UploadedFile[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      docFiles: {
+        ...prev.docFiles,
+        [slotKey]: files,
+      },
+    }));
+    if (errors.documents) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.documents;
+        return next;
+      });
+    }
+  };
+
+  const handleContinueStep5 = () => {
+    const errs = validateTourOperatorStep5(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(6);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -811,6 +977,8 @@ export default function App() {
       handleContinueStep3();
     } else if (step === 4) {
       handleContinueStep4();
+    } else if (step === 5) {
+      handleContinueStep5();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -937,6 +1105,13 @@ export default function App() {
                 updateStaffMember={updateStaffMember}
                 addStaffMember={addStaffMember}
                 removeStaffMember={removeStaffMember}
+              />
+            ) : step === 5 ? (
+              <Step5DocumentsScreen
+                formData={formData}
+                errors={errors}
+                toggleDocSection={toggleDocSection}
+                setDocSlotFiles={setDocSlotFiles}
               />
             ) : (
               <View style={styles.formContainer}>
@@ -1095,7 +1270,8 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '    │   ├── NationalEmblem.tsx                 # Official Government of India Emblem SVG',
       '    │   └── UnionLogo.tsx                      # Portal Union.svg brand mark SVG',
       '    ├── components/',
-      '    │   └── Icons.tsx                          # Crosshairs GPS icon SVG',
+      '    │   ├── DocumentUploadSlot.tsx           # Document upload slot with status indicator',
+      '    │   └── Icons.tsx                          # SVG icons',
       '    ├── constants/',
       '    │   ├── formOptions.ts                     # Trade types, location options & STEP_METADATA',
       '    │   └── initialFormData.ts                 # Initial TourOperatorFormData state factory',
@@ -1109,7 +1285,8 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '        ├── Step1RegistrationTypeScreen.tsx    # Step 1 of 7: Service Required & Existing Registration Details',
       '        ├── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details',
       '        ├── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details',
-      '        └── Step4ServicesCapabilityScreen.tsx  # Step 4 of 7: Activities, Scale of Operation & Staff Qualifications',
+      '        ├── Step4ServicesCapabilityScreen.tsx  # Step 4 of 7: Activities, Scale of Operation & Staff Qualifications',
+      '        └── Step5DocumentsScreen.tsx           # Step 5 of 7: Grouped Document Uploads',
       '```',
       '',
       '## Getting Started',
@@ -1123,6 +1300,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     ].join('\n'),
     'src/assets/NationalEmblem.tsx': NATIONAL_EMBLEM_SOURCE,
     'src/assets/UnionLogo.tsx': buildUnionLogoFile(normalizedCode),
+    'src/components/DocumentUploadSlot.tsx': buildDocumentUploadSlotFile(normalizedCode),
     'src/components/Icons.tsx': buildIconsFile(normalizedCode),
     'src/types/tourOperator.ts': buildTypesFile(),
     'src/constants/formOptions.ts': buildFormOptionsFile(normalizedCode),
@@ -1133,6 +1311,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     'src/screens/Step2ApplicantFirmScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'src/screens/Step3OfficePremisesScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'src/screens/Step4ServicesCapabilityScreen.tsx': buildStep4ScreenFile(normalizedCode),
+    'src/screens/Step5DocumentsScreen.tsx': buildStep5ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }
