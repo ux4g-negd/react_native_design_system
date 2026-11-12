@@ -9,7 +9,7 @@ interface TourOperatorRegistrationFlowDocProps {
 }
 
 // Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, All 7 Steps Active)
-const SNACK_ID = 'mlGK2HIShLeui3qcL5Hei';
+const SNACK_ID = 'WorqdfxgQmGql0J-giIRq';
 
 export const TourOperatorRegistrationFlowDoc: React.FC<TourOperatorRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -47,6 +47,8 @@ import {
   Ux4gCompactStepper,
   Ux4gCard,
   Ux4gFileUpload,
+  Ux4gModal,
+  Ux4gSpinner,
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
@@ -465,6 +467,7 @@ export default function App() {
   const [step, setStep] = useState(7);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [isPaymentModeView, setIsPaymentModeView] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const scrollViewRef = useRef(null);
 
@@ -579,6 +582,15 @@ export default function App() {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
     }
   }, [step]);
+
+  useEffect(() => {
+    if (!isRedirecting) return;
+    const timer = setTimeout(() => {
+      setIsRedirecting(false);
+      setPaymentCompleted(true);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [isRedirecting]);
 
   const handleSaveDraft = () => {
     try {
@@ -945,12 +957,7 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    setPaymentCompleted(true);
-    alert(
-      'Payment of ' +
-        getTourOperatorFeeSummary(formData).formattedAmount +
-        ' successful! Your application has been submitted.'
-    );
+    setIsRedirecting(true);
   };
 
   const handleStepperNext = () => {
@@ -2735,6 +2742,37 @@ export default function App() {
             style={{ width: '100%' }}
           />
         </View>
+
+        {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
+        <Ux4gModal
+          visible={step === 7 && isPaymentModeView && !paymentCompleted && isRedirecting}
+          onDismiss={() => setIsRedirecting(false)}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={44}
+              strokeWidth={4}
+              color={UX4GColors.primary}
+              gradientColors={[
+                UX4GColors.primary100,
+                UX4GColors.primary300,
+                UX4GColors.primary,
+              ]}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={12}
+          backgroundColor={UX4GColors.white}
+        />
       </SafeAreaView>
     </Ux4gThemeProvider>
   );

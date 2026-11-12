@@ -82463,6 +82463,8 @@ import Svg, { Path, Circle } from 'react-native-svg';
 import {
   Ux4gStatusBanner,
   Ux4gCompactStepper,
+  Ux4gModal,
+  Ux4gSpinner,
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
@@ -82505,6 +82507,7 @@ export default function App() {
   const [step, setStep] = useState<number>(7);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const [isPaymentModeView, setIsPaymentModeView] = useState<boolean>(true);
+  const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
   const [paymentCompleted, setPaymentCompleted] = useState<boolean>(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -82519,6 +82522,15 @@ export default function App() {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
     }
   }, [step]);
+
+  useEffect(() => {
+    if (!isRedirecting) return;
+    const timer = setTimeout(() => {
+      setIsRedirecting(false);
+      setPaymentCompleted(true);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [isRedirecting]);
 
   const handleSaveDraft = () => {
     try {
@@ -82728,12 +82740,7 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    setPaymentCompleted(true);
-    alert(
-      'Payment of ' +
-        getTourOperatorFeeSummary(formData).formattedAmount +
-        ' successful! Your application has been submitted.'
-    );
+    setIsRedirecting(true);
   };
 
   const handleStepperNext = () => {
@@ -82946,6 +82953,37 @@ export default function App() {
             style={{ width: '100%' }}
           />
         </View>
+
+        {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
+        <Ux4gModal
+          visible={step === 7 && isPaymentModeView && !paymentCompleted && isRedirecting}
+          onDismiss={() => setIsRedirecting(false)}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={44}
+              strokeWidth={4}
+              color={UX4GColors.primary}
+              gradientColors={[
+                UX4GColors.primary100,
+                UX4GColors.primary300,
+                UX4GColors.primary,
+              ]}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={12}
+          backgroundColor={UX4GColors.white}
+        />
       </SafeAreaView>
     </Ux4gThemeProvider>
   );
@@ -82956,7 +82994,7 @@ import App from './App';
 
 registerRootComponent(App);
 `,"README.md":["# Tour operator and Travel Agency Registration Flow (UX4G React Native)","","A modular government service pattern for **Tour operator and Travel Agency Registration (7-Step Workflow, Screen 1)** built using official **UX4G Design System** React Native components.","","## Project Structure","","```text","├── App.tsx                                    # Root orchestrator, header, StatusBanner, 7-step stepper","├── index.js                                   # Expo entry point","├── package.json","├── tsconfig.json","├── app.json","└── src/","    ├── assets/","    │   ├── NationalEmblem.tsx                 # Official Government of India Emblem SVG","    │   └── UnionLogo.tsx                      # Portal Union.svg brand mark SVG","    ├── components/","    │   ├── DocumentUploadSlot.tsx           # Document upload slot with status indicator","    │   └── Icons.tsx                          # SVG icons","    ├── constants/","    │   ├── formOptions.ts                     # Trade types, location options & STEP_METADATA","    │   └── initialFormData.ts                 # Initial TourOperatorFormData state factory","    ├── types/","    │   └── tourOperator.ts                    # TypeScript interfaces for form state & validation errors","    ├── utils/","    │   └── validators.ts                      # Step validation rules","    ├── styles/","    │   └── commonStyles.ts                    # Shared StyleSheet using UX4GColors tokens","    └── screens/","        ├── Step1RegistrationTypeScreen.tsx    # Step 1 of 7: Service Required & Existing Registration Details","        ├── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details","        ├── Step3OfficePremisesScreen.tsx      # Step 3 of 7: Office Location, Geo Location & Premises Details","        ├── Step4ServicesCapabilityScreen.tsx  # Step 4 of 7: Activities, Scale of Operation & Staff Qualifications","        ├── Step5DocumentsScreen.tsx           # Step 5 of 7: Grouped Document Uploads","        ├── Step6ReviewDeclarationScreen.tsx   # Step 6 of 7: Application Preview & Declaration","        └── Step7FeePaymentScreen.tsx          # Step 7 of 7: Fee Details & Payment","```","","## Getting Started","","```bash","npm install","npm run typecheck","npx expo start","```",""].join(`
-`),"src/assets/NationalEmblem.tsx":jg,"src/assets/UnionLogo.tsx":JB(o),"src/components/DocumentUploadSlot.tsx":eI(o),"src/components/Icons.tsx":QB(o),"src/types/tourOperator.ts":ZB(),"src/constants/formOptions.ts":tI(o),"src/constants/initialFormData.ts":rI(o),"src/utils/validators.ts":iI(),"src/styles/commonStyles.ts":oI(o),"src/screens/Step1RegistrationTypeScreen.tsx":nI(o),"src/screens/Step2ApplicantFirmScreen.tsx":aI(o),"src/screens/Step3OfficePremisesScreen.tsx":sI(o),"src/screens/Step4ServicesCapabilityScreen.tsx":lI(o),"src/screens/Step5DocumentsScreen.tsx":dI(o),"src/screens/Step6ReviewDeclarationScreen.tsx":cI(o),"src/screens/Step7FeePaymentScreen.tsx":uI(o),"App.tsx":pI()}}const hI="mlGK2HIShLeui3qcL5Hei",Tx=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`),"src/assets/NationalEmblem.tsx":jg,"src/assets/UnionLogo.tsx":JB(o),"src/components/DocumentUploadSlot.tsx":eI(o),"src/components/Icons.tsx":QB(o),"src/types/tourOperator.ts":ZB(),"src/constants/formOptions.ts":tI(o),"src/constants/initialFormData.ts":rI(o),"src/utils/validators.ts":iI(),"src/styles/commonStyles.ts":oI(o),"src/screens/Step1RegistrationTypeScreen.tsx":nI(o),"src/screens/Step2ApplicantFirmScreen.tsx":aI(o),"src/screens/Step3OfficePremisesScreen.tsx":sI(o),"src/screens/Step4ServicesCapabilityScreen.tsx":lI(o),"src/screens/Step5DocumentsScreen.tsx":dI(o),"src/screens/Step6ReviewDeclarationScreen.tsx":cI(o),"src/screens/Step7FeePaymentScreen.tsx":uI(o),"App.tsx":pI()}}const hI="WorqdfxgQmGql0J-giIRq",Tx=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -82979,6 +83017,8 @@ import {
   Ux4gCompactStepper,
   Ux4gCard,
   Ux4gFileUpload,
+  Ux4gModal,
+  Ux4gSpinner,
   Ux4gButton,
   Ux4gThemeProvider,
   UX4GColors,
@@ -83397,6 +83437,7 @@ export default function App() {
   const [step, setStep] = useState(7);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [isPaymentModeView, setIsPaymentModeView] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const scrollViewRef = useRef(null);
 
@@ -83511,6 +83552,15 @@ export default function App() {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
     }
   }, [step]);
+
+  useEffect(() => {
+    if (!isRedirecting) return;
+    const timer = setTimeout(() => {
+      setIsRedirecting(false);
+      setPaymentCompleted(true);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [isRedirecting]);
 
   const handleSaveDraft = () => {
     try {
@@ -83877,12 +83927,7 @@ export default function App() {
       setErrors(errs);
       return;
     }
-    setPaymentCompleted(true);
-    alert(
-      'Payment of ' +
-        getTourOperatorFeeSummary(formData).formattedAmount +
-        ' successful! Your application has been submitted.'
-    );
+    setIsRedirecting(true);
   };
 
   const handleStepperNext = () => {
@@ -85667,6 +85712,37 @@ export default function App() {
             style={{ width: '100%' }}
           />
         </View>
+
+        {/* Payment Redirecting Processing Modal using official Ux4gModal & Ux4gSpinner */}
+        <Ux4gModal
+          visible={step === 7 && isPaymentModeView && !paymentCompleted && isRedirecting}
+          onDismiss={() => setIsRedirecting(false)}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={44}
+              strokeWidth={4}
+              color={UX4GColors.primary}
+              gradientColors={[
+                UX4GColors.primary100,
+                UX4GColors.primary300,
+                UX4GColors.primary,
+              ]}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={12}
+          backgroundColor={UX4GColors.white}
+        />
       </SafeAreaView>
     </Ux4gThemeProvider>
   );
