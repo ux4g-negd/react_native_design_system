@@ -52,6 +52,14 @@ export interface StepMeta {
   subtitle: string;
 }
 
+export interface LanguageProficiency {
+  id: string;
+  name: string;
+  read: boolean;
+  write: boolean;
+  speak: boolean;
+}
+
 export interface TouristGuideFormData {
   // Step 1: About you
   photoCaptured: boolean;
@@ -73,6 +81,14 @@ export interface TouristGuideFormData {
   // Step 2: Category & eligibility
   guideCategory: string;
   highestQualification: string[];
+
+  // Step 3: Skills & service area
+  selectedLanguageAdd: string[];
+  languagesKnown: LanguageProficiency[];
+  specialisms: string[];
+  yearsGuiding: string;
+  districtFilter: string;
+  operationDistricts: string[];
 }
 
 export type TouristGuideFormErrors = Record<string, string | undefined>;
@@ -113,6 +129,10 @@ function buildIconsFile(appCode: string): string {
     .replace(
       'export const AvatarPlaceholderSvg = () =>',
       'export const AvatarPlaceholderSvg: React.FC = () =>'
+    )
+    .replace(
+      'export const TrashCanIcon = ({ size = 18, color = UX4GColors.neutral700 }) =>',
+      'export const TrashCanIcon: React.FC<IconProps> = ({ size = 18, color = UX4GColors.neutral700 }) =>'
     );
 
   return `import React from 'react';
@@ -146,7 +166,10 @@ function buildFormOptionsFile(appCode: string): string {
     .replace('export const SUB_DISTRICTS =', 'export const SUB_DISTRICTS: RadioOption[] =')
     .replace('export const CITIES_VILLAGES =', 'export const CITIES_VILLAGES: RadioOption[] =')
     .replace('export const GUIDE_CATEGORIES =', 'export const GUIDE_CATEGORIES: RadioOption[] =')
-    .replace('export const HIGHEST_QUALIFICATIONS =', 'export const HIGHEST_QUALIFICATIONS: RadioOption[] =');
+    .replace('export const HIGHEST_QUALIFICATIONS =', 'export const HIGHEST_QUALIFICATIONS: RadioOption[] =')
+    .replace('export const LANGUAGE_OPTIONS =', 'export const LANGUAGE_OPTIONS: RadioOption[] =')
+    .replace('export const SPECIALISM_OPTIONS =', 'export const SPECIALISM_OPTIONS: RadioOption[] =')
+    .replace('export const OPERATION_DISTRICTS =', 'export const OPERATION_DISTRICTS: RadioOption[] =');
 
   return `import { RadioOption, StepMeta } from '../types/touristGuide';
 
@@ -274,6 +297,25 @@ export function validateTouristGuideStep2(
   }
   return errs;
 }
+
+export function validateTouristGuideStep3(
+  formData: TouristGuideFormData
+): TouristGuideFormErrors {
+  const errs: TouristGuideFormErrors = {};
+  if (!formData.languagesKnown || formData.languagesKnown.length === 0) {
+    errs.languagesKnown = 'Please add at least one language';
+  }
+  if (!formData.specialisms || formData.specialisms.length === 0) {
+    errs.specialisms = 'Please select at least one area of specialisation';
+  }
+  if (!formData.yearsGuiding.trim()) {
+    errs.yearsGuiding = 'Years guiding is required';
+  }
+  if (!formData.operationDistricts || formData.operationDistricts.length === 0) {
+    errs.operationDistricts = 'Please select at least one district';
+  }
+  return errs;
+}
 `;
 }
 
@@ -335,7 +377,7 @@ function buildStep2ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     ') : step === 2 ? (',
-    ') : (',
+    ') : step === 3 ? (',
     'Tourist Guide Step 2'
   );
 
@@ -374,6 +416,64 @@ ${jsx}
 `;
 }
 
+function buildStep3ScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    ') : step === 3 ? (',
+    ') : (',
+    'Tourist Guide Step 3'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  Ux4gCheckbox,
+  Ux4gInputField,
+  Ux4gSelectionDropdown,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { TrashCanIcon } from '../components/Icons';
+import {
+  LANGUAGE_OPTIONS,
+  SPECIALISM_OPTIONS,
+  OPERATION_DISTRICTS,
+} from '../constants/formOptions';
+import {
+  LanguageProficiency,
+  TouristGuideFormData,
+  TouristGuideFormErrors,
+} from '../types/touristGuide';
+import { styles } from '../styles/commonStyles';
+
+export interface Step3SkillsServiceAreaScreenProps {
+  formData: TouristGuideFormData;
+  errors: TouristGuideFormErrors;
+  updateField: <K extends keyof TouristGuideFormData>(
+    key: K,
+    value: TouristGuideFormData[K]
+  ) => void;
+  handleAddLanguage: (ids: string[]) => void;
+  toggleLanguageSkill: (langId: string, skillKey: keyof Pick<LanguageProficiency, 'read' | 'write' | 'speak'>) => void;
+  removeLanguage: (langId: string) => void;
+  toggleSpecialism: (id: string) => void;
+  toggleOperationDistrict: (id: string) => void;
+}
+
+export const Step3SkillsServiceAreaScreen: React.FC<Step3SkillsServiceAreaScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+  handleAddLanguage,
+  toggleLanguageSkill,
+  removeLanguage,
+  toggleSpecialism,
+  toggleOperationDistrict,
+}) => (
+${jsx}
+);
+`;
+}
+
 function buildRootAppFile(): string {
   return `import React, { useState, useRef, useEffect } from 'react';
 import {
@@ -394,22 +494,25 @@ import {
 } from 'ux4g-react-native-components';
 import NationalEmblem from './src/assets/NationalEmblem';
 import UnionLogo from './src/assets/UnionLogo';
-import { STEP_METADATA } from './src/constants/formOptions';
+import { LANGUAGE_OPTIONS, STEP_METADATA } from './src/constants/formOptions';
 import { createInitialTouristGuideFormData } from './src/constants/initialFormData';
 import {
+  LanguageProficiency,
   TouristGuideFormData,
   TouristGuideFormErrors,
 } from './src/types/touristGuide';
 import {
   validateTouristGuideStep1,
   validateTouristGuideStep2,
+  validateTouristGuideStep3,
 } from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1AboutYouScreen } from './src/screens/Step1AboutYouScreen';
 import { Step2CategoryEligibilityScreen } from './src/screens/Step2CategoryEligibilityScreen';
+import { Step3SkillsServiceAreaScreen } from './src/screens/Step3SkillsServiceAreaScreen';
 
 export default function App() {
-  const [step, setStep] = useState<number>(2);
+  const [step, setStep] = useState<number>(3);
   const [savedTime, setSavedTime] = useState<string>('3:14 PM');
   const scrollViewRef = useRef<ScrollView | null>(null);
 
@@ -476,11 +579,103 @@ export default function App() {
     setStep(3);
   };
 
+  const handleAddLanguage = (ids: string[]) => {
+    updateField('selectedLanguageAdd', ids);
+    if (!ids || !ids.length) return;
+    const langId = ids[0];
+    const opt = LANGUAGE_OPTIONS.find((l) => l.id === langId);
+    if (!opt) return;
+    setFormData((prev) => {
+      const exists = (prev.languagesKnown || []).some((item) => item.id === langId);
+      if (exists) return prev;
+      return {
+        ...prev,
+        languagesKnown: [
+          ...(prev.languagesKnown || []),
+          { id: langId, name: opt.label, read: true, write: true, speak: true },
+        ],
+      };
+    });
+    if (errors.languagesKnown) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.languagesKnown;
+        return next;
+      });
+    }
+  };
+
+  const toggleLanguageSkill = (
+    langId: string,
+    skillKey: keyof Pick<LanguageProficiency, 'read' | 'write' | 'speak'>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      languagesKnown: (prev.languagesKnown || []).map((item) =>
+        item.id === langId ? { ...item, [skillKey]: !item[skillKey] } : item
+      ),
+    }));
+  };
+
+  const removeLanguage = (langId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      languagesKnown: (prev.languagesKnown || []).filter((item) => item.id !== langId),
+    }));
+  };
+
+  const toggleSpecialism = (id: string) => {
+    setFormData((prev) => {
+      const current = prev.specialisms || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        specialisms: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+    if (errors.specialisms) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.specialisms;
+        return next;
+      });
+    }
+  };
+
+  const toggleOperationDistrict = (id: string) => {
+    setFormData((prev) => {
+      const current = prev.operationDistricts || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        operationDistricts: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+    if (errors.operationDistricts) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.operationDistricts;
+        return next;
+      });
+    }
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = validateTouristGuideStep3(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(4);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
     } else if (step === 2) {
       handleContinueStep2();
+    } else if (step === 3) {
+      handleContinueStep3();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -583,6 +778,17 @@ export default function App() {
                 formData={formData}
                 errors={errors}
                 updateField={updateField}
+              />
+            ) : step === 3 ? (
+              <Step3SkillsServiceAreaScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+                handleAddLanguage={handleAddLanguage}
+                toggleLanguageSkill={toggleLanguageSkill}
+                removeLanguage={removeLanguage}
+                toggleSpecialism={toggleSpecialism}
+                toggleOperationDistrict={toggleOperationDistrict}
               />
             ) : (
               <View style={styles.formContainer}>
@@ -743,7 +949,8 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
       '    │   └── commonStyles.ts                    # Shared StyleSheet using UX4GColors tokens',
       '    └── screens/',
       '        ├── Step1AboutYouScreen.tsx            # Step 1 of 6: Photograph, Applicant, Contact, Location & Address',
-      '        └── Step2CategoryEligibilityScreen.tsx # Step 2 of 6: Category of Registration, Qualification & Eligibility',
+      '        ├── Step2CategoryEligibilityScreen.tsx # Step 2 of 6: Category of Registration, Qualification & Eligibility',
+      '        └── Step3SkillsServiceAreaScreen.tsx   # Step 3 of 6: Languages Known, Specialisation & Districts',
       '```',
       '',
       '## Getting Started',
@@ -765,6 +972,7 @@ export function buildTouristGuideModularProject(fullAppCodeString: string): Reco
     'src/styles/commonStyles.ts': buildCommonStylesFile(normalizedCode),
     'src/screens/Step1AboutYouScreen.tsx': buildStep1ScreenFile(normalizedCode),
     'src/screens/Step2CategoryEligibilityScreen.tsx': buildStep2ScreenFile(normalizedCode),
+    'src/screens/Step3SkillsServiceAreaScreen.tsx': buildStep3ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }

@@ -8,8 +8,8 @@ interface TouristGuideRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–2 Active)
-const SNACK_ID = 'nWFvwy60gG2Mfs7t30GXm';
+// Official Snack ID for Tourist guide Registration Flow (6-Step Workflow, Steps 1–3 Active)
+const SNACK_ID = 'fzP4FhdUk296lGl38pa5O';
 
 export const TouristGuideRegistrationFlowDoc: React.FC<TouristGuideRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -38,6 +38,7 @@ import {
 import Svg, { Path, Circle } from 'react-native-svg';
 import {
   Ux4gRadioButton,
+  Ux4gCheckbox,
   Ux4gInputField,
   Ux4gSelectionDropdown,
   Ux4gDatePicker,
@@ -69,8 +70,8 @@ const STEP_METADATA = {
     subtitle: 'What you are registering as, and what that category asks you to prove.',
   },
   3: {
-    title: 'Guiding area & experience',
-    subtitle: 'Where you plan to guide, and your track record.',
+    title: 'Skills & service area',
+    subtitle: 'The languages you guide in, what you specialise in, and where you work.',
   },
   4: {
     title: 'Documents',
@@ -145,6 +146,46 @@ const HIGHEST_QUALIFICATIONS = [
   { id: 'diploma_tourism', label: 'Diploma / Certificate in Tourism' },
 ];
 
+const LANGUAGE_OPTIONS = [
+  { id: 'hindi', label: 'Hindi' },
+  { id: 'english', label: 'English' },
+  { id: 'garhwali', label: 'Garhwali' },
+  { id: 'kumaoni', label: 'Kumaoni' },
+  { id: 'punjabi', label: 'Punjabi' },
+  { id: 'french', label: 'French' },
+  { id: 'german', label: 'German' },
+  { id: 'spanish', label: 'Spanish' },
+  { id: 'japanese', label: 'Japanese' },
+];
+
+const SPECIALISM_OPTIONS = [
+  { id: 'char_dham', label: 'Char Dham and pilgrimage' },
+  { id: 'adventure', label: 'Adventure and trekking' },
+  { id: 'cultural_heritage', label: 'Cultural heritage' },
+  { id: 'eco_tourism', label: 'Eco tourism' },
+  { id: 'wildlife', label: 'Wildlife' },
+  { id: 'astro_tourism', label: 'Astro tourism' },
+  { id: 'paragliding', label: 'Paragliding and aero sports' },
+  { id: 'tour_manager', label: 'Tour manager' },
+  { id: 'destination_guide', label: 'Destination guide' },
+];
+
+const OPERATION_DISTRICTS = [
+  { id: 'almora', label: 'Almora' },
+  { id: 'bageshwar', label: 'Bageshwar' },
+  { id: 'chamoli', label: 'Chamoli' },
+  { id: 'champawat', label: 'Champawat' },
+  { id: 'dehradun', label: 'Dehradun' },
+  { id: 'haridwar', label: 'Haridwar' },
+  { id: 'nainital', label: 'Nainital' },
+  { id: 'pauri_garhwal', label: 'Pauri Garhwal' },
+  { id: 'pithoragarh', label: 'Pithoragarh' },
+  { id: 'rudraprayag', label: 'Rudraprayag' },
+  { id: 'tehri_garhwal', label: 'Tehri Garhwal' },
+  { id: 'udham_singh_nagar', label: 'Udham Singh Nagar' },
+  { id: 'uttarkashi', label: 'Uttarkashi' },
+];
+
 const CheckSmallIcon = ({ size = 11, color = UX4GColors.white }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
@@ -163,6 +204,18 @@ const AvatarPlaceholderSvg = () => (
     <Path
       d="M22 195C22 150 52 122 90 122C128 122 158 150 158 195H22Z"
       fill={UX4GColors.neutral300}
+    />
+  </Svg>
+);
+
+const TrashCanIcon = ({ size = 18, color = UX4GColors.neutral700 }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 002 2h8a2 2 0 002-2l1-12M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"
+      stroke={color}
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );
@@ -191,7 +244,7 @@ const calculateAgeFromDob = (dobStr) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(3);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
@@ -216,6 +269,18 @@ export default function App() {
     // Step 2: Category & eligibility
     guideCategory: 'general',
     highestQualification: [],
+
+    // Step 3: Skills & service area
+    selectedLanguageAdd: [],
+    languagesKnown: [
+      { id: 'hindi', name: 'Hindi', read: true, write: true, speak: true },
+      { id: 'english', name: 'English', read: true, write: true, speak: true },
+      { id: 'garhwali', name: 'Garhwali', read: false, write: false, speak: true },
+    ],
+    specialisms: ['adventure', 'cultural_heritage', 'destination_guide'],
+    yearsGuiding: '',
+    districtFilter: '',
+    operationDistricts: ['dehradun', 'haridwar', 'tehri_garhwal'],
   });
 
   const [errors, setErrors] = useState({});
@@ -321,11 +386,112 @@ export default function App() {
     setStep(3);
   };
 
+  const handleAddLanguage = (ids) => {
+    updateField('selectedLanguageAdd', ids);
+    if (!ids || !ids.length) return;
+    const langId = ids[0];
+    const opt = LANGUAGE_OPTIONS.find((l) => l.id === langId);
+    if (!opt) return;
+    setFormData((prev) => {
+      const exists = (prev.languagesKnown || []).some((item) => item.id === langId);
+      if (exists) return prev;
+      return {
+        ...prev,
+        languagesKnown: [
+          ...(prev.languagesKnown || []),
+          { id: langId, name: opt.label, read: true, write: true, speak: true },
+        ],
+      };
+    });
+    if (errors.languagesKnown) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.languagesKnown;
+        return next;
+      });
+    }
+  };
+
+  const toggleLanguageSkill = (langId, skillKey) => {
+    setFormData((prev) => ({
+      ...prev,
+      languagesKnown: (prev.languagesKnown || []).map((item) =>
+        item.id === langId ? { ...item, [skillKey]: !item[skillKey] } : item
+      ),
+    }));
+  };
+
+  const removeLanguage = (langId) => {
+    setFormData((prev) => ({
+      ...prev,
+      languagesKnown: (prev.languagesKnown || []).filter((item) => item.id !== langId),
+    }));
+  };
+
+  const toggleSpecialism = (id) => {
+    setFormData((prev) => {
+      const current = prev.specialisms || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        specialisms: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+    if (errors.specialisms) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.specialisms;
+        return next;
+      });
+    }
+  };
+
+  const toggleOperationDistrict = (id) => {
+    setFormData((prev) => {
+      const current = prev.operationDistricts || [];
+      const exists = current.includes(id);
+      return {
+        ...prev,
+        operationDistricts: exists ? current.filter((x) => x !== id) : [...current, id],
+      };
+    });
+    if (errors.operationDistricts) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.operationDistricts;
+        return next;
+      });
+    }
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = {};
+    if (!formData.languagesKnown || formData.languagesKnown.length === 0) {
+      errs.languagesKnown = 'Please add at least one language';
+    }
+    if (!formData.specialisms || formData.specialisms.length === 0) {
+      errs.specialisms = 'Please select at least one area of specialisation';
+    }
+    if (!formData.yearsGuiding.trim()) {
+      errs.yearsGuiding = 'Years guiding is required';
+    }
+    if (!formData.operationDistricts || formData.operationDistricts.length === 0) {
+      errs.operationDistricts = 'Please select at least one district';
+    }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(4);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
     } else if (step === 2) {
       handleContinueStep2();
+    } else if (step === 3) {
+      handleContinueStep3();
     } else if (step < 6) {
       setStep(step + 1);
     }
@@ -830,6 +996,185 @@ export default function App() {
                   />
                 </View>
               </View>
+            ) : step === 3 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Languages Known */}
+                <Text style={styles.sectionHeading}>Languages Known</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Add a language"
+                    required
+                    searchEnabled={true}
+                    size="l"
+                    options={LANGUAGE_OPTIONS}
+                    selectedOptionIds={formData.selectedLanguageAdd}
+                    onSelectionChange={handleAddLanguage}
+                    placeholder="Search languages"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.languagesKnown ? 'error' : 'defaultStatus'}
+                    description={errors.languagesKnown}
+                  />
+                </View>
+
+                <View style={styles.langTableCard}>
+                  <View style={styles.langTableHeader}>
+                    <Text style={[styles.langTableHeaderText, styles.langNameCell]}>
+                      Language
+                    </Text>
+                    <Text style={[styles.langTableHeaderText, styles.langSkillCell]}>
+                      Read
+                    </Text>
+                    <Text style={[styles.langTableHeaderText, styles.langSkillCell]}>
+                      Write
+                    </Text>
+                    <Text style={[styles.langTableHeaderText, styles.langSkillCell]}>
+                      Speak
+                    </Text>
+                    <View style={styles.langTrashCell} />
+                  </View>
+
+                  {(formData.languagesKnown || []).map((lang, idx, arr) => (
+                    <View
+                      key={lang.id}
+                      style={[
+                        styles.langTableRow,
+                        idx === arr.length - 1 && { borderBottomWidth: 0 },
+                      ]}
+                    >
+                      <Text style={[styles.langNameText, styles.langNameCell]}>
+                        {lang.name}
+                      </Text>
+                      <View style={styles.langSkillCell}>
+                        <Ux4gCheckbox
+                          value={lang.read}
+                          onChanged={() => toggleLanguageSkill(lang.id, 'read')}
+                          size="medium"
+                          activeColor={UX4GColors.primary}
+                          style={{ paddingVertical: 0, paddingHorizontal: 0 }}
+                        />
+                      </View>
+                      <View style={styles.langSkillCell}>
+                        <Ux4gCheckbox
+                          value={lang.write}
+                          onChanged={() => toggleLanguageSkill(lang.id, 'write')}
+                          size="medium"
+                          activeColor={UX4GColors.primary}
+                          style={{ paddingVertical: 0, paddingHorizontal: 0 }}
+                        />
+                      </View>
+                      <View style={styles.langSkillCell}>
+                        <Ux4gCheckbox
+                          value={lang.speak}
+                          onChanged={() => toggleLanguageSkill(lang.id, 'speak')}
+                          size="medium"
+                          activeColor={UX4GColors.primary}
+                          style={{ paddingVertical: 0, paddingHorizontal: 0 }}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        style={styles.langTrashCell}
+                        onPress={() => removeLanguage(lang.id)}
+                        activeOpacity={0.7}
+                        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                      >
+                        <TrashCanIcon size={18} color={UX4GColors.neutral700} />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </View>
+
+                {/* 2. Area of Specialisation */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>
+                  Area of Specialisation
+                </Text>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Tick every specialism you guide in. At least one.
+                    <Text style={styles.requiredStar}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    {SPECIALISM_OPTIONS.map((option) => (
+                      <Ux4gCheckbox
+                        key={option.id}
+                        value={(formData.specialisms || []).includes(option.id)}
+                        onChanged={() => toggleSpecialism(option.id)}
+                        label={option.label}
+                        size="medium"
+                        activeColor={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                  {errors.specialisms ? (
+                    <Text style={styles.inlineErrorText}>{errors.specialisms}</Text>
+                  ) : null}
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Years guiding"
+                    required
+                    type="number"
+                    size="large"
+                    value={formData.yearsGuiding}
+                    onValueChange={(v) => updateField('yearsGuiding', v)}
+                    placeholder="Whole years"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.yearsGuiding ? 'error' : 'defaultStatus'}
+                    caption={errors.yearsGuiding}
+                  />
+                </View>
+
+                {/* 3. Area of Operation */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>
+                  Area of Operation
+                </Text>
+
+                <View style={styles.districtBoxCard}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Districts you will work in<Text style={styles.requiredStar}>*</Text>
+                  </Text>
+
+                  <View style={{ marginBottom: 10 }}>
+                    <Ux4gInputField
+                      size="large"
+                      value={formData.districtFilter}
+                      onValueChange={(v) => updateField('districtFilter', v)}
+                      placeholder="Type to filter the 13 districts"
+                      borderColor={UX4GColors.neutral300}
+                    />
+                  </View>
+
+                  <View style={styles.radioStack}>
+                    {OPERATION_DISTRICTS.filter((d) =>
+                      !formData.districtFilter.trim()
+                        ? true
+                        : d.label
+                            .toLowerCase()
+                            .includes(formData.districtFilter.trim().toLowerCase())
+                    ).map((option) => (
+                      <Ux4gCheckbox
+                        key={option.id}
+                        value={(formData.operationDistricts || []).includes(option.id)}
+                        onChanged={() => toggleOperationDistrict(option.id)}
+                        label={option.label}
+                        size="medium"
+                        activeColor={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+
+                  {errors.operationDistricts ? (
+                    <Text style={styles.inlineErrorText}>{errors.operationDistricts}</Text>
+                  ) : null}
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -1077,6 +1422,64 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontWeight: '500',
   },
+  langTableCard: {
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    borderRadius: 10,
+    backgroundColor: UX4GColors.white,
+    overflow: 'hidden',
+    marginBottom: 18,
+  },
+  langTableHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: UX4GColors.neutral100,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: UX4GColors.neutral200,
+  },
+  langTableHeaderText: {
+    fontSize: 12.5,
+    fontWeight: '700',
+    color: UX4GColors.neutral800,
+  },
+  langTableRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: UX4GColors.neutral200,
+  },
+  langNameCell: {
+    flex: 1.4,
+    paddingRight: 6,
+  },
+  langNameText: {
+    fontSize: 13.5,
+    color: UX4GColors.neutral800,
+    fontWeight: '500',
+  },
+  langSkillCell: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  langTrashCell: {
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  districtBoxCard: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 4,
+  },
   bottomActionBar: {
     backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
@@ -1165,7 +1568,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 6 Steps (Steps 1–2 Active)
+                Service Pattern • 6 Steps (Steps 1–3 Active)
               </span>
             </div>
             <p
