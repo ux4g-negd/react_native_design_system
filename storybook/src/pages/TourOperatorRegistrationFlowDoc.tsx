@@ -8,8 +8,8 @@ interface TourOperatorRegistrationFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Step 1 Active)
-const SNACK_ID = 'f07APXcJFrXzNtmP0tdnN';
+// Official Snack ID for Tour operator and Travel Agency Registration Flow (7-Step Workflow, Steps 1–2 Active)
+const SNACK_ID = 'E3jcGw6xKpLirKyNzg5Md';
 
 export const TourOperatorRegistrationFlowDoc: React.FC<TourOperatorRegistrationFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -39,6 +39,9 @@ import Svg, { Path, Circle } from 'react-native-svg';
 import {
   Ux4gRadioButton,
   Ux4gInputField,
+  Ux4gPanInputField,
+  Ux4gSelectionDropdown,
+  Ux4gDatePicker,
   Ux4gStatusBanner,
   Ux4gButton,
   Ux4gThemeProvider,
@@ -208,8 +211,8 @@ const STEP_METADATA = {
     subtitle: 'What you are registering as, and whether this is a first registration or a renewal.',
   },
   2: {
-    title: 'Applicant & entity',
-    subtitle: 'Who is applying, in what legal form, and who the department will deal with.',
+    title: 'Applicant & firm',
+    subtitle: 'Who is applying, how to reach them, and the business being registered.',
   },
   3: {
     title: 'Office & premises',
@@ -244,15 +247,77 @@ const APPLICATION_TYPE_OPTIONS = [
   { id: 'renewal', label: 'Renewal of an existing registration' },
 ];
 
+const RELATION_TO_FIRM_OPTIONS = [
+  { id: 'proprietor', label: 'Proprietor' },
+  { id: 'partner', label: 'Partner' },
+  { id: 'director', label: 'Director' },
+  { id: 'authorised_signatory', label: 'Authorised signatory' },
+];
+
+const LEGAL_ENTITY_TYPES = [
+  { id: 'individual', label: 'Individual / Sole Proprietor' },
+  { id: 'partnership', label: 'Partnership Firm' },
+  { id: 'llp', label: 'Limited Liability Partnership (LLP)' },
+  { id: 'pvt_ltd', label: 'Private Limited Company' },
+  { id: 'public_ltd', label: 'Public Limited Company' },
+  { id: 'society_trust', label: 'Trust / Society' },
+];
+
+const BANK_OPTIONS = [
+  { id: 'sbi', label: 'State Bank of India' },
+  { id: 'hdfc', label: 'HDFC Bank' },
+  { id: 'icici', label: 'ICICI Bank' },
+  { id: 'axis', label: 'Axis Bank' },
+  { id: 'kotak', label: 'Kotak Mahindra Bank' },
+  { id: 'pnb', label: 'Punjab National Bank' },
+  { id: 'bob', label: 'Bank of Baroda' },
+  { id: 'canara', label: 'Canara Bank' },
+  { id: 'union', label: 'Union Bank of India' },
+  { id: 'indusind', label: 'IndusInd Bank' },
+  { id: 'yes', label: 'Yes Bank' },
+  { id: 'idfc', label: 'IDFC First Bank' },
+];
+
+const parseDateString = (str) => {
+  if (!str) return undefined;
+  const parts = str.split('/');
+  if (parts.length !== 3) return undefined;
+  const d = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10) - 1;
+  const y = parseInt(parts[2], 10);
+  if (isNaN(d) || isNaN(m) || isNaN(y)) return undefined;
+  return new Date(y, m, d);
+};
+
 export default function App() {
   const [step, setStep] = useState(1);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const scrollViewRef = useRef(null);
 
   const [formData, setFormData] = useState({
+    // Step 1: Registration type
     tradeType: 'travel_agent',
     applicationType: 'renewal',
     existingRegNumber: '',
+
+    // Step 2: Applicant & firm
+    applicantFullName: '',
+    fathersName: '',
+    relationToFirm: '',
+    mobileNumber: '',
+    emailAddress: '',
+    landline: '',
+    tradingName: '',
+    legalEntityName: '',
+    brandName: '',
+    legalEntityType: [],
+    firmRegistrationNumber: '',
+    firmPan: '',
+    gstNumber: '',
+    firmEstablishedDate: '',
+    website: '',
+    bankName: [],
+    bankBranch: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -308,9 +373,60 @@ export default function App() {
     setStep(2);
   };
 
+  const handleContinueStep2 = () => {
+    const errs = {};
+    if (!formData.applicantFullName.trim()) {
+      errs.applicantFullName = 'Full name of the applicant is required';
+    }
+    if (!formData.fathersName.trim()) {
+      errs.fathersName = "Father's name is required";
+    }
+    if (!formData.relationToFirm) {
+      errs.relationToFirm = 'Please select your relation to the firm';
+    }
+    if (!/^[0-9]{10}$/.test(formData.mobileNumber.trim())) {
+      errs.mobileNumber = 'Enter a valid 10-digit mobile number';
+    }
+    if (!/^[^@ ]+@[^@ ]+[.][^@ ]+$/.test(formData.emailAddress.trim())) {
+      errs.emailAddress = 'Enter a valid email address';
+    }
+    if (!formData.tradingName.trim()) {
+      errs.tradingName = 'Trading name of the agency is required';
+    }
+    if (!formData.legalEntityName.trim()) {
+      errs.legalEntityName = 'Legal entity name as per PAN is required';
+    }
+    if (!formData.legalEntityType.length) {
+      errs.legalEntityType = 'Please select the type of legal entity';
+    }
+    if (!formData.firmRegistrationNumber.trim()) {
+      errs.firmRegistrationNumber = 'Firm registration or incorporation number is required';
+    }
+    if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/i.test(formData.firmPan.trim())) {
+      errs.firmPan = 'Enter a valid 10-character PAN (e.g. ABCDE1234F)';
+    }
+    if (!formData.firmEstablishedDate.trim()) {
+      errs.firmEstablishedDate = 'Date the firm was established is required';
+    }
+    if (!formData.bankName.length) {
+      errs.bankName = 'Please select your bank';
+    }
+    if (!formData.bankBranch.trim()) {
+      errs.bankBranch = 'Branch name or IFSC is required';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(3);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
+    } else if (step === 2) {
+      handleContinueStep2();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -478,6 +594,276 @@ export default function App() {
                   </View>
                 )}
               </View>
+            ) : step === 2 ? (
+              <View style={styles.formContainer}>
+                {/* 1. Applicant Details */}
+                <Text style={styles.sectionHeading}>Applicant Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Full name of the applicant"
+                    required
+                    size="large"
+                    value={formData.applicantFullName}
+                    onValueChange={(v) => updateField('applicantFullName', v)}
+                    placeholder="As it appears on the PAN"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.applicantFullName ? 'error' : 'defaultStatus'}
+                    caption={errors.applicantFullName}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Father's name"
+                    required
+                    size="large"
+                    value={formData.fathersName}
+                    onValueChange={(v) => updateField('fathersName', v)}
+                    placeholder="Full name"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.fathersName ? 'error' : 'defaultStatus'}
+                    caption={errors.fathersName}
+                  />
+                </View>
+
+                <View style={styles.groupBlock}>
+                  <Text style={styles.fieldGroupLabel}>
+                    Your relation to the firm<Text style={styles.requiredStar}>*</Text>
+                  </Text>
+                  <View style={styles.radioStack}>
+                    {RELATION_TO_FIRM_OPTIONS.map((option) => (
+                      <Ux4gRadioButton
+                        key={option.id}
+                        value={option.id}
+                        groupValue={formData.relationToFirm}
+                        onChanged={(val) => updateField('relationToFirm', val)}
+                        label={option.label}
+                        size="medium"
+                        color={UX4GColors.primary}
+                        labelStyle={styles.radioOptionLabel}
+                        style={styles.radioRowItem}
+                      />
+                    ))}
+                  </View>
+                  {errors.relationToFirm && (
+                    <Text style={styles.inlineErrorText}>{errors.relationToFirm}</Text>
+                  )}
+                </View>
+
+                {/* 2. Contact Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 4 }]}>Contact Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Mobile number"
+                    required
+                    size="large"
+                    prefixText="+91"
+                    value={formData.mobileNumber}
+                    onValueChange={(v) => updateField('mobileNumber', v)}
+                    placeholder="10 digits"
+                    type="number"
+                    maxLength={10}
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.mobileNumber ? 'error' : 'defaultStatus'}
+                    caption={errors.mobileNumber}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Email address"
+                    required
+                    size="large"
+                    type="email"
+                    value={formData.emailAddress}
+                    onValueChange={(v) => updateField('emailAddress', v)}
+                    placeholder="name@example.com"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.emailAddress ? 'error' : 'defaultStatus'}
+                    caption={errors.emailAddress}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Landline"
+                    size="large"
+                    type="number"
+                    value={formData.landline}
+                    onValueChange={(v) => updateField('landline', v)}
+                    placeholder="STD code and number"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                  />
+                </View>
+
+                {/* 3. Firm Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>Firm Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Trading name of the agency"
+                    required
+                    size="large"
+                    value={formData.tradingName}
+                    onValueChange={(v) => updateField('tradingName', v)}
+                    placeholder="The name you trade under"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.tradingName ? 'error' : 'defaultStatus'}
+                    caption={errors.tradingName}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Legal entity name, as per PAN"
+                    required
+                    size="large"
+                    value={formData.legalEntityName}
+                    onValueChange={(v) => updateField('legalEntityName', v)}
+                    placeholder="As printed on the firm's PAN"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.legalEntityName ? 'error' : 'defaultStatus'}
+                    caption={errors.legalEntityName}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Brand name"
+                    size="large"
+                    value={formData.brandName}
+                    onValueChange={(v) => updateField('brandName', v)}
+                    placeholder="If you market under a different name"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Type of legal entity"
+                    required
+                    size="l"
+                    options={LEGAL_ENTITY_TYPES}
+                    selectedOptionIds={formData.legalEntityType}
+                    onSelectionChange={(ids) => updateField('legalEntityType', ids)}
+                    placeholder="Select the entity type"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.legalEntityType ? 'error' : 'defaultStatus'}
+                    description={errors.legalEntityType}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Firm registration or incorporation number"
+                    required
+                    size="large"
+                    value={formData.firmRegistrationNumber}
+                    onValueChange={(v) => updateField('firmRegistrationNumber', v)}
+                    placeholder="CIN, LLPIN,..."
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.firmRegistrationNumber ? 'error' : 'defaultStatus'}
+                    caption={errors.firmRegistrationNumber}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gPanInputField
+                    label="PAN of the firm"
+                    required
+                    size="large"
+                    value={formData.firmPan}
+                    onValueChange={(v) => updateField('firmPan', v.toUpperCase())}
+                    placeholder="Ten characters"
+                    labelStyle={styles.inputLabelStyle}
+                    status={errors.firmPan ? 'error' : 'defaultStatus'}
+                    caption={errors.firmPan || ''}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="GST number"
+                    size="large"
+                    value={formData.gstNumber}
+                    onValueChange={(v) => updateField('gstNumber', v.toUpperCase())}
+                    placeholder="If the firm is registered for GST"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gDatePicker
+                    label="Date the firm was established"
+                    required
+                    initialDate={parseDateString(formData.firmEstablishedDate)}
+                    onDateSelected={(d) =>
+                      updateField('firmEstablishedDate', d.toLocaleDateString('en-GB'))
+                    }
+                    placeholder="Select date"
+                    status={errors.firmEstablishedDate ? 'error' : 'defaultStatus'}
+                    description={errors.firmEstablishedDate}
+                  />
+                </View>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gInputField
+                    label="Website"
+                    size="large"
+                    value={formData.website}
+                    onValueChange={(v) => updateField('website', v)}
+                    placeholder="https://"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                  />
+                </View>
+
+                {/* 4. Bank Details */}
+                <Text style={[styles.sectionHeading, { marginTop: 6 }]}>Bank Details</Text>
+
+                <View style={styles.fieldSpacing}>
+                  <Ux4gSelectionDropdown
+                    label="Bank name"
+                    required
+                    size="l"
+                    searchEnabled={true}
+                    options={BANK_OPTIONS}
+                    selectedOptionIds={formData.bankName}
+                    onSelectionChange={(ids) => updateField('bankName', ids)}
+                    placeholder="Search your bank"
+                    labelTextStyle={styles.inputLabelStyle}
+                    status={errors.bankName ? 'error' : 'defaultStatus'}
+                    description={errors.bankName}
+                  />
+                </View>
+
+                <View style={[styles.fieldSpacing, { marginBottom: 4 }]}>
+                  <Ux4gInputField
+                    label="Branch"
+                    required
+                    size="large"
+                    value={formData.bankBranch}
+                    onValueChange={(v) => updateField('bankBranch', v)}
+                    placeholder="Branch name or IFSC"
+                    labelStyle={styles.inputLabelStyle}
+                    borderColor={UX4GColors.neutral300}
+                    status={errors.bankBranch ? 'error' : 'defaultStatus'}
+                    caption={errors.bankBranch}
+                  />
+                </View>
+              </View>
             ) : (
               <View style={styles.formContainer}>
                 <Ux4gStatusBanner
@@ -632,6 +1018,9 @@ const styles = StyleSheet.create({
   formContainer: {
     paddingTop: 2,
   },
+  fieldSpacing: {
+    marginBottom: 14,
+  },
   sectionHeading: {
     fontSize: 15.5,
     fontWeight: '700',
@@ -765,7 +1154,7 @@ const styles = StyleSheet.create({
                   border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
                 }}
               >
-                Service Pattern • 7 Steps (Step 1 Active)
+                Service Pattern • 7 Steps (Steps 1–2 Active)
               </span>
             </div>
             <p

@@ -57,6 +57,25 @@ export interface TourOperatorFormData {
   tradeType: string;
   applicationType: string;
   existingRegNumber: string;
+
+  // Step 2: Applicant & firm
+  applicantFullName: string;
+  fathersName: string;
+  relationToFirm: string;
+  mobileNumber: string;
+  emailAddress: string;
+  landline: string;
+  tradingName: string;
+  legalEntityName: string;
+  brandName: string;
+  legalEntityType: string[];
+  firmRegistrationNumber: string;
+  firmPan: string;
+  gstNumber: string;
+  firmEstablishedDate: string;
+  website: string;
+  bankName: string[];
+  bankBranch: string;
 }
 
 export type TourOperatorFormErrors = Record<string, string | undefined>;
@@ -121,7 +140,7 @@ function buildFormOptionsFile(appCode: string): string {
   const rawBlock = sliceBetween(
     appCode,
     'const STEP_METADATA =',
-    'export default function App()',
+    'const parseDateString =',
     'tourOperatorFormOptions'
   ).trim();
 
@@ -129,7 +148,10 @@ function buildFormOptionsFile(appCode: string): string {
     .replace(/^const /gm, 'export const ')
     .replace('export const STEP_METADATA =', 'export const STEP_METADATA: Record<number, StepMeta> =')
     .replace('export const TRADE_OPTIONS =', 'export const TRADE_OPTIONS: RadioOption[] =')
-    .replace('export const APPLICATION_TYPE_OPTIONS =', 'export const APPLICATION_TYPE_OPTIONS: RadioOption[] =');
+    .replace('export const APPLICATION_TYPE_OPTIONS =', 'export const APPLICATION_TYPE_OPTIONS: RadioOption[] =')
+    .replace('export const RELATION_TO_FIRM_OPTIONS =', 'export const RELATION_TO_FIRM_OPTIONS: RadioOption[] =')
+    .replace('export const LEGAL_ENTITY_TYPES =', 'export const LEGAL_ENTITY_TYPES: RadioOption[] =')
+    .replace('export const BANK_OPTIONS =', 'export const BANK_OPTIONS: RadioOption[] =');
 
   return `import { RadioOption, StepMeta } from '../types/tourOperator';
 
@@ -176,6 +198,17 @@ function buildValidatorsFile(): string {
   TourOperatorFormErrors,
 } from '../types/tourOperator';
 
+export function parseDateString(str: string): Date | undefined {
+  if (!str) return undefined;
+  const parts = str.split('/');
+  if (parts.length !== 3) return undefined;
+  const d = parseInt(parts[0], 10);
+  const m = parseInt(parts[1], 10) - 1;
+  const y = parseInt(parts[2], 10);
+  if (isNaN(d) || isNaN(m) || isNaN(y)) return undefined;
+  return new Date(y, m, d);
+}
+
 export function validateTourOperatorStep1(
   formData: TourOperatorFormData
 ): TourOperatorFormErrors {
@@ -191,6 +224,52 @@ export function validateTourOperatorStep1(
   }
   return errs;
 }
+
+export function validateTourOperatorStep2(
+  formData: TourOperatorFormData
+): TourOperatorFormErrors {
+  const errs: TourOperatorFormErrors = {};
+  if (!formData.applicantFullName.trim()) {
+    errs.applicantFullName = 'Full name of the applicant is required';
+  }
+  if (!formData.fathersName.trim()) {
+    errs.fathersName = "Father's name is required";
+  }
+  if (!formData.relationToFirm) {
+    errs.relationToFirm = 'Please select your relation to the firm';
+  }
+  if (!/^[0-9]{10}$/.test(formData.mobileNumber.trim())) {
+    errs.mobileNumber = 'Enter a valid 10-digit mobile number';
+  }
+  if (!/^[^@ ]+@[^@ ]+[.][^@ ]+$/.test(formData.emailAddress.trim())) {
+    errs.emailAddress = 'Enter a valid email address';
+  }
+  if (!formData.tradingName.trim()) {
+    errs.tradingName = 'Trading name of the agency is required';
+  }
+  if (!formData.legalEntityName.trim()) {
+    errs.legalEntityName = 'Legal entity name as per PAN is required';
+  }
+  if (!formData.legalEntityType.length) {
+    errs.legalEntityType = 'Please select the type of legal entity';
+  }
+  if (!formData.firmRegistrationNumber.trim()) {
+    errs.firmRegistrationNumber = 'Firm registration or incorporation number is required';
+  }
+  if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/i.test(formData.firmPan.trim())) {
+    errs.firmPan = 'Enter a valid 10-character PAN (e.g. ABCDE1234F)';
+  }
+  if (!formData.firmEstablishedDate.trim()) {
+    errs.firmEstablishedDate = 'Date the firm was established is required';
+  }
+  if (!formData.bankName.length) {
+    errs.bankName = 'Please select your bank';
+  }
+  if (!formData.bankBranch.trim()) {
+    errs.bankBranch = 'Branch name or IFSC is required';
+  }
+  return errs;
+}
 `;
 }
 
@@ -198,7 +277,7 @@ function buildStep1ScreenFile(appCode: string): string {
   const jsx = extractScreenJsx(
     appCode,
     '{step === 1 ? (',
-    ') : (',
+    ') : step === 2 ? (',
     'Tour Operator Step 1'
   );
 
@@ -226,6 +305,54 @@ export interface Step1RegistrationTypeScreenProps {
 }
 
 export const Step1RegistrationTypeScreen: React.FC<Step1RegistrationTypeScreenProps> = ({
+  formData,
+  errors,
+  updateField,
+}) => (
+${jsx}
+);
+`;
+}
+
+function buildStep2ScreenFile(appCode: string): string {
+  let jsx = extractScreenJsx(
+    appCode,
+    ') : step === 2 ? (',
+    ') : (',
+    'Tour Operator Step 2'
+  );
+
+  jsx = jsx.replace('onDateSelected={(d) =>', 'onDateSelected={(d: Date) =>');
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import {
+  Ux4gRadioButton,
+  Ux4gInputField,
+  Ux4gPanInputField,
+  Ux4gSelectionDropdown,
+  Ux4gDatePicker,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import {
+  RELATION_TO_FIRM_OPTIONS,
+  LEGAL_ENTITY_TYPES,
+  BANK_OPTIONS,
+} from '../constants/formOptions';
+import { TourOperatorFormData, TourOperatorFormErrors } from '../types/tourOperator';
+import { parseDateString } from '../utils/validators';
+import { styles } from '../styles/commonStyles';
+
+export interface Step2ApplicantFirmScreenProps {
+  formData: TourOperatorFormData;
+  errors: TourOperatorFormErrors;
+  updateField: <K extends keyof TourOperatorFormData>(
+    key: K,
+    value: TourOperatorFormData[K]
+  ) => void;
+}
+
+export const Step2ApplicantFirmScreen: React.FC<Step2ApplicantFirmScreenProps> = ({
   formData,
   errors,
   updateField,
@@ -265,9 +392,13 @@ import {
   TourOperatorFormData,
   TourOperatorFormErrors,
 } from './src/types/tourOperator';
-import { validateTourOperatorStep1 } from './src/utils/validators';
+import {
+  validateTourOperatorStep1,
+  validateTourOperatorStep2,
+} from './src/utils/validators';
 import { styles } from './src/styles/commonStyles';
 import { Step1RegistrationTypeScreen } from './src/screens/Step1RegistrationTypeScreen';
+import { Step2ApplicantFirmScreen } from './src/screens/Step2ApplicantFirmScreen';
 
 export default function App() {
   const [step, setStep] = useState<number>(1);
@@ -323,9 +454,20 @@ export default function App() {
     setStep(2);
   };
 
+  const handleContinueStep2 = () => {
+    const errs = validateTourOperatorStep2(formData);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    setStep(3);
+  };
+
   const handleStepperNext = () => {
     if (step === 1) {
       handleContinueStep1();
+    } else if (step === 2) {
+      handleContinueStep2();
     } else if (step < 7) {
       setStep(step + 1);
     }
@@ -421,6 +563,12 @@ export default function App() {
 
             {step === 1 ? (
               <Step1RegistrationTypeScreen
+                formData={formData}
+                errors={errors}
+                updateField={updateField}
+              />
+            ) : step === 2 ? (
+              <Step2ApplicantFirmScreen
                 formData={formData}
                 errors={errors}
                 updateField={updateField}
@@ -593,7 +741,8 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
       '    ├── styles/',
       '    │   └── commonStyles.ts                    # Shared StyleSheet using UX4GColors tokens',
       '    └── screens/',
-      '        └── Step1RegistrationTypeScreen.tsx    # Step 1 of 7: Service Required & Existing Registration Details',
+      '        ├── Step1RegistrationTypeScreen.tsx    # Step 1 of 7: Service Required & Existing Registration Details',
+      '        └── Step2ApplicantFirmScreen.tsx       # Step 2 of 7: Applicant, Contact, Firm & Bank Details',
       '```',
       '',
       '## Getting Started',
@@ -614,6 +763,7 @@ export function buildTourOperatorModularProject(fullAppCodeString: string): Reco
     'src/utils/validators.ts': buildValidatorsFile(),
     'src/styles/commonStyles.ts': buildCommonStylesFile(normalizedCode),
     'src/screens/Step1RegistrationTypeScreen.tsx': buildStep1ScreenFile(normalizedCode),
+    'src/screens/Step2ApplicantFirmScreen.tsx': buildStep2ScreenFile(normalizedCode),
     'App.tsx': buildRootAppFile(),
   };
 }
