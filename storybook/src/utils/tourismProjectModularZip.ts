@@ -91,7 +91,10 @@ export interface TourismProjectFormData {
   hasDprReport: boolean;
   hasPcbNoc: boolean;
   hasForestNoc: boolean;
-  // Step 5: Declaration
+  // Step 4: Declaration
+  declarationAccuracy: boolean;
+  declarationInspection: boolean;
+  // Step 5: Declaration Legacy
   confirmedAccuracy: boolean;
   agreeToAudit: boolean;
 }
@@ -187,6 +190,8 @@ export const INITIAL_FORM_DATA: TourismProjectFormData = {
   hasDprReport: true,
   hasPcbNoc: true,
   hasForestNoc: false,
+  declarationAccuracy: false,
+  declarationInspection: false,
   confirmedAccuracy: true,
   agreeToAudit: true,
 };
@@ -205,8 +210,8 @@ export const STEP_METADATA: Record<number, StepMeta> = {
     subtitle: 'Whether the project is finished, and the proof that it exists.',
   },
   4: {
-    title: 'Clearances & documents',
-    subtitle: 'Statutory approvals, DPR, environmental clearances, and order copy.',
+    title: 'Review & declaration',
+    subtitle: 'Check every section. Nothing can be changed after you submit.',
   },
   5: {
     title: 'Review & submit',
@@ -329,6 +334,39 @@ export interface Step3EvidenceScreenProps {
 export const Step3EvidenceScreen: React.FC<Step3EvidenceScreenProps> = ({
   formData,
   setFormData,
+}) => {
+  return (
+${jsx}
+  );
+};
+`;
+}
+
+function buildStep4ReviewScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    '{/* ─── STEP 4: REVIEW & DECLARATION ─── */}',
+    '{/* ─── STEP 5:',
+    'Step4ReviewScreen'
+  );
+
+  return `import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
+import { UX4GColors } from 'ux4g-react-native-components';
+import { TourismProjectFormData } from '../types/tourismProject';
+import { styles } from '../styles/commonStyles';
+
+export interface Step4ReviewScreenProps {
+  formData: TourismProjectFormData;
+  setFormData: React.Dispatch<React.SetStateAction<TourismProjectFormData>>;
+  setStep: (step: number) => void;
+}
+
+export const Step4ReviewScreen: React.FC<Step4ReviewScreenProps> = ({
+  formData,
+  setFormData,
+  setStep,
 }) => {
   return (
 ${jsx}
@@ -538,6 +576,7 @@ export function buildTourismProjectModularProject(fullAppCode: string): Record<s
   files['src/screens/Step1ApprovalScreen.tsx'] = buildStep1ScreenFile(fullAppCode);
   files['src/screens/Step2FundingScreen.tsx'] = buildStep2FundingScreenFile(fullAppCode);
   files['src/screens/Step3EvidenceScreen.tsx'] = buildStep3EvidenceScreenFile(fullAppCode);
+  files['src/screens/Step4ReviewScreen.tsx'] = buildStep4ReviewScreenFile(fullAppCode);
 
   return files;
 }

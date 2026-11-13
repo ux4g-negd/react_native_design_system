@@ -8,8 +8,8 @@ interface TourismProjectApprovalFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Project Approval Flow (5-Step Workflow, Step 3 Active)
-const SNACK_ID = 'USz3kVoUokOCN5EZD8U8y';
+// Official Snack ID for Tourism Project Approval Flow (5-Step Workflow, Step 4 Active)
+const SNACK_ID = 'UeCykV7Brepmg-lSs5kVa';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -85,8 +85,8 @@ const STEP_METADATA = {
     subtitle: 'Whether the project is finished, and the proof that it exists.',
   },
   4: {
-    title: 'Clearances & documents',
-    subtitle: 'Statutory approvals, DPR, environmental clearances, and order copy.',
+    title: 'Review & declaration',
+    subtitle: 'Check every section. Nothing can be changed after you submit.',
   },
   5: {
     title: 'Review & submit',
@@ -137,7 +137,7 @@ const LENDER_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -187,7 +187,10 @@ export default function App() {
     hasDpr: true,
     hasPcbNoc: true,
     hasForestNoc: false,
-    // Step 5 Review
+    // Step 4 Review & Declaration
+    declarationAccuracy: false,
+    declarationInspection: false,
+    // Step 5 Legacy
     declarationAccurate: true,
     declarationTerms: true,
   });
@@ -1079,39 +1082,188 @@ export default function App() {
             </View>
           )}
 
-          {/* ─── STEP 4: CLEARANCES & DOCUMENTS ─── */}
+          {/* ─── STEP 4: REVIEW & DECLARATION ─── */}
           {step === 4 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Statutory Clearances</Text>
-              <View style={styles.docItemCard}>
-                <View style={styles.docItemRow}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.docItemTitle}>Copy of SIPB Sanction Order / LOI</Text>
-                    <Text style={styles.docItemSub}>Sanction # SIPB/2026/00412 • PDF, 1.4 MB</Text>
+              <Text style={styles.sectionHeading}>Preview Your Application</Text>
+
+              {/* Card 1: Step 1 Summary */}
+              <View style={styles.previewCard}>
+                <View style={styles.previewCardHeader}>
+                  <View style={styles.previewCardHeaderLeft}>
+                    <View style={styles.checkCircleIcon}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M5 13l4 4L19 7"
+                          stroke="#FFFFFF"
+                          strokeWidth={3}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    </View>
+                    <Text style={styles.previewCardTitle}>Step 1 · The approval you hold</Text>
                   </View>
-                  <Text style={styles.docStatusBadge}>Attached</Text>
+                  <TouchableOpacity
+                    style={styles.editPencilBtn}
+                    onPress={() => setStep(1)}
+                    activeOpacity={0.7}
+                  >
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill="#111827"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
                 </View>
+                <Text style={styles.previewCardSubText}>
+                  SIPB/2026/00412 · Valley View Eco Resort · eco tourism project · new
+                </Text>
               </View>
 
-              <View style={[styles.docItemCard, { marginTop: 12 }]}>
-                <View style={styles.docItemRow}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.docItemTitle}>Detailed Project Report (DPR)</Text>
-                    <Text style={styles.docItemSub}>Architectural layout & financial model • PDF, 8.2 MB</Text>
+              {/* Card 2: Step 2 Summary */}
+              <View style={styles.previewCard}>
+                <View style={styles.previewCardHeader}>
+                  <View style={styles.previewCardHeaderLeft}>
+                    <View style={styles.checkCircleIcon}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M5 13l4 4L19 7"
+                          stroke="#FFFFFF"
+                          strokeWidth={3}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    </View>
+                    <Text style={styles.previewCardTitle}>Step 2 · How it was funded</Text>
                   </View>
-                  <Text style={styles.docStatusBadge}>Attached</Text>
+                  <TouchableOpacity
+                    style={styles.editPencilBtn}
+                    onPress={() => setStep(2)}
+                    activeOpacity={0.7}
+                  >
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill="#111827"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
                 </View>
+                <Text style={styles.previewCardSubText}>
+                  ₹5,00,00,000 cost · ₹1,00,00,000 claimed · funding short by ₹2,00,00,000
+                </Text>
               </View>
 
-              <View style={[styles.docItemCard, { marginTop: 12 }]}>
-                <View style={styles.docItemRow}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.docItemTitle}>Pollution Control Board Consent to Establish (CTE)</Text>
-                    <Text style={styles.docItemSub}>Consent letter # SPCB/CTE/2026/89 • PDF, 980 KB</Text>
+              {/* Card 3: Step 3 Summary */}
+              <View style={styles.previewCard}>
+                <View style={styles.previewCardHeader}>
+                  <View style={styles.previewCardHeaderLeft}>
+                    <View style={styles.checkCircleIcon}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M5 13l4 4L19 7"
+                          stroke="#FFFFFF"
+                          strokeWidth={3}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    </View>
+                    <Text style={styles.previewCardTitle}>Step 3 · Completion and evidence</Text>
                   </View>
-                  <Text style={styles.docStatusBadge}>Attached</Text>
+                  <TouchableOpacity
+                    style={styles.editPencilBtn}
+                    onPress={() => setStep(3)}
+                    activeOpacity={0.7}
+                  >
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill="#111827"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
                 </View>
+                <Text style={styles.previewCardSubText}>
+                  Completed 1 September 2026 · 2 certificates · 3 clearances · 1 photograph
+                </Text>
               </View>
+
+              {/* Declaration Section */}
+              <Text style={[styles.sectionHeading, { marginTop: 28 }]}>Declaration</Text>
+
+              {/* Checkbox 1 */}
+              <TouchableOpacity
+                style={styles.declarationRow}
+                activeOpacity={0.7}
+                onPress={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    declarationAccuracy: !prev.declarationAccuracy,
+                  }))
+                }
+              >
+                <View
+                  style={[
+                    styles.checkboxSquare,
+                    formData.declarationAccuracy && styles.checkboxSquareChecked,
+                  ]}
+                >
+                  {formData.declarationAccuracy && (
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M5 13l4 4L19 7"
+                        stroke="#FFFFFF"
+                        strokeWidth={3}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
+                  )}
+                </View>
+                <Text style={styles.declarationText}>
+                  Everything I have entered is true, and the project described is the one covered by sanction order SIPB/2026/00412
+                </Text>
+                <Text style={styles.asterisk}>*</Text>
+              </TouchableOpacity>
+
+              {/* Checkbox 2 */}
+              <TouchableOpacity
+                style={[styles.declarationRow, { marginTop: 16 }]}
+                activeOpacity={0.7}
+                onPress={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    declarationInspection: !prev.declarationInspection,
+                  }))
+                }
+              >
+                <View
+                  style={[
+                    styles.checkboxSquare,
+                    formData.declarationInspection && styles.checkboxSquareChecked,
+                  ]}
+                >
+                  {formData.declarationInspection && (
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M5 13l4 4L19 7"
+                        stroke="#FFFFFF"
+                        strokeWidth={3}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
+                  )}
+                </View>
+                <Text style={styles.declarationText}>
+                  I agree to an inspection of the completed project before any amount is sanctioned
+                </Text>
+                <Text style={styles.asterisk}>*</Text>
+              </TouchableOpacity>
             </View>
           )}
 
@@ -1686,6 +1838,77 @@ const styles = StyleSheet.create({
     borderColor: '#16A34A',
     backgroundColor: '#16A34A',
   },
+  previewCard: {
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+    borderRadius: 10,
+    padding: 14,
+    marginTop: 12,
+  },
+  previewCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  previewCardHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  checkCircleIcon: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  previewCardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#166534',
+    flex: 1,
+  },
+  editPencilBtn: {
+    padding: 4,
+    marginLeft: 8,
+  },
+  previewCardSubText: {
+    fontSize: 13,
+    color: '#15803D',
+    lineHeight: 18,
+    marginTop: 4,
+    paddingLeft: 30,
+  },
+  declarationRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  checkboxSquare: {
+    width: 20,
+    height: 20,
+    borderRadius: 4,
+    borderWidth: 1.5,
+    borderColor: '#D1D5DB',
+    backgroundColor: '#FFFFFF',
+    marginRight: 12,
+    marginTop: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxSquareChecked: {
+    backgroundColor: UX4GColors.primary,
+    borderColor: UX4GColors.primary,
+  },
+  declarationText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#1F2937',
+    lineHeight: 20,
+    fontWeight: '500',
+  },
   continueButton: {
     backgroundColor: UX4GColors.primary,
     borderRadius: 8,
@@ -1837,7 +2060,7 @@ const styles = StyleSheet.create({
             </span>
           </div>
           <span style={{ fontSize: 12, color: isDark ? '#94A3B8' : '#64748B' }}>
-            5 Steps · Step 3 Active
+            5 Steps · Step 4 Active
           </span>
         </div>
         <div style={{ minHeight: 880, width: '100%' }}>
