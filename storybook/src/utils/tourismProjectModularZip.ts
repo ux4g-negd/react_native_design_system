@@ -12,15 +12,6 @@ function sliceBetween(source: string, startMarker: string, endMarker: string, la
   return source.slice(startIdx, endIdx);
 }
 
-function dedentBlock(block: string, spaces: number): string {
-  const prefix = ' '.repeat(spaces);
-  return block
-    .split('\n')
-    .map((line) => (line.startsWith(prefix) ? line.slice(spaces) : line))
-    .join('\n')
-    .trimEnd();
-}
-
 function extractScreenJsx(appCode: string, startMarker: string, endMarker: string, label: string): string {
   const startIdx = appCode.indexOf(startMarker);
   if (startIdx === -1) {
@@ -64,13 +55,21 @@ export interface TourismProjectFormData {
   projectNature: 'new' | 'expansion';
   projectCost: string;
   sanctionRevised: 'yes' | 'no';
-  // Step 2: Location
-  district: string[];
-  tehsil: string;
-  village: string;
-  khasraNo: string;
-  totalLandArea: string;
-  landOwnershipType: string;
+  // Step 2: Project Funding
+  eligibleProjectCost: string;
+  subsidyClaimed: string;
+  ownContribution: string;
+  otherGrants: string;
+  hasBorrowed: 'yes' | 'no';
+  anythingElse: string;
+  totalFunding: string;
+  amountBorrowed: string;
+  lender: string[];
+  branch: string;
+  interestRate: string;
+  loanTerm: string;
+  loanSanctionFiles: any[];
+  repaymentScheduleFiles: any[];
   // Step 3: Components
   roomCount: string;
   diningCapacity: string;
@@ -112,20 +111,20 @@ export const SANCTION_REVISED_OPTIONS: RadioOption[] = [
   { id: 'no', label: 'No' },
 ];
 
-export const DISTRICT_OPTIONS: DropdownOption[] = [
-  { id: 'dehradun', label: 'Dehradun' },
-  { id: 'haridwar', label: 'Haridwar' },
-  { id: 'nainital', label: 'Nainital' },
-  { id: 'tehri_garhwal', label: 'Tehri Garhwal' },
-  { id: 'uttarkashi', label: 'Uttarkashi' },
-  { id: 'chamoli', label: 'Chamoli' },
-  { id: 'pauri_garhwal', label: 'Pauri Garhwal' },
-  { id: 'rudraprayag', label: 'Rudraprayag' },
-  { id: 'almora', label: 'Almora' },
-  { id: 'pithoragarh', label: 'Pithoragarh' },
-  { id: 'bageshwar', label: 'Bageshwar' },
-  { id: 'champawat', label: 'Champawat' },
-  { id: 'udham_singh_nagar', label: 'Udham Singh Nagar' },
+export const BORROWED_OPTIONS: RadioOption[] = [
+  { id: 'yes', label: 'Yes — from a bank or financial institution' },
+  { id: 'no', label: 'No' },
+];
+
+export const LENDER_OPTIONS: DropdownOption[] = [
+  { id: 'sbi', label: 'State Bank of India (SBI)' },
+  { id: 'pnb', label: 'Punjab National Bank (PNB)' },
+  { id: 'bob', label: 'Bank of Baroda' },
+  { id: 'hdfc', label: 'HDFC Bank Ltd' },
+  { id: 'icici', label: 'ICICI Bank Ltd' },
+  { id: 'sidbi', label: 'SIDBI (Small Industries Dev Bank)' },
+  { id: 'tfci', label: 'Tourism Finance Corp of India (TFCI)' },
+  { id: 'other', label: 'Other Scheduled Commercial Bank' },
 ];
 `;
 }
@@ -140,12 +139,20 @@ export const INITIAL_FORM_DATA: TourismProjectFormData = {
   projectNature: 'new',
   projectCost: '',
   sanctionRevised: 'yes',
-  district: ['dehradun'],
-  tehsil: 'Rishikesh',
-  village: 'Shivpuri',
-  khasraNo: '412/1, 412/2',
-  totalLandArea: '12.5',
-  landOwnershipType: 'Freehold (Privately owned)',
+  eligibleProjectCost: '5,00,00,000',
+  subsidyClaimed: '',
+  ownContribution: '3,00,00,000',
+  otherGrants: '',
+  hasBorrowed: 'yes',
+  anythingElse: '',
+  totalFunding: '3,00,00,000',
+  amountBorrowed: '',
+  lender: [],
+  branch: '',
+  interestRate: '',
+  loanTerm: '',
+  loanSanctionFiles: [],
+  repaymentScheduleFiles: [],
   roomCount: '48',
   diningCapacity: '120',
   parkingSpaces: '60',
@@ -164,8 +171,8 @@ export const STEP_METADATA: Record<number, StepMeta> = {
     subtitle: 'The sanction order you already have, and what the project is.',
   },
   2: {
-    title: 'Project location & land',
-    subtitle: 'Where the project is located, land area, and zoning clearances.',
+    title: 'How the project was funded',
+    subtitle: 'What it cost, what you are claiming, and where the money came from.',
   },
   3: {
     title: 'Components & facilities',
@@ -188,7 +195,8 @@ function buildCommonStylesFile(appCode: string): string {
   return `import { StyleSheet, Platform } from 'react-native';
 import { UX4GColors } from 'ux4g-react-native-components';
 
-export ${stylesBlock}});\n`;
+export ${stylesBlock}});
+`;
 }
 
 function buildStep1ScreenFile(appCode: string): string {
@@ -205,6 +213,7 @@ import Svg, { Path, Circle } from 'react-native-svg';
 import {
   Ux4gRadioButton,
   Ux4gSelectionDropdown,
+  Ux4gFileUpload,
   UX4GColors,
 } from 'ux4g-react-native-components';
 import { TourismProjectFormData } from '../types/tourismProject';
@@ -221,6 +230,43 @@ export const Step1ApprovalScreen: React.FC<Step1ScreenProps> = ({
   formData,
   updateField,
   onFetchSanction,
+}) => {
+  return (
+${jsx}
+  );
+};
+`;
+}
+
+function buildStep2FundingScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    '{/* ─── STEP 2: PROJECT FUNDING ─── */}',
+    '{/* ─── STEP 3:',
+    'Step2FundingScreen'
+  );
+
+  return `import React from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import Svg, { Path, Circle } from 'react-native-svg';
+import {
+  Ux4gRadioButton,
+  Ux4gSelectionDropdown,
+  Ux4gFileUpload,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { TourismProjectFormData } from '../types/tourismProject';
+import { BORROWED_OPTIONS, LENDER_OPTIONS } from '../constants/formOptions';
+import { styles } from '../styles/commonStyles';
+
+export interface Step2FundingScreenProps {
+  formData: TourismProjectFormData;
+  setFormData: React.Dispatch<React.SetStateAction<TourismProjectFormData>>;
+}
+
+export const Step2FundingScreen: React.FC<Step2FundingScreenProps> = ({
+  formData,
+  setFormData,
 }) => {
   return (
 ${jsx}
@@ -347,6 +393,7 @@ A comprehensive 5-step government single-window service pattern for **Tourism Pr
 
 ## Features
 - **Accurate Step 1 UI**: Sanction order fetch input with pre-filled match banner, notified project type dropdown, project nature radio group, formatted project cost input, and amended order verification.
+- **Accurate Step 2 UI (Funding)**: Eligible project cost, subsidy claim, source of funds, loan borrowings, lender dropdown, branch & interest rate, self-attested sanction letter and repayment schedule uploads.
 - **Official UX4G Compact Stepper**: Center-between layout with 5 progress indicators and step navigation arrows.
 - **Standard Header**: Government of India national banner with Ashoka emblem and Union UX4G logo.
 - **Sticky Actions**: Pinned \`Continue\` and \`Save as draft\` buttons with tactile feedback.
@@ -427,7 +474,7 @@ export function buildTourismProjectModularProject(fullAppCode: string): Record<s
   files['src/components/Header.tsx'] = buildHeaderFile();
   files['src/components/NationalEmblem.tsx'] = NATIONAL_EMBLEM_SOURCE;
   files['src/screens/Step1ApprovalScreen.tsx'] = buildStep1ScreenFile(fullAppCode);
+  files['src/screens/Step2FundingScreen.tsx'] = buildStep2FundingScreenFile(fullAppCode);
 
   return files;
 }
-

@@ -8,8 +8,8 @@ interface TourismProjectApprovalFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Project Approval Flow (5-Step Workflow, Step 1 Active)
-const SNACK_ID = 'sE67Ir4pYXyYu5weAIfme';
+// Official Snack ID for Tourism Project Approval Flow (5-Step Workflow, Step 2 Active)
+const SNACK_ID = 'zzjp-YQ2WlJHciKU-WMUx';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -77,8 +77,8 @@ const STEP_METADATA = {
     subtitle: 'The sanction order you already have, and what the project is.',
   },
   2: {
-    title: 'Project location & land',
-    subtitle: 'Where the project is located, land area, and zoning clearances.',
+    title: 'How the project was funded',
+    subtitle: 'What it cost, what you are claiming, and where the money came from.',
   },
   3: {
     title: 'Components & facilities',
@@ -115,26 +115,51 @@ const SANCTION_REVISED_OPTIONS = [
   { id: 'no', label: 'No' },
 ];
 
+const BORROWED_OPTIONS = [
+  { id: 'yes', label: 'Yes — from a bank or financial institution' },
+  { id: 'no', label: 'No' },
+];
+
+const LENDER_OPTIONS = [
+  { id: 'sbi', label: 'State Bank of India (SBI)' },
+  { id: 'pnb', label: 'Punjab National Bank (PNB)' },
+  { id: 'bob', label: 'Bank of Baroda' },
+  { id: 'hdfc', label: 'HDFC Bank Ltd' },
+  { id: 'icici', label: 'ICICI Bank Ltd' },
+  { id: 'sidbi', label: 'SIDBI (Small Industries Dev Bank)' },
+  { id: 'tfci', label: 'Tourism Finance Corp of India (TFCI)' },
+  { id: 'other', label: 'Other Scheduled Commercial Bank' },
+];
+
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
 
   // Form State
   const [formData, setFormData] = useState({
+    // Step 1: Approval Details
     sanctionNumber: 'SIPB/2026/00412',
     isRecordFound: true,
     projectType: [],
     projectNature: 'new',
     projectCost: '',
     sanctionRevised: 'yes',
-    // Step 2 Location
-    district: ['dehradun'],
-    tehsil: 'Rishikesh',
-    village: 'Shivpuri',
-    khasraNo: '412/1, 412/2',
-    landArea: '12.5',
-    landOwnership: 'freehold',
+    // Step 2: Project Funding (matches exact UI image)
+    eligibleProjectCost: '5,00,00,000',
+    subsidyClaimed: '',
+    ownContribution: '3,00,00,000',
+    otherGrants: '',
+    hasBorrowed: 'yes',
+    anythingElse: '',
+    totalFunding: '3,00,00,000',
+    amountBorrowed: '',
+    lender: [],
+    branch: '',
+    interestRate: '',
+    loanTerm: '',
+    loanSanctionFiles: [],
+    repaymentScheduleFiles: [],
     // Step 3 Components
     roomCount: '48',
     diningCapacity: '120',
@@ -394,55 +419,242 @@ export default function App() {
             </View>
           )}
 
-          {/* ─── STEP 2: LOCATION & LAND ─── */}
+          {/* ─── STEP 2: PROJECT FUNDING ─── */}
           {step === 2 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Project Site Location</Text>
+              {/* Project Cost and Subsidy Claimed */}
+              <Text style={styles.sectionHeading}>Project Cost and Subsidy Claimed</Text>
+
               <Text style={styles.fieldLabel}>
-                District<Text style={styles.asterisk}>*</Text>
+                Eligible project cost<Text style={styles.asterisk}>*</Text>
               </Text>
-              <Ux4gInputField
-                value="Dehradun"
-                placeholder="District"
-                editable={false}
-              />
+              <View style={styles.currencyInputReadOnlyContainer}>
+                <Text style={styles.currencyPrefix}>₹</Text>
+                <Text style={styles.currencyInputReadOnlyText}>{formData.eligibleProjectCost}</Text>
+              </View>
 
-              <Text style={[styles.fieldLabel, { marginTop: 16 }]}>
-                Tehsil / Sub-division<Text style={styles.asterisk}>*</Text>
+              <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                Capital investment subsidy claimed<Text style={styles.asterisk}>*</Text>
               </Text>
-              <Ux4gInputField
-                value={formData.tehsil}
-                onChangeText={(val) => setFormData((prev) => ({ ...prev, tehsil: val }))}
-                placeholder="e.g. Rishikesh"
-              />
+              <View style={styles.currencyInputContainer}>
+                <Text style={styles.currencyPrefix}>₹</Text>
+                <TextInput
+                  style={styles.currencyInput}
+                  value={formData.subsidyClaimed}
+                  onChangeText={(val) =>
+                    setFormData((prev) => ({ ...prev, subsidyClaimed: val.replace(/[^0-9]/g, '') }))
+                  }
+                  placeholder="Digits only"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+              </View>
 
-              <Text style={[styles.fieldLabel, { marginTop: 16 }]}>
-                Revenue Village / Town<Text style={styles.asterisk}>*</Text>
-              </Text>
-              <Ux4gInputField
-                value={formData.village}
-                onChangeText={(val) => setFormData((prev) => ({ ...prev, village: val }))}
-                placeholder="e.g. Shivpuri"
-              />
+              {/* Source of Funds */}
+              <Text style={[styles.sectionHeading, { marginTop: 28 }]}>Source of Funds</Text>
 
-              <Text style={[styles.fieldLabel, { marginTop: 16 }]}>
-                Khasra / Survey Number(s)<Text style={styles.asterisk}>*</Text>
+              <Text style={styles.fieldLabel}>
+                Your own contribution<Text style={styles.asterisk}>*</Text>
               </Text>
-              <Ux4gInputField
-                value={formData.khasraNo}
-                onChangeText={(val) => setFormData((prev) => ({ ...prev, khasraNo: val }))}
-                placeholder="e.g. 412/1, 412/2"
-              />
+              <View style={styles.currencyInputContainer}>
+                <Text style={styles.currencyPrefix}>₹</Text>
+                <TextInput
+                  style={styles.currencyInput}
+                  value={formData.ownContribution}
+                  onChangeText={(val) =>
+                    setFormData((prev) => ({ ...prev, ownContribution: val }))
+                  }
+                  placeholder="Digits only"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+              </View>
 
-              <Text style={[styles.fieldLabel, { marginTop: 16 }]}>
-                Total Land Area (in Acres)<Text style={styles.asterisk}>*</Text>
+              <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                Other grants or subsidies<Text style={styles.asterisk}>*</Text>
               </Text>
-              <Ux4gInputField
-                value={formData.landArea}
-                onChangeText={(val) => setFormData((prev) => ({ ...prev, landArea: val }))}
-                placeholder="e.g. 12.5"
-                type="number"
-              />
+              <View style={styles.currencyInputContainer}>
+                <Text style={styles.currencyPrefix}>₹</Text>
+                <TextInput
+                  style={styles.currencyInput}
+                  value={formData.otherGrants}
+                  onChangeText={(val) =>
+                    setFormData((prev) => ({ ...prev, otherGrants: val }))
+                  }
+                  placeholder="0 if none"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                Have you borrowed for this project?<Text style={styles.asterisk}>*</Text>
+              </Text>
+              <View style={styles.radioGroup}>
+                {BORROWED_OPTIONS.map((opt) => (
+                  <View key={opt.id} style={styles.radioItem}>
+                    <Ux4gRadioButton
+                      label={opt.label}
+                      checked={formData.hasBorrowed === opt.id}
+                      onChange={() => setFormData((prev) => ({ ...prev, hasBorrowed: opt.id }))}
+                    />
+                  </View>
+                ))}
+              </View>
+
+              <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                Anything else<Text style={styles.asterisk}>*</Text>
+              </Text>
+              <View style={styles.currencyInputContainer}>
+                <Text style={styles.currencyPrefix}>₹</Text>
+                <TextInput
+                  style={styles.currencyInput}
+                  value={formData.anythingElse}
+                  onChangeText={(val) =>
+                    setFormData((prev) => ({ ...prev, anythingElse: val }))
+                  }
+                  placeholder="0 if none"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                Total<Text style={styles.asterisk}>*</Text>
+              </Text>
+              <View style={styles.currencyInputReadOnlyContainer}>
+                <Text style={styles.currencyPrefix}>₹</Text>
+                <Text style={styles.currencyInputReadOnlyText}>{formData.totalFunding}</Text>
+              </View>
+
+              {/* Warning Banner */}
+              <View style={styles.warningBanner}>
+                <View style={styles.warningIconCol}>
+                  <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} fill="#F59E0B" />
+                    <Path
+                      d="M12 7v6M12 16.5v.5"
+                      stroke="#FFFFFF"
+                      strokeWidth={2.2}
+                      strokeLinecap="round"
+                    />
+                  </Svg>
+                </View>
+                <Text style={styles.warningText}>
+                  Your funding adds up to ₹{formData.totalFunding} against an eligible project cost of ₹{formData.eligibleProjectCost} — ₹2,00,00,000 is unaccounted for. Correct one of the two before you continue.
+                </Text>
+              </View>
+
+              {/* Loan Details Section (conditional on hasBorrowed === 'yes') */}
+              {formData.hasBorrowed === 'yes' && (
+                <View style={{ marginTop: 28 }}>
+                  <Text style={styles.sectionHeading}>Loan Details</Text>
+
+                  <Text style={styles.fieldLabel}>
+                    Amount borrowed<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <View style={styles.currencyInputContainer}>
+                    <Text style={styles.currencyPrefix}>₹</Text>
+                    <TextInput
+                      style={styles.currencyInput}
+                      value={formData.amountBorrowed}
+                      onChangeText={(val) =>
+                        setFormData((prev) => ({ ...prev, amountBorrowed: val.replace(/[^0-9]/g, '') }))
+                      }
+                      placeholder="Digits only"
+                      placeholderTextColor="#9CA3AF"
+                      keyboardType="numeric"
+                    />
+                  </View>
+
+                  <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                    Bank or financial institution<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <Ux4gSelectionDropdown
+                    placeholder="Search the lender"
+                    options={LENDER_OPTIONS}
+                    selectedOptionIds={formData.lender}
+                    onSelectionChange={(val) => setFormData((prev) => ({ ...prev, lender: val }))}
+                    size="l"
+                  />
+
+                  <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                    Branch<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <TextInput
+                    style={styles.standardInput}
+                    value={formData.branch}
+                    onChangeText={(val) => setFormData((prev) => ({ ...prev, branch: val }))}
+                    placeholder="Branch name or IFSC"
+                    placeholderTextColor="#9CA3AF"
+                  />
+
+                  <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                    Interest rate<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <View style={styles.suffixInputContainer}>
+                    <TextInput
+                      style={styles.suffixInput}
+                      value={formData.interestRate}
+                      onChangeText={(val) => setFormData((prev) => ({ ...prev, interestRate: val }))}
+                      placeholder="Per cent per year"
+                      placeholderTextColor="#9CA3AF"
+                      keyboardType="numeric"
+                    />
+                    <Text style={styles.suffixText}>%</Text>
+                  </View>
+
+                  <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
+                    Term<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <TextInput
+                    style={styles.standardInput}
+                    value={formData.loanTerm}
+                    onChangeText={(val) => setFormData((prev) => ({ ...prev, loanTerm: val }))}
+                    placeholder="Months"
+                    placeholderTextColor="#9CA3AF"
+                    keyboardType="numeric"
+                  />
+
+                  {/* Loan sanction letter file upload using official Ux4gFileUpload */}
+                  <Text style={[styles.fieldLabel, { marginTop: 20 }]}>
+                    Loan sanction letter<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <Text style={styles.fieldSubCaption}>PDF · 1 file · self-attested</Text>
+                  <Ux4gFileUpload
+                    maxFiles={1}
+                    maxFileSize={5 * 1024 * 1024}
+                    allowedExtensions={['pdf', 'jpg', 'png']}
+                    borderStyle="dashed"
+                    buttonBorderRadius={8}
+                    buttonColor={UX4GColors.primary}
+                    buttonBorderColor={UX4GColors.purple700}
+                    initialFiles={formData.loanSanctionFiles}
+                    onFilesChanged={(files) =>
+                      setFormData((prev) => ({ ...prev, loanSanctionFiles: files }))
+                    }
+                  />
+
+                  {/* Interest repayment schedule file upload using official Ux4gFileUpload */}
+                  <Text style={[styles.fieldLabel, { marginTop: 24 }]}>
+                    Interest repayment schedule<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <Text style={styles.fieldSubCaption}>PDF · 1 file</Text>
+                  <Ux4gFileUpload
+                    maxFiles={1}
+                    maxFileSize={5 * 1024 * 1024}
+                    allowedExtensions={['pdf']}
+                    borderStyle="dashed"
+                    buttonBorderRadius={8}
+                    buttonColor={UX4GColors.primary}
+                    buttonBorderColor={UX4GColors.purple700}
+                    initialFiles={formData.repaymentScheduleFiles}
+                    onFilesChanged={(files) =>
+                      setFormData((prev) => ({ ...prev, repaymentScheduleFiles: files }))
+                    }
+                  />
+                </View>
+              )}
             </View>
           )}
 
@@ -548,9 +760,9 @@ export default function App() {
               </View>
 
               <View style={[styles.reviewCard, { marginTop: 12 }]}>
-                <Text style={styles.reviewStepTitle}>Step 2 · Location & Land</Text>
-                <Text style={styles.reviewText}>Location: Shivpuri, Rishikesh, Dehradun</Text>
-                <Text style={styles.reviewText}>Land Area: 12.5 Acres (Khasra 412/1, 412/2)</Text>
+                <Text style={styles.reviewStepTitle}>Step 2 · How Project Was Funded</Text>
+                <Text style={styles.reviewText}>Eligible Cost: ₹{formData.eligibleProjectCost} • Own: ₹{formData.ownContribution}</Text>
+                <Text style={styles.reviewText}>Borrowed: {formData.hasBorrowed === 'yes' ? 'Yes (Bank / Financial Institution)' : 'No'}</Text>
               </View>
 
               <View style={[styles.reviewCard, { marginTop: 12 }]}>
@@ -727,6 +939,12 @@ const styles = StyleSheet.create({
     color: '#1F2937',
     marginBottom: 8,
   },
+  fieldSubCaption: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: -4,
+    marginBottom: 8,
+  },
   asterisk: {
     color: '#DC2626',
   },
@@ -793,6 +1011,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     height: 48,
   },
+  currencyInputReadOnlyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    backgroundColor: '#E5E7EB',
+    paddingHorizontal: 12,
+    height: 48,
+  },
+  currencyInputReadOnlyText: {
+    fontSize: 14,
+    color: '#374151',
+    fontWeight: '500',
+  },
   currencyPrefix: {
     fontSize: 16,
     fontWeight: '500',
@@ -805,6 +1038,138 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#111827',
     paddingVertical: 10,
+  },
+  standardInput: {
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 14,
+    height: 48,
+    fontSize: 14,
+    color: '#111827',
+  },
+  suffixInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 12,
+    height: 48,
+  },
+  suffixInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#111827',
+    paddingVertical: 10,
+  },
+  suffixText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#6B7280',
+    paddingHorizontal: 6,
+  },
+  warningBanner: {
+    flexDirection: 'row',
+    backgroundColor: '#FFFBEB',
+    borderWidth: 1,
+    borderColor: '#FDE68A',
+    borderRadius: 8,
+    padding: 14,
+    marginTop: 18,
+  },
+  warningIconCol: {
+    marginRight: 10,
+    marginTop: 2,
+  },
+  warningText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#92400E',
+    lineHeight: 19,
+  },
+  uploadBox: {
+    borderWidth: 1.5,
+    borderColor: '#7C3AED',
+    borderStyle: 'dashed',
+    borderRadius: 8,
+    backgroundColor: '#FAF5FF',
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 6,
+  },
+  cloudIconContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#EDE9FE',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  dropTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginBottom: 4,
+  },
+  dropSub: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginBottom: 4,
+  },
+  dropOr: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    marginVertical: 4,
+  },
+  uploadButtonPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#C4B5FD',
+    borderRadius: 6,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    marginTop: 4,
+  },
+  uploadButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
+  attachedFileBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F9FAFB',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 6,
+  },
+  attachedFileName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  attachedFileSize: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 2,
+  },
+  removeFileBtn: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#DC2626',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   checkItem: {
     marginVertical: 6,
@@ -1017,7 +1382,7 @@ const styles = StyleSheet.create({
             </span>
           </div>
           <span style={{ fontSize: 12, color: isDark ? '#94A3B8' : '#64748B' }}>
-            5 Steps · Step 1 Active
+            5 Steps · Step 2 Active
           </span>
         </div>
         <div style={{ minHeight: 880, width: '100%' }}>
