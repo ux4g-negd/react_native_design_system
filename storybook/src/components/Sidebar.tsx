@@ -1579,6 +1579,11 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Tourist guide Registration Flow',
         icon: 'layers',
       },
+      {
+        id: 'service-pattern-tourism-project-approval',
+        label: 'Tourism project Approval Flow',
+        icon: 'layers',
+      },
     ],
   },
 ];

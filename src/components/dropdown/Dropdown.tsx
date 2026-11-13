@@ -348,8 +348,8 @@ export interface Ux4gSelectionDropdownProps {
  * status validation (`defaultStatus`, `error`, `disabled`), search query filtering, labels, and helper descriptions.
  */
 export const Ux4gSelectionDropdown: React.FC<Ux4gSelectionDropdownProps> = ({
-  options,
-  selectedOptionIds,
+  options = [],
+  selectedOptionIds = [],
   onSelectionChange,
   label,
   required,
