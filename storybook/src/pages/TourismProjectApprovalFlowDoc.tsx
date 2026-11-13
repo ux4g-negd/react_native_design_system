@@ -8,8 +8,8 @@ interface TourismProjectApprovalFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Project Approval Flow (5-Step Workflow, Step 2 Active)
-const SNACK_ID = 'zzjp-YQ2WlJHciKU-WMUx';
+// Official Snack ID for Tourism Project Approval Flow (5-Step Workflow, Step 3 Active)
+const SNACK_ID = 'USz3kVoUokOCN5EZD8U8y';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -81,8 +81,8 @@ const STEP_METADATA = {
     subtitle: 'What it cost, what you are claiming, and where the money came from.',
   },
   3: {
-    title: 'Components & facilities',
-    subtitle: 'Proposed facilities, room/visitor capacity, and investment breakup.',
+    title: 'Completion and evidence',
+    subtitle: 'Whether the project is finished, and the proof that it exists.',
   },
   4: {
     title: 'Clearances & documents',
@@ -115,6 +115,11 @@ const SANCTION_REVISED_OPTIONS = [
   { id: 'no', label: 'No' },
 ];
 
+const PROJECT_COMPLETION_OPTIONS = [
+  { id: 'yes', label: 'Yes — it is built and operating' },
+  { id: 'no', label: 'No — it is still under construction' },
+];
+
 const BORROWED_OPTIONS = [
   { id: 'yes', label: 'Yes — from a bank or financial institution' },
   { id: 'no', label: 'No' },
@@ -132,7 +137,7 @@ const LENDER_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(3);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -160,7 +165,18 @@ export default function App() {
     loanTerm: '',
     loanSanctionFiles: [],
     repaymentScheduleFiles: [],
-    // Step 3 Components
+    // Step 3 Completion & Evidence (matches exact UI image)
+    hasProjectCompleted: 'yes',
+    completionDate: '',
+    expandedCategory: 'completion', // 'completion' | 'clearance' | 'photos' | null
+    occupancyCertFiles: [],
+    inspectionReportFiles: [],
+    fireNocFiles: [],
+    pollutionNocFiles: [],
+    forestNocFiles: [],
+    layoutMapFiles: [],
+    projectPhotoFiles: [],
+    // Step 3 Components legacy fallback
     roomCount: '48',
     diningCapacity: '120',
     conferenceHall: true,
@@ -658,56 +674,408 @@ export default function App() {
             </View>
           )}
 
-          {/* ─── STEP 3: COMPONENTS & FACILITIES ─── */}
+          {/* ─── STEP 3: COMPLETION & EVIDENCE ─── */}
           {step === 3 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Proposed Facilities & Capacity</Text>
+              {/* Completion Status Section */}
+              <Text style={styles.sectionHeading}>Completion Status</Text>
+
               <Text style={styles.fieldLabel}>
-                Number of Keys / Cottages / Rooms<Text style={styles.asterisk}>*</Text>
+                Has the project been completed?<Text style={styles.asterisk}>*</Text>
               </Text>
-              <Ux4gInputField
-                value={formData.roomCount}
-                onChangeText={(val) => setFormData((prev) => ({ ...prev, roomCount: val }))}
-                placeholder="e.g. 48"
-                type="number"
-              />
-
-              <Text style={[styles.fieldLabel, { marginTop: 16 }]}>
-                Dining Capacity (Covers)<Text style={styles.asterisk}>*</Text>
-              </Text>
-              <Ux4gInputField
-                value={formData.diningCapacity}
-                onChangeText={(val) => setFormData((prev) => ({ ...prev, diningCapacity: val }))}
-                placeholder="e.g. 120"
-                type="number"
-              />
-
-              <Text style={[styles.fieldLabel, { marginTop: 20 }]}>
-                Key Project Amenities Included
-              </Text>
-              <View style={{ marginTop: 8 }}>
-                <View style={styles.checkItem}>
-                  <Ux4gCheckbox
-                    label="Conference Hall & Banquet Facility"
-                    checked={formData.conferenceHall}
-                    onChange={(checked) => setFormData((prev) => ({ ...prev, conferenceHall: checked }))}
-                  />
-                </View>
-                <View style={styles.checkItem}>
-                  <Ux4gCheckbox
-                    label="AYUSH / Naturopathy / Wellness Spa"
-                    checked={formData.spaWellness}
-                    onChange={(checked) => setFormData((prev) => ({ ...prev, spaWellness: checked }))}
-                  />
-                </View>
-                <View style={styles.checkItem}>
-                  <Ux4gCheckbox
-                    label="Eco Adventure & Trekking Trail"
-                    checked={formData.adventureZone}
-                    onChange={(checked) => setFormData((prev) => ({ ...prev, adventureZone: checked }))}
-                  />
-                </View>
+              <View style={styles.radioGroup}>
+                {PROJECT_COMPLETION_OPTIONS.map((opt) => (
+                  <View key={opt.id} style={styles.radioItem}>
+                    <Ux4gRadioButton
+                      label={opt.label}
+                      checked={formData.hasProjectCompleted === opt.id}
+                      onChange={() => setFormData((prev) => ({ ...prev, hasProjectCompleted: opt.id }))}
+                    />
+                  </View>
+                ))}
               </View>
+
+              {formData.hasProjectCompleted === 'yes' && (
+                <>
+                  <Text style={[styles.fieldLabel, { marginTop: 20 }]}>
+                    Date of completion<Text style={styles.asterisk}>*</Text>
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.datePickerContainer}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if (!formData.completionDate) {
+                        setFormData((prev) => ({ ...prev, completionDate: '15 May 2026' }));
+                      }
+                    }}
+                  >
+                    <TextInput
+                      style={styles.datePickerInput}
+                      value={formData.completionDate}
+                      onChangeText={(val) => setFormData((prev) => ({ ...prev, completionDate: val }))}
+                      placeholder="Select date"
+                      placeholderTextColor="#9CA3AF"
+                    />
+                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M8 2v3M16 2v3M3.5 9.09h17M21 8.5V17a3.5 3.5 0 01-3.5 3.5h-11A3.5 3.5 0 013 17V8.5A3.5 3.5 0 016.5 5h11A3.5 3.5 0 0121 8.5z"
+                        stroke="#6B7280"
+                        strokeWidth={1.8}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <Path
+                        d="M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01"
+                        stroke="#6B7280"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+
+                  {/* ── Accordion 1: Completion Documents (Expanded by default) ── */}
+                  <View style={[styles.accordionCard, { marginTop: 24 }]}>
+                    <TouchableOpacity
+                      style={styles.accordionHeader}
+                      activeOpacity={0.7}
+                      onPress={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          expandedCategory: prev.expandedCategory === 'completion' ? null : 'completion',
+                        }))
+                      }
+                    >
+                      <Text style={styles.accordionTitle}>Completion Documents</Text>
+                      <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                        {formData.expandedCategory === 'completion' ? (
+                          <Path
+                            d="M18 15l-6-6-6 6"
+                            stroke="#111827"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        ) : (
+                          <Path
+                            d="M6 9l6 6 6-6"
+                            stroke="#111827"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        )}
+                      </Svg>
+                    </TouchableOpacity>
+
+                    {formData.expandedCategory === 'completion' && (
+                      <View style={styles.accordionContent}>
+                        {/* Occupancy or completion certificate */}
+                        <View style={styles.docItemHeaderRow}>
+                          <View
+                            style={[
+                              styles.circleIndicator,
+                              formData.occupancyCertFiles?.length > 0 && styles.circleIndicatorActive,
+                            ]}
+                          >
+                            {formData.occupancyCertFiles?.length > 0 && (
+                              <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                                <Path
+                                  d="M5 13l4 4L19 7"
+                                  stroke="#FFFFFF"
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </Svg>
+                            )}
+                          </View>
+                          <Text style={styles.docItemTitleText}>
+                            Occupancy or completion certificate<Text style={styles.asterisk}>*</Text>
+                          </Text>
+                        </View>
+                        <Text style={styles.fieldSubCaption}>
+                          PDF · 1 file · issued by the local authority
+                        </Text>
+                        <Ux4gFileUpload
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={8}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.occupancyCertFiles}
+                          onFilesChanged={(files) =>
+                            setFormData((prev) => ({ ...prev, occupancyCertFiles: files }))
+                          }
+                        />
+
+                        {/* Inspection report by the departmental committee */}
+                        <View style={[styles.docItemHeaderRow, { marginTop: 24 }]}>
+                          <View
+                            style={[
+                              styles.circleIndicator,
+                              formData.inspectionReportFiles?.length > 0 && styles.circleIndicatorActive,
+                            ]}
+                          >
+                            {formData.inspectionReportFiles?.length > 0 && (
+                              <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                                <Path
+                                  d="M5 13l4 4L19 7"
+                                  stroke="#FFFFFF"
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </Svg>
+                            )}
+                          </View>
+                          <Text style={styles.docItemTitleText}>
+                            Inspection report by the departmental committee<Text style={styles.asterisk}>*</Text>
+                          </Text>
+                        </View>
+                        <Text style={styles.fieldSubCaption}>PDF · 1 file</Text>
+                        <Ux4gFileUpload
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={8}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.inspectionReportFiles}
+                          onFilesChanged={(files) =>
+                            setFormData((prev) => ({ ...prev, inspectionReportFiles: files }))
+                          }
+                        />
+                      </View>
+                    )}
+                  </View>
+
+                  {/* ── Accordion 2: Clearance Documents (Collapsed by default) ── */}
+                  <View style={[styles.accordionCard, { marginTop: 16 }]}>
+                    <TouchableOpacity
+                      style={styles.accordionHeader}
+                      activeOpacity={0.7}
+                      onPress={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          expandedCategory: prev.expandedCategory === 'clearance' ? null : 'clearance',
+                        }))
+                      }
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.accordionTitle}>Clearance Documents</Text>
+                        <Text style={styles.accordionSubtitle}>
+                          {formData.fireNocFiles?.length +
+                            formData.pollutionNocFiles?.length +
+                            formData.forestNocFiles?.length +
+                            formData.layoutMapFiles?.length >
+                          0
+                            ? String(
+                                (formData.fireNocFiles?.length || 0) +
+                                (formData.pollutionNocFiles?.length || 0) +
+                                (formData.forestNocFiles?.length || 0) +
+                                (formData.layoutMapFiles?.length || 0)
+                              ) + ' of 4 uploaded'
+                            : '4 documents · none uploaded yet'}
+                        </Text>
+                        <View style={styles.dotsRow}>
+                          <View
+                            style={[
+                              styles.docDot,
+                              formData.fireNocFiles?.length > 0 && styles.docDotFilled,
+                            ]}
+                          />
+                          <View
+                            style={[
+                              styles.docDot,
+                              formData.pollutionNocFiles?.length > 0 && styles.docDotFilled,
+                            ]}
+                          />
+                          <View
+                            style={[
+                              styles.docDot,
+                              formData.forestNocFiles?.length > 0 && styles.docDotFilled,
+                            ]}
+                          />
+                          <View
+                            style={[
+                              styles.docDot,
+                              formData.layoutMapFiles?.length > 0 && styles.docDotFilled,
+                            ]}
+                          />
+                        </View>
+                      </View>
+                      <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                        {formData.expandedCategory === 'clearance' ? (
+                          <Path
+                            d="M18 15l-6-6-6 6"
+                            stroke="#111827"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        ) : (
+                          <Path
+                            d="M6 9l6 6 6-6"
+                            stroke="#111827"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        )}
+                      </Svg>
+                    </TouchableOpacity>
+
+                    {formData.expandedCategory === 'clearance' && (
+                      <View style={styles.accordionContent}>
+                        <Text style={styles.fieldLabel}>Fire safety clearance / NOC*</Text>
+                        <Text style={styles.fieldSubCaption}>PDF · 1 file</Text>
+                        <Ux4gFileUpload
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={8}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.fireNocFiles}
+                          onFilesChanged={(files) =>
+                            setFormData((prev) => ({ ...prev, fireNocFiles: files }))
+                          }
+                        />
+
+                        <Text style={[styles.fieldLabel, { marginTop: 20 }]}>
+                          State Pollution Control Board CTE / CTO*
+                        </Text>
+                        <Text style={styles.fieldSubCaption}>PDF · 1 file</Text>
+                        <Ux4gFileUpload
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={8}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.pollutionNocFiles}
+                          onFilesChanged={(files) =>
+                            setFormData((prev) => ({ ...prev, pollutionNocFiles: files }))
+                          }
+                        />
+
+                        <Text style={[styles.fieldLabel, { marginTop: 20 }]}>
+                          Forest / CRZ / Wildlife Clearance (if applicable)
+                        </Text>
+                        <Text style={styles.fieldSubCaption}>PDF · 1 file</Text>
+                        <Ux4gFileUpload
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={8}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.forestNocFiles}
+                          onFilesChanged={(files) =>
+                            setFormData((prev) => ({ ...prev, forestNocFiles: files }))
+                          }
+                        />
+
+                        <Text style={[styles.fieldLabel, { marginTop: 20 }]}>
+                          Approved Building Layout Plan & Map*
+                        </Text>
+                        <Text style={styles.fieldSubCaption}>PDF, DWG · 1 file</Text>
+                        <Ux4gFileUpload
+                          maxFiles={1}
+                          maxFileSize={10 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={8}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.layoutMapFiles}
+                          onFilesChanged={(files) =>
+                            setFormData((prev) => ({ ...prev, layoutMapFiles: files }))
+                          }
+                        />
+                      </View>
+                    )}
+                  </View>
+
+                  {/* ── Accordion 3: Photographs of the Project (Collapsed by default) ── */}
+                  <View style={[styles.accordionCard, { marginTop: 16 }]}>
+                    <TouchableOpacity
+                      style={styles.accordionHeader}
+                      activeOpacity={0.7}
+                      onPress={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          expandedCategory: prev.expandedCategory === 'photos' ? null : 'photos',
+                        }))
+                      }
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.accordionTitle}>Photographs of the Project</Text>
+                        <Text style={styles.accordionSubtitle}>
+                          {formData.projectPhotoFiles?.length > 0
+                            ? '1 document uploaded'
+                            : '1 document · none uploaded yet'}
+                        </Text>
+                        <View style={styles.dotsRow}>
+                          <View
+                            style={[
+                              styles.docDot,
+                              formData.projectPhotoFiles?.length > 0 && styles.docDotFilled,
+                            ]}
+                          />
+                        </View>
+                      </View>
+                      <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                        {formData.expandedCategory === 'photos' ? (
+                          <Path
+                            d="M18 15l-6-6-6 6"
+                            stroke="#111827"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        ) : (
+                          <Path
+                            d="M6 9l6 6 6-6"
+                            stroke="#111827"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        )}
+                      </Svg>
+                    </TouchableOpacity>
+
+                    {formData.expandedCategory === 'photos' && (
+                      <View style={styles.accordionContent}>
+                        <Text style={styles.fieldLabel}>
+                          Geo-tagged photographs of completed project & facilities*
+                        </Text>
+                        <Text style={styles.fieldSubCaption}>JPG, PNG · 1 file · geo-tagged</Text>
+                        <Ux4gFileUpload
+                          maxFiles={1}
+                          maxFileSize={8 * 1024 * 1024}
+                          allowedExtensions={['jpg', 'jpeg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={8}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.projectPhotoFiles}
+                          onFilesChanged={(files) =>
+                            setFormData((prev) => ({ ...prev, projectPhotoFiles: files }))
+                          }
+                        />
+                      </View>
+                    )}
+                  </View>
+                </>
+              )}
             </View>
           )}
 
@@ -766,9 +1134,9 @@ export default function App() {
               </View>
 
               <View style={[styles.reviewCard, { marginTop: 12 }]}>
-                <Text style={styles.reviewStepTitle}>Step 3 · Components & Capacity</Text>
-                <Text style={styles.reviewText}>Cottages/Keys: 48 • Dining: 120 covers</Text>
-                <Text style={styles.reviewText}>Amenities: Conference Hall, Spa, Adventure Trail</Text>
+                <Text style={styles.reviewStepTitle}>Step 3 · Completion & Evidence</Text>
+                <Text style={styles.reviewText}>Status: Built and operating • Completed: {formData.completionDate || '15 May 2026'}</Text>
+                <Text style={styles.reviewText}>Evidence: Occupancy certificate & inspection report attached</Text>
               </View>
 
               <View style={[styles.reviewCard, { marginTop: 12 }]}>
@@ -1231,6 +1599,93 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: Platform.OS === 'ios' ? 24 : 16,
   },
+  datePickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 14,
+    height: 48,
+  },
+  datePickerInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#111827',
+  },
+  accordionCard: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 12,
+    padding: 16,
+  },
+  accordionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  accordionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  accordionSubtitle: {
+    fontSize: 13,
+    color: '#6B7280',
+    marginTop: 2,
+  },
+  accordionContent: {
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#F3F4F6',
+  },
+  docItemHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  circleIndicator: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 1.5,
+    borderColor: '#D1D5DB',
+    backgroundColor: '#FFFFFF',
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circleIndicatorActive: {
+    borderColor: '#16A34A',
+    backgroundColor: '#16A34A',
+  },
+  docItemTitleText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
+    flex: 1,
+  },
+  dotsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 6,
+  },
+  docDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    borderWidth: 1.2,
+    borderColor: '#D1D5DB',
+    backgroundColor: '#FFFFFF',
+  },
+  docDotFilled: {
+    borderColor: '#16A34A',
+    backgroundColor: '#16A34A',
+  },
   continueButton: {
     backgroundColor: UX4GColors.primary,
     borderRadius: 8,
@@ -1382,7 +1837,7 @@ const styles = StyleSheet.create({
             </span>
           </div>
           <span style={{ fontSize: 12, color: isDark ? '#94A3B8' : '#64748B' }}>
-            5 Steps · Step 2 Active
+            5 Steps · Step 3 Active
           </span>
         </div>
         <div style={{ minHeight: 880, width: '100%' }}>

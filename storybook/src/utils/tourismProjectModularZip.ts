@@ -70,6 +70,17 @@ export interface TourismProjectFormData {
   loanTerm: string;
   loanSanctionFiles: any[];
   repaymentScheduleFiles: any[];
+  // Step 3: Completion & Evidence
+  hasProjectCompleted: 'yes' | 'no';
+  completionDate: string;
+  expandedCategory: 'completion' | 'clearance' | 'photos' | null;
+  occupancyCertFiles: any[];
+  inspectionReportFiles: any[];
+  fireNocFiles: any[];
+  pollutionNocFiles: any[];
+  forestNocFiles: any[];
+  layoutMapFiles: any[];
+  projectPhotoFiles: any[];
   // Step 3: Components
   roomCount: string;
   diningCapacity: string;
@@ -109,6 +120,11 @@ export const PROJECT_NATURE_OPTIONS: RadioOption[] = [
 export const SANCTION_REVISED_OPTIONS: RadioOption[] = [
   { id: 'yes', label: 'Yes — an amended order was issued' },
   { id: 'no', label: 'No' },
+];
+
+export const PROJECT_COMPLETION_OPTIONS: RadioOption[] = [
+  { id: 'yes', label: 'Yes — it is built and operating' },
+  { id: 'no', label: 'No — it is still under construction' },
 ];
 
 export const BORROWED_OPTIONS: RadioOption[] = [
@@ -153,6 +169,16 @@ export const INITIAL_FORM_DATA: TourismProjectFormData = {
   loanTerm: '',
   loanSanctionFiles: [],
   repaymentScheduleFiles: [],
+  hasProjectCompleted: 'yes',
+  completionDate: '',
+  expandedCategory: 'completion',
+  occupancyCertFiles: [],
+  inspectionReportFiles: [],
+  fireNocFiles: [],
+  pollutionNocFiles: [],
+  forestNocFiles: [],
+  layoutMapFiles: [],
+  projectPhotoFiles: [],
   roomCount: '48',
   diningCapacity: '120',
   parkingSpaces: '60',
@@ -175,8 +201,8 @@ export const STEP_METADATA: Record<number, StepMeta> = {
     subtitle: 'What it cost, what you are claiming, and where the money came from.',
   },
   3: {
-    title: 'Components & facilities',
-    subtitle: 'Proposed facilities, room/visitor capacity, and investment breakup.',
+    title: 'Completion and evidence',
+    subtitle: 'Whether the project is finished, and the proof that it exists.',
   },
   4: {
     title: 'Clearances & documents',
@@ -265,6 +291,42 @@ export interface Step2FundingScreenProps {
 }
 
 export const Step2FundingScreen: React.FC<Step2FundingScreenProps> = ({
+  formData,
+  setFormData,
+}) => {
+  return (
+${jsx}
+  );
+};
+`;
+}
+
+function buildStep3EvidenceScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    '{/* ─── STEP 3: COMPLETION & EVIDENCE ─── */}',
+    '{/* ─── STEP 4:',
+    'Step3EvidenceScreen'
+  );
+
+  return `import React from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import Svg, { Path, Circle } from 'react-native-svg';
+import {
+  Ux4gRadioButton,
+  Ux4gFileUpload,
+  UX4GColors,
+} from 'ux4g-react-native-components';
+import { TourismProjectFormData } from '../types/tourismProject';
+import { PROJECT_COMPLETION_OPTIONS } from '../constants/formOptions';
+import { styles } from '../styles/commonStyles';
+
+export interface Step3EvidenceScreenProps {
+  formData: TourismProjectFormData;
+  setFormData: React.Dispatch<React.SetStateAction<TourismProjectFormData>>;
+}
+
+export const Step3EvidenceScreen: React.FC<Step3EvidenceScreenProps> = ({
   formData,
   setFormData,
 }) => {
@@ -475,6 +537,7 @@ export function buildTourismProjectModularProject(fullAppCode: string): Record<s
   files['src/components/NationalEmblem.tsx'] = NATIONAL_EMBLEM_SOURCE;
   files['src/screens/Step1ApprovalScreen.tsx'] = buildStep1ScreenFile(fullAppCode);
   files['src/screens/Step2FundingScreen.tsx'] = buildStep2FundingScreenFile(fullAppCode);
+  files['src/screens/Step3EvidenceScreen.tsx'] = buildStep3EvidenceScreenFile(fullAppCode);
 
   return files;
 }
