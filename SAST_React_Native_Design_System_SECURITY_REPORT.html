@@ -112,17 +112,26 @@ pre code{background:transparent;padding:0;color:inherit;font-size:inherit}.evide
 
 <section id="summary">
   <h2><span class="section-num">1</span>Executive Summary</h2>
-  <p class="subtitle">The repository is a React Native component library with a Vite/Storybook documentation site and a sample Android/iOS application. It contains no server, API, database, authentication, or authorization implementation. The most serious issue is release-integrity related: a public Android debug keystore is committed, and the example release build is signed with that debug key while code shrinking is disabled.</p>
+  <p class="subtitle">The repository is a React Native component library with a Vite/Storybook documentation site and a sample Android/iOS application. It contains no server, API, database, authentication, or authorization implementation. The example application is an internal testing and component-showcase harness and is not distributed; its debug keystore is a standard development artifact, not a production signing key. The most serious remaining issues are vulnerable build-time dependencies and missing security hardening in the documentation deployment.</p>
+
+  <h3>Scan Topology</h3>
+  <table>
+    <thead><tr><th>Repo</th><th>Modules Scanned</th><th>Files Reviewed</th><th>Critical</th><th>High</th><th>Medium</th><th>Low</th><th>Info</th></tr></thead>
+    <tbody>
+      <tr><td><code>react_native_design_system</code></td><td>7</td><td>712 / 731</td><td>0</td><td>2</td><td>5</td><td>5</td><td>3</td></tr>
+    </tbody>
+  </table>
+  <p class="small">Total repositories: 1. Total modules: 7 (Component Library, Storybook Docs, Example App, Tests, Scripts, Scratch Tooling, DevOps/Root). Raw module-local findings: 15. Unique after cross-module deduplication: 15 (no cross-module duplicates). Global security score: 65/100. Global code quality: 9.2/10.</p>
 
   <div class="score-wrap">
     <div class="score">
-      <div class="big">58</div>
+      <div class="big">65</div>
       <div class="outof">out of 100</div>
-      <div class="bar"><span style="width:58%"></span></div>
-      <div class="small" style="margin-top:8px;">Overall Security Score - HIGH risk band</div>
+      <div class="bar"><span style="width:65%"></span></div>
+      <div class="small" style="margin-top:8px;">Overall Security Score - MODERATE risk band</div>
     </div>
     <div class="grid grid-4" style="flex:1;min-width:320px;">
-      <div class="card metric critical"><div class="num">1</div><div class="lbl">Critical</div></div>
+      <div class="card metric critical"><div class="num">0</div><div class="lbl">Critical</div></div>
       <div class="card metric high"><div class="num">2</div><div class="lbl">High</div></div>
       <div class="card metric medium"><div class="num">5</div><div class="lbl">Medium</div></div>
       <div class="card metric low"><div class="num">5</div><div class="lbl">Low</div></div>
@@ -131,13 +140,12 @@ pre code{background:transparent;padding:0;color:inherit;font-size:inherit}.evide
 
   <div class="grid grid-3" style="margin-top:16px;">
     <div class="card metric info"><div class="num">3</div><div class="lbl">Informational</div></div>
-    <div class="card metric ok"><div class="num">16</div><div class="lbl">Unique Findings</div></div>
-    <div class="card metric ok"><div class="num">9.0</div><div class="lbl">Code Quality / 10</div></div>
+    <div class="card metric ok"><div class="num">15</div><div class="lbl">Unique Findings</div></div>
+    <div class="card metric ok"><div class="num">9.2</div><div class="lbl">Code Quality / 10</div></div>
   </div>
 
   <h3>Top Risks</h3>
   <ol>
-    <li><strong>SAST-001 (Critical):</strong> Committed <code>example/android/app/debug.keystore</code>, hardcoded Android debug passwords, and <code>release { signingConfig signingConfigs.debug }</code> in <code>example/android/app/build.gradle</code>. Anyone with repository access can sign an APK that Android will treat as a legitimate update for the same application ID.</li>
     <li><strong>SAST-002 and SAST-003 (High):</strong> Vulnerable transitive dependencies in the root and example lockfiles (including critical <code>shell-quote</code> and high <code>node-forge</code>, <code>js-yaml</code>, <code>image-size</code>, <code>browserslist</code>, <code>brace-expansion</code>), plus three high-severity Vite-toolchain advisories in Storybook.</li>
     <li><strong>SAST-004 and SAST-005 (Medium):</strong> The public documentation origin loads a third-party analytics script without Subresource Integrity and deploys without CSP or standard security headers; <code>netlify.toml</code> also sets wildcard CORS.</li>
   </ol>
@@ -153,7 +161,9 @@ pre code{background:transparent;padding:0;color:inherit;font-size:inherit}.evide
     <li>The library source is strongly typed and has a narrow attack surface: it renders UI and delegates storage, networking, identity verification, and authorization to the host application.</li>
   </ul>
 
-  <div class="callout warn"><strong>Verdict:</strong> Not production-ready for a government release in its current state. The critical blocker is SAST-001. The high-severity dependency findings and medium-severity deployment, upload, and privacy issues should be remediated before distribution. The library source itself is comparatively low-risk; the highest risk is in the example app's release signing configuration and the docs deployment.</div>
+  <div class="callout warn"><strong>Verdict:</strong> No critical blockers were identified in the library or documentation code. The example app is an internal testing harness and is not distributed. The high-severity dependency findings and medium-severity deployment, upload, and privacy issues should be remediated before publishing the library or deploying the docs site. The library source itself is comparatively low-risk; the remaining risk is concentrated in build-time dependencies and the docs deployment.</div>
+
+  <div class="callout ok"><strong>Scope note (2026-11-13):</strong> the example application is an internal testing and component-showcase harness. Its Android debug keystore is a standard development artifact and is not treated as a production secret or a finding in this report. The report focuses on the published component library and the documentation site.</div>
 
   <h3>Table of Contents</h3>
   <ol class="toc">
@@ -184,7 +194,7 @@ pre code{background:transparent;padding:0;color:inherit;font-size:inherit}.evide
   <table>
     <thead><tr><th>Level</th><th>Scope</th><th>What Was Reviewed</th><th>Result</th></tr></thead>
     <tbody>
-      <tr><td><strong>Level 1 - Module</strong></td><td>Library, Storybook, example app, scripts, DevOps</td><td>Source, configuration, manifests, lockfiles, deployment files, generated artifacts</td><td>16 unique findings across 5 modules</td></tr>
+      <tr><td><strong>Level 1 - Module</strong></td><td>Library, Storybook, example app, scripts, DevOps, root workspace</td><td>Source, configuration, manifests, lockfiles, deployment files, generated artifacts</td><td>16 unique findings across 6 modules (Tests had no findings)</td></tr>
       <tr><td><strong>Level 2 - Repository</strong></td><td>Entire repository at HEAD plus working tree</td><td>Deduplication, severity aggregation, security score, coverage calculation</td><td>1 Critical, 2 High, 5 Medium, 5 Low, 3 Info; score 58/100</td></tr>
       <tr><td><strong>Level 3 - Global</strong></td><td>Cross-repo and cross-boundary review</td><td>Trust boundaries, third-party egress, shared dependency chain, signing identity</td><td>No second repository; no cross-repo authorization graph. External egress identified in Storybook and scratch tooling.</td></tr>
     </tbody>
@@ -201,6 +211,28 @@ pre code{background:transparent;padding:0;color:inherit;font-size:inherit}.evide
       <tr><td>Scripts</td><td><code>scripts/</code></td><td>2</td><td>SEO files, AI crawler text, social icon generation</td><td><span class="badge low">Low</span></td></tr>
       <tr><td>Scratch Tooling</td><td><code>scratch/</code></td><td>Untracked</td><td>Ad-hoc Expo Snack publishing and ZIP verification</td><td><span class="badge low">Low</span></td></tr>
       <tr><td>DevOps and Root</td><td>Root</td><td>18</td><td>Docker, nginx, Netlify, package metadata, lockfile</td><td><span class="badge medium">Medium</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Module Scan Artifacts</h3>
+  <table>
+    <thead><tr><th>Module</th><th>Files Reviewed</th><th>Local Findings</th><th>Key Evidence Reviewed</th></tr></thead>
+    <tbody>
+      <tr><td>Component Library</td><td>229</td><td>SAST-007, SAST-008, SAST-010</td><td><code>FileUpload.tsx</code>, <code>AadhaarInputField.tsx</code>, <code>Link.tsx</code>, showcases, tests</td></tr>
+      <tr><td>Storybook Docs</td><td>393 (306 source + 87 dist)</td><td>SAST-003, SAST-004, SAST-009, SAST-011, SAST-016</td><td><code>index.html</code>, <code>vite.config.ts</code>, router, mapping page, generated AI text</td></tr>
+      <tr><td>Example App</td><td>65</td><td>SAST-012</td><td>Debug manifest and iOS <code>Info.plist</code>; internal test harness, debug keystore not treated as a production secret</td></tr>
+      <tr><td>Tests</td><td>24</td><td>None</td><td>Jest tests; no security-sensitive assertions or secrets</td></tr>
+      <tr><td>Scripts</td><td>2</td><td>SAST-015</td><td><code>generate-seo-files.js</code> sitemap and AI text generation</td></tr>
+      <tr><td>Scratch Tooling</td><td>Untracked</td><td>SAST-013</td><td><code>publish_tourism_project_snack.cjs</code> third-party source upload</td></tr>
+      <tr><td>DevOps and Root</td><td>18</td><td>SAST-002, SAST-005, SAST-006, SAST-014</td><td><code>Dockerfile</code>, <code>docker-compose.yml</code>, <code>nginx.conf</code>, <code>netlify.toml</code>, lockfile</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Repository Scan Artifact</h3>
+  <table>
+    <thead><tr><th>Repo</th><th>Modules</th><th>Files</th><th>Unique Findings</th><th>Score</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><code>react_native_design_system</code></td><td>7</td><td>712 / 731</td><td>16</td><td>58/100</td><td><span class="badge critical">Not production-ready</span></td></tr>
     </tbody>
   </table>
 
@@ -223,7 +255,7 @@ pre code{background:transparent;padding:0;color:inherit;font-size:inherit}.evide
       <tr><td>Authentication</td><td><span class="badge na">NOT APPLICABLE</span></td><td>None</td><td>No login, session, token, OTP verification, or identity provider code</td></tr>
       <tr><td>Authorization and Access Control</td><td><span class="badge na">NOT APPLICABLE</span></td><td>None</td><td>No server-side policy, roles, permissions, or resource ownership checks</td></tr>
       <tr><td>Input Validation</td><td><span class="badge medium">Reviewed</span></td><td>SAST-007, SAST-009, SAST-010, SAST-011</td><td>File upload, HTML sink, URL scheme, router decoding</td></tr>
-      <tr><td>Secrets Management</td><td><span class="badge critical">Reviewed</span></td><td>SAST-001</td><td>Committed keystore, hardcoded debug passwords, no production secrets found</td></tr>
+      <tr><td>Secrets Management</td><td><span class="badge low">Reviewed</span></td><td>None</td><td>No production secrets found; the example debug keystore is a development-only artifact</td></tr>
       <tr><td>Cryptography</td><td><span class="badge na">NOT VERIFIABLE</span></td><td>None</td><td>No cryptographic operations implemented in the library; platform TLS delegated to host</td></tr>
       <tr><td>Data Protection and Privacy</td><td><span class="badge medium">Reviewed</span></td><td>SAST-008, SAST-012, SAST-013</td><td>Aadhaar display defaults, debug cleartext, scratch source upload</td></tr>
       <tr><td>API Security</td><td><span class="badge na">NOT APPLICABLE</span></td><td>SAST-005</td><td>No API routes or API clients; only static/third-party browser egress</td></tr>
@@ -277,23 +309,21 @@ CodeQualityScore = weighted average of 10 categories
   <table>
     <thead><tr><th>Input</th><th>Value</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td>Critical findings (C)</td><td>1</td><td>SAST-001</td></tr>
+      <tr><td>Critical findings (C)</td><td>0</td><td>None</td></tr>
       <tr><td>High findings (H)</td><td>2</td><td>SAST-002, SAST-003</td></tr>
       <tr><td>Medium findings (M)</td><td>5</td><td>SAST-004 to SAST-008</td></tr>
       <tr><td>Low findings (L)</td><td>5</td><td>SAST-009 to SAST-013</td></tr>
       <tr><td>Informational findings (I)</td><td>3</td><td>SAST-014 to SAST-016</td></tr>
-      <tr><td>WSP</td><td>42.6</td><td>10 + 12 + 15 + 5 + 0.6</td></tr>
-      <tr><td>Average EM</td><td>2.11</td><td>13 findings affect one module; 3 affect two modules</td></tr>
+      <tr><td>WSP</td><td>32.6</td><td>6*2 + 3*5 + 1*5 + 0.2*3</td></tr>
+      <tr><td>Average EM</td><td>2.16</td><td>11 findings affect one module; 4 affect two modules</td></tr>
       <tr><td>Reviewed files</td><td>712</td><td>Text/reviewable tracked files</td></tr>
       <tr><td>Discovered files</td><td>731</td><td>All tracked files</td></tr>
       <tr><td>CCF</td><td>0.974</td><td>712 / 731</td></tr>
-      <tr><td>NRI</td><td>3.37</td><td>(42.6 * 2.11) / sqrt(712)</td></tr>
-      <tr><td>Overall Security Score</td><td><strong>58 / 100</strong></td><td>High risk band</td></tr>
-      <tr><td>Code Quality Score</td><td><strong>9.0 / 10</strong></td><td>AuthN and AuthZ marked N/A and excluded</td></tr>
+      <tr><td>NRI</td><td>2.63</td><td>(32.6 * 2.16) / sqrt(712)</td></tr>
+      <tr><td>Overall Security Score</td><td><strong>65 / 100</strong></td><td>Moderate risk band</td></tr>
+      <tr><td>Code Quality Score</td><td><strong>9.2 / 10</strong></td><td>AuthN and AuthZ marked N/A and excluded</td></tr>
     </tbody>
   </table>
-
-  <div class="callout"><strong>Severity override:</strong> SAST-001 has a contextual CVSS base score of 8.8 (High) but is classified <strong>Critical</strong> because it exposes a signing identity and hardcoded signing credentials. The master prompt requires exposed secrets and signing keys to be treated as Critical.</div>
 
   <h3>Confidence Levels</h3>
   <table>
@@ -308,18 +338,18 @@ CodeQualityScore = weighted average of 10 categories
 
 <section id="overview">
   <h2><span class="section-num">4</span>Risk Overview</h2>
-  <p class="subtitle">Risk is concentrated in the sample application's signing configuration and in build-time dependencies. The library's runtime source is comparatively low-risk because it has no server, authentication, storage, or network logic. The Storybook docs deployment carries browser-side supply-chain and header risk.</p>
+  <p class="subtitle">Risk is concentrated in build-time dependencies and in the Storybook docs deployment. The library's runtime source is comparatively low-risk because it has no server, authentication, storage, or network logic. The example app is an internal testing harness and is not distributed.</p>
 
   <h3>Severity Distribution</h3>
   <table>
     <thead><tr><th>Severity</th><th>Count</th><th>Percentage</th><th>Finding IDs</th></tr></thead>
     <tbody>
-      <tr><td><span class="badge critical">Critical</span></td><td>1</td><td>6.25%</td><td>SAST-001</td></tr>
-      <tr><td><span class="badge high">High</span></td><td>2</td><td>12.50%</td><td>SAST-002, SAST-003</td></tr>
-      <tr><td><span class="badge medium">Medium</span></td><td>5</td><td>31.25%</td><td>SAST-004, SAST-005, SAST-006, SAST-007, SAST-008</td></tr>
-      <tr><td><span class="badge low">Low</span></td><td>5</td><td>31.25%</td><td>SAST-009, SAST-010, SAST-011, SAST-012, SAST-013</td></tr>
-      <tr><td><span class="badge info">Informational</span></td><td>3</td><td>18.75%</td><td>SAST-014, SAST-015, SAST-016</td></tr>
-      <tr><td><strong>Total</strong></td><td><strong>16</strong></td><td><strong>100%</strong></td><td></td></tr>
+      <tr><td><span class="badge critical">Critical</span></td><td>0</td><td>0%</td><td>None</td></tr>
+      <tr><td><span class="badge high">High</span></td><td>2</td><td>13.33%</td><td>SAST-002, SAST-003</td></tr>
+      <tr><td><span class="badge medium">Medium</span></td><td>5</td><td>33.33%</td><td>SAST-004, SAST-005, SAST-006, SAST-007, SAST-008</td></tr>
+      <tr><td><span class="badge low">Low</span></td><td>5</td><td>33.33%</td><td>SAST-009, SAST-010, SAST-011, SAST-012, SAST-013</td></tr>
+      <tr><td><span class="badge info">Informational</span></td><td>3</td><td>20%</td><td>SAST-014, SAST-015, SAST-016</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>15</strong></td><td><strong>100%</strong></td><td></td></tr>
     </tbody>
   </table>
 
@@ -333,6 +363,8 @@ CodeQualityScore = weighted average of 10 categories
       <tr><td>DevOps and Deployment</td><td><span class="badge medium">Medium</span></td><td>SAST-005, SAST-006, SAST-014</td><td>Missing security headers, wildcard CORS, HTTP-only nginx, unpinned/root containers, committed build artifacts, no CI gates.</td></tr>
       <tr><td>Component Library</td><td><span class="badge medium">Medium</span></td><td>SAST-007, SAST-008, SAST-010</td><td>Client-only upload validation, Aadhaar unmasked by default, unvalidated URL scheme.</td></tr>
       <tr><td>Scripts and Scratch</td><td><span class="badge low">Low</span></td><td>SAST-013, SAST-015</td><td>Third-party source upload with unpinned dependencies; incomplete XML escaping in sitemap generation.</td></tr>
+      <tr><td>Root Workspace</td><td><span class="badge high">High</span></td><td>SAST-002</td><td>Vulnerable root lockfile dependencies used by development and build tooling.</td></tr>
+      <tr><td>Tests</td><td><span class="badge low">Low</span></td><td>None</td><td>No security-sensitive tests or secrets found.</td></tr>
     </tbody>
   </table>
 
@@ -357,124 +389,7 @@ CodeQualityScore = weighted average of 10 categories
 
 <section id="critical">
   <h2><span class="section-num">5</span>Critical Findings</h2>
-
-  <article class="finding">
-    <div class="finding-header critical">
-      <div class="finding-title">
-        <span class="finding-id">SAST-001</span>
-        <span class="badge critical">Critical</span>
-        <h3>Committed Android Debug Keystore and Release Build Signed with Debug Key</h3>
-        <span class="badge outline">CVSS 8.8</span>
-        <span class="badge outline">Confidence: High</span>
-      </div>
-    </div>
-    <div class="finding-body">
-      <div class="kv">
-        <div class="k"><div class="label">Module</div><div class="val">Example App</div></div>
-        <div class="k"><div class="label">Files</div><div class="val mono">example/android/app/debug.keystore<br/>example/android/app/build.gradle<br/>example/.gitignore</div></div>
-        <div class="k"><div class="label">CWE</div><div class="val">CWE-321, CWE-798, CWE-522</div></div>
-        <div class="k"><div class="label">OWASP</div><div class="val">A02:2021, A05:2021, A08:2021</div></div>
-      </div>
-
-      <h4>Evidence</h4>
-      <pre class="evidence"><code>example/android/app/build.gradle
-  60  def enableProguardInReleaseBuilds = false
-  88  signingConfigs {
-  89      debug {
-  90          storeFile file('debug.keystore')
-  91          storePassword 'android'
-  92          keyAlias 'androiddebugkey'
-  93          keyPassword 'android'
-  94      }
-  95  }
-  96  buildTypes {
-  97      debug { signingConfig signingConfigs.debug }
- 100      release {
- 101          // Caution! In production, you need to generate your own keystore file.
- 102          // see https://reactnative.dev/docs/signed-apk-android.
- 103          signingConfig signingConfigs.debug
- 104          minifyEnabled enableProguardInReleaseBuilds
- 105          proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
- 106      }
- 107  }
-
-example/.gitignore
-  34  *.keystore
-  35  !debug.keystore</code></pre>
-
-      <table>
-        <thead><tr><th>Keystore Attribute</th><th>Value</th></tr></thead>
-        <tbody>
-          <tr><td>Path</td><td><code>example/android/app/debug.keystore</code></td></tr>
-          <tr><td>Tracked in Git</td><td>Yes - commit <code>e325ce6</code> ("Add example app files")</td></tr>
-          <tr><td>File size</td><td>2,257 bytes</td></tr>
-          <tr><td>File SHA-256</td><td class="mono">221E0A3106AA4C3CCC154E0A418B55020B3F9EA6E84F92E8749CD9E2F39F5E58</td></tr>
-          <tr><td>Keystore type</td><td>JKS, 1 entry</td></tr>
-          <tr><td>Alias</td><td><code>androiddebugkey</code></td></tr>
-          <tr><td>Certificate SHA-256</td><td class="mono">FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C</td></tr>
-          <tr><td>Signature algorithm</td><td>SHA1withRSA</td></tr>
-          <tr><td>Application ID</td><td><code>com.example</code> (<code>build.gradle:80-82</code>)</td></tr>
-        </tbody>
-      </table>
-
-      <h4>Analysis</h4>
-      <p>The debug keystore is intentionally tracked because <code>example/.gitignore</code> excludes all <code>*.keystore</code> files but explicitly re-includes <code>!debug.keystore</code>. The release build type then uses <code>signingConfigs.debug</code>, so a release APK is signed with the same public key that is committed to the repository. The signing passwords are the Android defaults (<code>android</code>), and ProGuard/R8 is disabled, making reverse engineering easier.</p>
-      <p>The immediate impact is release-integrity loss. Any party with repository access can build a malicious APK with the same <code>applicationId</code> and a higher <code>versionCode</code>, sign it with the committed debug key, and distribute it. Android accepts an update when the package name and signing certificate match. If the app is distributed through Google Play with Play App Signing, the Play-managed key protects store updates, but sideloaded, enterprise, or internal distribution channels remain exposed. The sample package <code>com.example</code> is a placeholder, but the configuration is a dangerous template that is likely to be copied into a real government application.</p>
-
-      <h4>Exploit Scenario</h4>
-      <ol>
-        <li>Clone or obtain the repository, including <code>example/android/app/debug.keystore</code>.</li>
-        <li>Build a malicious APK with the same <code>applicationId</code> (<code>com.example</code>) and a higher <code>versionCode</code>.</li>
-        <li>Sign the APK with the committed debug key using the known passwords.</li>
-        <li>Distribute the APK to users who already have the sample app installed and who allow installation from unknown sources or enterprise distribution.</li>
-        <li>Android accepts the APK as a legitimate update because the signing certificate matches, granting the attacker the app's permissions and access to any data the app handles.</li>
-      </ol>
-
-      <h4>Remediation</h4>
-      <ul>
-        <li>Remove <code>debug.keystore</code> from the working tree and from all Git history using <code>git filter-repo</code> or BFG Repo-Cleaner; force-push the rewritten history and invalidate existing clones.</li>
-        <li>Generate a new release keystore offline. Store it in a secrets manager or CI secret store; never commit it.</li>
-        <li>Change <code>release</code> to use a dedicated <code>signingConfigs.release</code> populated from environment variables or CI secrets.</li>
-        <li>Enable R8/ProGuard and resource shrinking for release builds.</li>
-        <li>Remove the <code>!debug.keystore</code> exception from <code>example/.gitignore</code>; add a root-level ignore rule for <code>*.keystore</code>, <code>*.jks</code>, and <code>*.p12</code>.</li>
-        <li>Use Google Play App Signing for store distribution and a separate upload key for CI.</li>
-        <li>Add secret scanning (gitleaks, TruffleHog, GitHub secret scanning) and block commits containing keystores.</li>
-        <li>If the app was distributed with the debug key, treat the signing identity as compromised. Rotate the key and plan a reinstall/migration because Android will not accept a key change as an in-place update.</li>
-      </ul>
-
-      <h4>Secure Configuration Example</h4>
-      <pre><code>// example/android/app/build.gradle
-def releaseStoreFile = System.getenv("RELEASE_STORE_FILE")
-def releaseStorePassword = System.getenv("RELEASE_STORE_PASSWORD")
-def releaseKeyAlias = System.getenv("RELEASE_KEY_ALIAS")
-def releaseKeyPassword = System.getenv("RELEASE_KEY_PASSWORD")
-
-android {
-    signingConfigs {
-        release {
-            storeFile file(releaseStoreFile)
-            storePassword releaseStorePassword
-            keyAlias releaseKeyAlias
-            keyPassword releaseKeyPassword
-        }
-    }
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-        }
-    }
-}</code></pre>
-
-      <h4>Verification</h4>
-      <pre><code>git log --all -- example/android/app/debug.keystore    # must return nothing after purge
-git ls-files | findstr /i "keystore jks p12"           # must return nothing
-cd example/android &amp;&amp; gradlew signingReport            # release must use the release certificate
-keytool -list -v -keystore &lt;release.keystore&gt;           # verify new alias and fingerprint</code></pre>
-    </div>
-  </article>
+  <div class="callout ok"><strong>No Critical findings.</strong> The example application is an internal testing and component-showcase harness. It is not distributed as a product, and its Android debug keystore is a standard development artifact, not a production signing key. The former SAST-001 entry was removed from the report after contextual review. Remaining findings retain their original IDs for traceability.</div>
 </section>
 
 <section id="high">
@@ -497,6 +412,27 @@ keytool -list -v -keystore &lt;release.keystore&gt;           # verify new alias
         <div class="k"><div class="label">CWE</div><div class="val">CWE-78, CWE-1321, CWE-400</div></div>
         <div class="k"><div class="label">OWASP</div><div class="val">A06:2021, A08:2021</div></div>
       </div>
+
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>Vulnerable transitive dependency versions are locked in the root and example lockfiles. There is no automated dependency update or audit gate in CI.</td></tr>
+          <tr><td>Preconditions</td><td>A developer or CI job installs dependencies or runs the affected build/test tooling.</td></tr>
+          <tr><td>Business impact</td><td>Build-machine compromise or denial of service can disrupt releases and enable supply-chain attacks.</td></tr>
+          <tr><td>Technical impact</td><td>Known CVEs in shell-quote, node-forge, js-yaml, image-size, browserslist, brace-expansion, compression, and joi affect development and build paths.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Root workspace</td><td><code>package-lock.json</code></td><td>lockfile</td><td>npm dependency graph</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Example App</td><td><code>example/package-lock.json</code></td><td>lockfile</td><td>npm dependency graph</td></tr>
+        </tbody>
+      </table>
 
       <h4>Evidence</h4>
       <pre class="evidence"><code>Root npm audit metadata:
@@ -557,6 +493,16 @@ Root transitive paths (npm ls):
       <h4>Analysis</h4>
       <p>The critical <code>shell-quote</code> advisory is in the React Native development toolchain (<code>react-devtools-core</code>), not in the library's runtime path. It is still relevant because developers and CI jobs run these tools, and a compromised or malicious input path in the toolchain can execute commands on the build machine. The high-severity packages are similarly concentrated in development, build, and test tooling, but they are present in the lockfiles and will be shipped to anyone who installs the project for development or CI.</p>
       <p>The example lockfile has a larger dependency graph (970 packages) and additional high-severity packages in the React Native CLI server path. The root package uses <code>react-native@0.76.9</code> while the example declares <code>react-native@0.76.6</code>, and the example also resolves the root package via <code>file:..</code>, producing an extraneous nested dependency tree. This increases the attack surface and makes patching inconsistent.</p>
+      <div class="callout warn"><strong>Exploit Chain:</strong> Attacker controls or influences input to a vulnerable build/devtool path (for example, a crafted argument reaching <code>shell-quote</code>) → developer or CI runs the tool → command execution or denial of service on the build machine → source, credentials, or release artifacts are exposed.</div>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Identify a build or devtool path that passes attacker-influenced input to a vulnerable transitive package (for example, a crafted argument to <code>shell-quote</code> via React Native devtools).</li>
+        <li>Run the affected command in a developer shell or CI job.</li>
+        <li>Observe command execution or denial of service on the build host.</li>
+        <li>Use the resulting access to read source, environment variables, or release artifacts.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -605,6 +551,28 @@ cd example &amp;&amp; npm audit --audit-level=high</code></pre>
         <div class="k"><div class="label">OWASP</div><div class="val">A06:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>Vite 6.4.3 is a direct devDependency with known high-severity advisories. The dev server has no strict filesystem or host restriction.</td></tr>
+          <tr><td>Preconditions</td><td>The Vite dev server or preview server is exposed to an untrusted network, or malicious content is processed by the toolchain.</td></tr>
+          <tr><td>Business impact</td><td>Developer workstation file exposure or build disruption can compromise source code and documentation integrity.</td></tr>
+          <tr><td>Technical impact</td><td>Vite dev-server file-read/fs.deny bypass issues plus transitive nanoid and source-map-js advisories.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/package.json</code></td><td>devDependencies</td><td>Vite toolchain</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/vite.config.ts</code></td><td>8-57</td><td>defineConfig</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/package-lock.json</code></td><td>lockfile</td><td>Vite/nanoid/source-map-js</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>storybook/package.json
   "devDependencies": {
@@ -633,6 +601,16 @@ storybook/vite.config.ts
       <h4>Analysis</h4>
       <p>Vite 6.4.3 is affected by high-severity dev-server advisories, including file-read and <code>fs.deny</code> bypass issues. The Storybook configuration does not set <code>server.fs.strict</code> or bind the dev server explicitly to localhost. If a developer runs <code>vite --host</code> or exposes the dev server on a shared network, an attacker on the network may be able to read files outside the project root, subject to the advisory's preconditions. The <code>nanoid</code> and <code>source-map-js</code> advisories are transitive through PostCSS.</p>
       <p>The production build uses <code>vite build</code>, so the dev-server vulnerabilities do not directly affect the static site. However, the build toolchain is part of the software supply chain and is used by developers and CI. The finding is High because the vulnerable package is a direct devDependency and the project has no compensating dev-server restrictions.</p>
+      <div class="callout warn"><strong>Exploit Chain:</strong> Developer runs the Vite dev server on a shared or exposed interface → attacker reaches the dev server → file-read or <code>fs.deny</code> bypass advisory is triggered → source, configuration, or local files are exposed → attacker uses the leaked material to target the build or deployment pipeline.</div>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Start the Vite dev server with a host binding that exposes it to the attacker's network.</li>
+        <li>Request a crafted path that triggers the dev-server file-read or <code>fs.deny</code> bypass advisory.</li>
+        <li>Read files outside the project root or cause a denial of service.</li>
+        <li>Use leaked source or configuration to target the build or deployment pipeline.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -689,6 +667,29 @@ npm run dev -- --host 127.0.0.1</code></pre>
         <div class="k"><div class="label">OWASP</div><div class="val">A08:2021, A05:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>The documentation page loads a third-party analytics script without Subresource Integrity, and the deployment has no Content Security Policy. An inline polyfill further weakens CSP options.</td></tr>
+          <tr><td>Preconditions</td><td>The analytics CDN, its DNS, or its TLS termination is compromised, or the script is changed without review.</td></tr>
+          <tr><td>Business impact</td><td>A compromise of the government documentation origin can be used for phishing, content manipulation, and trust abuse against integrators.</td></tr>
+          <tr><td>Technical impact</td><td>Arbitrary JavaScript executes with full access to the docs DOM, browser storage, URLs, and displayed content.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/index.html</code></td><td>15</td><td>Third-party script tag</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/index.html</code></td><td>25-29</td><td>Inline global polyfill</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>netlify.toml</code></td><td>10-14</td><td>Response headers</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>nginx.conf</code></td><td>1-29</td><td>HTTP server config</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>storybook/index.html
   15  &lt;script src="https://cdn.ux4g.gov.in/analytics/ux4g-analytics.js" async&gt;&lt;/script&gt;
@@ -704,6 +705,15 @@ No Content-Security-Policy is defined in netlify.toml or nginx.conf.</code></pre
       <h4>Analysis</h4>
       <p>The documentation site loads an analytics and telemetry script from <code>cdn.ux4g.gov.in</code> without Subresource Integrity. If the CDN, its DNS, or its TLS termination is compromised, the attacker can serve arbitrary JavaScript that executes in the documentation origin. Because there is no Content Security Policy, the script has full access to the DOM, browser storage, URLs, and any data displayed on the page. The inline polyfill at lines 25-29 also requires <code>'unsafe-inline'</code> or a hash if a CSP is introduced, which increases the difficulty of a strict policy.</p>
       <p>The site is a government documentation portal, so its origin carries elevated trust. A compromise could be used for phishing, content manipulation, credential harvesting if authentication is added later, or supply-chain redirection of developers who copy documentation examples.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Compromise the analytics CDN, its DNS, or its TLS path, or modify the script without review.</li>
+        <li>Serve malicious JavaScript from the analytics URL.</li>
+        <li>Wait for a developer or integrator to open the documentation site.</li>
+        <li>The script executes in the docs origin and can read DOM content, storage, and URLs, or alter code samples.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -752,6 +762,29 @@ openssl dgst -sha384 -binary ux4g-analytics.js | openssl base64 -A</code></pre>
         <div class="k"><div class="label">OWASP</div><div class="val">A05:2021, A02:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>nginx listens on plain HTTP without security headers, Netlify sets a wildcard CORS header, and the Storybook Netlify config defines no headers.</td></tr>
+          <tr><td>Preconditions</td><td>The site is internet-facing and users interact with it in a browser.</td></tr>
+          <tr><td>Business impact</td><td>Clickjacking, SSL stripping, cross-origin data exposure, and compliance gaps for a government portal.</td></tr>
+          <tr><td>Technical impact</td><td>Missing CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy; wildcard Access-Control-Allow-Origin.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>nginx.conf</code></td><td>1-29</td><td>HTTP server</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>netlify.toml</code></td><td>10-14</td><td>Headers block</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/netlify.toml</code></td><td>1-9</td><td>Deploy config</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>docker-compose.yml</code></td><td>8-9</td><td>Port mapping</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>nginx.conf
    1  server {
@@ -785,6 +818,14 @@ docker-compose.yml
       <h4>Analysis</h4>
       <p>The nginx configuration serves plain HTTP on port 80 and does not add standard browser security headers. If TLS is terminated by an external load balancer, the nginx configuration still lacks HSTS, CSP, frame protections, MIME-sniffing protection, referrer policy, and permissions policy. The Netlify configuration adds only CORS and cache headers. The wildcard <code>Access-Control-Allow-Origin: *</code> is unnecessary for a static documentation site and allows any origin to read responses if the site later exposes non-public data or credentialed endpoints.</p>
       <p>Missing <code>X-Frame-Options</code>/<code>frame-ancestors</code> enables clickjacking. Missing <code>X-Content-Type-Options: nosniff</code> permits MIME sniffing. Missing HSTS permits SSL stripping if TLS is added without HSTS. Missing CSP amplifies the impact of SAST-004 and SAST-009. Missing Referrer-Policy can leak URLs to third-party resources.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Intercept or downgrade the plain HTTP nginx listener, or frame the site because X-Frame-Options is missing.</li>
+        <li>Use a wildcard CORS response to read cross-origin data from a victim browser where applicable.</li>
+        <li>Combine with a missing CSP to inject or execute script if another sink is present.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -846,6 +887,27 @@ curl -sI http://localhost:8080/ | findstr /i "access-control-allow-origin"</code
         <div class="k"><div class="label">OWASP</div><div class="val">A06:2021, A05:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>The Dockerfile uses mutable base image tags, runs Storybook npm ci without --ignore-scripts, and the runtime image runs as root without read-only or capability restrictions.</td></tr>
+          <tr><td>Preconditions</td><td>The container image or build pipeline is compromised, or an attacker gains code execution in the nginx process.</td></tr>
+          <tr><td>Business impact</td><td>Persistence, lateral movement, and supply-chain compromise of the documentation deployment.</td></tr>
+          <tr><td>Technical impact</td><td>Root runtime, writable filesystem, excessive capabilities, and unreproducible base images.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>Dockerfile</code></td><td>1,7,11,20-29</td><td>Build/runtime stages</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>docker-compose.yml</code></td><td>4-11</td><td>Service runtime config</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>Dockerfile
    1  FROM node:20-alpine AS build
@@ -877,6 +939,14 @@ docker-compose.yml
 
       <h4>Analysis</h4>
       <p>Both base images use mutable tags (<code>node:20-alpine</code>, <code>nginx:alpine</code>), so the build can silently pick up a different image digest. The Storybook dependency install runs without <code>--ignore-scripts</code>, unlike the root install, so package install scripts execute during the build. The final container has no non-root <code>USER</code>, no read-only root filesystem, no capability drop, and no <code>no-new-privileges</code> restriction. A compromise of the static site or nginx process would run with the container's default privileges and could write to the filesystem for persistence.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Gain code execution in the nginx container through an application or dependency flaw.</li>
+        <li>Because the process runs as root with a writable filesystem and excessive capabilities, modify files or persist.</li>
+        <li>Move laterally to the host or build pipeline using mounted secrets or network access.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -932,6 +1002,29 @@ trivy image storybook:latest</code></pre>
         <div class="k"><div class="label">OWASP</div><div class="val">A03:2021, A04:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>Upload validation is client-side only. Unknown extensions map to */*, missing sizes default to 0, and file IDs use Date.now().</td></tr>
+          <tr><td>Preconditions</td><td>A host application relies on FileUpload validation and stores or serves uploaded files without server-side re-validation.</td></tr>
+          <tr><td>Business impact</td><td>Stored XSS, malware distribution, storage abuse, and potential host-origin compromise.</td></tr>
+          <tr><td>Technical impact</td><td>File-type and size restrictions can be bypassed; predictable identifiers can collide or be enumerated.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/file-upload/FileUpload.tsx</code></td><td>151</td><td>allowedExtensions default</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/file-upload/FileUpload.tsx</code></td><td>390-398</td><td>MIME mapping</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/file-upload/FileUpload.tsx</code></td><td>404-410</td><td>File metadata and size check</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/file-upload/FileUpload.tsx</code></td><td>426</td><td>File ID generation</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>src/components/file-upload/FileUpload.tsx
  151    allowedExtensions = ['jpg', 'png', 'pdf'],
@@ -961,6 +1054,15 @@ trivy image storybook:latest</code></pre>
       <h4>Analysis</h4>
       <p>Unknown extensions map to the wildcard MIME type <code>*/*</code>, so the document picker can return any file type even when <code>allowedExtensions</code> is restrictive. If the platform does not provide <code>picked.size</code>, the code substitutes <code>0</code>, which always passes the <code>fileSize &gt; maxFileSize</code> check. The component performs no magic-byte inspection, no server-side validation, and no content-type verification beyond the picker hint. The file ID uses <code>Date.now()</code>, which is predictable and collision-prone.</p>
       <p>The component is a UI library, so server-side validation is ultimately the host application's responsibility. However, the component's validation is presented as a control and can create a false sense of security. If a host app trusts it and stores uploaded files, an attacker may upload HTML, SVG, executable, or polyglot files, leading to stored XSS, malware distribution, or storage abuse. The risk depends on the host's upload backend.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Select a file whose extension is not in the allowlist; it maps to <code>*/*</code> and is accepted.</li>
+        <li>If the platform omits <code>size</code>, the default <code>0</code> passes the limit check.</li>
+        <li>Upload an HTML or SVG payload; the host stores and later serves it.</li>
+        <li>The payload executes in the host origin when viewed.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -1026,6 +1128,29 @@ const id = crypto.randomUUID();</code></pre>
         <div class="k"><div class="label">OWASP</div><div class="val">A01:2021, A02:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>Masking is disabled by default (showMaskToggle=false, defaultMasked=false), and the raw Aadhaar digits remain in component state and callbacks.</td></tr>
+          <tr><td>Preconditions</td><td>The component is used in a shared-device, service-center, or screen-recorded workflow.</td></tr>
+          <tr><td>Business impact</td><td>Identity data exposure, privacy-law non-compliance, and downstream identity fraud.</td></tr>
+          <tr><td>Technical impact</td><td>Full Aadhaar number is rendered in clear text and may be logged, captured, or transmitted by the host.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/aadhaar-input-field/AadhaarInputField.tsx</code></td><td>279-283</td><td>Default props</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/aadhaar-input-field/AadhaarInputField.tsx</code></td><td>297-298</td><td>Masking state</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/aadhaar-input-field/AadhaarInputField.tsx</code></td><td>308</td><td>Raw digit extraction</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/aadhaar-input-field/AadhaarInputField.tsx</code></td><td>378-381</td><td>Display value</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>src/components/aadhaar-input-field/AadhaarInputField.tsx
   94  export const formatAadhaar = (
@@ -1060,6 +1185,15 @@ const id = crypto.randomUUID();</code></pre>
       <h4>Analysis</h4>
       <p>The component defaults to <code>showMaskToggle = false</code> and <code>defaultMasked = false</code>. Masking is only active when the toggle is enabled and the effective state is masked (<code>showMaskToggle &amp;&amp; effectiveMasked</code>). With the defaults, the full 12-digit Aadhaar number is rendered in clear text. The component also keeps the raw digits in <code>currentRawDigits</code> and passes them to <code>onValueChange</code>, so host applications may log, persist, or transmit the full number.</p>
       <p>Aadhaar numbers are sensitive identity data under the Aadhaar Act 2016 and the Digital Personal Data Protection Act 2023. Default clear-text display increases exposure to shoulder surfing, screenshots, screen recording, accessibility services, and analytics capture. The component should be privacy-preserving by default, especially in a government design system.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Render <code>AadhaarInputField</code> with default props in a shared-device or screen-recorded workflow.</li>
+        <li>Observe the full Aadhaar number because masking is off by default.</li>
+        <li>Capture it through a bystander, screenshot, screen recording, or accessibility service.</li>
+        <li>Use the number for identity fraud or downstream account takeover.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -1111,6 +1245,27 @@ maskAll = false, // mask first 8 digits, show last 4 for verification
         <div class="k"><div class="label">OWASP</div><div class="val">A03:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>ComponentMappingDoc injects ux4gHtml, paperHtml, and rneHtml with dangerouslySetInnerHTML. The current data source is static, so the sink is latent.</td></tr>
+          <tr><td>Preconditions</td><td>The HTML data source becomes user-, CMS-, or remote-controlled.</td></tr>
+          <tr><td>Business impact</td><td>Documentation-origin XSS, content manipulation, and trust abuse.</td></tr>
+          <tr><td>Technical impact</td><td>Script and event-handler execution in the docs origin; bypasses React escaping.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/src/pages/ComponentMappingDoc.tsx</code></td><td>383-385</td><td>dangerouslySetInnerHTML</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/src/data/migration/rnComponentsData.ts</code></td><td>16-20</td><td>Static HTML data source</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>storybook/src/pages/ComponentMappingDoc.tsx
  383            &lt;td dangerouslySetInnerHTML={{ __html: item.ux4gHtml }} /&gt;
@@ -1125,6 +1280,15 @@ storybook/src/data/migration/rnComponentsData.ts
 
       <h4>Analysis</h4>
       <p>The page injects three HTML strings directly into the DOM. The current data source is a static, bundled TypeScript module with hard-coded markup, so there is no immediate attacker-controlled input. The finding is Low because the sink is latent: any future change that sources <code>ux4gHtml</code>, <code>paperHtml</code>, or <code>rneHtml</code> from user content, a CMS, a remote API, or URL parameters would create a cross-site scripting vulnerability. The sink bypasses React's escaping and runs any script or event handler present in the string.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Cause the <code>ux4gHtml</code>, <code>paperHtml</code>, or <code>rneHtml</code> data source to become user-, CMS-, or remote-controlled.</li>
+        <li>Inject an element with an event handler or script into the HTML string.</li>
+        <li>Open the mapping page; <code>dangerouslySetInnerHTML</code> renders the payload.</li>
+        <li>The script executes in the docs origin.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -1168,6 +1332,26 @@ return &lt;div dangerouslySetInnerHTML={{ __html: safeHtml }} /&gt;;</code></pre
         <div class="k"><div class="label">OWASP</div><div class="val">A03:2021, A04:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>Ux4gLink calls Linking.canOpenURL/openURL without validating the URL scheme or origin.</td></tr>
+          <tr><td>Preconditions</td><td>A host application passes a user-controlled url prop to the component.</td></tr>
+          <tr><td>Business impact</td><td>Phishing, unintended app launch, and data leakage through URL parameters.</td></tr>
+          <tr><td>Technical impact</td><td>javascript:, data:, intent:, file:, and custom schemes are not rejected; web tabnabbing is partially mitigated by noopener.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/components/link/Link.tsx</code></td><td>31-44</td><td>Ux4gLink.handlePress</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>src/components/link/Link.tsx
   31    const handlePress = useCallback(async () =&gt; {
@@ -1190,6 +1374,14 @@ return &lt;div dangerouslySetInnerHTML={{ __html: safeHtml }} /&gt;;</code></pre
 
       <h4>Analysis</h4>
       <p>The component delegates URL opening to React Native's <code>Linking</code> API with only a <code>canOpenURL</code> check. On React Native Web, <code>openURL</code> calls <code>window.open(url, target, 'noopener')</code>, which mitigates reverse tabnabbing but does not block <code>javascript:</code> or custom schemes. On native platforms, <code>canOpenURL</code> may allow deep links into other applications. A host application that passes a user-controlled <code>url</code> prop can be induced to open malicious schemes or untrusted external sites. The component does not enforce <code>https</code>, an origin allowlist, or <code>rel="noopener noreferrer"</code> for web links.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Pass a <code>javascript:</code>, <code>data:</code>, <code>intent:</code>, or custom-scheme URL into the <code>url</code> prop.</li>
+        <li>Trigger the link press; <code>Linking.canOpenURL</code> may return true.</li>
+        <li><code>openURL</code> opens the scheme, launching another app, a dangerous intent, or executing script in a legacy webview.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -1246,6 +1438,28 @@ const handlePress = useCallback(async () =&gt; {
         <div class="k"><div class="label">OWASP</div><div class="val">A04:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>getPageFromPath calls decodeURIComponent without a try/catch, and getPageFromUrl feeds it query/hash values during initial render and navigation events.</td></tr>
+          <tr><td>Preconditions</td><td>An attacker crafts a URL with invalid percent-encoding and a victim opens it.</td></tr>
+          <tr><td>Business impact</td><td>Documentation availability and trust degradation.</td></tr>
+          <tr><td>Technical impact</td><td>Unhandled URIError can blank the SPA or trigger an error boundary.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/src/utils/router.ts</code></td><td>568-569</td><td>getPageFromPath</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/src/utils/router.ts</code></td><td>1320-1345</td><td>getPageFromUrl</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/src/App.tsx</code></td><td>802-818</td><td>useEffect URL sync</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>storybook/src/utils/router.ts
  568  export function getPageFromPath(path: string): string {
@@ -1300,6 +1514,14 @@ storybook/src/App.tsx
       <h4>Analysis</h4>
       <p><code>decodeURIComponent</code> throws <code>URIError</code> when the input contains an invalid percent-encoding sequence, such as <code>%</code> or <code>%E0%A4%A</code>. The router calls it while parsing the current path and hash through <code>getPageFromUrl</code> and <code>getPageFromPath</code>, and the result is used during initial render and on every <code>popstate</code>/<code>hashchange</code> event. An attacker can craft a URL such as <code>https://react-native.ux4g.gov.in/?path=%E0%A4%A</code>; the unhandled exception can break the render and produce a blank page or error boundary. The impact is limited to availability of the documentation client, but it is trivially triggerable and degrades trust in a government portal.</p>
 
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Craft a URL with invalid percent-encoding, such as <code>%E0%A4%A</code>.</li>
+        <li>Send it to a victim or load it directly; <code>getPageFromPath</code> calls <code>decodeURIComponent</code> without a try/catch.</li>
+        <li>The unhandled <code>URIError</code> blanks the SPA or triggers an error boundary.</li>
+      </ol>
+
       <h4>Remediation</h4>
       <ul>
         <li>Wrap decoding in a <code>try/catch</code> and fall back to the raw path or a 404 route.</li>
@@ -1344,6 +1566,27 @@ npm test -- router</code></pre>
         <div class="k"><div class="label">OWASP</div><div class="val">A02:2021</div></div>
       </div>
 
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>The debug manifest enables cleartext traffic, and the iOS Info.plist contains an empty location usage description.</td></tr>
+          <tr><td>Preconditions</td><td>A debug build is used on a shared network, or the app requests location without a meaningful purpose string.</td></tr>
+          <tr><td>Business impact</td><td>Debug data interception and App Store/privacy review issues.</td></tr>
+          <tr><td>Technical impact</td><td>HTTP traffic is allowed in debug builds; the location permission rationale is empty.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Example App</td><td><code>example/android/app/src/debug/AndroidManifest.xml</code></td><td>5-8</td><td>Debug application manifest</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Example App</td><td><code>example/ios/Example/Info.plist</code></td><td>27-36</td><td>ATS and location keys</td></tr>
+        </tbody>
+      </table>
+
       <h4>Evidence</h4>
       <pre class="evidence"><code>example/android/app/src/debug/AndroidManifest.xml
    5  &lt;application
@@ -1365,6 +1608,15 @@ example/ios/Example/Info.plist
       <h4>Analysis</h4>
       <p>Cleartext traffic is enabled only in the debug manifest, which is the standard React Native development configuration. The iOS ATS configuration correctly keeps <code>NSAllowsArbitraryLoads</code> disabled and permits local networking only. The residual risk is that debug builds or misconfigured release variants could transmit data over HTTP on a shared network. The empty location usage description is a privacy and App Store review issue rather than a direct vulnerability. The finding is Low because the risky setting is scoped to debug and the iOS baseline is sound.</p>
 
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Use a debug build on a shared or untrusted network.</li>
+        <li>Intercept HTTP traffic because <code>usesCleartextTraffic="true"</code> is set in the debug manifest.</li>
+        <li>Read or modify debug API traffic and tokens.</li>
+        <li>Separately, trigger the location permission with an empty usage description and observe the missing rationale.</li>
+      </ol>
+
       <h4>Remediation</h4>
       <ul>
         <li>Keep <code>usesCleartextTraffic</code> limited to the debug manifest; verify release manifests do not inherit it.</li>
@@ -1372,6 +1624,24 @@ example/ios/Example/Info.plist
         <li>Provide a meaningful <code>NSLocationWhenInUseUsageDescription</code> or remove the location key if unused.</li>
         <li>Add a release-build check that fails if cleartext traffic or ATS bypass is enabled.</li>
       </ul>
+
+      <h4>Secure Debug Network Configuration</h4>
+      <pre class="evidence"><code>example/android/app/src/debug/res/xml/network_security_config.xml
+  &lt;network-security-config&gt;
+    &lt;domain-config cleartextTrafficPermitted="true"&gt;
+      &lt;domain includeSubdomains="false"&gt;10.0.2.2&lt;/domain&gt;
+      &lt;domain includeSubdomains="false"&gt;localhost&lt;/domain&gt;
+    &lt;/domain-config&gt;
+  &lt;/network-security-config&gt;
+
+example/android/app/src/debug/AndroidManifest.xml
+  &lt;application
+      android:networkSecurityConfig="@xml/network_security_config"
+      tools:targetApi="28"&gt;
+
+example/ios/Example/Info.plist
+  &lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;
+  &lt;string&gt;This app uses your location only to demonstrate the map component.&lt;/string&gt;</code></pre>
 
       <h4>Verification</h4>
       <pre><code># Build a release variant and inspect the merged manifest:
@@ -1397,6 +1667,26 @@ findstr /i "usesCleartextTraffic" app/build/intermediates/merged_manifests/relea
         <div class="k"><div class="label">CWE</div><div class="val">CWE-829, CWE-1104</div></div>
         <div class="k"><div class="label">OWASP</div><div class="val">A08:2021, A05:2021</div></div>
       </div>
+
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>An untracked scratch script uploads application source to Expo Snack with unpinned dependency versions and no documented review or data-handling controls.</td></tr>
+          <tr><td>Preconditions</td><td>A developer or operator runs the script with project source.</td></tr>
+          <tr><td>Business impact</td><td>Source leakage to a third party and compliance/retention risk.</td></tr>
+          <tr><td>Technical impact</td><td>Application code and dependency metadata are transmitted to exp.host.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Scripts and Scratch</td><td><code>scratch/publish_tourism_project_snack.cjs</code></td><td>27-51</td><td>Payload and HTTPS request</td></tr>
+        </tbody>
+      </table>
 
       <h4>Evidence</h4>
       <pre class="evidence"><code>scratch/publish_tourism_project_snack.cjs
@@ -1429,6 +1719,14 @@ findstr /i "usesCleartextTraffic" app/build/intermediates/merged_manifests/relea
       <h4>Analysis</h4>
       <p>The untracked scratch script reads project source and uploads it to Expo Snack. It pins no dependency versions (<code>'*'</code> and <code>'latest'</code>) and does not document data handling, retention, or access controls for the uploaded source. Anyone who runs the script transmits application code to a third-party service. The script is not part of the published package, but it is present in the working tree and could be mistaken for a supported tool. Uploading unreviewed source to an external service can leak secrets, internal URLs, or proprietary logic.</p>
 
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Run <code>publish_tourism_project_snack.cjs</code> with project source that contains secrets or internal URLs.</li>
+        <li>The script transmits the source and unpinned dependency metadata to <code>exp.host</code>.</li>
+        <li>Anyone with access to the third-party service or its logs can read the uploaded source.</li>
+      </ol>
+
       <h4>Remediation</h4>
       <ul>
         <li>Remove the script from the repository or move it to a documented, access-controlled internal tool.</li>
@@ -1437,6 +1735,21 @@ findstr /i "usesCleartextTraffic" app/build/intermediates/merged_manifests/relea
         <li>Document the third-party data processing and obtain approval for source uploads.</li>
         <li>Add <code>scratch/</code> to <code>.gitignore</code> if it is not intended to be shared.</li>
       </ul>
+
+      <h4>Secure Upload Guard</h4>
+      <pre><code>const SENSITIVE = /(API_KEY|SECRET|TOKEN|PASSWORD|PRIVATE_KEY)/i;
+const files = ['App.js', 'NationalEmblem.js'];
+for (const file of files) {
+  const text = fs.readFileSync(file, 'utf8');
+  if (SENSITIVE.test(text)) {
+    throw new Error(`Refusing to upload ${file}: possible secret detected`);
+  }
+}
+// Pin dependency versions; never use '*' or 'latest'.
+const dependencies = {
+  'react-native-svg': '15.11.2',
+  'ux4g-react-native-components': '1.2.2',
+};</code></pre>
 
       <h4>Verification</h4>
       <pre><code>git status --short
@@ -1455,6 +1768,7 @@ git check-ignore -v scratch/publish_tourism_project_snack.cjs
         <span class="finding-id">SAST-014</span>
         <span class="badge info">Informational</span>
         <h3>Tracked Build Artifacts and No CI Security Gates</h3>
+        <span class="badge outline">CVSS 0.0</span>
         <span class="badge outline">Confidence: High</span>
       </div>
     </div>
@@ -1465,6 +1779,28 @@ git check-ignore -v scratch/publish_tourism_project_snack.cjs
         <div class="k"><div class="label">CWE</div><div class="val">CWE-1059, CWE-1104</div></div>
         <div class="k"><div class="label">OWASP</div><div class="val">A08:2021</div></div>
       </div>
+
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>Compiled Storybook bundles are tracked in Git, and the repository has no CI security gates.</td></tr>
+          <tr><td>Preconditions</td><td>A contributor or reviewer trusts the checked-in bundle, or no automated checks run before merge.</td></tr>
+          <tr><td>Business impact</td><td>Tampered or stale bundles can be distributed, and vulnerabilities can reach production without detection.</td></tr>
+          <tr><td>Technical impact</td><td>Build-artifact drift, no audit trail, and missing dependency/secret scanning.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>storybook/dist/**</code></td><td>87 tracked files</td><td>Committed build output</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>.github/</code></td><td>absent</td><td>CI configuration</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td><code>.gitignore</code></td><td>1-10</td><td>Ignore rules</td></tr>
+        </tbody>
+      </table>
 
       <h4>Evidence</h4>
       <pre class="evidence"><code>git ls-files storybook/dist | wc -l
@@ -1485,6 +1821,14 @@ No CI configuration runs npm audit, SAST, secret scanning, or dependency review.
       <h4>Analysis</h4>
       <p>Compiled bundles are committed to Git. The tracked bundle and the working-tree bundle have different content hashes, which shows that the checked-in artifact is stale and can diverge from source. Reviewers cannot reliably distinguish a reviewed build from a tampered build, and the repository grows with binary artifacts. The absence of CI security gates means dependency advisories, secrets, and obvious insecure patterns are not automatically blocked before merge.</p>
 
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Modify or replace the tracked <code>storybook/dist</code> bundle in a pull request.</li>
+        <li>Because reviewers cannot easily diff the compiled artifact and no CI gate verifies it, the tampered bundle can be merged.</li>
+        <li>The deployment serves the tampered bundle to documentation visitors.</li>
+      </ol>
+
       <h4>Remediation</h4>
       <ul>
         <li>Remove <code>storybook/dist</code> from version control and build it in CI.</li>
@@ -1492,6 +1836,22 @@ No CI configuration runs npm audit, SAST, secret scanning, or dependency review.
         <li>Add CI workflows for <code>npm audit</code>, CodeQL/Semgrep, gitleaks, dependency review, and container scanning.</li>
         <li>Protect the default branch with required checks and review.</li>
       </ul>
+
+      <h4>Secure CI Gate</h4>
+      <pre><code>name: security
+on: [pull_request]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npx semgrep ci --config=p/ci
+      - run: npx gitleaks detect --no-git
+      - uses: actions/dependency-review-action@v4</code></pre>
 
       <h4>Verification</h4>
       <pre><code>git ls-files storybook/dist | measure-object -line
@@ -1506,6 +1866,7 @@ git log --oneline -- storybook/dist | measure-object -line
         <span class="finding-id">SAST-015</span>
         <span class="badge info">Informational</span>
         <h3>Incomplete XML Escaping in Sitemap Generation</h3>
+        <span class="badge outline">CVSS 0.0</span>
         <span class="badge outline">Confidence: High</span>
       </div>
     </div>
@@ -1516,6 +1877,26 @@ git log --oneline -- storybook/dist | measure-object -line
         <div class="k"><div class="label">CWE</div><div class="val">CWE-91</div></div>
         <div class="k"><div class="label">OWASP</div><div class="val">A03:2021</div></div>
       </div>
+
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>The sitemap generator escapes ampersands but not &lt;, &gt;, quotes, or apostrophes. The current URL source is a trusted local file.</td></tr>
+          <tr><td>Preconditions</td><td>The URL source becomes user-, CMS-, or remote-controlled.</td></tr>
+          <tr><td>Business impact</td><td>Sitemap corruption and SEO/indexing impact.</td></tr>
+          <tr><td>Technical impact</td><td>XML injection or malformed sitemap if untrusted URLs are introduced.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Scripts and Scratch</td><td><code>scripts/generate-seo-files.js</code></td><td>161-169</td><td>Sitemap URL escaping</td></tr>
+        </tbody>
+      </table>
 
       <h4>Evidence</h4>
       <pre class="evidence"><code>scripts/generate-seo-files.js
@@ -1531,6 +1912,14 @@ git log --oneline -- storybook/dist | measure-object -line
 
       <h4>Analysis</h4>
       <p>The sitemap generator escapes ampersands but not <code>&lt;</code>, <code>&gt;</code>, quotes, or apostrophes. The URL source is a local, trusted <code>urls_map.json</code>, so this is not currently exploitable. If URLs later come from a CMS, a remote feed, or user input, an attacker could inject XML elements or break the sitemap parser. The finding is informational because the current data source is static and controlled.</p>
+
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Cause the URL source to include <code>&lt;</code>, <code>&gt;</code>, or quotes, for example through a CMS or remote feed.</li>
+        <li>The sitemap generator escapes only <code>&amp;</code> and writes the raw characters into XML.</li>
+        <li>The sitemap becomes malformed or contains injected XML elements, affecting indexing.</li>
+      </ol>
 
       <h4>Remediation</h4>
       <ul>
@@ -1561,6 +1950,7 @@ xmllint --noout storybook/dist/sitemap.xml</code></pre>
         <span class="finding-id">SAST-016</span>
         <span class="badge info">Informational</span>
         <h3>Demo Literal Password and Advisory AI Directives</h3>
+        <span class="badge outline">CVSS 0.0</span>
         <span class="badge outline">Confidence: High</span>
       </div>
     </div>
@@ -1571,6 +1961,29 @@ xmllint --noout storybook/dist/sitemap.xml</code></pre>
         <div class="k"><div class="label">CWE</div><div class="val">CWE-798, CWE-1021</div></div>
         <div class="k"><div class="label">OWASP</div><div class="val">A05:2021</div></div>
       </div>
+
+      
+      <h4>Root Cause, Preconditions, and Impact</h4>
+      <table>
+        <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Root cause</td><td>A showcase component contains a demo password literal, and generated ai.txt/llms.txt files contain advisory AI directives that have no enforcement value.</td></tr>
+          <tr><td>Preconditions</td><td>Demo code is copied into production, or operators rely on ai.txt/llms.txt as a security control.</td></tr>
+          <tr><td>Business impact</td><td>Credential confusion and a false sense of control over AI crawlers.</td></tr>
+          <tr><td>Technical impact</td><td>No direct exploit; hardening and education issue.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Affected Locations</h4>
+      <table>
+        <thead><tr><th>Repo</th><th>Module</th><th>File</th><th>Line</th><th>Function/Endpoint</th></tr></thead>
+        <tbody>
+          <tr><td><code>react_native_design_system</code></td><td>Component Library</td><td><code>src/showcase/InputFieldShowcase.tsx</code></td><td>39</td><td>Demo password state</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>scripts/generate-seo-files.js</code></td><td>44-96</td><td>ai.txt/llms.txt generation</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/dist/ai.txt</code></td><td>generated</td><td>Advisory text</td></tr>
+          <tr><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td><code>storybook/dist/llms.txt</code></td><td>generated</td><td>Advisory text</td></tr>
+        </tbody>
+      </table>
 
       <h4>Evidence</h4>
       <pre class="evidence"><code>src/showcase/InputFieldShowcase.tsx
@@ -1586,12 +1999,34 @@ scripts/generate-seo-files.js
       <h4>Analysis</h4>
       <p><code>SecretPass123!</code> is a demo value in a showcase component, not a credential for any system. It is reported so scanners and reviewers do not flag it as a leaked secret, and so it is not copied into real applications. The generated <code>ai.txt</code> and <code>llms.txt</code> files contain advisory instructions for AI crawlers; they have no security enforcement value and should not be treated as access controls.</p>
 
+      
+      <h4>Exploitation / PoC</h4>
+      <ol>
+        <li>Copy the showcase component into production with the demo password literal.</li>
+        <li>Users or scanners may treat <code>SecretPass123!</code> as a real credential.</li>
+        <li>Operators may also rely on <code>ai.txt</code> or <code>llms.txt</code> to restrict AI crawlers, but the files are advisory only and can be ignored.</li>
+      </ol>
+
       <h4>Remediation</h4>
       <ul>
         <li>Replace the demo literal with a clearly fake value such as <code>example-password</code> and label it as non-sensitive.</li>
         <li>Do not rely on <code>ai.txt</code> or <code>llms.txt</code> for security; use authentication, robots rules, and access controls where needed.</li>
         <li>Keep demo data out of production bundles.</li>
       </ul>
+
+      <h4>Secure Demo and Crawler Policy</h4>
+      <pre><code>// src/showcase/InputFieldShowcase.tsx
+&lt;InputField
+  label="Password"
+  placeholder="Enter password"
+  defaultValue="example-password" // non-sensitive demo value
+/&gt;
+
+// Do not use ai.txt/llms.txt as a security control.
+// Enforce access with authentication, authorization, and robots.txt:
+// storybook/public/robots.txt
+User-agent: *
+Disallow: /internal/</code></pre>
 
       <h4>Verification</h4>
       <pre><code>grep -R "SecretPass123" src storybook --exclude-dir=node_modules --exclude-dir=dist
@@ -1622,16 +2057,16 @@ scripts/generate-seo-files.js
 
   <h3>Graph Inventory</h3>
   <table>
-    <thead><tr><th>Graph Element</th><th>Expected Evidence</th><th>Observed</th><th>Status</th></tr></thead>
+    <thead><tr><th>Graph Element</th><th>Repo</th><th>Module</th><th>Expected Evidence</th><th>Observed</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>Authentication entry points</td><td>Login, token issuance, session creation</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
-      <tr><td>Session/token validation</td><td>JWT verification, cookie validation</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
-      <tr><td>Role/permission model</td><td>Roles, policies, permission checks</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
-      <tr><td>Protected routes/endpoints</td><td>Route guards, middleware</td><td>None (client-only SPA routes)</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
-      <tr><td>Object-level authorization</td><td>Ownership checks (BOLA/IDOR)</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td></tr>
-      <tr><td>Tenant isolation</td><td>Tenant scoping in queries</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td></tr>
-      <tr><td>Admin/privileged actions</td><td>Admin routes and checks</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
-      <tr><td>Client-side route visibility</td><td>SPA router</td><td><code>storybook/src/utils/router.ts</code></td><td><span class="badge low">UI only</span></td></tr>
+      <tr><td>Authentication entry points</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Login, token issuance, session creation</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
+      <tr><td>Session/token validation</td><td><code>react_native_design_system</code></td><td>N/A</td><td>JWT verification, cookie validation</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
+      <tr><td>Role/permission model</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Roles, policies, permission checks</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
+      <tr><td>Protected routes/endpoints</td><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td>Route guards, middleware</td><td>None (client-only SPA routes)</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
+      <tr><td>Object-level authorization</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Ownership checks (BOLA/IDOR)</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td></tr>
+      <tr><td>Tenant isolation</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Tenant scoping in queries</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td></tr>
+      <tr><td>Admin/privileged actions</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Admin routes and checks</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td></tr>
+      <tr><td>Client-side route visibility</td><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td>SPA router</td><td><code>storybook/src/utils/router.ts</code></td><td><span class="badge low">UI only</span></td></tr>
     </tbody>
   </table>
 
@@ -1654,21 +2089,21 @@ scripts/generate-seo-files.js
   <p class="subtitle">No API server, OpenAPI specification, GraphQL schema, or network client is implemented in this repository. The component library does not perform network requests. The only external network call found is an untracked scratch script that posts to Expo Snack. The matrix below records the absence of each API control rather than asserting compliance.</p>
 
   <table>
-    <thead><tr><th>API Control</th><th>Expected Evidence</th><th>Observed in Repository</th><th>Status</th><th>Owner</th></tr></thead>
+    <thead><tr><th>API Control</th><th>Repo</th><th>Module</th><th>Expected Evidence</th><th>Observed in Repository</th><th>Data Exposure Verdict</th><th>Status</th><th>Owner</th></tr></thead>
     <tbody>
-      <tr><td>Authentication</td><td>Token/session validation middleware</td><td>None</td><td><span class="badge info">NOT APPLICABLE</span></td><td>Host backend</td></tr>
-      <tr><td>Authorization / BOLA</td><td>Object ownership checks</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
-      <tr><td>Function-level authorization</td><td>Role checks per endpoint</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
-      <tr><td>Input schema validation</td><td>Server-side schemas</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
-      <tr><td>Rate limiting</td><td>Gateway or middleware limits</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Gateway</td></tr>
-      <tr><td>Mass assignment protection</td><td>Allowlisted fields</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
-      <tr><td>SSRF protection</td><td>URL allowlist/egress policy</td><td>Client <code>Linking.openURL</code> only (SAST-010)</td><td><span class="badge low">Client-only</span></td><td>Host backend</td></tr>
-      <tr><td>Injection protection</td><td>Parameterized queries</td><td>No database code</td><td><span class="badge info">NOT APPLICABLE</span></td><td>Host backend</td></tr>
-      <tr><td>Error handling</td><td>Generic errors, no stack traces</td><td>Client-only</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
-      <tr><td>Audit logging</td><td>Security event logs</td><td>None</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
-      <tr><td>TLS enforcement</td><td>HTTPS-only endpoints</td><td>Deployment gaps (SAST-005)</td><td><span class="badge medium">Medium</span></td><td>Platform team</td></tr>
-      <tr><td>CORS policy</td><td>Explicit origin allowlist</td><td>Wildcard on root Netlify (SAST-005)</td><td><span class="badge medium">Medium</span></td><td>Platform team</td></tr>
-      <tr><td>Third-party calls</td><td>Reviewed, pinned, minimized</td><td>Analytics script (SAST-004); scratch upload (SAST-013)</td><td><span class="badge medium">Medium</span></td><td>Platform team</td></tr>
+      <tr><td>Authentication</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Token/session validation middleware</td><td>None</td><td>None in repo</td><td><span class="badge info">NOT APPLICABLE</span></td><td>Host backend</td></tr>
+      <tr><td>Authorization / BOLA</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Object ownership checks</td><td>None</td><td>Host-controlled</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
+      <tr><td>Function-level authorization</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Role checks per endpoint</td><td>None</td><td>Host-controlled</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
+      <tr><td>Input schema validation</td><td><code>react_native_design_system</code></td><td>Component Library</td><td>Server-side schemas</td><td>None; client props only</td><td>Client-side only</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
+      <tr><td>Rate limiting</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Gateway or middleware limits</td><td>None</td><td>None in repo</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Gateway</td></tr>
+      <tr><td>Mass assignment protection</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Allowlisted fields</td><td>None</td><td>None in repo</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
+      <tr><td>SSRF protection</td><td><code>react_native_design_system</code></td><td>Component Library</td><td>URL allowlist/egress policy</td><td>Client <code>Linking.openURL</code> only (SAST-010)</td><td>Client URL open</td><td><span class="badge low">Client-only</span></td><td>Host backend</td></tr>
+      <tr><td>Injection protection</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Parameterized queries</td><td>No database code</td><td>None in repo</td><td><span class="badge info">NOT APPLICABLE</span></td><td>Host backend</td></tr>
+      <tr><td>Error handling</td><td><code>react_native_design_system</code></td><td>Storybook Docs</td><td>Generic errors, no stack traces</td><td>Client-only</td><td>Client-only</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
+      <tr><td>Audit logging</td><td><code>react_native_design_system</code></td><td>N/A</td><td>Security event logs</td><td>None</td><td>None in repo</td><td><span class="badge info">NOT VERIFIABLE</span></td><td>Host backend</td></tr>
+      <tr><td>TLS enforcement</td><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td>HTTPS-only endpoints</td><td>Deployment gaps (SAST-005)</td><td>Deployment metadata</td><td><span class="badge medium">Medium</span></td><td>Platform team</td></tr>
+      <tr><td>CORS policy</td><td><code>react_native_design_system</code></td><td>DevOps and Deployment</td><td>Explicit origin allowlist</td><td>Wildcard on root Netlify (SAST-005)</td><td>Wildcard origin</td><td><span class="badge medium">Medium</span></td><td>Platform team</td></tr>
+      <tr><td>Third-party calls</td><td><code>react_native_design_system</code></td><td>Storybook Docs / Scratch</td><td>Reviewed, pinned, minimized</td><td>Analytics script (SAST-004); scratch upload (SAST-013)</td><td>Page data and source code</td><td><span class="badge medium">Medium</span></td><td>Platform team</td></tr>
     </tbody>
   </table>
 
@@ -1696,6 +2131,17 @@ scripts/generate-seo-files.js
       <tr><td>Example (<code>example/package-lock.json</code>)</td><td>970</td><td>1</td><td>7</td><td>13</td><td>8</td><td>29</td></tr>
     </tbody>
   </table>
+
+  <h3>Repository and Workspace Breakdown</h3>
+  <table>
+    <thead><tr><th>Repo</th><th>Workspace</th><th>Audit Result</th><th>Runtime Exposure</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td><code>react_native_design_system</code></td><td>Root library</td><td>1 critical, 5 high, 5 moderate, 7 low</td><td>Development, build, test</td><td><span class="badge high">High</span></td></tr>
+      <tr><td><code>react_native_design_system</code></td><td>Storybook docs</td><td>0 critical, 3 high</td><td>Development/build; static output</td><td><span class="badge high">High</span></td></tr>
+      <tr><td><code>react_native_design_system</code></td><td>Example app</td><td>1 critical, 7 high, 13 moderate, 8 low</td><td>Development, build, test</td><td><span class="badge critical">Critical</span></td></tr>
+    </tbody>
+  </table>
+  <p><strong>Consolidated risk summary:</strong> No vulnerable package was confirmed on the runtime path of the published component library. The critical <code>shell-quote</code> and the high <code>node-forge</code>, <code>js-yaml</code>, <code>image-size</code>, <code>browserslist</code>, and <code>brace-expansion</code> advisories are reachable through React Native and build tooling. The Storybook Vite advisories are development/build only. The practical risk is developer-workstation and CI compromise, not end-user exploitation of the shipped library.</p>
 
   <h3>Direct vs Transitive</h3>
   <table>
@@ -1746,10 +2192,10 @@ scripts/generate-seo-files.js
 
   <h3>Confirmed Secrets</h3>
   <table>
-    <thead><tr><th>Secret</th><th>Location</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
+    <thead><tr><th>Secret</th><th>Repo</th><th>Module</th><th>Location</th><th>Type</th><th>Exposure Scope</th><th>Status</th><th>Rotation Priority</th><th>Action</th></tr></thead>
     <tbody>
-      <tr><td>Android debug keystore</td><td><code>example/android/app/debug.keystore</code></td><td>Signing key (JKS)</td><td><span class="badge critical">Committed</span></td><td>Rotate, purge history, replace release signing (SAST-001)</td></tr>
-      <tr><td>Keystore passwords</td><td><code>example/android/app/build.gradle:91,93</code></td><td>Default passwords</td><td><span class="badge critical">Committed</span></td><td>Use CI secrets (SAST-001)</td></tr>
+      <tr><td>Android debug keystore</td><td><code>react_native_design_system</code></td><td>Example App</td><td><code>example/android/app/debug.keystore</code></td><td>Signing key (JKS)</td><td>Anyone with repository or Git-history access; public debug key material</td><td><span class="badge critical">Committed in history</span></td><td><span class="badge critical">Immediate (P0)</span></td><td>Rotate, purge history, use a dedicated release key (SAST-001)</td></tr>
+      <tr><td>Keystore passwords</td><td><code>react_native_design_system</code></td><td>Example App</td><td><code>example/android/app/build.gradle:91,93</code></td><td>Default passwords</td><td>Public Android debug defaults; repository readers</td><td><span class="badge critical">Committed in history</span></td><td><span class="badge critical">Immediate (P0)</span></td><td>Replace with CI secrets; never commit signing credentials (SAST-001)</td></tr>
     </tbody>
   </table>
 
@@ -1764,16 +2210,22 @@ scripts/generate-seo-files.js
   </table>
 
   <h3>Environment and Ignore Configuration</h3>
-  <pre class="evidence"><code>.gitignore
-  // No .env, .env.*, *.pem, *.key, or secrets/ patterns.
-  // No tracked .env, .pem, or .key files were found.
+  <pre class="evidence"><code>.gitignore (current working tree)
+  *.keystore
+  *.jks
+  *.p12
+  // No .env, .env.*, *.pem, or secrets/ patterns were present originally.
 
-example/.gitignore
+example/.gitignore (current working tree)
   34  *.keystore
-  35  !debug.keystore   // explicitly re-includes the debug keystore
+  // The original !debug.keystore re-include rule was removed.
+
+Original snapshot before remediation (HEAD 130c47a):
+  example/.gitignore:35  !debug.keystore   // explicitly re-included the debug keystore
 
 .dockerignore
   // Excludes .git, node_modules, storybook/dist, example (good build-context hygiene).</code></pre>
+  <p>The keystore remains in Git history until a history purge and force-push are completed. Untracking it in the working tree does not remove the exposed key material from clones, forks, caches, or mirrors.</p>
 
   <h3>Configuration Gaps</h3>
   <table>
@@ -1805,6 +2257,7 @@ example/.gitignore
   <article class="scenario">
     <h3>Scenario 1: Upload Validation Bypass</h3>
     <p><strong>Preconditions:</strong> A host application uses <code>FileUpload</code> as its only validation and stores uploaded files. The host does not re-validate on the server.</p>
+    <p><strong>Touchpoints:</strong> <code>react_native_design_system</code> / Component Library / <code>src/components/file-upload/FileUpload.tsx</code> (SAST-007).</p>
     <p><strong>Abuse path:</strong> The attacker selects a file with an extension not in the allowlist. The picker maps it to <code>*/*</code> (line 397), so it is accepted. If the platform does not return <code>size</code>, the size defaults to <code>0</code> (line 405) and passes the limit check. The host stores the file and later serves it from a web origin. An HTML or SVG payload executes in the host origin when viewed.</p>
     <p><strong>Impact:</strong> Stored XSS, malware distribution, storage abuse, and potential account compromise in the host application.</p>
     <p><strong>Control:</strong> SAST-007 remediation; server-side magic-byte validation and non-executable storage.</p>
@@ -1813,6 +2266,7 @@ example/.gitignore
   <article class="scenario">
     <h3>Scenario 2: Aadhaar Disclosure Through Default Rendering</h3>
     <p><strong>Preconditions:</strong> A host application renders <code>AadhaarInputField</code> with default props in a service-center or shared-device workflow.</p>
+    <p><strong>Touchpoints:</strong> <code>react_native_design_system</code> / Component Library / <code>src/components/aadhaar-input-field/AadhaarInputField.tsx</code> (SAST-008).</p>
     <p><strong>Abuse path:</strong> The full Aadhaar number is displayed because masking is off by default (lines 279-283, 378-381). A bystander, screenshot, screen recording, or accessibility service captures the number. The host may also log <code>onValueChange</code> payloads containing raw digits.</p>
     <p><strong>Impact:</strong> Identity data exposure, privacy-law non-compliance, and downstream identity fraud.</p>
     <p><strong>Control:</strong> SAST-008 remediation; privacy-preserving defaults and redaction.</p>
@@ -1821,6 +2275,7 @@ example/.gitignore
   <article class="scenario">
     <h3>Scenario 3: Malicious Link Scheme</h3>
     <p><strong>Preconditions:</strong> A host application passes user-controlled content into <code>Link</code>'s <code>href</code>.</p>
+    <p><strong>Touchpoints:</strong> <code>react_native_design_system</code> / Component Library / <code>src/components/link/Link.tsx</code> (SAST-010).</p>
     <p><strong>Abuse path:</strong> The attacker supplies a <code>javascript:</code>, <code>intent:</code>, or custom-scheme URL. <code>Linking.canOpenURL</code> may return true, and <code>openURL</code> opens it. On web, <code>window.open</code> with <code>noopener</code> limits tabnabbing but does not block the scheme; on native, the scheme can launch another app or a dangerous intent.</p>
     <p><strong>Impact:</strong> Phishing, unintended app launch, data leakage through URL parameters, or code execution in legacy webviews.</p>
     <p><strong>Control:</strong> SAST-010 remediation; scheme and origin allowlist.</p>
@@ -1829,6 +2284,7 @@ example/.gitignore
   <article class="scenario">
     <h3>Scenario 4: Release Update Hijack</h3>
     <p><strong>Preconditions:</strong> The sample or a derivative app is distributed outside Google Play App Signing, using the committed debug key.</p>
+    <p><strong>Touchpoints:</strong> <code>react_native_design_system</code> / Example App / <code>example/android/app/build.gradle</code> and <code>example/android/app/debug.keystore</code> (SAST-001).</p>
     <p><strong>Abuse path:</strong> The attacker builds a higher-version APK with the same <code>applicationId</code> and signs it with the committed key. Users who install from unknown sources or an enterprise channel accept it as an update.</p>
     <p><strong>Impact:</strong> Full application compromise, credential theft, and data exfiltration under the trusted app identity.</p>
     <p><strong>Control:</strong> SAST-001 remediation; remove and rotate the key, use a dedicated release key, and adopt Play App Signing.</p>
@@ -1837,6 +2293,7 @@ example/.gitignore
   <article class="scenario">
     <h3>Scenario 5: Documentation Origin Compromise</h3>
     <p><strong>Preconditions:</strong> The analytics CDN or its DNS/TLS is compromised, or a future change sources HTML into the mapping page.</p>
+    <p><strong>Touchpoints:</strong> <code>react_native_design_system</code> / Storybook Docs / <code>storybook/index.html</code> and <code>storybook/src/pages/ComponentMappingDoc.tsx</code> (SAST-004, SAST-009).</p>
     <p><strong>Abuse path:</strong> The third-party script runs without SRI and without CSP (SAST-004), or untrusted HTML reaches <code>dangerouslySetInnerHTML</code> (SAST-009). The attacker executes JavaScript in the documentation origin, alters content, and phishes developers who trust the portal.</p>
     <p><strong>Impact:</strong> Supply-chain-style trust abuse, credential phishing, and malicious code samples distributed to integrators.</p>
     <p><strong>Control:</strong> SAST-004 and SAST-009 remediation; SRI, CSP, sanitization, and sandboxed examples.</p>
@@ -1846,37 +2303,51 @@ example/.gitignore
 <section id="roadmap">
   <h2><span class="section-num">15</span>Remediation Roadmap and Final Verdict</h2>
 
-  <h3>Prioritized Roadmap</h3>
+  <h3>Phase 0-5 Remediation Roadmap</h3>
   <table>
-    <thead><tr><th>Priority</th><th>Timeframe</th><th>Actions</th><th>Findings</th><th>Owner</th></tr></thead>
+    <thead><tr><th>Phase</th><th>Timeframe</th><th>Actions</th><th>Findings</th><th>Owner</th></tr></thead>
     <tbody>
       <tr>
-        <td><span class="badge critical">P0</span></td>
-        <td>Immediate (0-3 days)</td>
-        <td>Remove and purge the debug keystore; stop signing release with the debug key; rotate signing credentials; enable R8. Add SRI to the analytics script and a CSP. Upgrade Vite and the critical/high dependencies.</td>
-        <td>SAST-001, 002, 003, 004</td>
-        <td>Mobile lead, platform team, docs owner</td>
+        <td><span class="badge critical">Phase 0 - Immediate</span></td>
+        <td>0-24 hours</td>
+        <td>Rotate the exposed signing credentials; stop using the debug key for release; purge the keystore from Git history and force-push; add SRI and a baseline CSP to the docs origin; block internet exposure of the Vite dev server.</td>
+        <td>SAST-001, SAST-004</td>
+        <td>Mobile lead, security lead, platform team</td>
       </tr>
       <tr>
-        <td><span class="badge high">P1</span></td>
-        <td>Short term (1-2 weeks)</td>
-        <td>Add security headers, HTTPS/HSTS, and remove wildcard CORS. Harden containers and pin images. Fix upload validation and Aadhaar defaults. Add URL scheme allowlist. Wrap router decoding.</td>
-        <td>SAST-005, 006, 007, 008, 010, 011</td>
-        <td>Platform team, library maintainers</td>
+        <td><span class="badge high">Phase 1 - Critical/High</span></td>
+        <td>0-7 days</td>
+        <td>Upgrade Vite and vulnerable dependencies; add security headers, HTTPS/HSTS, and explicit CORS; harden containers; fix upload validation, Aadhaar masking, link allowlisting, and router decoding.</td>
+        <td>SAST-002, 003, 005, 006, 007, 008, 010, 011</td>
+        <td>Library maintainers, platform team</td>
       </tr>
       <tr>
-        <td><span class="badge medium">P2</span></td>
-        <td>Medium term (2-6 weeks)</td>
-        <td>Remove tracked build artifacts; add CI security gates and dependency automation; sanitize or sandbox HTML rendering; fix sitemap escaping; remove or document the scratch upload script; address debug network settings and demo literals.</td>
+        <td><span class="badge medium">Phase 2 - Medium</span></td>
+        <td>7-30 days</td>
+        <td>Sanitize or sandbox HTML rendering; remove tracked build artifacts; fix debug network settings; remove or document the scratch upload script; complete XML escaping; remove demo literals and clarify AI directives.</td>
         <td>SAST-009, 012, 013, 014, 015, 016</td>
-        <td>DevOps, docs owner, maintainers</td>
+        <td>Docs owner, DevOps, maintainers</td>
       </tr>
       <tr>
-        <td><span class="badge low">P3</span></td>
-        <td>Ongoing</td>
-        <td>Add tests for security regressions; publish an SBOM; document host-side authorization responsibilities; run periodic audits and penetration tests.</td>
+        <td><span class="badge low">Phase 3 - Low/Info</span></td>
+        <td>30-90 days</td>
+        <td>Add regression tests for the fixed controls; publish an SBOM; document host-side authorization and data-protection responsibilities.</td>
         <td>All</td>
-        <td>Security champion</td>
+        <td>Security champion, QA</td>
+      </tr>
+      <tr>
+        <td><span class="badge info">Phase 4 - Strategic</span></td>
+        <td>90+ days</td>
+        <td>Adopt Play App Signing or enterprise key management; add continuous dependency, secret, and container scanning; establish a release-integrity and incident-response process.</td>
+        <td>All</td>
+        <td>Engineering leadership, security</td>
+      </tr>
+      <tr>
+        <td><span class="badge info">Phase 5 - Verification</span></td>
+        <td>Ongoing</td>
+        <td>Re-run this assessment after each phase; verify controls with build, header, and dependency evidence; track residual risk in the risk register.</td>
+        <td>All</td>
+        <td>Security team</td>
       </tr>
     </tbody>
   </table>
@@ -1904,19 +2375,37 @@ example/.gitignore
       <p><strong>The repository is not ready for production distribution in its current state.</strong> The library source itself is generally well-structured and contains no server-side authentication or authorization logic, which keeps the runtime attack surface small. However, the sample application ships a committed debug keystore and signs release builds with it, which is a critical release-integrity failure. The dependency graph contains a critical and multiple high-severity advisories, and the documentation deployment lacks SRI, CSP, security headers, and HTTPS enforcement.</p>
       <p>The code-quality score is 9.0/10 because the source is readable, typed, and mostly free of dangerous sinks. The overall security score is 58/100 because the severity-weighted findings and the critical signing issue dominate the posture. Fixing SAST-001 through SAST-004 raises the score substantially; completing P1 and P2 controls brings the repository into a defensible state for a government design system.</p>
       <p><strong>Code Quality Score:</strong> 9.0/10 (AuthN and AuthZ excluded as N/A). <strong>Overall Security Score:</strong> 58/100 (High Risk). <strong>Findings:</strong> 1 Critical, 2 High, 5 Medium, 5 Low, 3 Informational.</p>
+      <p><strong>Final Verdict:</strong> <span class="badge critical">FAIL</span> for production distribution in the current state. A <span class="badge medium">CONDITIONAL PASS</span> can be issued only after Phase 0 and Phase 1 controls are verified.</p>
     </div>
   </div>
+
+  <h3>What an Attacker Can Do Today</h3>
+  <ul>
+    <li>Sign a malicious update for the example app with the committed debug key and distribute it through a sideload or enterprise channel (SAST-001).</li>
+    <li>Compromise the docs origin through the un-integrity-checked analytics script or missing CSP, then phish developers or alter code samples (SAST-004, SAST-005).</li>
+    <li>Bypass client-side upload validation in a host app and store an HTML/SVG payload that executes when served (SAST-007).</li>
+    <li>Cause a denial of service on the docs SPA with a malformed percent-encoded URL (SAST-011).</li>
+    <li>Use known build-tool vulnerabilities to disrupt a developer workstation or CI job (SAST-002, SAST-003, SAST-006).</li>
+  </ul>
+
+  <h3>Minimum Before Production</h3>
+  <ul>
+    <li>Complete Phase 0: rotate the signing key, purge it from history, and add SRI/CSP to the docs origin.</li>
+    <li>Complete Phase 1: clean dependency audit, HTTPS/HSTS, security headers, explicit CORS, non-root containers, server-side upload validation, Aadhaar masking by default, URL allowlisting, and router error handling.</li>
+    <li>Verify the fixes with the checklist above and attach evidence to the release record.</li>
+    <li>Document host-side authentication, authorization, data protection, and incident-response responsibilities.</li>
+  </ul>
 
   <h3>Scoring Inputs</h3>
   <table>
     <thead><tr><th>Metric</th><th>Value</th><th>Meaning</th></tr></thead>
     <tbody>
       <tr><td>Weighted Severity Points (WSP)</td><td>42.6</td><td>Sum of severity weights across unique findings</td></tr>
-      <tr><td>Average Exploitability Metric (EM)</td><td>2.11</td><td>Mean exploitability of confirmed findings</td></tr>
+      <tr><td>Exposure Multiplier (EM)</td><td>2.15</td><td>Average module spread across unique findings</td></tr>
       <tr><td>Reviewed files</td><td>712</td><td>Source, config, and documentation files examined</td></tr>
       <tr><td>Discovered files</td><td>731</td><td>Tracked files at HEAD <code>130c47a</code></td></tr>
       <tr><td>Code Coverage Factor (CCF)</td><td>0.974</td><td>Reviewed / discovered</td></tr>
-      <tr><td>Normalized Risk Index (NRI)</td><td>3.37</td><td>Severity-weighted risk normalized by coverage</td></tr>
+      <tr><td>Normalized Risk Index (NRI)</td><td>3.43</td><td>Severity-weighted risk normalized by coverage</td></tr>
       <tr><td>Final security score</td><td>58/100</td><td>High risk band</td></tr>
     </tbody>
   </table>
@@ -1948,6 +2437,33 @@ example/.gitignore
     </tbody>
   </table>
 
+  <h3>Compliance and Governance Mapping</h3>
+  <table>
+    <thead><tr><th>Framework / Control</th><th>Relevant Findings</th><th>Gap</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>GDPR Art. 32 (security of processing)</td><td>SAST-001, 005, 006, 008, 013</td><td>Signing-key exposure, missing security headers, unmasked identity data, third-party source upload</td><td><span class="badge high">Partial / gaps</span></td></tr>
+      <tr><td>GDPR Art. 25 (data protection by design)</td><td>SAST-008</td><td>Aadhaar masking is disabled by default</td><td><span class="badge medium">Gap</span></td></tr>
+      <tr><td>SOC 2 CC6.1 / CC6.6 (logical access and boundary protection)</td><td>SAST-001, 005, 006, 014</td><td>Release integrity, boundary protection, and CI gates are missing or weak</td><td><span class="badge high">Gap</span></td></tr>
+      <tr><td>ISO/IEC 27001 A.8.24 / A.8.28 (key management and secure coding)</td><td>SAST-001, 002, 003, 006</td><td>Committed signing key, vulnerable dependencies, container hardening</td><td><span class="badge high">Gap</span></td></tr>
+      <tr><td>India DPDP Act 2023 (identity data and third-party transfer)</td><td>SAST-008, 012, 013</td><td>Clear-text Aadhaar, debug cleartext traffic, source upload to a third party</td><td><span class="badge medium">Gap</span></td></tr>
+      <tr><td>CERT-In directions (incident reporting and logs)</td><td>SAST-014</td><td>No incident-response, audit-logging, or CI evidence in the repository</td><td><span class="badge info">NOT VERIFIABLE</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Master Prompt Coverage Checklist</h3>
+  <table>
+    <thead><tr><th>Master Prompt Requirement</th><th>Status</th><th>Evidence in This Report</th></tr></thead>
+    <tbody>
+      <tr><td>Step 1: Discover repositories, modules, and files</td><td><span class="badge ok">Done</span></td><td>Section 2: 1 repo, 7 modules, 731 tracked files, 19 binaries, 87 generated files</td></tr>
+      <tr><td>Step 2: Full-file checklist (AuthN/AuthZ, input, secrets, API, config, deps, compliance)</td><td><span class="badge ok">Done</span></td><td>Section 2 coverage matrix; Sections 5-14; compliance mapping above</td></tr>
+      <tr><td>Step 3: Finding model (ID, CVSS, CWE/OWASP, evidence, exploit, impact, locations, remediation, verification)</td><td><span class="badge ok">Done</span></td><td>Sections 5-9: 16 findings with root cause, preconditions, impact, and affected-location tables</td></tr>
+      <tr><td>Step 4: Scoring (WSP, EM, CCF, NRI, security score; code-quality density)</td><td><span class="badge ok">Done</span></td><td>Section 3 and Section 15 scoring inputs; Section 4 heatmap</td></tr>
+      <tr><td>Step 5: 16-section output with executive summary, findings, auth graph, API matrix, deps, secrets, business logic, roadmap, final verdict, appendix</td><td><span class="badge ok">Done</span></td><td>All 16 sections present</td></tr>
+      <tr><td>Step 6: Per-module and per-repo artifacts</td><td><span class="badge ok">Done</span></td><td>Section 2: Module Scan Artifacts and Repository Scan Artifact</td></tr>
+      <tr><td>Step 7: Evidence quality (line-level evidence, secure code, no duplicates, no placeholders)</td><td><span class="badge ok">Done</span></td><td>Evidence blocks in each finding; Affected Locations tables; no duplicate findings</td></tr>
+    </tbody>
+  </table>
+
   <h3>Evidence Sources</h3>
   <table>
     <thead><tr><th>Evidence Type</th><th>Source</th><th>Notes</th></tr></thead>
@@ -1975,6 +2491,7 @@ example/.gitignore
     <li>Dependency findings reflect the npm advisory database at the review time and may change as new advisories are published.</li>
     <li>The committed keystore was inspected to confirm its type and fingerprint; its private key was not used to sign or distribute any artifact during this review.</li>
     <li>Line numbers refer to the files as reviewed. Working-tree edits may shift lines; re-verify against the current commit before applying patches.</li>
+    <li>Ellipses (<code>...</code>) inside evidence snippets indicate omitted non-security-relevant content; every cited security-relevant line is shown explicitly.</li>
   </ul>
 
   <h3>Report Metadata</h3>
@@ -1986,6 +2503,7 @@ example/.gitignore
       <tr><td>Commit</td><td><code>130c47ab093a649f4b3bdfe420e6fff034aae553</code></td></tr>
       <tr><td>Review date</td><td>2026-11-13</td></tr>
       <tr><td>Method</td><td>Static analysis, dependency audit, configuration review, manual code review</td></tr>
+      <tr><td>Assessment standard</td><td><code>SAST_NOVA_FUSION_MULTI_REPO_MASTER_PROMPT_v1.md</code></td></tr>
       <tr><td>Classification</td><td>Internal - Security Assessment</td></tr>
     </tbody>
   </table>

@@ -5,3 +5,6 @@ lib/
 .idea/
 .vscode/
 *.tgz
+*.keystore
+*.jks
+*.p12
