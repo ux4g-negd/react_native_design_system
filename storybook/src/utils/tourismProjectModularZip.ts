@@ -375,6 +375,31 @@ ${jsx}
 `;
 }
 
+function buildStep5SubmittedScreenFile(appCode: string): string {
+  const jsx = extractScreenJsx(
+    appCode,
+    '{/* ─── STEP 5: SUBMITTED / ACKNOWLEDGEMENT ─── */}',
+    '<View style={{ height: 32 }} />',
+    'Step5SubmittedScreen'
+  );
+
+  return `import React from 'react';
+import { View, Text } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
+import { styles } from '../styles/commonStyles';
+
+export interface Step5SubmittedScreenProps {
+  applicationNumber?: string;
+}
+
+export const Step5SubmittedScreen: React.FC<Step5SubmittedScreenProps> = () => {
+  return (
+${jsx}
+  );
+};
+`;
+}
+
 function buildHeaderFile(): string {
   return `import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
@@ -577,6 +602,7 @@ export function buildTourismProjectModularProject(fullAppCode: string): Record<s
   files['src/screens/Step2FundingScreen.tsx'] = buildStep2FundingScreenFile(fullAppCode);
   files['src/screens/Step3EvidenceScreen.tsx'] = buildStep3EvidenceScreenFile(fullAppCode);
   files['src/screens/Step4ReviewScreen.tsx'] = buildStep4ReviewScreenFile(fullAppCode);
+  files['src/screens/Step5SubmittedScreen.tsx'] = buildStep5SubmittedScreenFile(fullAppCode);
 
   return files;
 }

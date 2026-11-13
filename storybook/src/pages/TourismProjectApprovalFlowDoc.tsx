@@ -8,8 +8,8 @@ interface TourismProjectApprovalFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Project Approval Flow (5-Step Workflow, Step 4 Active)
-const SNACK_ID = 'UeCykV7Brepmg-lSs5kVa';
+// Official Snack ID for Tourism Project Approval Flow (Complete 5-Step Workflow: Steps 1-5 Combined Flow)
+const SNACK_ID = 'PopN7cLEiqwm2FvgZU3qU';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -89,8 +89,8 @@ const STEP_METADATA = {
     subtitle: 'Check every section. Nothing can be changed after you submit.',
   },
   5: {
-    title: 'Review & submit',
-    subtitle: 'Everything you have entered, read back before you submit for final approval.',
+    title: 'Submitted',
+    subtitle: 'Your application is with the department.',
   },
 };
 
@@ -137,7 +137,8 @@ const LENDER_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
+  const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -240,6 +241,12 @@ export default function App() {
     }
   };
 
+  const jumpToStep = (targetStep) => {
+    setStep(targetStep);
+    setIsNavMenuOpen(false);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
   const activeMeta = STEP_METADATA[step] || STEP_METADATA[1];
 
   return (
@@ -281,7 +288,11 @@ export default function App() {
             <View style={{ width: 10 }} />
             <UnionLogo />
           </View>
-          <TouchableOpacity style={styles.hamburgerBtn} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={styles.hamburgerBtn}
+            activeOpacity={0.7}
+            onPress={() => setIsNavMenuOpen(true)}
+          >
             <View style={styles.hamburgerBar} />
             <View style={styles.hamburgerBar} />
             <View style={styles.hamburgerBar} />
@@ -295,22 +306,24 @@ export default function App() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Saved Status Banner */}
-          <View style={styles.savedBannerRow}>
-            <View style={styles.savedPill}>
-              <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
-                <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
-                <Path
-                  d="M8 12l2.5 2.5L16 9"
-                  stroke="#16A34A"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
-              <Text style={styles.savedText}>Saved {savedTime}</Text>
+          {/* Saved Status Banner (Steps 1-4) */}
+          {step < 5 && (
+            <View style={styles.savedBannerRow}>
+              <View style={styles.savedPill}>
+                <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
+                  <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
+                  <Path
+                    d="M8 12l2.5 2.5L16 9"
+                    stroke="#16A34A"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </Svg>
+                <Text style={styles.savedText}>Saved {savedTime}</Text>
+              </View>
             </View>
-          </View>
+          )}
 
           {/* Stepper Card */}
           <View style={styles.stepperCard}>
@@ -1106,7 +1119,7 @@ export default function App() {
                   </View>
                   <TouchableOpacity
                     style={styles.editPencilBtn}
-                    onPress={() => setStep(1)}
+                    onPress={() => jumpToStep(1)}
                     activeOpacity={0.7}
                   >
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
@@ -1141,7 +1154,7 @@ export default function App() {
                   </View>
                   <TouchableOpacity
                     style={styles.editPencilBtn}
-                    onPress={() => setStep(2)}
+                    onPress={() => jumpToStep(2)}
                     activeOpacity={0.7}
                   >
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
@@ -1176,7 +1189,7 @@ export default function App() {
                   </View>
                   <TouchableOpacity
                     style={styles.editPencilBtn}
-                    onPress={() => setStep(3)}
+                    onPress={() => jumpToStep(3)}
                     activeOpacity={0.7}
                   >
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
@@ -1267,51 +1280,26 @@ export default function App() {
             </View>
           )}
 
-          {/* ─── STEP 5: REVIEW & SUBMIT ─── */}
+          {/* ─── STEP 5: SUBMITTED / ACKNOWLEDGEMENT ─── */}
           {step === 5 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Review Your Tourism Project</Text>
+              <Text style={styles.sectionHeading}>Acknowledgement</Text>
 
-              <View style={styles.reviewCard}>
-                <Text style={styles.reviewStepTitle}>Step 1 · Approval Details</Text>
-                <Text style={styles.reviewText}>Sanction: SIPB/2026/00412 (Valley View Eco Resort)</Text>
-                <Text style={styles.reviewText}>Type: Eco-resort / Nature lodge • New project</Text>
-                <Text style={styles.reviewText}>Amended Order: Yes</Text>
-              </View>
-
-              <View style={[styles.reviewCard, { marginTop: 12 }]}>
-                <Text style={styles.reviewStepTitle}>Step 2 · How Project Was Funded</Text>
-                <Text style={styles.reviewText}>Eligible Cost: ₹{formData.eligibleProjectCost} • Own: ₹{formData.ownContribution}</Text>
-                <Text style={styles.reviewText}>Borrowed: {formData.hasBorrowed === 'yes' ? 'Yes (Bank / Financial Institution)' : 'No'}</Text>
-              </View>
-
-              <View style={[styles.reviewCard, { marginTop: 12 }]}>
-                <Text style={styles.reviewStepTitle}>Step 3 · Completion & Evidence</Text>
-                <Text style={styles.reviewText}>Status: Built and operating • Completed: {formData.completionDate || '15 May 2026'}</Text>
-                <Text style={styles.reviewText}>Evidence: Occupancy certificate & inspection report attached</Text>
-              </View>
-
-              <View style={[styles.reviewCard, { marginTop: 12 }]}>
-                <Text style={styles.reviewStepTitle}>Step 4 · Statutory Clearances</Text>
-                <Text style={styles.reviewText}>SIPB Order, DPR, PCB CTE: Attached & Verified</Text>
-              </View>
-
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Declaration</Text>
-              <View style={{ marginTop: 8 }}>
-                <View style={styles.checkItem}>
-                  <Ux4gCheckbox
-                    label="I certify that the particulars given above and in the DPR are true and correct to the best of my knowledge."
-                    checked={formData.declarationAccurate}
-                    onChange={(checked) => setFormData((prev) => ({ ...prev, declarationAccurate: checked }))}
-                  />
+              <View style={styles.acknowledgementCard}>
+                <View style={styles.ackCheckIconWrapper}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M20 6L9 17L4 12"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
                 </View>
-                <View style={styles.checkItem}>
-                  <Ux4gCheckbox
-                    label="I agree to undergo inspection and physical verification by the State Tourism Department."
-                    checked={formData.declarationTerms}
-                    onChange={(checked) => setFormData((prev) => ({ ...prev, declarationTerms: checked }))}
-                  />
-                </View>
+                <Text style={styles.acknowledgementText}>
+                  Submitted. Your application number is TPA-2026-004417. Keep it — every enquiry about this claim is answered against it.
+                </Text>
               </View>
             </View>
           )}
@@ -1321,23 +1309,95 @@ export default function App() {
 
         {/* ─── STICKY BOTTOM ACTION BAR ─── */}
         <View style={styles.bottomActionBar}>
-          <TouchableOpacity
-            style={styles.continueButton}
-            onPress={handleContinue}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.continueButtonText}>
-              {step === 5 ? 'Submit Application' : 'Continue'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.saveDraftButton}
-            onPress={handleSaveDraft}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.saveDraftButtonText}>Save as draft</Text>
-          </TouchableOpacity>
+          {step === 5 ? (
+            <TouchableOpacity
+              style={styles.continueButton}
+              onPress={() => triggerToast('Opening tracking for application TPA-2026-004417...')}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.continueButtonText}>Track this application</Text>
+            </TouchableOpacity>
+          ) : (
+            <>
+              <TouchableOpacity
+                style={styles.continueButton}
+                onPress={handleContinue}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.continueButtonText}>Continue</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.saveDraftButton}
+                onPress={handleSaveDraft}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.saveDraftButtonText}>Save as draft</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
+
+        {/* Step Navigation Drawer Modal */}
+        {isNavMenuOpen && (
+          <View style={styles.navMenuOverlay}>
+            <TouchableOpacity
+              style={StyleSheet.absoluteFillObject}
+              onPress={() => setIsNavMenuOpen(false)}
+              activeOpacity={1}
+            />
+            <View style={styles.navMenuCard}>
+              <View style={styles.navMenuHeader}>
+                <Text style={styles.navMenuTitle}>Jump to Screen (Step 1 - 5)</Text>
+                <TouchableOpacity
+                  onPress={() => setIsNavMenuOpen(false)}
+                  style={styles.navMenuCloseBtn}
+                >
+                  <Text style={styles.navMenuCloseText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              {[1, 2, 3, 4, 5].map((s) => (
+                <TouchableOpacity
+                  key={s}
+                  style={[
+                    styles.menuStepItem,
+                    step === s && styles.menuStepItemActive,
+                  ]}
+                  onPress={() => jumpToStep(s)}
+                  activeOpacity={0.7}
+                >
+                  <View
+                    style={[
+                      styles.menuStepBadge,
+                      step === s && styles.menuStepBadgeActive,
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.menuStepBadgeText,
+                        step === s && styles.menuStepBadgeTextActive,
+                      ]}
+                    >
+                      {s}
+                    </Text>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={[
+                        styles.menuStepTitle,
+                        step === s && styles.menuStepTitleActive,
+                      ]}
+                    >
+                      {STEP_METADATA[s].title}
+                    </Text>
+                    <Text style={styles.menuStepSubtitle} numberOfLines={1}>
+                      {STEP_METADATA[s].subtitle}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
 
         {/* Toast Feedback */}
         {toastMessage && (
@@ -1909,6 +1969,34 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: '500',
   },
+  acknowledgementCard: {
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+    borderRadius: 10,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 4,
+  },
+  ackCheckIconWrapper: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    marginTop: 2,
+    flexShrink: 0,
+  },
+  acknowledgementText: {
+    flex: 1,
+    fontSize: 14,
+    lineHeight: 22,
+    color: '#15803D',
+    fontWeight: '400',
+  },
   continueButton: {
     backgroundColor: UX4GColors.primary,
     borderRadius: 8,
@@ -1956,6 +2044,89 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '500',
+  },
+  navMenuOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+    zIndex: 999,
+  },
+  navMenuCard: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 20,
+    maxHeight: '80%',
+  },
+  navMenuHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  navMenuTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  navMenuCloseBtn: {
+    padding: 4,
+  },
+  navMenuCloseText: {
+    fontSize: 18,
+    color: '#6B7280',
+    fontWeight: '600',
+  },
+  menuStepItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginBottom: 8,
+    backgroundColor: '#F9FAFB',
+  },
+  menuStepItemActive: {
+    backgroundColor: '#EEF2FF',
+    borderWidth: 1,
+    borderColor: '#C7D2FE',
+  },
+  menuStepBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#E5E7EB',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  menuStepBadgeActive: {
+    backgroundColor: UX4GColors.primary,
+  },
+  menuStepBadgeText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#4B5563',
+  },
+  menuStepBadgeTextActive: {
+    color: '#FFFFFF',
+  },
+  menuStepTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
+  },
+  menuStepTitleActive: {
+    color: UX4GColors.primary,
+    fontWeight: '700',
+  },
+  menuStepSubtitle: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 2,
   },
 });
 `;
@@ -2060,7 +2231,7 @@ const styles = StyleSheet.create({
             </span>
           </div>
           <span style={{ fontSize: 12, color: isDark ? '#94A3B8' : '#64748B' }}>
-            5 Steps · Step 4 Active
+            5 Steps · Complete Unified Flow (Steps 1 → 5)
           </span>
         </div>
         <div style={{ minHeight: 880, width: '100%' }}>
