@@ -423,7 +423,7 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
         }
 
         const newFile: UploadedFile = {
-          id: Date.now().toString(),
+          id: `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
           name: fileName,
           fileSize,
           status: UploadStatus.idle,

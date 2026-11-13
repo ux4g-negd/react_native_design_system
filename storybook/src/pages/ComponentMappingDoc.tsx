@@ -65,6 +65,46 @@ const TABS: TabDef[] = [
   { id: 'gov-exclusive', label: 'Gov-Exclusive Modules', badge: '8+' },
 ];
 
+function renderSafeCell(html: string) {
+  const isCheck = html.includes('polyline') || html.includes('status-success');
+  const isCross = html.includes('line x1') || html.includes('status-danger');
+  const isWarn = html.includes('status-warning') || html.includes('M20.49');
+
+  const textWithoutSvg = html.replace(/<svg[\s\S]*?<\/svg>/g, '').trim();
+  const codeMatch = textWithoutSvg.match(/<span class="ux4g-code">([^<]+)<\/span>/);
+  const cleanText = (codeMatch ? codeMatch[1] : textWithoutSvg.replace(/<[^>]+>/g, ''))
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+
+  return (
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+      {isCheck && (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      )}
+      {isCross && (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      )}
+      {isWarn && (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+          <path d="M23 4v6h-6" />
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+        </svg>
+      )}
+      {codeMatch ? (
+        <span className="ux4g-code">{cleanText}</span>
+      ) : (
+        <span>{cleanText}</span>
+      )}
+    </div>
+  );
+}
+
 export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
   isDark = false,
   onNavigate,
@@ -380,9 +420,9 @@ export const ComponentMappingDoc: React.FC<ComponentMappingDocProps> = ({
                           {item.category}
                         </div>
                       </td>
-                      <td dangerouslySetInnerHTML={{ __html: item.ux4gHtml }} />
-                      <td dangerouslySetInnerHTML={{ __html: item.paperHtml }} />
-                      <td dangerouslySetInnerHTML={{ __html: item.rneHtml }} />
+                      <td>{renderSafeCell(item.ux4gHtml)}</td>
+                      <td>{renderSafeCell(item.paperHtml)}</td>
+                      <td>{renderSafeCell(item.rneHtml)}</td>
                     </tr>
                   ))}
                 </tbody>

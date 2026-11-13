@@ -20,6 +20,33 @@ export interface Ux4gLinkProps {
  * Ux4gLink wraps any child and opens the given URL when tapped.
  * Behavior mirrors Flutter Ux4gLink by delegating launch to platform URL handling.
  */
+const ALLOWED_SCHEMES = ['https:', 'http:', 'mailto:', 'tel:'];
+
+function isSafeUrl(rawUrl: string): boolean {
+  if (!rawUrl || typeof rawUrl !== 'string') return false;
+  const trimmed = rawUrl.trim().toLowerCase();
+  if (
+    trimmed.startsWith('javascript:') ||
+    trimmed.startsWith('data:') ||
+    trimmed.startsWith('file:') ||
+    trimmed.startsWith('intent:')
+  ) {
+    return false;
+  }
+  try {
+    const parsed = new URL(rawUrl);
+    return ALLOWED_SCHEMES.includes(parsed.protocol.toLowerCase());
+  } catch {
+    return (
+      trimmed.startsWith('mailto:') ||
+      trimmed.startsWith('tel:') ||
+      trimmed.startsWith('/') ||
+      trimmed.startsWith('https://') ||
+      trimmed.startsWith('http://')
+    );
+  }
+}
+
 export const Ux4gLink: React.FC<Ux4gLinkProps> = ({
   child,
   url,
@@ -30,6 +57,10 @@ export const Ux4gLink: React.FC<Ux4gLinkProps> = ({
 }) => {
   const handlePress = useCallback(async () => {
     if (disabled) return;
+    if (!isSafeUrl(url)) {
+      console.warn(`Blocked navigation to unsafe or unsupported URL: ${url}`);
+      return;
+    }
 
     try {
       const canOpen = await Linking.canOpenURL(url);

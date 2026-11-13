@@ -565,8 +565,16 @@ export function getPathFromPage(page: string): string {
   return PAGE_TO_PATH[page] ?? page;
 }
 
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 export function getPageFromPath(path: string): string {
-  const cleanPath = decodeURIComponent(path).replace(/^\/+|\/+$/g, '').toLowerCase();
+  const cleanPath = safeDecode(path).replace(/^\/+|\/+$/g, '').toLowerCase();
 
   if (cleanPath.includes('tourism-project')) {
     return 'service-pattern-tourism-project-approval';
