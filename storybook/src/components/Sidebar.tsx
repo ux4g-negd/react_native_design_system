@@ -1589,6 +1589,11 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Tourism Event Sponsorship Flow',
         icon: 'layers',
       },
+      {
+        id: 'service-pattern-entry-and-area-permit',
+        label: 'Entry and Area Permit Flow',
+        icon: 'layers',
+      },
     ],
   },
 ];
