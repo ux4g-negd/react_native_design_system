@@ -9,7 +9,7 @@ interface TourismEventSponsorshipFlowDocProps {
 }
 
 // Official Snack ID for Tourism Event Sponsorship Flow (Complete 5-Step Connected Flow)
-const SNACK_ID = 'N7z30G__NIdAI0kwqdSCj';
+const SNACK_ID = 'HvhBiHPm0sQAJpR-FmnC0';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -601,15 +601,37 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        {/* ─── TOP STATUS BANNER (SAVED NOTIFICATION) ─── */}
+        {/* ─── TOP STATUS BANNER (SAVED NOTIFICATION - USING UX4GSTATUSBANNER) ─── */}
         {step !== 5 && (
           <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
             <Ux4gStatusBanner
               variant="successLight"
               title={'Saved ' + savedTime}
+              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
               contentAlignment="right"
+              leadingIcon={
+                <View style={{ marginRight: -8 }}>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                    <Path
+                      d="M8 12l2.5 2.5L16 9"
+                      stroke="#15803D"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+              }
               paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+              containerStyle={{
+                backgroundColor: '#EBF9F1',
+                borderColor: 'transparent',
+                elevation: 0,
+                shadowOpacity: 0,
+                borderRadius: 8,
+              }}
             />
           </View>
         )}

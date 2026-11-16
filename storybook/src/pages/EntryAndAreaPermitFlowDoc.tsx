@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'MTr3_tk548unpP_lSad1x';
+const SNACK_ID = 'KBOAUtuMXNv9Vi1locRBA';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -511,15 +511,37 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        {/* ─── SAVED STATUS BANNER ─── */}
+        {/* ─── SAVED STATUS BANNER (USING UX4GSTATUSBANNER) ─── */}
         {step < 9 && (
           <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
             <Ux4gStatusBanner
               variant="successLight"
               title={'Saved ' + savedTime}
+              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
               contentAlignment="right"
+              leadingIcon={
+                <View style={{ marginRight: -8 }}>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                    <Path
+                      d="M8 12l2.5 2.5L16 9"
+                      stroke="#15803D"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+              }
               paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+              containerStyle={{
+                backgroundColor: '#EBF9F1',
+                borderColor: 'transparent',
+                elevation: 0,
+                shadowOpacity: 0,
+                borderRadius: 8,
+              }}
             />
           </View>
         )}
@@ -603,43 +625,53 @@ export default function App() {
                 />
               </View>
 
-              {/* Informational Callout Banner (No Aadhaar counter service) */}
+              {/* Informational Callout Banner (No Aadhaar counter service - Using Ux4gStatusBanner) */}
               <Ux4gStatusBanner
                 variant="infoLight"
                 title="No Aadhaar? You can still apply in person."
-                titleStyle={{ fontSize: 14, fontWeight: '700', color: UX4GColors.neutral900 }}
+                titleStyle={{ fontSize: 13.5, fontWeight: '700', color: UX4GColors.neutral900, lineHeight: 18 }}
                 leadingIcon={
                   <View
                     style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 10,
+                      width: 18,
+                      height: 18,
+                      borderRadius: 9,
                       backgroundColor: '#00ACC1',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      marginRight: -4,
                     }}
                   >
-                    <Text style={{ color: '#FFFFFF', fontSize: 12, fontWeight: '700', fontStyle: 'italic', lineHeight: 14 }}>
+                    <Text style={{ color: '#FFFFFF', fontSize: 11, fontWeight: '700', fontStyle: 'italic', lineHeight: 13 }}>
                       i
                     </Text>
                   </View>
                 }
                 subtitleWidget={
-                  <Text style={{ fontSize: 13, lineHeight: 19, color: UX4GColors.neutral700 }}>
-                    {'Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. '}
-                    <Text
-                      style={{ color: '#00838F', fontWeight: '600', textDecorationLine: 'underline' }}
-                      onPress={() => triggerToast('Opening list of local district administrative counters')}
-                    >
-                      See the list of counters
+                  <View style={{ marginTop: 2 }}>
+                    <Text style={{ fontSize: 12.5, lineHeight: 18, color: '#334155' }}>
+                      {'Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. '}
                     </Text>
-                  </Text>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() => triggerToast('Opening list of local district administrative counters')}
+                      style={{ marginTop: 3 }}
+                    >
+                      <Text style={{ fontSize: 12.5, fontWeight: '600', color: '#00838F', textDecorationLine: 'underline' }}>
+                        See the list of counters
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 }
-                paddingStyle={{ paddingHorizontal: 16, paddingVertical: 14 }}
+                paddingStyle={{ paddingHorizontal: 14, paddingVertical: 12 }}
                 marginStyle={{ marginHorizontal: 0, marginVertical: 14 }}
                 containerStyle={{
                   backgroundColor: '#E0F7FA',
                   borderColor: '#80DEEA',
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  elevation: 0,
+                  shadowOpacity: 0,
                 }}
               />
 

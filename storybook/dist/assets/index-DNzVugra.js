@@ -90692,7 +90692,7 @@ A comprehensive 5-step government single-window service pattern for **Tourism Pr
 npm install
 npx expo start
 \`\`\`
-`}function QI(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-project-approval-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Project Approval Flow",slug:"tourism-project-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=JI(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismProject.ts"]=LI(),o["src/constants/formOptions.ts"]=WI(),o["src/constants/initialFormData.ts"]=OI(),o["src/styles/commonStyles.ts"]=MI(t),o["src/components/Header.tsx"]=ZI(),o["src/components/NationalEmblem.tsx"]=zn,o["src/screens/Step1ApprovalScreen.tsx"]=HI(t),o["src/screens/Step2FundingScreen.tsx"]=$I(t),o["src/screens/Step3EvidenceScreen.tsx"]=qI(t),o["src/screens/Step4ReviewScreen.tsx"]=YI(t),o["src/screens/Step5SubmittedScreen.tsx"]=KI(t),o}const eV="OJ-bRZP55nsoSlV-Wic-d",Ix=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${eV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`}function QI(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-project-approval-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Project Approval Flow",slug:"tourism-project-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=JI(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismProject.ts"]=LI(),o["src/constants/formOptions.ts"]=WI(),o["src/constants/initialFormData.ts"]=OI(),o["src/styles/commonStyles.ts"]=MI(t),o["src/components/Header.tsx"]=ZI(),o["src/components/NationalEmblem.tsx"]=zn,o["src/screens/Step1ApprovalScreen.tsx"]=HI(t),o["src/screens/Step2FundingScreen.tsx"]=$I(t),o["src/screens/Step3EvidenceScreen.tsx"]=qI(t),o["src/screens/Step4ReviewScreen.tsx"]=YI(t),o["src/screens/Step5SubmittedScreen.tsx"]=KI(t),o}const eV="6Or6lQugyiK2BZ6VV6-c0",Ix=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${eV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -90993,14 +90993,36 @@ export default function App() {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Saved Status Banner (Steps 1-4) */}
+          {/* Saved Status Banner (Steps 1-4, using Ux4gStatusBanner) */}
           {step < 5 && (
             <Ux4gStatusBanner
               variant="successLight"
               title={'Saved ' + savedTime}
+              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
               contentAlignment="right"
+              leadingIcon={
+                <View style={{ marginRight: -8 }}>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                    <Path
+                      d="M8 12l2.5 2.5L16 9"
+                      stroke="#15803D"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+              }
               paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
               marginStyle={{ marginHorizontal: 16, marginTop: 12, marginBottom: 4 }}
+              containerStyle={{
+                backgroundColor: '#EBF9F1',
+                borderColor: 'transparent',
+                elevation: 0,
+                shadowOpacity: 0,
+                borderRadius: 8,
+              }}
             />
           )}
 
@@ -92975,7 +92997,7 @@ Constructed using **UX4G React Native Design System** components.
 npm install
 npx expo start
 \`\`\`
-`}function nV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=iV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=tV(),o["src/constants/formOptions.ts"]=rV(),o["src/constants/initialFormData.ts"]=oV(),o}const aV="N7z30G__NIdAI0kwqdSCj",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${aV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`}function nV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=iV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=tV(),o["src/constants/formOptions.ts"]=rV(),o["src/constants/initialFormData.ts"]=oV(),o}const aV="HvhBiHPm0sQAJpR-FmnC0",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${aV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -93545,15 +93567,37 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        {/* ─── TOP STATUS BANNER (SAVED NOTIFICATION) ─── */}
+        {/* ─── TOP STATUS BANNER (SAVED NOTIFICATION - USING UX4GSTATUSBANNER) ─── */}
         {step !== 5 && (
           <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
             <Ux4gStatusBanner
               variant="successLight"
               title={'Saved ' + savedTime}
+              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
               contentAlignment="right"
+              leadingIcon={
+                <View style={{ marginRight: -8 }}>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                    <Path
+                      d="M8 12l2.5 2.5L16 9"
+                      stroke="#15803D"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+              }
               paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+              containerStyle={{
+                backgroundColor: '#EBF9F1',
+                borderColor: 'transparent',
+                elevation: 0,
+                shadowOpacity: 0,
+                borderRadius: 8,
+              }}
             />
           </View>
         )}
@@ -95880,7 +95924,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="MTr3_tk548unpP_lSad1x",Dx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="KBOAUtuMXNv9Vi1locRBA",Dx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -96377,15 +96421,37 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        {/* ─── SAVED STATUS BANNER ─── */}
+        {/* ─── SAVED STATUS BANNER (USING UX4GSTATUSBANNER) ─── */}
         {step < 9 && (
           <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
             <Ux4gStatusBanner
               variant="successLight"
               title={'Saved ' + savedTime}
+              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
               contentAlignment="right"
+              leadingIcon={
+                <View style={{ marginRight: -8 }}>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                    <Path
+                      d="M8 12l2.5 2.5L16 9"
+                      stroke="#15803D"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+              }
               paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+              containerStyle={{
+                backgroundColor: '#EBF9F1',
+                borderColor: 'transparent',
+                elevation: 0,
+                shadowOpacity: 0,
+                borderRadius: 8,
+              }}
             />
           </View>
         )}
@@ -96469,43 +96535,53 @@ export default function App() {
                 />
               </View>
 
-              {/* Informational Callout Banner (No Aadhaar counter service) */}
+              {/* Informational Callout Banner (No Aadhaar counter service - Using Ux4gStatusBanner) */}
               <Ux4gStatusBanner
                 variant="infoLight"
                 title="No Aadhaar? You can still apply in person."
-                titleStyle={{ fontSize: 14, fontWeight: '700', color: UX4GColors.neutral900 }}
+                titleStyle={{ fontSize: 13.5, fontWeight: '700', color: UX4GColors.neutral900, lineHeight: 18 }}
                 leadingIcon={
                   <View
                     style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 10,
+                      width: 18,
+                      height: 18,
+                      borderRadius: 9,
                       backgroundColor: '#00ACC1',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      marginRight: -4,
                     }}
                   >
-                    <Text style={{ color: '#FFFFFF', fontSize: 12, fontWeight: '700', fontStyle: 'italic', lineHeight: 14 }}>
+                    <Text style={{ color: '#FFFFFF', fontSize: 11, fontWeight: '700', fontStyle: 'italic', lineHeight: 13 }}>
                       i
                     </Text>
                   </View>
                 }
                 subtitleWidget={
-                  <Text style={{ fontSize: 13, lineHeight: 19, color: UX4GColors.neutral700 }}>
-                    {'Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. '}
-                    <Text
-                      style={{ color: '#00838F', fontWeight: '600', textDecorationLine: 'underline' }}
-                      onPress={() => triggerToast('Opening list of local district administrative counters')}
-                    >
-                      See the list of counters
+                  <View style={{ marginTop: 2 }}>
+                    <Text style={{ fontSize: 12.5, lineHeight: 18, color: '#334155' }}>
+                      {'Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. '}
                     </Text>
-                  </Text>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() => triggerToast('Opening list of local district administrative counters')}
+                      style={{ marginTop: 3 }}
+                    >
+                      <Text style={{ fontSize: 12.5, fontWeight: '600', color: '#00838F', textDecorationLine: 'underline' }}>
+                        See the list of counters
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 }
-                paddingStyle={{ paddingHorizontal: 16, paddingVertical: 14 }}
+                paddingStyle={{ paddingHorizontal: 14, paddingVertical: 12 }}
                 marginStyle={{ marginHorizontal: 0, marginVertical: 14 }}
                 containerStyle={{
                   backgroundColor: '#E0F7FA',
                   borderColor: '#80DEEA',
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  elevation: 0,
+                  shadowOpacity: 0,
                 }}
               />
 
