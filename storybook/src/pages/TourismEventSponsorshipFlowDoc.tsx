@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow (Full Flow with Screen 1 & Screen 2 Validations)
-const SNACK_ID = 'kyPH_wdZVulQsezpM3Xji';
+// Official Snack ID for Tourism Event Sponsorship Flow (Official UX4G DatePicker & Dropdown Components)
+const SNACK_ID = 'Bp-nOtubIZL-b61uLhsl4';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -57,10 +57,37 @@ import {
   Ux4gModal,
   Ux4gSpinner,
   Ux4gButton,
+  Ux4gDatePicker,
+  Ux4gTextArea,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
 import NationalEmblem from './NationalEmblem';
+
+// Helper to parse 'DD/MM/YYYY' or ISO string to Date object
+const parseDate = (str) => {
+  if (!str) return undefined;
+  if (str instanceof Date) return isNaN(str.getTime()) ? undefined : str;
+  const parts = String(str).trim().split('/');
+  if (parts.length === 3) {
+    const d = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const y = parseInt(parts[2], 10);
+    const dt = new Date(y, m, d);
+    return isNaN(dt.getTime()) ? undefined : dt;
+  }
+  const dt = new Date(str);
+  return isNaN(dt.getTime()) ? undefined : dt;
+};
+
+// Helper to format Date object to 'DD/MM/YYYY' string
+const formatDate = (date) => {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) return '';
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = String(date.getFullYear());
+  return [d, m, y].join('/');
+};
 
 // Union.svg UX4G Logo
 const UnionLogo = () => (
@@ -170,17 +197,6 @@ export default function App() {
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
   const [errors, setErrors] = useState({});
-  const [pickerModal, setPickerModal] = useState({
-    visible: false,
-    title: '',
-    field: '',
-    options: [],
-  });
-  const [datePickerModal, setDatePickerModal] = useState({
-    visible: false,
-    field: '',
-    title: '',
-  });
 
   // Form State
   const [formData, setFormData] = useState({
@@ -793,46 +809,17 @@ export default function App() {
               </View>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Type of organisation<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TouchableOpacity
-                  style={[styles.dropdownSelectBox, errors.orgType && styles.dropdownSelectBoxError]}
-                  activeOpacity={0.8}
-                  onPress={() =>
-                    setPickerModal({
-                      visible: true,
-                      title: 'Select Type of Organisation',
-                      field: 'orgType',
-                      options: ORG_TYPE_OPTIONS,
-                    })
-                  }
-                >
-                  <Text
-                    style={formData.orgType ? styles.dropdownSelectedText : styles.dropdownPlaceholder}
-                  >
-                    {ORG_TYPE_OPTIONS.find((o) => o.id === formData.orgType)?.label ||
-                      'Select the legal structure'}
-                  </Text>
-                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                    <Path
-                      d="M6 9l6 6 6-6"
-                      stroke="#64748B"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Svg>
-                </TouchableOpacity>
-                {errors.orgType && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.orgType}</Text>
-                  </View>
-                )}
+                <Ux4gSelectionDropdown
+                  label="Type of organisation"
+                  required
+                  placeholder="Select the legal structure"
+                  options={ORG_TYPE_OPTIONS}
+                  selectedOptionIds={formData.orgType ? [formData.orgType] : []}
+                  onSelectionChange={(selected) => updateField('orgType', selected[0] || '')}
+                  size="l"
+                  status={errors.orgType ? 'error' : 'defaultStatus'}
+                  description={errors.orgType}
+                />
               </View>
 
               <View style={styles.fieldGroup}>
@@ -905,46 +892,17 @@ export default function App() {
               </View>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  District<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TouchableOpacity
-                  style={[styles.dropdownSelectBox, errors.district && styles.dropdownSelectBoxError]}
-                  activeOpacity={0.8}
-                  onPress={() =>
-                    setPickerModal({
-                      visible: true,
-                      title: 'Select District',
-                      field: 'district',
-                      options: DISTRICT_OPTIONS,
-                    })
-                  }
-                >
-                  <Text
-                    style={formData.district ? styles.dropdownSelectedText : styles.dropdownPlaceholder}
-                  >
-                    {DISTRICT_OPTIONS.find((d) => d.id === formData.district)?.label ||
-                      'Select the district'}
-                  </Text>
-                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                    <Path
-                      d="M6 9l6 6 6-6"
-                      stroke="#64748B"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Svg>
-                </TouchableOpacity>
-                {errors.district && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.district}</Text>
-                  </View>
-                )}
+                <Ux4gSelectionDropdown
+                  label="District"
+                  required
+                  placeholder="Select the district"
+                  options={DISTRICT_OPTIONS}
+                  selectedOptionIds={formData.district ? [formData.district] : []}
+                  onSelectionChange={(selected) => updateField('district', selected[0] || '')}
+                  size="l"
+                  status={errors.district ? 'error' : 'defaultStatus'}
+                  description={errors.district}
+                />
               </View>
             </View>
           )}
@@ -1107,48 +1065,17 @@ export default function App() {
               </View>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  District<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TouchableOpacity
-                  style={[styles.dropdownSelectBox, errors.eventDistrict && styles.dropdownSelectBoxError]}
-                  activeOpacity={0.8}
-                  onPress={() =>
-                    setPickerModal({
-                      visible: true,
-                      title: 'Select Event District',
-                      field: 'eventDistrict',
-                      options: DISTRICT_OPTIONS,
-                    })
-                  }
-                >
-                  <Text
-                    style={
-                      formData.eventDistrict ? styles.dropdownSelectedText : styles.dropdownPlaceholder
-                    }
-                  >
-                    {DISTRICT_OPTIONS.find((d) => d.id === formData.eventDistrict)?.label ||
-                      'Select the district'}
-                  </Text>
-                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                    <Path
-                      d="M6 9l6 6 6-6"
-                      stroke="#64748B"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Svg>
-                </TouchableOpacity>
-                {errors.eventDistrict && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.eventDistrict}</Text>
-                  </View>
-                )}
+                <Ux4gSelectionDropdown
+                  label="District"
+                  required
+                  placeholder="Select the district"
+                  options={DISTRICT_OPTIONS}
+                  selectedOptionIds={formData.eventDistrict ? [formData.eventDistrict] : []}
+                  onSelectionChange={(selected) => updateField('eventDistrict', selected[0] || '')}
+                  size="l"
+                  status={errors.eventDistrict ? 'error' : 'defaultStatus'}
+                  description={errors.eventDistrict}
+                />
               </View>
 
               {/* Section 3: Date and Duration of the Event */}
@@ -1157,99 +1084,31 @@ export default function App() {
               </Text>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  First day of the event<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TouchableOpacity
-                  style={[styles.datePickerInput, errors.startDate && styles.datePickerInputError]}
-                  activeOpacity={0.8}
-                  onPress={() =>
-                    setDatePickerModal({
-                      visible: true,
-                      field: 'startDate',
-                      title: 'Select First Day of Event',
-                    })
-                  }
-                >
-                  <Text
-                    style={formData.startDate ? styles.datePickerText : styles.datePickerPlaceholder}
-                  >
-                    {formData.startDate || 'Select date'}
-                  </Text>
-                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                    <Path
-                      d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                      stroke="#475569"
-                      strokeWidth={1.8}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <Path
-                      d="M16 2V6M8 2V6M3 10H21"
-                      stroke="#475569"
-                      strokeWidth={1.8}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Svg>
-                </TouchableOpacity>
-                {errors.startDate && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.startDate}</Text>
-                  </View>
-                )}
+                <Ux4gDatePicker
+                  label="First day of the event"
+                  required
+                  placeholder="Select date"
+                  initialDate={parseDate(formData.startDate)}
+                  value={formData.startDate}
+                  onDateSelected={(date) => updateField('startDate', formatDate(date))}
+                  onValueChange={(val) => updateField('startDate', val)}
+                  status={errors.startDate ? 'error' : 'defaultStatus'}
+                  description={errors.startDate}
+                />
               </View>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Last day of the event<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TouchableOpacity
-                  style={[styles.datePickerInput, errors.endDate && styles.datePickerInputError]}
-                  activeOpacity={0.8}
-                  onPress={() =>
-                    setDatePickerModal({
-                      visible: true,
-                      field: 'endDate',
-                      title: 'Select Last Day of Event',
-                    })
-                  }
-                >
-                  <Text
-                    style={formData.endDate ? styles.datePickerText : styles.datePickerPlaceholder}
-                  >
-                    {formData.endDate || 'Select date'}
-                  </Text>
-                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                    <Path
-                      d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                      stroke="#475569"
-                      strokeWidth={1.8}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <Path
-                      d="M16 2V6M8 2V6M3 10H21"
-                      stroke="#475569"
-                      strokeWidth={1.8}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </Svg>
-                </TouchableOpacity>
-                {errors.endDate && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.endDate}</Text>
-                  </View>
-                )}
+                <Ux4gDatePicker
+                  label="Last day of the event"
+                  required
+                  placeholder="Select date"
+                  initialDate={parseDate(formData.endDate)}
+                  value={formData.endDate}
+                  onDateSelected={(date) => updateField('endDate', formatDate(date))}
+                  onValueChange={(val) => updateField('endDate', val)}
+                  status={errors.endDate ? 'error' : 'defaultStatus'}
+                  description={errors.endDate}
+                />
               </View>
 
               <View style={styles.fieldGroup}>
@@ -1888,141 +1747,6 @@ export default function App() {
             </TouchableOpacity>
           </View>
         )}
-
-        {/* ─── INTERACTIVE DROPDOWN PICKER MODAL ─── */}
-        <Modal
-          visible={pickerModal.visible}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setPickerModal({ visible: false, title: '', field: '', options: [] })}
-        >
-          <TouchableOpacity
-            style={styles.modalOverlay}
-            activeOpacity={1}
-            onPress={() => setPickerModal({ visible: false, title: '', field: '', options: [] })}
-          >
-            <View style={styles.pickerModalContent}>
-              <View style={styles.pickerModalHeader}>
-                <Text style={styles.pickerModalTitle}>{pickerModal.title}</Text>
-                <TouchableOpacity
-                  onPress={() => setPickerModal({ visible: false, title: '', field: '', options: [] })}
-                  style={styles.pickerModalCloseBtn}
-                >
-                  <Text style={styles.pickerModalCloseText}>✕</Text>
-                </TouchableOpacity>
-              </View>
-              <ScrollView style={{ maxHeight: 360 }}>
-                {pickerModal.options.map((opt) => {
-                  const isSelected = formData[pickerModal.field] === opt.id;
-                  return (
-                    <TouchableOpacity
-                      key={opt.id}
-                      style={[
-                        styles.pickerOptionItem,
-                        isSelected && styles.pickerOptionItemActive,
-                      ]}
-                      onPress={() => {
-                        updateField(pickerModal.field, opt.id);
-                        setPickerModal({ visible: false, title: '', field: '', options: [] });
-                      }}
-                      activeOpacity={0.7}
-                    >
-                      <View
-                        style={[
-                          styles.pickerRadioOuter,
-                          isSelected && styles.pickerRadioOuterActive,
-                        ]}
-                      >
-                        {isSelected && <View style={styles.pickerRadioInner} />}
-                      </View>
-                      <Text
-                        style={[
-                          styles.pickerOptionText,
-                          isSelected && styles.pickerOptionTextActive,
-                        ]}
-                      >
-                        {opt.label}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </View>
-          </TouchableOpacity>
-        </Modal>
-
-        {/* ─── INTERACTIVE DATE PICKER MODAL ─── */}
-        <Modal
-          visible={datePickerModal.visible}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setDatePickerModal({ visible: false, field: '', title: '' })}
-        >
-          <TouchableOpacity
-            style={styles.modalOverlay}
-            activeOpacity={1}
-            onPress={() => setDatePickerModal({ visible: false, field: '', title: '' })}
-          >
-            <View style={styles.pickerModalContent}>
-              <View style={styles.pickerModalHeader}>
-                <Text style={styles.pickerModalTitle}>{datePickerModal.title}</Text>
-                <TouchableOpacity
-                  onPress={() => setDatePickerModal({ visible: false, field: '', title: '' })}
-                  style={styles.pickerModalCloseBtn}
-                >
-                  <Text style={styles.pickerModalCloseText}>✕</Text>
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.pickerModalSubText}>
-                Select upcoming tourism festival schedule dates:
-              </Text>
-              {[
-                { date: '15/12/2026', label: '15 Dec 2026 (Winter Festival Opener)' },
-                { date: '20/12/2026', label: '20 Dec 2026 (Winter Finale)' },
-                { date: '05/01/2027', label: '05 Jan 2027 (New Year Coastal Carnival)' },
-                { date: '10/01/2027', label: '10 Jan 2027 (Harvest Special)' },
-                { date: '14/02/2027', label: '14 Feb 2027 (Spring Beach Regatta)' },
-                { date: '20/02/2027', label: '20 Feb 2027 (Cultural Gala)' },
-              ].map((item) => (
-                <TouchableOpacity
-                  key={item.date}
-                  style={[
-                    styles.pickerOptionItem,
-                    formData[datePickerModal.field] === item.date && styles.pickerOptionItemActive,
-                  ]}
-                  onPress={() => {
-                    updateField(datePickerModal.field, item.date);
-                    setDatePickerModal({ visible: false, field: '', title: '' });
-                    triggerToast('Selected ' + item.date);
-                  }}
-                  activeOpacity={0.7}
-                >
-                  <View
-                    style={[
-                      styles.pickerRadioOuter,
-                      formData[datePickerModal.field] === item.date && styles.pickerRadioOuterActive,
-                    ]}
-                  >
-                    {formData[datePickerModal.field] === item.date && (
-                      <View style={styles.pickerRadioInner} />
-                    )}
-                  </View>
-                  <View style={{ flex: 1 }}>
-                    <Text
-                      style={[
-                        styles.pickerOptionText,
-                        formData[datePickerModal.field] === item.date && styles.pickerOptionTextActive,
-                      ]}
-                    >
-                      {item.label}
-                    </Text>
-                    <Text style={styles.pickerOptionSub}>{item.date}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </TouchableOpacity>
-        </Modal>
 
         {/* ─── HAMBURGER SIDE DRAWER MODAL ─── */}
         <Modal

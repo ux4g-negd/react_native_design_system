@@ -8,8 +8,8 @@ interface TourismProjectApprovalFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Project Approval Flow (Complete 5-Step Workflow: Steps 1-5 Combined Flow)
-const SNACK_ID = 'PopN7cLEiqwm2FvgZU3qU';
+// Official Snack ID for Tourism Project Approval Flow (Complete 5-Step Workflow with Ux4gDatePicker)
+const SNACK_ID = 'LwlkWRvWahVZ7Bj73rxcr';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -56,10 +56,36 @@ import {
   Ux4gModal,
   Ux4gSpinner,
   Ux4gButton,
+  Ux4gDatePicker,
   Ux4gThemeProvider,
   UX4GColors,
 } from 'ux4g-react-native-components';
 import NationalEmblem from './NationalEmblem';
+
+// Helper to parse 'DD/MM/YYYY' or ISO string to Date object
+const parseDate = (str) => {
+  if (!str) return undefined;
+  if (str instanceof Date) return isNaN(str.getTime()) ? undefined : str;
+  const parts = String(str).trim().split('/');
+  if (parts.length === 3) {
+    const d = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const y = parseInt(parts[2], 10);
+    const dt = new Date(y, m, d);
+    return isNaN(dt.getTime()) ? undefined : dt;
+  }
+  const dt = new Date(str);
+  return isNaN(dt.getTime()) ? undefined : dt;
+};
+
+// Helper to format Date object to 'DD/MM/YYYY' string
+const formatDate = (date) => {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) return '';
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = String(date.getFullYear());
+  return [d, m, y].join('/');
+};
 
 // Union.svg UX4G Logo
 const UnionLogo = () => (
@@ -713,41 +739,21 @@ export default function App() {
 
               {formData.hasProjectCompleted === 'yes' && (
                 <>
-                  <Text style={[styles.fieldLabel, { marginTop: 20 }]}>
-                    Date of completion<Text style={styles.asterisk}>*</Text>
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.datePickerContainer}
-                    activeOpacity={0.8}
-                    onPress={() => {
-                      if (!formData.completionDate) {
-                        setFormData((prev) => ({ ...prev, completionDate: '15 May 2026' }));
-                      }
-                    }}
-                  >
-                    <TextInput
-                      style={styles.datePickerInput}
-                      value={formData.completionDate}
-                      onChangeText={(val) => setFormData((prev) => ({ ...prev, completionDate: val }))}
+                  <View style={{ marginTop: 20 }}>
+                    <Ux4gDatePicker
+                      label="Date of completion"
+                      required
                       placeholder="Select date"
-                      placeholderTextColor="#9CA3AF"
+                      initialDate={parseDate(formData.completionDate)}
+                      value={formData.completionDate}
+                      onDateSelected={(date) => {
+                        setFormData((prev) => ({ ...prev, completionDate: formatDate(date) }));
+                      }}
+                      onValueChange={(val) => {
+                        setFormData((prev) => ({ ...prev, completionDate: val }));
+                      }}
                     />
-                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M8 2v3M16 2v3M3.5 9.09h17M21 8.5V17a3.5 3.5 0 01-3.5 3.5h-11A3.5 3.5 0 013 17V8.5A3.5 3.5 0 016.5 5h11A3.5 3.5 0 0121 8.5z"
-                        stroke="#6B7280"
-                        strokeWidth={1.8}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <Path
-                        d="M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01"
-                        stroke="#6B7280"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                      />
-                    </Svg>
-                  </TouchableOpacity>
+                  </View>
 
                   {/* ── Accordion 1: Completion Documents (Expanded by default) ── */}
                   <View style={[styles.accordionCard, { marginTop: 24 }]}>

@@ -32,6 +32,10 @@ export interface Ux4gDatePickerProps {
   minDate?: Date;
   /** Maximum selectable date. */
   maxDate?: Date;
+  /** Selected date value as Date or string (e.g. 'DD/MM/YYYY'). */
+  value?: Date | string;
+  /** Callback fired when a date is selected in single mode with formatted string. */
+  onValueChange?: (val: string) => void;
   /** Callback fired when a date is selected in single mode. */
   onDateSelected?: (date: Date) => void;
   /** Callback fired when a date range is selected in range mode. */
@@ -63,8 +67,28 @@ const formatDate = (date: Date): string => {
   return `${d}/${m}/${y}`;
 };
 
+const parseToDate = (val?: Date | string): Date | undefined => {
+  if (!val) return undefined;
+  if (val instanceof Date) return isNaN(val.getTime()) ? undefined : val;
+  if (typeof val === 'string') {
+    const parts = val.trim().split('/');
+    if (parts.length === 3) {
+      const d = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10) - 1;
+      const y = parseInt(parts[2], 10);
+      const dt = new Date(y, m, d);
+      return isNaN(dt.getTime()) ? undefined : dt;
+    }
+    const dt = new Date(val);
+    return isNaN(dt.getTime()) ? undefined : dt;
+  }
+  return undefined;
+};
+
 export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
   mode = 'single',
+  value,
+  onValueChange,
   initialDate,
   initialDateRange,
   minDate,
@@ -84,13 +108,13 @@ export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
   const { colors, typography } = useUx4gTheme();
   const showRequired = isRequired || required;
 
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(initialDate);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(parseToDate(value) || initialDate);
   const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(initialDateRange);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    setSelectedDate(initialDate);
-  }, [initialDate]);
+    setSelectedDate(parseToDate(value) || initialDate);
+  }, [value, initialDate]);
 
   useEffect(() => {
     setSelectedRange(initialDateRange);
@@ -147,6 +171,7 @@ export const Ux4gDatePicker: React.FC<Ux4gDatePickerProps> = ({
     setSelectedDate(date);
     setModalVisible(false);
     onDateSelected?.(date);
+    onValueChange?.(formatDate(date));
   };
 
   const handleDialogConfirmRange = (range: DateRange) => {
