@@ -90692,7 +90692,7 @@ A comprehensive 5-step government single-window service pattern for **Tourism Pr
 npm install
 npx expo start
 \`\`\`
-`}function JI(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-project-approval-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Project Approval Flow",slug:"tourism-project-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=ZI(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismProject.ts"]=_I(),o["src/constants/formOptions.ts"]=LI(),o["src/constants/initialFormData.ts"]=WI(),o["src/styles/commonStyles.ts"]=OI(t),o["src/components/Header.tsx"]=KI(),o["src/components/NationalEmblem.tsx"]=zn,o["src/screens/Step1ApprovalScreen.tsx"]=MI(t),o["src/screens/Step2FundingScreen.tsx"]=HI(t),o["src/screens/Step3EvidenceScreen.tsx"]=$I(t),o["src/screens/Step4ReviewScreen.tsx"]=qI(t),o["src/screens/Step5SubmittedScreen.tsx"]=YI(t),o}const QI="gwHP3sPiwDl6tgFYfDZDC",Ix=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${QI}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`}function JI(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-project-approval-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Project Approval Flow",slug:"tourism-project-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=ZI(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismProject.ts"]=_I(),o["src/constants/formOptions.ts"]=LI(),o["src/constants/initialFormData.ts"]=WI(),o["src/styles/commonStyles.ts"]=OI(t),o["src/components/Header.tsx"]=KI(),o["src/components/NationalEmblem.tsx"]=zn,o["src/screens/Step1ApprovalScreen.tsx"]=MI(t),o["src/screens/Step2FundingScreen.tsx"]=HI(t),o["src/screens/Step3EvidenceScreen.tsx"]=$I(t),o["src/screens/Step4ReviewScreen.tsx"]=qI(t),o["src/screens/Step5SubmittedScreen.tsx"]=YI(t),o}const QI="TlnO22vI8wyZ1Y6hvtO-A",Ix=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${QI}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -91406,12 +91406,8 @@ export default function App() {
                       required
                       placeholder="Select date"
                       initialDate={parseDate(formData.completionDate)}
-                      value={formData.completionDate}
                       onDateSelected={(date) => {
                         setFormData((prev) => ({ ...prev, completionDate: formatDate(date) }));
-                      }}
-                      onValueChange={(val) => {
-                        setFormData((prev) => ({ ...prev, completionDate: val }));
                       }}
                     />
                   </View>
@@ -93011,7 +93007,7 @@ Constructed using **UX4G React Native Design System** components.
 npm install
 npx expo start
 \`\`\`
-`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="S-I38u8qHprz5ve47UgmV",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="6VNtyBL4bv_K0sVf5Qfnn",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -94069,9 +94065,7 @@ export default function App() {
                   required
                   placeholder="Select date"
                   initialDate={parseDate(formData.startDate)}
-                  value={formData.startDate}
                   onDateSelected={(date) => updateField('startDate', formatDate(date))}
-                  onValueChange={(val) => updateField('startDate', val)}
                   status={errors.startDate ? 'error' : 'defaultStatus'}
                   description={errors.startDate}
                 />
@@ -94083,9 +94077,7 @@ export default function App() {
                   required
                   placeholder="Select date"
                   initialDate={parseDate(formData.endDate)}
-                  value={formData.endDate}
                   onDateSelected={(date) => updateField('endDate', formatDate(date))}
-                  onValueChange={(val) => updateField('endDate', val)}
                   status={errors.endDate ? 'error' : 'defaultStatus'}
                   description={errors.endDate}
                 />

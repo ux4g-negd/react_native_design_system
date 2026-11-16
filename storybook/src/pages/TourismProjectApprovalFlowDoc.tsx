@@ -9,7 +9,7 @@ interface TourismProjectApprovalFlowDocProps {
 }
 
 // Official Snack ID for Tourism Project Approval Flow (Complete 5-Step Workflow with Ux4gDatePicker)
-const SNACK_ID = 'LwlkWRvWahVZ7Bj73rxcr';
+const SNACK_ID = 'TlnO22vI8wyZ1Y6hvtO-A';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -745,12 +745,8 @@ export default function App() {
                       required
                       placeholder="Select date"
                       initialDate={parseDate(formData.completionDate)}
-                      value={formData.completionDate}
                       onDateSelected={(date) => {
                         setFormData((prev) => ({ ...prev, completionDate: formatDate(date) }));
-                      }}
-                      onValueChange={(val) => {
-                        setFormData((prev) => ({ ...prev, completionDate: val }));
                       }}
                     />
                   </View>

@@ -9,7 +9,7 @@ interface TourismEventSponsorshipFlowDocProps {
 }
 
 // Official Snack ID for Tourism Event Sponsorship Flow (Official UX4G DatePicker & Dropdown Components)
-const SNACK_ID = 'Bp-nOtubIZL-b61uLhsl4';
+const SNACK_ID = '6VNtyBL4bv_K0sVf5Qfnn';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -1089,9 +1089,7 @@ export default function App() {
                   required
                   placeholder="Select date"
                   initialDate={parseDate(formData.startDate)}
-                  value={formData.startDate}
                   onDateSelected={(date) => updateField('startDate', formatDate(date))}
-                  onValueChange={(val) => updateField('startDate', val)}
                   status={errors.startDate ? 'error' : 'defaultStatus'}
                   description={errors.startDate}
                 />
@@ -1103,9 +1101,7 @@ export default function App() {
                   required
                   placeholder="Select date"
                   initialDate={parseDate(formData.endDate)}
-                  value={formData.endDate}
                   onDateSelected={(date) => updateField('endDate', formatDate(date))}
-                  onValueChange={(val) => updateField('endDate', val)}
                   status={errors.endDate ? 'error' : 'defaultStatus'}
                   description={errors.endDate}
                 />
