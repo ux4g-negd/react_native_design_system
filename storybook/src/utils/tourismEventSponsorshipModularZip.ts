@@ -208,7 +208,7 @@ export const INITIAL_FORM_DATA: TourismEventSponsorshipFormData = {
   declarationTrueKnowledge: false,
   declarationVenueRight: false,
   isSubmitted: false,
-  applicationNumber: 'TPA-2026-004417',
+  applicationNumber: 'TE-2026-000000',
 };
 `;
 }

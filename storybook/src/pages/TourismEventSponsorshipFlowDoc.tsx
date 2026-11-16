@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow (Step 4: Review & Declaration with Material Edit Icons)
-const SNACK_ID = 'Mg1NdDpXIIh04OhzicWED';
+// Official Snack ID for Tourism Event Sponsorship Flow (Step 5: Submitted Final Screen)
+const SNACK_ID = '0gZNGXfAc2UdIShu5X2bp';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -192,7 +192,7 @@ const CLEARANCE_STATUS_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(5);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -235,12 +235,12 @@ export default function App() {
     docBudgetSheet: '',
 
     // Step 4: Declarations
-    declarationTrueKnowledge: false,
-    declarationVenueRight: false,
+    declarationTrueKnowledge: true,
+    declarationVenueRight: true,
 
     // Step 5: Submitted
-    isSubmitted: false,
-    applicationNumber: 'TPA-2026-004417',
+    isSubmitted: true,
+    applicationNumber: 'TE-2026-000000',
   });
 
   const scrollRef = useRef(null);
@@ -600,21 +600,23 @@ export default function App() {
         </View>
 
         {/* ─── TOP STATUS BANNER (SAVED NOTIFICATION) ─── */}
-        <View style={styles.autoSaveBanner}>
-          <View style={styles.autoSaveRow}>
-            <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-              <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
-              <Path
-                d="M8 12l3 3 5-5"
-                stroke="#16A34A"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
-            <Text style={styles.autoSaveText}>Saved {savedTime}</Text>
+        {step !== 5 && (
+          <View style={styles.autoSaveBanner}>
+            <View style={styles.autoSaveRow}>
+              <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
+                <Path
+                  d="M8 12l3 3 5-5"
+                  stroke="#16A34A"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </Svg>
+              <Text style={styles.autoSaveText}>Saved {savedTime}</Text>
+            </View>
           </View>
-        </View>
+        )}
 
         {/* ─── 5-SEGMENT STEPPER PROGRESS ─── */}
         <View style={styles.stepperContainer}>
@@ -1711,16 +1713,14 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 5: SUBMITTED (ACKNOWLEDGEMENT)                                       */}
+          {/* STEP 5: SUBMITTED (FINAL SCREEN)                                         */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 5 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Acknowledgement</Text>
-
-              <View style={styles.ackGreenCard}>
-                <View style={styles.ackCardHeaderRow}>
-                  <View style={styles.ackCheckCircle}>
-                    <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
+              <View style={styles.step5TopContainer}>
+                <View style={styles.step5SuccessOuterCircle}>
+                  <View style={styles.step5SuccessInnerCircle}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M5 13l4 4L19 7"
                         stroke="#FFFFFF"
@@ -1730,10 +1730,48 @@ export default function App() {
                       />
                     </Svg>
                   </View>
-                  <Text style={styles.ackCardMessage}>
-                    {'Submitted. Your application number is ' +
-                      formData.applicationNumber +
-                      '. Keep it — every enquiry about this claim is answered against it.'}
+                </View>
+
+                <Text style={styles.step5Heading}>Application submitted</Text>
+
+                <Text style={styles.step5Description}>
+                  {(formData.eventName || 'Netoyed Festival 2026') +
+                    ' is with the Directorate of Tourism. Nothing is owed — this application asks the department for support, it does not charge you.'}
+                </Text>
+              </View>
+
+              {/* Green Details Card */}
+              <View style={styles.step5DetailsCard}>
+                <View style={styles.step5DetailRow}>
+                  <Text style={styles.step5DetailLabel}>Application number</Text>
+                  <Text style={styles.step5DetailValue}>
+                    {formData.applicationNumber || 'TE-2026-000000'}
+                  </Text>
+                </View>
+
+                <View style={styles.step5DetailRow}>
+                  <Text style={styles.step5DetailLabel}>Event</Text>
+                  <Text style={styles.step5DetailValue}>
+                    {formData.eventName || 'ABC Festival 2026'}
+                  </Text>
+                </View>
+
+                <View style={styles.step5DetailRow}>
+                  <Text style={styles.step5DetailLabel}>Event dates</Text>
+                  <Text style={styles.step5DetailValue}>10–15 December 2026</Text>
+                </View>
+
+                <View style={styles.step5DetailRow}>
+                  <Text style={styles.step5DetailLabel}>Submitted on</Text>
+                  <Text style={styles.step5DetailValue}>
+                    {'18 September 2026, ' + savedTime + ' IST'}
+                  </Text>
+                </View>
+
+                <View style={styles.step5DetailRow}>
+                  <Text style={styles.step5DetailLabel}>Assessed by</Text>
+                  <Text style={styles.step5DetailValue}>
+                    {'Directorate of Tourism,\n' + (formData.eventDistrict || 'Dehradun')}
                   </Text>
                 </View>
               </View>
@@ -1754,7 +1792,7 @@ export default function App() {
               {step === 4
                 ? 'Submit application'
                 : step === 5
-                ? 'Track this application'
+                ? 'Go to my applications'
                 : 'Continue'}
             </Text>
           </TouchableOpacity>
@@ -2523,6 +2561,71 @@ const styles = StyleSheet.create({
     color: '#14532D',
     lineHeight: 20,
     fontWeight: '500',
+  },
+  step5TopContainer: {
+    alignItems: 'center',
+    paddingTop: 16,
+    paddingHorizontal: 8,
+  },
+  step5SuccessOuterCircle: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    backgroundColor: '#DCFCE7',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  step5SuccessInnerCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  step5Heading: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  step5Description: {
+    fontSize: 14,
+    color: '#475569',
+    textAlign: 'center',
+    lineHeight: 21,
+    marginBottom: 20,
+    paddingHorizontal: 6,
+  },
+  step5DetailsCard: {
+    backgroundColor: '#DCFCE7',
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 20,
+  },
+  step5DetailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    paddingVertical: 7,
+  },
+  step5DetailLabel: {
+    fontSize: 13.5,
+    color: '#374151',
+    flex: 1,
+  },
+  step5DetailValue: {
+    fontSize: 13.5,
+    fontWeight: '700',
+    color: '#111827',
+    textAlign: 'right',
+    flex: 1,
+    marginLeft: 8,
+    lineHeight: 19,
   },
   submittedContainer: {
     padding: 20,
