@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow
-const SNACK_ID = 'dGeTLDOGQZmOVi7F-YIcK';
+// Official Snack ID for Tourism Event Sponsorship Flow (Full Flow with Screen 1 & Screen 2 Validations)
+const SNACK_ID = 'kyPH_wdZVulQsezpM3Xji';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -169,6 +169,18 @@ export default function App() {
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [pickerModal, setPickerModal] = useState({
+    visible: false,
+    title: '',
+    field: '',
+    options: [],
+  });
+  const [datePickerModal, setDatePickerModal] = useState({
+    visible: false,
+    field: '',
+    title: '',
+  });
 
   // Form State
   const [formData, setFormData] = useState({
@@ -234,7 +246,34 @@ export default function App() {
     }, 3000);
   };
 
+  const updateField = (key, value) => {
+    setFormData((prev) => {
+      const next = { ...prev, [key]: value };
+      if (key === 'startDate' || key === 'endDate') {
+        if (next.startDate && next.endDate) {
+          next.eventDuration = '6 days';
+        }
+      }
+      return next;
+    });
+    if (errors[key]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      });
+    }
+  };
+
   const handleFetchDetails = () => {
+    if (!formData.registrationNumber.trim()) {
+      setErrors((prev) => ({
+        ...prev,
+        registrationNumber: 'Please enter registration number first to fetch details',
+      }));
+      triggerToast('Enter registration number first');
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
       isRecordFound: true,
@@ -244,7 +283,44 @@ export default function App() {
       registeredAddress: '402, Heritage Plaza, Senapati Bapat Marg, Lower Parel, Mumbai',
       district: 'mumbai_city',
     }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.registrationNumber;
+      delete next.organisationName;
+      delete next.orgType;
+      delete next.incorporationNumber;
+      delete next.registeredAddress;
+      delete next.district;
+      return next;
+    });
     triggerToast('MahaAtithi vendor record found and details auto-filled!');
+  };
+
+  const handleFillSampleEvent = () => {
+    setFormData((prev) => ({
+      ...prev,
+      eventName: 'Konkan Cultural & Seafood Carnival 2026',
+      eventDescription:
+        'A 6-day coastal mega festival showcasing traditional Malvani music, beach sports, coastal handicraft exhibitions, and Konkani cuisine to boost state tourism.',
+      expectedFootfall: '75000',
+      venueAddress: 'Bhatye Beach Promenade, Ratnagiri Coastal Highway, Maharashtra 415612',
+      eventDistrict: 'ratnagiri',
+      startDate: '15/12/2026',
+      endDate: '20/12/2026',
+      eventDuration: '6 days',
+    }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next.eventName;
+      delete next.eventDescription;
+      delete next.expectedFootfall;
+      delete next.venueAddress;
+      delete next.eventDistrict;
+      delete next.startDate;
+      delete next.endDate;
+      return next;
+    });
+    triggerToast('Sample event details loaded!');
   };
 
   const handleSaveDraft = () => {
@@ -259,8 +335,101 @@ export default function App() {
     triggerToast('Draft saved successfully at ' + timeStr);
   };
 
+  const handleContinueStep1 = () => {
+    const errs = {};
+    if (!formData.fullName.trim()) {
+      errs.fullName = 'Full name is required as per official record';
+    }
+    if (!formData.designation.trim()) {
+      errs.designation = 'Designation in organisation is required';
+    }
+    if (!formData.mobileNumber.trim()) {
+      errs.mobileNumber = 'Mobile number is required';
+    } else if (!/^[6-9]\d{9}$/.test(formData.mobileNumber.trim())) {
+      errs.mobileNumber = 'Please enter a valid 10-digit mobile number';
+    }
+    if (!formData.emailAddress.trim()) {
+      errs.emailAddress = 'Email address is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress.trim())) {
+      errs.emailAddress = 'Please enter a valid email address';
+    }
+    if (!formData.registrationNumber.trim()) {
+      errs.registrationNumber = 'MahaAtithi or Mahabooking registration number is required';
+    }
+    if (!formData.organisationName.trim()) {
+      errs.organisationName = 'Organisation name is required';
+    }
+    if (!formData.orgType) {
+      errs.orgType = 'Please select type of organisation';
+    }
+    if (!formData.incorporationNumber.trim()) {
+      errs.incorporationNumber = 'Registration or incorporation number is required';
+    }
+    if (!formData.registeredAddress.trim()) {
+      errs.registeredAddress = 'Registered address is required';
+    }
+    if (!formData.district) {
+      errs.district = 'Please select district';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please complete all required fields in Step 1');
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
+
+    setErrors({});
+    setStep(2);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  const handleContinueStep2 = () => {
+    const errs = {};
+    if (!formData.eventName.trim()) {
+      errs.eventName = 'Name of the event or festival is required';
+    }
+    if (!formData.eventDescription.trim()) {
+      errs.eventDescription = 'Description of the event is required';
+    } else if (formData.eventDescription.trim().length < 15) {
+      errs.eventDescription = 'Description must be at least 15 characters';
+    }
+    if (!formData.expectedFootfall.trim()) {
+      errs.expectedFootfall = 'Expected footfall is required';
+    } else if (isNaN(parseInt(formData.expectedFootfall.replace(/,/g, ''), 10))) {
+      errs.expectedFootfall = 'Enter a valid numeric footfall';
+    }
+    if (!formData.venueAddress.trim()) {
+      errs.venueAddress = 'Venue address is required';
+    }
+    if (!formData.eventDistrict) {
+      errs.eventDistrict = 'Please select district where the event takes place';
+    }
+    if (!formData.startDate) {
+      errs.startDate = 'First day of the event is required';
+    }
+    if (!formData.endDate) {
+      errs.endDate = 'Last day of the event is required';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please complete all required fields in Step 2');
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
+
+    setErrors({});
+    setStep(3);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
   const handleContinue = () => {
-    if (step < 5) {
+    if (step === 1) {
+      handleContinueStep1();
+    } else if (step === 2) {
+      handleContinueStep2();
+    } else if (step < 5) {
       setStep((prev) => prev + 1);
       scrollRef.current?.scrollTo({ y: 0, animated: true });
     } else {
@@ -271,12 +440,14 @@ export default function App() {
 
   const handlePrevious = () => {
     if (step > 1) {
+      setErrors({});
       setStep((prev) => prev - 1);
       scrollRef.current?.scrollTo({ y: 0, animated: true });
     }
   };
 
   const jumpToStep = (targetStep) => {
+    setErrors({});
     setStep(targetStep);
     setIsNavMenuOpen(false);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
@@ -425,7 +596,7 @@ export default function App() {
           keyboardShouldPersistTaps="handled"
         >
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 1: WHO IS APPLYING (EXACT IMAGE REPLICATION)                        */}
+          {/* STEP 1: WHO IS APPLYING (EXACT IMAGE REPLICATION WITH VALIDATION FLOW)    */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 1 && (
             <View style={styles.formContainer}>
@@ -437,12 +608,21 @@ export default function App() {
                   Full name<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
+                  style={[styles.textInput, errors.fullName && styles.textInputError]}
                   placeholder="As it appears on your official record"
                   placeholderTextColor="#94A3B8"
                   value={formData.fullName}
-                  onChangeText={(text) => setFormData((prev) => ({ ...prev, fullName: text }))}
+                  onChangeText={(text) => updateField('fullName', text)}
                 />
+                {errors.fullName && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.fullName}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -450,19 +630,33 @@ export default function App() {
                   Designation in the organisation<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
-                  placeholder="For exampl..."
+                  style={[styles.textInput, errors.designation && styles.textInputError]}
+                  placeholder="For example: General Secretary / President"
                   placeholderTextColor="#94A3B8"
                   value={formData.designation}
-                  onChangeText={(text) => setFormData((prev) => ({ ...prev, designation: text }))}
+                  onChangeText={(text) => updateField('designation', text)}
                 />
+                {errors.designation && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.designation}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
                   Mobile number<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.phoneInputRow}>
+                <View
+                  style={[
+                    styles.phoneInputRow,
+                    errors.mobileNumber && styles.phoneInputRowError,
+                  ]}
+                >
                   <View style={styles.phonePrefixBox}>
                     <Text style={styles.phonePrefixText}>+91</Text>
                   </View>
@@ -473,11 +667,18 @@ export default function App() {
                     keyboardType="number-pad"
                     maxLength={10}
                     value={formData.mobileNumber}
-                    onChangeText={(text) =>
-                      setFormData((prev) => ({ ...prev, mobileNumber: text }))
-                    }
+                    onChangeText={(text) => updateField('mobileNumber', text)}
                   />
                 </View>
+                {errors.mobileNumber && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.mobileNumber}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -485,16 +686,23 @@ export default function App() {
                   Email address<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
+                  style={[styles.textInput, errors.emailAddress && styles.textInputError]}
                   placeholder="name@example.com"
                   placeholderTextColor="#94A3B8"
                   keyboardType="email-address"
                   autoCapitalize="none"
                   value={formData.emailAddress}
-                  onChangeText={(text) =>
-                    setFormData((prev) => ({ ...prev, emailAddress: text }))
-                  }
+                  onChangeText={(text) => updateField('emailAddress', text)}
                 />
+                {errors.emailAddress && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.emailAddress}</Text>
+                  </View>
+                )}
               </View>
 
               {/* Section 2: Existing Registration Details */}
@@ -508,14 +716,21 @@ export default function App() {
                   <Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
+                  style={[styles.textInput, errors.registrationNumber && styles.textInputError]}
                   placeholder="e.g. MA/2023/0041827"
                   placeholderTextColor="#94A3B8"
                   value={formData.registrationNumber}
-                  onChangeText={(text) =>
-                    setFormData((prev) => ({ ...prev, registrationNumber: text }))
-                  }
+                  onChangeText={(text) => updateField('registrationNumber', text)}
                 />
+                {errors.registrationNumber && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.registrationNumber}</Text>
+                  </View>
+                )}
               </View>
 
               {/* Fetch my details Action Button */}
@@ -560,14 +775,21 @@ export default function App() {
                   Organisation name<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
+                  style={[styles.textInput, errors.organisationName && styles.textInputError]}
                   placeholder="As registered"
                   placeholderTextColor="#94A3B8"
                   value={formData.organisationName}
-                  onChangeText={(text) =>
-                    setFormData((prev) => ({ ...prev, organisationName: text }))
-                  }
+                  onChangeText={(text) => updateField('organisationName', text)}
                 />
+                {errors.organisationName && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.organisationName}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -575,9 +797,16 @@ export default function App() {
                   Type of organisation<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TouchableOpacity
-                  style={styles.dropdownSelectBox}
+                  style={[styles.dropdownSelectBox, errors.orgType && styles.dropdownSelectBoxError]}
                   activeOpacity={0.8}
-                  onPress={() => triggerToast('Select legal entity structure')}
+                  onPress={() =>
+                    setPickerModal({
+                      visible: true,
+                      title: 'Select Type of Organisation',
+                      field: 'orgType',
+                      options: ORG_TYPE_OPTIONS,
+                    })
+                  }
                 >
                   <Text
                     style={formData.orgType ? styles.dropdownSelectedText : styles.dropdownPlaceholder}
@@ -595,6 +824,15 @@ export default function App() {
                     />
                   </Svg>
                 </TouchableOpacity>
+                {errors.orgType && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.orgType}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -603,32 +841,42 @@ export default function App() {
                   <Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
+                  style={[styles.textInput, errors.incorporationNumber && styles.textInputError]}
                   placeholder="Society, trust, company or firm registration num"
                   placeholderTextColor="#94A3B8"
                   value={formData.incorporationNumber}
-                  onChangeText={(text) =>
-                    setFormData((prev) => ({ ...prev, incorporationNumber: text }))
-                  }
+                  onChangeText={(text) => updateField('incorporationNumber', text)}
                 />
+                {errors.incorporationNumber && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.incorporationNumber}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
                   Registered address<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.textAreaContainer}>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    errors.registeredAddress && styles.textAreaContainerError,
+                  ]}
+                >
                   <TextInput
                     style={styles.textAreaInput}
-                    placeholder="Placeholder"
+                    placeholder="Registered office address"
                     placeholderTextColor="#94A3B8"
                     multiline
                     numberOfLines={4}
                     maxLength={200}
                     value={formData.registeredAddress}
-                    onChangeText={(text) =>
-                      setFormData((prev) => ({ ...prev, registeredAddress: text }))
-                    }
+                    onChangeText={(text) => updateField('registeredAddress', text)}
                   />
                   <View style={styles.charCounterRow}>
                     <Text style={styles.charCounterText}>
@@ -645,6 +893,15 @@ export default function App() {
                     </Svg>
                   </View>
                 </View>
+                {errors.registeredAddress && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.registeredAddress}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -652,9 +909,16 @@ export default function App() {
                   District<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TouchableOpacity
-                  style={styles.dropdownSelectBox}
+                  style={[styles.dropdownSelectBox, errors.district && styles.dropdownSelectBoxError]}
                   activeOpacity={0.8}
-                  onPress={() => triggerToast('Select registered headquarters district')}
+                  onPress={() =>
+                    setPickerModal({
+                      visible: true,
+                      title: 'Select District',
+                      field: 'district',
+                      options: DISTRICT_OPTIONS,
+                    })
+                  }
                 >
                   <Text
                     style={formData.district ? styles.dropdownSelectedText : styles.dropdownPlaceholder}
@@ -672,15 +936,33 @@ export default function App() {
                     />
                   </Svg>
                 </TouchableOpacity>
+                {errors.district && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.district}</Text>
+                  </View>
+                )}
               </View>
             </View>
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 2: THE EVENT (EXACT IMAGE REPLICATION)                               */}
+          {/* STEP 2: THE EVENT (EXACT IMAGE REPLICATION WITH VALIDATION FLOW)           */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 2 && (
             <View style={styles.formContainer}>
+              {/* Quick Sample Data Action */}
+              <TouchableOpacity
+                style={styles.fillSampleBtn}
+                onPress={handleFillSampleEvent}
+                activeOpacity={0.75}
+              >
+                <Text style={styles.fillSampleBtnText}>⚡ Fill Sample Event Data</Text>
+              </TouchableOpacity>
+
               {/* Section 1: Event Details */}
               <Text style={styles.sectionHeading}>Event Details</Text>
 
@@ -689,19 +971,33 @@ export default function App() {
                   Name of the event or festival<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
+                  style={[styles.textInput, errors.eventName && styles.textInputError]}
                   placeholder="As it will be advertised"
                   placeholderTextColor="#94A3B8"
                   value={formData.eventName}
-                  onChangeText={(text) => setFormData((prev) => ({ ...prev, eventName: text }))}
+                  onChangeText={(text) => updateField('eventName', text)}
                 />
+                {errors.eventName && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.eventName}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
                   Description of the event<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.textAreaContainer}>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    errors.eventDescription && styles.textAreaContainerError,
+                  ]}
+                >
                   <TextInput
                     style={styles.textAreaInput}
                     placeholder="One paragraph: what happens, who it is for, and why it needs support"
@@ -710,9 +1006,7 @@ export default function App() {
                     numberOfLines={4}
                     maxLength={200}
                     value={formData.eventDescription}
-                    onChangeText={(text) =>
-                      setFormData((prev) => ({ ...prev, eventDescription: text }))
-                    }
+                    onChangeText={(text) => updateField('eventDescription', text)}
                   />
                   <View style={styles.charCounterRow}>
                     <Text style={styles.charCounterText}>
@@ -729,6 +1023,15 @@ export default function App() {
                     </Svg>
                   </View>
                 </View>
+                {errors.eventDescription && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.eventDescription}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -736,15 +1039,22 @@ export default function App() {
                   Expected footfall<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={styles.textInput}
-                  placeholder="Number of visitors you expect"
+                  style={[styles.textInput, errors.expectedFootfall && styles.textInputError]}
+                  placeholder="Number of visitors you expect (e.g. 75000)"
                   placeholderTextColor="#94A3B8"
                   keyboardType="numeric"
                   value={formData.expectedFootfall}
-                  onChangeText={(text) =>
-                    setFormData((prev) => ({ ...prev, expectedFootfall: text }))
-                  }
+                  onChangeText={(text) => updateField('expectedFootfall', text)}
                 />
+                {errors.expectedFootfall && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.expectedFootfall}</Text>
+                  </View>
+                )}
               </View>
 
               {/* Section 2: Venue Details */}
@@ -754,18 +1064,21 @@ export default function App() {
                 <Text style={styles.fieldLabel}>
                   Venue address<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.textAreaContainer}>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    errors.venueAddress && styles.textAreaContainerError,
+                  ]}
+                >
                   <TextInput
                     style={styles.textAreaInput}
-                    placeholder="Placeholder"
+                    placeholder="Exact venue address and ground name"
                     placeholderTextColor="#94A3B8"
                     multiline
                     numberOfLines={4}
                     maxLength={200}
                     value={formData.venueAddress}
-                    onChangeText={(text) =>
-                      setFormData((prev) => ({ ...prev, venueAddress: text }))
-                    }
+                    onChangeText={(text) => updateField('venueAddress', text)}
                   />
                   <View style={styles.charCounterRow}>
                     <Text style={styles.charCounterText}>
@@ -782,6 +1095,15 @@ export default function App() {
                     </Svg>
                   </View>
                 </View>
+                {errors.venueAddress && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.venueAddress}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -789,9 +1111,16 @@ export default function App() {
                   District<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TouchableOpacity
-                  style={styles.dropdownSelectBox}
+                  style={[styles.dropdownSelectBox, errors.eventDistrict && styles.dropdownSelectBoxError]}
                   activeOpacity={0.8}
-                  onPress={() => triggerToast('Select event district')}
+                  onPress={() =>
+                    setPickerModal({
+                      visible: true,
+                      title: 'Select Event District',
+                      field: 'eventDistrict',
+                      options: DISTRICT_OPTIONS,
+                    })
+                  }
                 >
                   <Text
                     style={
@@ -811,6 +1140,15 @@ export default function App() {
                     />
                   </Svg>
                 </TouchableOpacity>
+                {errors.eventDistrict && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.eventDistrict}</Text>
+                  </View>
+                )}
               </View>
 
               {/* Section 3: Date and Duration of the Event */}
@@ -823,12 +1161,15 @@ export default function App() {
                   First day of the event<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TouchableOpacity
-                  style={styles.datePickerInput}
+                  style={[styles.datePickerInput, errors.startDate && styles.datePickerInputError]}
                   activeOpacity={0.8}
-                  onPress={() => {
-                    setFormData((prev) => ({ ...prev, startDate: '15/12/2026' }));
-                    triggerToast('Selected start date: 15/12/2026');
-                  }}
+                  onPress={() =>
+                    setDatePickerModal({
+                      visible: true,
+                      field: 'startDate',
+                      title: 'Select First Day of Event',
+                    })
+                  }
                 >
                   <Text
                     style={formData.startDate ? styles.datePickerText : styles.datePickerPlaceholder}
@@ -852,6 +1193,15 @@ export default function App() {
                     />
                   </Svg>
                 </TouchableOpacity>
+                {errors.startDate && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.startDate}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -859,12 +1209,15 @@ export default function App() {
                   Last day of the event<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TouchableOpacity
-                  style={styles.datePickerInput}
+                  style={[styles.datePickerInput, errors.endDate && styles.datePickerInputError]}
                   activeOpacity={0.8}
-                  onPress={() => {
-                    setFormData((prev) => ({ ...prev, endDate: '20/12/2026' }));
-                    triggerToast('Selected end date: 20/12/2026');
-                  }}
+                  onPress={() =>
+                    setDatePickerModal({
+                      visible: true,
+                      field: 'endDate',
+                      title: 'Select Last Day of Event',
+                    })
+                  }
                 >
                   <Text
                     style={formData.endDate ? styles.datePickerText : styles.datePickerPlaceholder}
@@ -888,6 +1241,15 @@ export default function App() {
                     />
                   </Svg>
                 </TouchableOpacity>
+                {errors.endDate && (
+                  <View style={styles.errorCaptionRow}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                    </Svg>
+                    <Text style={styles.errorCaptionText}>{errors.endDate}</Text>
+                  </View>
+                )}
               </View>
 
               <View style={styles.fieldGroup}>
@@ -1526,6 +1888,141 @@ export default function App() {
             </TouchableOpacity>
           </View>
         )}
+
+        {/* ─── INTERACTIVE DROPDOWN PICKER MODAL ─── */}
+        <Modal
+          visible={pickerModal.visible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setPickerModal({ visible: false, title: '', field: '', options: [] })}
+        >
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setPickerModal({ visible: false, title: '', field: '', options: [] })}
+          >
+            <View style={styles.pickerModalContent}>
+              <View style={styles.pickerModalHeader}>
+                <Text style={styles.pickerModalTitle}>{pickerModal.title}</Text>
+                <TouchableOpacity
+                  onPress={() => setPickerModal({ visible: false, title: '', field: '', options: [] })}
+                  style={styles.pickerModalCloseBtn}
+                >
+                  <Text style={styles.pickerModalCloseText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <ScrollView style={{ maxHeight: 360 }}>
+                {pickerModal.options.map((opt) => {
+                  const isSelected = formData[pickerModal.field] === opt.id;
+                  return (
+                    <TouchableOpacity
+                      key={opt.id}
+                      style={[
+                        styles.pickerOptionItem,
+                        isSelected && styles.pickerOptionItemActive,
+                      ]}
+                      onPress={() => {
+                        updateField(pickerModal.field, opt.id);
+                        setPickerModal({ visible: false, title: '', field: '', options: [] });
+                      }}
+                      activeOpacity={0.7}
+                    >
+                      <View
+                        style={[
+                          styles.pickerRadioOuter,
+                          isSelected && styles.pickerRadioOuterActive,
+                        ]}
+                      >
+                        {isSelected && <View style={styles.pickerRadioInner} />}
+                      </View>
+                      <Text
+                        style={[
+                          styles.pickerOptionText,
+                          isSelected && styles.pickerOptionTextActive,
+                        ]}
+                      >
+                        {opt.label}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+
+        {/* ─── INTERACTIVE DATE PICKER MODAL ─── */}
+        <Modal
+          visible={datePickerModal.visible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setDatePickerModal({ visible: false, field: '', title: '' })}
+        >
+          <TouchableOpacity
+            style={styles.modalOverlay}
+            activeOpacity={1}
+            onPress={() => setDatePickerModal({ visible: false, field: '', title: '' })}
+          >
+            <View style={styles.pickerModalContent}>
+              <View style={styles.pickerModalHeader}>
+                <Text style={styles.pickerModalTitle}>{datePickerModal.title}</Text>
+                <TouchableOpacity
+                  onPress={() => setDatePickerModal({ visible: false, field: '', title: '' })}
+                  style={styles.pickerModalCloseBtn}
+                >
+                  <Text style={styles.pickerModalCloseText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.pickerModalSubText}>
+                Select upcoming tourism festival schedule dates:
+              </Text>
+              {[
+                { date: '15/12/2026', label: '15 Dec 2026 (Winter Festival Opener)' },
+                { date: '20/12/2026', label: '20 Dec 2026 (Winter Finale)' },
+                { date: '05/01/2027', label: '05 Jan 2027 (New Year Coastal Carnival)' },
+                { date: '10/01/2027', label: '10 Jan 2027 (Harvest Special)' },
+                { date: '14/02/2027', label: '14 Feb 2027 (Spring Beach Regatta)' },
+                { date: '20/02/2027', label: '20 Feb 2027 (Cultural Gala)' },
+              ].map((item) => (
+                <TouchableOpacity
+                  key={item.date}
+                  style={[
+                    styles.pickerOptionItem,
+                    formData[datePickerModal.field] === item.date && styles.pickerOptionItemActive,
+                  ]}
+                  onPress={() => {
+                    updateField(datePickerModal.field, item.date);
+                    setDatePickerModal({ visible: false, field: '', title: '' });
+                    triggerToast('Selected ' + item.date);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <View
+                    style={[
+                      styles.pickerRadioOuter,
+                      formData[datePickerModal.field] === item.date && styles.pickerRadioOuterActive,
+                    ]}
+                  >
+                    {formData[datePickerModal.field] === item.date && (
+                      <View style={styles.pickerRadioInner} />
+                    )}
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={[
+                        styles.pickerOptionText,
+                        formData[datePickerModal.field] === item.date && styles.pickerOptionTextActive,
+                      ]}
+                    >
+                      {item.label}
+                    </Text>
+                    <Text style={styles.pickerOptionSub}>{item.date}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </TouchableOpacity>
+        </Modal>
 
         {/* ─── HAMBURGER SIDE DRAWER MODAL ─── */}
         <Modal
@@ -2302,6 +2799,145 @@ const styles = StyleSheet.create({
   drawerStepItemTextActive: {
     color: UX4GColors.primary,
     fontWeight: '600',
+  },
+  textInputError: {
+    borderColor: '#DC2626',
+    borderWidth: 1.5,
+    backgroundColor: '#FEF2F2',
+  },
+  phoneInputRowError: {
+    borderColor: '#DC2626',
+    borderWidth: 1.5,
+  },
+  textAreaContainerError: {
+    borderColor: '#DC2626',
+    borderWidth: 1.5,
+    backgroundColor: '#FEF2F2',
+  },
+  dropdownSelectBoxError: {
+    borderColor: '#DC2626',
+    borderWidth: 1.5,
+    backgroundColor: '#FEF2F2',
+  },
+  datePickerInputError: {
+    borderColor: '#DC2626',
+    borderWidth: 1.5,
+    backgroundColor: '#FEF2F2',
+  },
+  errorCaptionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 5,
+  },
+  errorCaptionText: {
+    fontSize: 12,
+    color: '#DC2626',
+    fontWeight: '500',
+  },
+  fillSampleBtn: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#EEF2FF',
+    borderWidth: 1,
+    borderColor: '#C7D2FE',
+    borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginBottom: 16,
+  },
+  fillSampleBtnText: {
+    fontSize: 12.5,
+    color: UX4GColors.primary,
+    fontWeight: '600',
+  },
+  pickerModalContent: {
+    width: '90%',
+    maxHeight: '80%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 8,
+    alignSelf: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+  },
+  pickerModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F1F5F9',
+  },
+  pickerModalTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1E293B',
+  },
+  pickerModalCloseBtn: {
+    padding: 4,
+  },
+  pickerModalCloseText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#64748B',
+  },
+  pickerModalSubText: {
+    fontSize: 12.5,
+    color: '#64748B',
+    marginBottom: 12,
+  },
+  pickerOptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginBottom: 6,
+    backgroundColor: '#F8FAFC',
+  },
+  pickerOptionItemActive: {
+    backgroundColor: '#EEF2FF',
+    borderWidth: 1,
+    borderColor: '#C7D2FE',
+  },
+  pickerRadioOuter: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#CBD5E1',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  pickerRadioOuterActive: {
+    borderColor: UX4GColors.primary,
+  },
+  pickerRadioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: UX4GColors.primary,
+  },
+  pickerOptionText: {
+    fontSize: 14,
+    color: '#334155',
+    fontWeight: '500',
+  },
+  pickerOptionTextActive: {
+    color: UX4GColors.primary,
+    fontWeight: '700',
+  },
+  pickerOptionSub: {
+    fontSize: 11.5,
+    color: '#64748B',
+    marginTop: 2,
   },
   toastContainer: {
     position: 'absolute',
