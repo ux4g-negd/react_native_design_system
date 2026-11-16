@@ -6,8 +6,8 @@ interface EntryAndAreaPermitFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Entry and Area Permit Flow (9-Step Service Pattern)
-const SNACK_ID = 'YMClcPJCTKgHwyB8QTD3S';
+// Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
+const SNACK_ID = 'V3wUAuE77YdE5iZQUjh9G';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -30,11 +30,14 @@ import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import {
   Ux4gThemeProvider,
   UX4GColors,
+  Ux4gAadhaarInputField,
+  Ux4gOtpInput,
   Ux4gInputField,
   Ux4gTextArea,
   Ux4gDatePicker,
   Ux4gSelectionDropdown,
-  Ux4gCompactStepper,
+  Ux4gRadioButton,
+  Ux4gCheckbox,
   Ux4gCard,
   Ux4gButton,
 } from 'ux4g-react-native-components';
@@ -74,7 +77,7 @@ const STEP_METADATA = {
     subtitle: 'Select the restricted area, border belt, or protected wildlife sanctuary you wish to visit.',
   },
   3: {
-    title: 'Purpose & Dates',
+    title: 'Purpose & Schedule of Visit',
     subtitle: 'State the visit purpose, checkpost of entry, and exact travel duration.',
   },
   4: {
@@ -103,20 +106,42 @@ const STEP_METADATA = {
   },
 };
 
+const ZONE_OPTIONS = [
+  { id: 'changthang', label: 'Changthang Wildlife Sanctuary & Pangong Tso Belt' },
+  { id: 'nubra', label: 'Nubra Valley & Siachen Base Camp Route' },
+  { id: 'tawang', label: 'Tawang & Bum La Border Circuit' },
+  { id: 'nathula', label: 'Nathu La Pass & Gurudongmar Lake Zone' },
+  { id: 'dzongu', label: 'Dzongu Tribal & Forest Reserve' },
+];
+
+const CHECKPOST_OPTIONS = [
+  { id: 'tsaga_la', label: 'Tsaga La / Chushul Border Outpost' },
+  { id: 'khardung_la', label: 'Khardung La Northern Checkpost' },
+  { id: 'bhalukpong', label: 'Bhalukpong Inter-State Gate' },
+  { id: 'rangpo', label: 'Rangpo Entry Check Barrier' },
+];
+
+const PURPOSE_OPTIONS = [
+  { id: 'tourism', label: 'Tourism & Sightseeing' },
+  { id: 'photography', label: 'Cultural & Landscape Photography' },
+  { id: 'trekking', label: 'High-Altitude Trekking & Expedition' },
+  { id: 'official', label: 'Government / Official Work' },
+  { id: 'research', label: 'Ecological & Flora-Fauna Research' },
+];
+
 export default function App() {
   const [step, setStep] = useState(1);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
   const [errors, setErrors] = useState({});
-  const [isAadhaarMasked, setIsAadhaarMasked] = useState(true);
 
-  // Form State initialized to match the provided image exactly
+  // Full 9-Step Application State
   const [formData, setFormData] = useState({
-    // Step 1: Aadhaar Verification & eKYC
+    // Step 1: Aadhaar Verification & eKYC (Initialized to match user image)
     aadhaarNumber: '9845 2014 6612',
     consentAadhaar: true,
-    otp: '1', // first box focused/entered
+    otp: '123456',
     
     // Details Fetched from Aadhaar
     fullName: 'Rajeev chauhan',
@@ -129,31 +154,55 @@ export default function App() {
     pincode: '201309',
 
     // Other Details
-    mobileNumber: '999999999',
+    mobileNumber: '9999999999',
     isWhatsAppSame: false,
     email: 'abc@gmail.com',
     nationality: 'indian', // 'indian' | 'foreign'
     permitRequiredFor: 'myself', // 'myself' | 'family' | 'clients'
 
-    // Step 2: Area & Protected Zone
-    permitZone: 'changthang',
-    permitType: 'ilp',
-    entryCheckpost: 'tsaga_la',
+    // Step 2: Area & Protected Zone Selection
+    permitType: 'ilp', // 'ilp' | 'pap'
+    selectedZone: 'changthang',
+    selectedCheckpost: 'tsaga_la',
 
-    // Step 3: Dates & Schedule
+    // Step 3: Purpose & Schedule of Visit
+    visitPurpose: 'tourism',
     startDate: '12/10/2026',
     endDate: '18/10/2026',
     durationDays: '7 days',
-    visitPurpose: 'tourism_photography',
     vehicleNumber: 'DL 01 AB 4402',
+    driverName: 'Sanjay Rawat',
 
-    // Step 4: Members
-    memberCount: '1',
+    // Step 4: Accompanying Persons
+    hasMembers: false,
+    members: [
+      { id: '1', name: 'Sunita Chauhan', age: '29', relation: 'spouse' }
+    ],
 
-    // Step 8 & 9: Submission
-    declarationTrue: false,
-    declarationEco: false,
+    // Step 5: Local Guide & Stay
+    guideName: 'Tenzing Dorjee',
+    guideLicense: 'LG-LDK-2024-0041',
+    guidePhone: '9419123456',
+    accommodationName: 'Pangong Eco Lake Camp, Spangmik',
+    accommodationBookingRef: 'BK-LDK-88412',
+
+    // Step 6: Documents & Evidence
+    idProofUploaded: true,
+    idProofFileName: 'Rajeev_Aadhaar_Card_Verified.pdf',
+    itineraryUploaded: true,
+    itineraryFileName: '7Day_Changthang_Pangong_Route_Plan.pdf',
+    vehicleRcUploaded: true,
+    vehicleRcFileName: 'DL01AB4402_Registration_Certificate.pdf',
+
+    // Step 7: Security & Environmental Undertakings
+    undertakingSecurity: true,
+    undertakingZeroWaste: true,
+    undertakingOriginalId: true,
+
+    // Step 8 & 9: Final Declaration & Submission
+    declarationAccuracy: false,
     permitNumber: 'EAP-2026-009418',
+    isSubmitted: false,
   });
 
   const scrollRef = useRef(null);
@@ -166,7 +215,15 @@ export default function App() {
   };
 
   const updateField = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
+    setFormData((prev) => {
+      const next = { ...prev, [key]: value };
+      if (key === 'startDate' || key === 'endDate') {
+        if (next.startDate && next.endDate) {
+          next.durationDays = '7 days';
+        }
+      }
+      return next;
+    });
     if (errors[key]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -188,20 +245,33 @@ export default function App() {
     triggerToast('Draft saved successfully at ' + timeStr);
   };
 
+  // Step 1 Validation Check
   const handleContinueStep1 = () => {
     const errs = {};
+    if (!formData.aadhaarNumber || formData.aadhaarNumber.replace(/\\D/g, '').length < 12) {
+      errs.aadhaarNumber = 'Please enter a valid 12-digit Aadhaar number';
+    }
     if (!formData.consentAadhaar) {
-      errs.consentAadhaar = 'Consent for Aadhaar eKYC is mandatory';
+      errs.consentAadhaar = 'Aadhaar authentication consent is required';
+    }
+    if (!formData.otp || formData.otp.length < 6) {
+      errs.otp = 'Please enter the 6-digit OTP received on mobile';
     }
     if (!formData.mobileNumber.trim()) {
       errs.mobileNumber = 'Mobile number is required';
-    } else if (formData.mobileNumber.trim().length < 10) {
-      errs.mobileNumber = 'Please enter a valid 10-digit mobile number';
+    } else if (!/^[6-9]\\d{9}$/.test(formData.mobileNumber.trim())) {
+      errs.mobileNumber = 'Enter a valid 10-digit mobile number';
+    }
+    if (!formData.nationality) {
+      errs.nationality = 'Please select nationality';
+    }
+    if (!formData.permitRequiredFor) {
+      errs.permitRequiredFor = 'Please select permit required for';
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
-      triggerToast('Please complete mandatory fields marked with *');
+      triggerToast('Please complete all mandatory fields in Step 1');
       scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
@@ -209,17 +279,164 @@ export default function App() {
     setErrors({});
     setStep(2);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
-    triggerToast('Identity verified. Proceeding to Protected Area selection.');
+    triggerToast('Identity verified via Aadhaar eKYC. Proceeding to Step 2.');
+  };
+
+  // Step 2 Validation Check
+  const handleContinueStep2 = () => {
+    const errs = {};
+    if (!formData.selectedZone) {
+      errs.selectedZone = 'Please select a protected zone';
+    }
+    if (!formData.selectedCheckpost) {
+      errs.selectedCheckpost = 'Please select an entry checkpost';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please select protected zone and entry checkpost');
+      return;
+    }
+
+    setErrors({});
+    setStep(3);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  // Step 3 Validation Check
+  const handleContinueStep3 = () => {
+    const errs = {};
+    if (!formData.visitPurpose) {
+      errs.visitPurpose = 'Please select purpose of visit';
+    }
+    if (!formData.startDate) {
+      errs.startDate = 'Entry date is required';
+    }
+    if (!formData.endDate) {
+      errs.endDate = 'Exit date is required';
+    }
+    if (!formData.vehicleNumber.trim()) {
+      errs.vehicleNumber = 'Vehicle registration number is required';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please complete visit dates and vehicle details');
+      return;
+    }
+
+    setErrors({});
+    setStep(4);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  // Step 4 Validation Check
+  const handleContinueStep4 = () => {
+    setErrors({});
+    setStep(5);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  // Step 5 Validation Check
+  const handleContinueStep5 = () => {
+    const errs = {};
+    if (!formData.guideName.trim()) {
+      errs.guideName = 'Local certified guide name is required';
+    }
+    if (!formData.accommodationName.trim()) {
+      errs.accommodationName = 'Hotel or basecamp booking name is required';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please provide guide and accommodation details');
+      return;
+    }
+
+    setErrors({});
+    setStep(6);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  // Step 6 Validation Check
+  const handleContinueStep6 = () => {
+    const errs = {};
+    if (!formData.idProofUploaded) {
+      errs.idProofUploaded = 'Please attach government photo ID';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please upload required identity documents');
+      return;
+    }
+
+    setErrors({});
+    setStep(7);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  // Step 7 Validation Check
+  const handleContinueStep7 = () => {
+    const errs = {};
+    if (!formData.undertakingSecurity) {
+      errs.undertakingSecurity = 'Border security protocol undertaking is required';
+    }
+    if (!formData.undertakingZeroWaste) {
+      errs.undertakingZeroWaste = 'Zero waste policy agreement is required';
+    }
+    if (!formData.undertakingOriginalId) {
+      errs.undertakingOriginalId = 'Physical ID verification undertaking is required';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please accept all security undertakings');
+      return;
+    }
+
+    setErrors({});
+    setStep(8);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
+  // Step 8 Validation Check & Final Permit Generation
+  const handleContinueStep8 = () => {
+    const errs = {};
+    if (!formData.declarationAccuracy) {
+      errs.declarationAccuracy = 'Please accept the declaration before submitting';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please confirm your declaration to submit');
+      return;
+    }
+
+    setErrors({});
+    const randomSuffix = Math.floor(100000 + Math.random() * 900000);
+    const newPermitNum = 'EAP-2026-' + randomSuffix;
+    setFormData((prev) => ({
+      ...prev,
+      isSubmitted: true,
+      permitNumber: newPermitNum,
+    }));
+    setStep(9);
+    triggerToast('Entry & Area Permit successfully issued! ID: ' + newPermitNum);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
   const handleContinue = () => {
-    if (step === 1) {
-      handleContinueStep1();
-    } else if (step < 9) {
-      setStep((prev) => prev + 1);
-      scrollRef.current?.scrollTo({ y: 0, animated: true });
-    } else {
-      triggerToast('Permit ' + formData.permitNumber + ' is verified and active.');
+    if (step === 1) handleContinueStep1();
+    else if (step === 2) handleContinueStep2();
+    else if (step === 3) handleContinueStep3();
+    else if (step === 4) handleContinueStep4();
+    else if (step === 5) handleContinueStep5();
+    else if (step === 6) handleContinueStep6();
+    else if (step === 7) handleContinueStep7();
+    else if (step === 8) handleContinueStep8();
+    else if (step === 9) {
+      triggerToast('Permit ' + formData.permitNumber + ' is active. Returning to step 1.');
       setStep(1);
       scrollRef.current?.scrollTo({ y: 0, animated: true });
     }
@@ -381,135 +598,64 @@ export default function App() {
           keyboardShouldPersistTaps="handled"
         >
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 1: IDENTITY & eKYC (EXACT MATCH OF GIVEN USER IMAGE)                  */}
+          {/* STEP 1: IDENTITY & eKYC (USING OFFICIAL UX4G COMPONENTS)                   */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 1 && (
             <View style={styles.formContainer}>
               {/* SECTION 1: Aadhaar Verification */}
               <Text style={styles.sectionHeading}>Aadhaar Verification</Text>
 
+              {/* Official UX4G Aadhaar Input Component */}
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Aadhaar or VID number<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.aadhaarInputContainer}>
-                  <TextInput
-                    style={styles.aadhaarTextInput}
-                    placeholder="xxxx xxxx xxxx"
-                    placeholderTextColor={UX4GColors.neutral400}
-                    value={
-                      isAadhaarMasked
-                        ? 'xxxx xxxx xxxx'
-                        : formData.aadhaarNumber
-                    }
-                    editable={false}
-                  />
-                  <TouchableOpacity
-                    style={styles.maskToggleBtn}
-                    onPress={() => setIsAadhaarMasked(!isAadhaarMasked)}
-                    activeOpacity={0.7}
-                  >
-                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                      {isAadhaarMasked ? (
-                        <>
-                          <Path
-                            d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"
-                            stroke={UX4GColors.neutral600}
-                            strokeWidth={1.8}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <Path
-                            d="M1 1l22 22"
-                            stroke={UX4GColors.neutral600}
-                            strokeWidth={1.8}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <Path
-                            d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
-                            stroke={UX4GColors.neutral600}
-                            strokeWidth={1.8}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <Circle cx={12} cy={12} r={3} stroke={UX4GColors.neutral600} strokeWidth={1.8} />
-                        </>
-                      )}
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.infoCaptionRow}>
-                  <Svg width={13} height={13} viewBox="0 0 24 24" fill="none" style={{ marginRight: 5, marginTop: 1 }}>
-                    <Circle cx={12} cy={12} r={10} stroke={UX4GColors.neutral500} strokeWidth={1.8} />
-                    <Path d="M12 16v-4M12 8h.01" stroke={UX4GColors.neutral500} strokeWidth={2} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.infoCaptionText}>
-                    12-digit Aadhaar or 16-digit VID. Masked as you type — the number is never shown in full again.
-                  </Text>
-                </View>
+                <Ux4gAadhaarInputField
+                  label="Aadhaar or VID number"
+                  required
+                  value={formData.aadhaarNumber}
+                  onValueChange={(val) => updateField('aadhaarNumber', val)}
+                  placeholder="xxxx xxxx xxxx"
+                  showMaskToggle={true}
+                  defaultMasked={true}
+                  status={errors.aadhaarNumber ? 'error' : 'defaultStatus'}
+                  caption={
+                    errors.aadhaarNumber ||
+                    '12-digit Aadhaar or 16-digit VID. Masked as you type — the number is never shown in full again.'
+                  }
+                  size="large"
+                />
               </View>
 
-              {/* Consent Checkbox */}
-              <TouchableOpacity
-                style={styles.consentCheckboxRow}
-                activeOpacity={0.8}
-                onPress={() => updateField('consentAadhaar', !formData.consentAadhaar)}
-              >
-                <View
-                  style={[
-                    styles.checkboxSquare,
-                    formData.consentAadhaar && styles.checkboxSquareChecked,
-                    errors.consentAadhaar && styles.checkboxSquareError,
-                  ]}
-                >
-                  {formData.consentAadhaar && (
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M5 13l4 4L19 7"
-                        stroke={UX4GColors.white}
-                        strokeWidth={3}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </Svg>
-                  )}
-                </View>
-                <Text style={styles.consentLabelText}>
-                  I consent to Aadhaar authentication and eKYC<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-              </TouchableOpacity>
-              {errors.consentAadhaar && (
-                <Text style={styles.errorMessageText}>{errors.consentAadhaar}</Text>
-              )}
-
-              {/* One-time password */}
-              <View style={[styles.fieldGroup, { marginTop: 18 }]}>
-                <Text style={styles.fieldLabel}>
-                  One-time password<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-
-                {/* 6-box OTP digits */}
-                <View style={styles.otpBoxesRow}>
-                  {/* Box 1 (Active/focused with vertical cursor) */}
-                  <View style={[styles.otpBox, styles.otpBoxActive]}>
-                    <Text style={styles.otpCursorText}>|</Text>
-                  </View>
-                  {/* Boxes 2 to 6 (Placeholders with '-') */}
-                  {[2, 3, 4, 5, 6].map((boxIndex) => (
-                    <View key={boxIndex} style={styles.otpBox}>
-                      <Text style={styles.otpDashPlaceholder}>-</Text>
-                    </View>
-                  ))}
-                </View>
-
-                <Text style={styles.resendText}>Didn't receive OTP? Resend in 00:17</Text>
+              {/* Official UX4G Checkbox for Aadhaar Consent */}
+              <View style={{ marginTop: 2, marginBottom: 8 }}>
+                <Ux4gCheckbox
+                  label="I consent to Aadhaar authentication and eKYC"
+                  isRequired
+                  value={formData.consentAadhaar}
+                  onChanged={(val) => updateField('consentAadhaar', !!val)}
+                  hasError={!!errors.consentAadhaar}
+                  description={errors.consentAadhaar}
+                  descriptionVariant="error"
+                  size="medium"
+                />
               </View>
 
-              {/* Informational Callout Box (No Aadhaar) */}
+              {/* Official UX4G 6-Digit OTP Input Component */}
+              <View style={[styles.fieldGroup, { marginTop: 14 }]}>
+                <Ux4gOtpInput
+                  label="One-time password"
+                  required
+                  length={6}
+                  value={formData.otp}
+                  onChanged={(val) => updateField('otp', val)}
+                  status={errors.otp ? 'error' : 'defaultStatus'}
+                  captionVariant="resendTimer"
+                  autoCountdownSeconds={17}
+                  captionLeadingText="Didn't receive OTP?"
+                  captionTrailingText="Resend in"
+                  onCaptionTrailingTap={() => triggerToast('New OTP sent to registered mobile')}
+                />
+              </View>
+
+              {/* Informational Callout Box (No Aadhaar counter service) */}
               <View style={styles.calloutCard}>
                 <View style={styles.calloutIconCol}>
                   <View style={styles.calloutCircle}>
@@ -593,161 +739,103 @@ export default function App() {
               {/* SECTION 3: Other Details */}
               <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Other Details</Text>
 
+              {/* Mobile Number with Official Ux4gInputField */}
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Mobile number<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={[styles.phoneInputContainer, errors.mobileNumber && styles.inputErrorBorder]}>
-                  <Text style={styles.phoneCountryCode}>+91</Text>
-                  <TextInput
-                    style={styles.phoneTextInput}
-                    value={formData.mobileNumber}
-                    onChangeText={(val) => updateField('mobileNumber', val.replace(/[^0-9]/g, ''))}
-                    placeholder="999999999"
-                    placeholderTextColor={UX4GColors.neutral400}
-                    keyboardType="numeric"
-                    maxLength={10}
-                  />
-                </View>
-                {errors.mobileNumber && (
-                  <Text style={styles.errorMessageText}>{errors.mobileNumber}</Text>
-                )}
-              </View>
-
-              {/* WhatsApp Checkbox */}
-              <TouchableOpacity
-                style={styles.plainCheckboxRow}
-                activeOpacity={0.8}
-                onPress={() => updateField('isWhatsAppSame', !formData.isWhatsAppSame)}
-              >
-                <View
-                  style={[
-                    styles.checkboxSquare,
-                    formData.isWhatsAppSame && styles.checkboxSquareChecked,
-                  ]}
-                >
-                  {formData.isWhatsAppSame && (
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M5 13l4 4L19 7"
-                        stroke={UX4GColors.white}
-                        strokeWidth={3}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </Svg>
-                  )}
-                </View>
-                <Text style={styles.plainCheckboxLabel}>This is also my WhatsApp number</Text>
-              </TouchableOpacity>
-
-              {/* Email */}
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>Email</Text>
-                <TextInput
-                  style={styles.standardInput}
-                  value={formData.email}
-                  onChangeText={(val) => updateField('email', val)}
-                  placeholder="abc@gmail.com"
-                  placeholderTextColor={UX4GColors.neutral400}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
+                <Ux4gInputField
+                  label="Mobile number"
+                  required
+                  value={formData.mobileNumber}
+                  onValueChange={(val) => updateField('mobileNumber', val.replace(/[^0-9]/g, ''))}
+                  placeholder="9999999999"
+                  type="number"
+                  maxLength={10}
+                  size="large"
+                  status={errors.mobileNumber ? 'error' : 'defaultStatus'}
+                  caption={errors.mobileNumber}
+                  leadingIcon={
+                    <Text style={{ fontSize: 13.5, fontWeight: '700', color: UX4GColors.neutral700, marginRight: 4 }}>
+                      +91
+                    </Text>
+                  }
                 />
               </View>
 
-              {/* Nationality */}
+              {/* WhatsApp Checkbox with Official Ux4gCheckbox */}
+              <View style={{ marginTop: 2, marginBottom: 12 }}>
+                <Ux4gCheckbox
+                  label="This is also my WhatsApp number"
+                  value={formData.isWhatsAppSame}
+                  onChanged={(val) => updateField('isWhatsAppSame', !!val)}
+                  size="medium"
+                />
+              </View>
+
+              {/* Email with Official Ux4gInputField */}
+              <View style={styles.fieldGroup}>
+                <Ux4gInputField
+                  label="Email"
+                  value={formData.email}
+                  onValueChange={(val) => updateField('email', val)}
+                  placeholder="abc@gmail.com"
+                  size="large"
+                  status={errors.email ? 'error' : 'defaultStatus'}
+                  caption={errors.email}
+                />
+              </View>
+
+              {/* Nationality with Official Ux4gRadioButton */}
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
                   Nationality<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <View style={styles.radioOptionGroup}>
-                  <TouchableOpacity
-                    style={styles.radioItemRow}
-                    activeOpacity={0.7}
-                    onPress={() => updateField('nationality', 'indian')}
-                  >
-                    <View
-                      style={[
-                        styles.radioOuterCircle,
-                        formData.nationality === 'indian' && styles.radioOuterCircleActive,
-                      ]}
-                    >
-                      {formData.nationality === 'indian' && <View style={styles.radioInnerDot} />}
-                    </View>
-                    <Text style={styles.radioLabelText}>Indian citizen</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.radioItemRow, { marginTop: 10 }]}
-                    activeOpacity={0.7}
-                    onPress={() => updateField('nationality', 'foreign')}
-                  >
-                    <View
-                      style={[
-                        styles.radioOuterCircle,
-                        formData.nationality === 'foreign' && styles.radioOuterCircleActive,
-                      ]}
-                    >
-                      {formData.nationality === 'foreign' && <View style={styles.radioInnerDot} />}
-                    </View>
-                    <Text style={styles.radioLabelText}>Foreign national</Text>
-                  </TouchableOpacity>
+                  <Ux4gRadioButton
+                    label="Indian citizen"
+                    value="indian"
+                    groupValue={formData.nationality}
+                    onChanged={(val) => updateField('nationality', val)}
+                    size="medium"
+                  />
+                  <View style={{ height: 8 }} />
+                  <Ux4gRadioButton
+                    label="Foreign national"
+                    value="foreign"
+                    groupValue={formData.nationality}
+                    onChanged={(val) => updateField('nationality', val)}
+                    size="medium"
+                  />
                 </View>
               </View>
 
-              {/* Permit Required For */}
+              {/* Permit Required For with Official Ux4gRadioButton */}
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
                   Permit Required For<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <View style={styles.radioOptionGroup}>
-                  <TouchableOpacity
-                    style={styles.radioItemRow}
-                    activeOpacity={0.7}
-                    onPress={() => updateField('permitRequiredFor', 'myself')}
-                  >
-                    <View
-                      style={[
-                        styles.radioOuterCircle,
-                        formData.permitRequiredFor === 'myself' && styles.radioOuterCircleActive,
-                      ]}
-                    >
-                      {formData.permitRequiredFor === 'myself' && <View style={styles.radioInnerDot} />}
-                    </View>
-                    <Text style={styles.radioLabelText}>Myself</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.radioItemRow, { marginTop: 10 }]}
-                    activeOpacity={0.7}
-                    onPress={() => updateField('permitRequiredFor', 'family')}
-                  >
-                    <View
-                      style={[
-                        styles.radioOuterCircle,
-                        formData.permitRequiredFor === 'family' && styles.radioOuterCircleActive,
-                      ]}
-                    >
-                      {formData.permitRequiredFor === 'family' && <View style={styles.radioInnerDot} />}
-                    </View>
-                    <Text style={styles.radioLabelText}>Myself and my family</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.radioItemRow, { marginTop: 10 }]}
-                    activeOpacity={0.7}
-                    onPress={() => updateField('permitRequiredFor', 'clients')}
-                  >
-                    <View
-                      style={[
-                        styles.radioOuterCircle,
-                        formData.permitRequiredFor === 'clients' && styles.radioOuterCircleActive,
-                      ]}
-                    >
-                      {formData.permitRequiredFor === 'clients' && <View style={styles.radioInnerDot} />}
-                    </View>
-                    <Text style={styles.radioLabelText}>Clients travelling with me, as an agent</Text>
-                  </TouchableOpacity>
+                  <Ux4gRadioButton
+                    label="Myself"
+                    value="myself"
+                    groupValue={formData.permitRequiredFor}
+                    onChanged={(val) => updateField('permitRequiredFor', val)}
+                    size="medium"
+                  />
+                  <View style={{ height: 8 }} />
+                  <Ux4gRadioButton
+                    label="Myself and my family"
+                    value="family"
+                    groupValue={formData.permitRequiredFor}
+                    onChanged={(val) => updateField('permitRequiredFor', val)}
+                    size="medium"
+                  />
+                  <View style={{ height: 8 }} />
+                  <Ux4gRadioButton
+                    label="Clients travelling with me, as an agent"
+                    value="clients"
+                    groupValue={formData.permitRequiredFor}
+                    onChanged={(val) => updateField('permitRequiredFor', val)}
+                    size="medium"
+                  />
                 </View>
               </View>
             </View>
@@ -765,26 +853,21 @@ export default function App() {
                   Permit Category<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <View style={styles.radioOptionGroup}>
-                  <TouchableOpacity
-                    style={styles.radioItemRow}
-                    activeOpacity={0.7}
-                    onPress={() => updateField('permitType', 'ilp')}
-                  >
-                    <View style={[styles.radioOuterCircle, formData.permitType === 'ilp' && styles.radioOuterCircleActive]}>
-                      {formData.permitType === 'ilp' && <View style={styles.radioInnerDot} />}
-                    </View>
-                    <Text style={styles.radioLabelText}>Inner Line Permit (ILP) · Domestic travelers</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.radioItemRow, { marginTop: 10 }]}
-                    activeOpacity={0.7}
-                    onPress={() => updateField('permitType', 'pap')}
-                  >
-                    <View style={[styles.radioOuterCircle, formData.permitType === 'pap' && styles.radioOuterCircleActive]}>
-                      {formData.permitType === 'pap' && <View style={styles.radioInnerDot} />}
-                    </View>
-                    <Text style={styles.radioLabelText}>Protected Area Permit (PAP) · Restricted zones</Text>
-                  </TouchableOpacity>
+                  <Ux4gRadioButton
+                    label="Inner Line Permit (ILP) · Domestic citizens"
+                    value="ilp"
+                    groupValue={formData.permitType}
+                    onChanged={(val) => updateField('permitType', val)}
+                    size="medium"
+                  />
+                  <View style={{ height: 8 }} />
+                  <Ux4gRadioButton
+                    label="Protected Area Permit (PAP) · International visitors & border zones"
+                    value="pap"
+                    groupValue={formData.permitType}
+                    onChanged={(val) => updateField('permitType', val)}
+                    size="medium"
+                  />
                 </View>
               </View>
 
@@ -792,37 +875,416 @@ export default function App() {
                 <Text style={styles.fieldLabel}>
                   Protected Zone / Circuit<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.standardInput}>
-                  <Text style={{ fontSize: 14, color: UX4GColors.neutral900 }}>
-                    Changthang Wildlife Sanctuary & Pangong Tso Belt
-                  </Text>
-                </View>
+                <Ux4gSelectionDropdown
+                  placeholder="Select protected wildlife or border zone"
+                  options={ZONE_OPTIONS}
+                  selectedOptionIds={formData.selectedZone ? [formData.selectedZone] : []}
+                  onSelectionChange={(selected) => updateField('selectedZone', selected[0] || '')}
+                  size="l"
+                  status={errors.selectedZone ? 'error' : 'defaultStatus'}
+                  description={errors.selectedZone}
+                />
               </View>
 
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
                   Designated Entry Checkpost<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.standardInput}>
-                  <Text style={{ fontSize: 14, color: UX4GColors.neutral900 }}>
-                    Tsaga La / Chushul Border Outpost
-                  </Text>
-                </View>
+                <Ux4gSelectionDropdown
+                  placeholder="Select entry check barrier"
+                  options={CHECKPOST_OPTIONS}
+                  selectedOptionIds={formData.selectedCheckpost ? [formData.selectedCheckpost] : []}
+                  onSelectionChange={(selected) => updateField('selectedCheckpost', selected[0] || '')}
+                  size="l"
+                  status={errors.selectedCheckpost ? 'error' : 'defaultStatus'}
+                  description={errors.selectedCheckpost}
+                />
               </View>
             </View>
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 3 to 8 PLACEHOLDER SIMULATION                                         */}
+          {/* STEP 3: PURPOSE & SCHEDULE OF VISIT                                       */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {step >= 3 && step <= 8 && (
+          {step === 3 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>{activeMeta.title}</Text>
-              <Text style={styles.stepSubtitleText}>{activeMeta.subtitle}</Text>
-              <View style={[styles.calloutCard, { marginTop: 16, backgroundColor: UX4GColors.primary50, borderColor: UX4GColors.primary200 }]}>
-                <Text style={{ fontSize: 13.5, color: UX4GColors.primary800, lineHeight: 20 }}>
-                  This step is configured for {activeMeta.title}. You can navigate forward or review declarations to complete your official permit submission.
+              <Text style={styles.sectionHeading}>Purpose & Schedule</Text>
+
+              <View style={styles.fieldGroup}>
+                <Text style={styles.fieldLabel}>
+                  Purpose of Visit<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
+                <Ux4gSelectionDropdown
+                  placeholder="Select purpose of entry"
+                  options={PURPOSE_OPTIONS}
+                  selectedOptionIds={formData.visitPurpose ? [formData.visitPurpose] : []}
+                  onSelectionChange={(selected) => updateField('visitPurpose', selected[0] || '')}
+                  size="l"
+                  status={errors.visitPurpose ? 'error' : 'defaultStatus'}
+                  description={errors.visitPurpose}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Ux4gDatePicker
+                  label="Entry Date"
+                  required
+                  placeholder="Select entry date"
+                  onDateSelected={(d) => updateField('startDate', d ? d.toLocaleDateString('en-GB') : '')}
+                  status={errors.startDate ? 'error' : 'defaultStatus'}
+                  description={errors.startDate}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Ux4gDatePicker
+                  label="Exit Date"
+                  required
+                  placeholder="Select exit date"
+                  onDateSelected={(d) => updateField('endDate', d ? d.toLocaleDateString('en-GB') : '')}
+                  status={errors.endDate ? 'error' : 'defaultStatus'}
+                  description={errors.endDate}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Text style={styles.fieldLabel}>Permit Duration</Text>
+                <View style={styles.readOnlyBox}>
+                  <Text style={styles.readOnlyValue}>{formData.durationDays}</Text>
+                </View>
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Ux4gInputField
+                  label="Vehicle Registration Number"
+                  required
+                  placeholder="e.g. DL 01 AB 4402"
+                  value={formData.vehicleNumber}
+                  onValueChange={(val) => updateField('vehicleNumber', val)}
+                  size="large"
+                  status={errors.vehicleNumber ? 'error' : 'defaultStatus'}
+                  caption={errors.vehicleNumber}
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 4: ACCOMPANYING PERSONS                                              */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 4 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Accompanying Persons</Text>
+              <Text style={styles.stepSubtitleText}>
+                Primary applicant and co-travelers included under this entry permit.
+              </Text>
+
+              {/* Primary Applicant Card */}
+              <View style={[styles.reviewCardGreen, { marginTop: 14 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <Text style={styles.reviewCardTitleGreen}>1. {formData.fullName} (Primary Applicant)</Text>
+                  <Text style={{ fontSize: 12, fontWeight: '700', color: UX4GColors.green800 }}>SELF</Text>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  DOB: {formData.dob} · {formData.gender} · Aadhaar Verified
+                </Text>
+              </View>
+
+              {/* Accompanying Member Card */}
+              {formData.members.map((m, idx) => (
+                <View key={m.id} style={[styles.reviewCardGreen, { marginTop: 10 }]}>
+                  <View style={styles.reviewCardHeader}>
+                    <Text style={styles.reviewCardTitleGreen}>{idx + 2}. {m.name}</Text>
+                    <Text style={{ fontSize: 12, fontWeight: '600', color: UX4GColors.neutral700 }}>
+                      {m.relation.toUpperCase()}
+                    </Text>
+                  </View>
+                  <Text style={styles.reviewCardSubTextGreen}>
+                    Age: {m.age} years · Co-traveler
+                  </Text>
+                </View>
+              ))}
+
+              <TouchableOpacity
+                style={styles.addMemberBtn}
+                activeOpacity={0.7}
+                onPress={() => triggerToast('Opening member registration form')}
+              >
+                <Text style={styles.addMemberBtnText}>+ Add Accompanying Member</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 5: LOCAL GUIDE & STAY                                                */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 5 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Certified Guide & Stay Details</Text>
+
+              <View style={styles.fieldGroup}>
+                <Ux4gInputField
+                  label="Registered Regional Guide Name"
+                  required
+                  placeholder="e.g. Tenzing Dorjee"
+                  value={formData.guideName}
+                  onValueChange={(val) => updateField('guideName', val)}
+                  size="large"
+                  status={errors.guideName ? 'error' : 'defaultStatus'}
+                  caption={errors.guideName}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Ux4gInputField
+                  label="Guide Government License Number"
+                  placeholder="e.g. LG-LDK-2024-0041"
+                  value={formData.guideLicense}
+                  onValueChange={(val) => updateField('guideLicense', val)}
+                  size="large"
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Ux4gInputField
+                  label="Accommodation / Basecamp Name"
+                  required
+                  placeholder="e.g. Pangong Eco Camp, Spangmik"
+                  value={formData.accommodationName}
+                  onValueChange={(val) => updateField('accommodationName', val)}
+                  size="large"
+                  status={errors.accommodationName ? 'error' : 'defaultStatus'}
+                  caption={errors.accommodationName}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Ux4gInputField
+                  label="Stay Booking Reference / Receipt"
+                  placeholder="e.g. BK-LDK-88412"
+                  value={formData.accommodationBookingRef}
+                  onValueChange={(val) => updateField('accommodationBookingRef', val)}
+                  size="large"
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 6: DOCUMENTS & EVIDENCE                                              */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 6 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Documents & Evidence</Text>
+
+              {/* ID Document Card */}
+              <View style={styles.docItemCard}>
+                <View style={styles.docHeaderRow}>
+                  <View style={styles.docIconCircleGreen}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                    </Svg>
+                  </View>
+                  <Text style={styles.docItemTitle}>Government Photo ID Proof*</Text>
+                </View>
+                <Text style={styles.docSubText}>{formData.idProofFileName}</Text>
+                <Ux4gButton
+                  text="Replace Document"
+                  variant="outline"
+                  size="small"
+                  borderRadius={6}
+                  onPress={() => triggerToast('Identity document updated')}
+                />
+              </View>
+
+              {/* Itinerary Card */}
+              <View style={[styles.docItemCard, { marginTop: 12 }]}>
+                <View style={styles.docHeaderRow}>
+                  <View style={styles.docIconCircleGreen}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                    </Svg>
+                  </View>
+                  <Text style={styles.docItemTitle}>Route Itinerary & Schedule*</Text>
+                </View>
+                <Text style={styles.docSubText}>{formData.itineraryFileName}</Text>
+                <Ux4gButton
+                  text="Replace Document"
+                  variant="outline"
+                  size="small"
+                  borderRadius={6}
+                  onPress={() => triggerToast('Route itinerary updated')}
+                />
+              </View>
+
+              {/* Vehicle RC Card */}
+              <View style={[styles.docItemCard, { marginTop: 12 }]}>
+                <View style={styles.docHeaderRow}>
+                  <View style={styles.docIconCircleGreen}>
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                    </Svg>
+                  </View>
+                  <Text style={styles.docItemTitle}>Vehicle Registration Certificate (RC)*</Text>
+                </View>
+                <Text style={styles.docSubText}>{formData.vehicleRcFileName}</Text>
+                <Ux4gButton
+                  text="Replace Document"
+                  variant="outline"
+                  size="small"
+                  borderRadius={6}
+                  onPress={() => triggerToast('Vehicle RC document updated')}
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 7: SECURITY & ENVIRONMENTAL UNDERTAKINGS                             */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 7 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Security & Environmental Undertakings</Text>
+              <Text style={styles.stepSubtitleText}>
+                Compliance with border security protocols and zero-waste ecological guidelines is statutory.
+              </Text>
+
+              <View style={{ marginTop: 16 }}>
+                <Ux4gCheckbox
+                  label="I undertake not to enter restricted defence zones, military outposts, or unpermitted border tracks."
+                  isRequired
+                  value={formData.undertakingSecurity}
+                  onChanged={(val) => updateField('undertakingSecurity', !!val)}
+                  size="medium"
+                  hasError={!!errors.undertakingSecurity}
+                  description={errors.undertakingSecurity}
+                  descriptionVariant="error"
+                />
+              </View>
+
+              <View style={{ marginTop: 16 }}>
+                <Ux4gCheckbox
+                  label="I will strictly adhere to the Zero Waste Policy and will not carry or discard single-use plastic in the protected sanctuary."
+                  isRequired
+                  value={formData.undertakingZeroWaste}
+                  onChanged={(val) => updateField('undertakingZeroWaste', !!val)}
+                  size="medium"
+                  hasError={!!errors.undertakingZeroWaste}
+                  description={errors.undertakingZeroWaste}
+                  descriptionVariant="error"
+                />
+              </View>
+
+              <View style={{ marginTop: 16 }}>
+                <Ux4gCheckbox
+                  label="I will carry my original entry permit and government photo ID card at all inspection checkposts."
+                  isRequired
+                  value={formData.undertakingOriginalId}
+                  onChanged={(val) => updateField('undertakingOriginalId', !!val)}
+                  size="medium"
+                  hasError={!!errors.undertakingOriginalId}
+                  description={errors.undertakingOriginalId}
+                  descriptionVariant="error"
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 8: REVIEW & DECLARATION                                              */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 8 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Preview Your Application</Text>
+
+              {/* Card 1: Identity Summary */}
+              <View style={styles.reviewCardGreen}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 1 · Identity & eKYC</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(1)}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  {formData.fullName} · {formData.gender} · {formData.city}, {formData.state} · +91 {formData.mobileNumber}
+                </Text>
+              </View>
+
+              {/* Card 2: Zone & Checkpost Summary */}
+              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 2 · Protected Zone & Checkpost</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(2)}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  Changthang Wildlife Sanctuary · Tsaga La Checkpost · Inner Line Permit (ILP)
+                </Text>
+              </View>
+
+              {/* Card 3: Dates & Guide Summary */}
+              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 3 & 5 · Schedule & Stay</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(3)}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  {formData.startDate} – {formData.endDate} (7 days) · Vehicle: {formData.vehicleNumber} · Guide: {formData.guideName}
+                </Text>
+              </View>
+
+              {/* Declaration Section */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Declaration</Text>
+              <View style={{ marginTop: 6 }}>
+                <Ux4gCheckbox
+                  label="I hereby declare that all information furnished is true, correct, and complete to the best of my knowledge."
+                  isRequired
+                  value={formData.declarationAccuracy}
+                  onChanged={(val) => updateField('declarationAccuracy', !!val)}
+                  size="medium"
+                  hasError={!!errors.declarationAccuracy}
+                  description={errors.declarationAccuracy}
+                  descriptionVariant="error"
+                />
               </View>
             </View>
           )}
@@ -867,8 +1329,12 @@ export default function App() {
                   <Text style={styles.step9DetailValue}>Changthang Wildlife Sanctuary</Text>
                 </View>
                 <View style={styles.step9DetailRow}>
+                  <Text style={styles.step9DetailLabel}>Checkpost</Text>
+                  <Text style={styles.step9DetailValue}>Tsaga La / Chushul Outpost</Text>
+                </View>
+                <View style={styles.step9DetailRow}>
                   <Text style={styles.step9DetailLabel}>Validity</Text>
-                  <Text style={styles.step9DetailValue}>12 Oct 2026 – 18 Oct 2026</Text>
+                  <Text style={styles.step9DetailValue}>{formData.startDate} – {formData.endDate}</Text>
                 </View>
                 <View style={styles.step9DetailRow}>
                   <Text style={styles.step9DetailLabel}>Issuing Authority</Text>
@@ -1133,106 +1599,6 @@ const styles = StyleSheet.create({
     color: UX4GColors.red600,
     marginLeft: 2,
   },
-  aadhaarInputContainer: {
-    height: 44,
-    borderWidth: 1,
-    borderColor: UX4GColors.neutral300,
-    borderRadius: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    backgroundColor: UX4GColors.white,
-  },
-  aadhaarTextInput: {
-    flex: 1,
-    fontSize: 14,
-    color: UX4GColors.neutral900,
-    letterSpacing: 1.5,
-    paddingVertical: 0,
-  },
-  maskToggleBtn: {
-    padding: 6,
-  },
-  infoCaptionRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginTop: 5,
-  },
-  infoCaptionText: {
-    flex: 1,
-    fontSize: 11.5,
-    color: UX4GColors.neutral500,
-    lineHeight: 16,
-  },
-  consentCheckboxRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    marginBottom: 6,
-  },
-  checkboxSquare: {
-    width: 18,
-    height: 18,
-    borderRadius: 4,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.neutral300,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
-    backgroundColor: UX4GColors.white,
-  },
-  checkboxSquareChecked: {
-    backgroundColor: UX4GColors.primary,
-    borderColor: UX4GColors.primary,
-  },
-  checkboxSquareError: {
-    borderColor: UX4GColors.red600,
-  },
-  consentLabelText: {
-    fontSize: 12.5,
-    fontWeight: '600',
-    color: UX4GColors.neutral800,
-    flex: 1,
-  },
-  errorMessageText: {
-    fontSize: 11.5,
-    color: UX4GColors.red600,
-    marginTop: 4,
-  },
-  otpBoxesRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 4,
-  },
-  otpBox: {
-    flex: 1,
-    height: 48,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: UX4GColors.neutral300,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: UX4GColors.white,
-  },
-  otpBoxActive: {
-    borderColor: UX4GColors.primary,
-    borderWidth: 1.5,
-  },
-  otpCursorText: {
-    fontSize: 20,
-    color: UX4GColors.primary,
-    fontWeight: '300',
-  },
-  otpDashPlaceholder: {
-    fontSize: 18,
-    color: UX4GColors.neutral400,
-  },
-  resendText: {
-    fontSize: 12,
-    color: UX4GColors.neutral500,
-    marginTop: 8,
-  },
   calloutCard: {
     flexDirection: 'row',
     backgroundColor: '#F0FDFA', // Soft cyan / turquoise tint matching image
@@ -1292,79 +1658,90 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: UX4GColors.neutral800,
   },
-  phoneInputContainer: {
-    height: 44,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: UX4GColors.neutral300,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-  },
-  phoneCountryCode: {
-    fontSize: 13.5,
-    fontWeight: '600',
-    color: UX4GColors.neutral700,
-    marginRight: 8,
-  },
-  phoneTextInput: {
-    flex: 1,
-    fontSize: 14,
-    color: UX4GColors.neutral900,
-    paddingVertical: 0,
-  },
-  inputErrorBorder: {
-    borderColor: UX4GColors.red600,
-  },
-  plainCheckboxRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
-    marginBottom: 14,
-  },
-  plainCheckboxLabel: {
-    fontSize: 12.5,
-    color: UX4GColors.neutral700,
-  },
-  standardInput: {
-    height: 44,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: UX4GColors.neutral300,
-    paddingHorizontal: 12,
-    fontSize: 14,
-    color: UX4GColors.neutral900,
-    justifyContent: 'center',
-  },
   radioOptionGroup: {
     marginTop: 4,
   },
-  radioItemRow: {
+  docItemCard: {
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    borderRadius: 8,
+    padding: 14,
+    backgroundColor: UX4GColors.white,
+  },
+  docHeaderRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 6,
   },
-  radioOuterCircle: {
+  docIconCircleGreen: {
     width: 18,
     height: 18,
     borderRadius: 9,
-    borderWidth: 1.5,
-    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.green600,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
   },
-  radioOuterCircleActive: {
-    borderColor: UX4GColors.primary,
+  docItemTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
   },
-  radioInnerDot: {
-    width: 9,
-    height: 9,
-    borderRadius: 4.5,
-    backgroundColor: UX4GColors.primary,
+  docSubText: {
+    fontSize: 12,
+    color: UX4GColors.neutral600,
+    marginBottom: 10,
   },
-  radioLabelText: {
-    fontSize: 13,
-    color: UX4GColors.neutral800,
+  reviewCardGreen: {
+    backgroundColor: UX4GColors.green50,
+    borderWidth: 1,
+    borderColor: UX4GColors.green300,
+    borderRadius: 10,
+    padding: 14,
+  },
+  reviewCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  reviewCardLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  reviewIconCircleGreen: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: UX4GColors.green600,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
+  reviewCardTitleGreen: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.green900,
+  },
+  reviewCardSubTextGreen: {
+    fontSize: 12.5,
+    color: UX4GColors.green800,
+    marginTop: 4,
+    lineHeight: 18,
+  },
+  addMemberBtn: {
+    borderWidth: 1,
+    borderColor: UX4GColors.primary300,
+    borderStyle: 'dashed',
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 14,
+  },
+  addMemberBtnText: {
+    color: UX4GColors.primary,
+    fontSize: 13.5,
+    fontWeight: '600',
   },
   step9TopContainer: {
     alignItems: 'center',
