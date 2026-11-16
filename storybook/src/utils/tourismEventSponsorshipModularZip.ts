@@ -72,17 +72,11 @@ export interface TourismEventSponsorshipFormData {
   endDate: string;
   eventDuration: string;
 
-  // Step 3: Budget & Sponsorship Claimed
-  totalBudget: string;
-  sponsorshipRequested: string;
-  sponsorshipTier: 'title' | 'associate' | 'supporting';
-  hasOtherSponsors: 'yes' | 'no';
-  entryModel: 'free' | 'ticketed' | 'hybrid';
-  deliverableLogo: boolean;
-  deliverableStall: boolean;
-  deliverableVipPass: boolean;
-  deliverableDigital: boolean;
-  deliverableStageMention: boolean;
+  // Step 3: Documents
+  docOrgRegistration: string;
+  docProfilePastEvents: string;
+  docEventProposal: string;
+  docBudgetSheet: string;
 
   // Step 4: Clearances & Evidence
   policeNocStatus: 'obtained' | 'applied';
@@ -205,17 +199,11 @@ export const INITIAL_FORM_DATA: TourismEventSponsorshipFormData = {
   endDate: '',
   eventDuration: '6 days',
 
-  // Step 3: Budget & Sponsorship Claimed
-  totalBudget: '45,00,000',
-  sponsorshipRequested: '12,00,000',
-  sponsorshipTier: 'title',
-  hasOtherSponsors: 'yes',
-  entryModel: 'free',
-  deliverableLogo: true,
-  deliverableStall: true,
-  deliverableVipPass: true,
-  deliverableDigital: true,
-  deliverableStageMention: true,
+  // Step 3: Documents
+  docOrgRegistration: 'MH_Tourism_Vendor_Registration_Certificate.pdf',
+  docProfilePastEvents: '',
+  docEventProposal: '',
+  docBudgetSheet: '',
 
   // Step 4: Clearances & Evidence
   policeNocStatus: 'obtained',

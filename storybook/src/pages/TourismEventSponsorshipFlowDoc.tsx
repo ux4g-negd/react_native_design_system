@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow (Step 2 with Ux4gInputField & Ux4gTextArea)
-const SNACK_ID = 'qRYsRdVk51ebnfYs32i79';
+// Official Snack ID for Tourism Event Sponsorship Flow (Step 3 with Documents Accordions & Ux4g components)
+const SNACK_ID = 'BoH_fWE0YYOJkAzzDpXWH';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -109,16 +109,16 @@ const STEP_METADATA = {
     subtitle: 'The festival or event you are proposing, and when and where it happens.',
   },
   3: {
-    title: 'Budget & sponsorship',
-    subtitle: 'What the event costs, the sponsorship amount requested, and what the department receives.',
+    title: 'Documents',
+    subtitle: 'What proves the organisation can hold it.',
   },
   4: {
-    title: 'Clearances & evidence',
-    subtitle: 'Permissions already secured, event deck, and proof of capability.',
-  },
-  5: {
     title: 'Review & declaration',
     subtitle: 'Check every section. Nothing can be changed after you submit.',
+  },
+  5: {
+    title: 'Submitted',
+    subtitle: 'Your application is with the department.',
   },
 };
 
@@ -192,11 +192,15 @@ const CLEARANCE_STATUS_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(3);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
   const [errors, setErrors] = useState({});
+  const [docSectionsExpanded, setDocSectionsExpanded] = useState({
+    organisation: true,
+    event: false,
+  });
 
   // Form State
   const [formData, setFormData] = useState({
@@ -214,26 +218,20 @@ export default function App() {
     district: 'mumbai_city',
 
     // Step 2: The event
-    eventName: '',
-    eventDescription: '',
-    expectedFootfall: '',
-    venueAddress: '',
-    eventDistrict: '',
-    startDate: '',
-    endDate: '',
+    eventName: 'Konkan Cultural & Seafood Carnival 2026',
+    eventDescription: 'A 6-day coastal mega festival showcasing traditional Malvani music, beach sports, coastal handicraft exhibitions, and Konkani cuisine to boost state tourism.',
+    expectedFootfall: '75000',
+    venueAddress: 'Bhatye Beach Promenade, Ratnagiri Coastal Highway, Maharashtra 415612',
+    eventDistrict: 'ratnagiri',
+    startDate: '15/12/2026',
+    endDate: '20/12/2026',
     eventDuration: '6 days',
 
-    // Step 3: Budget & Sponsorship Claimed
-    totalBudget: '45,00,000',
-    sponsorshipRequested: '12,00,000',
-    sponsorshipTier: 'title',
-    hasOtherSponsors: 'yes',
-    entryModel: 'free',
-    deliverableLogo: true,
-    deliverableStall: true,
-    deliverableVipPass: true,
-    deliverableDigital: true,
-    deliverableStageMention: true,
+    // Step 3: Documents
+    docOrgRegistration: 'MH_Tourism_Vendor_Registration_Certificate.pdf',
+    docProfilePastEvents: '',
+    docEventProposal: '',
+    docBudgetSheet: '',
 
     // Step 4: Clearances & Evidence
     policeNocStatus: 'obtained',
@@ -440,11 +438,71 @@ export default function App() {
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
+  const toggleDocSection = (section) => {
+    setDocSectionsExpanded((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const handleUploadDoc = (key) => {
+    const sampleFiles = {
+      docOrgRegistration: 'MH_Tourism_Vendor_Registration_Certificate.pdf',
+      docProfilePastEvents: 'ABC_Foundation_Profile_and_Past_Festivals.pdf',
+      docEventProposal: 'Konkan_Carnival_2026_Proposal_Deck.pdf',
+      docBudgetSheet: 'Itemised_Event_Budget_Sheet.xlsx',
+    };
+    const docNames = {
+      docOrgRegistration: 'Organisation registration certificate',
+      docProfilePastEvents: 'Profile and past events',
+      docEventProposal: 'Concept deck or event proposal',
+      docBudgetSheet: 'Estimated event budget sheet',
+    };
+
+    const fileName = sampleFiles[key] || 'Document.pdf';
+    setFormData((prev) => ({
+      ...prev,
+      [key]: fileName,
+    }));
+    if (errors[key]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      });
+    }
+    triggerToast((docNames[key] || 'Document') + ' updated successfully');
+  };
+
+  const handleContinueStep3 = () => {
+    const errs = {};
+    if (!formData.docOrgRegistration) {
+      errs.docOrgRegistration = 'Organisation registration certificate is required';
+    }
+    if (!formData.docProfilePastEvents) {
+      errs.docProfilePastEvents = 'Profile and past events is required';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      setDocSectionsExpanded((prev) => ({ ...prev, organisation: true }));
+      triggerToast('Please upload all required organisation documents');
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
+
+    setErrors({});
+    setStep(4);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
   const handleContinue = () => {
     if (step === 1) {
       handleContinueStep1();
     } else if (step === 2) {
       handleContinueStep2();
+    } else if (step === 3) {
+      handleContinueStep3();
     } else if (step < 5) {
       setStep((prev) => prev + 1);
       scrollRef.current?.scrollTo({ y: 0, animated: true });
@@ -468,6 +526,9 @@ export default function App() {
     setIsNavMenuOpen(false);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
+
+  const orgUploadedCount = (formData.docOrgRegistration ? 1 : 0) + (formData.docProfilePastEvents ? 1 : 0);
+  const eventUploadedCount = (formData.docEventProposal ? 1 : 0) + (formData.docBudgetSheet ? 1 : 0);
 
   const activeMeta = STEP_METADATA[step] || STEP_METADATA[1];
 
@@ -1034,174 +1095,111 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 3: BUDGET & SPONSORSHIP CLAIMED                                      */}
+          {/* STEP 3: DOCUMENTS                                                         */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 3 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Financials & Funding Request</Text>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Total estimated event budget (₹)<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.currencyInputRow}>
-                  <View style={styles.currencySymbolBox}>
-                    <Text style={styles.currencySymbolText}>₹</Text>
-                  </View>
-                  <TextInput
-                    style={[styles.textInput, styles.currencyTextInput]}
-                    placeholder="e.g. 45,00,000"
-                    placeholderTextColor="#94A3B8"
-                    keyboardType="numeric"
-                    value={formData.totalBudget}
-                    onChangeText={(text) => setFormData((prev) => ({ ...prev, totalBudget: text }))}
-                  />
-                </View>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Sponsorship grant requested from Tourism Dept (₹)
-                  <Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.currencyInputRow}>
-                  <View style={styles.currencySymbolBox}>
-                    <Text style={styles.currencySymbolText}>₹</Text>
-                  </View>
-                  <TextInput
-                    style={[styles.textInput, styles.currencyTextInput]}
-                    placeholder="e.g. 12,00,000 (Max 30% per policy)"
-                    placeholderTextColor="#94A3B8"
-                    keyboardType="numeric"
-                    value={formData.sponsorshipRequested}
-                    onChangeText={(text) =>
-                      setFormData((prev) => ({ ...prev, sponsorshipRequested: text }))
-                    }
-                  />
-                </View>
-                <Text style={styles.helperNoticeText}>
-                  Note: Under Department Scheme guidelines, maximum grant eligible is capped at 30% of audited budget.
-                </Text>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Sponsorship tier requested<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.radioGroupWrapper}>
-                  {SPONSORSHIP_TIER_OPTIONS.map((item) => {
-                    const isSelected = formData.sponsorshipTier === item.id;
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[styles.radioItemRow, isSelected && styles.radioItemRowActive]}
-                        activeOpacity={0.8}
-                        onPress={() => setFormData((prev) => ({ ...prev, sponsorshipTier: item.id }))}
-                      >
-                        <View style={[styles.radioOuter, isSelected && styles.radioOuterActive]}>
-                          {isSelected && <View style={styles.radioInner} />}
-                        </View>
-                        <Text style={[styles.radioLabelText, isSelected && styles.radioLabelTextActive]}>
-                          {item.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Confirmed co-sponsors or other grants<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.radioGroupWrapper}>
-                  {OTHER_SPONSOR_OPTIONS.map((item) => {
-                    const isSelected = formData.hasOtherSponsors === item.id;
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[styles.radioItemRow, isSelected && styles.radioItemRowActive]}
-                        activeOpacity={0.8}
-                        onPress={() => setFormData((prev) => ({ ...prev, hasOtherSponsors: item.id }))}
-                      >
-                        <View style={[styles.radioOuter, isSelected && styles.radioOuterActive]}>
-                          {isSelected && <View style={styles.radioInner} />}
-                        </View>
-                        <Text style={[styles.radioLabelText, isSelected && styles.radioLabelTextActive]}>
-                          {item.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Public entry fee model<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.radioGroupWrapper}>
-                  {ENTRY_MODEL_OPTIONS.map((item) => {
-                    const isSelected = formData.entryModel === item.id;
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[styles.radioItemRow, isSelected && styles.radioItemRowActive]}
-                        activeOpacity={0.8}
-                        onPress={() => setFormData((prev) => ({ ...prev, entryModel: item.id }))}
-                      >
-                        <View style={[styles.radioOuter, isSelected && styles.radioOuterActive]}>
-                          {isSelected && <View style={styles.radioInner} />}
-                        </View>
-                        <Text style={[styles.radioLabelText, isSelected && styles.radioLabelTextActive]}>
-                          {item.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>
-                Mandatory Branding Commitments for Department
+              <Text style={styles.sectionHeading}>Documents</Text>
+              <Text style={styles.sectionSubheading}>
+                What proves the organisation can hold it.
               </Text>
 
-              <View style={styles.checkboxGroupWrapper}>
-                {[
-                  {
-                    key: 'deliverableLogo',
-                    label: 'Prominent Department & UX4G logo on all stage backdrops, print media, hoardings & wristbands',
-                  },
-                  {
-                    key: 'deliverableStall',
-                    label: 'Complimentary 200 sq.ft. Tourism Experience & Information Stall at prime venue corridor',
-                  },
-                  {
-                    key: 'deliverableVipPass',
-                    label: '25 VIP passes and reserved front-row seating for Department dignitaries and guests',
-                  },
-                  {
-                    key: 'deliverableDigital',
-                    label: 'Co-branding across all digital campaigns, official trailer videos, and press releases',
-                  },
-                  {
-                    key: 'deliverableStageMention',
-                    label: 'Official stage acknowledgement and tourism video screening during opening & closing ceremonies',
-                  },
-                ].map((item) => {
-                  const isChecked = !!formData[item.key];
-                  return (
-                    <TouchableOpacity
-                      key={item.key}
-                      style={styles.checkboxItemRow}
-                      activeOpacity={0.8}
-                      onPress={() =>
-                        setFormData((prev) => ({ ...prev, [item.key]: !isChecked }))
-                      }
-                    >
-                      <View style={[styles.checkboxBox, isChecked && styles.checkboxBoxActive]}>
-                        {isChecked && (
-                          <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
+              {/* Accordion 1: What proves the organisation */}
+              <Ux4gCard
+                cornerRadius={12}
+                borderWidth={1}
+                borderColor={errors.docSectionOrg ? '#DC2626' : '#E2E8F0'}
+                backgroundColor="#FFFFFF"
+                elevation={0}
+                style={styles.docCardContainer}
+              >
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => toggleDocSection('organisation')}
+                  style={styles.docCardHeader}
+                >
+                  <View style={{ flex: 1, paddingRight: 8 }}>
+                    <Text style={styles.docCardTitle}>What proves the organisation</Text>
+                    {!docSectionsExpanded.organisation && (
+                      <>
+                        <Text style={styles.docCardSummaryText}>
+                          {'2 documents · ' +
+                            (orgUploadedCount === 2
+                              ? '2 uploaded'
+                              : orgUploadedCount === 1
+                              ? '1 uploaded'
+                              : 'none uploaded yet')}
+                        </Text>
+                        <View style={styles.docDotRow}>
+                          <View
+                            style={[
+                              styles.docStatusDot,
+                              formData.docOrgRegistration
+                                ? styles.docStatusDotDone
+                                : styles.docStatusDotEmpty,
+                            ]}
+                          >
+                            {formData.docOrgRegistration ? (
+                              <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                                <Path
+                                  d="M5 13l4 4L19 7"
+                                  stroke="#FFFFFF"
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </Svg>
+                            ) : null}
+                          </View>
+                          <View
+                            style={[
+                              styles.docStatusDot,
+                              formData.docProfilePastEvents
+                                ? styles.docStatusDotDone
+                                : styles.docStatusDotEmpty,
+                            ]}
+                          >
+                            {formData.docProfilePastEvents ? (
+                              <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                                <Path
+                                  d="M5 13l4 4L19 7"
+                                  stroke="#FFFFFF"
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </Svg>
+                            ) : null}
+                          </View>
+                        </View>
+                      </>
+                    )}
+                  </View>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={docSectionsExpanded.organisation ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#1E293B"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {docSectionsExpanded.organisation && (
+                  <View style={styles.docCardContent}>
+                    {/* Item 1: Organisation registration certificate */}
+                    <View style={styles.docItemRow}>
+                      <View
+                        style={[
+                          styles.docIconCircle,
+                          formData.docOrgRegistration
+                            ? styles.docIconCircleDone
+                            : styles.docIconCircleEmpty,
+                        ]}
+                      >
+                        {formData.docOrgRegistration ? (
+                          <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                             <Path
                               d="M5 13l4 4L19 7"
                               stroke="#FFFFFF"
@@ -1210,13 +1208,241 @@ export default function App() {
                               strokeLinejoin="round"
                             />
                           </Svg>
-                        )}
+                        ) : null}
                       </View>
-                      <Text style={styles.checkboxLabelText}>{item.label}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
+                      <Text style={styles.docItemLabel}>
+                        Organisation registration certificate
+                        <Text style={styles.requiredAsterisk}>*</Text>
+                      </Text>
+                    </View>
+
+                    <Ux4gButton
+                      text={formData.docOrgRegistration ? 'Replace' : 'Upload'}
+                      variant="outline"
+                      size="medium"
+                      borderColor="#A5B4FC"
+                      contentColor={UX4GColors.primary}
+                      borderRadius={8}
+                      onPress={() => handleUploadDoc('docOrgRegistration')}
+                      style={styles.docActionButton}
+                    />
+
+                    <View style={styles.docItemDivider} />
+
+                    {/* Item 2: Profile and past events */}
+                    <View style={styles.docItemRow}>
+                      <View
+                        style={[
+                          styles.docIconCircle,
+                          formData.docProfilePastEvents
+                            ? styles.docIconCircleDone
+                            : styles.docIconCircleEmpty,
+                        ]}
+                      >
+                        {formData.docProfilePastEvents ? (
+                          <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                            <Path
+                              d="M5 13l4 4L19 7"
+                              stroke="#FFFFFF"
+                              strokeWidth={3}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </Svg>
+                        ) : null}
+                      </View>
+                      <Text style={styles.docItemLabel}>
+                        Profile and past events<Text style={styles.requiredAsterisk}>*</Text>
+                      </Text>
+                    </View>
+
+                    <Ux4gButton
+                      text={formData.docProfilePastEvents ? 'Replace' : 'Upload'}
+                      variant="outline"
+                      size="medium"
+                      borderColor="#A5B4FC"
+                      contentColor={UX4GColors.primary}
+                      borderRadius={8}
+                      onPress={() => handleUploadDoc('docProfilePastEvents')}
+                      style={styles.docActionButton}
+                    />
+                    {errors.docProfilePastEvents && (
+                      <View style={styles.errorCaptionRow}>
+                        <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                          <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
+                          <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                        </Svg>
+                        <Text style={styles.errorCaptionText}>{errors.docProfilePastEvents}</Text>
+                      </View>
+                    )}
+                  </View>
+                )}
+              </Ux4gCard>
+
+              {/* Accordion 2: What proves the event */}
+              <Ux4gCard
+                cornerRadius={12}
+                borderWidth={1}
+                borderColor={errors.docSectionEvent ? '#DC2626' : '#E2E8F0'}
+                backgroundColor="#FFFFFF"
+                elevation={0}
+                style={styles.docCardContainer}
+              >
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => toggleDocSection('event')}
+                  style={styles.docCardHeader}
+                >
+                  <View style={{ flex: 1, paddingRight: 8 }}>
+                    <Text style={styles.docCardTitle}>What proves the event</Text>
+                    {!docSectionsExpanded.event && (
+                      <>
+                        <Text style={styles.docCardSummaryText}>
+                          {'2 documents · ' +
+                            (eventUploadedCount > 0
+                              ? eventUploadedCount + ' uploaded'
+                              : 'none uploaded yet')}
+                        </Text>
+                        <View style={styles.docDotRow}>
+                          <View
+                            style={[
+                              styles.docStatusDot,
+                              formData.docEventProposal
+                                ? styles.docStatusDotDone
+                                : styles.docStatusDotEmpty,
+                            ]}
+                          >
+                            {formData.docEventProposal ? (
+                              <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                                <Path
+                                  d="M5 13l4 4L19 7"
+                                  stroke="#FFFFFF"
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </Svg>
+                            ) : null}
+                          </View>
+                          <View
+                            style={[
+                              styles.docStatusDot,
+                              formData.docBudgetSheet
+                                ? styles.docStatusDotDone
+                                : styles.docStatusDotEmpty,
+                            ]}
+                          >
+                            {formData.docBudgetSheet ? (
+                              <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                                <Path
+                                  d="M5 13l4 4L19 7"
+                                  stroke="#FFFFFF"
+                                  strokeWidth={3}
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </Svg>
+                            ) : null}
+                          </View>
+                        </View>
+                      </>
+                    )}
+                  </View>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={docSectionsExpanded.event ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#1E293B"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {docSectionsExpanded.event && (
+                  <View style={styles.docCardContent}>
+                    {/* Item 1: Concept deck or event proposal */}
+                    <View style={styles.docItemRow}>
+                      <View
+                        style={[
+                          styles.docIconCircle,
+                          formData.docEventProposal
+                            ? styles.docIconCircleDone
+                            : styles.docIconCircleEmpty,
+                        ]}
+                      >
+                        {formData.docEventProposal ? (
+                          <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                            <Path
+                              d="M5 13l4 4L19 7"
+                              stroke="#FFFFFF"
+                              strokeWidth={3}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </Svg>
+                        ) : null}
+                      </View>
+                      <Text style={styles.docItemLabel}>
+                        Concept deck or event proposal
+                        <Text style={styles.requiredAsterisk}>*</Text>
+                      </Text>
+                    </View>
+
+                    <Ux4gButton
+                      text={formData.docEventProposal ? 'Replace' : 'Upload'}
+                      variant="outline"
+                      size="medium"
+                      borderColor="#A5B4FC"
+                      contentColor={UX4GColors.primary}
+                      borderRadius={8}
+                      onPress={() => handleUploadDoc('docEventProposal')}
+                      style={styles.docActionButton}
+                    />
+
+                    <View style={styles.docItemDivider} />
+
+                    {/* Item 2: Estimated event budget sheet */}
+                    <View style={styles.docItemRow}>
+                      <View
+                        style={[
+                          styles.docIconCircle,
+                          formData.docBudgetSheet
+                            ? styles.docIconCircleDone
+                            : styles.docIconCircleEmpty,
+                        ]}
+                      >
+                        {formData.docBudgetSheet ? (
+                          <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                            <Path
+                              d="M5 13l4 4L19 7"
+                              stroke="#FFFFFF"
+                              strokeWidth={3}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </Svg>
+                        ) : null}
+                      </View>
+                      <Text style={styles.docItemLabel}>
+                        Estimated event budget sheet
+                        <Text style={styles.requiredAsterisk}>*</Text>
+                      </Text>
+                    </View>
+
+                    <Ux4gButton
+                      text={formData.docBudgetSheet ? 'Replace' : 'Upload'}
+                      variant="outline"
+                      size="medium"
+                      borderColor="#A5B4FC"
+                      contentColor={UX4GColors.primary}
+                      borderRadius={8}
+                      onPress={() => handleUploadDoc('docBudgetSheet')}
+                      style={styles.docActionButton}
+                    />
+                  </View>
+                )}
+              </Ux4gCard>
             </View>
           )}
 
@@ -1873,6 +2099,93 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     marginBottom: 12,
   },
+  sectionSubheading: {
+    fontSize: 13.5,
+    color: '#475569',
+    marginTop: -4,
+    marginBottom: 16,
+    lineHeight: 18,
+  },
+  docCardContainer: {
+    padding: 16,
+    marginBottom: 16,
+  },
+  docCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  docCardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  docCardSummaryText: {
+    fontSize: 12.5,
+    color: '#64748B',
+    marginTop: 4,
+  },
+  docDotRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 10,
+  },
+  docStatusDot: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  docStatusDotDone: {
+    backgroundColor: '#16A34A',
+  },
+  docStatusDotEmpty: {
+    borderWidth: 1.5,
+    borderColor: '#CBD5E1',
+    backgroundColor: '#FFFFFF',
+  },
+  docCardContent: {
+    marginTop: 16,
+  },
+  docItemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  docIconCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  docIconCircleDone: {
+    backgroundColor: '#16A34A',
+  },
+  docIconCircleEmpty: {
+    borderWidth: 1.5,
+    borderColor: '#CBD5E1',
+    backgroundColor: '#FFFFFF',
+  },
+  docItemLabel: {
+    fontSize: 14.5,
+    fontWeight: '600',
+    color: '#0F172A',
+    flex: 1,
+  },
+  docActionButton: {
+    width: '100%',
+    height: 44,
+    backgroundColor: '#FFFFFF',
+  },
+  docItemDivider: {
+    height: 1,
+    backgroundColor: '#E2E8F0',
+    marginVertical: 16,
+  },
   fieldGroup: {
     marginBottom: 16,
   },
@@ -2375,11 +2688,11 @@ const styles = StyleSheet.create({
   secondarySaveDraftBtn: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1.5,
-    borderColor: UX4GColors.primary,
+    borderColor: '#C7D2FE',
     borderRadius: 8,
     paddingVertical: 13,
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 10,
   },
   secondarySaveDraftBtnText: {
     color: UX4GColors.primary,
