@@ -93007,7 +93007,7 @@ Constructed using **UX4G React Native Design System** components.
 npm install
 npx expo start
 \`\`\`
-`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="qnZhU6RA9vX6qVeN4aVhG",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="qRYsRdVk51ebnfYs32i79",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -93892,141 +93892,65 @@ export default function App() {
               <Text style={styles.sectionHeading}>Event Details</Text>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Name of the event or festival<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[styles.textInput, errors.eventName && styles.textInputError]}
+                <Ux4gInputField
+                  label="Name of the event or festival"
+                  required
                   placeholder="As it will be advertised"
-                  placeholderTextColor="#94A3B8"
                   value={formData.eventName}
-                  onChangeText={(text) => updateField('eventName', text)}
+                  onValueChange={(text) => updateField('eventName', text)}
+                  size="large"
+                  status={errors.eventName ? 'error' : 'defaultStatus'}
+                  caption={errors.eventName}
                 />
-                {errors.eventName && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.eventName}</Text>
-                  </View>
-                )}
               </View>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Description of the event<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View
-                  style={[
-                    styles.textAreaContainer,
-                    errors.eventDescription && styles.textAreaContainerError,
-                  ]}
-                >
-                  <TextInput
-                    style={styles.textAreaInput}
-                    placeholder="One paragraph: what happens, who it is for, and why it needs support"
-                    placeholderTextColor="#94A3B8"
-                    multiline
-                    numberOfLines={4}
-                    maxLength={200}
-                    value={formData.eventDescription}
-                    onChangeText={(text) => updateField('eventDescription', text)}
-                  />
-                  <View style={styles.charCounterRow}>
-                    <Text style={styles.charCounterText}>
-                      {formData.eventDescription.length}/200
-                    </Text>
-                    <Svg width={11} height={11} viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
-                      <Path
-                        d="M10 2L2 10M11 6L6 11M11 9L9 11"
-                        stroke="#94A3B8"
-                        strokeWidth={1.4}
-                        strokeLinecap="round"
-                      />
-                    </Svg>
-                  </View>
-                </View>
-                {errors.eventDescription && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.eventDescription}</Text>
-                  </View>
-                )}
+                <Ux4gTextArea
+                  label="Description of the event"
+                  required
+                  placeholder="One paragraph: what happens, who it is for, and why it needs support"
+                  value={formData.eventDescription}
+                  onValueChange={(text) => updateField('eventDescription', text)}
+                  maxLength={200}
+                  characterCountText={formData.eventDescription.length + '/200'}
+                  minHeight="medium"
+                  size="large"
+                  status={errors.eventDescription ? 'error' : 'defaultStatus'}
+                  caption={errors.eventDescription}
+                />
               </View>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Expected footfall<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[styles.textInput, errors.expectedFootfall && styles.textInputError]}
+                <Ux4gInputField
+                  label="Expected footfall"
+                  required
                   placeholder="Number of visitors you expect"
-                  placeholderTextColor="#94A3B8"
-                  keyboardType="numeric"
+                  type="number"
                   value={formData.expectedFootfall}
-                  onChangeText={(text) => updateField('expectedFootfall', text)}
+                  onValueChange={(text) => updateField('expectedFootfall', text)}
+                  size="large"
+                  status={errors.expectedFootfall ? 'error' : 'defaultStatus'}
+                  caption={errors.expectedFootfall}
                 />
-                {errors.expectedFootfall && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.expectedFootfall}</Text>
-                  </View>
-                )}
               </View>
 
               {/* Section 2: Venue Details */}
               <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Venue Details</Text>
 
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Venue address<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View
-                  style={[
-                    styles.textAreaContainer,
-                    errors.venueAddress && styles.textAreaContainerError,
-                  ]}
-                >
-                  <TextInput
-                    style={styles.textAreaInput}
-                    placeholder="Placeholder"
-                    placeholderTextColor="#94A3B8"
-                    multiline
-                    numberOfLines={4}
-                    maxLength={200}
-                    value={formData.venueAddress}
-                    onChangeText={(text) => updateField('venueAddress', text)}
-                  />
-                  <View style={styles.charCounterRow}>
-                    <Text style={styles.charCounterText}>
-                      {formData.venueAddress.length}/200
-                    </Text>
-                    <Svg width={11} height={11} viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
-                      <Path
-                        d="M10 2L2 10M11 6L6 11M11 9L9 11"
-                        stroke="#94A3B8"
-                        strokeWidth={1.4}
-                        strokeLinecap="round"
-                      />
-                    </Svg>
-                  </View>
-                </View>
-                {errors.venueAddress && (
-                  <View style={styles.errorCaptionRow}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
-                    </Svg>
-                    <Text style={styles.errorCaptionText}>{errors.venueAddress}</Text>
-                  </View>
-                )}
+                <Ux4gTextArea
+                  label="Venue address"
+                  required
+                  placeholder="Placeholder"
+                  value={formData.venueAddress}
+                  onValueChange={(text) => updateField('venueAddress', text)}
+                  maxLength={200}
+                  characterCountText={formData.venueAddress.length + '/200'}
+                  minHeight="medium"
+                  size="large"
+                  status={errors.venueAddress ? 'error' : 'defaultStatus'}
+                  caption={errors.venueAddress}
+                />
               </View>
 
               <View style={styles.fieldGroup}>
