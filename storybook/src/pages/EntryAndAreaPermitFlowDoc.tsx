@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'V3wUAuE77YdE5iZQUjh9G';
+const SNACK_ID = 'IGk_Q8tI975IB1WErjdza';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -40,6 +40,8 @@ import {
   Ux4gCheckbox,
   Ux4gCard,
   Ux4gButton,
+  Ux4gStatusBanner,
+  Ux4gCompactStepper,
 } from 'ux4g-react-native-components';
 import NationalEmblem from './NationalEmblem';
 
@@ -509,86 +511,32 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        {/* ─── SAVED PILL BANNER ─── */}
-        <View style={styles.savedBannerContainer}>
-          <View style={styles.savedPill}>
-            <Svg width={14} height={14} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
-              <Circle cx={12} cy={12} r={10} stroke={UX4GColors.green600} strokeWidth={2} />
-              <Path
-                d="M8 12l2.5 2.5L16 9"
-                stroke={UX4GColors.green600}
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
-            <Text style={styles.savedText}>Saved {savedTime}</Text>
+        {/* ─── SAVED STATUS BANNER ─── */}
+        {step < 9 && (
+          <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
+            <Ux4gStatusBanner
+              variant="successLight"
+              title={'Saved ' + savedTime}
+              contentAlignment="right"
+              paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
+              marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+            />
           </View>
-        </View>
+        )}
 
         {/* ─── 9-SEGMENT STEPPER PROGRESS ─── */}
-        <View style={styles.stepperContainer}>
-          <View style={styles.progressSegmentsRow}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((s) => (
-              <View
-                key={s}
-                style={[
-                  styles.progressSegment,
-                  s <= step ? styles.progressSegmentActive : styles.progressSegmentInactive,
-                ]}
-              />
-            ))}
-          </View>
-
-          <Text style={styles.stepCounterText}>Step {step} of 9</Text>
-
-          <View style={styles.stepperNavRow}>
-            <TouchableOpacity
-              style={[
-                styles.navArrowBtn,
-                step === 1 ? styles.navArrowBtnDisabled : styles.navArrowBtnActive,
-              ]}
-              onPress={handlePrevious}
-              disabled={step === 1}
-              activeOpacity={0.7}
-            >
-              <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                <Path
-                  d="M19 12H5M12 19l-7-7 7-7"
-                  stroke={step === 1 ? UX4GColors.neutral400 : UX4GColors.primary}
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
-            </TouchableOpacity>
-
-            <View style={styles.stepperCenterInfo}>
-              <Text style={styles.stepTitleText}>{activeMeta.title}</Text>
-              <Text style={styles.stepSubtitleText}>{activeMeta.subtitle}</Text>
-            </View>
-
-            <TouchableOpacity
-              style={[
-                styles.navArrowBtn,
-                step === 9 ? styles.navArrowBtnDisabled : styles.navArrowBtnActive,
-              ]}
-              onPress={handleContinue}
-              disabled={step === 9}
-              activeOpacity={0.7}
-            >
-              <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                <Path
-                  d="M5 12h14M12 5l7 7-7 7"
-                  stroke={step === 9 ? UX4GColors.neutral400 : UX4GColors.primary}
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <Ux4gCompactStepper
+          totalSteps={9}
+          currentStep={step}
+          layout="centeredBetween"
+          stepLabel={activeMeta.title}
+          description={activeMeta.subtitle}
+          onPrevious={handlePrevious}
+          onNext={handleContinue}
+          cumulative={true}
+          activeColor={UX4GColors.primary}
+          inactiveColor={UX4GColors.neutral300}
+        />
 
         {/* ─── MAIN SCROLLABLE FORM BODY ─── */}
         <ScrollView
@@ -655,25 +603,13 @@ export default function App() {
                 />
               </View>
 
-              {/* Informational Callout Box (No Aadhaar counter service) */}
-              <View style={styles.calloutCard}>
-                <View style={styles.calloutIconCol}>
-                  <View style={styles.calloutCircle}>
-                    <Text style={styles.calloutInfoIcon}>i</Text>
-                  </View>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.calloutBodyText}>
-                    No Aadhaar? You can still apply in person. Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit.
-                  </Text>
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => triggerToast('Opening list of local district administrative counters')}
-                  >
-                    <Text style={styles.calloutLinkText}>See the list of counters</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              {/* Informational Callout Banner (No Aadhaar counter service) */}
+              <Ux4gStatusBanner
+                variant="infoLight"
+                title="No Aadhaar? You can still apply in person."
+                subtitle="Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. See the list of counters"
+                marginStyle={{ marginHorizontal: 0, marginVertical: 14 }}
+              />
 
               {/* SECTION 2: Details Fetched from Aadhaar */}
               <Text style={[styles.sectionHeading, { marginTop: 28 }]}>

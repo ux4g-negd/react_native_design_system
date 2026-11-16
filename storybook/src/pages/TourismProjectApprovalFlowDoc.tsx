@@ -9,7 +9,7 @@ interface TourismProjectApprovalFlowDocProps {
 }
 
 // Official Snack ID for Tourism Project Approval Flow (Complete 5-Step Workflow with Ux4gDatePicker)
-const SNACK_ID = 'TlnO22vI8wyZ1Y6hvtO-A';
+const SNACK_ID = 'OJ-bRZP55nsoSlV-Wic-d';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -334,21 +334,13 @@ export default function App() {
         >
           {/* Saved Status Banner (Steps 1-4) */}
           {step < 5 && (
-            <View style={styles.savedBannerRow}>
-              <View style={styles.savedPill}>
-                <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
-                  <Circle cx={12} cy={12} r={10} stroke={UX4GColors.green600} strokeWidth={2} />
-                  <Path
-                    d="M8 12l2.5 2.5L16 9"
-                    stroke={UX4GColors.green600}
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </Svg>
-                <Text style={styles.savedText}>Saved {savedTime}</Text>
-              </View>
-            </View>
+            <Ux4gStatusBanner
+              variant="successLight"
+              title={'Saved ' + savedTime}
+              contentAlignment="right"
+              paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
+              marginStyle={{ marginHorizontal: 16, marginTop: 12, marginBottom: 4 }}
+            />
           )}
 
           {/* Stepper Card */}

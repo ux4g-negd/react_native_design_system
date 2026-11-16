@@ -9,7 +9,7 @@ interface TourismEventSponsorshipFlowDocProps {
 }
 
 // Official Snack ID for Tourism Event Sponsorship Flow (Complete 5-Step Connected Flow)
-const SNACK_ID = 'd8BSvB8_qWEKoEOV2b3OD';
+const SNACK_ID = 'N7z30G__NIdAI0kwqdSCj';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -603,88 +603,30 @@ export default function App() {
 
         {/* ─── TOP STATUS BANNER (SAVED NOTIFICATION) ─── */}
         {step !== 5 && (
-          <View style={styles.autoSaveBanner}>
-            <View style={styles.autoSaveRow}>
-              <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                <Circle cx={12} cy={12} r={10} stroke={UX4GColors.green600} strokeWidth={2} />
-                <Path
-                  d="M8 12l3 3 5-5"
-                  stroke={UX4GColors.green600}
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
-              <Text style={styles.autoSaveText}>Saved {savedTime}</Text>
-            </View>
+          <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
+            <Ux4gStatusBanner
+              variant="successLight"
+              title={'Saved ' + savedTime}
+              contentAlignment="right"
+              paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
+              marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
+            />
           </View>
         )}
 
         {/* ─── 5-SEGMENT STEPPER PROGRESS ─── */}
-        <View style={styles.stepperContainer}>
-          <View style={styles.progressSegmentsRow}>
-            {[1, 2, 3, 4, 5].map((s) => (
-              <View
-                key={s}
-                style={[
-                  styles.progressSegment,
-                  s <= step ? styles.progressSegmentActive : styles.progressSegmentInactive,
-                ]}
-              />
-            ))}
-          </View>
-
-          <Text style={styles.stepCounterText}>Step {step} of 5</Text>
-
-          <View style={styles.stepperNavRow}>
-            <TouchableOpacity
-              style={[
-                styles.navArrowBtn,
-                step === 1 ? styles.navArrowBtnDisabled : styles.navArrowBtnActive,
-              ]}
-              onPress={handlePrevious}
-              disabled={step === 1}
-              activeOpacity={0.7}
-            >
-              <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                <Path
-                  d="M19 12H5M12 19l-7-7 7-7"
-                  stroke={step === 1 ? UX4GColors.neutral400 : UX4GColors.primary}
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
-            </TouchableOpacity>
-
-            <View style={styles.stepperCenterInfo}>
-              <Text style={styles.stepTitleText}>{activeMeta.title}</Text>
-              <Text style={styles.stepSubtitleText}>{activeMeta.subtitle}</Text>
-            </View>
-
-            <TouchableOpacity
-              style={[
-                styles.navArrowBtn,
-                step === 5 ? styles.navArrowBtnDisabled : styles.navArrowBtnActive,
-              ]}
-              onPress={handleContinue}
-              disabled={step === 5}
-              activeOpacity={0.7}
-            >
-              <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                <Path
-                  d="M5 12h14M12 5l7 7-7 7"
-                  stroke={step === 5 ? UX4GColors.neutral400 : UX4GColors.primary}
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Svg>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.stepperDivider} />
-        </View>
+        <Ux4gCompactStepper
+          totalSteps={5}
+          currentStep={step}
+          layout="centeredBetween"
+          stepLabel={activeMeta.title}
+          description={activeMeta.subtitle}
+          onPrevious={handlePrevious}
+          onNext={handleContinue}
+          cumulative={true}
+          activeColor={UX4GColors.primary}
+          inactiveColor={UX4GColors.neutral300}
+        />
 
         {/* ─── MAIN SCROLLABLE FORM BODY ─── */}
         <ScrollView
