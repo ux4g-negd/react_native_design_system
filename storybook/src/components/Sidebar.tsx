@@ -1584,6 +1584,11 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Tourism project Approval Flow',
         icon: 'layers',
       },
+      {
+        id: 'service-pattern-tourism-event-sponsorship',
+        label: 'Tourism Event Sponsorship Flow',
+        icon: 'layers',
+      },
     ],
   },
 ];

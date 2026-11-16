@@ -196,12 +196,20 @@ import { HotelRegistrationFlowDoc } from './pages/HotelRegistrationFlowDoc';
 import { TourOperatorRegistrationFlowDoc } from './pages/TourOperatorRegistrationFlowDoc';
 import { TouristGuideRegistrationFlowDoc } from './pages/TouristGuideRegistrationFlowDoc';
 import { TourismProjectApprovalFlowDoc } from './pages/TourismProjectApprovalFlowDoc';
+import { TourismEventSponsorshipFlowDoc } from './pages/TourismEventSponsorshipFlowDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
 } from './utils/router';
 
 const getMobileBreadcrumb = (page: string) => {
+  if (
+    page === 'service-pattern-tourism-event-sponsorship' ||
+    page.includes('tourism-event') ||
+    page.includes('event-sponsorship')
+  ) {
+    return 'Service Patterns / Tourism Event Sponsorship Flow';
+  }
   if (
     page === 'service-pattern-tourism-project-approval' ||
     page.includes('tourism-project')
@@ -982,6 +990,13 @@ export const App: React.FC = () => {
       return <SideMenuDoc isDark={isDark} story={activePage} />;
     }
     if (
+      activePage === 'service-pattern-tourism-event-sponsorship' ||
+      activePage.includes('tourism-event') ||
+      activePage.includes('event-sponsorship')
+    ) {
+      return <TourismEventSponsorshipFlowDoc isDark={isDark} />;
+    }
+    if (
       activePage === 'service-pattern-tourism-project-approval' ||
       activePage.includes('tourism-project')
     ) {
@@ -1544,6 +1559,8 @@ export const App: React.FC = () => {
     }
 
     switch (activePage) {
+      case 'service-pattern-tourism-event-sponsorship':
+        return <TourismEventSponsorshipFlowDoc isDark={isDark} />;
       case 'service-pattern-tourism-project-approval':
         return <TourismProjectApprovalFlowDoc isDark={isDark} />;
       case 'service-pattern-tourist-guide-registration':
