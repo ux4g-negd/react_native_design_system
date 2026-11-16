@@ -88,10 +88,9 @@ export interface TourismEventSponsorshipFormData {
   pastReportFile: string;
   bankChequeFile: string;
 
-  // Step 5: Review & Declarations
-  declarationAccuracy: boolean;
-  declarationUtilisation: boolean;
-  declarationGreenProtocol: boolean;
+  // Step 4: Declarations
+  declarationTrueKnowledge: boolean;
+  declarationVenueRight: boolean;
   isSubmitted: boolean;
   applicationNumber: string;
 }
@@ -205,22 +204,11 @@ export const INITIAL_FORM_DATA: TourismEventSponsorshipFormData = {
   docEventProposal: '',
   docBudgetSheet: '',
 
-  // Step 4: Clearances & Evidence
-  policeNocStatus: 'obtained',
-  municipalSanctionStatus: 'obtained',
-  venuePermissionStatus: 'obtained',
-  fireNocStatus: 'applied',
-  conceptDeckFile: 'Konkan_Fest_2026_Proposal.pdf',
-  budgetSheetFile: 'Detailed_Budget_Breakdown.xlsx',
-  pastReportFile: 'Konkan_Fest_2025_Audited_Report.pdf',
-  bankChequeFile: 'Cancelled_Cheque_ABC_Foundation.pdf',
-
-  // Step 5: Review & Declarations
-  declarationAccuracy: true,
-  declarationUtilisation: true,
-  declarationGreenProtocol: true,
+  // Step 4: Declarations
+  declarationTrueKnowledge: false,
+  declarationVenueRight: false,
   isSubmitted: false,
-  applicationNumber: 'MH-TES-2026-00892',
+  applicationNumber: 'TPA-2026-004417',
 };
 `;
 }

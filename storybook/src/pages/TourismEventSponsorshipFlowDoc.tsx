@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow (Step 3 with Documents Accordions & Ux4g components)
-const SNACK_ID = 'BoH_fWE0YYOJkAzzDpXWH';
+// Official Snack ID for Tourism Event Sponsorship Flow (Step 4: Review & Declaration with Material Edit Icons)
+const SNACK_ID = 'Mg1NdDpXIIh04OhzicWED';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -114,7 +114,7 @@ const STEP_METADATA = {
   },
   4: {
     title: 'Review & declaration',
-    subtitle: 'Check every section. Nothing can be changed after you submit.',
+    subtitle: 'Everything you have entered, read back before you commit to it.',
   },
   5: {
     title: 'Submitted',
@@ -192,7 +192,7 @@ const CLEARANCE_STATUS_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -205,27 +205,28 @@ export default function App() {
   // Form State
   const [formData, setFormData] = useState({
     // Step 1: Who is applying
-    fullName: 'Rajesh V. Deshmukh',
-    designation: 'General Secretary',
+    fullName: 'Anil Kumar',
+    designation: 'Secretary',
     mobileNumber: '9820144821',
-    emailAddress: 'rajesh.deshmukh@abcevents.in',
+    emailAddress: 'anil.kumar@abc.org.in',
     registrationNumber: 'MA/2023/0041827',
     isRecordFound: true,
-    organisationName: 'ABC Tourism & Cultural Promotion Foundation',
+    organisationName: 'ABC',
     orgType: 'society_trust',
     incorporationNumber: 'MH/2021/SOC/09841',
     registeredAddress: '402, Heritage Plaza, Senapati Bapat Marg, Lower Parel, Mumbai',
     district: 'mumbai_city',
 
     // Step 2: The event
-    eventName: 'Konkan Cultural & Seafood Carnival 2026',
-    eventDescription: 'A 6-day coastal mega festival showcasing traditional Malvani music, beach sports, coastal handicraft exhibitions, and Konkani cuisine to boost state tourism.',
-    expectedFootfall: '75000',
-    venueAddress: 'Bhatye Beach Promenade, Ratnagiri Coastal Highway, Maharashtra 415612',
-    eventDistrict: 'ratnagiri',
-    startDate: '15/12/2026',
-    endDate: '20/12/2026',
-    eventDuration: '6 days',
+    eventName: 'ABC Festival 2026',
+    eventDescription:
+      'A 6-day regional mega festival showcasing traditional music, cultural exhibitions, beach sports, and state cuisine to boost state tourism.',
+    expectedFootfall: '5,000',
+    venueAddress: 'Bhatye Beach Promenade, Dehradun 248001',
+    eventDistrict: 'Dehradun',
+    startDate: '10 Dec',
+    endDate: '15 Dec',
+    eventDuration: 'six days',
 
     // Step 3: Documents
     docOrgRegistration: 'MH_Tourism_Vendor_Registration_Certificate.pdf',
@@ -233,22 +234,13 @@ export default function App() {
     docEventProposal: '',
     docBudgetSheet: '',
 
-    // Step 4: Clearances & Evidence
-    policeNocStatus: 'obtained',
-    municipalSanctionStatus: 'obtained',
-    venuePermissionStatus: 'obtained',
-    fireNocStatus: 'applied',
-    conceptDeckFile: 'Konkan_Carnival_2026_Proposal.pdf',
-    budgetSheetFile: 'Itemised_Event_Budget_Sheet.xlsx',
-    pastReportFile: 'Konkan_Fest_2025_Audited_Report.pdf',
-    bankChequeFile: 'Cancelled_Cheque_ABC_Foundation.pdf',
+    // Step 4: Declarations
+    declarationTrueKnowledge: false,
+    declarationVenueRight: false,
 
-    // Step 5: Review & Declarations
-    declarationAccuracy: true,
-    declarationUtilisation: true,
-    declarationGreenProtocol: true,
+    // Step 5: Submitted
     isSubmitted: false,
-    applicationNumber: 'MH-TES-2026-00892',
+    applicationNumber: 'TPA-2026-004417',
   });
 
   const scrollRef = useRef(null);
@@ -496,6 +488,28 @@ export default function App() {
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
+  const handleContinueStep4 = () => {
+    const errs = {};
+    if (!formData.declarationTrueKnowledge) {
+      errs.declarationTrueKnowledge = 'Please confirm that everything entered is true';
+    }
+    if (!formData.declarationVenueRight) {
+      errs.declarationVenueRight = 'Please confirm the right to hold this event';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      triggerToast('Please accept all mandatory declarations to submit');
+      return;
+    }
+
+    setErrors({});
+    setFormData((prev) => ({ ...prev, isSubmitted: true }));
+    setStep(5);
+    triggerToast('Application submitted successfully!');
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
+
   const handleContinue = () => {
     if (step === 1) {
       handleContinueStep1();
@@ -503,12 +517,10 @@ export default function App() {
       handleContinueStep2();
     } else if (step === 3) {
       handleContinueStep3();
-    } else if (step < 5) {
-      setStep((prev) => prev + 1);
-      scrollRef.current?.scrollTo({ y: 0, animated: true });
-    } else {
-      setFormData((prev) => ({ ...prev, isSubmitted: true }));
-      triggerToast('Sponsorship application submitted successfully!');
+    } else if (step === 4) {
+      handleContinueStep4();
+    } else if (step === 5) {
+      triggerToast('Tracking application: ' + formData.applicationNumber);
     }
   };
 
@@ -529,6 +541,11 @@ export default function App() {
 
   const orgUploadedCount = (formData.docOrgRegistration ? 1 : 0) + (formData.docProfilePastEvents ? 1 : 0);
   const eventUploadedCount = (formData.docEventProposal ? 1 : 0) + (formData.docBudgetSheet ? 1 : 0);
+  const totalDocsAttached =
+    (formData.docOrgRegistration ? 1 : 0) +
+    (formData.docProfilePastEvents ? 1 : 0) +
+    (formData.docEventProposal ? 1 : 0) +
+    (formData.docBudgetSheet ? 1 : 0);
 
   const activeMeta = STEP_METADATA[step] || STEP_METADATA[1];
 
@@ -1447,413 +1464,279 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 4: CLEARANCES & EVIDENCE                                             */}
+          {/* STEP 4: REVIEW & DECLARATION                                              */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 4 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Statutory Permissions & NOCs</Text>
+              <Text style={styles.sectionHeading}>Preview Your Application</Text>
 
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Local Police & Traffic NOC<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.radioGroupWrapper}>
-                  {CLEARANCE_STATUS_OPTIONS.map((item) => {
-                    const isSelected = formData.policeNocStatus === item.id;
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[styles.radioItemRow, isSelected && styles.radioItemRowActive]}
-                        activeOpacity={0.8}
-                        onPress={() =>
-                          setFormData((prev) => ({ ...prev, policeNocStatus: item.id }))
-                        }
-                      >
-                        <View style={[styles.radioOuter, isSelected && styles.radioOuterActive]}>
-                          {isSelected && <View style={styles.radioInner} />}
-                        </View>
-                        <Text style={[styles.radioLabelText, isSelected && styles.radioLabelTextActive]}>
-                          {item.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Municipal / Local Panchayat Sanction<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.radioGroupWrapper}>
-                  {CLEARANCE_STATUS_OPTIONS.map((item) => {
-                    const isSelected = formData.municipalSanctionStatus === item.id;
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[styles.radioItemRow, isSelected && styles.radioItemRowActive]}
-                        activeOpacity={0.8}
-                        onPress={() =>
-                          setFormData((prev) => ({ ...prev, municipalSanctionStatus: item.id }))
-                        }
-                      >
-                        <View style={[styles.radioOuter, isSelected && styles.radioOuterActive]}>
-                          {isSelected && <View style={styles.radioInner} />}
-                        </View>
-                        <Text style={[styles.radioLabelText, isSelected && styles.radioLabelTextActive]}>
-                          {item.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Venue owner / ground booking confirmation
-                  <Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.radioGroupWrapper}>
-                  {CLEARANCE_STATUS_OPTIONS.map((item) => {
-                    const isSelected = formData.venuePermissionStatus === item.id;
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[styles.radioItemRow, isSelected && styles.radioItemRowActive]}
-                        activeOpacity={0.8}
-                        onPress={() =>
-                          setFormData((prev) => ({ ...prev, venuePermissionStatus: item.id }))
-                        }
-                      >
-                        <View style={[styles.radioOuter, isSelected && styles.radioOuterActive]}>
-                          {isSelected && <View style={styles.radioInner} />}
-                        </View>
-                        <Text style={[styles.radioLabelText, isSelected && styles.radioLabelTextActive]}>
-                          {item.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Fire Safety & Emergency Management Clearance
-                  <Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View style={styles.radioGroupWrapper}>
-                  {CLEARANCE_STATUS_OPTIONS.map((item) => {
-                    const isSelected = formData.fireNocStatus === item.id;
-                    return (
-                      <TouchableOpacity
-                        key={item.id}
-                        style={[styles.radioItemRow, isSelected && styles.radioItemRowActive]}
-                        activeOpacity={0.8}
-                        onPress={() => setFormData((prev) => ({ ...prev, fireNocStatus: item.id }))}
-                      >
-                        <View style={[styles.radioOuter, isSelected && styles.radioOuterActive]}>
-                          {isSelected && <View style={styles.radioInner} />}
-                        </View>
-                        <Text style={[styles.radioLabelText, isSelected && styles.radioLabelTextActive]}>
-                          {item.label}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Document Uploads</Text>
-
-              {[
-                {
-                  label: 'Event Concept Pitch Deck & Schedule*',
-                  file: formData.conceptDeckFile,
-                  sub: 'PDF up to 15MB with artist lineup, site plan, marketing schedule',
-                },
-                {
-                  label: 'Itemised Expenditure Budget Breakdown*',
-                  file: formData.budgetSheetFile,
-                  sub: 'Excel/PDF sheet certified by Chartered Accountant',
-                },
-                {
-                  label: 'Audited Report of Past Event Edition (if applicable)',
-                  file: formData.pastReportFile,
-                  sub: 'Photographs, press clippings, and audited statement',
-                },
-                {
-                  label: 'Bank Mandate & Cancelled Cheque (for DBT Grant Transfer)*',
-                  file: formData.bankChequeFile,
-                  sub: 'Account in the legal name of applying organisation',
-                },
-              ].map((doc, idx) => (
-                <View key={idx} style={styles.docUploadCard}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.docUploadTitle}>{doc.label}</Text>
-                    <Text style={styles.docUploadSub}>{doc.sub}</Text>
-                    <View style={styles.docUploadedBadge}>
-                      <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
+              {/* Card 1: Step 1 · Who is applying */}
+              <View style={styles.reviewStepCardGreen}>
+                <View style={styles.reviewStepCardHeader}>
+                  <View style={styles.reviewStepCardHeaderLeft}>
+                    <View style={styles.reviewStepIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                         <Path
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          stroke="#16A34A"
-                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                          stroke="#FFFFFF"
+                          strokeWidth={3}
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                       </Svg>
-                      <Text style={styles.docUploadedFileName}>{doc.file}</Text>
                     </View>
+                    <Text style={styles.reviewStepCardTitleGreen}>
+                      Step 1 · Who is applying
+                    </Text>
                   </View>
                   <TouchableOpacity
-                    style={styles.docReuploadBtn}
+                    style={styles.editPencilBtn}
+                    onPress={() => jumpToStep(1)}
                     activeOpacity={0.7}
-                    onPress={() => triggerToast('Select new document to replace')}
                   >
-                    <Text style={styles.docReuploadBtnText}>Change</Text>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill="#111827"
+                      />
+                    </Svg>
                   </TouchableOpacity>
                 </View>
-              ))}
-            </View>
-          )}
-
-          {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 5: REVIEW & DECLARATION / SUBMITTED                                  */}
-          {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {step === 5 && !formData.isSubmitted && (
-            <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Summary of Sponsorship Application</Text>
-
-              {/* Review Card 1 */}
-              <View style={styles.reviewCard}>
-                <View style={styles.reviewCardHeader}>
-                  <Text style={styles.reviewCardHeading}>Applicant & Organisation</Text>
-                  <TouchableOpacity activeOpacity={0.7} onPress={() => jumpToStep(1)}>
-                    <Text style={styles.reviewCardEditLink}>Edit</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Applicant:</Text>
-                  <Text style={styles.reviewValue}>{formData.fullName} ({formData.designation})</Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Organisation:</Text>
-                  <Text style={styles.reviewValue}>{formData.organisationName}</Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Reg / Inc ID:</Text>
-                  <Text style={styles.reviewValue}>{formData.incorporationNumber}</Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>MahaAtithi ID:</Text>
-                  <Text style={styles.reviewValue}>{formData.registrationNumber}</Text>
-                </View>
+                <Text style={styles.reviewStepCardSubTextGreen}>
+                  {formData.fullName +
+                    ', ' +
+                    formData.designation +
+                    ' · ' +
+                    formData.organisationName +
+                    ' · vendor record ' +
+                    formData.registrationNumber}
+                </Text>
               </View>
 
-              {/* Review Card 2 */}
-              <View style={styles.reviewCard}>
-                <View style={styles.reviewCardHeader}>
-                  <Text style={styles.reviewCardHeading}>Event Specifications</Text>
-                  <TouchableOpacity activeOpacity={0.7} onPress={() => jumpToStep(2)}>
-                    <Text style={styles.reviewCardEditLink}>Edit</Text>
+              {/* Card 2: Step 2 · The event */}
+              <View style={styles.reviewStepCardGreen}>
+                <View style={styles.reviewStepCardHeader}>
+                  <View style={styles.reviewStepCardHeaderLeft}>
+                    <View style={styles.reviewStepIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M5 13l4 4L19 7"
+                          stroke="#FFFFFF"
+                          strokeWidth={3}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewStepCardTitleGreen}>
+                      Step 2 · The event
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.editPencilBtn}
+                    onPress={() => jumpToStep(2)}
+                    activeOpacity={0.7}
+                  >
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill="#111827"
+                      />
+                    </Svg>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Event Title:</Text>
-                  <Text style={styles.reviewValue}>{formData.eventName}</Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Category:</Text>
-                  <Text style={styles.reviewValue}>
-                    {EVENT_CATEGORY_OPTIONS.find((c) => c.id === formData.eventCategory)?.label}
-                  </Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Dates & Venue:</Text>
-                  <Text style={styles.reviewValue}>
-                    {formData.startDate} – {formData.endDate} @ {formData.venueName} ({formData.eventDistrict})
-                  </Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Est. Footfall:</Text>
-                  <Text style={styles.reviewValue}>
-                    {FOOTFALL_OPTIONS.find((f) => f.id === formData.expectedFootfall)?.label}
-                  </Text>
-                </View>
+                <Text style={styles.reviewStepCardSubTextGreen}>
+                  {formData.eventName +
+                    ' · ' +
+                    formData.eventDistrict +
+                    ' · ' +
+                    formData.startDate +
+                    '–' +
+                    formData.endDate +
+                    ', ' +
+                    formData.eventDuration +
+                    ' · ' +
+                    formData.expectedFootfall +
+                    ' expected'}
+                </Text>
               </View>
 
-              {/* Review Card 3 */}
-              <View style={styles.reviewCard}>
-                <View style={styles.reviewCardHeader}>
-                  <Text style={styles.reviewCardHeading}>Budget & Grant Request</Text>
-                  <TouchableOpacity activeOpacity={0.7} onPress={() => jumpToStep(3)}>
-                    <Text style={styles.reviewCardEditLink}>Edit</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Total Budget:</Text>
-                  <Text style={styles.reviewValue}>₹ {formData.totalBudget}</Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Grant Claimed:</Text>
-                  <Text style={[styles.reviewValue, { color: UX4GColors.primary, fontWeight: '700' }]}>
-                    ₹ {formData.sponsorshipRequested}
-                  </Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Requested Tier:</Text>
-                  <Text style={styles.reviewValue}>
-                    {SPONSORSHIP_TIER_OPTIONS.find((t) => t.id === formData.sponsorshipTier)?.label}
-                  </Text>
-                </View>
-                <View style={styles.reviewRow}>
-                  <Text style={styles.reviewLabel}>Deliverables:</Text>
-                  <Text style={styles.reviewValue}>5 Mandatory Commitments Accepted</Text>
-                </View>
-              </View>
-
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Statutory Undertakings</Text>
-
-              <View style={styles.checkboxGroupWrapper}>
-                {[
-                  {
-                    key: 'declarationAccuracy',
-                    label:
-                      'I solemnly affirm that the statements made and documents submitted are true, authentic, and complete to the best of my knowledge.',
-                  },
-                  {
-                    key: 'declarationUtilisation',
-                    label:
-                      'The organisation undertakes to submit the Audited Statement of Expenditure and Utilisation Certificate (UC) within 30 days of event conclusion.',
-                  },
-                  {
-                    key: 'declarationGreenProtocol',
-                    label:
-                      'The event management shall strictly adhere to eco-friendly, zero single-use plastic guidelines and green event protocols.',
-                  },
-                ].map((item) => {
-                  const isChecked = !!formData[item.key];
-                  return (
-                    <TouchableOpacity
-                      key={item.key}
-                      style={styles.checkboxItemRow}
-                      activeOpacity={0.8}
-                      onPress={() =>
-                        setFormData((prev) => ({ ...prev, [item.key]: !isChecked }))
+              {/* Card 3: Step 3 · Documents */}
+              <View
+                style={
+                  totalDocsAttached === 4
+                    ? styles.reviewStepCardGreen
+                    : styles.reviewStepCardAmber
+                }
+              >
+                <View style={styles.reviewStepCardHeader}>
+                  <View style={styles.reviewStepCardHeaderLeft}>
+                    <View
+                      style={
+                        totalDocsAttached === 4
+                          ? styles.reviewStepIconCircleGreen
+                          : styles.reviewStepIconCircleAmber
                       }
                     >
-                      <View style={[styles.checkboxBox, isChecked && styles.checkboxBoxActive]}>
-                        {isChecked && (
-                          <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
-                            <Path
-                              d="M5 13l4 4L19 7"
-                              stroke="#FFFFFF"
-                              strokeWidth={3}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </Svg>
-                        )}
-                      </View>
-                      <Text style={styles.checkboxLabelText}>{item.label}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
+                      {totalDocsAttached === 4 ? (
+                        <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                          <Path
+                            d="M5 13l4 4L19 7"
+                            stroke="#FFFFFF"
+                            strokeWidth={3}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </Svg>
+                      ) : (
+                        <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                          <Path
+                            d="M12 7v6M12 17h.01"
+                            stroke="#FFFFFF"
+                            strokeWidth={2.8}
+                            strokeLinecap="round"
+                          />
+                        </Svg>
+                      )}
+                    </View>
+                    <Text
+                      style={
+                        totalDocsAttached === 4
+                          ? styles.reviewStepCardTitleGreen
+                          : styles.reviewStepCardTitleAmber
+                      }
+                    >
+                      Step 3 · Documents
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.editPencilBtn}
+                    onPress={() => jumpToStep(3)}
+                    activeOpacity={0.7}
+                  >
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill="#111827"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text
+                  style={
+                    totalDocsAttached === 4
+                      ? styles.reviewStepCardSubTextGreen
+                      : styles.reviewStepCardSubTextAmber
+                  }
+                >
+                  {totalDocsAttached === 4
+                    ? 'All four documents attached and verified'
+                    : totalDocsAttached === 1
+                    ? 'One of four attached — three still outstanding'
+                    : totalDocsAttached === 2
+                    ? 'Two of four attached — two still outstanding'
+                    : totalDocsAttached === 3
+                    ? 'Three of four attached — one still outstanding'
+                    : 'None of four attached — four still outstanding'}
+                </Text>
               </View>
+
+              {/* Section: Declaration */}
+              <Text style={[styles.sectionHeading, { marginTop: 20 }]}>Declaration</Text>
+
+              <TouchableOpacity
+                style={styles.declarationRow}
+                activeOpacity={0.8}
+                onPress={() =>
+                  updateField('declarationTrueKnowledge', !formData.declarationTrueKnowledge)
+                }
+              >
+                <View
+                  style={[
+                    styles.declarationCheckboxBox,
+                    formData.declarationTrueKnowledge && styles.declarationCheckboxBoxActive,
+                    errors.declarationTrueKnowledge && styles.declarationCheckboxBoxError,
+                  ]}
+                >
+                  {formData.declarationTrueKnowledge && (
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M5 13l4 4L19 7"
+                        stroke="#FFFFFF"
+                        strokeWidth={3}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
+                  )}
+                </View>
+                <Text style={styles.declarationText}>
+                  Everything I have entered is true to the best of my knowledge
+                </Text>
+                <Text style={styles.declarationAsterisk}>*</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.declarationRow}
+                activeOpacity={0.8}
+                onPress={() =>
+                  updateField('declarationVenueRight', !formData.declarationVenueRight)
+                }
+              >
+                <View
+                  style={[
+                    styles.declarationCheckboxBox,
+                    formData.declarationVenueRight && styles.declarationCheckboxBoxActive,
+                    errors.declarationVenueRight && styles.declarationCheckboxBoxError,
+                  ]}
+                >
+                  {formData.declarationVenueRight && (
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M5 13l4 4L19 7"
+                        stroke="#FFFFFF"
+                        strokeWidth={3}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
+                  )}
+                </View>
+                <Text style={styles.declarationText}>
+                  I confirm the organisation has the right to hold this event at this venue on these dates
+                </Text>
+                <Text style={styles.declarationAsterisk}>*</Text>
+              </TouchableOpacity>
             </View>
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 5 (SUBMITTED STATE ACKNOWLEDGEMENT)                                  */}
+          {/* STEP 5: SUBMITTED (ACKNOWLEDGEMENT)                                       */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {step === 5 && formData.isSubmitted && (
-            <View style={styles.submittedContainer}>
-              <View style={styles.successIconCircle}>
-                <Svg width={36} height={36} viewBox="0 0 24 24" fill="none">
-                  <Path
-                    d="M5 13l4 4L19 7"
-                    stroke="#16A34A"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </Svg>
-              </View>
+          {step === 5 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Acknowledgement</Text>
 
-              <Text style={styles.submittedTitle}>Application Submitted!</Text>
-              <Text style={styles.submittedSubtitle}>
-                Directorate of Tourism, Government of Maharashtra has received your event sponsorship proposal.
-              </Text>
-
-              <View style={styles.refNumberBadge}>
-                <Text style={styles.refNumberLabel}>Application Reference Number</Text>
-                <Text style={styles.refNumberValue}>{formData.applicationNumber}</Text>
-              </View>
-
-              <View style={styles.timelineCard}>
-                <Text style={styles.timelineCardTitle}>Next Steps & Processing Timeline</Text>
-
-                <View style={styles.timelineItem}>
-                  <View style={[styles.timelineDot, styles.timelineDotDone]} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.timelineHeading}>Application Received</Text>
-                    <Text style={styles.timelineDesc}>Digital receipt registered on portal</Text>
+              <View style={styles.ackGreenCard}>
+                <View style={styles.ackCardHeaderRow}>
+                  <View style={styles.ackCheckCircle}>
+                    <Svg width={14} height={14} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M5 13l4 4L19 7"
+                        stroke="#FFFFFF"
+                        strokeWidth={3}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
                   </View>
-                </View>
-
-                <View style={styles.timelineItem}>
-                  <View style={[styles.timelineDot, styles.timelineDotActive]} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.timelineHeading}>Desk Scrutiny & Document Check</Text>
-                    <Text style={styles.timelineDesc}>By District Tourism Officer (Est. 3-5 working days)</Text>
-                  </View>
-                </View>
-
-                <View style={styles.timelineItem}>
-                  <View style={styles.timelineDot} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.timelineHeading}>State Event Evaluation Committee</Text>
-                    <Text style={styles.timelineDesc}>Review of pitch deck, deliverables & grant eligibility</Text>
-                  </View>
-                </View>
-
-                <View style={styles.timelineItem}>
-                  <View style={styles.timelineDot} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.timelineHeading}>Sanction Order & 50% Advance Release</Text>
-                    <Text style={styles.timelineDesc}>MoU signing and direct bank disbursement</Text>
-                  </View>
+                  <Text style={styles.ackCardMessage}>
+                    {'Submitted. Your application number is ' +
+                      formData.applicationNumber +
+                      '. Keep it — every enquiry about this claim is answered against it.'}
+                  </Text>
                 </View>
               </View>
-
-              <TouchableOpacity
-                style={styles.downloadReceiptBtn}
-                activeOpacity={0.8}
-                onPress={() => triggerToast('Downloading Acknowledgement Receipt PDF...')}
-              >
-                <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                  <Path
-                    d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"
-                    stroke="#FFFFFF"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </Svg>
-                <Text style={styles.downloadReceiptBtnText}>Download Acknowledgement (PDF)</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.restartBtn}
-                activeOpacity={0.8}
-                onPress={() => {
-                  setFormData((prev) => ({ ...prev, isSubmitted: false }));
-                  setStep(1);
-                }}
-              >
-                <Text style={styles.restartBtnText}>Review / Start New Application</Text>
-              </TouchableOpacity>
             </View>
           )}
 
@@ -1861,18 +1744,22 @@ export default function App() {
         </ScrollView>
 
         {/* ─── STICKY BOTTOM ACTIONS BAR ─── */}
-        {!formData.isSubmitted && (
-          <View style={styles.bottomActionBar}>
-            <TouchableOpacity
-              style={styles.primaryContinueBtn}
-              activeOpacity={0.85}
-              onPress={handleContinue}
-            >
-              <Text style={styles.primaryContinueBtnText}>
-                {step === 5 ? 'Submit Application' : 'Continue'}
-              </Text>
-            </TouchableOpacity>
+        <View style={styles.bottomActionBar}>
+          <TouchableOpacity
+            style={styles.primaryContinueBtn}
+            activeOpacity={0.85}
+            onPress={handleContinue}
+          >
+            <Text style={styles.primaryContinueBtnText}>
+              {step === 4
+                ? 'Submit application'
+                : step === 5
+                ? 'Track this application'
+                : 'Continue'}
+            </Text>
+          </TouchableOpacity>
 
+          {step !== 5 && (
             <TouchableOpacity
               style={styles.secondarySaveDraftBtn}
               activeOpacity={0.85}
@@ -1880,8 +1767,8 @@ export default function App() {
             >
               <Text style={styles.secondarySaveDraftBtnText}>Save as draft</Text>
             </TouchableOpacity>
-          </View>
-        )}
+          )}
+        </View>
 
         {/* ─── HAMBURGER SIDE DRAWER MODAL ─── */}
         <Modal
@@ -2500,49 +2387,142 @@ const styles = StyleSheet.create({
     color: UX4GColors.primary,
     fontWeight: '600',
   },
-  reviewCard: {
-    backgroundColor: '#F8FAFC',
+  reviewStepCardGreen: {
+    backgroundColor: '#F0FDF4',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    borderRadius: 8,
-    padding: 12,
+    borderColor: '#86EFAC',
+    borderRadius: 10,
+    padding: 14,
     marginBottom: 12,
   },
-  reviewCardHeader: {
+  reviewStepCardAmber: {
+    backgroundColor: '#FFFBEB',
+    borderWidth: 1,
+    borderColor: '#FCD34D',
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 12,
+  },
+  reviewStepCardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
-    paddingBottom: 8,
-    marginBottom: 8,
-  },
-  reviewCardHeading: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: UX4GColors.primary,
-  },
-  reviewCardEditLink: {
-    fontSize: 12.5,
-    fontWeight: '600',
-    color: UX4GColors.primary,
-  },
-  reviewRow: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 3,
   },
-  reviewLabel: {
-    fontSize: 12.5,
-    color: '#64748B',
-  },
-  reviewValue: {
-    fontSize: 12.5,
-    color: '#1E293B',
-    fontWeight: '500',
+  reviewStepCardHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
-    textAlign: 'right',
-    marginLeft: 12,
+  },
+  reviewStepIconCircleGreen: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  reviewStepIconCircleAmber: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#F59E0B',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  reviewStepCardTitleGreen: {
+    fontSize: 14.5,
+    fontWeight: '700',
+    color: '#166534',
+  },
+  reviewStepCardTitleAmber: {
+    fontSize: 14.5,
+    fontWeight: '700',
+    color: '#B45309',
+  },
+  editPencilBtn: {
+    padding: 4,
+    marginLeft: 8,
+  },
+  reviewStepCardSubTextGreen: {
+    fontSize: 13,
+    color: '#15803D',
+    marginTop: 4,
+    marginLeft: 28,
+    lineHeight: 18,
+  },
+  reviewStepCardSubTextAmber: {
+    fontSize: 13,
+    color: '#B45309',
+    marginTop: 4,
+    marginLeft: 28,
+    lineHeight: 18,
+  },
+  declarationRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  declarationCheckboxBox: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    borderWidth: 1.5,
+    borderColor: '#CBD5E1',
+    backgroundColor: '#FFFFFF',
+    marginTop: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  declarationCheckboxBoxActive: {
+    backgroundColor: UX4GColors.primary,
+    borderColor: UX4GColors.primary,
+  },
+  declarationCheckboxBoxError: {
+    borderColor: '#DC2626',
+  },
+  declarationText: {
+    flex: 1,
+    fontSize: 13.5,
+    color: '#1E293B',
+    lineHeight: 19,
+    marginLeft: 10,
+  },
+  declarationAsterisk: {
+    color: '#DC2626',
+    fontWeight: '700',
+    fontSize: 15,
+    marginLeft: 6,
+  },
+  ackGreenCard: {
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+    borderRadius: 10,
+    padding: 16,
+    marginTop: 6,
+  },
+  ackCardHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  ackCheckCircle: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    marginTop: 1,
+  },
+  ackCardMessage: {
+    flex: 1,
+    fontSize: 14,
+    color: '#14532D',
+    lineHeight: 20,
+    fontWeight: '500',
   },
   submittedContainer: {
     padding: 20,
