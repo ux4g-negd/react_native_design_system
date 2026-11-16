@@ -1552,9 +1552,11 @@ const styles = StyleSheet.create({
     }
   };
 
-  const snackUrl = `https://snack.expo.dev/embedded/@ux4g/entry-and-area-permit-flow?preview=true&platform=web&theme=${
-    isDark ? 'dark' : 'light'
-  }&id=${SNACK_ID}`;
+  const snackUrl = useMemo(() => {
+    return `https://snack.expo.dev/embedded/${SNACK_ID}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${
+      isDark ? 'dark' : 'light'
+    }`;
+  }, [isDark]);
 
   return (
     <div
