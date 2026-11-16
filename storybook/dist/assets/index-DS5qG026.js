@@ -92983,7 +92983,7 @@ Constructed using **UX4G React Native Design System** components.
 npm install
 npx expo start
 \`\`\`
-`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="Ew51X-4v_VLOJiBzS8OGX",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="d8BSvB8_qWEKoEOV2b3OD",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -93144,7 +93144,7 @@ const CLEARANCE_STATUS_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(1);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -93187,11 +93187,11 @@ export default function App() {
     docBudgetSheet: '',
 
     // Step 4: Declarations
-    declarationTrueKnowledge: true,
-    declarationVenueRight: true,
+    declarationTrueKnowledge: false,
+    declarationVenueRight: false,
 
     // Step 5: Submitted
-    isSubmitted: true,
+    isSubmitted: false,
     applicationNumber: 'TE-2026-000000',
   });
 
@@ -93422,15 +93422,9 @@ export default function App() {
     const errs = {};
     if (!formData.docOrgRegistration) {
       errs.docOrgRegistration = 'Organisation registration certificate is required';
-    }
-    if (!formData.docProfilePastEvents) {
-      errs.docProfilePastEvents = 'Profile and past events is required';
-    }
-
-    if (Object.keys(errs).length > 0) {
       setErrors(errs);
       setDocSectionsExpanded((prev) => ({ ...prev, organisation: true }));
-      triggerToast('Please upload all required organisation documents');
+      triggerToast('Please upload organisation registration certificate');
       scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
@@ -93456,9 +93450,15 @@ export default function App() {
     }
 
     setErrors({});
-    setFormData((prev) => ({ ...prev, isSubmitted: true }));
+    const randomAppSuffix = Math.floor(100000 + Math.random() * 900000);
+    const newAppNumber = 'TE-2026-' + randomAppSuffix;
+    setFormData((prev) => ({
+      ...prev,
+      isSubmitted: true,
+      applicationNumber: newAppNumber,
+    }));
     setStep(5);
-    triggerToast('Application submitted successfully!');
+    triggerToast('Application submitted successfully! ID: ' + newAppNumber);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
@@ -93472,7 +93472,9 @@ export default function App() {
     } else if (step === 4) {
       handleContinueStep4();
     } else if (step === 5) {
-      triggerToast('Tracking application: ' + formData.applicationNumber);
+      triggerToast('Application ' + formData.applicationNumber + ' is with the department. Returning to flow start.');
+      setStep(1);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
     }
   };
 

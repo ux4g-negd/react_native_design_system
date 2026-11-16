@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow (Step 5: UX4G Color Palette)
-const SNACK_ID = 'Ew51X-4v_VLOJiBzS8OGX';
+// Official Snack ID for Tourism Event Sponsorship Flow (Complete 5-Step Connected Flow)
+const SNACK_ID = 'd8BSvB8_qWEKoEOV2b3OD';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -192,7 +192,7 @@ const CLEARANCE_STATUS_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(1);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -235,11 +235,11 @@ export default function App() {
     docBudgetSheet: '',
 
     // Step 4: Declarations
-    declarationTrueKnowledge: true,
-    declarationVenueRight: true,
+    declarationTrueKnowledge: false,
+    declarationVenueRight: false,
 
     // Step 5: Submitted
-    isSubmitted: true,
+    isSubmitted: false,
     applicationNumber: 'TE-2026-000000',
   });
 
@@ -470,15 +470,9 @@ export default function App() {
     const errs = {};
     if (!formData.docOrgRegistration) {
       errs.docOrgRegistration = 'Organisation registration certificate is required';
-    }
-    if (!formData.docProfilePastEvents) {
-      errs.docProfilePastEvents = 'Profile and past events is required';
-    }
-
-    if (Object.keys(errs).length > 0) {
       setErrors(errs);
       setDocSectionsExpanded((prev) => ({ ...prev, organisation: true }));
-      triggerToast('Please upload all required organisation documents');
+      triggerToast('Please upload organisation registration certificate');
       scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
@@ -504,9 +498,15 @@ export default function App() {
     }
 
     setErrors({});
-    setFormData((prev) => ({ ...prev, isSubmitted: true }));
+    const randomAppSuffix = Math.floor(100000 + Math.random() * 900000);
+    const newAppNumber = 'TE-2026-' + randomAppSuffix;
+    setFormData((prev) => ({
+      ...prev,
+      isSubmitted: true,
+      applicationNumber: newAppNumber,
+    }));
     setStep(5);
-    triggerToast('Application submitted successfully!');
+    triggerToast('Application submitted successfully! ID: ' + newAppNumber);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
@@ -520,7 +520,9 @@ export default function App() {
     } else if (step === 4) {
       handleContinueStep4();
     } else if (step === 5) {
-      triggerToast('Tracking application: ' + formData.applicationNumber);
+      triggerToast('Application ' + formData.applicationNumber + ' is with the department. Returning to flow start.');
+      setStep(1);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
     }
   };
 
