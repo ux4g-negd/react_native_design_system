@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow (Step 5: Submitted Final Screen)
-const SNACK_ID = '0gZNGXfAc2UdIShu5X2bp';
+// Official Snack ID for Tourism Event Sponsorship Flow (Step 5: UX4G Color Palette)
+const SNACK_ID = 'Ew51X-4v_VLOJiBzS8OGX';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -566,7 +566,7 @@ export default function App() {
             <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 4 }}>
               <Path
                 d="M14 3h7v7M10 14L20 4M21 14v6a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h6"
-                stroke="#FFFFFF"
+                stroke={UX4GColors.white}
                 strokeWidth={2}
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -576,7 +576,7 @@ export default function App() {
           <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
             <Path
               d="M12 2a2 2 0 100 4 2 2 0 000-4zM7 8h10v2H7V8zm2 4h6v10H9V12z"
-              fill="#FFFFFF"
+              fill={UX4GColors.white}
             />
           </Svg>
         </View>
@@ -604,10 +604,10 @@ export default function App() {
           <View style={styles.autoSaveBanner}>
             <View style={styles.autoSaveRow}>
               <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
+                <Circle cx={12} cy={12} r={10} stroke={UX4GColors.green600} strokeWidth={2} />
                 <Path
                   d="M8 12l3 3 5-5"
-                  stroke="#16A34A"
+                  stroke={UX4GColors.green600}
                   strokeWidth={2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -647,7 +647,7 @@ export default function App() {
               <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                 <Path
                   d="M19 12H5M12 19l-7-7 7-7"
-                  stroke={step === 1 ? '#94A3B8' : UX4GColors.primary}
+                  stroke={step === 1 ? UX4GColors.neutral400 : UX4GColors.primary}
                   strokeWidth={2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -672,7 +672,7 @@ export default function App() {
               <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                 <Path
                   d="M5 12h14M12 5l7 7-7 7"
-                  stroke={step === 5 ? '#94A3B8' : UX4GColors.primary}
+                  stroke={step === 5 ? UX4GColors.neutral400 : UX4GColors.primary}
                   strokeWidth={2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -706,15 +706,15 @@ export default function App() {
                 <TextInput
                   style={[styles.textInput, errors.fullName && styles.textInputError]}
                   placeholder="As it appears on your official record"
-                  placeholderTextColor="#94A3B8"
+                  placeholderTextColor={UX4GColors.neutral400}
                   value={formData.fullName}
                   onChangeText={(text) => updateField('fullName', text)}
                 />
                 {errors.fullName && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.fullName}</Text>
                   </View>
@@ -728,15 +728,15 @@ export default function App() {
                 <TextInput
                   style={[styles.textInput, errors.designation && styles.textInputError]}
                   placeholder="For example: General Secretary / President"
-                  placeholderTextColor="#94A3B8"
+                  placeholderTextColor={UX4GColors.neutral400}
                   value={formData.designation}
                   onChangeText={(text) => updateField('designation', text)}
                 />
                 {errors.designation && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.designation}</Text>
                   </View>
@@ -759,7 +759,7 @@ export default function App() {
                   <TextInput
                     style={[styles.textInput, styles.phoneTextInput]}
                     placeholder="10 digits"
-                    placeholderTextColor="#94A3B8"
+                    placeholderTextColor={UX4GColors.neutral400}
                     keyboardType="number-pad"
                     maxLength={10}
                     value={formData.mobileNumber}
@@ -769,8 +769,8 @@ export default function App() {
                 {errors.mobileNumber && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.mobileNumber}</Text>
                   </View>
@@ -784,7 +784,7 @@ export default function App() {
                 <TextInput
                   style={[styles.textInput, errors.emailAddress && styles.textInputError]}
                   placeholder="name@example.com"
-                  placeholderTextColor="#94A3B8"
+                  placeholderTextColor={UX4GColors.neutral400}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   value={formData.emailAddress}
@@ -793,8 +793,8 @@ export default function App() {
                 {errors.emailAddress && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.emailAddress}</Text>
                   </View>
@@ -814,15 +814,15 @@ export default function App() {
                 <TextInput
                   style={[styles.textInput, errors.registrationNumber && styles.textInputError]}
                   placeholder="e.g. MA/2023/0041827"
-                  placeholderTextColor="#94A3B8"
+                  placeholderTextColor={UX4GColors.neutral400}
                   value={formData.registrationNumber}
                   onChangeText={(text) => updateField('registrationNumber', text)}
                 />
                 {errors.registrationNumber && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.registrationNumber}</Text>
                   </View>
@@ -843,10 +843,10 @@ export default function App() {
                 <View style={styles.foundRecordCard}>
                   <View style={styles.foundRecordHeaderRow}>
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} fill="#16A34A" />
+                      <Circle cx={12} cy={12} r={10} fill={UX4GColors.green600} />
                       <Path
                         d="M8 12l3 3 5-5"
-                        stroke="#FFFFFF"
+                        stroke={UX4GColors.white}
                         strokeWidth={2}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -873,15 +873,15 @@ export default function App() {
                 <TextInput
                   style={[styles.textInput, errors.organisationName && styles.textInputError]}
                   placeholder="As registered"
-                  placeholderTextColor="#94A3B8"
+                  placeholderTextColor={UX4GColors.neutral400}
                   value={formData.organisationName}
                   onChangeText={(text) => updateField('organisationName', text)}
                 />
                 {errors.organisationName && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.organisationName}</Text>
                   </View>
@@ -910,15 +910,15 @@ export default function App() {
                 <TextInput
                   style={[styles.textInput, errors.incorporationNumber && styles.textInputError]}
                   placeholder="Society, trust, company or firm registration num"
-                  placeholderTextColor="#94A3B8"
+                  placeholderTextColor={UX4GColors.neutral400}
                   value={formData.incorporationNumber}
                   onChangeText={(text) => updateField('incorporationNumber', text)}
                 />
                 {errors.incorporationNumber && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.incorporationNumber}</Text>
                   </View>
@@ -938,7 +938,7 @@ export default function App() {
                   <TextInput
                     style={styles.textAreaInput}
                     placeholder="Registered office address"
-                    placeholderTextColor="#94A3B8"
+                    placeholderTextColor={UX4GColors.neutral400}
                     multiline
                     numberOfLines={4}
                     maxLength={200}
@@ -952,7 +952,7 @@ export default function App() {
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 4 }}>
                       <Path
                         d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
-                        stroke="#94A3B8"
+                        stroke={UX4GColors.neutral400}
                         strokeWidth={1.5}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -963,8 +963,8 @@ export default function App() {
                 {errors.registeredAddress && (
                   <View style={styles.errorCaptionRow}>
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                      <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                      <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                      <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                     </Svg>
                     <Text style={styles.errorCaptionText}>{errors.registeredAddress}</Text>
                   </View>
@@ -1127,8 +1127,8 @@ export default function App() {
               <Ux4gCard
                 cornerRadius={12}
                 borderWidth={1}
-                borderColor={errors.docSectionOrg ? '#DC2626' : '#E2E8F0'}
-                backgroundColor="#FFFFFF"
+                borderColor={errors.docSectionOrg ? UX4GColors.red600 : UX4GColors.neutral200}
+                backgroundColor={UX4GColors.white}
                 elevation={0}
                 style={styles.docCardContainer}
               >
@@ -1162,7 +1162,7 @@ export default function App() {
                               <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
                                 <Path
                                   d="M5 13l4 4L19 7"
-                                  stroke="#FFFFFF"
+                                  stroke={UX4GColors.white}
                                   strokeWidth={3}
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -1182,7 +1182,7 @@ export default function App() {
                               <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
                                 <Path
                                   d="M5 13l4 4L19 7"
-                                  stroke="#FFFFFF"
+                                  stroke={UX4GColors.white}
                                   strokeWidth={3}
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -1197,7 +1197,7 @@ export default function App() {
                   <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
                     <Path
                       d={docSectionsExpanded.organisation ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
-                      stroke="#1E293B"
+                      stroke={UX4GColors.neutral800}
                       strokeWidth={2}
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -1221,7 +1221,7 @@ export default function App() {
                           <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                             <Path
                               d="M5 13l4 4L19 7"
-                              stroke="#FFFFFF"
+                              stroke={UX4GColors.white}
                               strokeWidth={3}
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -1239,7 +1239,7 @@ export default function App() {
                       text={formData.docOrgRegistration ? 'Replace' : 'Upload'}
                       variant="outline"
                       size="medium"
-                      borderColor="#A5B4FC"
+                      borderColor={UX4GColors.primary300}
                       contentColor={UX4GColors.primary}
                       borderRadius={8}
                       onPress={() => handleUploadDoc('docOrgRegistration')}
@@ -1262,7 +1262,7 @@ export default function App() {
                           <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                             <Path
                               d="M5 13l4 4L19 7"
-                              stroke="#FFFFFF"
+                              stroke={UX4GColors.white}
                               strokeWidth={3}
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -1279,7 +1279,7 @@ export default function App() {
                       text={formData.docProfilePastEvents ? 'Replace' : 'Upload'}
                       variant="outline"
                       size="medium"
-                      borderColor="#A5B4FC"
+                      borderColor={UX4GColors.primary300}
                       contentColor={UX4GColors.primary}
                       borderRadius={8}
                       onPress={() => handleUploadDoc('docProfilePastEvents')}
@@ -1288,8 +1288,8 @@ export default function App() {
                     {errors.docProfilePastEvents && (
                       <View style={styles.errorCaptionRow}>
                         <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                          <Circle cx={12} cy={12} r={10} stroke="#DC2626" strokeWidth={2} />
-                          <Path d="M12 8v5M12 16h.01" stroke="#DC2626" strokeWidth={2} strokeLinecap="round" />
+                          <Circle cx={12} cy={12} r={10} stroke={UX4GColors.red600} strokeWidth={2} />
+                          <Path d="M12 8v5M12 16h.01" stroke={UX4GColors.red600} strokeWidth={2} strokeLinecap="round" />
                         </Svg>
                         <Text style={styles.errorCaptionText}>{errors.docProfilePastEvents}</Text>
                       </View>
@@ -1302,8 +1302,8 @@ export default function App() {
               <Ux4gCard
                 cornerRadius={12}
                 borderWidth={1}
-                borderColor={errors.docSectionEvent ? '#DC2626' : '#E2E8F0'}
-                backgroundColor="#FFFFFF"
+                borderColor={errors.docSectionEvent ? UX4GColors.red600 : UX4GColors.neutral200}
+                backgroundColor={UX4GColors.white}
                 elevation={0}
                 style={styles.docCardContainer}
               >
@@ -1335,7 +1335,7 @@ export default function App() {
                               <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
                                 <Path
                                   d="M5 13l4 4L19 7"
-                                  stroke="#FFFFFF"
+                                  stroke={UX4GColors.white}
                                   strokeWidth={3}
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -1355,7 +1355,7 @@ export default function App() {
                               <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
                                 <Path
                                   d="M5 13l4 4L19 7"
-                                  stroke="#FFFFFF"
+                                  stroke={UX4GColors.white}
                                   strokeWidth={3}
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -1370,7 +1370,7 @@ export default function App() {
                   <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
                     <Path
                       d={docSectionsExpanded.event ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
-                      stroke="#1E293B"
+                      stroke={UX4GColors.neutral800}
                       strokeWidth={2}
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -1394,7 +1394,7 @@ export default function App() {
                           <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                             <Path
                               d="M5 13l4 4L19 7"
-                              stroke="#FFFFFF"
+                              stroke={UX4GColors.white}
                               strokeWidth={3}
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -1412,7 +1412,7 @@ export default function App() {
                       text={formData.docEventProposal ? 'Replace' : 'Upload'}
                       variant="outline"
                       size="medium"
-                      borderColor="#A5B4FC"
+                      borderColor={UX4GColors.primary300}
                       contentColor={UX4GColors.primary}
                       borderRadius={8}
                       onPress={() => handleUploadDoc('docEventProposal')}
@@ -1435,7 +1435,7 @@ export default function App() {
                           <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                             <Path
                               d="M5 13l4 4L19 7"
-                              stroke="#FFFFFF"
+                              stroke={UX4GColors.white}
                               strokeWidth={3}
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -1453,7 +1453,7 @@ export default function App() {
                       text={formData.docBudgetSheet ? 'Replace' : 'Upload'}
                       variant="outline"
                       size="medium"
-                      borderColor="#A5B4FC"
+                      borderColor={UX4GColors.primary300}
                       contentColor={UX4GColors.primary}
                       borderRadius={8}
                       onPress={() => handleUploadDoc('docBudgetSheet')}
@@ -1480,7 +1480,7 @@ export default function App() {
                       <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                         <Path
                           d="M5 13l4 4L19 7"
-                          stroke="#FFFFFF"
+                          stroke={UX4GColors.white}
                           strokeWidth={3}
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -1499,7 +1499,7 @@ export default function App() {
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill="#111827"
+                        fill={UX4GColors.neutral900}
                       />
                     </Svg>
                   </TouchableOpacity>
@@ -1523,7 +1523,7 @@ export default function App() {
                       <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                         <Path
                           d="M5 13l4 4L19 7"
-                          stroke="#FFFFFF"
+                          stroke={UX4GColors.white}
                           strokeWidth={3}
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -1542,7 +1542,7 @@ export default function App() {
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill="#111827"
+                        fill={UX4GColors.neutral900}
                       />
                     </Svg>
                   </TouchableOpacity>
@@ -1584,7 +1584,7 @@ export default function App() {
                         <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                           <Path
                             d="M5 13l4 4L19 7"
-                            stroke="#FFFFFF"
+                            stroke={UX4GColors.white}
                             strokeWidth={3}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -1594,7 +1594,7 @@ export default function App() {
                         <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                           <Path
                             d="M12 7v6M12 17h.01"
-                            stroke="#FFFFFF"
+                            stroke={UX4GColors.white}
                             strokeWidth={2.8}
                             strokeLinecap="round"
                           />
@@ -1619,7 +1619,7 @@ export default function App() {
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill="#111827"
+                        fill={UX4GColors.neutral900}
                       />
                     </Svg>
                   </TouchableOpacity>
@@ -1664,7 +1664,7 @@ export default function App() {
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M5 13l4 4L19 7"
-                        stroke="#FFFFFF"
+                        stroke={UX4GColors.white}
                         strokeWidth={3}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -1696,7 +1696,7 @@ export default function App() {
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M5 13l4 4L19 7"
-                        stroke="#FFFFFF"
+                        stroke={UX4GColors.white}
                         strokeWidth={3}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -1723,7 +1723,7 @@ export default function App() {
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M5 13l4 4L19 7"
-                        stroke="#FFFFFF"
+                        stroke={UX4GColors.white}
                         strokeWidth={3}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -1858,7 +1858,7 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
   },
   govTopBar: {
     height: 38,
@@ -1882,15 +1882,15 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.4)',
   },
   govText: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 12.5,
     fontWeight: '600',
   },
   whiteHeader: {
     height: 58,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: UX4GColors.neutral100,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -1905,7 +1905,7 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#C7D2FE',
+    borderColor: UX4GColors.primary200,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 9,
@@ -1923,7 +1923,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: '#EBF9F1',
+    backgroundColor: UX4GColors.green50,
     alignItems: 'flex-end',
   },
   autoSaveRow: {
@@ -1933,7 +1933,7 @@ const styles = StyleSheet.create({
   },
   autoSaveText: {
     fontSize: 12.5,
-    color: '#166534',
+    color: UX4GColors.green800,
     fontWeight: '600',
   },
   stepperContainer: {
@@ -1953,13 +1953,13 @@ const styles = StyleSheet.create({
     backgroundColor: UX4GColors.primary,
   },
   progressSegmentInactive: {
-    backgroundColor: '#D1D5DB',
+    backgroundColor: UX4GColors.neutral300,
   },
   stepCounterText: {
     textAlign: 'center',
     fontSize: 14,
     fontWeight: '700',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     marginTop: 12,
   },
   stepperNavRow: {
@@ -1978,12 +1978,12 @@ const styles = StyleSheet.create({
   navArrowBtnActive: {
     borderWidth: 1.5,
     borderColor: UX4GColors.primary,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
   },
   navArrowBtnDisabled: {
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
   },
   stepperCenterInfo: {
     flex: 1,
@@ -1998,14 +1998,14 @@ const styles = StyleSheet.create({
   },
   stepSubtitleText: {
     fontSize: 12.5,
-    color: '#475569',
+    color: UX4GColors.neutral600,
     textAlign: 'center',
     marginTop: 2,
     lineHeight: 17,
   },
   stepperDivider: {
     height: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: UX4GColors.neutral200,
     marginTop: 12,
   },
   mainScrollView: {
@@ -2021,12 +2021,12 @@ const styles = StyleSheet.create({
   sectionHeading: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1E293B',
+    color: UX4GColors.neutral900,
     marginBottom: 12,
   },
   sectionSubheading: {
     fontSize: 13.5,
-    color: '#475569',
+    color: UX4GColors.neutral600,
     marginTop: -4,
     marginBottom: 16,
     lineHeight: 18,
@@ -2043,11 +2043,11 @@ const styles = StyleSheet.create({
   docCardTitle: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
   },
   docCardSummaryText: {
     fontSize: 12.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 4,
   },
   docDotRow: {
@@ -2064,12 +2064,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   docStatusDotDone: {
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
   },
   docStatusDotEmpty: {
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
   },
   docCardContent: {
     marginTop: 16,
@@ -2088,27 +2088,27 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   docIconCircleDone: {
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
   },
   docIconCircleEmpty: {
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
   },
   docItemLabel: {
     fontSize: 14.5,
     fontWeight: '600',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     flex: 1,
   },
   docActionButton: {
     width: '100%',
     height: 44,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
   },
   docItemDivider: {
     height: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: UX4GColors.neutral200,
     marginVertical: 16,
   },
   fieldGroup: {
@@ -2117,42 +2117,42 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 13.5,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     marginBottom: 6,
   },
   requiredAsterisk: {
-    color: '#DC2626',
+    color: UX4GColors.red600,
     fontWeight: '700',
   },
   textInput: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 14,
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   phoneInputRow: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     overflow: 'hidden',
   },
   phonePrefixBox: {
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderRightWidth: 1,
-    borderRightColor: '#E2E8F0',
-    backgroundColor: '#F8FAFC',
+    borderRightColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.neutral50,
   },
   phonePrefixText: {
     fontSize: 14,
-    color: '#475569',
+    color: UX4GColors.neutral600,
     fontWeight: '600',
   },
   phoneTextInput: {
@@ -2164,7 +2164,7 @@ const styles = StyleSheet.create({
   outlineFetchBtn: {
     borderWidth: 1.5,
     borderColor: UX4GColors.primary,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
@@ -2176,9 +2176,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   foundRecordCard: {
-    backgroundColor: '#F0FDF4',
+    backgroundColor: UX4GColors.green50,
     borderWidth: 1.5,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     borderRadius: 8,
     padding: 12,
     marginTop: 14,
@@ -2191,18 +2191,18 @@ const styles = StyleSheet.create({
   foundRecordTitle: {
     fontSize: 13.5,
     fontWeight: '700',
-    color: '#166534',
+    color: UX4GColors.green800,
   },
   foundRecordBody: {
     fontSize: 12.5,
-    color: '#15803D',
+    color: UX4GColors.green700,
     lineHeight: 18,
     marginTop: 6,
   },
   dropdownSelectBox: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 11,
@@ -2212,23 +2212,23 @@ const styles = StyleSheet.create({
   },
   dropdownPlaceholder: {
     fontSize: 14,
-    color: '#94A3B8',
+    color: UX4GColors.neutral400,
   },
   dropdownSelectedText: {
     fontSize: 14,
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     fontWeight: '500',
   },
   textAreaContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
     padding: 10,
   },
   textAreaInput: {
     fontSize: 14,
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     minHeight: 80,
     textAlignVertical: 'top',
   },
@@ -2240,12 +2240,12 @@ const styles = StyleSheet.create({
   },
   charCounterText: {
     fontSize: 11.5,
-    color: '#94A3B8',
+    color: UX4GColors.neutral400,
   },
   datePickerInput: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 12,
@@ -2255,14 +2255,14 @@ const styles = StyleSheet.create({
   },
   datePickerText: {
     fontSize: 14,
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   datePickerPlaceholder: {
     fontSize: 14,
-    color: '#94A3B8',
+    color: UX4GColors.neutral400,
   },
   disabledDurationBox: {
-    backgroundColor: '#D8D8DC',
+    backgroundColor: UX4GColors.neutral200,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 13,
@@ -2270,29 +2270,29 @@ const styles = StyleSheet.create({
   },
   disabledDurationText: {
     fontSize: 14,
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     fontWeight: '500',
   },
   currencyInputRow: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     overflow: 'hidden',
   },
   currencySymbolBox: {
     paddingHorizontal: 14,
     paddingVertical: 10,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: UX4GColors.neutral50,
     borderRightWidth: 1,
-    borderRightColor: '#E2E8F0',
+    borderRightColor: UX4GColors.neutral200,
   },
   currencySymbolText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#475569',
+    color: UX4GColors.neutral600,
   },
   currencyTextInput: {
     flex: 1,
@@ -2302,7 +2302,7 @@ const styles = StyleSheet.create({
   },
   helperNoticeText: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 5,
     lineHeight: 16,
   },
@@ -2315,20 +2315,20 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
   },
   radioItemRowActive: {
     borderColor: UX4GColors.primary,
-    backgroundColor: '#F5F3FF',
+    backgroundColor: UX4GColors.primary50,
   },
   radioOuter: {
     width: 18,
     height: 18,
     borderRadius: 9,
     borderWidth: 2,
-    borderColor: '#94A3B8',
+    borderColor: UX4GColors.neutral400,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
@@ -2344,11 +2344,11 @@ const styles = StyleSheet.create({
   },
   radioLabelText: {
     fontSize: 13.5,
-    color: '#334155',
+    color: UX4GColors.neutral700,
     flex: 1,
   },
   radioLabelTextActive: {
-    color: '#1E1B4B',
+    color: UX4GColors.primary900,
     fontWeight: '600',
   },
   checkboxGroupWrapper: {
@@ -2365,7 +2365,7 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: '#94A3B8',
+    borderColor: UX4GColors.neutral400,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 2,
@@ -2376,7 +2376,7 @@ const styles = StyleSheet.create({
   },
   checkboxLabelText: {
     fontSize: 13,
-    color: '#334155',
+    color: UX4GColors.neutral700,
     flex: 1,
     lineHeight: 18,
   },
@@ -2386,19 +2386,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     marginBottom: 10,
   },
   docUploadTitle: {
     fontSize: 13.5,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   docUploadSub: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 2,
   },
   docUploadedBadge: {
@@ -2409,7 +2409,7 @@ const styles = StyleSheet.create({
   },
   docUploadedFileName: {
     fontSize: 12,
-    color: '#16A34A',
+    color: UX4GColors.green600,
     fontWeight: '600',
   },
   docReuploadBtn: {
@@ -2426,17 +2426,17 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   reviewStepCardGreen: {
-    backgroundColor: '#F0FDF4',
+    backgroundColor: UX4GColors.green50,
     borderWidth: 1,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     borderRadius: 10,
     padding: 14,
     marginBottom: 12,
   },
   reviewStepCardAmber: {
-    backgroundColor: '#FFFBEB',
+    backgroundColor: UX4GColors.gold50,
     borderWidth: 1,
-    borderColor: '#FCD34D',
+    borderColor: UX4GColors.gold300,
     borderRadius: 10,
     padding: 14,
     marginBottom: 12,
@@ -2455,7 +2455,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
@@ -2464,7 +2464,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#F59E0B',
+    backgroundColor: UX4GColors.gold600,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
@@ -2472,12 +2472,12 @@ const styles = StyleSheet.create({
   reviewStepCardTitleGreen: {
     fontSize: 14.5,
     fontWeight: '700',
-    color: '#166534',
+    color: UX4GColors.green800,
   },
   reviewStepCardTitleAmber: {
     fontSize: 14.5,
     fontWeight: '700',
-    color: '#B45309',
+    color: UX4GColors.gold800,
   },
   editPencilBtn: {
     padding: 4,
@@ -2485,14 +2485,14 @@ const styles = StyleSheet.create({
   },
   reviewStepCardSubTextGreen: {
     fontSize: 13,
-    color: '#15803D',
+    color: UX4GColors.green700,
     marginTop: 4,
     marginLeft: 28,
     lineHeight: 18,
   },
   reviewStepCardSubTextAmber: {
     fontSize: 13,
-    color: '#B45309',
+    color: UX4GColors.gold800,
     marginTop: 4,
     marginLeft: 28,
     lineHeight: 18,
@@ -2507,8 +2507,8 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: '#CBD5E1',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
     marginTop: 2,
     alignItems: 'center',
     justifyContent: 'center',
@@ -2518,25 +2518,25 @@ const styles = StyleSheet.create({
     borderColor: UX4GColors.primary,
   },
   declarationCheckboxBoxError: {
-    borderColor: '#DC2626',
+    borderColor: UX4GColors.red600,
   },
   declarationText: {
     flex: 1,
     fontSize: 13.5,
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     lineHeight: 19,
     marginLeft: 10,
   },
   declarationAsterisk: {
-    color: '#DC2626',
+    color: UX4GColors.red600,
     fontWeight: '700',
     fontSize: 15,
     marginLeft: 6,
   },
   ackGreenCard: {
-    backgroundColor: '#F0FDF4',
+    backgroundColor: UX4GColors.green50,
     borderWidth: 1,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     borderRadius: 10,
     padding: 16,
     marginTop: 6,
@@ -2549,7 +2549,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -2558,7 +2558,7 @@ const styles = StyleSheet.create({
   ackCardMessage: {
     flex: 1,
     fontSize: 14,
-    color: '#14532D',
+    color: UX4GColors.green900,
     lineHeight: 20,
     fontWeight: '500',
   },
@@ -2571,7 +2571,7 @@ const styles = StyleSheet.create({
     width: 68,
     height: 68,
     borderRadius: 34,
-    backgroundColor: '#DCFCE7',
+    backgroundColor: UX4GColors.green100,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
@@ -2580,29 +2580,29 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
     alignItems: 'center',
     justifyContent: 'center',
   },
   step5Heading: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#0F172A',
+    color: UX4GColors.neutral900,
     textAlign: 'center',
     marginBottom: 10,
   },
   step5Description: {
     fontSize: 14,
-    color: '#475569',
+    color: UX4GColors.neutral600,
     textAlign: 'center',
     lineHeight: 21,
     marginBottom: 20,
     paddingHorizontal: 6,
   },
   step5DetailsCard: {
-    backgroundColor: '#DCFCE7',
+    backgroundColor: UX4GColors.green100,
     borderWidth: 1,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
@@ -2615,13 +2615,13 @@ const styles = StyleSheet.create({
   },
   step5DetailLabel: {
     fontSize: 13.5,
-    color: '#374151',
+    color: UX4GColors.neutral700,
     flex: 1,
   },
   step5DetailValue: {
     fontSize: 13.5,
     fontWeight: '700',
-    color: '#111827',
+    color: UX4GColors.neutral900,
     textAlign: 'right',
     flex: 1,
     marginLeft: 8,
@@ -2635,9 +2635,9 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#DCFCE7',
+    backgroundColor: UX4GColors.green100,
     borderWidth: 3,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 14,
@@ -2645,21 +2645,21 @@ const styles = StyleSheet.create({
   submittedTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     textAlign: 'center',
   },
   submittedSubtitle: {
     fontSize: 13,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     textAlign: 'center',
     marginTop: 6,
     lineHeight: 18,
   },
   refNumberBadge: {
     marginTop: 16,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: UX4GColors.neutral100,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -2668,7 +2668,7 @@ const styles = StyleSheet.create({
   },
   refNumberLabel: {
     fontSize: 11,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -2680,9 +2680,9 @@ const styles = StyleSheet.create({
   },
   timelineCard: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
     padding: 14,
     marginTop: 16,
@@ -2690,7 +2690,7 @@ const styles = StyleSheet.create({
   timelineCardTitle: {
     fontSize: 13.5,
     fontWeight: '700',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
     marginBottom: 12,
   },
   timelineItem: {
@@ -2702,12 +2702,12 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#CBD5E1',
+    backgroundColor: UX4GColors.neutral300,
     marginTop: 3,
     marginRight: 10,
   },
   timelineDotDone: {
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
   },
   timelineDotActive: {
     backgroundColor: UX4GColors.primary,
@@ -2715,11 +2715,11 @@ const styles = StyleSheet.create({
   timelineHeading: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   timelineDesc: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 1,
   },
   downloadReceiptBtn: {
@@ -2735,7 +2735,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   downloadReceiptBtnText: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -2754,8 +2754,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderTopColor: UX4GColors.neutral200,
+    backgroundColor: UX4GColors.white,
   },
   primaryContinueBtn: {
     backgroundColor: UX4GColors.primary,
@@ -2764,14 +2764,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryContinueBtnText: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 15,
     fontWeight: '600',
   },
   secondarySaveDraftBtn: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1.5,
-    borderColor: '#C7D2FE',
+    borderColor: UX4GColors.primary200,
     borderRadius: 8,
     paddingVertical: 13,
     alignItems: 'center',
@@ -2790,7 +2790,7 @@ const styles = StyleSheet.create({
   sideDrawerContent: {
     width: '80%',
     height: '100%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     padding: 20,
   },
   drawerHeader: {
@@ -2800,16 +2800,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: UX4GColors.neutral200,
   },
   drawerTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   drawerCloseText: {
     fontSize: 18,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     padding: 4,
   },
   drawerStepItem: {
@@ -2819,39 +2819,39 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   drawerStepItemActive: {
-    backgroundColor: '#F5F3FF',
+    backgroundColor: UX4GColors.primary50,
   },
   drawerStepItemText: {
     fontSize: 13.5,
-    color: '#334155',
+    color: UX4GColors.neutral700,
   },
   drawerStepItemTextActive: {
     color: UX4GColors.primary,
     fontWeight: '600',
   },
   textInputError: {
-    borderColor: '#DC2626',
+    borderColor: UX4GColors.red600,
     borderWidth: 1.5,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: UX4GColors.red50,
   },
   phoneInputRowError: {
-    borderColor: '#DC2626',
+    borderColor: UX4GColors.red600,
     borderWidth: 1.5,
   },
   textAreaContainerError: {
-    borderColor: '#DC2626',
+    borderColor: UX4GColors.red600,
     borderWidth: 1.5,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: UX4GColors.red50,
   },
   dropdownSelectBoxError: {
-    borderColor: '#DC2626',
+    borderColor: UX4GColors.red600,
     borderWidth: 1.5,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: UX4GColors.red50,
   },
   datePickerInputError: {
-    borderColor: '#DC2626',
+    borderColor: UX4GColors.red600,
     borderWidth: 1.5,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: UX4GColors.red50,
   },
   errorCaptionRow: {
     flexDirection: 'row',
@@ -2861,14 +2861,14 @@ const styles = StyleSheet.create({
   },
   errorCaptionText: {
     fontSize: 12,
-    color: '#DC2626',
+    color: UX4GColors.red600,
     fontWeight: '500',
   },
   fillSampleBtn: {
     alignSelf: 'flex-start',
-    backgroundColor: '#EEF2FF',
+    backgroundColor: UX4GColors.primary50,
     borderWidth: 1,
-    borderColor: '#C7D2FE',
+    borderColor: UX4GColors.primary200,
     borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -2882,10 +2882,10 @@ const styles = StyleSheet.create({
   pickerModalContent: {
     width: '90%',
     maxHeight: '80%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderRadius: 16,
     padding: 20,
-    shadowColor: '#000',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
@@ -2901,12 +2901,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: UX4GColors.neutral100,
   },
   pickerModalTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1E293B',
+    color: UX4GColors.neutral800,
   },
   pickerModalCloseBtn: {
     padding: 4,
@@ -2914,11 +2914,11 @@ const styles = StyleSheet.create({
   pickerModalCloseText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#64748B',
+    color: UX4GColors.neutral500,
   },
   pickerModalSubText: {
     fontSize: 12.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginBottom: 12,
   },
   pickerOptionItem: {
@@ -2928,19 +2928,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     marginBottom: 6,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: UX4GColors.neutral50,
   },
   pickerOptionItemActive: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: UX4GColors.primary50,
     borderWidth: 1,
-    borderColor: '#C7D2FE',
+    borderColor: UX4GColors.primary200,
   },
   pickerRadioOuter: {
     width: 20,
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#CBD5E1',
+    borderColor: UX4GColors.neutral300,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -2956,7 +2956,7 @@ const styles = StyleSheet.create({
   },
   pickerOptionText: {
     fontSize: 14,
-    color: '#334155',
+    color: UX4GColors.neutral700,
     fontWeight: '500',
   },
   pickerOptionTextActive: {
@@ -2965,7 +2965,7 @@ const styles = StyleSheet.create({
   },
   pickerOptionSub: {
     fontSize: 11.5,
-    color: '#64748B',
+    color: UX4GColors.neutral500,
     marginTop: 2,
   },
   toastContainer: {
@@ -2973,19 +2973,19 @@ const styles = StyleSheet.create({
     bottom: 90,
     left: 20,
     right: 20,
-    backgroundColor: '#1E293B',
+    backgroundColor: UX4GColors.neutral800,
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 16,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
   },
   toastText: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 13,
     fontWeight: '500',
     textAlign: 'center',
@@ -3041,7 +3041,7 @@ const styles = StyleSheet.create({
                   fontSize: 28,
                   fontWeight: 800,
                   margin: 0,
-                  color: isDark ? '#F1F5F9' : '#0F172A',
+                  color: isDark ? UX4GColors.neutral100 : UX4GColors.neutral900,
                   letterSpacing: '-0.5px',
                 }}
               >
@@ -3054,9 +3054,9 @@ const styles = StyleSheet.create({
                   borderRadius: 12,
                   fontSize: 12,
                   fontWeight: 600,
-                  backgroundColor: isDark ? '#312E81' : '#EEF2FF',
+                  backgroundColor: isDark ? UX4GColors.primary800 : UX4GColors.primary50,
                   color: UX4GColors.primary600,
-                  border: `1px solid ${isDark ? '#4338CA' : '#C7D2FE'}`,
+                  border: `1px solid ${isDark ? UX4GColors.primary700 : UX4GColors.primary200}`,
                 }}
               >
                 Service Pattern • Complete 5-Step Flow
@@ -3066,7 +3066,7 @@ const styles = StyleSheet.create({
               style={{
                 fontSize: 14,
                 margin: 0,
-                color: isDark ? '#94A3B8' : '#64748B',
+                color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
                 maxWidth: 680,
                 lineHeight: 1.5,
               }}
@@ -3090,7 +3090,7 @@ const styles = StyleSheet.create({
                 fontSize: 13,
                 fontWeight: 600,
                 backgroundColor: UX4GColors.primary600,
-                color: '#FFFFFF',
+                color: UX4GColors.white,
                 border: 'none',
                 cursor: isDownloadingZip ? 'wait' : 'pointer',
                 boxShadow: '0 2px 8px rgba(79, 70, 229, 0.3)',
@@ -3111,9 +3111,9 @@ const styles = StyleSheet.create({
               marginBottom: 16,
               padding: '10px 16px',
               borderRadius: 8,
-              backgroundColor: isDark ? '#1E293B' : '#F0FDF4',
-              border: `1px solid ${isDark ? '#334155' : '#86EFAC'}`,
-              color: isDark ? '#F1F5F9' : '#166534',
+              backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.green50,
+              border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.green300}`,
+              color: isDark ? UX4GColors.neutral100 : UX4GColors.green800,
               fontSize: 13,
               fontWeight: 500,
               display: 'flex',
@@ -3122,7 +3122,7 @@ const styles = StyleSheet.create({
               boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
             }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#16A34A' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 18, color: UX4GColors.green600 }}>
               check_circle
             </span>
             {toastMessage}
@@ -3138,8 +3138,8 @@ const styles = StyleSheet.create({
             overflow: 'hidden',
             borderRadius: 8,
             minHeight: 880,
-            backgroundColor: isDark ? '#1E293B' : '#F8FAFC',
-            border: `1px solid ${isDark ? '#334155' : '#E2E8F0'}`,
+            backgroundColor: isDark ? UX4GColors.neutral800 : UX4GColors.neutral50,
+            border: `1px solid ${isDark ? UX4GColors.neutral700 : UX4GColors.neutral200}`,
           }}
         >
           <iframe

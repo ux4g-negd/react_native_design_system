@@ -292,7 +292,7 @@ export default function App() {
             <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 4 }}>
               <Path
                 d="M14 3h7v7M10 14L20 4M21 14v6a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1h6"
-                stroke="#FFFFFF"
+                stroke={UX4GColors.white}
                 strokeWidth={2}
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -302,7 +302,7 @@ export default function App() {
           <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
             <Path
               d="M12 2a2 2 0 100 4 2 2 0 000-4zM7 8h10v2H7V8zm2 4h6v10H9V12z"
-              fill="#FFFFFF"
+              fill={UX4GColors.white}
             />
           </Svg>
         </View>
@@ -337,10 +337,10 @@ export default function App() {
             <View style={styles.savedBannerRow}>
               <View style={styles.savedPill}>
                 <Svg width={16} height={16} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
-                  <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
+                  <Circle cx={12} cy={12} r={10} stroke={UX4GColors.green600} strokeWidth={2} />
                   <Path
                     d="M8 12l2.5 2.5L16 9"
-                    stroke="#16A34A"
+                    stroke={UX4GColors.green600}
                     strokeWidth={2}
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -363,7 +363,7 @@ export default function App() {
               onNext={handleContinue}
               cumulative={true}
               activeColor={UX4GColors.primary}
-              inactiveColor="#E0E0E0"
+              inactiveColor={UX4GColors.neutral300}
             />
           </View>
 
@@ -382,7 +382,7 @@ export default function App() {
                   value={formData.sanctionNumber}
                   onChangeText={(val) => setFormData((prev) => ({ ...prev, sanctionNumber: val }))}
                   placeholder="As printed on the order, for example SIPB/2026/00412"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={UX4GColors.neutral400}
                 />
                 <TouchableOpacity
                   style={styles.fetchButton}
@@ -398,10 +398,10 @@ export default function App() {
                 <View style={styles.recordFoundBox}>
                   <View style={styles.recordFoundIconCol}>
                     <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                      <Circle cx={12} cy={12} r={12} fill="#16A34A" />
+                      <Circle cx={12} cy={12} r={12} fill={UX4GColors.green600} />
                       <Path
                         d="M7 12.5L10.5 16L17 8.5"
-                        stroke="#FFFFFF"
+                        stroke={UX4GColors.white}
                         strokeWidth={2.2}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -455,7 +455,7 @@ export default function App() {
                     setFormData((prev) => ({ ...prev, projectCost: val.replace(/[^0-9]/g, '') }))
                   }
                   placeholder="Digits only"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={UX4GColors.neutral400}
                   keyboardType="numeric"
                 />
               </View>
@@ -503,7 +503,7 @@ export default function App() {
                     setFormData((prev) => ({ ...prev, subsidyClaimed: val.replace(/[^0-9]/g, '') }))
                   }
                   placeholder="Digits only"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={UX4GColors.neutral400}
                   keyboardType="numeric"
                 />
               </View>
@@ -523,7 +523,7 @@ export default function App() {
                     setFormData((prev) => ({ ...prev, ownContribution: val }))
                   }
                   placeholder="Digits only"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={UX4GColors.neutral400}
                   keyboardType="numeric"
                 />
               </View>
@@ -540,7 +540,7 @@ export default function App() {
                     setFormData((prev) => ({ ...prev, otherGrants: val }))
                   }
                   placeholder="0 if none"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={UX4GColors.neutral400}
                   keyboardType="numeric"
                 />
               </View>
@@ -572,7 +572,7 @@ export default function App() {
                     setFormData((prev) => ({ ...prev, anythingElse: val }))
                   }
                   placeholder="0 if none"
-                  placeholderTextColor="#9CA3AF"
+                  placeholderTextColor={UX4GColors.neutral400}
                   keyboardType="numeric"
                 />
               </View>
@@ -589,10 +589,10 @@ export default function App() {
               <View style={styles.warningBanner}>
                 <View style={styles.warningIconCol}>
                   <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                    <Circle cx={12} cy={12} r={10} fill="#F59E0B" />
+                    <Circle cx={12} cy={12} r={10} fill={UX4GColors.gold600} />
                     <Path
                       d="M12 7v6M12 16.5v.5"
-                      stroke="#FFFFFF"
+                      stroke={UX4GColors.white}
                       strokeWidth={2.2}
                       strokeLinecap="round"
                     />
@@ -620,7 +620,7 @@ export default function App() {
                         setFormData((prev) => ({ ...prev, amountBorrowed: val.replace(/[^0-9]/g, '') }))
                       }
                       placeholder="Digits only"
-                      placeholderTextColor="#9CA3AF"
+                      placeholderTextColor={UX4GColors.neutral400}
                       keyboardType="numeric"
                     />
                   </View>
@@ -644,7 +644,7 @@ export default function App() {
                     value={formData.branch}
                     onChangeText={(val) => setFormData((prev) => ({ ...prev, branch: val }))}
                     placeholder="Branch name or IFSC"
-                    placeholderTextColor="#9CA3AF"
+                    placeholderTextColor={UX4GColors.neutral400}
                   />
 
                   <Text style={[styles.fieldLabel, { marginTop: 18 }]}>
@@ -656,7 +656,7 @@ export default function App() {
                       value={formData.interestRate}
                       onChangeText={(val) => setFormData((prev) => ({ ...prev, interestRate: val }))}
                       placeholder="Per cent per year"
-                      placeholderTextColor="#9CA3AF"
+                      placeholderTextColor={UX4GColors.neutral400}
                       keyboardType="numeric"
                     />
                     <Text style={styles.suffixText}>%</Text>
@@ -670,7 +670,7 @@ export default function App() {
                     value={formData.loanTerm}
                     onChangeText={(val) => setFormData((prev) => ({ ...prev, loanTerm: val }))}
                     placeholder="Months"
-                    placeholderTextColor="#9CA3AF"
+                    placeholderTextColor={UX4GColors.neutral400}
                     keyboardType="numeric"
                   />
 
@@ -768,7 +768,7 @@ export default function App() {
                         {formData.expandedCategory === 'completion' ? (
                           <Path
                             d="M18 15l-6-6-6 6"
-                            stroke="#111827"
+                            stroke={UX4GColors.neutral900}
                             strokeWidth={2}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -776,7 +776,7 @@ export default function App() {
                         ) : (
                           <Path
                             d="M6 9l6 6 6-6"
-                            stroke="#111827"
+                            stroke={UX4GColors.neutral900}
                             strokeWidth={2}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -799,7 +799,7 @@ export default function App() {
                               <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
                                 <Path
                                   d="M5 13l4 4L19 7"
-                                  stroke="#FFFFFF"
+                                  stroke={UX4GColors.white}
                                   strokeWidth={3}
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -840,7 +840,7 @@ export default function App() {
                               <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
                                 <Path
                                   d="M5 13l4 4L19 7"
-                                  stroke="#FFFFFF"
+                                  stroke={UX4GColors.white}
                                   strokeWidth={3}
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -929,7 +929,7 @@ export default function App() {
                         {formData.expandedCategory === 'clearance' ? (
                           <Path
                             d="M18 15l-6-6-6 6"
-                            stroke="#111827"
+                            stroke={UX4GColors.neutral900}
                             strokeWidth={2}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -937,7 +937,7 @@ export default function App() {
                         ) : (
                           <Path
                             d="M6 9l6 6 6-6"
-                            stroke="#111827"
+                            stroke={UX4GColors.neutral900}
                             strokeWidth={2}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -1053,7 +1053,7 @@ export default function App() {
                         {formData.expandedCategory === 'photos' ? (
                           <Path
                             d="M18 15l-6-6-6 6"
-                            stroke="#111827"
+                            stroke={UX4GColors.neutral900}
                             strokeWidth={2}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -1061,7 +1061,7 @@ export default function App() {
                         ) : (
                           <Path
                             d="M6 9l6 6 6-6"
-                            stroke="#111827"
+                            stroke={UX4GColors.neutral900}
                             strokeWidth={2}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -1110,7 +1110,7 @@ export default function App() {
                       <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                         <Path
                           d="M5 13l4 4L19 7"
-                          stroke="#FFFFFF"
+                          stroke={UX4GColors.white}
                           strokeWidth={3}
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -1127,7 +1127,7 @@ export default function App() {
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill="#111827"
+                        fill={UX4GColors.neutral900}
                       />
                     </Svg>
                   </TouchableOpacity>
@@ -1145,7 +1145,7 @@ export default function App() {
                       <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                         <Path
                           d="M5 13l4 4L19 7"
-                          stroke="#FFFFFF"
+                          stroke={UX4GColors.white}
                           strokeWidth={3}
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -1162,7 +1162,7 @@ export default function App() {
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill="#111827"
+                        fill={UX4GColors.neutral900}
                       />
                     </Svg>
                   </TouchableOpacity>
@@ -1180,7 +1180,7 @@ export default function App() {
                       <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                         <Path
                           d="M5 13l4 4L19 7"
-                          stroke="#FFFFFF"
+                          stroke={UX4GColors.white}
                           strokeWidth={3}
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -1197,7 +1197,7 @@ export default function App() {
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill="#111827"
+                        fill={UX4GColors.neutral900}
                       />
                     </Svg>
                   </TouchableOpacity>
@@ -1231,7 +1231,7 @@ export default function App() {
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M5 13l4 4L19 7"
-                        stroke="#FFFFFF"
+                        stroke={UX4GColors.white}
                         strokeWidth={3}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -1266,7 +1266,7 @@ export default function App() {
                     <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                       <Path
                         d="M5 13l4 4L19 7"
-                        stroke="#FFFFFF"
+                        stroke={UX4GColors.white}
                         strokeWidth={3}
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -1292,7 +1292,7 @@ export default function App() {
                   <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
                     <Path
                       d="M20 6L9 17L4 12"
-                      stroke="#FFFFFF"
+                      stroke={UX4GColors.white}
                       strokeWidth={3}
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -1415,7 +1415,7 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: UX4GColors.neutral50,
   },
   govTopBar: {
     backgroundColor: UX4GColors.primary,
@@ -1437,19 +1437,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.4)',
   },
   govText: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 13,
     fontWeight: '600',
   },
   whiteHeader: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: UX4GColors.neutral200,
   },
   logoRow: {
     flexDirection: 'row',
@@ -1460,7 +1460,7 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: '#C7D2FE',
+    borderColor: UX4GColors.primary200,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 7,
@@ -1486,64 +1486,64 @@ const styles = StyleSheet.create({
   savedPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EBF9F1',
+    backgroundColor: UX4GColors.green50,
     borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
   savedText: {
-    color: '#166534',
+    color: UX4GColors.green800,
     fontSize: 12,
     fontWeight: '600',
   },
   stepperCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderRadius: 10,
     paddingVertical: 8,
     marginBottom: 16,
   },
   formContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderRadius: 10,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#F3F4F6',
+    borderColor: UX4GColors.neutral100,
   },
   sectionHeading: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111827',
+    color: UX4GColors.neutral900,
     marginBottom: 14,
   },
   fieldLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1F2937',
+    color: UX4GColors.neutral800,
     marginBottom: 8,
   },
   fieldSubCaption: {
     fontSize: 12,
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     marginTop: -4,
     marginBottom: 8,
   },
   asterisk: {
-    color: '#DC2626',
+    color: UX4GColors.red600,
   },
   inputWithActionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     paddingHorizontal: 14,
     minHeight: 48,
   },
   inputWithAction: {
     flex: 1,
     fontSize: 14,
-    color: '#111827',
+    color: UX4GColors.neutral900,
     paddingVertical: 10,
   },
   fetchButton: {
@@ -1557,9 +1557,9 @@ const styles = StyleSheet.create({
   },
   recordFoundBox: {
     flexDirection: 'row',
-    backgroundColor: '#EBF9F1',
+    backgroundColor: UX4GColors.green50,
     borderWidth: 1,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     borderRadius: 8,
     padding: 14,
     marginTop: 14,
@@ -1571,7 +1571,7 @@ const styles = StyleSheet.create({
   recordFoundText: {
     flex: 1,
     fontSize: 13,
-    color: '#14532D',
+    color: UX4GColors.green900,
     lineHeight: 19,
   },
   recordFoundBold: {
@@ -1587,9 +1587,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     paddingHorizontal: 12,
     height: 48,
   },
@@ -1597,67 +1597,67 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: UX4GColors.neutral200,
     paddingHorizontal: 12,
     height: 48,
   },
   currencyInputReadOnlyText: {
     fontSize: 14,
-    color: '#374151',
+    color: UX4GColors.neutral700,
     fontWeight: '500',
   },
   currencyPrefix: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#4B5563',
+    color: UX4GColors.neutral600,
     marginRight: 8,
     paddingLeft: 2,
   },
   currencyInput: {
     flex: 1,
     fontSize: 14,
-    color: '#111827',
+    color: UX4GColors.neutral900,
     paddingVertical: 10,
   },
   standardInput: {
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     paddingHorizontal: 14,
     height: 48,
     fontSize: 14,
-    color: '#111827',
+    color: UX4GColors.neutral900,
   },
   suffixInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     paddingHorizontal: 12,
     height: 48,
   },
   suffixInput: {
     flex: 1,
     fontSize: 14,
-    color: '#111827',
+    color: UX4GColors.neutral900,
     paddingVertical: 10,
   },
   suffixText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     paddingHorizontal: 6,
   },
   warningBanner: {
     flexDirection: 'row',
-    backgroundColor: '#FFFBEB',
+    backgroundColor: UX4GColors.gold50,
     borderWidth: 1,
-    borderColor: '#FDE68A',
+    borderColor: UX4GColors.gold200,
     borderRadius: 8,
     padding: 14,
     marginTop: 18,
@@ -1669,15 +1669,15 @@ const styles = StyleSheet.create({
   warningText: {
     flex: 1,
     fontSize: 13,
-    color: '#92400E',
+    color: UX4GColors.gold900,
     lineHeight: 19,
   },
   uploadBox: {
     borderWidth: 1.5,
-    borderColor: '#7C3AED',
+    borderColor: UX4GColors.primary,
     borderStyle: 'dashed',
     borderRadius: 8,
-    backgroundColor: '#FAF5FF',
+    backgroundColor: UX4GColors.primary50,
     paddingVertical: 24,
     paddingHorizontal: 16,
     alignItems: 'center',
@@ -1688,7 +1688,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#EDE9FE',
+    backgroundColor: UX4GColors.primary100,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
@@ -1696,26 +1696,26 @@ const styles = StyleSheet.create({
   dropTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#1F2937',
+    color: UX4GColors.neutral800,
     marginBottom: 4,
   },
   dropSub: {
     fontSize: 12,
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     marginBottom: 4,
   },
   dropOr: {
     fontSize: 12,
-    color: '#9CA3AF',
+    color: UX4GColors.neutral400,
     marginVertical: 4,
   },
   uploadButtonPill: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
-    borderColor: '#C4B5FD',
+    borderColor: UX4GColors.primary200,
     borderRadius: 6,
     paddingHorizontal: 20,
     paddingVertical: 8,
@@ -1729,9 +1729,9 @@ const styles = StyleSheet.create({
   attachedFileBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F9FAFB',
+    backgroundColor: UX4GColors.neutral50,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
     padding: 12,
     marginTop: 6,
@@ -1739,17 +1739,17 @@ const styles = StyleSheet.create({
   attachedFileName: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#111827',
+    color: UX4GColors.neutral900,
   },
   attachedFileSize: {
     fontSize: 12,
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     marginTop: 2,
   },
   removeFileBtn: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#DC2626',
+    color: UX4GColors.red600,
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
@@ -1757,9 +1757,9 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   docItemCard: {
-    backgroundColor: '#F9FAFB',
+    backgroundColor: UX4GColors.neutral50,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
     padding: 14,
   },
@@ -1771,26 +1771,26 @@ const styles = StyleSheet.create({
   docItemTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111827',
+    color: UX4GColors.neutral900,
   },
   docItemSub: {
     fontSize: 12,
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     marginTop: 2,
   },
   docStatusBadge: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#166534',
-    backgroundColor: '#EBF9F1',
+    color: UX4GColors.green800,
+    backgroundColor: UX4GColors.green50,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
   },
   reviewCard: {
-    backgroundColor: '#F9FAFB',
+    backgroundColor: UX4GColors.neutral50,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 8,
     padding: 14,
   },
@@ -1802,14 +1802,14 @@ const styles = StyleSheet.create({
   },
   reviewText: {
     fontSize: 13,
-    color: '#374151',
+    color: UX4GColors.neutral700,
     marginTop: 2,
     lineHeight: 18,
   },
   bottomActionBar: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
+    borderTopColor: UX4GColors.neutral200,
     padding: 16,
     paddingBottom: Platform.OS === 'ios' ? 24 : 16,
   },
@@ -1817,21 +1817,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: UX4GColors.neutral300,
     borderRadius: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     paddingHorizontal: 14,
     height: 48,
   },
   datePickerInput: {
     flex: 1,
     fontSize: 14,
-    color: '#111827',
+    color: UX4GColors.neutral900,
   },
   accordionCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: UX4GColors.neutral200,
     borderRadius: 12,
     padding: 16,
   },
@@ -1843,18 +1843,18 @@ const styles = StyleSheet.create({
   accordionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111827',
+    color: UX4GColors.neutral900,
   },
   accordionSubtitle: {
     fontSize: 13,
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     marginTop: 2,
   },
   accordionContent: {
     marginTop: 16,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
+    borderTopColor: UX4GColors.neutral100,
   },
   docItemHeaderRow: {
     flexDirection: 'row',
@@ -1866,20 +1866,20 @@ const styles = StyleSheet.create({
     height: 18,
     borderRadius: 9,
     borderWidth: 1.5,
-    borderColor: '#D1D5DB',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
     marginRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   circleIndicatorActive: {
-    borderColor: '#16A34A',
-    backgroundColor: '#16A34A',
+    borderColor: UX4GColors.green600,
+    backgroundColor: UX4GColors.green600,
   },
   docItemTitleText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1F2937',
+    color: UX4GColors.neutral800,
     flex: 1,
   },
   dotsRow: {
@@ -1893,17 +1893,17 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     borderWidth: 1.2,
-    borderColor: '#D1D5DB',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
   },
   docDotFilled: {
-    borderColor: '#16A34A',
-    backgroundColor: '#16A34A',
+    borderColor: UX4GColors.green600,
+    backgroundColor: UX4GColors.green600,
   },
   previewCard: {
-    backgroundColor: '#F0FDF4',
+    backgroundColor: UX4GColors.green50,
     borderWidth: 1,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     borderRadius: 10,
     padding: 14,
     marginTop: 12,
@@ -1922,7 +1922,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -1930,7 +1930,7 @@ const styles = StyleSheet.create({
   previewCardTitle: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#166534',
+    color: UX4GColors.green800,
     flex: 1,
   },
   editPencilBtn: {
@@ -1939,7 +1939,7 @@ const styles = StyleSheet.create({
   },
   previewCardSubText: {
     fontSize: 13,
-    color: '#15803D',
+    color: UX4GColors.green700,
     lineHeight: 18,
     marginTop: 4,
     paddingLeft: 30,
@@ -1953,8 +1953,8 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 4,
     borderWidth: 1.5,
-    borderColor: '#D1D5DB',
-    backgroundColor: '#FFFFFF',
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
     marginRight: 12,
     marginTop: 2,
     alignItems: 'center',
@@ -1967,14 +1967,14 @@ const styles = StyleSheet.create({
   declarationText: {
     flex: 1,
     fontSize: 14,
-    color: '#1F2937',
+    color: UX4GColors.neutral800,
     lineHeight: 20,
     fontWeight: '500',
   },
   acknowledgementCard: {
-    backgroundColor: '#F0FDF4',
+    backgroundColor: UX4GColors.green50,
     borderWidth: 1,
-    borderColor: '#86EFAC',
+    borderColor: UX4GColors.green300,
     borderRadius: 10,
     padding: 16,
     flexDirection: 'row',
@@ -1985,7 +1985,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#16A34A',
+    backgroundColor: UX4GColors.green600,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -1996,7 +1996,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     lineHeight: 22,
-    color: '#15803D',
+    color: UX4GColors.green700,
     fontWeight: '400',
   },
   continueButton: {
@@ -2007,12 +2007,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   continueButtonText: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 16,
     fontWeight: '600',
   },
   saveDraftButton: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderWidth: 1,
     borderColor: UX4GColors.primary,
     borderRadius: 8,
@@ -2031,19 +2031,19 @@ const styles = StyleSheet.create({
     bottom: 120,
     left: 20,
     right: 20,
-    backgroundColor: '#1F2937',
+    backgroundColor: UX4GColors.neutral800,
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: UX4GColors.neutral1000black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
   },
   toastText: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
     fontSize: 14,
     fontWeight: '500',
   },
@@ -2054,7 +2054,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   navMenuCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: UX4GColors.white,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     padding: 20,
@@ -2067,19 +2067,19 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: UX4GColors.neutral100,
   },
   navMenuTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111827',
+    color: UX4GColors.neutral900,
   },
   navMenuCloseBtn: {
     padding: 4,
   },
   navMenuCloseText: {
     fontSize: 18,
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     fontWeight: '600',
   },
   menuStepItem: {
@@ -2089,18 +2089,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     marginBottom: 8,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: UX4GColors.neutral50,
   },
   menuStepItemActive: {
-    backgroundColor: '#EEF2FF',
+    backgroundColor: UX4GColors.primary50,
     borderWidth: 1,
-    borderColor: '#C7D2FE',
+    borderColor: UX4GColors.primary200,
   },
   menuStepBadge: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: UX4GColors.neutral200,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
@@ -2111,15 +2111,15 @@ const styles = StyleSheet.create({
   menuStepBadgeText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#4B5563',
+    color: UX4GColors.neutral600,
   },
   menuStepBadgeTextActive: {
-    color: '#FFFFFF',
+    color: UX4GColors.white,
   },
   menuStepTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1F2937',
+    color: UX4GColors.neutral800,
   },
   menuStepTitleActive: {
     color: UX4GColors.primary,
@@ -2127,7 +2127,7 @@ const styles = StyleSheet.create({
   },
   menuStepSubtitle: {
     fontSize: 12,
-    color: '#6B7280',
+    color: UX4GColors.neutral500,
     marginTop: 2,
   },
 });
