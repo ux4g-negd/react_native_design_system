@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'IGk_Q8tI975IB1WErjdza';
+const SNACK_ID = 'MTr3_tk548unpP_lSad1x';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -607,8 +607,40 @@ export default function App() {
               <Ux4gStatusBanner
                 variant="infoLight"
                 title="No Aadhaar? You can still apply in person."
-                subtitle="Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. See the list of counters"
+                titleStyle={{ fontSize: 14, fontWeight: '700', color: UX4GColors.neutral900 }}
+                leadingIcon={
+                  <View
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 10,
+                      backgroundColor: '#00ACC1',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ color: '#FFFFFF', fontSize: 12, fontWeight: '700', fontStyle: 'italic', lineHeight: 14 }}>
+                      i
+                    </Text>
+                  </View>
+                }
+                subtitleWidget={
+                  <Text style={{ fontSize: 13, lineHeight: 19, color: UX4GColors.neutral700 }}>
+                    {'Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. '}
+                    <Text
+                      style={{ color: '#00838F', fontWeight: '600', textDecorationLine: 'underline' }}
+                      onPress={() => triggerToast('Opening list of local district administrative counters')}
+                    >
+                      See the list of counters
+                    </Text>
+                  </Text>
+                }
+                paddingStyle={{ paddingHorizontal: 16, paddingVertical: 14 }}
                 marginStyle={{ marginHorizontal: 0, marginVertical: 14 }}
+                containerStyle={{
+                  backgroundColor: '#E0F7FA',
+                  borderColor: '#80DEEA',
+                }}
               />
 
               {/* SECTION 2: Details Fetched from Aadhaar */}
