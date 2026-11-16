@@ -93007,7 +93007,7 @@ Constructed using **UX4G React Native Design System** components.
 npm install
 npx expo start
 \`\`\`
-`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="6VNtyBL4bv_K0sVf5Qfnn",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`}function iV(t){const o={};return o["package.json"]=JSON.stringify({name:"ux4g-tourism-event-sponsorship-flow",version:"1.0.0",scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0","expo-status-bar":"~1.12.1",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@types/react":"~18.2.45",typescript:"~5.3.3"},private:!0},null,2),o["app.json"]=JSON.stringify({expo:{name:"Tourism Event Sponsorship Flow",slug:"tourism-event-sponsorship-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",newArchEnabled:!0}},null,2),o["tsconfig.json"]=JSON.stringify({extends:"expo/tsconfig.base",compilerOptions:{strict:!0}},null,2),o["README.md"]=oV(),o["App.tsx"]=t,o["NationalEmblem.tsx"]=zn,o["src/types/tourismEventSponsorship.ts"]=eV(),o["src/constants/formOptions.ts"]=tV(),o["src/constants/initialFormData.ts"]=rV(),o}const nV="qnZhU6RA9vX6qVeN4aVhG",Vx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=u=>{d(u),setTimeout(()=>{d(null)},3500)},p=f.useMemo(()=>`https://snack.expo.dev/embedded/${nV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]),n=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -93168,7 +93168,7 @@ const CLEARANCE_STATUS_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -93888,15 +93888,6 @@ export default function App() {
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 2 && (
             <View style={styles.formContainer}>
-              {/* Quick Sample Data Action */}
-              <TouchableOpacity
-                style={styles.fillSampleBtn}
-                onPress={handleFillSampleEvent}
-                activeOpacity={0.75}
-              >
-                <Text style={styles.fillSampleBtnText}>⚡ Fill Sample Event Data</Text>
-              </TouchableOpacity>
-
               {/* Section 1: Event Details */}
               <Text style={styles.sectionHeading}>Event Details</Text>
 
@@ -93946,13 +93937,12 @@ export default function App() {
                     <Text style={styles.charCounterText}>
                       {formData.eventDescription.length}/200
                     </Text>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 4 }}>
+                    <Svg width={11} height={11} viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
                       <Path
-                        d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
+                        d="M10 2L2 10M11 6L6 11M11 9L9 11"
                         stroke="#94A3B8"
-                        strokeWidth={1.5}
+                        strokeWidth={1.4}
                         strokeLinecap="round"
-                        strokeLinejoin="round"
                       />
                     </Svg>
                   </View>
@@ -93974,7 +93964,7 @@ export default function App() {
                 </Text>
                 <TextInput
                   style={[styles.textInput, errors.expectedFootfall && styles.textInputError]}
-                  placeholder="Number of visitors you expect (e.g. 75000)"
+                  placeholder="Number of visitors you expect"
                   placeholderTextColor="#94A3B8"
                   keyboardType="numeric"
                   value={formData.expectedFootfall}
@@ -94006,7 +93996,7 @@ export default function App() {
                 >
                   <TextInput
                     style={styles.textAreaInput}
-                    placeholder="Exact venue address and ground name"
+                    placeholder="Placeholder"
                     placeholderTextColor="#94A3B8"
                     multiline
                     numberOfLines={4}
@@ -94018,13 +94008,12 @@ export default function App() {
                     <Text style={styles.charCounterText}>
                       {formData.venueAddress.length}/200
                     </Text>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 4 }}>
+                    <Svg width={11} height={11} viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
                       <Path
-                        d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
+                        d="M10 2L2 10M11 6L6 11M11 9L9 11"
                         stroke="#94A3B8"
-                        strokeWidth={1.5}
+                        strokeWidth={1.4}
                         strokeLinecap="round"
-                        strokeLinejoin="round"
                       />
                     </Svg>
                   </View>

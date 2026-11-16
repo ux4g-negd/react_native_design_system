@@ -8,8 +8,8 @@ interface TourismEventSponsorshipFlowDocProps {
   isDark: boolean;
 }
 
-// Official Snack ID for Tourism Event Sponsorship Flow (Official UX4G DatePicker & Dropdown Components)
-const SNACK_ID = '6VNtyBL4bv_K0sVf5Qfnn';
+// Official Snack ID for Tourism Event Sponsorship Flow (Step 2 Active with Complete Unified Flow)
+const SNACK_ID = 'qnZhU6RA9vX6qVeN4aVhG';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -192,7 +192,7 @@ const CLEARANCE_STATUS_OPTIONS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -912,15 +912,6 @@ export default function App() {
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 2 && (
             <View style={styles.formContainer}>
-              {/* Quick Sample Data Action */}
-              <TouchableOpacity
-                style={styles.fillSampleBtn}
-                onPress={handleFillSampleEvent}
-                activeOpacity={0.75}
-              >
-                <Text style={styles.fillSampleBtnText}>⚡ Fill Sample Event Data</Text>
-              </TouchableOpacity>
-
               {/* Section 1: Event Details */}
               <Text style={styles.sectionHeading}>Event Details</Text>
 
@@ -970,13 +961,12 @@ export default function App() {
                     <Text style={styles.charCounterText}>
                       {formData.eventDescription.length}/200
                     </Text>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 4 }}>
+                    <Svg width={11} height={11} viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
                       <Path
-                        d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
+                        d="M10 2L2 10M11 6L6 11M11 9L9 11"
                         stroke="#94A3B8"
-                        strokeWidth={1.5}
+                        strokeWidth={1.4}
                         strokeLinecap="round"
-                        strokeLinejoin="round"
                       />
                     </Svg>
                   </View>
@@ -998,7 +988,7 @@ export default function App() {
                 </Text>
                 <TextInput
                   style={[styles.textInput, errors.expectedFootfall && styles.textInputError]}
-                  placeholder="Number of visitors you expect (e.g. 75000)"
+                  placeholder="Number of visitors you expect"
                   placeholderTextColor="#94A3B8"
                   keyboardType="numeric"
                   value={formData.expectedFootfall}
@@ -1030,7 +1020,7 @@ export default function App() {
                 >
                   <TextInput
                     style={styles.textAreaInput}
-                    placeholder="Exact venue address and ground name"
+                    placeholder="Placeholder"
                     placeholderTextColor="#94A3B8"
                     multiline
                     numberOfLines={4}
@@ -1042,13 +1032,12 @@ export default function App() {
                     <Text style={styles.charCounterText}>
                       {formData.venueAddress.length}/200
                     </Text>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 4 }}>
+                    <Svg width={11} height={11} viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
                       <Path
-                        d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
+                        d="M10 2L2 10M11 6L6 11M11 9L9 11"
                         stroke="#94A3B8"
-                        strokeWidth={1.5}
+                        strokeWidth={1.4}
                         strokeLinecap="round"
-                        strokeLinejoin="round"
                       />
                     </Svg>
                   </View>
