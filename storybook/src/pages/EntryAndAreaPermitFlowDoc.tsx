@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = '-cHePixovbYIxtetFUcif';
+const SNACK_ID = 'eJbez6yj2B7fggIVKex4q';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -712,34 +712,37 @@ export default function App() {
           <View style={{ paddingHorizontal: 16, paddingTop: 10, paddingBottom: 2 }}>
             <Ux4gStatusBanner
               variant="successLight"
-              height={34}
-              title={'Saved ' + savedTime}
-              titleStyle={{ fontSize: 12.5, fontWeight: '600', color: '#166534', includeFontPadding: false }}
-              contentAlignment="right"
-              leadingIcon={
-                <View style={{ marginRight: -10, justifyContent: 'center', alignItems: 'center' }}>
-                  <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
-                    <Circle cx={12} cy={12} r={10} stroke="#16a34a" strokeWidth={2.2} />
+              title=""
+              leadingIcon={<View />}
+              trailingIcon={
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Circle cx="12" cy="12" r="9.5" stroke={UX4GColors.green} strokeWidth="1.8" />
                     <Path
-                      d="M8 12l2.5 2.5L16 9"
-                      stroke="#16a34a"
-                      strokeWidth={2.2}
+                      d="M8.5 12.2L10.8 14.5L15.8 9.5"
+                      stroke={UX4GColors.green}
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </Svg>
+                  <Text style={{ fontSize: 12.5, fontWeight: '600', color: UX4GColors.green800 }}>
+                    {'Saved ' + savedTime}
+                  </Text>
                 </View>
               }
-              paddingStyle={{ paddingVertical: 4, paddingHorizontal: 12 }}
+              contentAlignment="right"
+              backgroundColor="#f2fcef"
+              borderColor="transparent"
+              height={36}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
               containerStyle={{
-                backgroundColor: '#f2fcef',
-                borderColor: 'transparent',
-                borderWidth: 0,
+                borderRadius: 8,
                 elevation: 0,
                 shadowOpacity: 0,
-                borderRadius: 6,
+                justifyContent: 'center',
               }}
+              paddingStyle={{ paddingVertical: 2, paddingHorizontal: 14 }}
             />
           </View>
         )}
