@@ -25154,7 +25154,7 @@ const styles = StyleSheet.create({
   digitalIndiaLogo: { height: 24, width: 80 },
 });`,[a]),g=()=>{const u=a==="card",x=u?s.cardScreenBg:s.defaultScreenBg;return e.jsxs("div",{style:{width:360,height:760,borderRadius:20,overflow:"hidden",boxShadow:t?"0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px #333333":"0 12px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px #E5E7EB",backgroundColor:x,display:"flex",flexDirection:"column",margin:"0 auto",position:"relative"},children:[e.jsxs("div",{style:{position:"relative",zIndex:10},children:[e.jsx($e,{title:"",variant:"light",elevation:0,useSafeArea:!1,height:56,horizontalPadding:16,leadingSpacing:12,backgroundColor:s.headerBg,borderColor:s.border,leadingWidgets:[e.jsx("img",{src:"/national_emblem_logo.svg",alt:"National Emblem",style:{height:32,filter:t?"brightness(0) invert(1)":"none"}},"emblem"),e.jsx("div",{style:{width:1,height:28,backgroundColor:t?r.neutral700:r.neutral300,margin:"0 4px"}},"divider"),e.jsx(ke,{size:32,isDark:t},"union")],actions:[{customWidget:e.jsx("button",{type:"button",onClick:()=>{},style:{width:36,height:36,borderRadius:8,backgroundColor:t?"transparent":"#FFFFFF",border:`1.5px solid ${t?r.primary400:"#C0B3FF"}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",padding:0},children:e.jsx("svg",{width:"20",height:"20",viewBox:"0 0 24 24",fill:"none",children:e.jsx("path",{d:"M4 6h16M4 12h16M4 18h16",stroke:t?r.primary300:r.primary,strokeWidth:"2.5",strokeLinecap:"round"})})},"menu")}]}),e.jsx("div",{style:{height:1,backgroundColor:s.border,width:"100%"}})]}),u?e.jsxs("div",{style:{flex:1,display:"flex",flexDirection:"column",backgroundColor:s.cardScreenBg,justifyContent:"space-between"},children:[e.jsx("div",{style:{padding:"16px",flex:1,overflow:"auto"},children:e.jsxs("div",{style:{backgroundColor:s.cardBg,borderRadius:16,padding:"36px 20px 28px 20px",boxShadow:t?"0 4px 16px rgba(0, 0, 0, 0.4)":"0 4px 16px rgba(0, 0, 0, 0.04)",display:"flex",flexDirection:"column",alignItems:"center"},children:[e.jsx("div",{style:{width:64,height:64,borderRadius:32,backgroundColor:s.greenCircleBg,display:"flex",alignItems:"center",justifyContent:"center"},children:e.jsxs("svg",{width:"36",height:"36",viewBox:"0 0 24 24",fill:"none",children:[e.jsx("circle",{cx:"12",cy:"12",r:"10",fill:s.greenIconColor}),e.jsx("path",{d:"M8 12.2l2.8 2.8L16.2 9",stroke:"#FFFFFF",strokeWidth:"2.2",strokeLinecap:"round",strokeLinejoin:"round"})]})}),e.jsx("div",{style:{height:20}}),e.jsx("h2",{style:{fontSize:26,fontWeight:700,lineHeight:1.25,letterSpacing:"-0.3px",color:s.title,margin:0,textAlign:"center",fontFamily:"Inter, system-ui, -apple-system, sans-serif",whiteSpace:"pre-line"},children:`Password reset
 successfully`}),e.jsx("div",{style:{height:10}}),e.jsx("p",{style:{fontSize:13,fontWeight:400,lineHeight:1.5,color:s.subtleText,margin:0,textAlign:"center",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:"Sign in with your new password to continue access to government services."}),e.jsx("div",{style:{height:28}}),e.jsx(xe,{text:"Sign in",variant:"primary",size:"large",onPress:p,style:{height:48,borderRadius:8,width:"100%",backgroundColor:s.buttonBg}})]})}),e.jsxs("div",{style:{display:"flex",flexDirection:"row",padding:"14px 20px",alignItems:"center",justifyContent:"center",gap:4},children:[e.jsx("span",{style:{fontSize:11,fontWeight:400,color:s.mutedText,fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:"Powered by -"}),e.jsx("img",{src:"/Digital_India_logo.svg",alt:"Digital India",style:{height:24,filter:t?"brightness(0) invert(1)":"none"}})]})]}):e.jsxs("div",{style:{flex:1,display:"flex",flexDirection:"column",justifyContent:"space-between",backgroundColor:s.defaultScreenBg},children:[e.jsxs("div",{style:{padding:"48px 20px 0 20px",flex:1,display:"flex",flexDirection:"column",alignItems:"center",overflow:"auto"},children:[e.jsx("div",{style:{width:64,height:64,borderRadius:32,backgroundColor:s.greenCircleBg,display:"flex",alignItems:"center",justifyContent:"center"},children:e.jsxs("svg",{width:"36",height:"36",viewBox:"0 0 24 24",fill:"none",children:[e.jsx("circle",{cx:"12",cy:"12",r:"10",fill:s.greenIconColor}),e.jsx("path",{d:"M8 12.2l2.8 2.8L16.2 9",stroke:"#FFFFFF",strokeWidth:"2.2",strokeLinecap:"round",strokeLinejoin:"round"})]})}),e.jsx("div",{style:{height:24}}),e.jsx("h2",{style:{fontSize:26,fontWeight:700,lineHeight:1.25,letterSpacing:"-0.3px",color:s.title,margin:0,textAlign:"center",fontFamily:"Inter, system-ui, -apple-system, sans-serif",whiteSpace:"pre-line"},children:`Password reset
-successfully`}),e.jsx("div",{style:{height:12}}),e.jsx("p",{style:{fontSize:14,fontWeight:400,lineHeight:1.5,color:s.subtleText,margin:0,textAlign:"center",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:"Sign in with your new password to continue access to government services."})]}),e.jsxs("div",{children:[e.jsx("div",{style:{padding:"0 20px 16px 20px"},children:e.jsx(xe,{text:"Sign in",variant:"primary",size:"large",onPress:p,style:{height:48,borderRadius:8,width:"100%",backgroundColor:s.buttonBg}})}),e.jsxs("div",{style:{display:"flex",flexDirection:"row",padding:"14px 20px",alignItems:"center",justifyContent:"center",gap:4},children:[e.jsx("span",{style:{fontSize:11,fontWeight:400,color:s.mutedText,fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:"Powered by -"}),e.jsx("img",{src:"/Digital_India_logo.svg",alt:"Digital India",style:{height:24,filter:t?"brightness(0) invert(1)":"none"}})]})]})]})]})};return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Password reset successfully"}),e.jsx("span",{className:"wb-badge",children:"Pattern"})]}),e.jsx("p",{className:"wb-subtitle",children:"Success confirmation after the new password has been saved."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>i("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>i("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(me,{isDark:t,children:e.jsxs("div",{className:`wb-preview-area ${t?"dark":""}`,style:{flexDirection:"column",alignItems:"center"},children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:24,backgroundColor:t?r.neutral800:r.neutral100,padding:4,borderRadius:10,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:[e.jsx("button",{type:"button",onClick:()=>d("default"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:a==="default"?r.primary:"transparent",color:a==="default"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>d("card"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:a==="card"?r.primary:"transparent",color:a==="card"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Card style"})]}),g()]})}),o==="code"&&e.jsxs("div",{className:"wb-code-area",children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:16,padding:"8px 16px",backgroundColor:t?r.neutral900:r.neutral50,borderRadius:8,alignItems:"center",border:`1px solid ${t?r.neutral800:r.neutral200}`},children:[e.jsx("span",{style:{fontSize:13,fontWeight:600,color:t?r.neutral300:r.neutral700},children:"Active Variant:"}),e.jsx("button",{type:"button",onClick:()=>d("default"),style:{padding:"4px 12px",borderRadius:6,border:"none",fontSize:12,fontWeight:600,cursor:"pointer",backgroundColor:a==="default"?r.primary:"transparent",color:a==="default"?r.neutral0:t?r.neutral400:r.neutral600},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>d("card"),style:{padding:"4px 12px",borderRadius:6,border:"none",fontSize:12,fontWeight:600,cursor:"pointer",backgroundColor:a==="card"?r.primary:"transparent",color:a==="card"?r.neutral0:t?r.neutral400:r.neutral600},children:"Card style"})]}),e.jsx(ne,{code:n,language:"TSX",filename:a==="card"?"PasswordResetSuccessCardPattern.tsx":"PasswordResetSuccessDefaultPattern.tsx"})]})]})]})})]})};let ii=null,ni=null,jn=null;try{const t=require("react-native-svg");ii=t.Svg,ni=t.Path,jn=t.Circle}catch{}const S7={small:{boxSize:16,typographyKey:"lM_default"},medium:{boxSize:20,typographyKey:"lL_default"},large:{boxSize:24,typographyKey:"lXL_default"}},ba=(t,o)=>!t||!t.startsWith("#")?t:`${t.slice(0,7)}${o}`,Ct=({value:t=!1,onChanged:o,label:i,description:a,size:d="medium",isRequired:s=!1,hasError:p=!1,descriptionVariant:n="helper",enabled:g=!0,activeColor:u,checkColor:x,style:h,labelStyle:w,descriptionStyle:b,testID:C,accessibilityLabel:y,accessibilityRole:S="checkbox",...T})=>{const k=mt(),j=S7[d];let D;switch(n){case"helper":D=ba(k.colors.onSurface,"B3");break;case"error":D=k.colors.error;break;case"warning":D=k.colors.warning;break;case"success":D=k.colors.success;break}const V=k.typography[j.typographyKey],U=g?k.colors.onSurface:ba(k.colors.onSurface,"61"),B=t===!0||t===null,N=u??k.colors.primary,G=x??k.colors.onPrimary;let _="transparent",H="transparent";g?B?(_=N,H=N):(_="transparent",p||a&&n==="error"?H=k.colors.error:H=k.isDark?r.neutral700:r.neutral300):B?(_=ba(k.colors.onSurface,"1F"),H="transparent"):(_="transparent",H=ba(k.colors.onSurface,"1F"));const A=()=>{if(!g||!o)return;o(t===null?!0:!t)},L=i!==void 0&&i.trim().length>0,z=a!==void 0&&a.trim().length>0,q=()=>{if(!B)return null;const K=g?G:ba(k.colors.onSurface,"61"),Z=Math.round(j.boxSize*.7);if(ii&&ni){if(t===!0)return e.jsx(ii,{width:Z,height:Z,viewBox:"0 0 24 24",fill:"none",children:e.jsx(ni,{d:"M4 12l5 5L20 6",stroke:K,strokeWidth:3,strokeLinecap:"round",strokeLinejoin:"round"})});if(t===null)return e.jsx(ii,{width:Z,height:Z,viewBox:"0 0 24 24",fill:"none",children:e.jsx(ni,{d:"M5 12h14",stroke:K,strokeWidth:3.5,strokeLinecap:"round"})})}return t===!0?e.jsx(Fe,{style:[jo.fallbackCheckText,{color:K,fontSize:j.boxSize*.65}],children:"✓"}):t===null?e.jsx(W,{style:[jo.fallbackDashView,{backgroundColor:K,width:j.boxSize*.55,height:2.5}]}):null},ce=()=>{if(ii&&ni)return n==="error"?e.jsxs(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:[jn&&e.jsx(jn,{cx:"12",cy:"12",r:"10",stroke:D,strokeWidth:"2"}),e.jsx(ni,{d:"M12 8v4M12 16h.01",stroke:D,strokeWidth:"2",strokeLinecap:"round"})]}):n==="warning"?e.jsx(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:e.jsx(ni,{d:"M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01",stroke:D,strokeWidth:"2",strokeLinecap:"round",strokeLinejoin:"round"})}):n==="success"?e.jsxs(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:[jn&&e.jsx(jn,{cx:"12",cy:"12",r:"10",stroke:D,strokeWidth:"2"}),e.jsx(ni,{d:"M8 12l2.5 2.5L16 9",stroke:D,strokeWidth:"2",strokeLinecap:"round",strokeLinejoin:"round"})]}):e.jsxs(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:[jn&&e.jsx(jn,{cx:"12",cy:"12",r:"10",stroke:D,strokeWidth:"2"}),e.jsx(ni,{d:"M12 16v-4M12 8h.01",stroke:D,strokeWidth:"2",strokeLinecap:"round"})]});let K="ⓘ";return n==="error"&&(K="⚠"),n==="warning"&&(K="⚠"),n==="success"&&(K="✓"),e.jsx(Fe,{style:[jo.fallbackIconText,{color:D}],children:K})},J=ba(k.colors.primary,"1F");return e.jsxs(Bt,{testID:C,accessibilityLabel:y??i,accessibilityRole:S,accessibilityState:{disabled:!g,checked:t===null?"mixed":t},disabled:!g||!o,onPress:A,android_ripple:void 0,style:K=>{const Z=typeof h=="function"?h(K):h;return[jo.rowContainer,{alignItems:z?"flex-start":"center",opacity:K.pressed&&g&&Et.OS!=="android"?.8:1},Z]},...T,children:[e.jsx(Bt,{disabled:!g||!o,onPress:A,android_ripple:g&&o?{color:J,borderless:!0,radius:Math.round(j.boxSize*1.1+4)}:void 0,style:K=>[jo.checkboxAlignmentWrapper,{opacity:K.pressed&&g&&Et.OS!=="android"?.8:1}],children:e.jsx(W,{style:[jo.checkboxBox,{width:j.boxSize,height:j.boxSize,backgroundColor:_,borderColor:H,borderWidth:B&&g?0:1.5}],children:q()})}),(L||z)&&e.jsxs(W,{style:jo.textColumn,children:[L&&e.jsxs(Fe,{style:[jo.labelText,{fontSize:V.fontSize,fontWeight:V.fontWeight,lineHeight:V.lineHeight,color:U},w],children:[i,s&&e.jsx(Fe,{style:{color:k.colors.error},children:" *"})]}),z&&e.jsxs(W,{style:[jo.descriptionRow,{marginTop:L?4:0}],children:[e.jsx(W,{style:jo.descriptionIconContainer,children:ce()}),e.jsx(Fe,{style:[jo.descriptionText,{fontSize:k.typography.lS_default.fontSize,fontWeight:k.typography.lS_default.fontWeight,lineHeight:k.typography.lS_default.lineHeight,color:D},b],children:a})]})]})]})},jo=Qe.create({rowContainer:{flexDirection:"row",alignItems:"center",paddingVertical:6},checkboxAlignmentWrapper:{justifyContent:"center",alignItems:"center"},checkboxBox:{borderRadius:4,justifyContent:"center",alignItems:"center",overflow:"hidden"},fallbackCheckText:{fontWeight:"700",textAlign:"center",includeFontPadding:!1,textAlignVertical:"center"},fallbackDashView:{borderRadius:1.5},textColumn:{flex:1,marginLeft:10,justifyContent:"center"},labelText:{includeFontPadding:!1},descriptionRow:{flexDirection:"row",alignItems:"center"},descriptionIconContainer:{marginRight:6,justifyContent:"center",alignItems:"center"},fallbackIconText:{fontSize:13,fontWeight:"700",includeFontPadding:!1},descriptionText:{flex:1,includeFontPadding:!1}}),T7=({isDark:t})=>{const[o,i]=f.useState("preview"),[a,d]=f.useState("default"),[s,p]=f.useState("5489 7621 1234"),[n,g]=f.useState(!1),u=f.useMemo(()=>({title:t?r.neutral50:"#0F172A",subtleText:t?r.neutral400:"#475569",mutedText:t?r.neutral500:"#64748B",border:t?r.neutral800:r.neutral200,cardBg:t?r.neutral900:"#FFFFFF",cardScreenBg:t?"#1C1335":"#F3F0FF",defaultScreenBg:t?r.neutral950:"#FFFFFF",headerBg:t?r.gray900:"#FFFFFF",primary:t?r.primary300:r.primary,menuBorder:t?r.primary400:"#C0B3FF",menuIcon:t?r.primary300:r.primary,buttonBg:t?r.primary:"#4F46E5"}),[t]),x=()=>{alert("Aadhaar OTP sent successfully!")},h=f.useMemo(()=>a==="card"?`import React, { useState } from 'react';
+successfully`}),e.jsx("div",{style:{height:12}}),e.jsx("p",{style:{fontSize:14,fontWeight:400,lineHeight:1.5,color:s.subtleText,margin:0,textAlign:"center",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:"Sign in with your new password to continue access to government services."})]}),e.jsxs("div",{children:[e.jsx("div",{style:{padding:"0 20px 16px 20px"},children:e.jsx(xe,{text:"Sign in",variant:"primary",size:"large",onPress:p,style:{height:48,borderRadius:8,width:"100%",backgroundColor:s.buttonBg}})}),e.jsxs("div",{style:{display:"flex",flexDirection:"row",padding:"14px 20px",alignItems:"center",justifyContent:"center",gap:4},children:[e.jsx("span",{style:{fontSize:11,fontWeight:400,color:s.mutedText,fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:"Powered by -"}),e.jsx("img",{src:"/Digital_India_logo.svg",alt:"Digital India",style:{height:24,filter:t?"brightness(0) invert(1)":"none"}})]})]})]})]})};return e.jsxs("div",{className:"wb-page",children:[e.jsxs("div",{className:"wb-header",children:[e.jsxs("div",{className:"wb-header-row",children:[e.jsx("h1",{className:"wb-title",children:"Password reset successfully"}),e.jsx("span",{className:"wb-badge",children:"Pattern"})]}),e.jsx("p",{className:"wb-subtitle",children:"Success confirmation after the new password has been saved."})]}),e.jsx("div",{className:"wb-body",children:e.jsxs("div",{className:"wb-main",children:[e.jsxs("div",{className:"wb-tab-bar",children:[e.jsxs("button",{className:`wb-tab ${o==="preview"?"active":""}`,onClick:()=>i("preview"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"visibility"})," Preview"]}),e.jsxs("button",{className:`wb-tab ${o==="code"?"active":""}`,onClick:()=>i("code"),type:"button",children:[e.jsx("span",{className:"material-symbols-outlined wb-tab-icon",children:"code"})," Code"]})]}),e.jsxs("div",{className:"wb-content",children:[o==="preview"&&e.jsx(me,{isDark:t,children:e.jsxs("div",{className:`wb-preview-area ${t?"dark":""}`,style:{flexDirection:"column",alignItems:"center"},children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:24,backgroundColor:t?r.neutral800:r.neutral100,padding:4,borderRadius:10,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:[e.jsx("button",{type:"button",onClick:()=>d("default"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:a==="default"?r.primary:"transparent",color:a==="default"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>d("card"),style:{padding:"8px 18px",borderRadius:8,border:"none",fontSize:13,fontWeight:600,cursor:"pointer",backgroundColor:a==="card"?r.primary:"transparent",color:a==="card"?r.neutral0:t?r.neutral400:r.neutral600,transition:"all 0.2s ease"},children:"Card style"})]}),g()]})}),o==="code"&&e.jsxs("div",{className:"wb-code-area",children:[e.jsxs("div",{style:{display:"flex",gap:8,marginBottom:16,padding:"8px 16px",backgroundColor:t?r.neutral900:r.neutral50,borderRadius:8,alignItems:"center",border:`1px solid ${t?r.neutral800:r.neutral200}`},children:[e.jsx("span",{style:{fontSize:13,fontWeight:600,color:t?r.neutral300:r.neutral700},children:"Active Variant:"}),e.jsx("button",{type:"button",onClick:()=>d("default"),style:{padding:"4px 12px",borderRadius:6,border:"none",fontSize:12,fontWeight:600,cursor:"pointer",backgroundColor:a==="default"?r.primary:"transparent",color:a==="default"?r.neutral0:t?r.neutral400:r.neutral600},children:"Default"}),e.jsx("button",{type:"button",onClick:()=>d("card"),style:{padding:"4px 12px",borderRadius:6,border:"none",fontSize:12,fontWeight:600,cursor:"pointer",backgroundColor:a==="card"?r.primary:"transparent",color:a==="card"?r.neutral0:t?r.neutral400:r.neutral600},children:"Card style"})]}),e.jsx(ne,{code:n,language:"TSX",filename:a==="card"?"PasswordResetSuccessCardPattern.tsx":"PasswordResetSuccessDefaultPattern.tsx"})]})]})]})})]})};let ii=null,ni=null,jn=null;try{const t=require("react-native-svg");ii=t.Svg,ni=t.Path,jn=t.Circle}catch{}const S7={small:{boxSize:16,typographyKey:"lM_default"},medium:{boxSize:20,typographyKey:"lL_default"},large:{boxSize:24,typographyKey:"lXL_default"}},ba=(t,o)=>!t||!t.startsWith("#")?t:`${t.slice(0,7)}${o}`,Ct=({value:t=!1,onChanged:o,label:i,description:a,size:d="medium",isRequired:s=!1,hasError:p=!1,descriptionVariant:n="helper",enabled:g=!0,activeColor:u,checkColor:x,style:h,labelStyle:w,descriptionStyle:b,testID:C,accessibilityLabel:y,accessibilityRole:S="checkbox",...T})=>{const k=mt(),j=S7[d];let D;switch(n){case"helper":D=ba(k.colors.onSurface,"B3");break;case"error":D=k.colors.error;break;case"warning":D=k.colors.warning;break;case"success":D=k.colors.success;break}const V=k.typography[j.typographyKey],U=g?k.colors.onSurface:ba(k.colors.onSurface,"61"),B=t===!0||t===null,N=u??k.colors.primary,G=x??k.colors.onPrimary;let _="transparent",H="transparent";g?B?(_=N,H=N):(_="transparent",p||n==="error"?H=k.colors.error:H=k.isDark?r.neutral700:r.neutral300):B?(_=ba(k.colors.onSurface,"1F"),H="transparent"):(_="transparent",H=ba(k.colors.onSurface,"1F"));const A=()=>{if(!g||!o)return;o(t===null?!0:!t)},L=i!==void 0&&i.trim().length>0,z=a!==void 0&&a.trim().length>0,q=()=>{if(!B)return null;const K=g?G:ba(k.colors.onSurface,"61"),Z=Math.round(j.boxSize*.7);if(ii&&ni){if(t===!0)return e.jsx(ii,{width:Z,height:Z,viewBox:"0 0 24 24",fill:"none",children:e.jsx(ni,{d:"M4 12l5 5L20 6",stroke:K,strokeWidth:3,strokeLinecap:"round",strokeLinejoin:"round"})});if(t===null)return e.jsx(ii,{width:Z,height:Z,viewBox:"0 0 24 24",fill:"none",children:e.jsx(ni,{d:"M5 12h14",stroke:K,strokeWidth:3.5,strokeLinecap:"round"})})}return t===!0?e.jsx(Fe,{style:[jo.fallbackCheckText,{color:K,fontSize:j.boxSize*.65}],children:"✓"}):t===null?e.jsx(W,{style:[jo.fallbackDashView,{backgroundColor:K,width:j.boxSize*.55,height:2.5}]}):null},ce=()=>{if(ii&&ni)return n==="error"?e.jsxs(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:[jn&&e.jsx(jn,{cx:"12",cy:"12",r:"10",stroke:D,strokeWidth:"2"}),e.jsx(ni,{d:"M12 8v4M12 16h.01",stroke:D,strokeWidth:"2",strokeLinecap:"round"})]}):n==="warning"?e.jsx(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:e.jsx(ni,{d:"M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01",stroke:D,strokeWidth:"2",strokeLinecap:"round",strokeLinejoin:"round"})}):n==="success"?e.jsxs(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:[jn&&e.jsx(jn,{cx:"12",cy:"12",r:"10",stroke:D,strokeWidth:"2"}),e.jsx(ni,{d:"M8 12l2.5 2.5L16 9",stroke:D,strokeWidth:"2",strokeLinecap:"round",strokeLinejoin:"round"})]}):e.jsxs(ii,{width:16,height:16,viewBox:"0 0 24 24",fill:"none",children:[jn&&e.jsx(jn,{cx:"12",cy:"12",r:"10",stroke:D,strokeWidth:"2"}),e.jsx(ni,{d:"M12 16v-4M12 8h.01",stroke:D,strokeWidth:"2",strokeLinecap:"round"})]});let K="ⓘ";return n==="error"&&(K="⚠"),n==="warning"&&(K="⚠"),n==="success"&&(K="✓"),e.jsx(Fe,{style:[jo.fallbackIconText,{color:D}],children:K})},J=ba(k.colors.primary,"1F");return e.jsxs(Bt,{testID:C,accessibilityLabel:y??i,accessibilityRole:S,accessibilityState:{disabled:!g,checked:t===null?"mixed":t},disabled:!g||!o,onPress:A,android_ripple:void 0,style:K=>{const Z=typeof h=="function"?h(K):h;return[jo.rowContainer,{alignItems:z?"flex-start":"center",opacity:K.pressed&&g&&Et.OS!=="android"?.8:1},Z]},...T,children:[e.jsx(Bt,{disabled:!g||!o,onPress:A,android_ripple:g&&o?{color:J,borderless:!0,radius:Math.round(j.boxSize*1.1+4)}:void 0,style:K=>[jo.checkboxAlignmentWrapper,{opacity:K.pressed&&g&&Et.OS!=="android"?.8:1}],children:e.jsx(W,{style:[jo.checkboxBox,{width:j.boxSize,height:j.boxSize,backgroundColor:_,borderColor:H,borderWidth:B&&g?0:1.5}],children:q()})}),(L||z)&&e.jsxs(W,{style:jo.textColumn,children:[L&&e.jsxs(Fe,{style:[jo.labelText,{fontSize:V.fontSize,fontWeight:V.fontWeight,lineHeight:V.lineHeight,color:U},w],children:[i,s&&e.jsx(Fe,{style:{color:k.colors.error},children:" *"})]}),z&&e.jsxs(W,{style:[jo.descriptionRow,{marginTop:L?4:0}],children:[e.jsx(W,{style:jo.descriptionIconContainer,children:ce()}),e.jsx(Fe,{style:[jo.descriptionText,{fontSize:k.typography.lS_default.fontSize,fontWeight:k.typography.lS_default.fontWeight,lineHeight:k.typography.lS_default.lineHeight,color:D},b],children:a})]})]})]})},jo=Qe.create({rowContainer:{flexDirection:"row",alignItems:"center",paddingVertical:6},checkboxAlignmentWrapper:{justifyContent:"center",alignItems:"center"},checkboxBox:{borderRadius:4,justifyContent:"center",alignItems:"center",overflow:"hidden"},fallbackCheckText:{fontWeight:"700",textAlign:"center",includeFontPadding:!1,textAlignVertical:"center"},fallbackDashView:{borderRadius:1.5},textColumn:{flex:1,marginLeft:10,justifyContent:"center"},labelText:{includeFontPadding:!1},descriptionRow:{flexDirection:"row",alignItems:"center"},descriptionIconContainer:{marginRight:6,justifyContent:"center",alignItems:"center"},fallbackIconText:{fontSize:13,fontWeight:"700",includeFontPadding:!1},descriptionText:{flex:1,includeFontPadding:!1}}),T7=({isDark:t})=>{const[o,i]=f.useState("preview"),[a,d]=f.useState("default"),[s,p]=f.useState("5489 7621 1234"),[n,g]=f.useState(!1),u=f.useMemo(()=>({title:t?r.neutral50:"#0F172A",subtleText:t?r.neutral400:"#475569",mutedText:t?r.neutral500:"#64748B",border:t?r.neutral800:r.neutral200,cardBg:t?r.neutral900:"#FFFFFF",cardScreenBg:t?"#1C1335":"#F3F0FF",defaultScreenBg:t?r.neutral950:"#FFFFFF",headerBg:t?r.gray900:"#FFFFFF",primary:t?r.primary300:r.primary,menuBorder:t?r.primary400:"#C0B3FF",menuIcon:t?r.primary300:r.primary,buttonBg:t?r.primary:"#4F46E5"}),[t]),x=()=>{alert("Aadhaar OTP sent successfully!")},h=f.useMemo(()=>a==="card"?`import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -95928,7 +95928,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="i-949Jr_xSLk1BxKy95c0",D1=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="2qiI3pps8zkUl0LQLvIZ3",D1=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -96002,8 +96002,8 @@ const STEP_METADATA = {
     subtitle: 'Check every answer before you commit to it.',
   },
   8: {
-    title: 'Review & Declaration',
-    subtitle: 'Everything you have entered, read back before final permit submission.',
+    title: 'Fee & payment',
+    subtitle: 'What this permit costs, on what basis, and when it falls due.',
   },
   9: {
     title: 'Permit Issued',
@@ -96134,7 +96134,7 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(7);
+  const [step, setStep] = useState(8);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -96259,9 +96259,8 @@ export default function App() {
     undertakingZeroWaste: true,
     undertakingOriginalId: true,
 
-    // Step 8 & 9: Final Declaration & Submission
-    declarationAccuracy: false,
-    permitNumber: 'EAP-2026-009418',
+    // Step 8 & 9: Fee, Payment & Final Permit
+    permitNumber: 'UK-EAP-2026-004821',
     isSubmitted: false,
   });
 
@@ -96780,29 +96779,17 @@ export default function App() {
     triggerToast('Review & declaration confirmed. Proceeding to Step 8.');
   };
 
-  // Step 8 Validation Check & Final Permit Generation
+  // Step 8 Validation Check & Proceed to Step 9
   const handleContinueStep8 = () => {
-    const errs = {};
-    if (!formData.declarationAccuracy) {
-      errs.declarationAccuracy = 'Please accept the declaration before submitting';
-    }
-
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs);
-      triggerToast('Please confirm your declaration to submit');
-      return;
-    }
-
     setErrors({});
-    const randomSuffix = Math.floor(100000 + Math.random() * 900000);
-    const newPermitNum = 'EAP-2026-' + randomSuffix;
+    const newPermitNum = formData.permitNumber || 'UK-EAP-2026-004821';
     setFormData((prev) => ({
       ...prev,
       isSubmitted: true,
       permitNumber: newPermitNum,
     }));
     setStep(9);
-    triggerToast('Entry & Area Permit successfully issued! ID: ' + newPermitNum);
+    triggerToast('Payment received! Permit issued: ' + newPermitNum);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
@@ -98295,177 +98282,28 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 8: REVIEW & DECLARATION                                              */}
+          {/* STEP 8: FEE & PAYMENT                                                    */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 8 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Preview Your Application</Text>
+              <Text style={styles.sectionHeading}>Fee Details</Text>
 
-              {/* Card 1: Identity Summary */}
-              <View style={styles.reviewCardGreen}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 1 · Identity & eKYC</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(1)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  {formData.fullName} · {formData.gender} · {formData.city}, {formData.state} · +91 {formData.mobileNumber}
+              <View style={styles.feeCard}>
+                <Text style={styles.feeCardTitle}>
+                  Entry and area permit · {formData.permitNumber || 'UK-EAP-2026-004821'}
                 </Text>
-              </View>
 
-              {/* Card 2: Zone & Checkpost Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 2 · Trip Details</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(2)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
+                <View style={styles.feeRow}>
+                  <Text style={styles.feeLabel}>Permit fee — 4-day trip, 2 travellers</Text>
+                  <Text style={styles.feeValue}>₹600</Text>
                 </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  {formData.destinations && formData.destinations.length > 0
-                    ? formData.destinations.map((d) => d.name).join(' → ')
-                    : 'Yamunotri → Gangotri → Kedarnath'} · {formData.numTravellers || '2'} Travellers · {formData.tripPurpose === 'tourist' ? 'Tourist' : (formData.tripPurpose || 'Tourist')}
-                </Text>
-              </View>
 
-              {/* Card 3: Travel & Vehicle Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 3 · Travel & Vehicle</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(3)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
+                <View style={styles.feeDivider} />
+
+                <View style={styles.feeRow}>
+                  <Text style={styles.feeTotalLabel}>Total payable</Text>
+                  <Text style={styles.feeTotalValue}>₹600</Text>
                 </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  {formData.travelMode === 'by_road' ? 'By road' : formData.travelMode} ({formData.transportType === 'private_car' ? 'Private car' : formData.transportType}) · {formData.vehicleNumber} · Driver: {formData.driverName} · PUC: {formData.pucCertNumber} (Valid: {formData.pucValidUntil})
-                </Text>
-              </View>
-
-              {/* Card 4: Travellers in the group Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 4 · Travellers in the group</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(4)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  Primary: {formData.fullName} (34, Male) · Group: {formData.groupTravellers && formData.groupTravellers.length > 0 ? formData.groupTravellers.map((t) => (t.fullName || 'Traveller') + ' (' + (t.relationship || t.type) + ')').join(', ') : 'None'}
-                </Text>
-              </View>
-
-              {/* Card 5: Health & Emergency Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 5 · Health & emergency</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(5)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  Emergency Contact: {formData.emergencyContactName} ({formData.emergencyContactRelation ? formData.emergencyContactRelation.toUpperCase() : 'MOTHER'}, +91 {formData.emergencyContactNumber}) · Conditions: {formData.conditionDetails || 'None'} {formData.isQualifiedDoctor ? '· Qualified Doctor' : ''}
-                </Text>
-              </View>
-
-              {/* Card 6: Documents & photo Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 6 · Documents & photo</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(6)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  Photograph: {formData.photoMode === 'live' ? 'Live webcam match verified' : (formData.passportPhotoFileName || 'passport_photo_ramesh.jpg')} · Identity document: 1 uploaded (UIDAI eKYC Verified)
-                </Text>
-              </View>
-
-              {/* Declaration Section */}
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Declaration</Text>
-              <View style={{ marginTop: 6 }}>
-                <Ux4gCheckbox
-                  label="I hereby declare that all information furnished is true, correct, and complete to the best of my knowledge."
-                  isRequired
-                  value={formData.declarationAccuracy}
-                  onChanged={(val) => updateField('declarationAccuracy', !!val)}
-                  size="medium"
-                  hasError={!!errors.declarationAccuracy}
-                  description={errors.declarationAccuracy}
-                  descriptionVariant={errors.declarationAccuracy ? 'error' : 'helper'}
-                />
               </View>
             </View>
           )}
@@ -98536,9 +98374,7 @@ export default function App() {
             onPress={handleContinue}
           >
             <Text style={styles.primaryContinueBtnText}>
-              {step === 8
-                ? 'Submit permit application'
-                : step === 9
+              {step === 9
                 ? 'Go to my permits'
                 : 'Continue'}
             </Text>
@@ -99002,6 +98838,52 @@ const styles = StyleSheet.create({
     color: '#b45309',
     marginTop: 2,
     lineHeight: 17,
+  },
+  feeCard: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 10,
+    padding: 16,
+    marginTop: 4,
+  },
+  feeCardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 14,
+  },
+  feeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  feeLabel: {
+    fontSize: 14,
+    color: '#374151',
+    flex: 1,
+    paddingRight: 12,
+    lineHeight: 20,
+  },
+  feeValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  feeDivider: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 14,
+  },
+  feeTotalLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  feeTotalValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
   },
   addMemberBtn: {
     borderWidth: 1,

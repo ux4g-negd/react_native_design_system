@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'i-949Jr_xSLk1BxKy95c0';
+const SNACK_ID = '2qiI3pps8zkUl0LQLvIZ3';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -88,8 +88,8 @@ const STEP_METADATA = {
     subtitle: 'Check every answer before you commit to it.',
   },
   8: {
-    title: 'Review & Declaration',
-    subtitle: 'Everything you have entered, read back before final permit submission.',
+    title: 'Fee & payment',
+    subtitle: 'What this permit costs, on what basis, and when it falls due.',
   },
   9: {
     title: 'Permit Issued',
@@ -220,7 +220,7 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(7);
+  const [step, setStep] = useState(8);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -345,9 +345,8 @@ export default function App() {
     undertakingZeroWaste: true,
     undertakingOriginalId: true,
 
-    // Step 8 & 9: Final Declaration & Submission
-    declarationAccuracy: false,
-    permitNumber: 'EAP-2026-009418',
+    // Step 8 & 9: Fee, Payment & Final Permit
+    permitNumber: 'UK-EAP-2026-004821',
     isSubmitted: false,
   });
 
@@ -866,29 +865,17 @@ export default function App() {
     triggerToast('Review & declaration confirmed. Proceeding to Step 8.');
   };
 
-  // Step 8 Validation Check & Final Permit Generation
+  // Step 8 Validation Check & Proceed to Step 9
   const handleContinueStep8 = () => {
-    const errs = {};
-    if (!formData.declarationAccuracy) {
-      errs.declarationAccuracy = 'Please accept the declaration before submitting';
-    }
-
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs);
-      triggerToast('Please confirm your declaration to submit');
-      return;
-    }
-
     setErrors({});
-    const randomSuffix = Math.floor(100000 + Math.random() * 900000);
-    const newPermitNum = 'EAP-2026-' + randomSuffix;
+    const newPermitNum = formData.permitNumber || 'UK-EAP-2026-004821';
     setFormData((prev) => ({
       ...prev,
       isSubmitted: true,
       permitNumber: newPermitNum,
     }));
     setStep(9);
-    triggerToast('Entry & Area Permit successfully issued! ID: ' + newPermitNum);
+    triggerToast('Payment received! Permit issued: ' + newPermitNum);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
@@ -2381,177 +2368,28 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 8: REVIEW & DECLARATION                                              */}
+          {/* STEP 8: FEE & PAYMENT                                                    */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 8 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Preview Your Application</Text>
+              <Text style={styles.sectionHeading}>Fee Details</Text>
 
-              {/* Card 1: Identity Summary */}
-              <View style={styles.reviewCardGreen}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 1 · Identity & eKYC</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(1)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  {formData.fullName} · {formData.gender} · {formData.city}, {formData.state} · +91 {formData.mobileNumber}
+              <View style={styles.feeCard}>
+                <Text style={styles.feeCardTitle}>
+                  Entry and area permit · {formData.permitNumber || 'UK-EAP-2026-004821'}
                 </Text>
-              </View>
 
-              {/* Card 2: Zone & Checkpost Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 2 · Trip Details</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(2)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
+                <View style={styles.feeRow}>
+                  <Text style={styles.feeLabel}>Permit fee — 4-day trip, 2 travellers</Text>
+                  <Text style={styles.feeValue}>₹600</Text>
                 </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  {formData.destinations && formData.destinations.length > 0
-                    ? formData.destinations.map((d) => d.name).join(' → ')
-                    : 'Yamunotri → Gangotri → Kedarnath'} · {formData.numTravellers || '2'} Travellers · {formData.tripPurpose === 'tourist' ? 'Tourist' : (formData.tripPurpose || 'Tourist')}
-                </Text>
-              </View>
 
-              {/* Card 3: Travel & Vehicle Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 3 · Travel & Vehicle</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(3)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
+                <View style={styles.feeDivider} />
+
+                <View style={styles.feeRow}>
+                  <Text style={styles.feeTotalLabel}>Total payable</Text>
+                  <Text style={styles.feeTotalValue}>₹600</Text>
                 </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  {formData.travelMode === 'by_road' ? 'By road' : formData.travelMode} ({formData.transportType === 'private_car' ? 'Private car' : formData.transportType}) · {formData.vehicleNumber} · Driver: {formData.driverName} · PUC: {formData.pucCertNumber} (Valid: {formData.pucValidUntil})
-                </Text>
-              </View>
-
-              {/* Card 4: Travellers in the group Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 4 · Travellers in the group</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(4)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  Primary: {formData.fullName} (34, Male) · Group: {formData.groupTravellers && formData.groupTravellers.length > 0 ? formData.groupTravellers.map((t) => (t.fullName || 'Traveller') + ' (' + (t.relationship || t.type) + ')').join(', ') : 'None'}
-                </Text>
-              </View>
-
-              {/* Card 5: Health & Emergency Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 5 · Health & emergency</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(5)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  Emergency Contact: {formData.emergencyContactName} ({formData.emergencyContactRelation ? formData.emergencyContactRelation.toUpperCase() : 'MOTHER'}, +91 {formData.emergencyContactNumber}) · Conditions: {formData.conditionDetails || 'None'} {formData.isQualifiedDoctor ? '· Qualified Doctor' : ''}
-                </Text>
-              </View>
-
-              {/* Card 6: Documents & photo Summary */}
-              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <View style={styles.reviewCardLeft}>
-                    <View style={styles.reviewIconCircleGreen}>
-                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                      </Svg>
-                    </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 6 · Documents & photo</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => jumpToStep(6)}>
-                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                        fill={UX4GColors.neutral900}
-                      />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  Photograph: {formData.photoMode === 'live' ? 'Live webcam match verified' : (formData.passportPhotoFileName || 'passport_photo_ramesh.jpg')} · Identity document: 1 uploaded (UIDAI eKYC Verified)
-                </Text>
-              </View>
-
-              {/* Declaration Section */}
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Declaration</Text>
-              <View style={{ marginTop: 6 }}>
-                <Ux4gCheckbox
-                  label="I hereby declare that all information furnished is true, correct, and complete to the best of my knowledge."
-                  isRequired
-                  value={formData.declarationAccuracy}
-                  onChanged={(val) => updateField('declarationAccuracy', !!val)}
-                  size="medium"
-                  hasError={!!errors.declarationAccuracy}
-                  description={errors.declarationAccuracy}
-                  descriptionVariant={errors.declarationAccuracy ? 'error' : 'helper'}
-                />
               </View>
             </View>
           )}
@@ -2622,9 +2460,7 @@ export default function App() {
             onPress={handleContinue}
           >
             <Text style={styles.primaryContinueBtnText}>
-              {step === 8
-                ? 'Submit permit application'
-                : step === 9
+              {step === 9
                 ? 'Go to my permits'
                 : 'Continue'}
             </Text>
@@ -3088,6 +2924,52 @@ const styles = StyleSheet.create({
     color: '#b45309',
     marginTop: 2,
     lineHeight: 17,
+  },
+  feeCard: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 10,
+    padding: 16,
+    marginTop: 4,
+  },
+  feeCardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 14,
+  },
+  feeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  feeLabel: {
+    fontSize: 14,
+    color: '#374151',
+    flex: 1,
+    paddingRight: 12,
+    lineHeight: 20,
+  },
+  feeValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  feeDivider: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 14,
+  },
+  feeTotalLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  feeTotalValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
   },
   addMemberBtn: {
     borderWidth: 1,
