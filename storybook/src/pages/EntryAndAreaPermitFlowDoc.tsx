@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = '72ckuuChm71Lm4T-OBjba';
+const SNACK_ID = 'i5MqIhSWBsVt54hZ7pyeM';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -836,25 +836,7 @@ export default function App() {
           {step === 1 && (
             <View style={styles.formContainer}>
               {/* SECTION 1: Aadhaar Verification */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <Text style={styles.sectionHeading}>Aadhaar Verification</Text>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={handleQuickFillStep1}
-                  style={{
-                    paddingVertical: 4,
-                    paddingHorizontal: 10,
-                    borderRadius: 14,
-                    backgroundColor: UX4GColors.primary50,
-                    borderWidth: 1,
-                    borderColor: UX4GColors.primary200,
-                  }}
-                >
-                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.primary }}>
-                    Fill sample data
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.sectionHeading}>Aadhaar Verification</Text>
 
               {/* Official UX4G Aadhaar Input Component */}
               <View style={styles.fieldGroup}>
@@ -1182,26 +1164,7 @@ export default function App() {
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 2 && (
             <View style={styles.formContainer}>
-              {/* Top Row: Section Heading & Quick Fill */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <Text style={styles.sectionHeading}>Travel Dates</Text>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={handleQuickFillStep2}
-                  style={{
-                    paddingVertical: 4,
-                    paddingHorizontal: 10,
-                    borderRadius: 14,
-                    backgroundColor: UX4GColors.primary50,
-                    borderWidth: 1,
-                    borderColor: UX4GColors.primary200,
-                  }}
-                >
-                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.primary }}>
-                    Fill sample data
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.sectionHeading}>Travel Dates</Text>
 
               {/* Trip start date* */}
               <View style={styles.fieldGroup}>
@@ -1361,25 +1324,7 @@ export default function App() {
           {step === 3 && (
             <View style={styles.formContainer}>
               {/* SECTION 1: Mode of Travel */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <Text style={styles.sectionHeading}>Mode of Travel</Text>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={handleQuickFillStep3}
-                  style={{
-                    paddingVertical: 4,
-                    paddingHorizontal: 10,
-                    borderRadius: 14,
-                    backgroundColor: UX4GColors.primary50,
-                    borderWidth: 1,
-                    borderColor: UX4GColors.primary200,
-                  }}
-                >
-                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.primary }}>
-                    Fill sample data
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.sectionHeading}>Mode of Travel</Text>
 
               {/* Mode of travel* */}
               <View style={styles.fieldGroup}>
