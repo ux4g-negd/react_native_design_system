@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'KBOAUtuMXNv9Vi1locRBA';
+const SNACK_ID = 'o4lqy4mWlNPZj47wrACIQ';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -513,34 +513,36 @@ export default function App() {
 
         {/* ─── SAVED STATUS BANNER (USING UX4GSTATUSBANNER) ─── */}
         {step < 9 && (
-          <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
+          <View style={{ paddingHorizontal: 16, paddingTop: 10, paddingBottom: 2 }}>
             <Ux4gStatusBanner
               variant="successLight"
+              height={34}
               title={'Saved ' + savedTime}
-              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
+              titleStyle={{ fontSize: 12.5, fontWeight: '600', color: '#166534', includeFontPadding: false }}
               contentAlignment="right"
               leadingIcon={
-                <View style={{ marginRight: -8 }}>
-                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                <View style={{ marginRight: -10, justifyContent: 'center', alignItems: 'center' }}>
+                  <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#16a34a" strokeWidth={2.2} />
                     <Path
                       d="M8 12l2.5 2.5L16 9"
-                      stroke="#15803D"
-                      strokeWidth={2}
+                      stroke="#16a34a"
+                      strokeWidth={2.2}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </Svg>
                 </View>
               }
-              paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
+              paddingStyle={{ paddingVertical: 4, paddingHorizontal: 12 }}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
               containerStyle={{
-                backgroundColor: '#EBF9F1',
+                backgroundColor: '#f2fcef',
                 borderColor: 'transparent',
+                borderWidth: 0,
                 elevation: 0,
                 shadowOpacity: 0,
-                borderRadius: 8,
+                borderRadius: 6,
               }}
             />
           </View>
@@ -629,47 +631,58 @@ export default function App() {
               <Ux4gStatusBanner
                 variant="infoLight"
                 title="No Aadhaar? You can still apply in person."
-                titleStyle={{ fontSize: 13.5, fontWeight: '700', color: UX4GColors.neutral900, lineHeight: 18 }}
+                titleStyle={{
+                  fontSize: 13,
+                  fontWeight: '700',
+                  color: '#002329',
+                  lineHeight: 18,
+                  includeFontPadding: false,
+                }}
                 leadingIcon={
                   <View
                     style={{
-                      width: 18,
-                      height: 18,
-                      borderRadius: 9,
-                      backgroundColor: '#00ACC1',
+                      width: 16,
+                      height: 16,
+                      borderRadius: 8,
+                      backgroundColor: '#13c2c2',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      marginRight: -4,
+                      marginRight: -6,
+                      marginTop: 1,
                     }}
                   >
-                    <Text style={{ color: '#FFFFFF', fontSize: 11, fontWeight: '700', fontStyle: 'italic', lineHeight: 13 }}>
+                    <Text
+                      style={{
+                        color: '#ffffff',
+                        fontSize: 10.5,
+                        fontWeight: '700',
+                        fontStyle: 'italic',
+                        lineHeight: 12,
+                        includeFontPadding: false,
+                      }}
+                    >
                       i
                     </Text>
                   </View>
                 }
                 subtitleWidget={
-                  <View style={{ marginTop: 2 }}>
-                    <Text style={{ fontSize: 12.5, lineHeight: 18, color: '#334155' }}>
-                      {'Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. '}
-                    </Text>
-                    <TouchableOpacity
-                      activeOpacity={0.7}
+                  <Text style={{ fontSize: 12, lineHeight: 17, color: '#475569', marginTop: 2 }}>
+                    {'Named counters are listed on the service page — you do not need an Aadhaar number to obtain this permit. '}
+                    <Text
+                      style={{ color: '#08979c', fontWeight: '600' }}
                       onPress={() => triggerToast('Opening list of local district administrative counters')}
-                      style={{ marginTop: 3 }}
                     >
-                      <Text style={{ fontSize: 12.5, fontWeight: '600', color: '#00838F', textDecorationLine: 'underline' }}>
-                        See the list of counters
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                      See the list of counters
+                    </Text>
+                  </Text>
                 }
-                paddingStyle={{ paddingHorizontal: 14, paddingVertical: 12 }}
+                paddingStyle={{ paddingHorizontal: 12, paddingVertical: 10 }}
                 marginStyle={{ marginHorizontal: 0, marginVertical: 14 }}
                 containerStyle={{
-                  backgroundColor: '#E0F7FA',
-                  borderColor: '#80DEEA',
+                  backgroundColor: '#e6fffb',
+                  borderColor: '#87e8de',
                   borderWidth: 1,
-                  borderRadius: 8,
+                  borderRadius: 6,
                   elevation: 0,
                   shadowOpacity: 0,
                 }}

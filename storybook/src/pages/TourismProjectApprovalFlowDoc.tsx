@@ -9,7 +9,7 @@ interface TourismProjectApprovalFlowDocProps {
 }
 
 // Official Snack ID for Tourism Project Approval Flow (Complete 5-Step Workflow with Ux4gDatePicker)
-const SNACK_ID = '6Or6lQugyiK2BZ6VV6-c0';
+const SNACK_ID = '9VOLqCATIVRtMQ0NnEimn';
 
 export const TourismProjectApprovalFlowDoc: React.FC<TourismProjectApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -336,31 +336,33 @@ export default function App() {
           {step < 5 && (
             <Ux4gStatusBanner
               variant="successLight"
+              height={34}
               title={'Saved ' + savedTime}
-              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
+              titleStyle={{ fontSize: 12.5, fontWeight: '600', color: '#166534', includeFontPadding: false }}
               contentAlignment="right"
               leadingIcon={
-                <View style={{ marginRight: -8 }}>
-                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                <View style={{ marginRight: -10, justifyContent: 'center', alignItems: 'center' }}>
+                  <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#16a34a" strokeWidth={2.2} />
                     <Path
                       d="M8 12l2.5 2.5L16 9"
-                      stroke="#15803D"
-                      strokeWidth={2}
+                      stroke="#16a34a"
+                      strokeWidth={2.2}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </Svg>
                 </View>
               }
-              paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
-              marginStyle={{ marginHorizontal: 16, marginTop: 12, marginBottom: 4 }}
+              paddingStyle={{ paddingVertical: 4, paddingHorizontal: 12 }}
+              marginStyle={{ marginHorizontal: 16, marginTop: 10, marginBottom: 4 }}
               containerStyle={{
-                backgroundColor: '#EBF9F1',
+                backgroundColor: '#f2fcef',
                 borderColor: 'transparent',
+                borderWidth: 0,
                 elevation: 0,
                 shadowOpacity: 0,
-                borderRadius: 8,
+                borderRadius: 6,
               }}
             />
           )}

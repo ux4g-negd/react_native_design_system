@@ -9,7 +9,7 @@ interface TourismEventSponsorshipFlowDocProps {
 }
 
 // Official Snack ID for Tourism Event Sponsorship Flow (Complete 5-Step Connected Flow)
-const SNACK_ID = 'HvhBiHPm0sQAJpR-FmnC0';
+const SNACK_ID = '5p8oelQbXtspRvU6H4tQs';
 
 export const TourismEventSponsorshipFlowDoc: React.FC<TourismEventSponsorshipFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -603,34 +603,36 @@ export default function App() {
 
         {/* ─── TOP STATUS BANNER (SAVED NOTIFICATION - USING UX4GSTATUSBANNER) ─── */}
         {step !== 5 && (
-          <View style={{ paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 }}>
+          <View style={{ paddingHorizontal: 16, paddingTop: 10, paddingBottom: 2 }}>
             <Ux4gStatusBanner
               variant="successLight"
+              height={34}
               title={'Saved ' + savedTime}
-              titleStyle={{ fontSize: 13, fontWeight: '600', color: '#15803D' }}
+              titleStyle={{ fontSize: 12.5, fontWeight: '600', color: '#166534', includeFontPadding: false }}
               contentAlignment="right"
               leadingIcon={
-                <View style={{ marginRight: -8 }}>
-                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-                    <Circle cx={12} cy={12} r={10} stroke="#15803D" strokeWidth={2} />
+                <View style={{ marginRight: -10, justifyContent: 'center', alignItems: 'center' }}>
+                  <Svg width={15} height={15} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} stroke="#16a34a" strokeWidth={2.2} />
                     <Path
                       d="M8 12l2.5 2.5L16 9"
-                      stroke="#15803D"
-                      strokeWidth={2}
+                      stroke="#16a34a"
+                      strokeWidth={2.2}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </Svg>
                 </View>
               }
-              paddingStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
+              paddingStyle={{ paddingVertical: 4, paddingHorizontal: 12 }}
               marginStyle={{ marginHorizontal: 0, marginVertical: 0 }}
               containerStyle={{
-                backgroundColor: '#EBF9F1',
+                backgroundColor: '#f2fcef',
                 borderColor: 'transparent',
+                borderWidth: 0,
                 elevation: 0,
                 shadowOpacity: 0,
-                borderRadius: 8,
+                borderRadius: 6,
               }}
             />
           </View>
