@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'RsrN2PQ3eWl9k-kXKLYpS';
+const SNACK_ID = 'Fnc1XStShLzB4LTV7l2XI';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -73,8 +73,8 @@ const STEP_METADATA = {
     subtitle: 'Everyone travelling under this permit, each with their own credential.',
   },
   5: {
-    title: 'Local Guide & Stay',
-    subtitle: 'Registered regional guide details and verified stay or basecamp information.',
+    title: 'Health & emergency',
+    subtitle: 'Fitness to travel, and who to contact if something goes wrong.',
   },
   6: {
     title: 'Documents & Evidence',
@@ -175,6 +175,14 @@ const ID_DOC_OPTIONS = [
   { id: 'pan_card', label: 'PAN Card' },
 ];
 
+const MEDICAL_CONDITIONS_OPTIONS = [
+  { id: 'cardiac', label: 'Cardiac or heart condition' },
+  { id: 'asthma', label: 'Asthma or breathing difficulty' },
+  { id: 'diabetes', label: 'Diabetes' },
+  { id: 'another', label: 'Another condition we should know about' },
+  { id: 'none', label: 'None of these' },
+];
+
 const AVAILABLE_DESTINATIONS = [
   'Yamunotri',
   'Gangotri',
@@ -209,7 +217,7 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(5);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -295,7 +303,15 @@ export default function App() {
       { id: '1', name: 'Ankit Joshi', age: '58', relation: 'father' }
     ],
 
-    // Step 5: Local Guide & Stay
+    // Step 5: Health & Emergency
+    medicalConditions: [],
+    conditionDetails: 'Mild altitude sensitivity',
+    emergencyContactName: 'Sunita Joshi',
+    emergencyContactNumber: '98110 22334',
+    emergencyContactRelation: 'mother',
+    isQualifiedDoctor: false,
+
+    // Step 5 Fallbacks
     guideName: 'Tenzing Dorjee',
     guideLicense: 'LG-LDK-2024-0041',
     guidePhone: '9419123456',
@@ -751,25 +767,58 @@ export default function App() {
     triggerToast('Group travellers saved. Proceeding to Step 5.');
   };
 
+  // Step 5: Toggle Medical Condition
+  const handleToggleMedicalCondition = (id) => {
+    setFormData((prev) => {
+      let updated;
+      if (id === 'none') {
+        updated = prev.medicalConditions.includes('none') ? [] : ['none'];
+      } else {
+        const filtered = prev.medicalConditions.filter((c) => c !== 'none');
+        if (filtered.includes(id)) {
+          updated = filtered.filter((c) => c !== id);
+        } else {
+          updated = [...filtered, id];
+        }
+      }
+      return { ...prev, medicalConditions: updated };
+    });
+    if (errors.medicalConditions) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.medicalConditions;
+        return next;
+      });
+    }
+  };
+
   // Step 5 Validation Check
   const handleContinueStep5 = () => {
     const errs = {};
-    if (!formData.guideName.trim()) {
-      errs.guideName = 'Local certified guide name is required';
+    if (!formData.emergencyContactName || !formData.emergencyContactName.trim()) {
+      errs.emergencyContactName = 'Contact name is required';
     }
-    if (!formData.accommodationName.trim()) {
-      errs.accommodationName = 'Hotel or basecamp booking name is required';
+    if (!formData.emergencyContactNumber || !formData.emergencyContactNumber.trim()) {
+      errs.emergencyContactNumber = 'Contact number is required';
+    } else if (formData.emergencyContactNumber.replace(/[^0-9]/g, '').length < 10) {
+      errs.emergencyContactNumber = 'Please enter a valid 10-digit mobile number';
+    }
+    if (!formData.emergencyContactRelation) {
+      errs.emergencyContactRelation = 'Relationship is required';
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
-      triggerToast('Please provide guide and accommodation details');
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
 
     setErrors({});
     setStep(6);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
+    triggerToast('Health & emergency details saved. Proceeding to Step 6.');
   };
 
   // Step 6 Validation Check
@@ -1827,55 +1876,102 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 5: LOCAL GUIDE & STAY                                                */}
+          {/* STEP 5: HEALTH & EMERGENCY                                                */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 5 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Certified Guide & Stay Details</Text>
+              {/* SECTION 1: Medical Fitness Details */}
+              <Text style={styles.sectionHeading}>Medical Fitness Details</Text>
 
+              <View style={{ marginTop: 14, marginBottom: 16 }}>
+                <Text style={styles.questionHeading}>
+                  Do any of these apply to anyone on this permit?<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+
+                <View style={{ gap: 10, marginTop: 10 }}>
+                  {MEDICAL_CONDITIONS_OPTIONS.map((item) => (
+                    <Ux4gCheckbox
+                      key={item.id}
+                      label={item.label}
+                      value={formData.medicalConditions.includes(item.id)}
+                      onChanged={() => handleToggleMedicalCondition(item.id)}
+                      size="medium"
+                    />
+                  ))}
+                </View>
+                {errors.medicalConditions ? (
+                  <Text style={[styles.errorText, { marginTop: 6 }]}>{errors.medicalConditions}</Text>
+                ) : null}
+              </View>
+
+              {/* Tell us about the condition */}
               <View style={styles.fieldGroup}>
                 <Ux4gInputField
-                  label="Registered Regional Guide Name"
+                  label="Tell us about the condition"
+                  value={formData.conditionDetails}
+                  onValueChange={(val) => updateField('conditionDetails', val)}
+                  placeholder="Mild altitude sensitivity"
+                  size="large"
+                />
+              </View>
+
+              {/* SECTION 2: Emergency Contact Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Emergency Contact Details</Text>
+
+              {/* Contact name* */}
+              <View style={styles.fieldGroup}>
+                <Ux4gInputField
+                  label="Contact name"
                   required
-                  placeholder="e.g. Tenzing Dorjee"
-                  value={formData.guideName}
-                  onValueChange={(val) => updateField('guideName', val)}
+                  value={formData.emergencyContactName}
+                  onValueChange={(val) => updateField('emergencyContactName', val)}
+                  placeholder="Sunita Joshi"
                   size="large"
-                  status={errors.guideName ? 'error' : 'defaultStatus'}
-                  caption={errors.guideName}
+                  status={errors.emergencyContactName ? 'error' : 'defaultStatus'}
+                  caption={errors.emergencyContactName}
                 />
               </View>
 
+              {/* Contact number* */}
               <View style={styles.fieldGroup}>
                 <Ux4gInputField
-                  label="Guide Government License Number"
-                  placeholder="e.g. LG-LDK-2024-0041"
-                  value={formData.guideLicense}
-                  onValueChange={(val) => updateField('guideLicense', val)}
-                  size="large"
-                />
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Ux4gInputField
-                  label="Accommodation / Basecamp Name"
+                  label="Contact number"
                   required
-                  placeholder="e.g. Pangong Eco Camp, Spangmik"
-                  value={formData.accommodationName}
-                  onValueChange={(val) => updateField('accommodationName', val)}
+                  value={formData.emergencyContactNumber}
+                  onValueChange={(val) => updateField('emergencyContactNumber', val)}
+                  placeholder="98110 22334"
                   size="large"
-                  status={errors.accommodationName ? 'error' : 'defaultStatus'}
-                  caption={errors.accommodationName}
+                  keyboardType="phone-pad"
+                  status={errors.emergencyContactNumber ? 'error' : 'defaultStatus'}
+                  caption={errors.emergencyContactNumber}
                 />
               </View>
 
+              {/* Relationship* */}
               <View style={styles.fieldGroup}>
-                <Ux4gInputField
-                  label="Stay Booking Reference / Receipt"
-                  placeholder="e.g. BK-LDK-88412"
-                  value={formData.accommodationBookingRef}
-                  onValueChange={(val) => updateField('accommodationBookingRef', val)}
-                  size="large"
+                <Text style={styles.fieldLabel}>
+                  Relationship<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <Ux4gSelectionDropdown
+                  placeholder="Select relationship"
+                  options={RELATIONSHIP_OPTIONS}
+                  selectedOptionIds={formData.emergencyContactRelation ? [formData.emergencyContactRelation] : ['mother']}
+                  onSelectionChange={(selected) => updateField('emergencyContactRelation', selected[0] || 'mother')}
+                  size="l"
+                  status={errors.emergencyContactRelation ? 'error' : 'defaultStatus'}
+                  description={errors.emergencyContactRelation}
+                />
+              </View>
+
+              {/* SECTION 3: Assistance You Can Offer */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Assistance You Can Offer</Text>
+
+              <View style={{ marginTop: 10, marginBottom: 8 }}>
+                <Ux4gCheckbox
+                  label="I am a qualified doctor and willing to be contacted in an emergency"
+                  value={formData.isQualifiedDoctor}
+                  onChanged={(val) => updateField('isQualifiedDoctor', !!val)}
+                  size="medium"
                 />
               </View>
             </View>
@@ -2107,6 +2203,31 @@ export default function App() {
                 </View>
                 <Text style={styles.reviewCardSubTextGreen}>
                   Primary: {formData.fullName} (34, Male) · Group: {formData.groupTravellers && formData.groupTravellers.length > 0 ? formData.groupTravellers.map((t) => (t.fullName || 'Traveller') + ' (' + (t.relationship || t.type) + ')').join(', ') : 'None'}
+                </Text>
+              </View>
+
+              {/* Card 5: Health & Emergency Summary */}
+              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 5 · Health & emergency</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(5)}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  Emergency Contact: {formData.emergencyContactName} ({formData.emergencyContactRelation ? formData.emergencyContactRelation.toUpperCase() : 'MOTHER'}, +91 {formData.emergencyContactNumber}) · Conditions: {formData.conditionDetails || 'None'} {formData.isQualifiedDoctor ? '· Qualified Doctor' : ''}
                 </Text>
               </View>
 
@@ -3003,6 +3124,12 @@ const styles = StyleSheet.create({
   },
   singleLineInputError: {
     borderColor: UX4GColors.red600,
+  },
+  questionHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+    lineHeight: 20,
   },
 });
 `;
