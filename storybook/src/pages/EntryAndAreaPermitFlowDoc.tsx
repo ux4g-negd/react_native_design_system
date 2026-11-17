@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'i5MqIhSWBsVt54hZ7pyeM';
+const SNACK_ID = 'eeEsxHcu1rdQWGUVyXmFy';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -69,8 +69,8 @@ const STEP_METADATA = {
     subtitle: 'How you will arrive, and the vehicle the permit is tied to.',
   },
   4: {
-    title: 'Accompanying Persons',
-    subtitle: 'Add details of any family members or group travelers accompanying you.',
+    title: 'Travellers in the group',
+    subtitle: 'Everyone travelling under this permit, each with their own credential.',
   },
   5: {
     title: 'Local Guide & Stay',
@@ -147,6 +147,34 @@ const FUEL_TYPE_OPTIONS = [
   { id: 'cng_hybrid', label: 'CNG / Hybrid' },
 ];
 
+const GENDER_OPTIONS = [
+  { id: 'male', label: 'Male' },
+  { id: 'female', label: 'Female' },
+  { id: 'transgender', label: 'Transgender' },
+  { id: 'other', label: 'Other' },
+];
+
+const RELATIONSHIP_OPTIONS = [
+  { id: 'father', label: 'Father' },
+  { id: 'mother', label: 'Mother' },
+  { id: 'spouse', label: 'Spouse' },
+  { id: 'son', label: 'Son' },
+  { id: 'daughter', label: 'Daughter' },
+  { id: 'brother', label: 'Brother' },
+  { id: 'sister', label: 'Sister' },
+  { id: 'friend', label: 'Friend' },
+  { id: 'colleague', label: 'Colleague' },
+  { id: 'other', label: 'Other' },
+];
+
+const ID_DOC_OPTIONS = [
+  { id: 'aadhaar', label: 'Aadhaar card' },
+  { id: 'passport', label: 'Passport' },
+  { id: 'voter_id', label: 'Voter ID' },
+  { id: 'driving_license', label: 'Driving License' },
+  { id: 'pan_card', label: 'PAN Card' },
+];
+
 const AVAILABLE_DESTINATIONS = [
   'Yamunotri',
   'Gangotri',
@@ -181,11 +209,12 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
   const [errors, setErrors] = useState({});
+  const [isPrimaryCollapsed, setIsPrimaryCollapsed] = useState(true);
   const [destModalMode, setDestModalMode] = useState(null);
   const [editingDestId, setEditingDestId] = useState(null);
   const [destModalName, setDestModalName] = useState('');
@@ -199,8 +228,8 @@ export default function App() {
     otp: '',
     
     // Details Fetched from Aadhaar (Rendered into official read-only summary boxes)
-    fullName: 'Rajeev chauhan',
-    dob: '07 / 09 / 1995',
+    fullName: 'Ramesh Chandra Joshi',
+    dob: '07 / 09 / 1990',
     gender: 'Male',
     permanentAddress: 'B-32, Sector 62',
     city: 'Noida',
@@ -241,16 +270,29 @@ export default function App() {
     pucCertNumber: 'PUC/2026/004821',
     pucValidUntil: '31 / 03 / 2027',
 
+    // Step 4: Travellers in the group
+    groupTravellers: [
+      {
+        id: '1',
+        type: 'adult',
+        fullName: 'Ankit Joshi',
+        age: '58',
+        gender: 'male',
+        relationship: 'father',
+        idDocType: 'aadhaar',
+        docNumber: 'XXXX XXXX 4821',
+        isExpanded: true,
+      },
+    ],
+
     // Fallbacks for downstream steps
     visitPurpose: 'tourism',
     startDate: '12/10/2026',
     endDate: '18/10/2026',
     durationDays: '7 days',
-
-    // Step 4: Accompanying Persons
     hasMembers: false,
     members: [
-      { id: '1', name: 'Sunita Chauhan', age: '29', relation: 'spouse' }
+      { id: '1', name: 'Ankit Joshi', age: '58', relation: 'father' }
     ],
 
     // Step 5: Local Guide & Stay
@@ -590,11 +632,123 @@ export default function App() {
     triggerToast('Travel & vehicle details saved. Proceeding to Step 4.');
   };
 
-  // Step 4 Validation Check
+  const handleAddAdult = () => {
+    const newId = String(Date.now());
+    const count = formData.groupTravellers.length + 2;
+    setFormData((prev) => ({
+      ...prev,
+      groupTravellers: [
+        ...prev.groupTravellers,
+        {
+          id: newId,
+          type: 'adult',
+          fullName: '',
+          age: '',
+          gender: 'male',
+          relationship: 'friend',
+          idDocType: 'aadhaar',
+          docNumber: '',
+          isExpanded: true,
+        },
+      ],
+    }));
+    triggerToast('Added Traveller ' + count + ' (Adult)');
+  };
+
+  const handleAddMinor = () => {
+    const newId = String(Date.now());
+    const count = formData.groupTravellers.length + 2;
+    setFormData((prev) => ({
+      ...prev,
+      groupTravellers: [
+        ...prev.groupTravellers,
+        {
+          id: newId,
+          type: 'minor',
+          fullName: '',
+          age: '',
+          gender: 'male',
+          relationship: 'son',
+          idDocType: 'aadhaar',
+          docNumber: '',
+          isExpanded: true,
+        },
+      ],
+    }));
+    triggerToast('Added Traveller ' + count + ' (Minor)');
+  };
+
+  const handleDeleteTraveller = (id) => {
+    const target = formData.groupTravellers.find((t) => t.id === id);
+    setFormData((prev) => ({
+      ...prev,
+      groupTravellers: prev.groupTravellers.filter((t) => t.id !== id),
+    }));
+    triggerToast('Removed ' + (target && target.fullName ? target.fullName : 'traveller'));
+  };
+
+  const handleToggleTraveller = (id) => {
+    setFormData((prev) => ({
+      ...prev,
+      groupTravellers: prev.groupTravellers.map((t) =>
+        t.id === id ? { ...t, isExpanded: !t.isExpanded } : t
+      ),
+    }));
+  };
+
+  const handleUpdateTraveller = (id, key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      groupTravellers: prev.groupTravellers.map((t) =>
+        t.id === id ? { ...t, [key]: value } : t
+      ),
+    }));
+    if (errors['traveller_' + id + '_' + key]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next['traveller_' + id + '_' + key];
+        return next;
+      });
+    }
+  };
+
+  // Step 4 Validation Check - Validate all group travellers
   const handleContinueStep4 = () => {
+    const errs = {};
+    formData.groupTravellers.forEach((t, idx) => {
+      const num = idx + 2;
+      if (!t.fullName || !t.fullName.trim()) {
+        errs['traveller_' + t.id + '_fullName'] = 'Full name is required for Traveller ' + num;
+      }
+      if (!t.age || !t.age.trim()) {
+        errs['traveller_' + t.id + '_age'] = 'Age is required for Traveller ' + num;
+      }
+      if (!t.gender) {
+        errs['traveller_' + t.id + '_gender'] = 'Gender is required for Traveller ' + num;
+      }
+      if (!t.relationship) {
+        errs['traveller_' + t.id + '_relationship'] = 'Relationship is required for Traveller ' + num;
+      }
+      if (!t.idDocType) {
+        errs['traveller_' + t.id + '_idDocType'] = 'ID document is required for Traveller ' + num;
+      }
+      if (!t.docNumber || !t.docNumber.trim()) {
+        errs['traveller_' + t.id + '_docNumber'] = 'Document number is required for Traveller ' + num;
+      }
+    });
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
+
     setErrors({});
     setStep(5);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
+    triggerToast('Group travellers saved. Proceeding to Step 5.');
   };
 
   // Step 5 Validation Check
@@ -1478,47 +1632,251 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 4: ACCOMPANYING PERSONS                                              */}
+          {/* STEP 4: TRAVELLERS IN THE GROUP                                           */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 4 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Accompanying Persons</Text>
-              <Text style={styles.stepSubtitleText}>
-                Primary applicant and co-travelers included under this entry permit.
-              </Text>
+              <Text style={styles.sectionHeading}>Traveller Details</Text>
 
-              {/* Primary Applicant Card */}
-              <View style={[styles.reviewCardGreen, { marginTop: 14 }]}>
-                <View style={styles.reviewCardHeader}>
-                  <Text style={styles.reviewCardTitleGreen}>1. {formData.fullName} (Primary Applicant)</Text>
-                  <Text style={{ fontSize: 12, fontWeight: '700', color: UX4GColors.green800 }}>SELF</Text>
-                </View>
-                <Text style={styles.reviewCardSubTextGreen}>
-                  DOB: {formData.dob} · {formData.gender} · Aadhaar Verified
-                </Text>
-              </View>
-
-              {/* Accompanying Member Card */}
-              {formData.members.map((m, idx) => (
-                <View key={m.id} style={[styles.reviewCardGreen, { marginTop: 10 }]}>
-                  <View style={styles.reviewCardHeader}>
-                    <Text style={styles.reviewCardTitleGreen}>{idx + 2}. {m.name}</Text>
-                    <Text style={{ fontSize: 12, fontWeight: '600', color: UX4GColors.neutral700 }}>
-                      {m.relation.toUpperCase()}
+              {/* Traveller 1 — you, the primary applicant */}
+              <View style={styles.primaryApplicantCard}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => setIsPrimaryCollapsed(!isPrimaryCollapsed)}
+                  style={styles.travellerCardHeaderRow}
+                >
+                  <View style={{ flex: 1, paddingRight: 8 }}>
+                    <Text style={styles.travellerTitle}>Traveller 1 — you, the primary applicant</Text>
+                    <Text style={styles.travellerSubtitle}>
+                      {formData.fullName} · 34 · Male · from your eKYC
                     </Text>
                   </View>
-                  <Text style={styles.reviewCardSubTextGreen}>
-                    Age: {m.age} years · Co-traveler
-                  </Text>
-                </View>
-              ))}
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isPrimaryCollapsed ? "M6 9l6 6 6-6" : "M18 15l-6-6-6 6"}
+                      stroke="#111827"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
 
+                {!isPrimaryCollapsed && (
+                  <View style={styles.primaryApplicantDetails}>
+                    <View style={styles.readOnlyRow}>
+                      <Text style={styles.readOnlyLabel}>Full Name:</Text>
+                      <Text style={styles.readOnlyValue}>{formData.fullName}</Text>
+                    </View>
+                    <View style={styles.readOnlyRow}>
+                      <Text style={styles.readOnlyLabel}>DOB / Age:</Text>
+                      <Text style={styles.readOnlyValue}>{formData.dob} (34 yrs)</Text>
+                    </View>
+                    <View style={styles.readOnlyRow}>
+                      <Text style={styles.readOnlyLabel}>Gender:</Text>
+                      <Text style={styles.readOnlyValue}>{formData.gender}</Text>
+                    </View>
+                    <View style={styles.readOnlyRow}>
+                      <Text style={styles.readOnlyLabel}>Aadhaar Number:</Text>
+                      <Text style={styles.readOnlyValue}>XXXX XXXX 1234 (Verified)</Text>
+                    </View>
+                    <View style={styles.readOnlyRow}>
+                      <Text style={styles.readOnlyLabel}>Address:</Text>
+                      <Text style={styles.readOnlyValue}>{formData.permanentAddress}, {formData.city}, {formData.state}</Text>
+                    </View>
+                  </View>
+                )}
+              </View>
+
+              {/* Dynamic Group Travellers (Traveller 2, 3, etc.) */}
+              {formData.groupTravellers.map((traveller, index) => {
+                const travellerNumber = index + 2;
+                return (
+                  <View key={traveller.id} style={styles.groupTravellerCard}>
+                    {/* Header */}
+                    <View style={styles.travellerCardHeaderRow}>
+                      <Text style={styles.travellerTitle}>
+                        Traveller {travellerNumber} — {traveller.type === 'minor' ? 'minor' : 'adult'}
+                      </Text>
+                      <View style={styles.cardActionsRow}>
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => handleDeleteTraveller(traveller.id)}
+                          style={styles.cardActionBtn}
+                        >
+                          <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                            <Path
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              stroke={UX4GColors.primary}
+                              strokeWidth={1.8}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </Svg>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => handleToggleTraveller(traveller.id)}
+                          style={styles.cardActionBtn}
+                        >
+                          <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                            <Path
+                              d={traveller.isExpanded ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}
+                              stroke="#111827"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </Svg>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    {/* Inputs (when expanded) */}
+                    {traveller.isExpanded && (
+                      <View style={{ marginTop: 14 }}>
+                        {/* Full name* */}
+                        <View style={styles.fieldGroup}>
+                          <Text style={styles.fieldLabel}>
+                            Full name<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <TextInput
+                            style={[
+                              styles.singleLineInput,
+                              errors['traveller_' + traveller.id + '_fullName'] && styles.singleLineInputError,
+                            ]}
+                            value={traveller.fullName}
+                            onChangeText={(val) => handleUpdateTraveller(traveller.id, 'fullName', val)}
+                            placeholder="Ankit Joshi"
+                            placeholderTextColor={UX4GColors.neutral400}
+                          />
+                          {errors['traveller_' + traveller.id + '_fullName'] ? (
+                            <Text style={styles.errorText}>
+                              {errors['traveller_' + traveller.id + '_fullName']}
+                            </Text>
+                          ) : null}
+                        </View>
+
+                        {/* Age* */}
+                        <View style={styles.fieldGroup}>
+                          <Text style={styles.fieldLabel}>
+                            Age<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <TextInput
+                            style={[
+                              styles.singleLineInput,
+                              errors['traveller_' + traveller.id + '_age'] && styles.singleLineInputError,
+                            ]}
+                            value={traveller.age}
+                            onChangeText={(val) => handleUpdateTraveller(traveller.id, 'age', val)}
+                            placeholder="58"
+                            placeholderTextColor={UX4GColors.neutral400}
+                            keyboardType="numeric"
+                          />
+                          {errors['traveller_' + traveller.id + '_age'] ? (
+                            <Text style={styles.errorText}>
+                              {errors['traveller_' + traveller.id + '_age']}
+                            </Text>
+                          ) : null}
+                        </View>
+
+                        {/* Gender* */}
+                        <View style={styles.fieldGroup}>
+                          <Text style={styles.fieldLabel}>
+                            Gender<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <Ux4gSelectionDropdown
+                            placeholder="Select gender"
+                            options={GENDER_OPTIONS}
+                            selectedOptionIds={traveller.gender ? [traveller.gender] : []}
+                            onSelectionChange={(selected) =>
+                              handleUpdateTraveller(traveller.id, 'gender', selected[0] || 'male')
+                            }
+                            size="l"
+                            status={errors['traveller_' + traveller.id + '_gender'] ? 'error' : 'defaultStatus'}
+                            description={errors['traveller_' + traveller.id + '_gender']}
+                          />
+                        </View>
+
+                        {/* Relationship to you* */}
+                        <View style={styles.fieldGroup}>
+                          <Text style={styles.fieldLabel}>
+                            Relationship to you<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <Ux4gSelectionDropdown
+                            placeholder="Select relationship"
+                            options={RELATIONSHIP_OPTIONS}
+                            selectedOptionIds={traveller.relationship ? [traveller.relationship] : []}
+                            onSelectionChange={(selected) =>
+                              handleUpdateTraveller(traveller.id, 'relationship', selected[0] || 'father')
+                            }
+                            size="l"
+                            status={errors['traveller_' + traveller.id + '_relationship'] ? 'error' : 'defaultStatus'}
+                            description={errors['traveller_' + traveller.id + '_relationship']}
+                          />
+                        </View>
+
+                        {/* Identity document* */}
+                        <View style={styles.fieldGroup}>
+                          <Text style={styles.fieldLabel}>
+                            Identity document<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <Ux4gSelectionDropdown
+                            placeholder="Select identity document"
+                            options={ID_DOC_OPTIONS}
+                            selectedOptionIds={traveller.idDocType ? [traveller.idDocType] : []}
+                            onSelectionChange={(selected) =>
+                              handleUpdateTraveller(traveller.id, 'idDocType', selected[0] || 'aadhaar')
+                            }
+                            size="l"
+                            status={errors['traveller_' + traveller.id + '_idDocType'] ? 'error' : 'defaultStatus'}
+                            description={errors['traveller_' + traveller.id + '_idDocType']}
+                          />
+                        </View>
+
+                        {/* Document number* */}
+                        <View style={styles.fieldGroup}>
+                          <Text style={styles.fieldLabel}>
+                            Document number<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <TextInput
+                            style={[
+                              styles.singleLineInput,
+                              errors['traveller_' + traveller.id + '_docNumber'] && styles.singleLineInputError,
+                            ]}
+                            value={traveller.docNumber}
+                            onChangeText={(val) => handleUpdateTraveller(traveller.id, 'docNumber', val)}
+                            placeholder="XXXX XXXX 4821"
+                            placeholderTextColor={UX4GColors.neutral400}
+                          />
+                          {errors['traveller_' + traveller.id + '_docNumber'] ? (
+                            <Text style={styles.errorText}>
+                              {errors['traveller_' + traveller.id + '_docNumber']}
+                            </Text>
+                          ) : null}
+                        </View>
+                      </View>
+                    )}
+                  </View>
+                );
+              })}
+
+              {/* Add an adult button */}
               <TouchableOpacity
-                style={styles.addMemberBtn}
-                activeOpacity={0.7}
-                onPress={() => triggerToast('Opening member registration form')}
+                style={styles.addAdultBtn}
+                activeOpacity={0.8}
+                onPress={handleAddAdult}
               >
-                <Text style={styles.addMemberBtnText}>+ Add Accompanying Member</Text>
+                <Text style={styles.addAdultBtnText}>Add an adult</Text>
+              </TouchableOpacity>
+
+              {/* Add a minor button */}
+              <TouchableOpacity
+                style={styles.addMinorBtn}
+                activeOpacity={0.8}
+                onPress={handleAddMinor}
+              >
+                <Text style={styles.addMinorBtnText}>Add a minor</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -1779,6 +2137,31 @@ export default function App() {
                 </View>
                 <Text style={styles.reviewCardSubTextGreen}>
                   {formData.travelMode === 'by_road' ? 'By road' : formData.travelMode} ({formData.transportType === 'private_car' ? 'Private car' : formData.transportType}) · {formData.vehicleNumber} · Driver: {formData.driverName} · PUC: {formData.pucCertNumber} (Valid: {formData.pucValidUntil})
+                </Text>
+              </View>
+
+              {/* Card 4: Travellers in the group Summary */}
+              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 4 · Travellers in the group</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(4)}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  Primary: {formData.fullName} (34, Male) · Group: {formData.groupTravellers && formData.groupTravellers.length > 0 ? formData.groupTravellers.map((t) => (t.fullName || 'Traveller') + ' (' + (t.relationship || t.type) + ')').join(', ') : 'None'}
                 </Text>
               </View>
 
@@ -2578,6 +2961,90 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     color: UX4GColors.white,
+  },
+  // ─── STEP 4: TRAVELLERS IN THE GROUP ───
+  primaryApplicantCard: {
+    backgroundColor: UX4GColors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    padding: 16,
+    marginTop: 14,
+  },
+  groupTravellerCard: {
+    backgroundColor: UX4GColors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    padding: 16,
+    marginTop: 14,
+  },
+  travellerCardHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  travellerTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+    marginBottom: 4,
+  },
+  travellerSubtitle: {
+    fontSize: 12,
+    color: UX4GColors.neutral600,
+    lineHeight: 16,
+  },
+  primaryApplicantDetails: {
+    marginTop: 14,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: UX4GColors.neutral100,
+  },
+  readOnlyRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  readOnlyLabel: {
+    fontSize: 12,
+    color: UX4GColors.neutral600,
+  },
+  readOnlyValue: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  addAdultBtn: {
+    height: 44,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary,
+    backgroundColor: UX4GColors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
+  addAdultBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
+  addMinorBtn: {
+    height: 44,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary,
+    backgroundColor: UX4GColors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 8,
+  },
+  addMinorBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.primary,
   },
 });
 `;
