@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'x3gorIRtzudiK2-loojxD';
+const SNACK_ID = '3PqZj9DpuzliIF8A0oTiI';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -84,8 +84,8 @@ const STEP_METADATA = {
     subtitle: 'Evidence and likeness — only what the register does not already hold.',
   },
   7: {
-    title: 'Security Undertaking',
-    subtitle: 'Compliance with border security protocols and zero-waste ecological guidelines.',
+    title: 'Review & declaration',
+    subtitle: 'Check every answer before you commit to it.',
   },
   8: {
     title: 'Review & Declaration',
@@ -220,7 +220,7 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(7);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -336,7 +336,11 @@ export default function App() {
     vehicleRcUploaded: true,
     vehicleRcFileName: 'DL01AB4402_Registration_Certificate.pdf',
 
-    // Step 7: Security & Environmental Undertakings
+    // Step 7: Review & declaration
+    declarationTrueComplete: false,
+    declarationEmergencyContact: false,
+
+    // Step 7 Fallbacks & Undertakings
     undertakingSecurity: true,
     undertakingZeroWaste: true,
     undertakingOriginalId: true,
@@ -839,28 +843,27 @@ export default function App() {
     triggerToast('Documents & photo saved. Proceeding to Step 7.');
   };
 
-  // Step 7 Validation Check
+  // Step 7 Validation Check - Review & declaration
   const handleContinueStep7 = () => {
     const errs = {};
-    if (!formData.undertakingSecurity) {
-      errs.undertakingSecurity = 'Border security protocol undertaking is required';
+    if (!formData.declarationTrueComplete) {
+      errs.declarationTrueComplete = 'Please declare that everything above is true and complete';
     }
-    if (!formData.undertakingZeroWaste) {
-      errs.undertakingZeroWaste = 'Zero waste policy agreement is required';
-    }
-    if (!formData.undertakingOriginalId) {
-      errs.undertakingOriginalId = 'Physical ID verification undertaking is required';
+    if (!formData.declarationEmergencyContact) {
+      errs.declarationEmergencyContact = 'Please confirm that your emergency contact knows they have been named';
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
-      triggerToast('Please accept all security undertakings');
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
       return;
     }
 
     setErrors({});
     setStep(8);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
+    triggerToast('Review & declaration confirmed. Proceeding to Step 8.');
   };
 
   // Step 8 Validation Check & Final Permit Generation
@@ -2190,50 +2193,187 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 7: SECURITY & ENVIRONMENTAL UNDERTAKINGS                             */}
+          {/* STEP 7: REVIEW & DECLARATION                                              */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 7 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Security & Environmental Undertakings</Text>
-              <Text style={styles.stepSubtitleText}>
-                Compliance with border security protocols and zero-waste ecological guidelines is statutory.
-              </Text>
+              <Text style={styles.sectionHeading}>Preview Your Application</Text>
 
-              <View style={{ marginTop: 16 }}>
+              {/* Card 1: Step 1 · Identity & eKYC */}
+              <View style={styles.reviewCardGreen}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 1 · Identity & eKYC</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(1)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  Ramesh Chandra Joshi · Indian citizen permit for myself and my family
+                </Text>
+              </View>
+
+              {/* Card 2: Step 2 · Trip details */}
+              <View style={[styles.reviewCardGreen, { marginTop: 10 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 2 · Trip details</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(2)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  25–28 September 2026 · Yamunotri, Gangotri, Kedarnath · {formData.numTravellers || '2'} travellers
+                </Text>
+              </View>
+
+              {/* Card 3: Step 3 · Travel & vehicle */}
+              <View style={[styles.reviewCardGreen, { marginTop: 10 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 3 · Travel & vehicle</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(3)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  By road · {formData.vehicleNumber || 'UK07 AB 1234'} · pollution certificate valid to 31 March 2027
+                </Text>
+              </View>
+
+              {/* Card 4: Step 4 · Travellers in the group */}
+              <View style={[styles.reviewCardGreen, { marginTop: 10 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 4 · Travellers in the group</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(4)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  2 of 2 registered · each gets their own reference and QR
+                </Text>
+              </View>
+
+              {/* Card 5: Step 5 · Health & emergency */}
+              <View style={[styles.reviewCardGreen, { marginTop: 10 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 5 · Health & emergency</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(5)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  Emergency contact named and confirmed · no declared condition
+                </Text>
+              </View>
+
+              {/* Card 6: Step 6 · Documents & photo */}
+              <View style={[styles.reviewCardAmber, { marginTop: 10 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleAmber}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M12 6v7M12 17.5v.5" stroke={UX4GColors.white} strokeWidth={3.5} strokeLinecap="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleAmber}>Step 6 · Documents & photo</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(6)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextAmber}>
+                  Live photograph not taken yet — everything else attached
+                </Text>
+              </View>
+
+              {/* Section 2: Declaration */}
+              <Text style={[styles.sectionHeading, { marginTop: 24, marginBottom: 14 }]}>Declaration</Text>
+
+              <View style={{ marginBottom: 14 }}>
                 <Ux4gCheckbox
-                  label="I undertake not to enter restricted defence zones, military outposts, or unpermitted border tracks."
+                  label="I declare that everything above is true and complete"
                   isRequired
-                  value={formData.undertakingSecurity}
-                  onChanged={(val) => updateField('undertakingSecurity', !!val)}
+                  value={formData.declarationTrueComplete}
+                  onChanged={(val) => updateField('declarationTrueComplete', !!val)}
                   size="medium"
-                  hasError={!!errors.undertakingSecurity}
-                  description={errors.undertakingSecurity}
+                  hasError={!!errors.declarationTrueComplete}
+                  description={errors.declarationTrueComplete}
                   descriptionVariant="error"
                 />
               </View>
 
-              <View style={{ marginTop: 16 }}>
+              <View style={{ marginBottom: 8 }}>
                 <Ux4gCheckbox
-                  label="I will strictly adhere to the Zero Waste Policy and will not carry or discard single-use plastic in the protected sanctuary."
+                  label="I confirm my emergency contact knows they have been named"
                   isRequired
-                  value={formData.undertakingZeroWaste}
-                  onChanged={(val) => updateField('undertakingZeroWaste', !!val)}
+                  value={formData.declarationEmergencyContact}
+                  onChanged={(val) => updateField('declarationEmergencyContact', !!val)}
                   size="medium"
-                  hasError={!!errors.undertakingZeroWaste}
-                  description={errors.undertakingZeroWaste}
-                  descriptionVariant="error"
-                />
-              </View>
-
-              <View style={{ marginTop: 16 }}>
-                <Ux4gCheckbox
-                  label="I will carry my original entry permit and government photo ID card at all inspection checkposts."
-                  isRequired
-                  value={formData.undertakingOriginalId}
-                  onChanged={(val) => updateField('undertakingOriginalId', !!val)}
-                  size="medium"
-                  hasError={!!errors.undertakingOriginalId}
-                  description={errors.undertakingOriginalId}
+                  hasError={!!errors.declarationEmergencyContact}
+                  description={errors.declarationEmergencyContact}
                   descriptionVariant="error"
                 />
               </View>
@@ -2882,11 +3022,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   reviewCardGreen: {
-    backgroundColor: UX4GColors.green50,
+    backgroundColor: '#f2fcef',
     borderWidth: 1,
-    borderColor: UX4GColors.green300,
-    borderRadius: 10,
-    padding: 14,
+    borderColor: '#bbf7d0',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  reviewCardAmber: {
+    backgroundColor: '#fffbeb',
+    borderWidth: 1,
+    borderColor: '#fde68a',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
   },
   reviewCardHeader: {
     flexDirection: 'row',
@@ -2897,12 +3046,23 @@ const styles = StyleSheet.create({
   reviewCardLeft: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
+    marginRight: 8,
   },
   reviewIconCircleGreen: {
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: UX4GColors.green600,
+    backgroundColor: '#16a34a',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
+  reviewIconCircleAmber: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#f59e0b',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
@@ -2910,13 +3070,24 @@ const styles = StyleSheet.create({
   reviewCardTitleGreen: {
     fontSize: 14,
     fontWeight: '700',
-    color: UX4GColors.green900,
+    color: '#166534',
+  },
+  reviewCardTitleAmber: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#b45309',
   },
   reviewCardSubTextGreen: {
-    fontSize: 12.5,
-    color: UX4GColors.green800,
-    marginTop: 4,
-    lineHeight: 18,
+    fontSize: 12,
+    color: '#15803d',
+    marginTop: 2,
+    lineHeight: 17,
+  },
+  reviewCardSubTextAmber: {
+    fontSize: 12,
+    color: '#b45309',
+    marginTop: 2,
+    lineHeight: 17,
   },
   addMemberBtn: {
     borderWidth: 1,
