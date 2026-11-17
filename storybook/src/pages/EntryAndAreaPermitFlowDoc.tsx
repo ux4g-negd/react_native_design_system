@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'H1nRtXIrqqjAkJ8aRebTc';
+const SNACK_ID = 'z0qlBb733JVwq5EHUhEb2';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -834,8 +834,6 @@ export default function App() {
     setStep(7);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
     triggerToast('Documents & photo saved. Proceeding to Step 7.');
-  };
-    scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
   // Step 7 Validation Check
