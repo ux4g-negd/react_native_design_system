@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'LbTnT-sW_T5NVziWNsdVL';
+const SNACK_ID = 'BAE-2c0o-0utaoRHg_6xD';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -25,6 +25,8 @@ import {
   StyleSheet,
   StatusBar,
   Modal,
+  Animated,
+  Easing,
 } from 'react-native';
 import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import {
@@ -232,7 +234,8 @@ const formatDate = (date) => {
 export default function App() {
   const [step, setStep] = useState(8);
   const [feeSubStep, setFeeSubStep] = useState('payment');
-  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(true);
+  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -245,6 +248,24 @@ export default function App() {
   const [editingDestId, setEditingDestId] = useState(null);
   const [destModalName, setDestModalName] = useState('');
   const [destModalDate, setDestModalDate] = useState('');
+
+  // Rotation animation for redirecting spinner
+  const spinAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isRedirecting) {
+      const loop = Animated.loop(
+        Animated.timing(spinAnim, {
+          toValue: 1,
+          duration: 900,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        })
+      );
+      loop.start();
+      return () => loop.stop();
+    }
+  }, [isRedirecting]);
 
   // Full 9-Step Application State
   const [formData, setFormData] = useState({
@@ -358,13 +379,14 @@ export default function App() {
     undertakingOriginalId: true,
 
     // Step 8 & 9: Fee, Payment & Final Permit
-    paymentMode: 'card', // 'upi' | 'card' | 'netbanking'
+    paymentMode: 'upi', // 'upi' | 'netbanking' | 'card' | 'offline'
     upiId: '',
     cardName: '',
     cardNumber: '',
     cardExpiry: '',
     cardCvv: '',
     selectedBank: '',
+    offlineReceiptNumber: '',
     permitNumber: 'UK-EAP-2026-004821',
     isSubmitted: false,
   });
@@ -916,6 +938,10 @@ export default function App() {
       if (!formData.selectedBank || !formData.selectedBank.trim()) {
         errs.selectedBank = 'Please select your bank to proceed';
       }
+    } else if (formData.paymentMode === 'offline') {
+      if (!formData.offlineReceiptNumber || !formData.offlineReceiptNumber.trim()) {
+        errs.offlineReceiptNumber = 'Challan or DD receipt number is required';
+      }
     }
 
     if (Object.keys(errs).length > 0) {
@@ -932,9 +958,15 @@ export default function App() {
       isSubmitted: true,
       permitNumber: newPermitNum,
     }));
-    setStep(9);
-    triggerToast('Payment received! Permit issued: ' + newPermitNum);
-    scrollRef.current?.scrollTo({ y: 0, animated: true });
+    
+    // Show Redirecting Modal and securely transition to Step 9
+    setIsRedirecting(true);
+    setTimeout(() => {
+      setIsRedirecting(false);
+      setStep(9);
+      triggerToast('Payment received! Permit issued: ' + newPermitNum);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+    }, 2800);
   };
 
   const handleContinue = () => {
@@ -954,6 +986,7 @@ export default function App() {
   };
 
   const handlePrevious = () => {
+    setIsRedirecting(false);
     if (step === 8 && feeSubStep === 'payment') {
       setFeeSubStep('summary');
       scrollRef.current?.scrollTo({ y: 0, animated: true });
@@ -967,6 +1000,7 @@ export default function App() {
   };
 
   const jumpToStep = (targetStep) => {
+    setIsRedirecting(false);
     setErrors({});
     setStep(targetStep);
     if (targetStep === 8) {
@@ -2484,7 +2518,23 @@ export default function App() {
                       descriptionStyle={formData.paymentMode === 'upi' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
                     />
 
-                    {/* Option 2: Debit / Credit Card */}
+                    {/* Option 2: Net Banking */}
+                    <Ux4gRadioButton
+                      value="netbanking"
+                      groupValue={formData.paymentMode}
+                      onChanged={(val) => updateField('paymentMode', val)}
+                      label="Net Banking"
+                      description="60+ banks supported"
+                      size="medium"
+                      style={[
+                        styles.paymentOptionCard,
+                        formData.paymentMode === 'netbanking' && styles.paymentOptionCardSelected,
+                      ]}
+                      labelStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
+                      descriptionStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
+                    />
+
+                    {/* Option 3: Debit / Credit Card */}
                     <Ux4gRadioButton
                       value="card"
                       groupValue={formData.paymentMode}
@@ -2500,20 +2550,20 @@ export default function App() {
                       descriptionStyle={formData.paymentMode === 'card' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
                     />
 
-                    {/* Option 3: Net Banking */}
+                    {/* Option 4: Already paid offline */}
                     <Ux4gRadioButton
-                      value="netbanking"
+                      value="offline"
                       groupValue={formData.paymentMode}
                       onChanged={(val) => updateField('paymentMode', val)}
-                      label="Net Banking"
-                      description="60+ banks supported"
+                      label="Already paid offline"
+                      description="Demand draft or counter payment ..."
                       size="medium"
                       style={[
                         styles.paymentOptionCard,
-                        formData.paymentMode === 'netbanking' && styles.paymentOptionCardSelected,
+                        formData.paymentMode === 'offline' && styles.paymentOptionCardSelected,
                       ]}
-                      labelStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
-                      descriptionStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
+                      labelStyle={formData.paymentMode === 'offline' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
+                      descriptionStyle={formData.paymentMode === 'offline' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
                     />
                   </View>
 
@@ -2677,6 +2727,25 @@ export default function App() {
                       </View>
                     </View>
                   )}
+
+                  {/* Mode 4 Details: Offline Payment */}
+                  {formData.paymentMode === 'offline' && (
+                    <View style={{ marginTop: 16 }}>
+                      <Text style={styles.sectionHeading}>Offline Challan / Counter Payment</Text>
+                      <View style={{ marginTop: 8 }}>
+                        <Ux4gInputField
+                          label="Challan / DD reference number"
+                          isRequired
+                          placeholder="e.g. CH-2026-998821"
+                          value={formData.offlineReceiptNumber}
+                          onChangeText={(text) => updateField('offlineReceiptNumber', text)}
+                          hasError={!!errors.offlineReceiptNumber}
+                          description={errors.offlineReceiptNumber}
+                          size="large"
+                        />
+                      </View>
+                    </View>
+                  )}
                 </>
               )}
             </View>
@@ -2750,6 +2819,8 @@ export default function App() {
             <Text style={styles.primaryContinueBtnText}>
               {step === 8 && feeSubStep === 'payment' && formData.paymentMode === 'netbanking'
                 ? 'Continue to bank'
+                : step === 8 && feeSubStep === 'payment' && formData.paymentMode === 'offline'
+                ? 'Submit challan'
                 : step === 8 && feeSubStep === 'payment'
                 ? 'Pay ₹600'
                 : step === 9
@@ -2768,6 +2839,71 @@ export default function App() {
             </TouchableOpacity>
           )}
         </View>
+
+        {/* ─── REDIRECTING MODAL OVERLAY (Step 8 Fee & Payment) ─── */}
+        <Modal
+          visible={isRedirecting}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setIsRedirecting(false)}
+        >
+          <TouchableOpacity
+            style={styles.redirectModalOverlay}
+            activeOpacity={1}
+            onPress={() => {
+              setIsRedirecting(false);
+              setStep(9);
+              triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              style={styles.redirectModalCard}
+              onPress={(e) => {
+                e?.stopPropagation?.();
+                setIsRedirecting(false);
+                setStep(9);
+                triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
+              }}
+            >
+              <Animated.View
+                style={{
+                  transform: [
+                    {
+                      rotate: spinAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0deg', '360deg'],
+                      }),
+                    },
+                  ],
+                }}
+              >
+                <Svg width={46} height={46} viewBox="0 0 46 46">
+                  <Circle
+                    cx={23}
+                    cy={23}
+                    r={19}
+                    stroke="#EDE9FE"
+                    strokeWidth={4.5}
+                    fill="none"
+                  />
+                  <Path
+                    d="M23 4 A19 19 0 0 1 42 23"
+                    stroke="#6B46C1"
+                    strokeWidth={4.5}
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                </Svg>
+              </Animated.View>
+
+              <Text style={styles.redirectModalTitle}>Redirecting..</Text>
+              <Text style={styles.redirectModalDesc}>
+                Please do not close or refresh this page. We are securely processing your payment.
+              </Text>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </Modal>
 
         {/* ─── HAMBURGER SIDE DRAWER MODAL ─── */}
         <Modal
@@ -3965,6 +4101,42 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     color: UX4GColors.primary,
+  },
+  redirectModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  redirectModalCard: {
+    width: '100%',
+    maxWidth: 340,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingTop: 32,
+    paddingBottom: 28,
+    paddingHorizontal: 26,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.16,
+    shadowRadius: 16,
+    elevation: 10,
+  },
+  redirectModalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    marginTop: 18,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  redirectModalDesc: {
+    fontSize: 13.5,
+    lineHeight: 20,
+    color: '#4B5563',
+    textAlign: 'center',
   },
 });
 `;
