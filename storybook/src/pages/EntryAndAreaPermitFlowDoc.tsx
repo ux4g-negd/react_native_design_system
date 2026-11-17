@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'z0qlBb733JVwq5EHUhEb2';
+const SNACK_ID = 'x3gorIRtzudiK2-loojxD';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -42,7 +42,10 @@ import {
   Ux4gButton,
   Ux4gStatusBanner,
   Ux4gCompactStepper,
+  Ux4gFileUpload,
 } from 'ux4g-react-native-components';
+
+const Ux4gFileUploader = Ux4gFileUpload;
 import NationalEmblem from './NationalEmblem';
 
 // ─── UNION LOGO (Union.svg UX4G Logo) ───
@@ -2017,51 +2020,25 @@ export default function App() {
                       </Text>
                     </TouchableOpacity>
 
-                    {/* Dropzone Area */}
-                    <TouchableOpacity
-                      activeOpacity={0.85}
-                      onPress={() => {
-                        updateField('photoMode', 'passport');
-                        updateField('passportPhotoUploaded', true);
-                        triggerToast('Passport photo uploaded: passport_photo_ramesh.jpg');
-                      }}
-                      style={styles.uploadDropzone}
-                    >
-                      {/* Purple Cloud Icon */}
-                      <Svg width={36} height={36} viewBox="0 0 24 24" fill="none">
-                        <Path
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          stroke={UX4GColors.primary}
-                          strokeWidth={1.8}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </Svg>
-
-                      <Text style={styles.dropzoneTitle}>Drop file here</Text>
-                      <Text style={styles.dropzoneSubtitle}>File type: PDF JPG PNG Max size: 5 MB</Text>
-
-                      {/* Or Divider */}
-                      <View style={styles.orDividerRow}>
-                        <View style={styles.orDividerLine} />
-                        <Text style={styles.orDividerText}>Or</Text>
-                        <View style={styles.orDividerLine} />
-                      </View>
-
-                      {/* Upload Button */}
-                      <View style={styles.uploadBtnBox}>
-                        <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                          <Path
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                            stroke={UX4GColors.primary}
-                            strokeWidth={1.8}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </Svg>
-                        <Text style={styles.uploadBtnBoxText}>Upload</Text>
-                      </View>
-                    </TouchableOpacity>
+                    {/* Official UX4G FileUploader Component */}
+                    <View style={{ marginTop: 4, marginBottom: 8 }}>
+                      <Ux4gFileUploader
+                        maxFiles={1}
+                        maxFileSize={5 * 1024 * 1024}
+                        allowedExtensions={['jpg', 'png', 'pdf']}
+                        borderStyle="dashed"
+                        buttonColor={UX4GColors.primary}
+                        buttonBorderColor={UX4GColors.primary}
+                        onFilesChanged={(files) => {
+                          if (files && files.length > 0) {
+                            updateField('photoMode', 'passport');
+                            updateField('passportPhotoUploaded', true);
+                            updateField('passportPhotoFileName', files[0].name);
+                            triggerToast('Passport photo uploaded: ' + files[0].name);
+                          }
+                        }}
+                      />
+                    </View>
 
                     <Text style={styles.fileHintText}>
                       JPG or PNG, 20 KB to 2 MB, one file.
