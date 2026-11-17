@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'o4lqy4mWlNPZj47wrACIQ';
+const SNACK_ID = 'Lhw_v5vHYM7V3CJ4sQpX6';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -140,12 +140,12 @@ export default function App() {
 
   // Full 9-Step Application State
   const [formData, setFormData] = useState({
-    // Step 1: Aadhaar Verification & eKYC (Initialized to match user image)
-    aadhaarNumber: '9845 2014 6612',
-    consentAadhaar: true,
-    otp: '123456',
+    // Step 1: Aadhaar Verification & eKYC (Initialized to unverified state to demonstrate full validation checks)
+    aadhaarNumber: '',
+    consentAadhaar: false,
+    otp: '',
     
-    // Details Fetched from Aadhaar
+    // Details Fetched from Aadhaar (Rendered into official read-only summary boxes)
     fullName: 'Rajeev chauhan',
     dob: '07 / 09 / 1995',
     gender: 'Male',
@@ -156,11 +156,11 @@ export default function App() {
     pincode: '201309',
 
     // Other Details
-    mobileNumber: '9999999999',
+    mobileNumber: '',
     isWhatsAppSame: false,
-    email: 'abc@gmail.com',
-    nationality: 'indian', // 'indian' | 'foreign'
-    permitRequiredFor: 'myself', // 'myself' | 'family' | 'clients'
+    email: '',
+    nationality: '', // 'indian' | 'foreign'
+    permitRequiredFor: '', // 'myself' | 'family' | 'clients'
 
     // Step 2: Area & Protected Zone Selection
     permitType: 'ilp', // 'ilp' | 'pap'
@@ -247,33 +247,73 @@ export default function App() {
     triggerToast('Draft saved successfully at ' + timeStr);
   };
 
-  // Step 1 Validation Check
+  // Quick fill helper for testing validation and complete flow
+  const handleQuickFillStep1 = () => {
+    setFormData((prev) => ({
+      ...prev,
+      aadhaarNumber: '9845 2014 6612',
+      consentAadhaar: true,
+      otp: '123456',
+      mobileNumber: '9999999999',
+      email: 'abc@gmail.com',
+      nationality: 'indian',
+      permitRequiredFor: 'myself',
+    }));
+    setErrors({});
+    triggerToast('Sample data filled for Step 1');
+  };
+
+  // Step 1 Validation Check - Comprehensive checks for all fields
   const handleContinueStep1 = () => {
     const errs = {};
-    if (!formData.aadhaarNumber || formData.aadhaarNumber.replace(/\\D/g, '').length < 12) {
-      errs.aadhaarNumber = 'Please enter a valid 12-digit Aadhaar number';
+    const cleanAadhaar = (formData.aadhaarNumber || '').replace(/[^0-9]/g, '');
+    if (!cleanAadhaar) {
+      errs.aadhaarNumber = 'Please enter your 12-digit Aadhaar number';
+    } else if (cleanAadhaar.length < 12) {
+      errs.aadhaarNumber = 'Aadhaar number must contain 12 digits (entered ' + cleanAadhaar.length + ' of 12)';
+    } else if (cleanAadhaar.startsWith('0') || cleanAadhaar.startsWith('1')) {
+      errs.aadhaarNumber = 'Aadhaar number cannot start with 0 or 1';
     }
+
     if (!formData.consentAadhaar) {
-      errs.consentAadhaar = 'Aadhaar authentication consent is required';
+      errs.consentAadhaar = 'Aadhaar authentication consent is required to proceed';
     }
-    if (!formData.otp || formData.otp.length < 6) {
+
+    const cleanOtp = (formData.otp || '').replace(/[^0-9]/g, '');
+    if (!cleanOtp) {
       errs.otp = 'Please enter the 6-digit OTP received on mobile';
+    } else if (cleanOtp.length < 6) {
+      errs.otp = 'Please enter complete 6-digit OTP (entered ' + cleanOtp.length + ' of 6)';
     }
-    if (!formData.mobileNumber.trim()) {
+
+    const cleanMobile = (formData.mobileNumber || '').trim().replace(/[^0-9]/g, '');
+    if (!cleanMobile) {
       errs.mobileNumber = 'Mobile number is required';
-    } else if (!/^[6-9]\\d{9}$/.test(formData.mobileNumber.trim())) {
-      errs.mobileNumber = 'Enter a valid 10-digit mobile number';
+    } else if (cleanMobile.length !== 10 || !['6', '7', '8', '9'].includes(cleanMobile[0])) {
+      errs.mobileNumber = 'Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9';
     }
+
+    if (formData.email && formData.email.trim()) {
+      const emailStr = formData.email.trim();
+      const atIdx = emailStr.indexOf('@');
+      const dotIdx = emailStr.lastIndexOf('.');
+      if (atIdx < 1 || dotIdx <= atIdx + 1 || dotIdx === emailStr.length - 1) {
+        errs.email = 'Please enter a valid email address (e.g. name@domain.com)';
+      }
+    }
+
     if (!formData.nationality) {
-      errs.nationality = 'Please select nationality';
+      errs.nationality = 'Please select your nationality';
     }
+
     if (!formData.permitRequiredFor) {
-      errs.permitRequiredFor = 'Please select permit required for';
+      errs.permitRequiredFor = 'Please select whom the permit is required for';
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
-      triggerToast('Please complete all mandatory fields in Step 1');
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
       scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
@@ -281,7 +321,7 @@ export default function App() {
     setErrors({});
     setStep(2);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
-    triggerToast('Identity verified via Aadhaar eKYC. Proceeding to Step 2.');
+    triggerToast('Identity & eKYC verified successfully. Proceeding to Step 2.');
   };
 
   // Step 2 Validation Check
@@ -575,7 +615,25 @@ export default function App() {
           {step === 1 && (
             <View style={styles.formContainer}>
               {/* SECTION 1: Aadhaar Verification */}
-              <Text style={styles.sectionHeading}>Aadhaar Verification</Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <Text style={styles.sectionHeading}>Aadhaar Verification</Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleQuickFillStep1}
+                  style={{
+                    paddingVertical: 4,
+                    paddingHorizontal: 10,
+                    borderRadius: 14,
+                    backgroundColor: UX4GColors.primary50,
+                    borderWidth: 1,
+                    borderColor: UX4GColors.primary200,
+                  }}
+                >
+                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.primary }}>
+                    Fill sample data
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
               {/* Official UX4G Aadhaar Input Component */}
               <View style={styles.fieldGroup}>
@@ -618,13 +676,20 @@ export default function App() {
                   length={6}
                   value={formData.otp}
                   onChanged={(val) => updateField('otp', val)}
-                  status={errors.otp ? 'error' : 'defaultStatus'}
+                  status={errors.otp ? 'error' : (formData.otp && formData.otp.length === 6) ? 'success' : 'defaultStatus'}
                   captionVariant="resendTimer"
                   autoCountdownSeconds={17}
                   captionLeadingText="Didn't receive OTP?"
                   captionTrailingText="Resend in"
-                  onCaptionTrailingTap={() => triggerToast('New OTP sent to registered mobile')}
+                  onCaptionTrailingTap={() => triggerToast('New OTP sent to registered mobile: +91 ' + (formData.mobileNumber || '9999999999'))}
                 />
+                {errors.otp && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                    <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
+                      {errors.otp}
+                    </Text>
+                  </View>
+                )}
               </View>
 
               {/* Informational Callout Banner (No Aadhaar counter service - Using Ux4gStatusBanner) */}
@@ -689,9 +754,30 @@ export default function App() {
               />
 
               {/* SECTION 2: Details Fetched from Aadhaar */}
-              <Text style={[styles.sectionHeading, { marginTop: 28 }]}>
-                Details Fetched from Aadhaar
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 28, marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
+                <Text style={styles.sectionHeading}>Details Fetched from Aadhaar</Text>
+                {formData.otp && formData.otp.length === 6 && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: '#F0FDF4',
+                      paddingHorizontal: 8,
+                      paddingVertical: 3,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: '#BBF7D0',
+                      gap: 4,
+                    }}
+                  >
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2.2} />
+                      <Path d="M8 12l2.5 2.5L16 9" stroke="#16A34A" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+                    </Svg>
+                    <Text style={{ fontSize: 11, fontWeight: '600', color: '#166534' }}>Verified via eKYC</Text>
+                  </View>
+                )}
+              </View>
 
               <View style={styles.readOnlyFieldGroup}>
                 <Text style={styles.readOnlyLabel}>Full name</Text>
@@ -818,6 +904,13 @@ export default function App() {
                     size="medium"
                   />
                 </View>
+                {errors.nationality && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                    <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
+                      {errors.nationality}
+                    </Text>
+                  </View>
+                )}
               </View>
 
               {/* Permit Required For with Official Ux4gRadioButton */}
@@ -850,6 +943,13 @@ export default function App() {
                     size="medium"
                   />
                 </View>
+                {errors.permitRequiredFor && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                    <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
+                      {errors.permitRequiredFor}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           )}

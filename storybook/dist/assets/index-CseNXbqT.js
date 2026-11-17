@@ -95928,7 +95928,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="o4lqy4mWlNPZj47wrACIQ",Dx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="Lhw_v5vHYM7V3CJ4sQpX6",Dx=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -96054,12 +96054,12 @@ export default function App() {
 
   // Full 9-Step Application State
   const [formData, setFormData] = useState({
-    // Step 1: Aadhaar Verification & eKYC (Initialized to match user image)
-    aadhaarNumber: '9845 2014 6612',
-    consentAadhaar: true,
-    otp: '123456',
+    // Step 1: Aadhaar Verification & eKYC (Initialized to unverified state to demonstrate full validation checks)
+    aadhaarNumber: '',
+    consentAadhaar: false,
+    otp: '',
     
-    // Details Fetched from Aadhaar
+    // Details Fetched from Aadhaar (Rendered into official read-only summary boxes)
     fullName: 'Rajeev chauhan',
     dob: '07 / 09 / 1995',
     gender: 'Male',
@@ -96070,11 +96070,11 @@ export default function App() {
     pincode: '201309',
 
     // Other Details
-    mobileNumber: '9999999999',
+    mobileNumber: '',
     isWhatsAppSame: false,
-    email: 'abc@gmail.com',
-    nationality: 'indian', // 'indian' | 'foreign'
-    permitRequiredFor: 'myself', // 'myself' | 'family' | 'clients'
+    email: '',
+    nationality: '', // 'indian' | 'foreign'
+    permitRequiredFor: '', // 'myself' | 'family' | 'clients'
 
     // Step 2: Area & Protected Zone Selection
     permitType: 'ilp', // 'ilp' | 'pap'
@@ -96161,33 +96161,73 @@ export default function App() {
     triggerToast('Draft saved successfully at ' + timeStr);
   };
 
-  // Step 1 Validation Check
+  // Quick fill helper for testing validation and complete flow
+  const handleQuickFillStep1 = () => {
+    setFormData((prev) => ({
+      ...prev,
+      aadhaarNumber: '9845 2014 6612',
+      consentAadhaar: true,
+      otp: '123456',
+      mobileNumber: '9999999999',
+      email: 'abc@gmail.com',
+      nationality: 'indian',
+      permitRequiredFor: 'myself',
+    }));
+    setErrors({});
+    triggerToast('Sample data filled for Step 1');
+  };
+
+  // Step 1 Validation Check - Comprehensive checks for all fields
   const handleContinueStep1 = () => {
     const errs = {};
-    if (!formData.aadhaarNumber || formData.aadhaarNumber.replace(/\\D/g, '').length < 12) {
-      errs.aadhaarNumber = 'Please enter a valid 12-digit Aadhaar number';
+    const cleanAadhaar = (formData.aadhaarNumber || '').replace(/[^0-9]/g, '');
+    if (!cleanAadhaar) {
+      errs.aadhaarNumber = 'Please enter your 12-digit Aadhaar number';
+    } else if (cleanAadhaar.length < 12) {
+      errs.aadhaarNumber = 'Aadhaar number must contain 12 digits (entered ' + cleanAadhaar.length + ' of 12)';
+    } else if (cleanAadhaar.startsWith('0') || cleanAadhaar.startsWith('1')) {
+      errs.aadhaarNumber = 'Aadhaar number cannot start with 0 or 1';
     }
+
     if (!formData.consentAadhaar) {
-      errs.consentAadhaar = 'Aadhaar authentication consent is required';
+      errs.consentAadhaar = 'Aadhaar authentication consent is required to proceed';
     }
-    if (!formData.otp || formData.otp.length < 6) {
+
+    const cleanOtp = (formData.otp || '').replace(/[^0-9]/g, '');
+    if (!cleanOtp) {
       errs.otp = 'Please enter the 6-digit OTP received on mobile';
+    } else if (cleanOtp.length < 6) {
+      errs.otp = 'Please enter complete 6-digit OTP (entered ' + cleanOtp.length + ' of 6)';
     }
-    if (!formData.mobileNumber.trim()) {
+
+    const cleanMobile = (formData.mobileNumber || '').trim().replace(/[^0-9]/g, '');
+    if (!cleanMobile) {
       errs.mobileNumber = 'Mobile number is required';
-    } else if (!/^[6-9]\\d{9}$/.test(formData.mobileNumber.trim())) {
-      errs.mobileNumber = 'Enter a valid 10-digit mobile number';
+    } else if (cleanMobile.length !== 10 || !['6', '7', '8', '9'].includes(cleanMobile[0])) {
+      errs.mobileNumber = 'Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9';
     }
+
+    if (formData.email && formData.email.trim()) {
+      const emailStr = formData.email.trim();
+      const atIdx = emailStr.indexOf('@');
+      const dotIdx = emailStr.lastIndexOf('.');
+      if (atIdx < 1 || dotIdx <= atIdx + 1 || dotIdx === emailStr.length - 1) {
+        errs.email = 'Please enter a valid email address (e.g. name@domain.com)';
+      }
+    }
+
     if (!formData.nationality) {
-      errs.nationality = 'Please select nationality';
+      errs.nationality = 'Please select your nationality';
     }
+
     if (!formData.permitRequiredFor) {
-      errs.permitRequiredFor = 'Please select permit required for';
+      errs.permitRequiredFor = 'Please select whom the permit is required for';
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
-      triggerToast('Please complete all mandatory fields in Step 1');
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
       scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
@@ -96195,7 +96235,7 @@ export default function App() {
     setErrors({});
     setStep(2);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
-    triggerToast('Identity verified via Aadhaar eKYC. Proceeding to Step 2.');
+    triggerToast('Identity & eKYC verified successfully. Proceeding to Step 2.');
   };
 
   // Step 2 Validation Check
@@ -96489,7 +96529,25 @@ export default function App() {
           {step === 1 && (
             <View style={styles.formContainer}>
               {/* SECTION 1: Aadhaar Verification */}
-              <Text style={styles.sectionHeading}>Aadhaar Verification</Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <Text style={styles.sectionHeading}>Aadhaar Verification</Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleQuickFillStep1}
+                  style={{
+                    paddingVertical: 4,
+                    paddingHorizontal: 10,
+                    borderRadius: 14,
+                    backgroundColor: UX4GColors.primary50,
+                    borderWidth: 1,
+                    borderColor: UX4GColors.primary200,
+                  }}
+                >
+                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.primary }}>
+                    Fill sample data
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
               {/* Official UX4G Aadhaar Input Component */}
               <View style={styles.fieldGroup}>
@@ -96532,13 +96590,20 @@ export default function App() {
                   length={6}
                   value={formData.otp}
                   onChanged={(val) => updateField('otp', val)}
-                  status={errors.otp ? 'error' : 'defaultStatus'}
+                  status={errors.otp ? 'error' : (formData.otp && formData.otp.length === 6) ? 'success' : 'defaultStatus'}
                   captionVariant="resendTimer"
                   autoCountdownSeconds={17}
                   captionLeadingText="Didn't receive OTP?"
                   captionTrailingText="Resend in"
-                  onCaptionTrailingTap={() => triggerToast('New OTP sent to registered mobile')}
+                  onCaptionTrailingTap={() => triggerToast('New OTP sent to registered mobile: +91 ' + (formData.mobileNumber || '9999999999'))}
                 />
+                {errors.otp && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                    <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
+                      {errors.otp}
+                    </Text>
+                  </View>
+                )}
               </View>
 
               {/* Informational Callout Banner (No Aadhaar counter service - Using Ux4gStatusBanner) */}
@@ -96603,9 +96668,30 @@ export default function App() {
               />
 
               {/* SECTION 2: Details Fetched from Aadhaar */}
-              <Text style={[styles.sectionHeading, { marginTop: 28 }]}>
-                Details Fetched from Aadhaar
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 28, marginBottom: 8, flexWrap: 'wrap', gap: 8 }}>
+                <Text style={styles.sectionHeading}>Details Fetched from Aadhaar</Text>
+                {formData.otp && formData.otp.length === 6 && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: '#F0FDF4',
+                      paddingHorizontal: 8,
+                      paddingVertical: 3,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: '#BBF7D0',
+                      gap: 4,
+                    }}
+                  >
+                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                      <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2.2} />
+                      <Path d="M8 12l2.5 2.5L16 9" stroke="#16A34A" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+                    </Svg>
+                    <Text style={{ fontSize: 11, fontWeight: '600', color: '#166534' }}>Verified via eKYC</Text>
+                  </View>
+                )}
+              </View>
 
               <View style={styles.readOnlyFieldGroup}>
                 <Text style={styles.readOnlyLabel}>Full name</Text>
@@ -96732,6 +96818,13 @@ export default function App() {
                     size="medium"
                   />
                 </View>
+                {errors.nationality && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                    <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
+                      {errors.nationality}
+                    </Text>
+                  </View>
+                )}
               </View>
 
               {/* Permit Required For with Official Ux4gRadioButton */}
@@ -96764,6 +96857,13 @@ export default function App() {
                     size="medium"
                   />
                 </View>
+                {errors.permitRequiredFor && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                    <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
+                      {errors.permitRequiredFor}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           )}
