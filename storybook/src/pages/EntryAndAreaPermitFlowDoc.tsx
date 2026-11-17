@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'hA_VoyLNonUg9dlWy6A6L';
+const SNACK_ID = 'Ex9GwAtfTJPN5R8ljUMv8';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -62,6 +62,8 @@ const UnionLogo = () => (
   </Svg>
 );
 
+const PERMIT_QR_PATH_D = 'M0,0h7v1h-7z M9,0h1v1h-1z M13,0h2v1h-2z M16,0h3v1h-3z M22,0h7v1h-7z M0,1h1v1h-1z M6,1h1v1h-1z M12,1h1v1h-1z M14,1h5v1h-5z M20,1h1v1h-1z M22,1h1v1h-1z M28,1h1v1h-1z M0,2h1v1h-1z M2,2h3v1h-3z M6,2h1v1h-1z M9,2h1v1h-1z M13,2h2v1h-2z M17,2h3v1h-3z M22,2h1v1h-1z M24,2h3v1h-3z M28,2h1v1h-1z M0,3h1v1h-1z M2,3h3v1h-3z M6,3h1v1h-1z M10,3h3v1h-3z M14,3h1v1h-1z M16,3h1v1h-1z M19,3h2v1h-2z M22,3h1v1h-1z M24,3h3v1h-3z M28,3h1v1h-1z M0,4h1v1h-1z M2,4h3v1h-3z M6,4h1v1h-1z M8,4h1v1h-1z M11,4h2v1h-2z M15,4h1v1h-1z M17,4h4v1h-4z M22,4h1v1h-1z M24,4h3v1h-3z M28,4h1v1h-1z M0,5h1v1h-1z M6,5h1v1h-1z M8,5h1v1h-1z M10,5h1v1h-1z M13,5h1v1h-1z M18,5h1v1h-1z M22,5h1v1h-1z M28,5h1v1h-1z M0,6h7v1h-7z M8,6h1v1h-1z M10,6h1v1h-1z M12,6h1v1h-1z M14,6h1v1h-1z M16,6h1v1h-1z M18,6h1v1h-1z M20,6h1v1h-1z M22,6h7v1h-7z M9,7h1v1h-1z M12,7h1v1h-1z M17,7h4v1h-4z M0,8h5v1h-5z M6,8h2v1h-2z M11,8h1v1h-1z M14,8h2v1h-2z M21,8h2v1h-2z M25,8h4v1h-4z M1,9h1v1h-1z M5,9h1v1h-1z M7,9h1v1h-1z M9,9h1v1h-1z M11,9h1v1h-1z M13,9h1v1h-1z M15,9h2v1h-2z M18,9h2v1h-2z M21,9h1v1h-1z M26,9h1v1h-1z M6,10h3v1h-3z M10,10h2v1h-2z M13,10h6v1h-6z M20,10h2v1h-2z M23,10h1v1h-1z M26,10h1v1h-1z M2,11h1v1h-1z M4,11h2v1h-2z M7,11h1v1h-1z M9,11h4v1h-4z M16,11h3v1h-3z M23,11h2v1h-2z M0,12h8v1h-8z M14,12h1v1h-1z M17,12h3v1h-3z M22,12h2v1h-2z M25,12h1v1h-1z M27,12h2v1h-2z M3,13h1v1h-1z M5,13h1v1h-1z M8,13h3v1h-3z M13,13h1v1h-1z M15,13h1v1h-1z M19,13h1v1h-1z M21,13h1v1h-1z M23,13h3v1h-3z M27,13h1v1h-1z M0,14h5v1h-5z M6,14h2v1h-2z M11,14h1v1h-1z M13,14h1v1h-1z M15,14h1v1h-1z M17,14h1v1h-1z M19,14h1v1h-1z M21,14h1v1h-1z M26,14h2v1h-2z M1,15h1v1h-1z M3,15h1v1h-1z M5,15h1v1h-1z M8,15h3v1h-3z M12,15h1v1h-1z M15,15h2v1h-2z M18,15h1v1h-1z M22,15h1v1h-1z M24,15h4v1h-4z M2,16h1v1h-1z M4,16h1v1h-1z M6,16h6v1h-6z M14,16h1v1h-1z M16,16h4v1h-4z M22,16h1v1h-1z M24,16h1v1h-1z M4,17h2v1h-2z M8,17h1v1h-1z M11,17h1v1h-1z M14,17h1v1h-1z M16,17h2v1h-2z M19,17h3v1h-3z M24,17h1v1h-1z M26,17h3v1h-3z M0,18h2v1h-2z M3,18h1v1h-1z M6,18h2v1h-2z M9,18h5v1h-5z M15,18h2v1h-2z M18,18h1v1h-1z M22,18h1v1h-1z M26,18h1v1h-1z M28,18h1v1h-1z M1,19h2v1h-2z M5,19h1v1h-1z M7,19h2v1h-2z M10,19h3v1h-3z M14,19h1v1h-1z M16,19h1v1h-1z M18,19h1v1h-1z M26,19h1v1h-1z M28,19h1v1h-1z M0,20h4v1h-4z M6,20h1v1h-1z M8,20h2v1h-2z M11,20h1v1h-1z M17,20h2v1h-2z M20,20h5v1h-5z M8,21h1v1h-1z M14,21h2v1h-2z M20,21h1v1h-1z M24,21h1v1h-1z M27,21h2v1h-2z M0,22h7v1h-7z M8,22h2v1h-2z M12,22h2v1h-2z M16,22h3v1h-3z M20,22h1v1h-1z M22,22h1v1h-1z M24,22h1v1h-1z M26,22h1v1h-1z M0,23h1v1h-1z M6,23h1v1h-1z M9,23h1v1h-1z M12,23h1v1h-1z M14,23h3v1h-3z M20,23h1v1h-1z M24,23h1v1h-1z M28,23h1v1h-1z M0,24h1v1h-1z M2,24h3v1h-3z M6,24h1v1h-1z M9,24h1v1h-1z M11,24h1v1h-1z M16,24h3v1h-3z M20,24h5v1h-5z M27,24h1v1h-1z M0,25h1v1h-1z M2,25h3v1h-3z M6,25h1v1h-1z M10,25h1v1h-1z M12,25h3v1h-3z M16,25h3v1h-3z M26,25h1v1h-1z M28,25h1v1h-1z M0,26h1v1h-1z M2,26h3v1h-3z M6,26h1v1h-1z M8,26h3v1h-3z M12,26h1v1h-1z M19,26h1v1h-1z M22,26h3v1h-3z M26,26h1v1h-1z M0,27h1v1h-1z M6,27h1v1h-1z M8,27h1v1h-1z M12,27h2v1h-2z M17,27h1v1h-1z M19,27h2v1h-2z M23,27h1v1h-1z M25,27h1v1h-1z M27,27h2v1h-2z M0,28h7v1h-7z M8,28h1v1h-1z M10,28h4v1h-4z M15,28h4v1h-4z M21,28h1v1h-1z M26,28h1v1h-1z';
+
 const STEP_METADATA = {
   1: {
     title: 'Identity & eKYC',
@@ -96,8 +98,8 @@ const STEP_METADATA = {
     subtitle: 'What this permit costs, on what basis, and when it falls due.',
   },
   9: {
-    title: 'Permit Issued',
-    subtitle: 'Your entry permit is granted and registered with the district administration.',
+    title: 'Acknowledgement & credential',
+    subtitle: 'Your issued permit, its QR code, and how a checkpoint officer verifies it.',
   },
 };
 
@@ -234,9 +236,9 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(8);
+  const [step, setStep] = useState(9);
   const [feeSubStep, setFeeSubStep] = useState('payment');
-  const [isRedirecting, setIsRedirecting] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
@@ -2736,55 +2738,146 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 9: PERMIT ISSUED & ACKNOWLEDGMENT                                    */}
+          {/* STEP 9: ACKNOWLEDGEMENT & CREDENTIAL (FINAL SCREEN)                       */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 9 && (
             <View style={styles.formContainer}>
-              <View style={styles.step9TopContainer}>
-                <View style={styles.step9SuccessOuterCircle}>
-                  <View style={styles.step9SuccessInnerCircle}>
-                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                      <Path
-                        d="M5 13l4 4L19 7"
-                        stroke={UX4GColors.white}
-                        strokeWidth={3}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </Svg>
-                  </View>
-                </View>
+              {/* Section 1: Permit Details */}
+              <Text style={styles.sectionHeading}>Permit Details</Text>
 
-                <Text style={styles.step9Heading}>Entry Permit Issued</Text>
-                <Text style={styles.step9Description}>
-                  Your entry and area permit has been officially granted and verified by the Office of the District Magistrate.
+              {/* Status Alert Banner (Success) */}
+              <View style={styles.permitSuccessAlert}>
+                <View style={styles.permitSuccessBadge}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M20 6L9 17l-5-5"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <Text style={styles.permitSuccessText}>
+                  Permit {formData.permitNumber || 'UK-EAP-2026-004821'} issued on 24 September 2026, valid 25–28 September. Carry it printed or on your phone and be ready to show it at the checkpoint.
                 </Text>
               </View>
 
-              <View style={styles.step9DetailsCard}>
-                <View style={styles.step9DetailRow}>
-                  <Text style={styles.step9DetailLabel}>Permit number</Text>
-                  <Text style={styles.step9DetailValue}>{formData.permitNumber}</Text>
+              {/* Permit Reference */}
+              <View style={{ marginTop: 18 }}>
+                <Text style={styles.permitReferenceLabel}>Permit reference</Text>
+                <Text style={styles.permitReferenceValue}>4821 7730 2609</Text>
+              </View>
+
+              {/* QR Code Container Card */}
+              <View style={styles.qrCardContainer}>
+                <Svg width={220} height={220} viewBox="0 0 29 29">
+                  <Path d={PERMIT_QR_PATH_D} fill="#111827" />
+                </Svg>
+              </View>
+
+              {/* Action Buttons below QR Code */}
+              <TouchableOpacity
+                style={styles.primaryDownloadPermitBtn}
+                activeOpacity={0.85}
+                onPress={() => triggerToast('Downloading permit ' + (formData.permitNumber || 'UK-EAP-2026-004821') + '...')}
+              >
+                <Text style={styles.primaryDownloadPermitBtnText}>Download permit</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.secondarySavePhoneBtn}
+                activeOpacity={0.85}
+                onPress={() => triggerToast('Permit credentials saved to phone')}
+              >
+                <Text style={styles.secondarySavePhoneBtnText}>Save to phone</Text>
+              </TouchableOpacity>
+
+              {/* Section 2: Travellers on This Permit */}
+              <Text style={[styles.sectionHeading, { marginTop: 28 }]}>
+                Travellers on This Permit
+              </Text>
+
+              {/* Traveller 1 */}
+              <View style={styles.travellerCredentialCard}>
+                <Text style={styles.travellerNameTitle}>
+                  {formData.fullName || 'Ramesh Chandra Joshi'} — primary
+                </Text>
+                <Text style={styles.travellerRefNumber}>4821 7730 2609</Text>
+
+                <TouchableOpacity
+                  style={styles.travellerDownloadBtn}
+                  activeOpacity={0.85}
+                  onPress={() => triggerToast('Downloading permit pass for ' + (formData.fullName || 'Ramesh Chandra Joshi'))}
+                >
+                  <Text style={styles.travellerDownloadBtnText}>Download</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Traveller 2 */}
+              <View style={[styles.travellerCredentialCard, { marginTop: 12 }]}>
+                <Text style={styles.travellerNameTitle}>
+                  {formData.groupMembers?.[0]?.name || 'Ankit Joshi'} — {formData.groupMembers?.[0]?.relation || 'father'}
+                </Text>
+                <Text style={styles.travellerRefNumber}>4821 7730 2610</Text>
+
+                <TouchableOpacity
+                  style={styles.travellerDownloadBtn}
+                  activeOpacity={0.85}
+                  onPress={() => triggerToast('Downloading permit pass for ' + (formData.groupMembers?.[0]?.name || 'Ankit Joshi'))}
+                >
+                  <Text style={styles.travellerDownloadBtnText}>Download</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Section 3: Verification at the Checkpoint */}
+              <Text style={[styles.sectionHeading, { marginTop: 28 }]}>
+                Verification at the Checkpoint
+              </Text>
+
+              {/* Checkpoint Info Box */}
+              <View style={styles.checkpointInfoAlert}>
+                <View style={styles.checkpointInfoBadge}>
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} fill="#0D9488" />
+                    <Path
+                      d="M12 16v-4M12 8h.01"
+                      stroke="#FFFFFF"
+                      strokeWidth={2.5}
+                      strokeLinecap="round"
+                    />
+                  </Svg>
                 </View>
-                <View style={styles.step9DetailRow}>
-                  <Text style={styles.step9DetailLabel}>Applicant name</Text>
-                  <Text style={styles.step9DetailValue}>{formData.fullName}</Text>
+                <Text style={styles.checkpointInfoText}>
+                  Verification happens in person at the checkpoint. Until an officer has verified you there, the visit certificate below stays locked — nothing you can do here releases it.
+                </Text>
+              </View>
+
+              {/* Numbered instructions */}
+              <View style={styles.checkpointInstructionsList}>
+                <View style={styles.checkpointInstructionRow}>
+                  <Text style={styles.checkpointInstructionNum}>1.</Text>
+                  <Text style={styles.checkpointInstructionText}>
+                    Carry the permit, printed or on your phone.
+                  </Text>
                 </View>
-                <View style={styles.step9DetailRow}>
-                  <Text style={styles.step9DetailLabel}>Protected zone</Text>
-                  <Text style={styles.step9DetailValue}>Changthang Wildlife Sanctuary</Text>
+                <View style={styles.checkpointInstructionRow}>
+                  <Text style={styles.checkpointInstructionNum}>2.</Text>
+                  <Text style={styles.checkpointInstructionText}>
+                    Show it at the checkpoint on the way in.
+                  </Text>
                 </View>
-                <View style={styles.step9DetailRow}>
-                  <Text style={styles.step9DetailLabel}>Checkpost</Text>
-                  <Text style={styles.step9DetailValue}>Tsaga La / Chushul Outpost</Text>
+                <View style={styles.checkpointInstructionRow}>
+                  <Text style={styles.checkpointInstructionNum}>3.</Text>
+                  <Text style={styles.checkpointInstructionText}>
+                    An officer verifies you in person against your live photograph.
+                  </Text>
                 </View>
-                <View style={styles.step9DetailRow}>
-                  <Text style={styles.step9DetailLabel}>Validity</Text>
-                  <Text style={styles.step9DetailValue}>{formData.startDate} – {formData.endDate}</Text>
-                </View>
-                <View style={styles.step9DetailRow}>
-                  <Text style={styles.step9DetailLabel}>Issuing Authority</Text>
-                  <Text style={styles.step9DetailValue}>District Magistrate Office</Text>
+                <View style={styles.checkpointInstructionRow}>
+                  <Text style={styles.checkpointInstructionNum}>4.</Text>
+                  <Text style={styles.checkpointInstructionText}>
+                    The visit certificate is released here once that verification is recorded.
+                  </Text>
                 </View>
               </View>
             </View>
@@ -2808,7 +2901,7 @@ export default function App() {
                 : step === 8 && feeSubStep === 'payment'
                 ? 'Pay ₹600'
                 : step === 9
-                ? 'Go to my permits'
+                ? 'Back to my permits'
                 : 'Continue'}
             </Text>
           </TouchableOpacity>
@@ -4087,6 +4180,153 @@ const styles = StyleSheet.create({
     color: '#4B5563',
     textAlign: 'center',
   },
+  permitSuccessAlert: {
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#BBF7D0',
+    borderRadius: 8,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 4,
+  },
+  permitSuccessBadge: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    marginTop: 2,
+  },
+  permitSuccessText: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: '#15803D',
+    flex: 1,
+  },
+  permitReferenceLabel: {
+    fontSize: 13,
+    color: '#6B7280',
+    marginBottom: 4,
+  },
+  permitReferenceValue: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 12,
+  },
+  qrCardContainer: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 12,
+    padding: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryDownloadPermitBtn: {
+    backgroundColor: UX4GColors.primary,
+    borderRadius: 8,
+    height: 46,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
+  primaryDownloadPermitBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.white,
+  },
+  secondarySavePhoneBtn: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary300,
+    borderRadius: 8,
+    height: 46,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  secondarySavePhoneBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
+  travellerCredentialCard: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 10,
+    padding: 16,
+  },
+  travellerNameTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  travellerRefNumber: {
+    fontSize: 13,
+    color: '#6B7280',
+    marginTop: 4,
+    marginBottom: 14,
+  },
+  travellerDownloadBtn: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary300,
+    borderRadius: 8,
+    height: 38,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  travellerDownloadBtnText: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
+  checkpointInfoAlert: {
+    backgroundColor: '#F0FDFA',
+    borderWidth: 1,
+    borderColor: '#99F6E4',
+    borderRadius: 8,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 4,
+  },
+  checkpointInfoBadge: {
+    marginRight: 10,
+    marginTop: 2,
+  },
+  checkpointInfoText: {
+    fontSize: 13,
+    lineHeight: 19,
+    color: '#0F766E',
+    flex: 1,
+  },
+  checkpointInstructionsList: {
+    marginTop: 14,
+  },
+  checkpointInstructionRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  checkpointInstructionNum: {
+    fontSize: 13,
+    color: '#4B5563',
+    width: 20,
+    lineHeight: 20,
+  },
+  checkpointInstructionText: {
+    fontSize: 13,
+    color: '#4B5563',
+    lineHeight: 20,
+    flex: 1,
+  },
+
 });
 `;
   }, []);
