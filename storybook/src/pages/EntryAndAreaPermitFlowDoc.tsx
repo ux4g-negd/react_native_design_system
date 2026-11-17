@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = '3PqZj9DpuzliIF8A0oTiI';
+const SNACK_ID = 'i-949Jr_xSLk1BxKy95c0';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -1072,7 +1072,7 @@ export default function App() {
                   onChanged={(val) => updateField('consentAadhaar', !!val)}
                   hasError={!!errors.consentAadhaar}
                   description={errors.consentAadhaar}
-                  descriptionVariant="error"
+                  descriptionVariant={errors.consentAadhaar ? 'error' : 'helper'}
                   size="medium"
                 />
               </View>
@@ -2361,7 +2361,7 @@ export default function App() {
                   size="medium"
                   hasError={!!errors.declarationTrueComplete}
                   description={errors.declarationTrueComplete}
-                  descriptionVariant="error"
+                  descriptionVariant={errors.declarationTrueComplete ? 'error' : 'helper'}
                 />
               </View>
 
@@ -2374,7 +2374,7 @@ export default function App() {
                   size="medium"
                   hasError={!!errors.declarationEmergencyContact}
                   description={errors.declarationEmergencyContact}
-                  descriptionVariant="error"
+                  descriptionVariant={errors.declarationEmergencyContact ? 'error' : 'helper'}
                 />
               </View>
             </View>
@@ -2550,7 +2550,7 @@ export default function App() {
                   size="medium"
                   hasError={!!errors.declarationAccuracy}
                   description={errors.declarationAccuracy}
-                  descriptionVariant="error"
+                  descriptionVariant={errors.declarationAccuracy ? 'error' : 'helper'}
                 />
               </View>
             </View>

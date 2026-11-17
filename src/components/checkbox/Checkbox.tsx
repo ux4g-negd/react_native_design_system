@@ -154,7 +154,7 @@ export const Ux4gCheckbox: React.FC<Ux4gCheckboxProps> = ({
   } else {
     // Unchecked enabled
     boxBgColor = 'transparent';
-    if (hasError || descriptionVariant === 'error') {
+    if (hasError || (description && descriptionVariant === 'error')) {
       boxBorderColor = theme.colors.error;
     } else {
       boxBorderColor = theme.isDark
