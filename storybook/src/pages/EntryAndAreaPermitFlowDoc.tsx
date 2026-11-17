@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = '2qiI3pps8zkUl0LQLvIZ3';
+const SNACK_ID = '9l5iovq0adI-QT9-g74L-';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -221,6 +221,7 @@ const formatDate = (date) => {
 
 export default function App() {
   const [step, setStep] = useState(8);
+  const [feeSubStep, setFeeSubStep] = useState('payment');
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -346,6 +347,8 @@ export default function App() {
     undertakingOriginalId: true,
 
     // Step 8 & 9: Fee, Payment & Final Permit
+    paymentMode: 'upi',
+    upiId: '',
     permitNumber: 'UK-EAP-2026-004821',
     isSubmitted: false,
   });
@@ -867,6 +870,25 @@ export default function App() {
 
   // Step 8 Validation Check & Proceed to Step 9
   const handleContinueStep8 = () => {
+    if (feeSubStep === 'summary') {
+      setFeeSubStep('payment');
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
+
+    if (formData.paymentMode === 'upi') {
+      if (!formData.upiId || !formData.upiId.trim()) {
+        setErrors({ upiId: 'Please enter your UPI ID' });
+        triggerToast('Please enter your UPI ID to proceed');
+        return;
+      }
+      if (!formData.upiId.includes('@')) {
+        setErrors({ upiId: 'Please enter a valid UPI ID (e.g. name@upi)' });
+        triggerToast('Please enter a valid UPI ID');
+        return;
+      }
+    }
+
     setErrors({});
     const newPermitNum = formData.permitNumber || 'UK-EAP-2026-004821';
     setFormData((prev) => ({
@@ -896,6 +918,11 @@ export default function App() {
   };
 
   const handlePrevious = () => {
+    if (step === 8 && feeSubStep === 'payment') {
+      setFeeSubStep('summary');
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+      return;
+    }
     if (step > 1) {
       setErrors({});
       setStep((prev) => prev - 1);
@@ -906,6 +933,9 @@ export default function App() {
   const jumpToStep = (targetStep) => {
     setErrors({});
     setStep(targetStep);
+    if (targetStep === 8) {
+      setFeeSubStep('payment');
+    }
     setIsNavMenuOpen(false);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
@@ -2372,25 +2402,106 @@ export default function App() {
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 8 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Fee Details</Text>
+              {feeSubStep === 'summary' ? (
+                <>
+                  <Text style={styles.sectionHeading}>Fee Details</Text>
 
-              <View style={styles.feeCard}>
-                <Text style={styles.feeCardTitle}>
-                  Entry and area permit · {formData.permitNumber || 'UK-EAP-2026-004821'}
-                </Text>
+                  <View style={styles.feeCard}>
+                    <Text style={styles.feeCardTitle}>
+                      Entry and area permit · {formData.permitNumber || 'UK-EAP-2026-004821'}
+                    </Text>
 
-                <View style={styles.feeRow}>
-                  <Text style={styles.feeLabel}>Permit fee — 4-day trip, 2 travellers</Text>
-                  <Text style={styles.feeValue}>₹600</Text>
-                </View>
+                    <View style={styles.feeRow}>
+                      <Text style={styles.feeLabel}>Permit fee — 4-day trip, 2 travellers</Text>
+                      <Text style={styles.feeValue}>₹600</Text>
+                    </View>
 
-                <View style={styles.feeDivider} />
+                    <View style={styles.feeDivider} />
 
-                <View style={styles.feeRow}>
-                  <Text style={styles.feeTotalLabel}>Total payable</Text>
-                  <Text style={styles.feeTotalValue}>₹600</Text>
-                </View>
-              </View>
+                    <View style={styles.feeRow}>
+                      <Text style={styles.feeTotalLabel}>Total payable</Text>
+                      <Text style={styles.feeTotalValue}>₹600</Text>
+                    </View>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.sectionHeading}>Fee & payment</Text>
+                  <Text style={styles.paymentIntroSubText}>
+                    What this permit costs, on what basis, and when it falls due.
+                  </Text>
+
+                  <Text style={[styles.sectionHeading, { marginTop: 16 }]}>Mode of Payment</Text>
+                  <Text style={styles.paymentIntroSubText}>
+                    ₹600 payable for {formData.permitNumber || 'UK-EAP-2026-004821'}.
+                  </Text>
+
+                  <View style={{ marginTop: 12 }}>
+                    <Ux4gRadioButton
+                      value="upi"
+                      groupValue={formData.paymentMode}
+                      onChanged={(val) => updateField('paymentMode', val)}
+                      label="UPI"
+                      description="Pay with any UPI app"
+                      size="medium"
+                      style={[
+                        styles.paymentOptionCard,
+                        formData.paymentMode === 'upi' && styles.paymentOptionCardSelected,
+                      ]}
+                      labelStyle={formData.paymentMode === 'upi' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
+                      descriptionStyle={formData.paymentMode === 'upi' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
+                    />
+
+                    <Ux4gRadioButton
+                      value="netbanking"
+                      groupValue={formData.paymentMode}
+                      onChanged={(val) => updateField('paymentMode', val)}
+                      label="Net Banking"
+                      description="60+ banks supported"
+                      size="medium"
+                      style={[
+                        styles.paymentOptionCard,
+                        formData.paymentMode === 'netbanking' && styles.paymentOptionCardSelected,
+                      ]}
+                      labelStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
+                      descriptionStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
+                    />
+
+                    <Ux4gRadioButton
+                      value="card"
+                      groupValue={formData.paymentMode}
+                      onChanged={(val) => updateField('paymentMode', val)}
+                      label="Debit / Credit Card"
+                      description="Visa, MasterCard, RuPay"
+                      size="medium"
+                      style={[
+                        styles.paymentOptionCard,
+                        formData.paymentMode === 'card' && styles.paymentOptionCardSelected,
+                      ]}
+                      labelStyle={formData.paymentMode === 'card' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
+                      descriptionStyle={formData.paymentMode === 'card' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
+                    />
+                  </View>
+
+                  {formData.paymentMode === 'upi' && (
+                    <View style={{ marginTop: 16 }}>
+                      <Text style={styles.sectionHeading}>Enter UPI ID</Text>
+                      <View style={{ marginTop: 8 }}>
+                        <Ux4gInputField
+                          label="UPI ID"
+                          isRequired
+                          placeholder="e.g. name@upi"
+                          value={formData.upiId}
+                          onChangeText={(text) => updateField('upiId', text)}
+                          hasError={!!errors.upiId}
+                          description={errors.upiId}
+                          size="large"
+                        />
+                      </View>
+                    </View>
+                  )}
+                </>
+              )}
             </View>
           )}
 
@@ -2460,7 +2571,9 @@ export default function App() {
             onPress={handleContinue}
           >
             <Text style={styles.primaryContinueBtnText}>
-              {step === 9
+              {step === 8 && feeSubStep === 'payment'
+                ? 'Pay ₹600'
+                : step === 9
                 ? 'Go to my permits'
                 : 'Continue'}
             </Text>
@@ -2970,6 +3083,46 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
     color: '#111827',
+  },
+  paymentIntroSubText: {
+    fontSize: 13,
+    color: '#4B5563',
+    marginTop: 4,
+    lineHeight: 18,
+  },
+  paymentOptionCard: {
+    backgroundColor: UX4GColors.white,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 10,
+  },
+  paymentOptionCardSelected: {
+    backgroundColor: '#F5F3FF',
+    borderColor: '#8B5CF6',
+    borderWidth: 1.5,
+  },
+  paymentOptionTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  paymentOptionTitleSelected: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#4A2BC2',
+  },
+  paymentOptionSub: {
+    fontSize: 13,
+    color: '#6B7280',
+    marginTop: 2,
+  },
+  paymentOptionSubSelected: {
+    fontSize: 13,
+    color: '#6D28D9',
+    marginTop: 2,
   },
   addMemberBtn: {
     borderWidth: 1,
