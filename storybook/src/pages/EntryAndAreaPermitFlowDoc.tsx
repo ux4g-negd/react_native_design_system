@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'mkT1rA3EO330ljPGst9_i';
+const SNACK_ID = 'ohbdyYxWtih0s_o8ug3zA';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -61,8 +61,8 @@ const STEP_METADATA = {
     subtitle: 'Authenticate against the register the government already holds, then confirm what it returned.',
   },
   2: {
-    title: 'Area & Protected Zone',
-    subtitle: 'Select the restricted area, border belt, or protected wildlife sanctuary you wish to visit.',
+    title: 'Trip details',
+    subtitle: 'When the trip runs, where it goes, and whether there is room on those dates.',
   },
   3: {
     title: 'Purpose & Schedule of Visit',
@@ -117,12 +117,57 @@ const PURPOSE_OPTIONS = [
   { id: 'research', label: 'Ecological & Flora-Fauna Research' },
 ];
 
+const TRIP_PURPOSE_OPTIONS = [
+  { id: 'tourist', label: 'Tourist' },
+  { id: 'pilgrimage', label: 'Pilgrimage' },
+  { id: 'trekking', label: 'Trekking & Mountaineering' },
+  { id: 'official', label: 'Government / Official Work' },
+  { id: 'research', label: 'Ecological & Flora-Fauna Research' },
+];
+
+const AVAILABLE_DESTINATIONS = [
+  'Yamunotri',
+  'Gangotri',
+  'Kedarnath',
+  'Badrinath',
+  'Hemkund Sahib',
+  'Valley of Flowers',
+  'Gaumukh Tapovan',
+  'Tungnath & Chandrashila',
+];
+
+const parseDate = (str) => {
+  if (!str) return undefined;
+  const clean = String(str).replace(/\s+/g, '');
+  const parts = clean.split('/');
+  if (parts.length === 3) {
+    const d = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const y = parseInt(parts[2], 10);
+    const date = new Date(y, m, d);
+    return isNaN(date.getTime()) ? undefined : date;
+  }
+  return undefined;
+};
+
+const formatDate = (date) => {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) return '';
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = String(date.getFullYear());
+  return d + ' / ' + m + ' / ' + y;
+};
+
 export default function App() {
   const [step, setStep] = useState(1);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
   const [errors, setErrors] = useState({});
+  const [destModalMode, setDestModalMode] = useState(null);
+  const [editingDestId, setEditingDestId] = useState(null);
+  const [destModalName, setDestModalName] = useState('');
+  const [destModalDate, setDestModalDate] = useState('');
 
   // Full 9-Step Application State
   const [formData, setFormData] = useState({
@@ -148,8 +193,19 @@ export default function App() {
     nationality: '', // 'indian' | 'foreign'
     permitRequiredFor: '', // 'myself' | 'family' | 'clients'
 
-    // Step 2: Area & Protected Zone Selection
-    permitType: 'ilp', // 'ilp' | 'pap'
+    // Step 2: Trip Details & Destinations
+    tripStartDate: '',
+    tripEndDate: '',
+    tripPurpose: 'tourist',
+    destinations: [
+      { id: '1', name: 'Yamunotri', date: '25 / 09 / 2026' },
+      { id: '2', name: 'Gangotri', date: '26 / 09 / 2026' },
+      { id: '3', name: 'Kedarnath', date: '28 / 09 / 2026' },
+    ],
+    numTravellers: '2',
+
+    // Legacy Fallback for downstream steps
+    permitType: 'ilp',
     selectedZone: 'changthang',
     selectedCheckpost: 'tsaga_la',
 
@@ -326,25 +382,123 @@ export default function App() {
     triggerToast('Identity & eKYC verified successfully. Proceeding to Step 2.');
   };
 
+  // Quick fill helper for Step 2
+  const handleQuickFillStep2 = () => {
+    setFormData((prev) => ({
+      ...prev,
+      tripStartDate: '24 / 09 / 2026',
+      tripEndDate: '30 / 09 / 2026',
+      tripPurpose: 'tourist',
+      destinations: [
+        { id: '1', name: 'Yamunotri', date: '25 / 09 / 2026' },
+        { id: '2', name: 'Gangotri', date: '26 / 09 / 2026' },
+        { id: '3', name: 'Kedarnath', date: '28 / 09 / 2026' },
+      ],
+      numTravellers: '2',
+    }));
+    setErrors({});
+    triggerToast('Sample data filled for Step 2');
+  };
+
+  const handleDeleteDestination = (id) => {
+    if (formData.destinations.length <= 1) {
+      triggerToast('At least one destination is required for the permit');
+      return;
+    }
+    const target = formData.destinations.find((d) => d.id === id);
+    setFormData((prev) => ({
+      ...prev,
+      destinations: prev.destinations.filter((d) => d.id !== id),
+    }));
+    triggerToast('Removed ' + (target ? target.name : 'destination'));
+  };
+
+  const handleOpenAddDestModal = () => {
+    setDestModalMode('add');
+    setEditingDestId(null);
+    setDestModalName('Badrinath');
+    setDestModalDate('29 / 09 / 2026');
+  };
+
+  const handleOpenEditDestModal = (item) => {
+    setDestModalMode('edit');
+    setEditingDestId(item.id);
+    setDestModalName(item.name);
+    setDestModalDate(item.date || '');
+  };
+
+  const handleSaveDestModal = () => {
+    if (!destModalName.trim()) {
+      triggerToast('Please enter destination name');
+      return;
+    }
+    if (destModalMode === 'add') {
+      const newDest = {
+        id: String(Date.now()),
+        name: destModalName.trim(),
+        date: destModalDate.trim() || '29 / 09 / 2026',
+      };
+      setFormData((prev) => ({
+        ...prev,
+        destinations: [...prev.destinations, newDest],
+      }));
+      triggerToast('Added ' + newDest.name + ' to itinerary');
+    } else if (destModalMode === 'edit' && editingDestId) {
+      setFormData((prev) => ({
+        ...prev,
+        destinations: prev.destinations.map((d) =>
+          d.id === editingDestId
+            ? { ...d, name: destModalName.trim(), date: destModalDate.trim() || d.date }
+            : d
+        ),
+      }));
+      triggerToast('Updated destination details');
+    }
+    setDestModalMode(null);
+  };
+
+  const handleCheckAvailability = () => {
+    const count = formData.numTravellers || '2';
+    triggerToast('Slots available: Quota open for ' + count + ' travellers across selected circuits');
+  };
+
   // Step 2 Validation Check
   const handleContinueStep2 = () => {
     const errs = {};
-    if (!formData.selectedZone) {
-      errs.selectedZone = 'Please select a protected zone';
+    if (!formData.tripStartDate) {
+      errs.tripStartDate = 'Please select trip start date';
     }
-    if (!formData.selectedCheckpost) {
-      errs.selectedCheckpost = 'Please select an entry checkpost';
+    if (!formData.tripEndDate) {
+      errs.tripEndDate = 'Please select trip end date';
+    }
+    if (!formData.tripPurpose) {
+      errs.tripPurpose = 'Please select purpose of visit';
+    }
+    if (!formData.destinations || formData.destinations.length === 0) {
+      errs.destinations = 'At least one destination is required';
+    } else {
+      const missingDate = formData.destinations.find((d) => !d.date || !d.date.trim());
+      if (missingDate) {
+        errs.destinations = 'Please select date of visit for ' + missingDate.name;
+      }
+    }
+    const cleanNum = parseInt(formData.numTravellers, 10);
+    if (!formData.numTravellers || isNaN(cleanNum) || cleanNum < 1) {
+      errs.numTravellers = 'Please enter a valid number of travellers (at least 1)';
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
-      triggerToast('Please select protected zone and entry checkpost');
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
 
     setErrors({});
     setStep(3);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
+    triggerToast('Trip details saved successfully. Proceeding to Step 3.');
   };
 
   // Step 3 Validation Check
@@ -959,63 +1113,179 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 2: AREA & PROTECTED ZONE SELECTION                                   */}
+          {/* STEP 2: TRIP DETAILS (EXACT MATCH TO DESIGN)                                */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 2 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Restricted & Protected Zone</Text>
+              {/* Top Row: Section Heading & Quick Fill */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <Text style={styles.sectionHeading}>Travel Dates</Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleQuickFillStep2}
+                  style={{
+                    paddingVertical: 4,
+                    paddingHorizontal: 10,
+                    borderRadius: 14,
+                    backgroundColor: UX4GColors.primary50,
+                    borderWidth: 1,
+                    borderColor: UX4GColors.primary200,
+                  }}
+                >
+                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.primary }}>
+                    Fill sample data
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
+              {/* Trip start date* */}
+              <View style={styles.fieldGroup}>
+                <Ux4gDatePicker
+                  label="Trip start date"
+                  required
+                  placeholder="Select date"
+                  initialDate={parseDate(formData.tripStartDate)}
+                  onDateSelected={(date) => updateField('tripStartDate', formatDate(date))}
+                />
+                {errors.tripStartDate ? (
+                  <Text style={styles.errorText}>{errors.tripStartDate}</Text>
+                ) : null}
+              </View>
+
+              {/* Trip end date* */}
+              <View style={styles.fieldGroup}>
+                <Ux4gDatePicker
+                  label="Trip end date"
+                  required
+                  placeholder="Select date"
+                  initialDate={parseDate(formData.tripEndDate)}
+                  onDateSelected={(date) => updateField('tripEndDate', formatDate(date))}
+                />
+                {errors.tripEndDate ? (
+                  <Text style={styles.errorText}>{errors.tripEndDate}</Text>
+                ) : null}
+              </View>
+
+              {/* Purpose of visit* */}
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
-                  Permit Category<Text style={styles.requiredAsterisk}>*</Text>
+                  Purpose of visit<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.radioOptionGroup}>
-                  <Ux4gRadioButton
-                    label="Inner Line Permit (ILP) · Domestic citizens"
-                    value="ilp"
-                    groupValue={formData.permitType}
-                    onChanged={(val) => updateField('permitType', val)}
-                    size="medium"
-                  />
-                  <View style={{ height: 8 }} />
-                  <Ux4gRadioButton
-                    label="Protected Area Permit (PAP) · International visitors & border zones"
-                    value="pap"
-                    groupValue={formData.permitType}
-                    onChanged={(val) => updateField('permitType', val)}
-                    size="medium"
+                <Ux4gSelectionDropdown
+                  placeholder="Select purpose of visit"
+                  options={TRIP_PURPOSE_OPTIONS}
+                  selectedOptionIds={formData.tripPurpose ? [formData.tripPurpose] : ['tourist']}
+                  onSelectionChange={(selected) => updateField('tripPurpose', selected[0] || 'tourist')}
+                  size="l"
+                  status={errors.tripPurpose ? 'error' : 'defaultStatus'}
+                  description={errors.tripPurpose}
+                />
+              </View>
+
+              {/* Section 2: Destination and Dates* */}
+              <View style={{ marginTop: 24, marginBottom: 12 }}>
+                <Text style={styles.sectionHeading}>
+                  Destination and Dates<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                {errors.destinations ? (
+                  <Text style={[styles.errorText, { marginBottom: 8 }]}>{errors.destinations}</Text>
+                ) : null}
+              </View>
+
+              {/* Destination Cards */}
+              {formData.destinations.map((item) => (
+                <View key={item.id} style={styles.destinationCard}>
+                  <View style={styles.destinationCardHeader}>
+                    <Text style={styles.destinationName}>{item.name}</Text>
+                    <View style={styles.cardActionsRow}>
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => handleOpenEditDestModal(item)}
+                        style={styles.cardActionBtn}
+                      >
+                        <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                          <Path
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                            stroke={UX4GColors.neutral700}
+                            strokeWidth={1.8}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </Svg>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => handleDeleteDestination(item.id)}
+                        style={styles.cardActionBtn}
+                      >
+                        <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                          <Path
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            stroke={UX4GColors.primary}
+                            strokeWidth={1.8}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </Svg>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  <Ux4gDatePicker
+                    label="Date of visit"
+                    placeholder="Select date"
+                    initialDate={parseDate(item.date)}
+                    onDateSelected={(date) => {
+                      const formatted = formatDate(date);
+                      setFormData((prev) => ({
+                        ...prev,
+                        destinations: prev.destinations.map((d) =>
+                          d.id === item.id ? { ...d, date: formatted } : d
+                        ),
+                      }));
+                    }}
                   />
                 </View>
-              </View>
+              ))}
 
+              {/* Button: Add destination */}
+              <TouchableOpacity
+                style={styles.addDestinationBtn}
+                activeOpacity={0.8}
+                onPress={handleOpenAddDestModal}
+              >
+                <Text style={styles.addDestinationBtnText}>Add destination</Text>
+              </TouchableOpacity>
+
+              {/* Button: Check availability */}
+              <TouchableOpacity
+                style={styles.checkAvailabilityBtn}
+                activeOpacity={0.8}
+                onPress={handleCheckAvailability}
+              >
+                <Text style={styles.checkAvailabilityBtnText}>Check availability</Text>
+              </TouchableOpacity>
+
+              {/* Section 3: Number of Travellers */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Number of Travellers</Text>
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
-                  Protected Zone / Circuit<Text style={styles.requiredAsterisk}>*</Text>
+                  Number of travellers<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <Ux4gSelectionDropdown
-                  placeholder="Select protected wildlife or border zone"
-                  options={ZONE_OPTIONS}
-                  selectedOptionIds={formData.selectedZone ? [formData.selectedZone] : []}
-                  onSelectionChange={(selected) => updateField('selectedZone', selected[0] || '')}
-                  size="l"
-                  status={errors.selectedZone ? 'error' : 'defaultStatus'}
-                  description={errors.selectedZone}
+                <TextInput
+                  style={[
+                    styles.singleLineInput,
+                    errors.numTravellers && styles.singleLineInputError,
+                  ]}
+                  value={formData.numTravellers}
+                  onChangeText={(val) => updateField('numTravellers', val.replace(/[^0-9]/g, ''))}
+                  placeholder="2"
+                  placeholderTextColor={UX4GColors.neutral400}
+                  keyboardType="numeric"
                 />
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Designated Entry Checkpost<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <Ux4gSelectionDropdown
-                  placeholder="Select entry check barrier"
-                  options={CHECKPOST_OPTIONS}
-                  selectedOptionIds={formData.selectedCheckpost ? [formData.selectedCheckpost] : []}
-                  onSelectionChange={(selected) => updateField('selectedCheckpost', selected[0] || '')}
-                  size="l"
-                  status={errors.selectedCheckpost ? 'error' : 'defaultStatus'}
-                  description={errors.selectedCheckpost}
-                />
+                {errors.numTravellers ? (
+                  <Text style={styles.errorText}>{errors.numTravellers}</Text>
+                ) : null}
               </View>
             </View>
           )}
@@ -1348,7 +1618,7 @@ export default function App() {
                         <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
                       </Svg>
                     </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 2 · Protected Zone & Checkpost</Text>
+                    <Text style={styles.reviewCardTitleGreen}>Step 2 · Trip Details</Text>
                   </View>
                   <TouchableOpacity onPress={() => jumpToStep(2)}>
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
@@ -1360,7 +1630,9 @@ export default function App() {
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.reviewCardSubTextGreen}>
-                  Changthang Wildlife Sanctuary · Tsaga La Checkpost · Inner Line Permit (ILP)
+                  {formData.destinations && formData.destinations.length > 0
+                    ? formData.destinations.map((d) => d.name).join(' → ')
+                    : 'Yamunotri → Gangotri → Kedarnath'} · {formData.numTravellers || '2'} Travellers · {formData.tripPurpose === 'tourist' ? 'Tourist' : (formData.tripPurpose || 'Tourist')}
                 </Text>
               </View>
 
@@ -1524,6 +1796,68 @@ export default function App() {
                 </TouchableOpacity>
               ))}
             </View>
+          </TouchableOpacity>
+        </Modal>
+
+        {/* ─── ADD / EDIT DESTINATION MODAL ─── */}
+        <Modal
+          visible={destModalMode !== null}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setDestModalMode(null)}
+        >
+          <TouchableOpacity
+            style={styles.modalBackdrop}
+            activeOpacity={1}
+            onPress={() => setDestModalMode(null)}
+          >
+            <TouchableOpacity
+              style={styles.modalCard}
+              activeOpacity={1}
+              onPress={(e) => e.stopPropagation()}
+            >
+              <Text style={styles.modalTitle}>
+                {destModalMode === 'add' ? 'Add Destination' : 'Edit Destination'}
+              </Text>
+              <View style={styles.fieldGroup}>
+                <Text style={styles.fieldLabel}>
+                  Destination Name<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={styles.singleLineInput}
+                  value={destModalName}
+                  onChangeText={setDestModalName}
+                  placeholder="e.g. Badrinath"
+                  placeholderTextColor={UX4GColors.neutral400}
+                />
+              </View>
+              <View style={[styles.fieldGroup, { marginTop: 12 }]}>
+                <Text style={styles.fieldLabel}>Date of visit</Text>
+                <TextInput
+                  style={styles.singleLineInput}
+                  value={destModalDate}
+                  onChangeText={setDestModalDate}
+                  placeholder="DD / MM / YYYY"
+                  placeholderTextColor={UX4GColors.neutral400}
+                />
+              </View>
+              <View style={styles.modalBtnRow}>
+                <TouchableOpacity
+                  style={styles.modalCancelBtn}
+                  onPress={() => setDestModalMode(null)}
+                >
+                  <Text style={styles.modalCancelBtnText}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.modalSaveBtn}
+                  onPress={handleSaveDestModal}
+                >
+                  <Text style={styles.modalSaveBtnText}>
+                    {destModalMode === 'add' ? 'Add destination' : 'Save changes'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
           </TouchableOpacity>
         </Modal>
 
@@ -2016,6 +2350,113 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     textAlign: 'center',
+  },
+  // ─── STEP 2: TRIP DETAILS & DESTINATIONS ───
+  destinationCard: {
+    backgroundColor: UX4GColors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    padding: 16,
+    marginBottom: 12,
+  },
+  destinationCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  destinationName: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  cardActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  cardActionBtn: {
+    padding: 4,
+  },
+  addDestinationBtn: {
+    height: 44,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary,
+    backgroundColor: UX4GColors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 4,
+  },
+  addDestinationBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
+  checkAvailabilityBtn: {
+    height: 44,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral300,
+    backgroundColor: UX4GColors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  checkAvailabilityBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalCard: {
+    backgroundColor: UX4GColors.white,
+    borderRadius: 12,
+    padding: 20,
+    width: '100%',
+    maxWidth: 400,
+  },
+  modalTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+    marginBottom: 16,
+  },
+  modalBtnRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 10,
+    marginTop: 20,
+  },
+  modalCancelBtn: {
+    paddingVertical: 9,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral300,
+  },
+  modalCancelBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: UX4GColors.neutral700,
+  },
+  modalSaveBtn: {
+    paddingVertical: 9,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    backgroundColor: UX4GColors.primary,
+  },
+  modalSaveBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: UX4GColors.white,
   },
 });
 `;
