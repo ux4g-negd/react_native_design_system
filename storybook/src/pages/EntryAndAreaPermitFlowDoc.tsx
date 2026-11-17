@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'BAE-2c0o-0utaoRHg_6xD';
+const SNACK_ID = 'hA_VoyLNonUg9dlWy6A6L';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -45,6 +45,8 @@ import {
   Ux4gStatusBanner,
   Ux4gCompactStepper,
   Ux4gFileUpload,
+  Ux4gSpinner,
+  Ux4gModal,
 } from 'ux4g-react-native-components';
 
 const Ux4gFileUploader = Ux4gFileUpload;
@@ -248,24 +250,6 @@ export default function App() {
   const [editingDestId, setEditingDestId] = useState(null);
   const [destModalName, setDestModalName] = useState('');
   const [destModalDate, setDestModalDate] = useState('');
-
-  // Rotation animation for redirecting spinner
-  const spinAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isRedirecting) {
-      const loop = Animated.loop(
-        Animated.timing(spinAnim, {
-          toValue: 1,
-          duration: 900,
-          easing: Easing.linear,
-          useNativeDriver: true,
-        })
-      );
-      loop.start();
-      return () => loop.stop();
-    }
-  }, [isRedirecting]);
 
   // Full 9-Step Application State
   const [formData, setFormData] = useState({
@@ -2840,70 +2824,35 @@ export default function App() {
           )}
         </View>
 
-        {/* ─── REDIRECTING MODAL OVERLAY (Step 8 Fee & Payment) ─── */}
-        <Modal
+        {/* ─── REDIRECTING MODAL (Using UX4G Design System Components: Ux4gModal & Ux4gSpinner) ─── */}
+        <Ux4gModal
           visible={isRedirecting}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={() => setIsRedirecting(false)}
-        >
-          <TouchableOpacity
-            style={styles.redirectModalOverlay}
-            activeOpacity={1}
-            onPress={() => {
-              setIsRedirecting(false);
-              setStep(9);
-              triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={1}
-              style={styles.redirectModalCard}
-              onPress={(e) => {
-                e?.stopPropagation?.();
-                setIsRedirecting(false);
-                setStep(9);
-                triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
-              }}
-            >
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      rotate: spinAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '360deg'],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                <Svg width={46} height={46} viewBox="0 0 46 46">
-                  <Circle
-                    cx={23}
-                    cy={23}
-                    r={19}
-                    stroke="#EDE9FE"
-                    strokeWidth={4.5}
-                    fill="none"
-                  />
-                  <Path
-                    d="M23 4 A19 19 0 0 1 42 23"
-                    stroke="#6B46C1"
-                    strokeWidth={4.5}
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                </Svg>
-              </Animated.View>
-
-              <Text style={styles.redirectModalTitle}>Redirecting..</Text>
-              <Text style={styles.redirectModalDesc}>
-                Please do not close or refresh this page. We are securely processing your payment.
-              </Text>
-            </TouchableOpacity>
-          </TouchableOpacity>
-        </Modal>
+          onDismiss={() => {
+            setIsRedirecting(false);
+            setStep(9);
+            triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
+          }}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={42}
+              color={UX4GColors.primary}
+              strokeWidth={4.5}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={16}
+          backgroundColor={UX4GColors.white}
+        />
 
         {/* ─── HAMBURGER SIDE DRAWER MODAL ─── */}
         <Modal

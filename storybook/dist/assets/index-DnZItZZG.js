@@ -95928,7 +95928,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="BAE-2c0o-0utaoRHg_6xD",D1=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="hA_VoyLNonUg9dlWy6A6L",D1=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -95959,6 +95959,8 @@ import {
   Ux4gStatusBanner,
   Ux4gCompactStepper,
   Ux4gFileUpload,
+  Ux4gSpinner,
+  Ux4gModal,
 } from 'ux4g-react-native-components';
 
 const Ux4gFileUploader = Ux4gFileUpload;
@@ -96162,24 +96164,6 @@ export default function App() {
   const [editingDestId, setEditingDestId] = useState(null);
   const [destModalName, setDestModalName] = useState('');
   const [destModalDate, setDestModalDate] = useState('');
-
-  // Rotation animation for redirecting spinner
-  const spinAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isRedirecting) {
-      const loop = Animated.loop(
-        Animated.timing(spinAnim, {
-          toValue: 1,
-          duration: 900,
-          easing: Easing.linear,
-          useNativeDriver: true,
-        })
-      );
-      loop.start();
-      return () => loop.stop();
-    }
-  }, [isRedirecting]);
 
   // Full 9-Step Application State
   const [formData, setFormData] = useState({
@@ -98754,70 +98738,35 @@ export default function App() {
           )}
         </View>
 
-        {/* ─── REDIRECTING MODAL OVERLAY (Step 8 Fee & Payment) ─── */}
-        <Modal
+        {/* ─── REDIRECTING MODAL (Using UX4G Design System Components: Ux4gModal & Ux4gSpinner) ─── */}
+        <Ux4gModal
           visible={isRedirecting}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={() => setIsRedirecting(false)}
-        >
-          <TouchableOpacity
-            style={styles.redirectModalOverlay}
-            activeOpacity={1}
-            onPress={() => {
-              setIsRedirecting(false);
-              setStep(9);
-              triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={1}
-              style={styles.redirectModalCard}
-              onPress={(e) => {
-                e?.stopPropagation?.();
-                setIsRedirecting(false);
-                setStep(9);
-                triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
-              }}
-            >
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      rotate: spinAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '360deg'],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                <Svg width={46} height={46} viewBox="0 0 46 46">
-                  <Circle
-                    cx={23}
-                    cy={23}
-                    r={19}
-                    stroke="#EDE9FE"
-                    strokeWidth={4.5}
-                    fill="none"
-                  />
-                  <Path
-                    d="M23 4 A19 19 0 0 1 42 23"
-                    stroke="#6B46C1"
-                    strokeWidth={4.5}
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                </Svg>
-              </Animated.View>
-
-              <Text style={styles.redirectModalTitle}>Redirecting..</Text>
-              <Text style={styles.redirectModalDesc}>
-                Please do not close or refresh this page. We are securely processing your payment.
-              </Text>
-            </TouchableOpacity>
-          </TouchableOpacity>
-        </Modal>
+          onDismiss={() => {
+            setIsRedirecting(false);
+            setStep(9);
+            triggerToast('Payment received! Permit issued: ' + (formData.permitNumber || 'UK-EAP-2026-004821'));
+          }}
+          alignment="centered"
+          leadingItem="icon"
+          leadingIcon={
+            <Ux4gSpinner
+              size={42}
+              color={UX4GColors.primary}
+              strokeWidth={4.5}
+            />
+          }
+          showHeader={true}
+          headerTitle="Redirecting.."
+          showDescription={true}
+          descriptionText="Please do not close or refresh this page. We are securely processing your payment."
+          showDividers={false}
+          showSubtitle={false}
+          showBody={false}
+          showFooter={false}
+          showCloseButton={false}
+          cornerRadius={16}
+          backgroundColor={UX4GColors.white}
+        />
 
         {/* ─── HAMBURGER SIDE DRAWER MODAL ─── */}
         <Modal
