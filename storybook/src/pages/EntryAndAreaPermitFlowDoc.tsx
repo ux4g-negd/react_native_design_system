@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'eJbez6yj2B7fggIVKex4q';
+const SNACK_ID = '72ckuuChm71Lm4T-OBjba';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -65,8 +65,8 @@ const STEP_METADATA = {
     subtitle: 'When the trip runs, where it goes, and whether there is room on those dates.',
   },
   3: {
-    title: 'Purpose & Schedule of Visit',
-    subtitle: 'State the visit purpose, checkpost of entry, and exact travel duration.',
+    title: 'Travel & vehicle',
+    subtitle: 'How you will arrive, and the vehicle the permit is tied to.',
   },
   4: {
     title: 'Accompanying Persons',
@@ -125,6 +125,28 @@ const TRIP_PURPOSE_OPTIONS = [
   { id: 'research', label: 'Ecological & Flora-Fauna Research' },
 ];
 
+const TRAVEL_MODE_OPTIONS = [
+  { id: 'by_road', label: 'By road' },
+  { id: 'by_air', label: 'By air' },
+  { id: 'by_rail', label: 'By rail' },
+  { id: 'on_foot', label: 'On foot / Trekking' },
+];
+
+const TRANSPORT_TYPE_OPTIONS = [
+  { id: 'private_car', label: 'Private car' },
+  { id: 'commercial_taxi', label: 'Commercial taxi / cab' },
+  { id: 'two_wheeler', label: 'Two-wheeler / Motorcycle' },
+  { id: 'bus_coach', label: 'Bus / Coach' },
+  { id: 'self_drive', label: 'Self-drive rental' },
+];
+
+const FUEL_TYPE_OPTIONS = [
+  { id: 'petrol', label: 'Petrol' },
+  { id: 'diesel', label: 'Diesel' },
+  { id: 'electric', label: 'Electric (EV)' },
+  { id: 'cng_hybrid', label: 'CNG / Hybrid' },
+];
+
 const AVAILABLE_DESTINATIONS = [
   'Yamunotri',
   'Gangotri',
@@ -159,7 +181,7 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(3);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -209,13 +231,21 @@ export default function App() {
     selectedZone: 'changthang',
     selectedCheckpost: 'tsaga_la',
 
-    // Step 3: Purpose & Schedule of Visit
+    // Step 3: Travel & Vehicle Details
+    travelMode: 'by_road',
+    transportType: 'private_car',
+    vehicleNumber: 'UP 16 AB 1234',
+    driverName: 'Rajeev chauhan',
+    fuelType: 'petrol',
+    pucIssuedBy: 'Authorised PUC centre, Noida',
+    pucCertNumber: 'PUC/2026/004821',
+    pucValidUntil: '31 / 03 / 2027',
+
+    // Fallbacks for downstream steps
     visitPurpose: 'tourism',
     startDate: '12/10/2026',
     endDate: '18/10/2026',
     durationDays: '7 days',
-    vehicleNumber: 'DL 01 AB 4402',
-    driverName: 'Sanjay Rawat',
 
     // Step 4: Accompanying Persons
     hasMembers: false,
@@ -501,31 +531,63 @@ export default function App() {
     triggerToast('Trip details saved successfully. Proceeding to Step 3.');
   };
 
-  // Step 3 Validation Check
+  // Quick fill helper for Step 3
+  const handleQuickFillStep3 = () => {
+    setFormData((prev) => ({
+      ...prev,
+      travelMode: 'by_road',
+      transportType: 'private_car',
+      vehicleNumber: 'UP 16 AB 1234',
+      driverName: 'Rajeev chauhan',
+      fuelType: 'petrol',
+      pucIssuedBy: 'Authorised PUC centre, Noida',
+      pucCertNumber: 'PUC/2026/004821',
+      pucValidUntil: '31 / 03 / 2027',
+    }));
+    setErrors({});
+    triggerToast('Sample data filled for Step 3');
+  };
+
+  // Step 3 Validation Check - Complete checks for Mode of travel, vehicle details & PUC
   const handleContinueStep3 = () => {
     const errs = {};
-    if (!formData.visitPurpose) {
-      errs.visitPurpose = 'Please select purpose of visit';
+    if (!formData.travelMode) {
+      errs.travelMode = 'Please select mode of travel';
     }
-    if (!formData.startDate) {
-      errs.startDate = 'Entry date is required';
+    if (!formData.transportType) {
+      errs.transportType = 'Please select type of transportation';
     }
-    if (!formData.endDate) {
-      errs.endDate = 'Exit date is required';
-    }
-    if (!formData.vehicleNumber.trim()) {
+    if (!formData.vehicleNumber || !formData.vehicleNumber.trim()) {
       errs.vehicleNumber = 'Vehicle registration number is required';
+    }
+    if (!formData.driverName || !formData.driverName.trim()) {
+      errs.driverName = "Driver's name is required";
+    }
+    if (!formData.fuelType) {
+      errs.fuelType = 'Please select fuel type';
+    }
+    if (!formData.pucIssuedBy || !formData.pucIssuedBy.trim()) {
+      errs.pucIssuedBy = 'Pollution certificate issuing centre is required';
+    }
+    if (!formData.pucCertNumber || !formData.pucCertNumber.trim()) {
+      errs.pucCertNumber = 'Pollution certificate number is required';
+    }
+    if (!formData.pucValidUntil || !formData.pucValidUntil.trim()) {
+      errs.pucValidUntil = 'PUC validity date is required';
     }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
-      triggerToast('Please complete visit dates and vehicle details');
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
       return;
     }
 
     setErrors({});
     setStep(4);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
+    triggerToast('Travel & vehicle details saved. Proceeding to Step 4.');
   };
 
   // Step 4 Validation Check
@@ -1294,67 +1356,178 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 3: PURPOSE & SCHEDULE OF VISIT                                       */}
+          {/* STEP 3: TRAVEL & VEHICLE (EXACT MATCH TO DESIGN)                          */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 3 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Purpose & Schedule</Text>
+              {/* SECTION 1: Mode of Travel */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <Text style={styles.sectionHeading}>Mode of Travel</Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={handleQuickFillStep3}
+                  style={{
+                    paddingVertical: 4,
+                    paddingHorizontal: 10,
+                    borderRadius: 14,
+                    backgroundColor: UX4GColors.primary50,
+                    borderWidth: 1,
+                    borderColor: UX4GColors.primary200,
+                  }}
+                >
+                  <Text style={{ fontSize: 11.5, fontWeight: '600', color: UX4GColors.primary }}>
+                    Fill sample data
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
+              {/* Mode of travel* */}
               <View style={styles.fieldGroup}>
                 <Text style={styles.fieldLabel}>
-                  Purpose of Visit<Text style={styles.requiredAsterisk}>*</Text>
+                  Mode of travel<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <Ux4gSelectionDropdown
-                  placeholder="Select purpose of entry"
-                  options={PURPOSE_OPTIONS}
-                  selectedOptionIds={formData.visitPurpose ? [formData.visitPurpose] : []}
-                  onSelectionChange={(selected) => updateField('visitPurpose', selected[0] || '')}
+                  placeholder="Select mode of travel"
+                  options={TRAVEL_MODE_OPTIONS}
+                  selectedOptionIds={formData.travelMode ? [formData.travelMode] : ['by_road']}
+                  onSelectionChange={(selected) => updateField('travelMode', selected[0] || 'by_road')}
                   size="l"
-                  status={errors.visitPurpose ? 'error' : 'defaultStatus'}
-                  description={errors.visitPurpose}
+                  status={errors.travelMode ? 'error' : 'defaultStatus'}
+                  description={errors.travelMode}
                 />
               </View>
 
+              {/* Type of transportation* */}
               <View style={styles.fieldGroup}>
-                <Ux4gDatePicker
-                  label="Entry Date"
-                  required
-                  placeholder="Select entry date"
-                  onDateSelected={(d) => updateField('startDate', d ? d.toLocaleDateString('en-GB') : '')}
-                  status={errors.startDate ? 'error' : 'defaultStatus'}
-                  description={errors.startDate}
+                <Text style={styles.fieldLabel}>
+                  Type of transportation<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <Ux4gSelectionDropdown
+                  placeholder="Select type of transportation"
+                  options={TRANSPORT_TYPE_OPTIONS}
+                  selectedOptionIds={formData.transportType ? [formData.transportType] : ['private_car']}
+                  onSelectionChange={(selected) => updateField('transportType', selected[0] || 'private_car')}
+                  size="l"
+                  status={errors.transportType ? 'error' : 'defaultStatus'}
+                  description={errors.transportType}
                 />
               </View>
 
-              <View style={styles.fieldGroup}>
-                <Ux4gDatePicker
-                  label="Exit Date"
-                  required
-                  placeholder="Select exit date"
-                  onDateSelected={(d) => updateField('endDate', d ? d.toLocaleDateString('en-GB') : '')}
-                  status={errors.endDate ? 'error' : 'defaultStatus'}
-                  description={errors.endDate}
-                />
-              </View>
+              {/* SECTION 2: Vehicle Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 20 }]}>Vehicle Details</Text>
 
+              {/* Vehicle registration number* */}
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>Permit Duration</Text>
-                <View style={styles.readOnlyBox}>
-                  <Text style={styles.readOnlyValue}>{formData.durationDays}</Text>
-                </View>
-              </View>
-
-              <View style={styles.fieldGroup}>
-                <Ux4gInputField
-                  label="Vehicle Registration Number"
-                  required
-                  placeholder="e.g. DL 01 AB 4402"
+                <Text style={styles.fieldLabel}>
+                  Vehicle registration number<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.singleLineInput,
+                    errors.vehicleNumber && styles.singleLineInputError,
+                  ]}
                   value={formData.vehicleNumber}
-                  onValueChange={(val) => updateField('vehicleNumber', val)}
-                  size="large"
-                  status={errors.vehicleNumber ? 'error' : 'defaultStatus'}
-                  caption={errors.vehicleNumber}
+                  onChangeText={(val) => updateField('vehicleNumber', val.toUpperCase())}
+                  placeholder="UP 16 AB 1234"
+                  placeholderTextColor={UX4GColors.neutral400}
+                  autoCapitalize="characters"
                 />
+                {errors.vehicleNumber ? (
+                  <Text style={styles.errorText}>{errors.vehicleNumber}</Text>
+                ) : null}
+              </View>
+
+              {/* Driver's name* */}
+              <View style={styles.fieldGroup}>
+                <Text style={styles.fieldLabel}>
+                  Driver's name<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.singleLineInput,
+                    errors.driverName && styles.singleLineInputError,
+                  ]}
+                  value={formData.driverName}
+                  onChangeText={(val) => updateField('driverName', val)}
+                  placeholder="Rajeev chauhan"
+                  placeholderTextColor={UX4GColors.neutral400}
+                />
+                {errors.driverName ? (
+                  <Text style={styles.errorText}>{errors.driverName}</Text>
+                ) : null}
+              </View>
+
+              {/* Fuel type* */}
+              <View style={styles.fieldGroup}>
+                <Text style={styles.fieldLabel}>
+                  Fuel type<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <Ux4gSelectionDropdown
+                  placeholder="Select fuel type"
+                  options={FUEL_TYPE_OPTIONS}
+                  selectedOptionIds={formData.fuelType ? [formData.fuelType] : ['petrol']}
+                  onSelectionChange={(selected) => updateField('fuelType', selected[0] || 'petrol')}
+                  size="l"
+                  status={errors.fuelType ? 'error' : 'defaultStatus'}
+                  description={errors.fuelType}
+                />
+              </View>
+
+              {/* SECTION 3: Pollution Certificate Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 20 }]}>Pollution Certificate Details</Text>
+
+              {/* Issued by* */}
+              <View style={styles.fieldGroup}>
+                <Text style={styles.fieldLabel}>
+                  Issued by<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.singleLineInput,
+                    errors.pucIssuedBy && styles.singleLineInputError,
+                  ]}
+                  value={formData.pucIssuedBy}
+                  onChangeText={(val) => updateField('pucIssuedBy', val)}
+                  placeholder="Authorised PUC centre, Noida"
+                  placeholderTextColor={UX4GColors.neutral400}
+                />
+                {errors.pucIssuedBy ? (
+                  <Text style={styles.errorText}>{errors.pucIssuedBy}</Text>
+                ) : null}
+              </View>
+
+              {/* Certificate number* */}
+              <View style={styles.fieldGroup}>
+                <Text style={styles.fieldLabel}>
+                  Certificate number<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.singleLineInput,
+                    errors.pucCertNumber && styles.singleLineInputError,
+                  ]}
+                  value={formData.pucCertNumber}
+                  onChangeText={(val) => updateField('pucCertNumber', val)}
+                  placeholder="PUC/2026/004821"
+                  placeholderTextColor={UX4GColors.neutral400}
+                />
+                {errors.pucCertNumber ? (
+                  <Text style={styles.errorText}>{errors.pucCertNumber}</Text>
+                ) : null}
+              </View>
+
+              {/* Valid until* */}
+              <View style={styles.fieldGroup}>
+                <Ux4gDatePicker
+                  label="Valid until"
+                  required
+                  placeholder="Select date"
+                  initialDate={parseDate(formData.pucValidUntil)}
+                  onDateSelected={(date) => updateField('pucValidUntil', formatDate(date))}
+                />
+                {errors.pucValidUntil ? (
+                  <Text style={styles.errorText}>{errors.pucValidUntil}</Text>
+                ) : null}
               </View>
             </View>
           )}
@@ -1639,7 +1812,7 @@ export default function App() {
                 </Text>
               </View>
 
-              {/* Card 3: Dates & Guide Summary */}
+              {/* Card 3: Travel & Vehicle Summary */}
               <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
                 <View style={styles.reviewCardHeader}>
                   <View style={styles.reviewCardLeft}>
@@ -1648,7 +1821,7 @@ export default function App() {
                         <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
                       </Svg>
                     </View>
-                    <Text style={styles.reviewCardTitleGreen}>Step 3 & 5 · Schedule & Stay</Text>
+                    <Text style={styles.reviewCardTitleGreen}>Step 3 · Travel & Vehicle</Text>
                   </View>
                   <TouchableOpacity onPress={() => jumpToStep(3)}>
                     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
@@ -1660,7 +1833,7 @@ export default function App() {
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.reviewCardSubTextGreen}>
-                  {formData.startDate} – {formData.endDate} (7 days) · Vehicle: {formData.vehicleNumber} · Guide: {formData.guideName}
+                  {formData.travelMode === 'by_road' ? 'By road' : formData.travelMode} ({formData.transportType === 'private_car' ? 'Private car' : formData.transportType}) · {formData.vehicleNumber} · Driver: {formData.driverName} · PUC: {formData.pucCertNumber} (Valid: {formData.pucValidUntil})
                 </Text>
               </View>
 
