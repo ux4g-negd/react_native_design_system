@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'eeEsxHcu1rdQWGUVyXmFy';
+const SNACK_ID = 'RsrN2PQ3eWl9k-kXKLYpS';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -1451,23 +1451,17 @@ export default function App() {
               {/* Section 3: Number of Travellers */}
               <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Number of Travellers</Text>
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Number of travellers<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[
-                    styles.singleLineInput,
-                    errors.numTravellers && styles.singleLineInputError,
-                  ]}
+                <Ux4gInputField
+                  label="Number of travellers"
+                  required
                   value={formData.numTravellers}
-                  onChangeText={(val) => updateField('numTravellers', val.replace(/[^0-9]/g, ''))}
+                  onValueChange={(val) => updateField('numTravellers', val.replace(/[^0-9]/g, ''))}
                   placeholder="2"
-                  placeholderTextColor={UX4GColors.neutral400}
+                  size="large"
                   keyboardType="numeric"
+                  status={errors.numTravellers ? 'error' : 'defaultStatus'}
+                  caption={errors.numTravellers}
                 />
-                {errors.numTravellers ? (
-                  <Text style={styles.errorText}>{errors.numTravellers}</Text>
-                ) : null}
               </View>
             </View>
           )}
@@ -1517,43 +1511,30 @@ export default function App() {
 
               {/* Vehicle registration number* */}
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Vehicle registration number<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[
-                    styles.singleLineInput,
-                    errors.vehicleNumber && styles.singleLineInputError,
-                  ]}
+                <Ux4gInputField
+                  label="Vehicle registration number"
+                  required
                   value={formData.vehicleNumber}
-                  onChangeText={(val) => updateField('vehicleNumber', val.toUpperCase())}
+                  onValueChange={(val) => updateField('vehicleNumber', val.toUpperCase())}
                   placeholder="UP 16 AB 1234"
-                  placeholderTextColor={UX4GColors.neutral400}
-                  autoCapitalize="characters"
+                  size="large"
+                  status={errors.vehicleNumber ? 'error' : 'defaultStatus'}
+                  caption={errors.vehicleNumber}
                 />
-                {errors.vehicleNumber ? (
-                  <Text style={styles.errorText}>{errors.vehicleNumber}</Text>
-                ) : null}
               </View>
 
               {/* Driver's name* */}
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Driver's name<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[
-                    styles.singleLineInput,
-                    errors.driverName && styles.singleLineInputError,
-                  ]}
+                <Ux4gInputField
+                  label="Driver's name"
+                  required
                   value={formData.driverName}
-                  onChangeText={(val) => updateField('driverName', val)}
+                  onValueChange={(val) => updateField('driverName', val)}
                   placeholder="Rajeev chauhan"
-                  placeholderTextColor={UX4GColors.neutral400}
+                  size="large"
+                  status={errors.driverName ? 'error' : 'defaultStatus'}
+                  caption={errors.driverName}
                 />
-                {errors.driverName ? (
-                  <Text style={styles.errorText}>{errors.driverName}</Text>
-                ) : null}
               </View>
 
               {/* Fuel type* */}
@@ -1577,42 +1558,30 @@ export default function App() {
 
               {/* Issued by* */}
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Issued by<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[
-                    styles.singleLineInput,
-                    errors.pucIssuedBy && styles.singleLineInputError,
-                  ]}
+                <Ux4gInputField
+                  label="Issued by"
+                  required
                   value={formData.pucIssuedBy}
-                  onChangeText={(val) => updateField('pucIssuedBy', val)}
+                  onValueChange={(val) => updateField('pucIssuedBy', val)}
                   placeholder="Authorised PUC centre, Noida"
-                  placeholderTextColor={UX4GColors.neutral400}
+                  size="large"
+                  status={errors.pucIssuedBy ? 'error' : 'defaultStatus'}
+                  caption={errors.pucIssuedBy}
                 />
-                {errors.pucIssuedBy ? (
-                  <Text style={styles.errorText}>{errors.pucIssuedBy}</Text>
-                ) : null}
               </View>
 
               {/* Certificate number* */}
               <View style={styles.fieldGroup}>
-                <Text style={styles.fieldLabel}>
-                  Certificate number<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[
-                    styles.singleLineInput,
-                    errors.pucCertNumber && styles.singleLineInputError,
-                  ]}
+                <Ux4gInputField
+                  label="Certificate number"
+                  required
                   value={formData.pucCertNumber}
-                  onChangeText={(val) => updateField('pucCertNumber', val)}
+                  onValueChange={(val) => updateField('pucCertNumber', val)}
                   placeholder="PUC/2026/004821"
-                  placeholderTextColor={UX4GColors.neutral400}
+                  size="large"
+                  status={errors.pucCertNumber ? 'error' : 'defaultStatus'}
+                  caption={errors.pucCertNumber}
                 />
-                {errors.pucCertNumber ? (
-                  <Text style={styles.errorText}>{errors.pucCertNumber}</Text>
-                ) : null}
               </View>
 
               {/* Valid until* */}
@@ -1737,47 +1706,31 @@ export default function App() {
                       <View style={{ marginTop: 14 }}>
                         {/* Full name* */}
                         <View style={styles.fieldGroup}>
-                          <Text style={styles.fieldLabel}>
-                            Full name<Text style={styles.requiredAsterisk}>*</Text>
-                          </Text>
-                          <TextInput
-                            style={[
-                              styles.singleLineInput,
-                              errors['traveller_' + traveller.id + '_fullName'] && styles.singleLineInputError,
-                            ]}
+                          <Ux4gInputField
+                            label="Full name"
+                            required
                             value={traveller.fullName}
-                            onChangeText={(val) => handleUpdateTraveller(traveller.id, 'fullName', val)}
+                            onValueChange={(val) => handleUpdateTraveller(traveller.id, 'fullName', val)}
                             placeholder="Ankit Joshi"
-                            placeholderTextColor={UX4GColors.neutral400}
+                            size="large"
+                            status={errors['traveller_' + traveller.id + '_fullName'] ? 'error' : 'defaultStatus'}
+                            caption={errors['traveller_' + traveller.id + '_fullName']}
                           />
-                          {errors['traveller_' + traveller.id + '_fullName'] ? (
-                            <Text style={styles.errorText}>
-                              {errors['traveller_' + traveller.id + '_fullName']}
-                            </Text>
-                          ) : null}
                         </View>
 
                         {/* Age* */}
                         <View style={styles.fieldGroup}>
-                          <Text style={styles.fieldLabel}>
-                            Age<Text style={styles.requiredAsterisk}>*</Text>
-                          </Text>
-                          <TextInput
-                            style={[
-                              styles.singleLineInput,
-                              errors['traveller_' + traveller.id + '_age'] && styles.singleLineInputError,
-                            ]}
+                          <Ux4gInputField
+                            label="Age"
+                            required
                             value={traveller.age}
-                            onChangeText={(val) => handleUpdateTraveller(traveller.id, 'age', val)}
+                            onValueChange={(val) => handleUpdateTraveller(traveller.id, 'age', val)}
                             placeholder="58"
-                            placeholderTextColor={UX4GColors.neutral400}
+                            size="large"
                             keyboardType="numeric"
+                            status={errors['traveller_' + traveller.id + '_age'] ? 'error' : 'defaultStatus'}
+                            caption={errors['traveller_' + traveller.id + '_age']}
                           />
-                          {errors['traveller_' + traveller.id + '_age'] ? (
-                            <Text style={styles.errorText}>
-                              {errors['traveller_' + traveller.id + '_age']}
-                            </Text>
-                          ) : null}
                         </View>
 
                         {/* Gender* */}
@@ -1836,24 +1789,16 @@ export default function App() {
 
                         {/* Document number* */}
                         <View style={styles.fieldGroup}>
-                          <Text style={styles.fieldLabel}>
-                            Document number<Text style={styles.requiredAsterisk}>*</Text>
-                          </Text>
-                          <TextInput
-                            style={[
-                              styles.singleLineInput,
-                              errors['traveller_' + traveller.id + '_docNumber'] && styles.singleLineInputError,
-                            ]}
+                          <Ux4gInputField
+                            label="Document number"
+                            required
                             value={traveller.docNumber}
-                            onChangeText={(val) => handleUpdateTraveller(traveller.id, 'docNumber', val)}
+                            onValueChange={(val) => handleUpdateTraveller(traveller.id, 'docNumber', val)}
                             placeholder="XXXX XXXX 4821"
-                            placeholderTextColor={UX4GColors.neutral400}
+                            size="large"
+                            status={errors['traveller_' + traveller.id + '_docNumber'] ? 'error' : 'defaultStatus'}
+                            caption={errors['traveller_' + traveller.id + '_docNumber']}
                           />
-                          {errors['traveller_' + traveller.id + '_docNumber'] ? (
-                            <Text style={styles.errorText}>
-                              {errors['traveller_' + traveller.id + '_docNumber']}
-                            </Text>
-                          ) : null}
                         </View>
                       </View>
                     )}
@@ -3045,6 +2990,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: UX4GColors.primary,
+  },
+  singleLineInput: {
+    height: 44,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral300,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    fontSize: 14,
+    color: UX4GColors.neutral900,
+    backgroundColor: UX4GColors.white,
+  },
+  singleLineInputError: {
+    borderColor: UX4GColors.red600,
   },
 });
 `;
