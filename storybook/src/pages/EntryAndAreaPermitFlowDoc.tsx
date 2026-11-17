@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = '9l5iovq0adI-QT9-g74L-';
+const SNACK_ID = 'LbTnT-sW_T5NVziWNsdVL';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -197,6 +197,16 @@ const AVAILABLE_DESTINATIONS = [
   'Tungnath & Chandrashila',
 ];
 
+const BANK_OPTIONS = [
+  'Airtel Payments Bank',
+  'Axis Bank',
+  'HDFC Bank',
+  'ICICI Bank',
+  'Kotak Mahindra Bank',
+  'State Bank of India',
+  'Bank of Baroda',
+];
+
 const parseDate = (str) => {
   if (!str) return undefined;
   const clean = String(str).replace(/\s+/g, '');
@@ -222,6 +232,7 @@ const formatDate = (date) => {
 export default function App() {
   const [step, setStep] = useState(8);
   const [feeSubStep, setFeeSubStep] = useState('payment');
+  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(true);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -347,8 +358,13 @@ export default function App() {
     undertakingOriginalId: true,
 
     // Step 8 & 9: Fee, Payment & Final Permit
-    paymentMode: 'upi',
+    paymentMode: 'card', // 'upi' | 'card' | 'netbanking'
     upiId: '',
+    cardName: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvv: '',
+    selectedBank: '',
     permitNumber: 'UK-EAP-2026-004821',
     isSubmitted: false,
   });
@@ -876,17 +892,37 @@ export default function App() {
       return;
     }
 
+    const errs = {};
     if (formData.paymentMode === 'upi') {
       if (!formData.upiId || !formData.upiId.trim()) {
-        setErrors({ upiId: 'Please enter your UPI ID' });
-        triggerToast('Please enter your UPI ID to proceed');
-        return;
+        errs.upiId = 'Please enter your UPI ID';
+      } else if (!formData.upiId.includes('@')) {
+        errs.upiId = 'Please enter a valid UPI ID (e.g. name@upi)';
       }
-      if (!formData.upiId.includes('@')) {
-        setErrors({ upiId: 'Please enter a valid UPI ID (e.g. name@upi)' });
-        triggerToast('Please enter a valid UPI ID');
-        return;
+    } else if (formData.paymentMode === 'card') {
+      if (!formData.cardName || !formData.cardName.trim()) {
+        errs.cardName = 'Name on card is required';
       }
+      if (!formData.cardNumber || !formData.cardNumber.trim()) {
+        errs.cardNumber = 'Card number is required';
+      }
+      if (!formData.cardExpiry || !formData.cardExpiry.trim()) {
+        errs.cardExpiry = 'Expiry date is required';
+      }
+      if (!formData.cardCvv || !formData.cardCvv.trim()) {
+        errs.cardCvv = 'Security code is required';
+      }
+    } else if (formData.paymentMode === 'netbanking') {
+      if (!formData.selectedBank || !formData.selectedBank.trim()) {
+        errs.selectedBank = 'Please select your bank to proceed';
+      }
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
+      return;
     }
 
     setErrors({});
@@ -2426,17 +2462,13 @@ export default function App() {
                 </>
               ) : (
                 <>
-                  <Text style={styles.sectionHeading}>Fee & payment</Text>
-                  <Text style={styles.paymentIntroSubText}>
-                    What this permit costs, on what basis, and when it falls due.
-                  </Text>
-
-                  <Text style={[styles.sectionHeading, { marginTop: 16 }]}>Mode of Payment</Text>
+                  <Text style={styles.sectionHeading}>Mode of Payment</Text>
                   <Text style={styles.paymentIntroSubText}>
                     ₹600 payable for {formData.permitNumber || 'UK-EAP-2026-004821'}.
                   </Text>
 
                   <View style={{ marginTop: 12 }}>
+                    {/* Option 1: UPI */}
                     <Ux4gRadioButton
                       value="upi"
                       groupValue={formData.paymentMode}
@@ -2452,21 +2484,7 @@ export default function App() {
                       descriptionStyle={formData.paymentMode === 'upi' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
                     />
 
-                    <Ux4gRadioButton
-                      value="netbanking"
-                      groupValue={formData.paymentMode}
-                      onChanged={(val) => updateField('paymentMode', val)}
-                      label="Net Banking"
-                      description="60+ banks supported"
-                      size="medium"
-                      style={[
-                        styles.paymentOptionCard,
-                        formData.paymentMode === 'netbanking' && styles.paymentOptionCardSelected,
-                      ]}
-                      labelStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
-                      descriptionStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
-                    />
-
+                    {/* Option 2: Debit / Credit Card */}
                     <Ux4gRadioButton
                       value="card"
                       groupValue={formData.paymentMode}
@@ -2481,8 +2499,25 @@ export default function App() {
                       labelStyle={formData.paymentMode === 'card' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
                       descriptionStyle={formData.paymentMode === 'card' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
                     />
+
+                    {/* Option 3: Net Banking */}
+                    <Ux4gRadioButton
+                      value="netbanking"
+                      groupValue={formData.paymentMode}
+                      onChanged={(val) => updateField('paymentMode', val)}
+                      label="Net Banking"
+                      description="60+ banks supported"
+                      size="medium"
+                      style={[
+                        styles.paymentOptionCard,
+                        formData.paymentMode === 'netbanking' && styles.paymentOptionCardSelected,
+                      ]}
+                      labelStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
+                      descriptionStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
+                    />
                   </View>
 
+                  {/* Mode 1 Details: UPI */}
                   {formData.paymentMode === 'upi' && (
                     <View style={{ marginTop: 16 }}>
                       <Text style={styles.sectionHeading}>Enter UPI ID</Text>
@@ -2497,6 +2532,148 @@ export default function App() {
                           description={errors.upiId}
                           size="large"
                         />
+                      </View>
+                    </View>
+                  )}
+
+                  {/* Mode 2 Details: Debit / Credit Card (Screen 10) */}
+                  {formData.paymentMode === 'card' && (
+                    <View style={{ marginTop: 16 }}>
+                      <Text style={styles.sectionHeading}>Enter Card Details</Text>
+                      <View style={{ marginTop: 8 }}>
+                        <Ux4gInputField
+                          label="Name on card"
+                          isRequired
+                          placeholder="As printed on the card"
+                          value={formData.cardName}
+                          onChangeText={(text) => updateField('cardName', text)}
+                          hasError={!!errors.cardName}
+                          description={errors.cardName}
+                          size="large"
+                        />
+                      </View>
+                      <View style={{ marginTop: 12 }}>
+                        <Ux4gInputField
+                          label="Card number"
+                          isRequired
+                          placeholder="XXXX - XXXX - XXXX - XXXX"
+                          value={formData.cardNumber}
+                          onChangeText={(text) => updateField('cardNumber', text)}
+                          hasError={!!errors.cardNumber}
+                          description={errors.cardNumber}
+                          size="large"
+                          keyboardType="numeric"
+                        />
+                      </View>
+                      <View style={{ marginTop: 12 }}>
+                        <Ux4gInputField
+                          label="Expiry date"
+                          isRequired
+                          placeholder="MM/YY"
+                          value={formData.cardExpiry}
+                          onChangeText={(text) => updateField('cardExpiry', text)}
+                          hasError={!!errors.cardExpiry}
+                          description={errors.cardExpiry}
+                          size="large"
+                        />
+                      </View>
+                      <View style={{ marginTop: 12 }}>
+                        <Ux4gInputField
+                          label="Security code"
+                          isRequired
+                          placeholder="XXX"
+                          value={formData.cardCvv}
+                          onChangeText={(text) => updateField('cardCvv', text)}
+                          hasError={!!errors.cardCvv}
+                          description={errors.cardCvv}
+                          size="large"
+                          keyboardType="numeric"
+                          secureTextEntry
+                        />
+                      </View>
+                    </View>
+                  )}
+
+                  {/* Mode 3 Details: Net Banking (Screen 11) */}
+                  {formData.paymentMode === 'netbanking' && (
+                    <View style={{ marginTop: 16 }}>
+                      <Text style={styles.sectionHeading}>Choose Your Bank</Text>
+                      <View style={{ marginTop: 10 }}>
+                        <View style={styles.bankLabelRow}>
+                          <Text style={styles.bankLabelText}>Bank</Text>
+                          <Text style={styles.bankLabelRequired}>*</Text>
+                        </View>
+
+                        <TouchableOpacity
+                          style={[
+                            styles.bankDropdownTrigger,
+                            !isBankDropdownOpen && styles.bankDropdownTriggerClosed,
+                            !!errors.selectedBank && { borderColor: UX4GColors.error },
+                          ]}
+                          activeOpacity={0.85}
+                          onPress={() => setIsBankDropdownOpen(!isBankDropdownOpen)}
+                        >
+                          <Text
+                            style={
+                              formData.selectedBank
+                                ? styles.bankDropdownTriggerTextSelected
+                                : styles.bankDropdownTriggerText
+                            }
+                          >
+                            {formData.selectedBank || 'Select your bank'}
+                          </Text>
+                          <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                            {isBankDropdownOpen ? (
+                              <Path
+                                d="M18 15l-6-6-6 6"
+                                stroke={UX4GColors.neutral700}
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            ) : (
+                              <Path
+                                d="M6 9l6 6 6-6"
+                                stroke={UX4GColors.neutral700}
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            )}
+                          </Svg>
+                        </TouchableOpacity>
+
+                        {isBankDropdownOpen && (
+                          <View style={styles.bankDropdownList}>
+                            {BANK_OPTIONS.map((bank, bIdx) => (
+                              <TouchableOpacity
+                                key={bank}
+                                style={[
+                                  styles.bankDropdownItem,
+                                  formData.selectedBank === bank && styles.bankDropdownItemActive,
+                                  bIdx === BANK_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                                ]}
+                                activeOpacity={0.7}
+                                onPress={() => {
+                                  updateField('selectedBank', bank);
+                                  setIsBankDropdownOpen(false);
+                                }}
+                              >
+                                <Text
+                                  style={[
+                                    styles.bankDropdownItemText,
+                                    formData.selectedBank === bank && styles.bankDropdownItemTextActive,
+                                  ]}
+                                >
+                                  {bank}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        )}
+                        {!!errors.selectedBank && (
+                          <Text style={styles.bankErrorText}>{errors.selectedBank}</Text>
+                        )}
                       </View>
                     </View>
                   )}
@@ -2571,7 +2748,9 @@ export default function App() {
             onPress={handleContinue}
           >
             <Text style={styles.primaryContinueBtnText}>
-              {step === 8 && feeSubStep === 'payment'
+              {step === 8 && feeSubStep === 'payment' && formData.paymentMode === 'netbanking'
+                ? 'Continue to bank'
+                : step === 8 && feeSubStep === 'payment'
                 ? 'Pay ₹600'
                 : step === 9
                 ? 'Go to my permits'
@@ -3123,6 +3302,76 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#6D28D9',
     marginTop: 2,
+  },
+  bankLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  bankLabelText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  bankLabelRequired: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.error,
+    marginLeft: 2,
+  },
+  bankDropdownTrigger: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#7C3AED',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    backgroundColor: UX4GColors.white,
+  },
+  bankDropdownTriggerClosed: {
+    borderColor: '#E5E7EB',
+  },
+  bankDropdownTriggerText: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  bankDropdownTriggerTextSelected: {
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '500',
+  },
+  bankDropdownList: {
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    backgroundColor: UX4GColors.white,
+    marginTop: 4,
+    overflow: 'hidden',
+  },
+  bankDropdownItem: {
+    paddingVertical: 11,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  bankDropdownItemActive: {
+    backgroundColor: '#F5F3FF',
+  },
+  bankDropdownItemText: {
+    fontSize: 14,
+    color: '#374151',
+  },
+  bankDropdownItemTextActive: {
+    fontSize: 14,
+    color: '#4A2BC2',
+    fontWeight: '600',
+  },
+  bankErrorText: {
+    fontSize: 12,
+    color: UX4GColors.error,
+    marginTop: 4,
   },
   addMemberBtn: {
     borderWidth: 1,

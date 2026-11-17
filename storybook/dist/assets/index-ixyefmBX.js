@@ -95928,7 +95928,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="9l5iovq0adI-QT9-g74L-",D1=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),g=async()=>{i(!0);try{const u=new Nn,x=nV(n);Object.entries(x).forEach(([C,y])=>{u.file(C,y)});const h=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(h),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(me,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function sV(t){const o=new Nn;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const lV="LbTnT-sW_T5NVziWNsdVL",D1=({isDark:t})=>{const[o,i]=f.useState(!1),[a,d]=f.useState(null),s=f.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -96111,6 +96111,16 @@ const AVAILABLE_DESTINATIONS = [
   'Tungnath & Chandrashila',
 ];
 
+const BANK_OPTIONS = [
+  'Airtel Payments Bank',
+  'Axis Bank',
+  'HDFC Bank',
+  'ICICI Bank',
+  'Kotak Mahindra Bank',
+  'State Bank of India',
+  'Bank of Baroda',
+];
+
 const parseDate = (str) => {
   if (!str) return undefined;
   const clean = String(str).replace(/s+/g, '');
@@ -96136,6 +96146,7 @@ const formatDate = (date) => {
 export default function App() {
   const [step, setStep] = useState(8);
   const [feeSubStep, setFeeSubStep] = useState('payment');
+  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(true);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
@@ -96261,8 +96272,13 @@ export default function App() {
     undertakingOriginalId: true,
 
     // Step 8 & 9: Fee, Payment & Final Permit
-    paymentMode: 'upi',
+    paymentMode: 'card', // 'upi' | 'card' | 'netbanking'
     upiId: '',
+    cardName: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvv: '',
+    selectedBank: '',
     permitNumber: 'UK-EAP-2026-004821',
     isSubmitted: false,
   });
@@ -96790,17 +96806,37 @@ export default function App() {
       return;
     }
 
+    const errs = {};
     if (formData.paymentMode === 'upi') {
       if (!formData.upiId || !formData.upiId.trim()) {
-        setErrors({ upiId: 'Please enter your UPI ID' });
-        triggerToast('Please enter your UPI ID to proceed');
-        return;
+        errs.upiId = 'Please enter your UPI ID';
+      } else if (!formData.upiId.includes('@')) {
+        errs.upiId = 'Please enter a valid UPI ID (e.g. name@upi)';
       }
-      if (!formData.upiId.includes('@')) {
-        setErrors({ upiId: 'Please enter a valid UPI ID (e.g. name@upi)' });
-        triggerToast('Please enter a valid UPI ID');
-        return;
+    } else if (formData.paymentMode === 'card') {
+      if (!formData.cardName || !formData.cardName.trim()) {
+        errs.cardName = 'Name on card is required';
       }
+      if (!formData.cardNumber || !formData.cardNumber.trim()) {
+        errs.cardNumber = 'Card number is required';
+      }
+      if (!formData.cardExpiry || !formData.cardExpiry.trim()) {
+        errs.cardExpiry = 'Expiry date is required';
+      }
+      if (!formData.cardCvv || !formData.cardCvv.trim()) {
+        errs.cardCvv = 'Security code is required';
+      }
+    } else if (formData.paymentMode === 'netbanking') {
+      if (!formData.selectedBank || !formData.selectedBank.trim()) {
+        errs.selectedBank = 'Please select your bank to proceed';
+      }
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      const firstError = Object.values(errs)[0];
+      triggerToast(firstError);
+      return;
     }
 
     setErrors({});
@@ -98340,17 +98376,13 @@ export default function App() {
                 </>
               ) : (
                 <>
-                  <Text style={styles.sectionHeading}>Fee & payment</Text>
-                  <Text style={styles.paymentIntroSubText}>
-                    What this permit costs, on what basis, and when it falls due.
-                  </Text>
-
-                  <Text style={[styles.sectionHeading, { marginTop: 16 }]}>Mode of Payment</Text>
+                  <Text style={styles.sectionHeading}>Mode of Payment</Text>
                   <Text style={styles.paymentIntroSubText}>
                     ₹600 payable for {formData.permitNumber || 'UK-EAP-2026-004821'}.
                   </Text>
 
                   <View style={{ marginTop: 12 }}>
+                    {/* Option 1: UPI */}
                     <Ux4gRadioButton
                       value="upi"
                       groupValue={formData.paymentMode}
@@ -98366,21 +98398,7 @@ export default function App() {
                       descriptionStyle={formData.paymentMode === 'upi' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
                     />
 
-                    <Ux4gRadioButton
-                      value="netbanking"
-                      groupValue={formData.paymentMode}
-                      onChanged={(val) => updateField('paymentMode', val)}
-                      label="Net Banking"
-                      description="60+ banks supported"
-                      size="medium"
-                      style={[
-                        styles.paymentOptionCard,
-                        formData.paymentMode === 'netbanking' && styles.paymentOptionCardSelected,
-                      ]}
-                      labelStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
-                      descriptionStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
-                    />
-
+                    {/* Option 2: Debit / Credit Card */}
                     <Ux4gRadioButton
                       value="card"
                       groupValue={formData.paymentMode}
@@ -98395,8 +98413,25 @@ export default function App() {
                       labelStyle={formData.paymentMode === 'card' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
                       descriptionStyle={formData.paymentMode === 'card' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
                     />
+
+                    {/* Option 3: Net Banking */}
+                    <Ux4gRadioButton
+                      value="netbanking"
+                      groupValue={formData.paymentMode}
+                      onChanged={(val) => updateField('paymentMode', val)}
+                      label="Net Banking"
+                      description="60+ banks supported"
+                      size="medium"
+                      style={[
+                        styles.paymentOptionCard,
+                        formData.paymentMode === 'netbanking' && styles.paymentOptionCardSelected,
+                      ]}
+                      labelStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionTitleSelected : styles.paymentOptionTitle}
+                      descriptionStyle={formData.paymentMode === 'netbanking' ? styles.paymentOptionSubSelected : styles.paymentOptionSub}
+                    />
                   </View>
 
+                  {/* Mode 1 Details: UPI */}
                   {formData.paymentMode === 'upi' && (
                     <View style={{ marginTop: 16 }}>
                       <Text style={styles.sectionHeading}>Enter UPI ID</Text>
@@ -98411,6 +98446,148 @@ export default function App() {
                           description={errors.upiId}
                           size="large"
                         />
+                      </View>
+                    </View>
+                  )}
+
+                  {/* Mode 2 Details: Debit / Credit Card (Screen 10) */}
+                  {formData.paymentMode === 'card' && (
+                    <View style={{ marginTop: 16 }}>
+                      <Text style={styles.sectionHeading}>Enter Card Details</Text>
+                      <View style={{ marginTop: 8 }}>
+                        <Ux4gInputField
+                          label="Name on card"
+                          isRequired
+                          placeholder="As printed on the card"
+                          value={formData.cardName}
+                          onChangeText={(text) => updateField('cardName', text)}
+                          hasError={!!errors.cardName}
+                          description={errors.cardName}
+                          size="large"
+                        />
+                      </View>
+                      <View style={{ marginTop: 12 }}>
+                        <Ux4gInputField
+                          label="Card number"
+                          isRequired
+                          placeholder="XXXX - XXXX - XXXX - XXXX"
+                          value={formData.cardNumber}
+                          onChangeText={(text) => updateField('cardNumber', text)}
+                          hasError={!!errors.cardNumber}
+                          description={errors.cardNumber}
+                          size="large"
+                          keyboardType="numeric"
+                        />
+                      </View>
+                      <View style={{ marginTop: 12 }}>
+                        <Ux4gInputField
+                          label="Expiry date"
+                          isRequired
+                          placeholder="MM/YY"
+                          value={formData.cardExpiry}
+                          onChangeText={(text) => updateField('cardExpiry', text)}
+                          hasError={!!errors.cardExpiry}
+                          description={errors.cardExpiry}
+                          size="large"
+                        />
+                      </View>
+                      <View style={{ marginTop: 12 }}>
+                        <Ux4gInputField
+                          label="Security code"
+                          isRequired
+                          placeholder="XXX"
+                          value={formData.cardCvv}
+                          onChangeText={(text) => updateField('cardCvv', text)}
+                          hasError={!!errors.cardCvv}
+                          description={errors.cardCvv}
+                          size="large"
+                          keyboardType="numeric"
+                          secureTextEntry
+                        />
+                      </View>
+                    </View>
+                  )}
+
+                  {/* Mode 3 Details: Net Banking (Screen 11) */}
+                  {formData.paymentMode === 'netbanking' && (
+                    <View style={{ marginTop: 16 }}>
+                      <Text style={styles.sectionHeading}>Choose Your Bank</Text>
+                      <View style={{ marginTop: 10 }}>
+                        <View style={styles.bankLabelRow}>
+                          <Text style={styles.bankLabelText}>Bank</Text>
+                          <Text style={styles.bankLabelRequired}>*</Text>
+                        </View>
+
+                        <TouchableOpacity
+                          style={[
+                            styles.bankDropdownTrigger,
+                            !isBankDropdownOpen && styles.bankDropdownTriggerClosed,
+                            !!errors.selectedBank && { borderColor: UX4GColors.error },
+                          ]}
+                          activeOpacity={0.85}
+                          onPress={() => setIsBankDropdownOpen(!isBankDropdownOpen)}
+                        >
+                          <Text
+                            style={
+                              formData.selectedBank
+                                ? styles.bankDropdownTriggerTextSelected
+                                : styles.bankDropdownTriggerText
+                            }
+                          >
+                            {formData.selectedBank || 'Select your bank'}
+                          </Text>
+                          <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                            {isBankDropdownOpen ? (
+                              <Path
+                                d="M18 15l-6-6-6 6"
+                                stroke={UX4GColors.neutral700}
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            ) : (
+                              <Path
+                                d="M6 9l6 6 6-6"
+                                stroke={UX4GColors.neutral700}
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            )}
+                          </Svg>
+                        </TouchableOpacity>
+
+                        {isBankDropdownOpen && (
+                          <View style={styles.bankDropdownList}>
+                            {BANK_OPTIONS.map((bank, bIdx) => (
+                              <TouchableOpacity
+                                key={bank}
+                                style={[
+                                  styles.bankDropdownItem,
+                                  formData.selectedBank === bank && styles.bankDropdownItemActive,
+                                  bIdx === BANK_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                                ]}
+                                activeOpacity={0.7}
+                                onPress={() => {
+                                  updateField('selectedBank', bank);
+                                  setIsBankDropdownOpen(false);
+                                }}
+                              >
+                                <Text
+                                  style={[
+                                    styles.bankDropdownItemText,
+                                    formData.selectedBank === bank && styles.bankDropdownItemTextActive,
+                                  ]}
+                                >
+                                  {bank}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        )}
+                        {!!errors.selectedBank && (
+                          <Text style={styles.bankErrorText}>{errors.selectedBank}</Text>
+                        )}
                       </View>
                     </View>
                   )}
@@ -98485,7 +98662,9 @@ export default function App() {
             onPress={handleContinue}
           >
             <Text style={styles.primaryContinueBtnText}>
-              {step === 8 && feeSubStep === 'payment'
+              {step === 8 && feeSubStep === 'payment' && formData.paymentMode === 'netbanking'
+                ? 'Continue to bank'
+                : step === 8 && feeSubStep === 'payment'
                 ? 'Pay ₹600'
                 : step === 9
                 ? 'Go to my permits'
@@ -99037,6 +99216,76 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#6D28D9',
     marginTop: 2,
+  },
+  bankLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  bankLabelText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  bankLabelRequired: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.error,
+    marginLeft: 2,
+  },
+  bankDropdownTrigger: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#7C3AED',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    backgroundColor: UX4GColors.white,
+  },
+  bankDropdownTriggerClosed: {
+    borderColor: '#E5E7EB',
+  },
+  bankDropdownTriggerText: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  bankDropdownTriggerTextSelected: {
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '500',
+  },
+  bankDropdownList: {
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    backgroundColor: UX4GColors.white,
+    marginTop: 4,
+    overflow: 'hidden',
+  },
+  bankDropdownItem: {
+    paddingVertical: 11,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  bankDropdownItemActive: {
+    backgroundColor: '#F5F3FF',
+  },
+  bankDropdownItemText: {
+    fontSize: 14,
+    color: '#374151',
+  },
+  bankDropdownItemTextActive: {
+    fontSize: 14,
+    color: '#4A2BC2',
+    fontWeight: '600',
+  },
+  bankErrorText: {
+    fontSize: 12,
+    color: UX4GColors.error,
+    marginTop: 4,
   },
   addMemberBtn: {
     borderWidth: 1,
