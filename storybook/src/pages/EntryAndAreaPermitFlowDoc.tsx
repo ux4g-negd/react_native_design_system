@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'Ex9GwAtfTJPN5R8ljUMv8';
+const SNACK_ID = 'KlOk2j3jPgi1YqIMj_oUN';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -236,8 +236,8 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(9);
-  const [feeSubStep, setFeeSubStep] = useState('payment');
+  const [step, setStep] = useState(1);
+  const [feeSubStep, setFeeSubStep] = useState('summary');
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
@@ -255,10 +255,10 @@ export default function App() {
 
   // Full 9-Step Application State
   const [formData, setFormData] = useState({
-    // Step 1: Aadhaar Verification & eKYC (Initialized to unverified state to demonstrate full validation checks)
-    aadhaarNumber: '',
-    consentAadhaar: false,
-    otp: '',
+    // Step 1: Aadhaar Verification & eKYC (Initialized with valid sample data for seamless end-to-end testing)
+    aadhaarNumber: '9999 4444 8888',
+    consentAadhaar: true,
+    otp: '123456',
     
     // Details Fetched from Aadhaar (Rendered into official read-only summary boxes)
     fullName: 'Ramesh Chandra Joshi',
@@ -271,15 +271,15 @@ export default function App() {
     pincode: '201309',
 
     // Other Details
-    mobileNumber: '',
-    isWhatsAppSame: false,
-    email: '',
-    nationality: '', // 'indian' | 'foreign'
-    permitRequiredFor: '', // 'myself' | 'family' | 'clients'
+    mobileNumber: '98765 43210',
+    isWhatsAppSame: true,
+    email: 'ramesh.joshi@example.com',
+    nationality: 'indian', // 'indian' | 'foreign'
+    permitRequiredFor: 'family', // 'myself' | 'family' | 'clients'
 
     // Step 2: Trip Details & Destinations
-    tripStartDate: '',
-    tripEndDate: '',
+    tripStartDate: '25 / 09 / 2026',
+    tripEndDate: '28 / 09 / 2026',
     tripPurpose: 'tourist',
     destinations: [
       { id: '1', name: 'Yamunotri', date: '25 / 09 / 2026' },
@@ -356,8 +356,8 @@ export default function App() {
     vehicleRcFileName: 'DL01AB4402_Registration_Certificate.pdf',
 
     // Step 7: Review & declaration
-    declarationTrueComplete: false,
-    declarationEmergencyContact: false,
+    declarationTrueComplete: true,
+    declarationEmergencyContact: true,
 
     // Step 7 Fallbacks & Undertakings
     undertakingSecurity: true,
@@ -366,13 +366,13 @@ export default function App() {
 
     // Step 8 & 9: Fee, Payment & Final Permit
     paymentMode: 'upi', // 'upi' | 'netbanking' | 'card' | 'offline'
-    upiId: '',
-    cardName: '',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCvv: '',
-    selectedBank: '',
-    offlineReceiptNumber: '',
+    upiId: 'ramesh@upi',
+    cardName: 'Ramesh Chandra Joshi',
+    cardNumber: '4532 8891 0021 4482',
+    cardExpiry: '11/29',
+    cardCvv: '884',
+    selectedBank: 'State Bank of India',
+    offlineReceiptNumber: 'CH-2026-998821',
     permitNumber: 'UK-EAP-2026-004821',
     isSubmitted: false,
   });
@@ -888,6 +888,7 @@ export default function App() {
 
     setErrors({});
     setStep(8);
+    setFeeSubStep('summary');
     scrollRef.current?.scrollTo({ y: 0, animated: true });
     triggerToast('Review & declaration confirmed. Proceeding to Step 8.');
   };
@@ -990,7 +991,7 @@ export default function App() {
     setErrors({});
     setStep(targetStep);
     if (targetStep === 8) {
-      setFeeSubStep('payment');
+      setFeeSubStep('summary');
     }
     setIsNavMenuOpen(false);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
