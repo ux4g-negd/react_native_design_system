@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'Fnc1XStShLzB4LTV7l2XI';
+const SNACK_ID = 'H1nRtXIrqqjAkJ8aRebTc';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -77,8 +77,8 @@ const STEP_METADATA = {
     subtitle: 'Fitness to travel, and who to contact if something goes wrong.',
   },
   6: {
-    title: 'Documents & Evidence',
-    subtitle: 'Government ID proofs, route itinerary, and vehicle registration documents.',
+    title: 'Documents & photo',
+    subtitle: 'Evidence and likeness — only what the register does not already hold.',
   },
   7: {
     title: 'Security Undertaking',
@@ -217,12 +217,15 @@ const formatDate = (date) => {
 };
 
 export default function App() {
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(6);
   const [isNavMenuOpen, setIsNavMenuOpen] = useState(false);
   const [savedTime, setSavedTime] = useState('3:14 PM');
   const [toastMessage, setToastMessage] = useState(null);
   const [errors, setErrors] = useState({});
   const [isPrimaryCollapsed, setIsPrimaryCollapsed] = useState(true);
+  const [isPhotoCardExpanded, setIsPhotoCardExpanded] = useState(true);
+  const [isIdDocCardExpanded, setIsIdDocCardExpanded] = useState(false);
+  const [isSupportingDocCardExpanded, setIsSupportingDocCardExpanded] = useState(false);
   const [destModalMode, setDestModalMode] = useState(null);
   const [editingDestId, setEditingDestId] = useState(null);
   const [destModalName, setDestModalName] = useState('');
@@ -318,9 +321,13 @@ export default function App() {
     accommodationName: 'Pangong Eco Lake Camp, Spangmik',
     accommodationBookingRef: 'BK-LDK-88412',
 
-    // Step 6: Documents & Evidence
+    // Step 6: Documents & photo
+    photoMode: 'passport',
+    passportPhotoFileName: 'passport_photo_ramesh.jpg',
+    passportPhotoUploaded: true,
+    isCameraAllowed: false,
     idProofUploaded: true,
-    idProofFileName: 'Rajeev_Aadhaar_Card_Verified.pdf',
+    idProofFileName: 'Aadhaar_Card_Verified.pdf',
     itineraryUploaded: true,
     itineraryFileName: '7Day_Changthang_Pangong_Route_Plan.pdf',
     vehicleRcUploaded: true,
@@ -823,19 +830,11 @@ export default function App() {
 
   // Step 6 Validation Check
   const handleContinueStep6 = () => {
-    const errs = {};
-    if (!formData.idProofUploaded) {
-      errs.idProofUploaded = 'Please attach government photo ID';
-    }
-
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs);
-      triggerToast('Please upload required identity documents');
-      return;
-    }
-
     setErrors({});
     setStep(7);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+    triggerToast('Documents & photo saved. Proceeding to Step 7.');
+  };
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
@@ -1978,71 +1977,240 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 6: DOCUMENTS & EVIDENCE                                              */}
+          {/* STEP 6: DOCUMENTS & PHOTO                                                 */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 6 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Documents & Evidence</Text>
+              {/* CARD 1: Your photograph */}
+              <View style={styles.photoAccordionCard}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => setIsPhotoCardExpanded(!isPhotoCardExpanded)}
+                  style={styles.accordionHeaderRow}
+                >
+                  <Text style={styles.accordionCardTitle}>Your photograph</Text>
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isPhotoCardExpanded ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}
+                      stroke="#111827"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
 
-              {/* ID Document Card */}
-              <View style={styles.docItemCard}>
-                <View style={styles.docHeaderRow}>
-                  <View style={styles.docIconCircleGreen}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                    </Svg>
+                {isPhotoCardExpanded && (
+                  <View style={{ marginTop: 16 }}>
+                    {/* OPTION 1: Passport-size photograph* */}
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => updateField('photoMode', 'passport')}
+                      style={styles.radioOptionHeaderRow}
+                    >
+                      <View style={[
+                        styles.radioCircleOuter,
+                        formData.photoMode === 'passport' && styles.radioCircleOuterSelected
+                      ]}>
+                        {formData.photoMode === 'passport' && <View style={styles.radioCircleInner} />}
+                      </View>
+                      <Text style={styles.photoOptionTitle}>
+                        Passport-size photograph<Text style={styles.requiredAsterisk}>*</Text>
+                      </Text>
+                    </TouchableOpacity>
+
+                    {/* Dropzone Area */}
+                    <TouchableOpacity
+                      activeOpacity={0.85}
+                      onPress={() => {
+                        updateField('photoMode', 'passport');
+                        updateField('passportPhotoUploaded', true);
+                        triggerToast('Passport photo uploaded: passport_photo_ramesh.jpg');
+                      }}
+                      style={styles.uploadDropzone}
+                    >
+                      {/* Purple Cloud Icon */}
+                      <Svg width={36} height={36} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                          stroke={UX4GColors.primary}
+                          strokeWidth={1.8}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+
+                      <Text style={styles.dropzoneTitle}>Drop file here</Text>
+                      <Text style={styles.dropzoneSubtitle}>File type: PDF JPG PNG Max size: 5 MB</Text>
+
+                      {/* Or Divider */}
+                      <View style={styles.orDividerRow}>
+                        <View style={styles.orDividerLine} />
+                        <Text style={styles.orDividerText}>Or</Text>
+                        <View style={styles.orDividerLine} />
+                      </View>
+
+                      {/* Upload Button */}
+                      <View style={styles.uploadBtnBox}>
+                        <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                          <Path
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            stroke={UX4GColors.primary}
+                            strokeWidth={1.8}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </Svg>
+                        <Text style={styles.uploadBtnBoxText}>Upload</Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <Text style={styles.fileHintText}>
+                      JPG or PNG, 20 KB to 2 MB, one file.
+                    </Text>
+
+                    {/* OPTION 2: Live photograph* */}
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => updateField('photoMode', 'live')}
+                      style={[styles.radioOptionHeaderRow, { marginTop: 14 }]}
+                    >
+                      <View style={[
+                        styles.radioCircleOuter,
+                        formData.photoMode === 'live' && styles.radioCircleOuterSelected
+                      ]}>
+                        {formData.photoMode === 'live' && <View style={styles.radioCircleInner} />}
+                      </View>
+                      <Text style={styles.photoOptionTitle}>
+                        Live photograph<Text style={styles.requiredAsterisk}>*</Text>
+                      </Text>
+                    </TouchableOpacity>
+
+                    {/* Camera Preview Area */}
+                    <View style={styles.cameraPreviewBox}>
+                      <Svg width={34} height={34} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M1 1l22 22M21 21H3a2 2 0 01-2-2V8a2 2 0 012-2h3l2-3h6l2 3h1.17M9.88 9.88a3 3 0 104.24 4.24"
+                          stroke={UX4GColors.primary}
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                      <Text style={styles.cameraOffText}>
+                        {formData.isCameraAllowed ? 'Camera ready for capture' : 'Camera is off'}
+                      </Text>
+                    </View>
+
+                    {/* Identity Verification Subtext */}
+                    <Text style={styles.identityVerificationHeading}>Identity verification</Text>
+                    <Text style={styles.identityVerificationText}>
+                      We will take a live photo with your webcam and match it against your Aadhaar photo. No biometric data is stored on this device.
+                    </Text>
+
+                    {/* Action Buttons */}
+                    <TouchableOpacity
+                      style={styles.allowCameraBtn}
+                      activeOpacity={0.85}
+                      onPress={() => {
+                        updateField('photoMode', 'live');
+                        updateField('isCameraAllowed', true);
+                        triggerToast('Webcam access enabled. Live match confirmed.');
+                      }}
+                    >
+                      <Text style={styles.allowCameraBtnText}>Allow</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={styles.verifyOtpInsteadBtn}
+                      activeOpacity={0.85}
+                      onPress={() => {
+                        triggerToast('Verification mode switched to Aadhaar OTP.');
+                      }}
+                    >
+                      <Text style={styles.verifyOtpInsteadBtnText}>Verify with OTP instead</Text>
+                    </TouchableOpacity>
                   </View>
-                  <Text style={styles.docItemTitle}>Government Photo ID Proof*</Text>
-                </View>
-                <Text style={styles.docSubText}>{formData.idProofFileName}</Text>
-                <Ux4gButton
-                  text="Replace Document"
-                  variant="outline"
-                  size="small"
-                  borderRadius={6}
-                  onPress={() => triggerToast('Identity document updated')}
-                />
+                )}
               </View>
 
-              {/* Itinerary Card */}
-              <View style={[styles.docItemCard, { marginTop: 12 }]}>
-                <View style={styles.docHeaderRow}>
-                  <View style={styles.docIconCircleGreen}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                    </Svg>
+              {/* CARD 2: Identity document */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setIsIdDocCardExpanded(!isIdDocCardExpanded)}
+                style={styles.collapsedDocCard}
+              >
+                <View style={styles.accordionHeaderRow}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.accordionCardTitle}>Identity document</Text>
+                    <Text style={styles.docCountSubtitle}>1 document · 1 uploaded</Text>
                   </View>
-                  <Text style={styles.docItemTitle}>Route Itinerary & Schedule*</Text>
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isIdDocCardExpanded ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}
+                      stroke="#111827"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
                 </View>
-                <Text style={styles.docSubText}>{formData.itineraryFileName}</Text>
-                <Ux4gButton
-                  text="Replace Document"
-                  variant="outline"
-                  size="small"
-                  borderRadius={6}
-                  onPress={() => triggerToast('Route itinerary updated')}
-                />
-              </View>
 
-              {/* Vehicle RC Card */}
-              <View style={[styles.docItemCard, { marginTop: 12 }]}>
-                <View style={styles.docHeaderRow}>
-                  <View style={styles.docIconCircleGreen}>
-                    <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
-                      <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
-                    </Svg>
-                  </View>
-                  <Text style={styles.docItemTitle}>Vehicle Registration Certificate (RC)*</Text>
+                {/* Status Icon: Green Checkmark */}
+                <View style={{ marginTop: 8 }}>
+                  <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                    <Circle cx="12" cy="12" r="10" fill={UX4GColors.green600} />
+                    <Path d="M7.5 12l3 3 6-6" stroke={UX4GColors.white} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
+                  </Svg>
                 </View>
-                <Text style={styles.docSubText}>{formData.vehicleRcFileName}</Text>
-                <Ux4gButton
-                  text="Replace Document"
-                  variant="outline"
-                  size="small"
-                  borderRadius={6}
-                  onPress={() => triggerToast('Vehicle RC document updated')}
-                />
-              </View>
+
+                {isIdDocCardExpanded && (
+                  <View style={styles.docExpandedInner}>
+                    <Text style={styles.docInnerFilename}>{formData.idProofFileName}</Text>
+                    <Text style={styles.docInnerStatus}>Verified via UIDAI eKYC</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+
+              {/* CARD 3: Supporting documents */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => setIsSupportingDocCardExpanded(!isSupportingDocCardExpanded)}
+                style={styles.collapsedDocCard}
+              >
+                <View style={styles.accordionHeaderRow}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.accordionCardTitle}>Supporting documents</Text>
+                    <Text style={styles.docCountSubtitle}>1 document · none uploaded yet</Text>
+                  </View>
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isSupportingDocCardExpanded ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}
+                      stroke="#111827"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+
+                {/* Status Icon: Gray Circle Outline */}
+                <View style={{ marginTop: 8 }}>
+                  <View style={styles.grayStatusCircleOutline} />
+                </View>
+
+                {isSupportingDocCardExpanded && (
+                  <View style={styles.docExpandedInner}>
+                    <Text style={styles.docInnerFilename}>Optional: Route plan or permit exemption certificate</Text>
+                    <TouchableOpacity
+                      style={styles.uploadSmallOutlineBtn}
+                      onPress={() => triggerToast('Selected supporting document')}
+                    >
+                      <Text style={styles.uploadSmallOutlineBtnText}>+ Attach Document</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </TouchableOpacity>
             </View>
           )}
 
@@ -2228,6 +2396,31 @@ export default function App() {
                 </View>
                 <Text style={styles.reviewCardSubTextGreen}>
                   Emergency Contact: {formData.emergencyContactName} ({formData.emergencyContactRelation ? formData.emergencyContactRelation.toUpperCase() : 'MOTHER'}, +91 {formData.emergencyContactNumber}) · Conditions: {formData.conditionDetails || 'None'} {formData.isQualifiedDoctor ? '· Qualified Doctor' : ''}
+                </Text>
+              </View>
+
+              {/* Card 6: Documents & photo Summary */}
+              <View style={[styles.reviewCardGreen, { marginTop: 12 }]}>
+                <View style={styles.reviewCardHeader}>
+                  <View style={styles.reviewCardLeft}>
+                    <View style={styles.reviewIconCircleGreen}>
+                      <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                        <Path d="M5 13l4 4L19 7" stroke={UX4GColors.white} strokeWidth={3} strokeLinecap="round" />
+                      </Svg>
+                    </View>
+                    <Text style={styles.reviewCardTitleGreen}>Step 6 · Documents & photo</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => jumpToStep(6)}>
+                    <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                        fill={UX4GColors.neutral900}
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.reviewCardSubTextGreen}>
+                  Photograph: {formData.photoMode === 'live' ? 'Live webcam match verified' : (formData.passportPhotoFileName || 'passport_photo_ramesh.jpg')} · Identity document: 1 uploaded (UIDAI eKYC Verified)
                 </Text>
               </View>
 
@@ -3130,6 +3323,218 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: UX4GColors.neutral900,
     lineHeight: 20,
+  },
+  // ─── STEP 6: DOCUMENTS & PHOTO ───
+  photoAccordionCard: {
+    backgroundColor: UX4GColors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    padding: 16,
+    marginBottom: 12,
+  },
+  accordionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  accordionCardTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  radioOptionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  radioCircleOuter: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.neutral400,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioCircleOuterSelected: {
+    borderColor: UX4GColors.primary,
+    borderWidth: 2,
+  },
+  radioCircleInner: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: UX4GColors.primary,
+  },
+  photoOptionTitle: {
+    fontSize: 13.5,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+  },
+  uploadDropzone: {
+    borderWidth: 1.5,
+    borderColor: UX4GColors.primary,
+    borderStyle: 'dashed',
+    borderRadius: 8,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    alignItems: 'center',
+    backgroundColor: UX4GColors.white,
+  },
+  dropzoneTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+    marginTop: 8,
+  },
+  dropzoneSubtitle: {
+    fontSize: 12,
+    color: UX4GColors.neutral600,
+    marginTop: 4,
+  },
+  orDividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    marginVertical: 14,
+  },
+  orDividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: UX4GColors.neutral200,
+  },
+  orDividerText: {
+    fontSize: 12,
+    color: UX4GColors.neutral500,
+    marginHorizontal: 12,
+  },
+  uploadBtnBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary,
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    backgroundColor: UX4GColors.white,
+  },
+  uploadBtnBoxText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
+  fileHintText: {
+    fontSize: 12,
+    color: UX4GColors.neutral600,
+    marginTop: 8,
+    marginBottom: 6,
+  },
+  cameraPreviewBox: {
+    backgroundColor: '#E0DAFB',
+    borderRadius: 12,
+    height: 170,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 6,
+    marginBottom: 14,
+  },
+  cameraOffText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+    marginTop: 8,
+  },
+  identityVerificationHeading: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: UX4GColors.neutral900,
+    marginBottom: 4,
+  },
+  identityVerificationText: {
+    fontSize: 12,
+    color: UX4GColors.neutral600,
+    lineHeight: 18,
+    marginBottom: 14,
+  },
+  allowCameraBtn: {
+    backgroundColor: UX4GColors.primary,
+    borderRadius: 8,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  allowCameraBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.white,
+  },
+  verifyOtpInsteadBtn: {
+    borderWidth: 1,
+    borderColor: UX4GColors.primary,
+    backgroundColor: UX4GColors.white,
+    borderRadius: 8,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  verifyOtpInsteadBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: UX4GColors.primary,
+  },
+  collapsedDocCard: {
+    backgroundColor: UX4GColors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: UX4GColors.neutral200,
+    padding: 16,
+    marginBottom: 12,
+  },
+  docCountSubtitle: {
+    fontSize: 12,
+    color: UX4GColors.neutral600,
+    marginTop: 2,
+  },
+  grayStatusCircleOutline: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    borderWidth: 1.5,
+    borderColor: UX4GColors.neutral300,
+  },
+  docExpandedInner: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: UX4GColors.neutral100,
+  },
+  docInnerFilename: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: UX4GColors.neutral900,
+  },
+  docInnerStatus: {
+    fontSize: 12,
+    color: UX4GColors.green700,
+    marginTop: 2,
+  },
+  uploadSmallOutlineBtn: {
+    marginTop: 8,
+    alignSelf: 'flex-start',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: UX4GColors.primary,
+  },
+  uploadSmallOutlineBtnText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: UX4GColors.primary,
   },
 });
 `;
