@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'Lhw_v5vHYM7V3CJ4sQpX6';
+const SNACK_ID = 'REbeb-NQoZK7NEPLIJIIv';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -216,6 +216,9 @@ export default function App() {
     }, 3000);
   };
 
+  const cleanAadhaar = (formData.aadhaarNumber || '').replace(/[^0-9]/g, '');
+  const isAadhaarValid = cleanAadhaar.length === 12 && !cleanAadhaar.startsWith('0') && !cleanAadhaar.startsWith('1');
+
   const updateField = (key, value) => {
     setFormData((prev) => {
       const next = { ...prev, [key]: value };
@@ -223,6 +226,15 @@ export default function App() {
         if (next.startDate && next.endDate) {
           next.durationDays = '7 days';
         }
+      }
+      if (key === 'aadhaarNumber') {
+        const digits = String(value).replace(/[^0-9]/g, '');
+        if (digits.length === 12 && !digits.startsWith('0') && !digits.startsWith('1')) {
+          triggerToast('12-digit Aadhaar verified. OTP section activated.');
+        }
+      }
+      if (key === 'otp' && String(value).length === 6) {
+        triggerToast('Aadhaar OTP authenticated successfully');
       }
       return next;
     });
@@ -266,7 +278,6 @@ export default function App() {
   // Step 1 Validation Check - Comprehensive checks for all fields
   const handleContinueStep1 = () => {
     const errs = {};
-    const cleanAadhaar = (formData.aadhaarNumber || '').replace(/[^0-9]/g, '');
     if (!cleanAadhaar) {
       errs.aadhaarNumber = 'Please enter your 12-digit Aadhaar number';
     } else if (cleanAadhaar.length < 12) {
@@ -279,11 +290,16 @@ export default function App() {
       errs.consentAadhaar = 'Aadhaar authentication consent is required to proceed';
     }
 
-    const cleanOtp = (formData.otp || '').replace(/[^0-9]/g, '');
-    if (!cleanOtp) {
-      errs.otp = 'Please enter the 6-digit OTP received on mobile';
-    } else if (cleanOtp.length < 6) {
-      errs.otp = 'Please enter complete 6-digit OTP (entered ' + cleanOtp.length + ' of 6)';
+    // Only validate OTP if valid Aadhaar has been entered
+    if (isAadhaarValid) {
+      const cleanOtp = (formData.otp || '').replace(/[^0-9]/g, '');
+      if (!cleanOtp) {
+        errs.otp = 'Please enter the 6-digit OTP received on mobile';
+      } else if (cleanOtp.length < 6) {
+        errs.otp = 'Please enter complete 6-digit OTP (entered ' + cleanOtp.length + ' of 6)';
+      }
+    } else {
+      errs.aadhaarNumber = errs.aadhaarNumber || 'Please enter valid 12-digit Aadhaar before OTP verification';
     }
 
     const cleanMobile = (formData.mobileNumber || '').trim().replace(/[^0-9]/g, '');
@@ -668,29 +684,31 @@ export default function App() {
                 />
               </View>
 
-              {/* Official UX4G 6-Digit OTP Input Component */}
-              <View style={[styles.fieldGroup, { marginTop: 14 }]}>
-                <Ux4gOtpInput
-                  label="One-time password"
-                  required
-                  length={6}
-                  value={formData.otp}
-                  onChanged={(val) => updateField('otp', val)}
-                  status={errors.otp ? 'error' : (formData.otp && formData.otp.length === 6) ? 'success' : 'defaultStatus'}
-                  captionVariant="resendTimer"
-                  autoCountdownSeconds={17}
-                  captionLeadingText="Didn't receive OTP?"
-                  captionTrailingText="Resend in"
-                  onCaptionTrailingTap={() => triggerToast('New OTP sent to registered mobile: +91 ' + (formData.mobileNumber || '9999999999'))}
-                />
-                {errors.otp && (
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
-                    <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
-                      {errors.otp}
-                    </Text>
-                  </View>
-                )}
-              </View>
+              {/* Official UX4G 6-Digit OTP Input Component (Only displayed when valid 12-digit Aadhaar is entered) */}
+              {isAadhaarValid && (
+                <View style={[styles.fieldGroup, { marginTop: 14 }]}>
+                  <Ux4gOtpInput
+                    label="One-time password"
+                    required
+                    length={6}
+                    value={formData.otp}
+                    onChanged={(val) => updateField('otp', val)}
+                    status={errors.otp ? 'error' : (formData.otp && formData.otp.length === 6) ? 'success' : 'defaultStatus'}
+                    captionVariant="resendTimer"
+                    autoCountdownSeconds={17}
+                    captionLeadingText="Didn't receive OTP?"
+                    captionTrailingText="Resend in"
+                    onCaptionTrailingTap={() => triggerToast('New OTP sent to registered mobile: +91 ' + (formData.mobileNumber || '9999999999'))}
+                  />
+                  {errors.otp && (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                      <Text style={{ fontSize: 12, color: UX4GColors.red600, fontWeight: '500' }}>
+                        {errors.otp}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              )}
 
               {/* Informational Callout Banner (No Aadhaar counter service - Using Ux4gStatusBanner) */}
               <Ux4gStatusBanner
