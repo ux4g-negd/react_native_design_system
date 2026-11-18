@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'X13lnwGHTi_m-eCUp_Mmt';
+const SNACK_ID = 'NtxSldA4p-N2Kh46ZAxo4';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -319,7 +319,8 @@ export default function App() {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
   const [paymentSubStep, setPaymentSubStep] = useState('mode'); // 'breakdown' | 'mode' (direct landing on mode of payment as requested)
-  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(true);
+  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
+  const [isRedirectingModalVisible, setIsRedirectingModalVisible] = useState(true); // Directly land on Screen 12 for testing as requested
 
   // Form State
   const [formData, setFormData] = useState({
@@ -452,17 +453,17 @@ export default function App() {
     passengerCoverPerPerson: '₹ 5,00,000 per participant',
     insuranceValidTill: '30/09/2027',
 
-    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png, media_1794994493465_f72803a6.png, media_1794994521204_4a3745e4.png)
+    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png, media_1794994493465_f72803a6.png, media_1794994521204_4a3745e4.png, media_1794995050454_49586869.png)
     feeApplicationId: 'AA-2026-000000',
     feeAmount: '5,000',
     feeNonRefundableAgreed: false,
-    paymentMethod: 'card', // 'card' (Screen 10) | 'netbanking' (Screen 11) | 'upi' (Screen 9)
+    paymentMethod: 'netbanking', // Net Banking with HDFC Bank as shown in Screen 12 image
     upiId: '',
     cardName: '',
     cardNumber: '',
     cardExpiry: '',
     cardCvv: '',
-    selectedBank: '',
+    selectedBank: 'HDFC Bank',
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -615,14 +616,17 @@ export default function App() {
         }
         return;
       }
-      // Process simulated payment
-      setIsProcessingPayment(true);
+      // Process simulated payment with Screen 12 Redirecting Modal
+      setIsRedirectingModalVisible(true);
       setTimeout(() => {
-        setIsProcessingPayment(false);
+        setIsRedirectingModalVisible(false);
         setPaymentDone(true);
         setStep(9);
         handleSaveDraft();
-      }, 1800);
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({ y: 0, animated: true });
+        }
+      }, 2500);
       return;
     }
 
@@ -3618,6 +3622,19 @@ export default function App() {
                           </View>
                         )}
 
+                        {/* Helper info text below bank selector (Matches media_1794995050454_49586869.png) */}
+                        {!isBankDropdownOpen && (
+                          <View style={styles.upiInfoRow}>
+                            <Svg width={15} height={15} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6, marginTop: 2 }}>
+                              <Circle cx={12} cy={12} r={10} stroke="#6B7280" strokeWidth={1.8} />
+                              <Path d="M12 16v-4M12 8h.01" stroke="#6B7280" strokeWidth={2} strokeLinecap="round" />
+                            </Svg>
+                            <Text style={styles.upiInfoText}>
+                              You will be redirected to your bank's secure site to complete this payment.
+                            </Text>
+                          </View>
+                        )}
+
                         {formErrors.selectedBank && (
                           <Text style={styles.errorHelperText}>{formErrors.selectedBank}</Text>
                         )}
@@ -3873,6 +3890,34 @@ export default function App() {
             )}
           </View>
         </View>
+
+        {/* ─── MODAL: REDIRECTING / PROCESSING PAYMENT (SCREEN 12: media_1794995050454_49586869.png) ─── */}
+        <Modal
+          visible={isRedirectingModalVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setIsRedirectingModalVisible(false)}
+        >
+          <TouchableOpacity
+            style={styles.redirectModalOverlay}
+            activeOpacity={1}
+            onPress={() => setIsRedirectingModalVisible(false)}
+          >
+            <View style={styles.redirectModalCard}>
+              <View style={styles.redirectSpinnerRow}>
+                <Ux4gSpinner size={46} color="#7C3AED" strokeWidth={4.5} />
+              </View>
+
+              <Text style={styles.redirectModalTitle}>Redirecting..</Text>
+
+              <Text style={styles.redirectModalDescription}>
+                Please do not close or refresh this page.{'\n'}
+                We are securely processing your{'\n'}
+                payment.
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </Modal>
 
         {/* ─── MODAL: HOW TO OBTAIN PREREQUISITE REGISTRATIONS ─── */}
         <Modal
@@ -4675,6 +4720,46 @@ const styles = StyleSheet.create({
   dropdownMenuItemTextSelected: {
     color: '#4A2BC2',
     fontWeight: '600',
+  },
+  // Screen 12: Redirecting Modal Styles
+  redirectModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  redirectModalCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingVertical: 32,
+    paddingHorizontal: 28,
+    width: '100%',
+    maxWidth: 360,
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
+  },
+  redirectSpinnerRow: {
+    marginBottom: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  redirectModalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  redirectModalDescription: {
+    fontSize: 14,
+    color: '#4B5563',
+    lineHeight: 22,
+    textAlign: 'center',
   },
   paymentCard: {
     borderWidth: 1,
