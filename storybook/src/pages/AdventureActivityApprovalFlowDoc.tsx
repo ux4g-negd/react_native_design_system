@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = '7c_s1HcU2I5PlWAV5Jn7-';
+const SNACK_ID = '3pndB7MtFWluqVvfkBZ6O';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -68,8 +68,8 @@ const STEP_METADATA = {
     subtitle: 'Everything this registration depends on, named up front — so nothing is discovered by failing.',
   },
   2: {
-    title: 'Applicant & enterprise',
-    subtitle: 'Who operates this adventure unit, its corporate entity, and where it is headquartered.',
+    title: 'Applicant & entity',
+    subtitle: 'Who is applying, how we reach you, and where you are registered.',
   },
   3: {
     title: 'Activity & location',
@@ -101,6 +101,16 @@ const STEP_METADATA = {
   },
 };
 
+const APPLICANT_TYPE_OPTIONS = [
+  { id: 'individual', label: 'Individual organiser' },
+  { id: 'proprietorship', label: 'Proprietorship' },
+  { id: 'partnership', label: 'Partnership firm' },
+  { id: 'llp', label: 'Limited Liability Partnership (LLP)' },
+  { id: 'pvt_ltd', label: 'Private Limited Company' },
+  { id: 'public_ltd', label: 'Public Limited Company' },
+  { id: 'society', label: 'Society / Trust / Association' },
+];
+
 const LAND_ACTIVITIES = [
   { id: 'trekking', label: 'Trekking & Mountaineering Expedition' },
   { id: 'rock_climbing', label: 'Rock Climbing & Bouldering' },
@@ -131,6 +141,7 @@ export default function App() {
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
   const [showPrereqModal, setShowPrereqModal] = useState(false);
+  const [isApplicantTypeDropdownOpen, setIsApplicantTypeDropdownOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
 
@@ -141,13 +152,26 @@ export default function App() {
     activityDomain: 'land', // 'land' | 'water' | 'air'
     hasPrerequisiteRegistrations: false,
 
-    // Step 2: Applicant & enterprise
+    // Step 2: Applicant & entity (Matches media_1794976345102_2f0352d5.png)
+    applicantType: '',
+    applicantOrOrgName: '',
+    ownerOrDirectorName: '',
+    designation: '',
+    aadhaarNumber: '',
+    isAadhaarMasked: true,
+    entityPan: '',
+    mobileNumber: '',
+    emailAddress: '',
+    registeredAddress: '',
+    sameAsRegisteredAddress: false,
+    correspondenceAddress: '',
+
+    // Legacy / downstream compatibility
     enterpriseName: 'Himalayan Apex Adventures Pvt Ltd',
     enterpriseType: 'Private Limited Company',
     regNumber: 'UDYAM-UK-04-0091823',
     panNumber: 'AABCH7821K',
     gstin: '05AABCH7821K1ZB',
-    registeredAddress: 'Plot 14, Riverside Industrial Area, Tapovan',
     district: 'Tehri Garhwal',
     state: 'Uttarakhand',
     pinCode: '249192',
@@ -234,9 +258,22 @@ export default function App() {
           'You must confirm that you have prerequisite registrations or will obtain them';
       }
     } else if (step === 2) {
-      if (!formData.enterpriseName.trim()) errors.enterpriseName = 'Enterprise name is required';
-      if (!formData.regNumber.trim()) errors.regNumber = 'Registration number is required';
-      if (!formData.panNumber.trim()) errors.panNumber = 'PAN number is required';
+      if (!formData.applicantType) errors.applicantType = 'Please select type of applicant';
+      if (!formData.applicantOrOrgName.trim()) errors.applicantOrOrgName = 'Please enter name of applicant or organisation';
+      if (!formData.ownerOrDirectorName.trim()) errors.ownerOrDirectorName = 'Please enter name of owner, director or partner';
+      if (!formData.designation.trim()) errors.designation = 'Please enter designation';
+      if (!formData.aadhaarNumber.trim() || formData.aadhaarNumber.replace(/\s/g, '').length < 12) {
+        errors.aadhaarNumber = 'Please enter valid 12-digit Aadhaar number';
+      }
+      if (!formData.mobileNumber.trim() || formData.mobileNumber.length < 10) {
+        errors.mobileNumber = 'Please enter valid 10-digit mobile number';
+      }
+      if (!formData.emailAddress.trim() || !formData.emailAddress.includes('@')) {
+        errors.emailAddress = 'Please enter valid email address';
+      }
+      if (!formData.registeredAddress.trim()) {
+        errors.registeredAddress = 'Please enter registered address';
+      }
     } else if (step === 3) {
       if (!formData.activityLocation.trim()) errors.activityLocation = 'Location/stretch is required';
       if (!formData.geoCoordinates.trim()) errors.geoCoordinates = 'GPS coordinates are required';
@@ -518,94 +555,370 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 2: APPLICANT & ENTERPRISE                                            */}
+          {/* STEP 2: APPLICANT & ENTITY (EXACT REPLICA OF USER REFERENCE IMAGE)        */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 2 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Enterprise Information</Text>
+              {/* SECTION 1: Applicant Details */}
+              <Text style={styles.sectionHeading}>Applicant Details</Text>
 
+              {/* Field 1: Type of applicant */}
               <View style={styles.fieldBlock}>
                 <Text style={styles.fieldLabel}>
-                  Adventure Operator / Unit Name<Text style={styles.requiredAsterisk}>*</Text>
+                  Type of applicant<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <TextInput
-                  style={[styles.textInput, formErrors.enterpriseName && styles.inputErrorBorder]}
-                  value={formData.enterpriseName}
-                  onChangeText={(val) => updateField('enterpriseName', val)}
-                  placeholder="e.g. Himalayan Apex Adventures Pvt Ltd"
-                />
-              </View>
-
-              <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Constitution of Enterprise</Text>
-                <TextInput
-                  style={styles.textInput}
-                  value={formData.enterpriseType}
-                  onChangeText={(val) => updateField('enterpriseType', val)}
-                />
-              </View>
-
-              <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>
-                  Udyam Registration / Commercial License No<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[styles.textInput, formErrors.regNumber && styles.inputErrorBorder]}
-                  value={formData.regNumber}
-                  onChangeText={(val) => updateField('regNumber', val)}
-                  placeholder="UDYAM-XX-00-0000000"
-                />
-              </View>
-
-              <View style={styles.rowTwoCols}>
-                <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={styles.fieldLabel}>
-                    PAN Number<Text style={styles.requiredAsterisk}>*</Text>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.applicantType && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsApplicantTypeDropdownOpen(!isApplicantTypeDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.applicantType
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {APPLICANT_TYPE_OPTIONS.find((o) => o.id === formData.applicantType)?.label ||
+                      'Select the legal form of the applicant'}
                   </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isApplicantTypeDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isApplicantTypeDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {APPLICANT_TYPE_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.applicantType === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === APPLICANT_TYPE_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('applicantType', opt.id);
+                          setIsApplicantTypeDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.applicantType === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+
+                <View style={styles.helperInfoRow}>
+                  <Svg width={13} height={13} viewBox="0 0 24 24" fill="none" style={styles.infoIcon}>
+                    <Circle cx={12} cy={12} r={10} stroke="#6B7280" strokeWidth={1.8} />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#6B7280" strokeWidth={2} strokeLinecap="round" />
+                  </Svg>
+                  <Text style={styles.helperInfoText}>
+                    If you operate on you own, choose Individual organiser - not other.
+                  </Text>
+                </View>
+                {formErrors.applicantType && (
+                  <Text style={styles.errorHelperText}>{formErrors.applicantType}</Text>
+                )}
+              </View>
+
+              {/* Field 2: Name of applicant or organisation */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Name of applicant or organisation<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.applicantOrOrgName && styles.inputErrorBorder]}
+                  value={formData.applicantOrOrgName}
+                  onChangeText={(val) => {
+                    updateField('applicantOrOrgName', val);
+                    updateField('enterpriseName', val);
+                  }}
+                  placeholder="As it appears on your registration certificate"
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.applicantOrOrgName && (
+                  <Text style={styles.errorHelperText}>{formErrors.applicantOrOrgName}</Text>
+                )}
+              </View>
+
+              {/* Field 3: Name of owner, director or partner */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Name of owner, director or partner<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.ownerOrDirectorName && styles.inputErrorBorder]}
+                  value={formData.ownerOrDirectorName}
+                  onChangeText={(val) => updateField('ownerOrDirectorName', val)}
+                  placeholder="Full name"
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.ownerOrDirectorName && (
+                  <Text style={styles.errorHelperText}>{formErrors.ownerOrDirectorName}</Text>
+                )}
+              </View>
+
+              {/* Field 4: Designation */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Designation<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.designation && styles.inputErrorBorder]}
+                  value={formData.designation}
+                  onChangeText={(val) => updateField('designation', val)}
+                  placeholder="Proprietor, Director, Managing Partner"
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.designation && (
+                  <Text style={styles.errorHelperText}>{formErrors.designation}</Text>
+                )}
+              </View>
+
+              {/* SECTION 2: Identity Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Identity Details</Text>
+
+              {/* Field 5: Aadhaar number of the applicant */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Aadhaar number of the applicant<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={[styles.inputWithIconRow, formErrors.aadhaarNumber && styles.inputErrorBorder]}>
                   <TextInput
-                    style={[styles.textInput, formErrors.panNumber && styles.inputErrorBorder]}
-                    value={formData.panNumber}
-                    onChangeText={(val) => updateField('panNumber', val.toUpperCase())}
+                    style={styles.inputInnerFlex}
+                    value={formData.aadhaarNumber}
+                    onChangeText={(val) => {
+                      const clean = val.replace(/[^0-9]/g, '').slice(0, 12);
+                      const chunks = clean.match(/.{1,4}/g);
+                      updateField('aadhaarNumber', chunks ? chunks.join(' ') : clean);
+                    }}
+                    placeholder="xxxx xxxx xxxx"
+                    placeholderTextColor="#9CA3AF"
+                    keyboardType="number-pad"
+                    secureTextEntry={formData.isAadhaarMasked}
+                    maxLength={14}
+                  />
+                  <TouchableOpacity
+                    onPress={() => updateField('isAadhaarMasked', !formData.isAadhaarMasked)}
+                    style={styles.iconInsideInput}
+                    hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                  >
+                    {formData.isAadhaarMasked ? (
+                      <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"
+                          stroke="#374151"
+                          strokeWidth={1.75}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    ) : (
+                      <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                          stroke="#374151"
+                          strokeWidth={1.75}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <Circle cx={12} cy={12} r={3} stroke="#374151" strokeWidth={1.75} />
+                      </Svg>
+                    )}
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.helperInfoRow}>
+                  <Svg width={13} height={13} viewBox="0 0 24 24" fill="none" style={styles.infoIcon}>
+                    <Circle cx={12} cy={12} r={10} stroke="#6B7280" strokeWidth={1.8} />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#6B7280" strokeWidth={2} strokeLinecap="round" />
+                  </Svg>
+                  <Text style={styles.helperInfoText}>
+                    Masked as you type. Verified once against UIDAI and never shown again in full.
+                  </Text>
+                </View>
+                {formErrors.aadhaarNumber && (
+                  <Text style={styles.errorHelperText}>{formErrors.aadhaarNumber}</Text>
+                )}
+              </View>
+
+              {/* Field 6: PAN of the applicant entity */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>PAN of the applicant entity</Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.entityPan && styles.inputErrorBorder]}
+                  value={formData.entityPan}
+                  onChangeText={(val) => {
+                    updateField('entityPan', val.toUpperCase());
+                    updateField('panNumber', val.toUpperCase());
+                  }}
+                  placeholder="Ten characters, as printed on the card"
+                  placeholderTextColor="#9CA3AF"
+                  maxLength={10}
+                  autoCapitalize="characters"
+                />
+                {formErrors.entityPan && (
+                  <Text style={styles.errorHelperText}>{formErrors.entityPan}</Text>
+                )}
+              </View>
+
+              {/* SECTION 3: Contact Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Contact Details</Text>
+
+              {/* Field 7: Mobile number */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Mobile number<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={[styles.mobileUnifiedBox, formErrors.mobileNumber && styles.inputErrorBorder]}>
+                  <Text style={styles.countryCodePrefix}>+91</Text>
+                  <TextInput
+                    style={styles.mobileUnifiedInput}
+                    value={formData.mobileNumber}
+                    onChangeText={(val) => updateField('mobileNumber', val.replace(/[^0-9]/g, ''))}
+                    placeholder="10 digits"
+                    placeholderTextColor="#9CA3AF"
+                    keyboardType="phone-pad"
                     maxLength={10}
                   />
                 </View>
-                <View style={{ flex: 1, marginLeft: 8 }}>
-                  <Text style={styles.fieldLabel}>GSTIN</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={formData.gstin}
-                    onChangeText={(val) => updateField('gstin', val.toUpperCase())}
-                  />
-                </View>
+                {formErrors.mobileNumber && (
+                  <Text style={styles.errorHelperText}>{formErrors.mobileNumber}</Text>
+                )}
               </View>
 
+              {/* Field 8: Email address */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Registered Base Address</Text>
+                <Text style={styles.fieldLabel}>
+                  Email address<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
                 <TextInput
-                  style={styles.textInput}
-                  value={formData.registeredAddress}
-                  onChangeText={(val) => updateField('registeredAddress', val)}
+                  style={[styles.textInput, formErrors.emailAddress && styles.inputErrorBorder]}
+                  value={formData.emailAddress}
+                  onChangeText={(val) => updateField('emailAddress', val)}
+                  placeholder="name@example.com"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+                {formErrors.emailAddress && (
+                  <Text style={styles.errorHelperText}>{formErrors.emailAddress}</Text>
+                )}
+              </View>
+
+              {/* SECTION 4: Address Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Address Details</Text>
+
+              {/* Field 9: Registered address */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Registered address<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={[styles.textAreaContainer, formErrors.registeredAddress && styles.inputErrorBorder]}>
+                  <TextInput
+                    style={styles.textAreaInput}
+                    value={formData.registeredAddress}
+                    onChangeText={(val) => {
+                      if (val.length <= 200) {
+                        updateField('registeredAddress', val);
+                        if (formData.sameAsRegisteredAddress) {
+                          updateField('correspondenceAddress', val);
+                        }
+                      }
+                    }}
+                    placeholder="Placeholder"
+                    placeholderTextColor="#9CA3AF"
+                    multiline={true}
+                    maxLength={200}
+                  />
+                  <View style={styles.textAreaFooter}>
+                    <Text style={styles.charCounterText}>
+                      {formData.registeredAddress.length}/200
+                    </Text>
+                    <Svg width={10} height={10} viewBox="0 0 10 10" fill="none" style={{ marginLeft: 4 }}>
+                      <Path d="M9 1L1 9M9 5L5 9M9 9L9 9" stroke="#9CA3AF" strokeWidth={1.5} strokeLinecap="round" />
+                    </Svg>
+                  </View>
+                </View>
+                <View style={styles.helperInfoRow}>
+                  <Svg width={13} height={13} viewBox="0 0 24 24" fill="none" style={styles.infoIcon}>
+                    <Circle cx={12} cy={12} r={10} stroke="#6B7280" strokeWidth={1.8} />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#6B7280" strokeWidth={2} strokeLinecap="round" />
+                  </Svg>
+                  <Text style={styles.helperInfoText}>Description</Text>
+                </View>
+                {formErrors.registeredAddress && (
+                  <Text style={styles.errorHelperText}>{formErrors.registeredAddress}</Text>
+                )}
+              </View>
+
+              {/* Checkbox: My correspondence address is the same as my registered address */}
+              <View style={[styles.declarationBlock, { marginTop: 12, marginBottom: 16 }]}>
+                <Ux4gCheckbox
+                  label="My correspondence address is the same as my registered address"
+                  isRequired={true}
+                  value={formData.sameAsRegisteredAddress}
+                  onChanged={(v) => {
+                    const checked = !!v;
+                    updateField('sameAsRegisteredAddress', checked);
+                    if (checked) {
+                      updateField('correspondenceAddress', formData.registeredAddress);
+                    }
+                  }}
                 />
               </View>
 
-              <View style={styles.rowTwoCols}>
-                <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={styles.fieldLabel}>District</Text>
+              {/* Field 10: Correspondence address */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Correspondence address</Text>
+                <View style={[styles.textAreaContainer, formErrors.correspondenceAddress && styles.inputErrorBorder]}>
                   <TextInput
-                    style={styles.textInput}
-                    value={formData.district}
-                    onChangeText={(val) => updateField('district', val)}
+                    style={styles.textAreaInput}
+                    value={formData.correspondenceAddress}
+                    onChangeText={(val) => {
+                      if (val.length <= 200) {
+                        updateField('correspondenceAddress', val);
+                      }
+                    }}
+                    placeholder="Placeholder"
+                    placeholderTextColor="#9CA3AF"
+                    multiline={true}
+                    maxLength={200}
+                    editable={!formData.sameAsRegisteredAddress}
                   />
+                  <View style={styles.textAreaFooter}>
+                    <Text style={styles.charCounterText}>
+                      {formData.correspondenceAddress.length}/200
+                    </Text>
+                    <Svg width={10} height={10} viewBox="0 0 10 10" fill="none" style={{ marginLeft: 4 }}>
+                      <Path d="M9 1L1 9M9 5L5 9M9 9L9 9" stroke="#9CA3AF" strokeWidth={1.5} strokeLinecap="round" />
+                    </Svg>
+                  </View>
                 </View>
-                <View style={{ flex: 1, marginLeft: 8 }}>
-                  <Text style={styles.fieldLabel}>Pincode</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={formData.pinCode}
-                    onChangeText={(val) => updateField('pinCode', val)}
-                    keyboardType="number-pad"
-                    maxLength={6}
-                  />
+                <View style={styles.helperInfoRow}>
+                  <Svg width={13} height={13} viewBox="0 0 24 24" fill="none" style={styles.infoIcon}>
+                    <Circle cx={12} cy={12} r={10} stroke="#6B7280" strokeWidth={1.8} />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#6B7280" strokeWidth={2} strokeLinecap="round" />
+                  </Svg>
+                  <Text style={styles.helperInfoText}>Description</Text>
                 </View>
               </View>
             </View>
@@ -1575,17 +1888,139 @@ const styles = StyleSheet.create({
     color: '#111827',
     backgroundColor: '#FFFFFF',
   },
-  textAreaInput: {
-    minHeight: 80,
+  dropdownTrigger: {
+    height: 46,
     borderWidth: 1,
     borderColor: '#D1D5DB',
     borderRadius: 8,
     paddingHorizontal: 14,
-    paddingVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+  },
+  dropdownValueText: {
     fontSize: 14,
     color: '#111827',
+    fontWeight: '500',
+  },
+  dropdownPlaceholderText: {
+    fontSize: 14,
+    color: '#9CA3AF',
+  },
+  dropdownMenu: {
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
     backgroundColor: '#FFFFFF',
+    marginTop: 4,
+    overflow: 'hidden',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  dropdownMenuItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  dropdownMenuItemActive: {
+    backgroundColor: '#F5F3FF',
+  },
+  dropdownMenuItemText: {
+    fontSize: 14,
+    color: '#374151',
+  },
+  dropdownMenuItemTextActive: {
+    color: '#4A2BC2',
+    fontWeight: '600',
+  },
+  helperInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 6,
+    paddingHorizontal: 2,
+  },
+  infoIcon: {
+    marginRight: 6,
+    marginTop: 2,
+  },
+  helperInfoText: {
+    fontSize: 12,
+    color: '#6B7280',
+    lineHeight: 16,
+    flex: 1,
+  },
+  inputWithIconRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    height: 46,
+    paddingHorizontal: 14,
+    backgroundColor: '#FFFFFF',
+  },
+  inputInnerFlex: {
+    flex: 1,
+    height: '100%',
+    fontSize: 14,
+    color: '#111827',
+  },
+  iconInsideInput: {
+    padding: 4,
+  },
+  mobileUnifiedBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    height: 46,
+    paddingHorizontal: 14,
+    backgroundColor: '#FFFFFF',
+  },
+  countryCodePrefix: {
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '600',
+    marginRight: 10,
+  },
+  mobileUnifiedInput: {
+    flex: 1,
+    height: '100%',
+    fontSize: 14,
+    color: '#111827',
+  },
+  textAreaContainer: {
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 14,
+    paddingTop: 10,
+    paddingBottom: 8,
+    minHeight: 100,
+  },
+  textAreaInput: {
+    minHeight: 70,
+    fontSize: 14,
+    color: '#111827',
     textAlignVertical: 'top',
+    padding: 0,
+  },
+  textAreaFooter: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  charCounterText: {
+    fontSize: 12,
+    color: '#9CA3AF',
   },
   inputErrorBorder: {
     borderColor: '#DC2626',
