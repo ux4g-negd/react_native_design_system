@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = '3pndB7MtFWluqVvfkBZ6O';
+const SNACK_ID = 'Z8mVfWKHZIdzzQ3wiU2YJ';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -72,8 +72,8 @@ const STEP_METADATA = {
     subtitle: 'Who is applying, how we reach you, and where you are registered.',
   },
   3: {
-    title: 'Activity & location',
-    subtitle: 'The specific adventure sport, domain, geographical coordinates, and base station.',
+    title: 'Registration category',
+    subtitle: 'What kind of operator you are, and which domain you operate in.',
   },
   4: {
     title: 'Safety & emergency',
@@ -111,6 +111,24 @@ const APPLICANT_TYPE_OPTIONS = [
   { id: 'society', label: 'Society / Trust / Association' },
 ];
 
+const REGISTRATION_CATEGORY_OPTIONS = [
+  { id: 'commercial_operator', label: 'Commercial adventure tour operator' },
+  { id: 'technical_provider', label: 'Technical service provider organisation' },
+  { id: 'non_profit', label: 'Non-profit organisation running adventure activities' },
+  { id: 'aggregator_reseller', label: 'Aggregator or reseller' },
+  { id: 'campsite_space_only', label: 'Campsite or resort providing space only' },
+  { id: 'resort_own_setup', label: 'Resort or campsite with its own adventure setup' },
+  { id: 'training_institute', label: 'Training institute running adventure courses' },
+  { id: 'individual_expert', label: 'Individual organiser or outdoor expert' },
+];
+
+const REGISTRATION_PERIOD_OPTIONS = [
+  { id: '1_year', label: '1 Year (Annual renewal cycle)' },
+  { id: '2_years', label: '2 Years (Standard validity)' },
+  { id: '3_years', label: '3 Years (Recognised multi-year approval)' },
+  { id: '5_years', label: '5 Years (Certified master operator tier)' },
+];
+
 const LAND_ACTIVITIES = [
   { id: 'trekking', label: 'Trekking & Mountaineering Expedition' },
   { id: 'rock_climbing', label: 'Rock Climbing & Bouldering' },
@@ -136,12 +154,14 @@ const AIR_ACTIVITIES = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3); // Directly land on Step 3 for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
   const [showPrereqModal, setShowPrereqModal] = useState(false);
+  const [showSectorRegModal, setShowSectorRegModal] = useState(false);
   const [isApplicantTypeDropdownOpen, setIsApplicantTypeDropdownOpen] = useState(false);
+  const [isPeriodDropdownOpen, setIsPeriodDropdownOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
 
@@ -165,6 +185,12 @@ export default function App() {
     registeredAddress: '',
     sameAsRegisteredAddress: false,
     correspondenceAddress: '',
+
+    // Step 3: Registration category (Matches media_1794977065300_4ab5953d.png)
+    registrationCategory: '',
+    sectorTourismRegNumber: '',
+    registrationIssueDate: '',
+    registrationPeriod: '',
 
     // Legacy / downstream compatibility
     enterpriseName: 'Himalayan Apex Adventures Pvt Ltd',
@@ -275,8 +301,10 @@ export default function App() {
         errors.registeredAddress = 'Please enter registered address';
       }
     } else if (step === 3) {
-      if (!formData.activityLocation.trim()) errors.activityLocation = 'Location/stretch is required';
-      if (!formData.geoCoordinates.trim()) errors.geoCoordinates = 'GPS coordinates are required';
+      if (!formData.registrationCategory) errors.registrationCategory = 'Please select category of registration';
+      if (!formData.sectorTourismRegNumber.trim()) errors.sectorTourismRegNumber = 'Please enter sector tourism registration number';
+      if (!formData.registrationIssueDate.trim()) errors.registrationIssueDate = 'Please enter date that registration was issued';
+      if (!formData.registrationPeriod) errors.registrationPeriod = 'Please select registration period';
     } else if (step === 4) {
       if (!formData.tieUpHospitalName.trim()) errors.tieUpHospitalName = 'Hospital tie-up name is required';
       if (!formData.emergencyContact.trim()) errors.emergencyContact = 'Emergency phone is required';
@@ -925,101 +953,201 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 3: ACTIVITY & LOCATION                                               */}
+          {/* STEP 3: REGISTRATION CATEGORY (EXACT REPLICA OF USER REFERENCE IMAGE)      */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 3 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Activity & Geographical Boundary</Text>
+              {/* SECTION 1: Category of Registration* */}
+              <Text style={styles.sectionHeading}>
+                Category of Registration<Text style={styles.requiredAsterisk}>*</Text>
+              </Text>
 
+              <View style={[styles.radioOptionGroup, { marginTop: 12 }]}>
+                {REGISTRATION_CATEGORY_OPTIONS.map((cat) => (
+                  <View key={cat.id} style={{ marginBottom: 12 }}>
+                    <Ux4gRadioButton
+                      label={cat.label}
+                      value={cat.id}
+                      groupValue={formData.registrationCategory}
+                      onChanged={(val) => updateField('registrationCategory', val)}
+                      size="medium"
+                    />
+                  </View>
+                ))}
+              </View>
+              {formErrors.registrationCategory && (
+                <Text style={styles.errorHelperText}>{formErrors.registrationCategory}</Text>
+              )}
+
+              {/* SECTION 2: Requirements for This Category */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>
+                Requirements for This Category
+              </Text>
+              <View style={styles.requirementCard}>
+                <View style={styles.requirementIconCol}>
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} fill="#06B6D4" />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#FFFFFF" strokeWidth={2.2} strokeLinecap="round" />
+                  </Svg>
+                </View>
+                <Text style={styles.requirementCardText}>
+                  Commercial adventure tour operator, on land. This combination needs a certified activity lead, equipment certification and public liability cover. It does not need a water-safety plan or a DGCA clearance.
+                </Text>
+              </View>
+
+              {/* SECTION 3: Existing Registration Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>
+                Existing Registration Details
+              </Text>
+
+              {/* Field 1: Sector tourism registration number* */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Domain Selected</Text>
-                <View style={styles.readonlyPill}>
-                  <Text style={styles.readonlyPillText}>
-                    {formData.activityDomain === 'land'
-                      ? 'On Land (Trekking, Climbing, Safaris)'
-                      : formData.activityDomain === 'water'
-                      ? 'On or In Water (Rafting, Kayaking, Scuba)'
-                      : 'In the Air (Paragliding, Paramotoring, Bungee)'}
+                <Text style={styles.fieldLabel}>
+                  Sector tourism registration number<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.textInput,
+                    formErrors.sectorTourismRegNumber && styles.inputErrorBorder,
+                  ]}
+                  value={formData.sectorTourismRegNumber}
+                  onChangeText={(val) => updateField('sectorTourismRegNumber', val)}
+                  placeholder="Number issued by the state tourism depart..."
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.sectorTourismRegNumber && (
+                  <Text style={styles.errorHelperText}>{formErrors.sectorTourismRegNumber}</Text>
+                )}
+              </View>
+
+              {/* Field 2: Date that registration was issued* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Date that registration was issued<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View
+                  style={[
+                    styles.dateInputWrapper,
+                    formErrors.registrationIssueDate && styles.inputErrorBorder,
+                  ]}
+                >
+                  <TextInput
+                    style={styles.dateTextInput}
+                    value={formData.registrationIssueDate}
+                    onChangeText={(val) => updateField('registrationIssueDate', val)}
+                    placeholder="DD / MM / YYYY"
+                    placeholderTextColor="#9CA3AF"
+                  />
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      if (!formData.registrationIssueDate) {
+                        updateField('registrationIssueDate', '24 / 09 / 2024');
+                      }
+                    }}
+                    style={styles.dateIconTouchable}
+                  >
+                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                      <Rect x={3} y={4} width={18} height={18} rx={2} stroke="#4B5563" strokeWidth={1.8} />
+                      <Path d="M16 2v4M8 2v4M3 10h18" stroke="#4B5563" strokeWidth={1.8} strokeLinecap="round" />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                {formErrors.registrationIssueDate && (
+                  <Text style={styles.errorHelperText}>{formErrors.registrationIssueDate}</Text>
+                )}
+
+                {/* External link: I do not have this number — how do I get one? ↗ */}
+                <TouchableOpacity
+                  style={styles.externalLinkRow}
+                  activeOpacity={0.7}
+                  onPress={() => setShowSectorRegModal(true)}
+                >
+                  <Text style={styles.externalLinkText}>
+                    I do not have this number — how do I get one?
                   </Text>
-                </View>
+                  <Svg width={14} height={14} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 6 }}>
+                    <Path
+                      d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"
+                      stroke="#4A2BC2"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
               </View>
 
+              {/* SECTION 4: Period of Registration */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>
+                Period of Registration
+              </Text>
+
+              {/* Field 3: Registration period* */}
               <View style={styles.fieldBlock}>
                 <Text style={styles.fieldLabel}>
-                  Specific Adventure Activity<Text style={styles.requiredAsterisk}>*</Text>
+                  Registration period<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
-                <View style={styles.radioOptionGroup}>
-                  {(formData.activityDomain === 'water'
-                    ? WATER_ACTIVITIES
-                    : formData.activityDomain === 'air'
-                    ? AIR_ACTIVITIES
-                    : LAND_ACTIVITIES
-                  ).map((act) => (
-                    <View key={act.id} style={{ marginBottom: 10 }}>
-                      <Ux4gRadioButton
-                        label={act.label}
-                        value={act.id}
-                        groupValue={formData.specificActivity}
-                        onChanged={(val) => updateField('specificActivity', val)}
-                        size="medium"
-                      />
-                    </View>
-                  ))}
-                </View>
-              </View>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.registrationPeriod && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsPeriodDropdownOpen(!isPeriodDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.registrationPeriod
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {REGISTRATION_PERIOD_OPTIONS.find((o) => o.id === formData.registrationPeriod)?.label ||
+                      'Select how long the registration should...'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isPeriodDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
 
-              <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>
-                  Designated Stretch / Airspace / Route<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[styles.textInput, formErrors.activityLocation && styles.inputErrorBorder]}
-                  value={formData.activityLocation}
-                  onChangeText={(val) => updateField('activityLocation', val)}
-                  placeholder="e.g. Rishikesh to Shivpuri River Corridor"
-                />
-              </View>
-
-              <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>
-                  GPS Coordinates (Launch / Base)<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <TextInput
-                  style={[styles.textInput, formErrors.geoCoordinates && styles.inputErrorBorder]}
-                  value={formData.geoCoordinates}
-                  onChangeText={(val) => updateField('geoCoordinates', val)}
-                  placeholder="Latitude, Longitude"
-                />
-              </View>
-
-              <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Base Camp / Station Name</Text>
-                <TextInput
-                  style={styles.textInput}
-                  value={formData.baseCampName}
-                  onChangeText={(val) => updateField('baseCampName', val)}
-                />
-              </View>
-
-              <View style={styles.rowTwoCols}>
-                <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={styles.fieldLabel}>Season Start Date</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={formData.seasonFrom}
-                    onChangeText={(val) => updateField('seasonFrom', val)}
-                    placeholder="DD/MM/YYYY"
-                  />
-                </View>
-                <View style={{ flex: 1, marginLeft: 8 }}>
-                  <Text style={styles.fieldLabel}>Season End Date</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={formData.seasonTo}
-                    onChangeText={(val) => updateField('seasonTo', val)}
-                    placeholder="DD/MM/YYYY"
-                  />
-                </View>
+                {isPeriodDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {REGISTRATION_PERIOD_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.registrationPeriod === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === REGISTRATION_PERIOD_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('registrationPeriod', opt.id);
+                          setIsPeriodDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.registrationPeriod === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.registrationPeriod && (
+                  <Text style={styles.errorHelperText}>{formErrors.registrationPeriod}</Text>
+                )}
               </View>
             </View>
           )}
@@ -1686,6 +1814,64 @@ export default function App() {
           </View>
         </Modal>
 
+        {/* ─── MODAL: HOW TO OBTAIN SECTOR TOURISM REGISTRATION ─── */}
+        <Modal
+          visible={showSectorRegModal}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowSectorRegModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Sector Tourism Registration</Text>
+                <TouchableOpacity onPress={() => setShowSectorRegModal(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                  <Text style={styles.modalCloseText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <ScrollView style={styles.modalBody}>
+                <Text style={styles.modalParagraph}>
+                  Sector Tourism Registration is granted by the State Department of Tourism under the State Adventure Tourism Promotion & Safety Framework.
+                </Text>
+                <View style={styles.prereqItem}>
+                  <Text style={styles.prereqNumber}>1</Text>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.prereqTitle}>Apply Online or at District Office</Text>
+                    <Text style={styles.prereqDesc}>
+                      Submit Form-A on your State Tourism Single Window Portal or at the District Tourism Development Office (DTDO).
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.prereqItem}>
+                  <Text style={styles.prereqNumber}>2</Text>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.prereqTitle}>Documents Required</Text>
+                    <Text style={styles.prereqDesc}>
+                      Enterprise registration (Udyam / MSME / ROC), applicant identity proof, GSTIN, and lease/premises ownership documents.
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.prereqItem}>
+                  <Text style={styles.prereqNumber}>3</Text>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.prereqTitle}>Provisional Number Allotment</Text>
+                    <Text style={styles.prereqDesc}>
+                      A provisional registration number is issued within 3 to 5 business days upon scrutiny of submitted documents.
+                    </Text>
+                  </View>
+                </View>
+              </ScrollView>
+              <TouchableOpacity
+                style={styles.modalPrimaryBtn}
+                onPress={() => setShowSectorRegModal(false)}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.modalPrimaryBtnText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
         {/* ─── PAYMENT PROCESSING MODAL ─── */}
         <Modal visible={isProcessingPayment} transparent={true} animationType="fade">
           <View style={styles.modalOverlay}>
@@ -1937,6 +2123,58 @@ const styles = StyleSheet.create({
   dropdownMenuItemTextActive: {
     color: '#4A2BC2',
     fontWeight: '600',
+  },
+  requirementCard: {
+    backgroundColor: '#ECFEFF',
+    borderWidth: 1,
+    borderColor: '#A5F3FC',
+    borderRadius: 8,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 12,
+  },
+  requirementIconCol: {
+    marginRight: 10,
+    marginTop: 2,
+  },
+  requirementCardText: {
+    color: '#0E7490',
+    fontSize: 13.5,
+    lineHeight: 20,
+    flex: 1,
+    fontWeight: '400',
+  },
+  dateInputWrapper: {
+    height: 46,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+  },
+  dateTextInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#111827',
+    paddingVertical: 0,
+  },
+  dateIconTouchable: {
+    paddingLeft: 8,
+  },
+  externalLinkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    paddingHorizontal: 2,
+  },
+  externalLinkText: {
+    fontSize: 13.5,
+    color: '#4A2BC2',
+    fontWeight: '500',
   },
   helperInfoRow: {
     flexDirection: 'row',
