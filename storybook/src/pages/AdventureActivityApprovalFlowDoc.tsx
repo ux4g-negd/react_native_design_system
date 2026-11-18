@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = '9Nvni1pmxzmU8RIdGOwrf';
+const SNACK_ID = 'D9h4RTSaQS-gMjNOM8MJV';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -113,8 +113,8 @@ const STEP_METADATA = {
     subtitle: 'Proof for everything you have declared. Reuse what the portal already holds.',
   },
   7: {
-    title: 'Insurance & compliance',
-    subtitle: 'Third-party liability coverage, participant accident insurance, and policy bounds.',
+    title: 'Review & declaration',
+    subtitle: 'Read back everything you entered, then sign it.',
   },
   8: {
     title: 'Fee & payment',
@@ -284,7 +284,7 @@ const AIR_ACTIVITIES = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(6); // Directly land on Step 6 for testing as requested
+  const [step, setStep] = useState(7); // Directly land on Step 7 for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
@@ -426,7 +426,14 @@ export default function App() {
     wildernessFirstAidCertified: true,
     instructorRatio: '1 Instructor per 6 Participants',
 
-    // Step 7: Insurance & compliance
+    // Step 7: Review & declaration (Matches media_1794988137715_2ba63eff.png)
+    declarationPlace: '',
+    declarationDate: '',
+    declarationSignerName: '',
+    declarationAgreed: false,
+    inspectionAgreed: false,
+
+    // Legacy / downstream compatibility
     insurancePolicyNo: 'NIA-ADV-LIAB-2026-992144',
     insurerName: 'The New India Assurance Co. Ltd.',
     liabilityCoverAmount: '₹ 50,00,000 (Fifty Lakhs)',
@@ -541,7 +548,11 @@ export default function App() {
         errors.siteLayoutDoc = 'Please upload site layout plan';
       }
     } else if (step === 7) {
-      if (!formData.insurancePolicyNo.trim()) errors.insurancePolicyNo = 'Insurance policy number is required';
+      if (!formData.declarationPlace.trim()) errors.declarationPlace = 'Please enter place where you are signing';
+      if (!formData.declarationDate.trim()) errors.declarationDate = 'Please select date';
+      if (!formData.declarationSignerName.trim()) errors.declarationSignerName = 'Please enter full name';
+      if (!formData.declarationAgreed) errors.declarationAgreed = 'Please confirm that the information is true';
+      if (!formData.inspectionAgreed) errors.inspectionAgreed = 'Please agree to physical inspection of the site';
     } else if (step === 8) {
       if (formData.paymentMethod === 'upi' && !formData.upiId.trim()) {
         errors.upiId = 'Please enter a valid UPI ID';
@@ -2965,59 +2976,318 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 7: INSURANCE & COMPLIANCE                                            */}
+          {/* STEP 7: REVIEW & DECLARATION (MATCHES USER REFERENCE IMAGE)                */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 7 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Liability & Passenger Cover</Text>
+              {/* SECTION 1: Preview Your Application */}
+              <Text style={styles.sectionHeading}>Preview Your Application</Text>
 
+              {/* Card 1: Step 1 · Before you start */}
+              <View style={styles.previewCardSuccess}>
+                <View style={styles.previewCheckCircle}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M5 13l4 4L19 7"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={styles.previewCardContent}>
+                  <Text style={styles.previewCardTitleSuccess}>Step 1 · Before you start</Text>
+                  <Text style={styles.previewCardSubtitleSuccess}>
+                    {formData.registrationType === 'renewal' ? 'Renewal registration' : 'New registration'} · activities on {formData.activityDomain || 'land'}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.previewEditButton}
+                  activeOpacity={0.7}
+                  onPress={() => setStep(1)}
+                  accessibilityLabel="Edit Step 1"
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      stroke="#1F2937"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </View>
+
+              {/* Card 2: Step 2 · Applicant & entity */}
+              <View style={styles.previewCardSuccess}>
+                <View style={styles.previewCheckCircle}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M5 13l4 4L19 7"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={styles.previewCardContent}>
+                  <Text style={styles.previewCardTitleSuccess}>Step 2 · Applicant & entity</Text>
+                  <Text style={styles.previewCardSubtitleSuccess}>
+                    {formData.applicantOrOrgName || 'Peak Trails Adventure LLP'} · {formData.ownerOrDirectorName || 'Rajesh Kulkarni'}, {formData.designation || 'Managing Partner'}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.previewEditButton}
+                  activeOpacity={0.7}
+                  onPress={() => setStep(2)}
+                  accessibilityLabel="Edit Step 2"
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      stroke="#1F2937"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </View>
+
+              {/* Card 3: Step 3 · Registration category */}
+              <View style={styles.previewCardSuccess}>
+                <View style={styles.previewCheckCircle}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M5 13l4 4L19 7"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={styles.previewCardContent}>
+                  <Text style={styles.previewCardTitleSuccess}>Step 3 · Registration category</Text>
+                  <Text style={styles.previewCardSubtitleSuccess}>
+                    {REGISTRATION_CATEGORY_OPTIONS.find((c) => c.id === formData.registrationCategory)?.label || 'Commercial adventure tour operator'} · {formData.registrationPeriod ? (formData.registrationPeriod.includes('1') ? 'one-year term' : formData.registrationPeriod.includes('2') ? 'two-year term' : formData.registrationPeriod.includes('5') ? 'five-year term' : 'three-year term') : 'three-year term'}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.previewEditButton}
+                  activeOpacity={0.7}
+                  onPress={() => setStep(3)}
+                  accessibilityLabel="Edit Step 3"
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      stroke="#1F2937"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </View>
+
+              {/* Card 4: Step 4 · Location & site */}
+              <View style={styles.previewCardSuccess}>
+                <View style={styles.previewCheckCircle}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M5 13l4 4L19 7"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={styles.previewCardContent}>
+                  <Text style={styles.previewCardTitleSuccess}>Step 4 · Location & site</Text>
+                  <Text style={styles.previewCardSubtitleSuccess}>
+                    {formData.siteSubDistrict ? (SUB_DISTRICT_OPTIONS.find((s) => s.id === formData.siteSubDistrict)?.label || formData.siteSubDistrict) : 'Mulshi'}, {formData.siteDistrict ? (DISTRICT_OPTIONS.find((d) => d.id === formData.siteDistrict)?.label || formData.siteDistrict) : 'Pune'}, {formData.siteState ? (STATE_UT_OPTIONS.find((s) => s.id === formData.siteState)?.label || formData.siteState) : 'Maharashtra'} · {formData.siteArea || '2.4'} {formData.unitOfArea ? (UNIT_OF_AREA_OPTIONS.find((u) => u.id === formData.unitOfArea)?.label?.split(' ')[0]?.toLowerCase() || formData.unitOfArea) : 'hectare'} held on {formData.landHoldingType === 'owned' ? 'ownership' : 'lease'}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.previewEditButton}
+                  activeOpacity={0.7}
+                  onPress={() => setStep(4)}
+                  accessibilityLabel="Edit Step 4"
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      stroke="#1F2937"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </View>
+
+              {/* Card 5: Step 5 · Activity & safety */}
+              <View style={styles.previewCardSuccess}>
+                <View style={styles.previewCheckCircle}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M5 13l4 4L19 7"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={styles.previewCardContent}>
+                  <Text style={styles.previewCardTitleSuccess}>Step 5 · Activity & safety</Text>
+                  <Text style={styles.previewCardSubtitleSuccess}>
+                    {formData.selectedActivities && formData.selectedActivities.length > 0
+                      ? (formData.selectedActivities.length === 4 ? 'Four' : formData.selectedActivities.length === 1 ? 'One' : formData.selectedActivities.length === 2 ? 'Two' : formData.selectedActivities.length === 3 ? 'Three' : String(formData.selectedActivities.length)) + ' activities'
+                      : 'Four activities'} · {formData.certifiedLeadsCount ? (formData.certifiedLeadsCount === '2' ? 'two' : formData.certifiedLeadsCount === '1' ? 'one' : String(formData.certifiedLeadsCount)) + ' certified leads' : 'two certified leads'} · cover valid to {formData.policyValidUntilDate || '31 March 2027'}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.previewEditButton}
+                  activeOpacity={0.7}
+                  onPress={() => setStep(5)}
+                  accessibilityLabel="Edit Step 5"
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      stroke="#1F2937"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </View>
+
+              {/* Card 6: Step 6 · Documents (Warning Card) */}
+              <View style={styles.previewCardWarning}>
+                <View style={styles.previewWarningCircle}>
+                  <Svg width={12} height={12} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M12 7v7M12 17.5h.01"
+                      stroke="#FFFFFF"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={styles.previewCardContent}>
+                  <Text style={styles.previewCardTitleWarning}>Step 6 · Documents</Text>
+                  <Text style={styles.previewCardSubtitleWarning}>
+                    Seven of nine attached — two still missing
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={styles.previewEditButton}
+                  activeOpacity={0.7}
+                  onPress={() => setStep(6)}
+                  accessibilityLabel="Edit Step 6"
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                      stroke="#B45309"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+              </View>
+
+              {/* SECTION 2: Declaration */}
+              <Text style={[styles.sectionHeading, { marginTop: 22, marginBottom: 14 }]}>Declaration</Text>
+
+              {/* Field 1: Place* */}
               <View style={styles.fieldBlock}>
                 <Text style={styles.fieldLabel}>
-                  Third-Party Comprehensive Policy No<Text style={styles.requiredAsterisk}>*</Text>
+                  Place<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={[styles.textInput, formErrors.insurancePolicyNo && styles.inputErrorBorder]}
-                  value={formData.insurancePolicyNo}
-                  onChangeText={(val) => updateField('insurancePolicyNo', val)}
+                  style={[styles.textInput, formErrors.declarationPlace && styles.inputErrorBorder]}
+                  value={formData.declarationPlace}
+                  onChangeText={(val) => updateField('declarationPlace', val)}
+                  placeholder="Town or city where you are signing"
+                  placeholderTextColor="#9CA3AF"
                 />
+                {formErrors.declarationPlace && (
+                  <Text style={styles.errorHelperText}>{formErrors.declarationPlace}</Text>
+                )}
               </View>
 
+              {/* Field 2: Date* (Ux4gDatePicker) */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Insurance Underwriting Company</Text>
-                <TextInput
-                  style={styles.textInput}
-                  value={formData.insurerName}
-                  onChangeText={(val) => updateField('insurerName', val)}
+                <Ux4gDatePicker
+                  label="Date"
+                  required
+                  placeholder="Today's date"
+                  initialDate={parseDate(formData.declarationDate)}
+                  onDateSelected={(date) => {
+                    updateField('declarationDate', formatDate(date));
+                  }}
+                  status={formErrors.declarationDate ? 'error' : 'defaultStatus'}
+                  description={formErrors.declarationDate}
                 />
               </View>
 
-              <View style={styles.rowTwoCols}>
-                <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={styles.fieldLabel}>Total Liability Cover</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={formData.liabilityCoverAmount}
-                    onChangeText={(val) => updateField('liabilityCoverAmount', val)}
-                  />
-                </View>
-                <View style={{ flex: 1, marginLeft: 8 }}>
-                  <Text style={styles.fieldLabel}>Passenger Personal Cover</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={formData.passengerCoverPerPerson}
-                    onChangeText={(val) => updateField('passengerCoverPerPerson', val)}
-                  />
-                </View>
-              </View>
-
+              {/* Field 3: Name of the person making this declaration* */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Policy Valid Until</Text>
+                <Text style={styles.fieldLabel}>
+                  Name of the person making this declaration<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
                 <TextInput
-                  style={styles.textInput}
-                  value={formData.insuranceValidTill}
-                  onChangeText={(val) => updateField('insuranceValidTill', val)}
-                  placeholder="DD/MM/YYYY"
+                  style={[styles.textInput, formErrors.declarationSignerName && styles.inputErrorBorder]}
+                  value={formData.declarationSignerName}
+                  onChangeText={(val) => updateField('declarationSignerName', val)}
+                  placeholder="Full name"
+                  placeholderTextColor="#9CA3AF"
                 />
+                {formErrors.declarationSignerName && (
+                  <Text style={styles.errorHelperText}>{formErrors.declarationSignerName}</Text>
+                )}
+              </View>
+
+              {/* Checkbox 1: I declare that the information in this application is true to the best of my knowledge* */}
+              <View style={[styles.declarationBlock, { marginTop: 14 }]}>
+                <Ux4gCheckbox
+                  label="I declare that the information in this application is true to the best of my knowledge"
+                  isRequired={true}
+                  value={formData.declarationAgreed}
+                  onChanged={(v) => updateField('declarationAgreed', !!v)}
+                  hasError={!!formErrors.declarationAgreed}
+                />
+                {formErrors.declarationAgreed && (
+                  <Text style={[styles.errorHelperText, { marginTop: 6 }]}>
+                    {formErrors.declarationAgreed}
+                  </Text>
+                )}
+              </View>
+
+              {/* Checkbox 2: I agree to a physical inspection of the site before a decision is taken* */}
+              <View style={[styles.declarationBlock, { marginTop: 14, marginBottom: 12 }]}>
+                <Ux4gCheckbox
+                  label="I agree to a physical inspection of the site before a decision is taken"
+                  isRequired={true}
+                  value={formData.inspectionAgreed}
+                  onChanged={(v) => updateField('inspectionAgreed', !!v)}
+                  hasError={!!formErrors.inspectionAgreed}
+                />
+                {formErrors.inspectionAgreed && (
+                  <Text style={[styles.errorHelperText, { marginTop: 6 }]}>
+                    {formErrors.inspectionAgreed}
+                  </Text>
+                )}
               </View>
             </View>
           )}
@@ -3306,7 +3576,7 @@ export default function App() {
                   activeOpacity={0.8}
                 >
                   <Text style={styles.primaryActionButtonText}>
-                    {step === 1 ? 'Start the application' : 'Continue'}
+                    {step === 1 ? 'Start the application' : step === 7 ? 'Continue to payment' : 'Continue'}
                   </Text>
                 </TouchableOpacity>
 
@@ -4147,6 +4417,80 @@ const styles = StyleSheet.create({
   },
   buttonActionGroup: {
     marginBottom: 20,
+  },
+  // Step 7: Preview cards styles
+  previewCardSuccess: {
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  previewCardWarning: {
+    backgroundColor: '#FFFBEB',
+    borderWidth: 1,
+    borderColor: '#FDE68A',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  previewCheckCircle: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  previewWarningCircle: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#F59E0B',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  previewCardContent: {
+    flex: 1,
+    paddingRight: 6,
+  },
+  previewCardTitleSuccess: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#065F46',
+  },
+  previewCardSubtitleSuccess: {
+    fontSize: 12.5,
+    fontWeight: '400',
+    color: '#047857',
+    marginTop: 3,
+    lineHeight: 17,
+  },
+  previewCardTitleWarning: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#B45309',
+  },
+  previewCardSubtitleWarning: {
+    fontSize: 12.5,
+    fontWeight: '400',
+    color: '#B45309',
+    marginTop: 3,
+    lineHeight: 17,
+  },
+  previewEditButton: {
+    padding: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   summaryCard: {
     borderWidth: 1,
