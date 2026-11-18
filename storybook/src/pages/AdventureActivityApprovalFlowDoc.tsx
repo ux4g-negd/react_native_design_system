@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'u4xhZ_kINUkN46n4IJcN6';
+const SNACK_ID = 'jVKgOPMLIweZBhrLOZSMf';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -101,8 +101,8 @@ const STEP_METADATA = {
     subtitle: 'What kind of operator you are, and which domain you operate in.',
   },
   4: {
-    title: 'Safety & emergency',
-    subtitle: 'Standard operating procedures, emergency evacuation plans, and hospital linkages.',
+    title: 'Location & site',
+    subtitle: 'Where the activity runs, down to the plot and the point on the map.',
   },
   5: {
     title: 'Equipment & inspection',
@@ -154,6 +154,69 @@ const REGISTRATION_PERIOD_OPTIONS = [
   { id: '5_years', label: '5 Years (Certified master operator tier)' },
 ];
 
+const STATE_UT_OPTIONS = [
+  { id: 'uttarakhand', label: 'Uttarakhand' },
+  { id: 'himachal', label: 'Himachal Pradesh' },
+  { id: 'jammu_kashmir', label: 'Jammu & Kashmir' },
+  { id: 'ladakh', label: 'Ladakh' },
+  { id: 'sikkim', label: 'Sikkim' },
+  { id: 'arunachal', label: 'Arunachal Pradesh' },
+  { id: 'goa', label: 'Goa' },
+  { id: 'kerala', label: 'Kerala' },
+  { id: 'maharashtra', label: 'Maharashtra' },
+  { id: 'karnataka', label: 'Karnataka' },
+  { id: 'rajasthan', label: 'Rajasthan' },
+];
+
+const REVENUE_DIVISION_OPTIONS = [
+  { id: 'garhwal', label: 'Garhwal Division' },
+  { id: 'kumaon', label: 'Kumaon Division' },
+  { id: 'northern', label: 'Northern Hill Division' },
+  { id: 'plains', label: 'Terai & Plains Division' },
+];
+
+const DISTRICT_OPTIONS = [
+  { id: 'tehri_garhwal', label: 'Tehri Garhwal' },
+  { id: 'dehradun', label: 'Dehradun' },
+  { id: 'pauri_garhwal', label: 'Pauri Garhwal' },
+  { id: 'uttarkashi', label: 'Uttarkashi' },
+  { id: 'chamoli', label: 'Chamoli' },
+  { id: 'rudraprayag', label: 'Rudraprayag' },
+  { id: 'nainital', label: 'Nainital' },
+];
+
+const SUB_DISTRICT_OPTIONS = [
+  { id: 'rishikesh', label: 'Rishikesh' },
+  { id: 'narendra_nagar', label: 'Narendra Nagar' },
+  { id: 'devprayag', label: 'Devprayag' },
+  { id: 'dhanaulti', label: 'Dhanaulti' },
+  { id: 'tehri', label: 'Tehri' },
+];
+
+const VILLAGE_TOWN_OPTIONS = [
+  { id: 'shivpuri', label: 'Shivpuri' },
+  { id: 'tapovan', label: 'Tapovan' },
+  { id: 'muni_ki_reti', label: 'Muni Ki Reti' },
+  { id: 'kaudiyala', label: 'Kaudiyala' },
+  { id: 'byasi', label: 'Byasi' },
+  { id: 'singtali', label: 'Singtali' },
+];
+
+const UNIT_OF_AREA_OPTIONS = [
+  { id: 'hectare', label: 'Hectare (ha)' },
+  { id: 'acre', label: 'Acre (ac)' },
+  { id: 'sq_metre', label: 'Square Metre (sq m)' },
+  { id: 'bigha', label: 'Bigha' },
+];
+
+const LAND_HOLDING_OPTIONS = [
+  { id: 'owned', label: 'Owned by applicant / organisation' },
+  { id: 'leased', label: 'Registered commercial lease agreement' },
+  { id: 'government', label: 'Government allotment / concession' },
+  { id: 'forest', label: 'Forest department licensed corridor' },
+  { id: 'panchayat', label: 'Gram Panchayat permission deed' },
+];
+
 const LAND_ACTIVITIES = [
   { id: 'trekking', label: 'Trekking & Mountaineering Expedition' },
   { id: 'rock_climbing', label: 'Rock Climbing & Bouldering' },
@@ -179,7 +242,7 @@ const AIR_ACTIVITIES = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(3); // Directly land on Step 3 for testing as requested
+  const [step, setStep] = useState(4); // Directly land on Step 4 for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
@@ -187,6 +250,13 @@ export default function App() {
   const [showSectorRegModal, setShowSectorRegModal] = useState(false);
   const [isApplicantTypeDropdownOpen, setIsApplicantTypeDropdownOpen] = useState(false);
   const [isPeriodDropdownOpen, setIsPeriodDropdownOpen] = useState(false);
+  const [isStateDropdownOpen, setIsStateDropdownOpen] = useState(false);
+  const [isDivisionDropdownOpen, setIsDivisionDropdownOpen] = useState(false);
+  const [isDistrictDropdownOpen, setIsDistrictDropdownOpen] = useState(false);
+  const [isSubDistrictDropdownOpen, setIsSubDistrictDropdownOpen] = useState(false);
+  const [isVillageDropdownOpen, setIsVillageDropdownOpen] = useState(false);
+  const [isUnitAreaDropdownOpen, setIsUnitAreaDropdownOpen] = useState(false);
+  const [isLandHoldingDropdownOpen, setIsLandHoldingDropdownOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
 
@@ -216,6 +286,22 @@ export default function App() {
     sectorTourismRegNumber: '',
     registrationIssueDate: '24/09/2024',
     registrationPeriod: '',
+
+    // Step 4: Location & site (Matches media_1794978281758_954b4266.png)
+    siteState: '',
+    siteDivision: '',
+    siteDistrict: '',
+    siteSubDistrict: '',
+    siteVillageOrTown: '',
+    surveyPlotNumber: '',
+    siteArea: '',
+    unitOfArea: '',
+    landHoldingType: '',
+    mapLink: '',
+    latitude: '',
+    longitude: '',
+    siteFullAddress: '',
+    sitePinCode: '',
 
     // Legacy / downstream compatibility
     enterpriseName: 'Himalayan Apex Adventures Pvt Ltd',
@@ -331,8 +417,19 @@ export default function App() {
       if (!formData.registrationIssueDate.trim()) errors.registrationIssueDate = 'Please enter date that registration was issued';
       if (!formData.registrationPeriod) errors.registrationPeriod = 'Please select registration period';
     } else if (step === 4) {
-      if (!formData.tieUpHospitalName.trim()) errors.tieUpHospitalName = 'Hospital tie-up name is required';
-      if (!formData.emergencyContact.trim()) errors.emergencyContact = 'Emergency phone is required';
+      if (!formData.siteState) errors.siteState = 'Please select state or union territory';
+      if (!formData.siteDistrict) errors.siteDistrict = 'Please select district';
+      if (!formData.siteSubDistrict) errors.siteSubDistrict = 'Please select sub-district, taluka or tehsil';
+      if (!formData.siteVillageOrTown) errors.siteVillageOrTown = 'Please select village, town or ward';
+      if (!formData.surveyPlotNumber.trim()) errors.surveyPlotNumber = 'Please enter survey, khasra or plot number';
+      if (!formData.siteArea.trim()) errors.siteArea = 'Please enter area of the site';
+      if (!formData.unitOfArea) errors.unitOfArea = 'Please select unit of area';
+      if (!formData.landHoldingType) errors.landHoldingType = 'Please select how you hold this land';
+      if (!formData.mapLink.trim()) errors.mapLink = 'Please provide a valid map link';
+      if (!formData.siteFullAddress.trim()) errors.siteFullAddress = 'Please enter full address of the site';
+      if (!formData.sitePinCode.trim() || formData.sitePinCode.length < 6) {
+        errors.sitePinCode = 'Please enter valid 6-digit PIN code';
+      }
     } else if (step === 5) {
       if (!formData.equipmentInventoryCount.trim()) errors.equipmentInventoryCount = 'Equipment summary is required';
     } else if (step === 6) {
@@ -1155,78 +1252,641 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 4: SAFETY & EMERGENCY SOPS                                           */}
+          {/* STEP 4: LOCATION & SITE (EXACT REPLICA OF USER REFERENCE IMAGE)           */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 4 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Emergency & Evacuation Protocol</Text>
+              {/* SECTION 1: Location Details */}
+              <Text style={styles.sectionHeading}>Location Details</Text>
 
-              <View style={styles.infoCard}>
-                <Text style={styles.infoCardTitle}>Department Safety Norms Compliance</Text>
-                <Text style={styles.infoCardBody}>
-                  All operators must maintain verified linkages with local district disaster management authorities
-                  (DDMA) and designated trauma care facilities prior to taking tourists.
-                </Text>
-              </View>
-
+              {/* Field 1: State or union territory* */}
               <View style={styles.fieldBlock}>
                 <Text style={styles.fieldLabel}>
-                  Nearest Tie-Up Hospital / Trauma Centre<Text style={styles.requiredAsterisk}>*</Text>
+                  State or union territory<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.siteState && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsStateDropdownOpen(!isStateDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.siteState
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {STATE_UT_OPTIONS.find((o) => o.id === formData.siteState)?.label ||
+                      'Type to search 36 states and union terri...'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isStateDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isStateDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {STATE_UT_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.siteState === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === STATE_UT_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('siteState', opt.id);
+                          setIsStateDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.siteState === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.siteState && (
+                  <Text style={styles.errorHelperText}>{formErrors.siteState}</Text>
+                )}
+              </View>
+
+              {/* Field 2: Revenue division or region */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Revenue division or region</Text>
+                <TouchableOpacity
+                  style={styles.dropdownTrigger}
+                  activeOpacity={0.8}
+                  onPress={() => setIsDivisionDropdownOpen(!isDivisionDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.siteDivision
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {REVENUE_DIVISION_OPTIONS.find((o) => o.id === formData.siteDivision)?.label ||
+                      'Select a division'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isDivisionDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isDivisionDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {REVENUE_DIVISION_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.siteDivision === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === REVENUE_DIVISION_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('siteDivision', opt.id);
+                          setIsDivisionDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.siteDivision === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+
+              {/* Field 3: District* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  District<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.siteDistrict && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsDistrictDropdownOpen(!isDistrictDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.siteDistrict
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {DISTRICT_OPTIONS.find((o) => o.id === formData.siteDistrict)?.label ||
+                      'Type to search districts in the selected s...'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isDistrictDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isDistrictDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {DISTRICT_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.siteDistrict === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === DISTRICT_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('siteDistrict', opt.id);
+                          setIsDistrictDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.siteDistrict === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.siteDistrict && (
+                  <Text style={styles.errorHelperText}>{formErrors.siteDistrict}</Text>
+                )}
+              </View>
+
+              {/* Field 4: Sub-district, taluka or tehsil* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Sub-district, taluka or tehsil<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.siteSubDistrict && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsSubDistrictDropdownOpen(!isSubDistrictDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.siteSubDistrict
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {SUB_DISTRICT_OPTIONS.find((o) => o.id === formData.siteSubDistrict)?.label ||
+                      'Select a sub-district'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isSubDistrictDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isSubDistrictDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {SUB_DISTRICT_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.siteSubDistrict === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === SUB_DISTRICT_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('siteSubDistrict', opt.id);
+                          setIsSubDistrictDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.siteSubDistrict === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.siteSubDistrict && (
+                  <Text style={styles.errorHelperText}>{formErrors.siteSubDistrict}</Text>
+                )}
+              </View>
+
+              {/* Field 5: Village, town or ward* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Village, town or ward<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.siteVillageOrTown && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsVillageDropdownOpen(!isVillageDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.siteVillageOrTown
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {VILLAGE_TOWN_OPTIONS.find((o) => o.id === formData.siteVillageOrTown)?.label ||
+                      'Select a village or town'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isVillageDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isVillageDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {VILLAGE_TOWN_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.siteVillageOrTown === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === VILLAGE_TOWN_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('siteVillageOrTown', opt.id);
+                          setIsVillageDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.siteVillageOrTown === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.siteVillageOrTown && (
+                  <Text style={styles.errorHelperText}>{formErrors.siteVillageOrTown}</Text>
+                )}
+              </View>
+
+              {/* SECTION 2: Land Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Land Details</Text>
+
+              {/* Field 6: Survey, khasra or plot number* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Survey, khasra or plot number<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={[styles.textInput, formErrors.tieUpHospitalName && styles.inputErrorBorder]}
-                  value={formData.tieUpHospitalName}
-                  onChangeText={(val) => updateField('tieUpHospitalName', val)}
+                  style={[
+                    styles.textInput,
+                    formErrors.surveyPlotNumber && styles.inputErrorBorder,
+                  ]}
+                  value={formData.surveyPlotNumber}
+                  onChangeText={(val) => updateField('surveyPlotNumber', val)}
+                  placeholder="As recorded in the land record"
+                  placeholderTextColor="#9CA3AF"
                 />
+                {formErrors.surveyPlotNumber && (
+                  <Text style={styles.errorHelperText}>{formErrors.surveyPlotNumber}</Text>
+                )}
               </View>
 
-              <View style={styles.rowTwoCols}>
-                <View style={{ flex: 1, marginRight: 8 }}>
-                  <Text style={styles.fieldLabel}>Distance to Hospital</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={formData.hospitalDistanceKm}
-                    onChangeText={(val) => updateField('hospitalDistanceKm', val)}
-                  />
-                </View>
-                <View style={{ flex: 1, marginLeft: 8 }}>
-                  <Text style={styles.fieldLabel}>
-                    Emergency Phone<Text style={styles.requiredAsterisk}>*</Text>
-                  </Text>
-                  <TextInput
-                    style={[styles.textInput, formErrors.emergencyContact && styles.inputErrorBorder]}
-                    value={formData.emergencyContact}
-                    onChangeText={(val) => updateField('emergencyContact', val)}
-                    keyboardType="phone-pad"
-                  />
-                </View>
-              </View>
-
+              {/* Field 7: Area of the site* */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Ambulance & Evacuation Readiness</Text>
+                <Text style={styles.fieldLabel}>
+                  Area of the site<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
                 <TextInput
-                  style={styles.textInput}
-                  value={formData.ambulanceStandby}
-                  onChangeText={(val) => updateField('ambulanceStandby', val)}
+                  style={[
+                    styles.textInput,
+                    formErrors.siteArea && styles.inputErrorBorder,
+                  ]}
+                  value={formData.siteArea}
+                  onChangeText={(val) => updateField('siteArea', val)}
+                  placeholder="Numeric area"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
                 />
+                {formErrors.siteArea && (
+                  <Text style={styles.errorHelperText}>{formErrors.siteArea}</Text>
+                )}
               </View>
 
+              {/* Field 8: Unit of area* */}
               <View style={styles.fieldBlock}>
-                <Ux4gCheckbox
-                  label="Standard Operating Procedure (SOP) verified and signed by Technical Director"
-                  isRequired={true}
-                  value={formData.sopDocumentUploaded}
-                  onChanged={(v) => updateField('sopDocumentUploaded', !!v)}
-                />
+                <Text style={styles.fieldLabel}>
+                  Unit of area<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.unitOfArea && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsUnitAreaDropdownOpen(!isUnitAreaDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.unitOfArea
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {UNIT_OF_AREA_OPTIONS.find((o) => o.id === formData.unitOfArea)?.label ||
+                      'Hectare, acre or square metre'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isUnitAreaDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isUnitAreaDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {UNIT_OF_AREA_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.unitOfArea === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === UNIT_OF_AREA_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('unitOfArea', opt.id);
+                          setIsUnitAreaDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.unitOfArea === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.unitOfArea && (
+                  <Text style={styles.errorHelperText}>{formErrors.unitOfArea}</Text>
+                )}
               </View>
 
+              {/* Field 9: How you hold this land* */}
               <View style={styles.fieldBlock}>
-                <Ux4gCheckbox
-                  label="Comprehensive Emergency Action Plan (EAP) submitted to District Police & Forest Office"
-                  isRequired={true}
-                  value={formData.emergencyPlanReady}
-                  onChanged={(v) => updateField('emergencyPlanReady', !!v)}
+                <Text style={styles.fieldLabel}>
+                  How you hold this land<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[
+                    styles.dropdownTrigger,
+                    formErrors.landHoldingType && styles.inputErrorBorder,
+                  ]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsLandHoldingDropdownOpen(!isLandHoldingDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.landHoldingType
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {LAND_HOLDING_OPTIONS.find((o) => o.id === formData.landHoldingType)?.label ||
+                      'Owned, leased, government or forest la...'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isLandHoldingDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isLandHoldingDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {LAND_HOLDING_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.landHoldingType === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === LAND_HOLDING_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('landHoldingType', opt.id);
+                          setIsLandHoldingDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.landHoldingType === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.landHoldingType && (
+                  <Text style={styles.errorHelperText}>{formErrors.landHoldingType}</Text>
+                )}
+              </View>
+
+              {/* SECTION 3: Geo Location */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Geo Location</Text>
+
+              {/* Field 10: Map link* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Map link<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[
+                    styles.textInput,
+                    formErrors.mapLink && styles.inputErrorBorder,
+                  ]}
+                  value={formData.mapLink}
+                  onChangeText={(val) => updateField('mapLink', val)}
+                  placeholder="Paste a Google Maps or Apple Maps link to t..."
+                  placeholderTextColor="#9CA3AF"
                 />
+                {formErrors.mapLink && (
+                  <Text style={styles.errorHelperText}>{formErrors.mapLink}</Text>
+                )}
+
+                {/* Target icon + Use my current location */}
+                <TouchableOpacity
+                  style={styles.locationActionRow}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    updateField('latitude', '30.1378° N');
+                    updateField('longitude', '78.3842° E');
+                    if (!formData.mapLink) {
+                      updateField('mapLink', 'https://maps.google.com/?q=30.1378,78.3842');
+                    }
+                  }}
+                >
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={8} stroke="#111827" strokeWidth={1.8} />
+                    <Circle cx={12} cy={12} r={3} fill="#111827" />
+                    <Path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke="#111827" strokeWidth={1.8} strokeLinecap="round" />
+                  </Svg>
+                  <Text style={styles.locationActionText}>Use my current location</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Field 11: Latitude */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Latitude</Text>
+                <View style={styles.disabledFilledBox}>
+                  <Text style={styles.disabledFilledText}>
+                    {formData.latitude || 'Set when you place the pin'}
+                  </Text>
+                </View>
+              </View>
+
+              {/* Field 12: Longitude */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Longitude</Text>
+                <View style={styles.disabledFilledBox}>
+                  <Text style={styles.disabledFilledText}>
+                    {formData.longitude || 'Set when you place the pin'}
+                  </Text>
+                </View>
+              </View>
+
+              {/* SECTION 4: Address of the Site */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Address of the Site</Text>
+
+              {/* Field 13: Full address of the site* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Full address of the site<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={[styles.textAreaContainer, formErrors.siteFullAddress && styles.inputErrorBorder]}>
+                  <TextInput
+                    style={styles.textAreaInput}
+                    value={formData.siteFullAddress}
+                    onChangeText={(val) => {
+                      if (val.length <= 200) {
+                        updateField('siteFullAddress', val);
+                      }
+                    }}
+                    placeholder="Placeholder"
+                    placeholderTextColor="#9CA3AF"
+                    multiline={true}
+                    maxLength={200}
+                  />
+                  <View style={styles.textAreaFooter}>
+                    <Text style={styles.charCounterText}>
+                      {formData.siteFullAddress.length}/200
+                    </Text>
+                    <Svg width={10} height={10} viewBox="0 0 10 10" fill="none" style={{ marginLeft: 4 }}>
+                      <Path d="M9 1L1 9M9 5L5 9M9 9L9 9" stroke="#9CA3AF" strokeWidth={1.5} strokeLinecap="round" />
+                    </Svg>
+                  </View>
+                </View>
+                <View style={styles.helperInfoRow}>
+                  <Svg width={13} height={13} viewBox="0 0 24 24" fill="none" style={styles.infoIcon}>
+                    <Circle cx={12} cy={12} r={10} stroke="#6B7280" strokeWidth={1.8} />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#6B7280" strokeWidth={2} strokeLinecap="round" />
+                  </Svg>
+                  <Text style={styles.helperInfoText}>Description</Text>
+                </View>
+                {formErrors.siteFullAddress && (
+                  <Text style={styles.errorHelperText}>{formErrors.siteFullAddress}</Text>
+                )}
+              </View>
+
+              {/* Field 14: PIN code* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  PIN code<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.sitePinCode && styles.inputErrorBorder]}
+                  value={formData.sitePinCode}
+                  onChangeText={(val) => updateField('sitePinCode', val.replace(/\D/g, '').slice(0, 6))}
+                  placeholder="6-digit PIN code"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                  maxLength={6}
+                />
+                {formErrors.sitePinCode && (
+                  <Text style={styles.errorHelperText}>{formErrors.sitePinCode}</Text>
+                )}
               </View>
             </View>
           )}
@@ -2177,6 +2837,33 @@ const styles = StyleSheet.create({
     fontSize: 13.5,
     color: '#4A2BC2',
     fontWeight: '500',
+  },
+  disabledFilledBox: {
+    height: 46,
+    backgroundColor: '#E5E7EB',
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    justifyContent: 'center',
+  },
+  disabledFilledText: {
+    fontSize: 14,
+    color: '#4B5563',
+    fontWeight: '500',
+  },
+  locationActionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 4,
+    paddingHorizontal: 2,
+  },
+  locationActionText: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    color: '#111827',
+    marginLeft: 8,
   },
   helperInfoRow: {
     flexDirection: 'row',
