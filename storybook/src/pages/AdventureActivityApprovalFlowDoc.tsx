@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'L1y-3Yu-lTFtJ9SKlkPL8';
+const SNACK_ID = '9Nvni1pmxzmU8RIdGOwrf';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -2877,14 +2877,6 @@ export default function App() {
                           buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
                           buttonBorderColor={UX4GColors.purple700}
-                          initialFiles={formData.leadCertificatesFiles}
-                          onFilesChanged={(files) => {
-                            updateField('leadCertificatesFiles', files);
-                            updateField('leadCertificatesDoc', files && files.length > 0 ? files[0] : null);
-                          }}
-                        />
-                      </View>
-                          buttonBorderColor={UX4GColors.primary}
                           initialFiles={formData.leadCertificatesFiles}
                           onFilesChanged={(files) => {
                             updateField('leadCertificatesFiles', files);
