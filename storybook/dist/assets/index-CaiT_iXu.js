@@ -100246,7 +100246,7 @@ const styles = StyleSheet.create({
   },
 
 });
-`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="D9h4RTSaQS-gMjNOM8MJV",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="DU1IJwB6mUid06OdkDHje",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -100350,7 +100350,7 @@ const STEP_METADATA = {
   },
   8: {
     title: 'Fee & payment',
-    subtitle: 'Inspection fee, departmental activity approval charges, and settlement gateway.',
+    subtitle: 'What the registration costs and how you pay it.',
   },
   9: {
     title: 'Acknowledgement & credential',
@@ -100516,7 +100516,7 @@ const AIR_ACTIVITIES = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(7); // Directly land on Step 7 for testing as requested
+  const [step, setStep] = useState(8); // Directly land on Step 8 for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
@@ -100672,8 +100672,11 @@ export default function App() {
     passengerCoverPerPerson: '₹ 5,00,000 per participant',
     insuranceValidTill: '30/09/2027',
 
-    // Step 8: Fee & payment
-    paymentMethod: 'upi', // 'upi' | 'card' | 'netbanking'
+    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png)
+    feeApplicationId: 'AA-2026-000000',
+    feeAmount: '5,000',
+    feeNonRefundableAgreed: false,
+    paymentMethod: 'upi', // legacy fallback
     upiId: '',
     cardName: '',
     cardNumber: '',
@@ -100786,12 +100789,8 @@ export default function App() {
       if (!formData.declarationAgreed) errors.declarationAgreed = 'Please confirm that the information is true';
       if (!formData.inspectionAgreed) errors.inspectionAgreed = 'Please agree to physical inspection of the site';
     } else if (step === 8) {
-      if (formData.paymentMethod === 'upi' && !formData.upiId.trim()) {
-        errors.upiId = 'Please enter a valid UPI ID';
-      } else if (formData.paymentMethod === 'card' && (!formData.cardNumber.trim() || !formData.cardExpiry.trim())) {
-        errors.card = 'Please enter card details';
-      } else if (formData.paymentMethod === 'netbanking' && !formData.selectedBank) {
-        errors.bank = 'Please select your bank';
+      if (!formData.feeNonRefundableAgreed) {
+        errors.feeNonRefundableAgreed = 'Please confirm that you understand the fee is non-refundable';
       }
     }
 
@@ -103525,7 +103524,7 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 8: FEE & PAYMENT                                                     */}
+          {/* STEP 8: FEE & PAYMENT (MATCHES USER REFERENCE IMAGE)                      */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 8 && (
             <View style={styles.formContainer}>
@@ -103533,168 +103532,40 @@ export default function App() {
 
               {/* Fee Summary Card */}
               <View style={styles.feeCard}>
-                <Text style={styles.feeCardHeader}>Adventure Activity Approval · UK-ADV-2026-009412</Text>
+                <Text style={styles.feeCardHeader}>
+                  Adventure activity registration · {formData.feeApplicationId || 'AA-2026-000000'}
+                </Text>
 
                 <View style={styles.feeCardRow}>
-                  <Text style={styles.feeItemLabel}>Technical Safety Inspection Fee</Text>
-                  <Text style={styles.feeItemAmount}>₹5,000</Text>
-                </View>
-                <View style={styles.feeCardRow}>
-                  <Text style={styles.feeItemLabel}>Departmental Registration & License Fee</Text>
-                  <Text style={styles.feeItemAmount}>₹2,500</Text>
+                  <Text style={styles.feeItemLabel}>
+                    Registration fee — {formData.registrationCategory ? (REGISTRATION_CATEGORY_OPTIONS.find((c) => c.id === formData.registrationCategory)?.label?.toLowerCase() || 'commercial operator') : 'commercial operator'}, {formData.activityDomain || 'land'}, {formData.registrationPeriod ? (formData.registrationPeriod.includes('1') ? 'one-year term' : formData.registrationPeriod.includes('2') ? 'two-year term' : formData.registrationPeriod.includes('5') ? 'five-year term' : 'three-year term') : 'three-year term'}
+                  </Text>
+                  <Text style={styles.feeItemAmount}>₹{formData.feeAmount || '5,000'}</Text>
                 </View>
 
                 <View style={styles.feeDivider} />
 
                 <View style={styles.feeCardRowTotal}>
                   <Text style={styles.feeTotalLabel}>Total payable</Text>
-                  <Text style={styles.feeTotalAmount}>₹7,500</Text>
+                  <Text style={styles.feeTotalAmount}>₹{formData.feeAmount || '5,000'}</Text>
                 </View>
               </View>
 
-              {/* Mode of Payment */}
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Mode of Payment</Text>
-              <Text style={styles.feeSubNotice}>₹7,500 payable for UK-ADV-2026-009412.</Text>
-
-              {/* Payment Option 1: UPI */}
-              <TouchableOpacity
-                style={[styles.paymentCard, formData.paymentMethod === 'upi' && styles.paymentCardSelected]}
-                onPress={() => updateField('paymentMethod', 'upi')}
-                activeOpacity={0.8}
-              >
-                <View style={styles.paymentRadioRow}>
-                  <View style={styles.radioOuterCircle}>
-                    {formData.paymentMethod === 'upi' && <View style={styles.radioInnerCircle} />}
-                  </View>
-                  <View style={{ marginLeft: 12 }}>
-                    <Text style={styles.paymentOptionTitle}>UPI</Text>
-                    <Text style={styles.paymentOptionSub}>Pay with Google Pay, PhonePe, Paytm or BHIM</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              {formData.paymentMethod === 'upi' && (
-                <View style={styles.paymentDetailBox}>
-                  <Text style={styles.fieldLabel}>
-                    UPI ID<Text style={styles.requiredAsterisk}>*</Text>
+              {/* Checkbox: I understand the fee is non-refundable once the application is submitted */}
+              <View style={[styles.declarationBlock, { marginTop: 14, marginBottom: 20 }]}>
+                <Ux4gCheckbox
+                  label="I understand the fee is non-refundable once the application is submitted"
+                  isRequired={true}
+                  value={formData.feeNonRefundableAgreed}
+                  onChanged={(v) => updateField('feeNonRefundableAgreed', !!v)}
+                  hasError={!!formErrors.feeNonRefundableAgreed}
+                />
+                {formErrors.feeNonRefundableAgreed && (
+                  <Text style={[styles.errorHelperText, { marginTop: 6 }]}>
+                    {formErrors.feeNonRefundableAgreed}
                   </Text>
-                  <TextInput
-                    style={[styles.textInput, formErrors.upiId && styles.inputErrorBorder]}
-                    placeholder="e.g. name@upi"
-                    value={formData.upiId}
-                    onChangeText={(v) => updateField('upiId', v)}
-                  />
-                  {formErrors.upiId && <Text style={styles.errorHelperText}>{formErrors.upiId}</Text>}
-                </View>
-              )}
-
-              {/* Payment Option 2: Card */}
-              <TouchableOpacity
-                style={[
-                  styles.paymentCard,
-                  formData.paymentMethod === 'card' && styles.paymentCardSelected,
-                  { marginTop: 12 },
-                ]}
-                onPress={() => updateField('paymentMethod', 'card')}
-                activeOpacity={0.8}
-              >
-                <View style={styles.paymentRadioRow}>
-                  <View style={styles.radioOuterCircle}>
-                    {formData.paymentMethod === 'card' && <View style={styles.radioInnerCircle} />}
-                  </View>
-                  <View style={{ marginLeft: 12 }}>
-                    <Text style={styles.paymentOptionTitle}>Debit / Credit Card</Text>
-                    <Text style={styles.paymentOptionSub}>Visa, MasterCard, RuPay</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              {formData.paymentMethod === 'card' && (
-                <View style={styles.paymentDetailBox}>
-                  <Text style={styles.fieldLabel}>
-                    Card Number<Text style={styles.requiredAsterisk}>*</Text>
-                  </Text>
-                  <TextInput
-                    style={[styles.textInput, formErrors.card && styles.inputErrorBorder]}
-                    placeholder="XXXX - XXXX - XXXX - XXXX"
-                    value={formData.cardNumber}
-                    onChangeText={(v) => updateField('cardNumber', v)}
-                    keyboardType="number-pad"
-                  />
-                  <View style={[styles.rowTwoCols, { marginTop: 12 }]}>
-                    <View style={{ flex: 1, marginRight: 8 }}>
-                      <Text style={styles.fieldLabel}>Expiry Date</Text>
-                      <TextInput
-                        style={styles.textInput}
-                        placeholder="MM/YY"
-                        value={formData.cardExpiry}
-                        onChangeText={(v) => updateField('cardExpiry', v)}
-                      />
-                    </View>
-                    <View style={{ flex: 1, marginLeft: 8 }}>
-                      <Text style={styles.fieldLabel}>CVV</Text>
-                      <TextInput
-                        style={styles.textInput}
-                        placeholder="XXX"
-                        value={formData.cardCvv}
-                        onChangeText={(v) => updateField('cardCvv', v)}
-                        secureTextEntry={true}
-                        maxLength={4}
-                      />
-                    </View>
-                  </View>
-                </View>
-              )}
-
-              {/* Payment Option 3: Net Banking */}
-              <TouchableOpacity
-                style={[
-                  styles.paymentCard,
-                  formData.paymentMethod === 'netbanking' && styles.paymentCardSelected,
-                  { marginTop: 12 },
-                ]}
-                onPress={() => updateField('paymentMethod', 'netbanking')}
-                activeOpacity={0.8}
-              >
-                <View style={styles.paymentRadioRow}>
-                  <View style={styles.radioOuterCircle}>
-                    {formData.paymentMethod === 'netbanking' && <View style={styles.radioInnerCircle} />}
-                  </View>
-                  <View style={{ marginLeft: 12 }}>
-                    <Text style={styles.paymentOptionTitle}>Net Banking</Text>
-                    <Text style={styles.paymentOptionSub}>60+ major scheduled banks supported</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              {formData.paymentMethod === 'netbanking' && (
-                <View style={styles.paymentDetailBox}>
-                  <Text style={styles.fieldLabel}>
-                    Choose Your Bank<Text style={styles.requiredAsterisk}>*</Text>
-                  </Text>
-                  <View style={styles.bankGrid}>
-                    {['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Punjab National Bank'].map(
-                      (b) => (
-                        <TouchableOpacity
-                          key={b}
-                          style={[styles.bankChip, formData.selectedBank === b && styles.bankChipSelected]}
-                          onPress={() => updateField('selectedBank', b)}
-                        >
-                          <Text
-                            style={[
-                              styles.bankChipText,
-                              formData.selectedBank === b && styles.bankChipTextSelected,
-                            ]}
-                          >
-                            {b}
-                          </Text>
-                        </TouchableOpacity>
-                      )
-                    )}
-                  </View>
-                  {formErrors.bank && <Text style={styles.errorHelperText}>{formErrors.bank}</Text>}
-                </View>
-              )}
+                )}
+              </View>
             </View>
           )}
 
@@ -103831,7 +103702,7 @@ export default function App() {
                   disabled={isProcessingPayment}
                 >
                   <Text style={styles.primaryActionButtonText}>
-                    {isProcessingPayment ? 'Processing...' : 'Pay ₹7,500'}
+                    {isProcessingPayment ? 'Processing...' : 'Pay and submit'}
                   </Text>
                 </TouchableOpacity>
 
@@ -104486,33 +104357,38 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#E5E7EB',
-    borderRadius: 8,
+    borderRadius: 10,
     padding: 16,
+    marginBottom: 16,
   },
   feeCardHeader: {
-    fontSize: 15,
+    fontSize: 14.5,
     fontWeight: '700',
     color: '#111827',
+    lineHeight: 20,
     marginBottom: 16,
   },
   feeCardRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    alignItems: 'flex-start',
   },
   feeItemLabel: {
-    fontSize: 14,
-    color: '#4B5563',
+    fontSize: 13.5,
+    color: '#374151',
+    lineHeight: 20,
+    flex: 1,
+    paddingRight: 16,
   },
   feeItemAmount: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 14.5,
+    fontWeight: '700',
     color: '#111827',
   },
   feeDivider: {
     height: 1,
     backgroundColor: '#E5E7EB',
-    marginVertical: 12,
+    marginVertical: 14,
   },
   feeCardRowTotal: {
     flexDirection: 'row',
@@ -104520,12 +104396,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   feeTotalLabel: {
-    fontSize: 16,
+    fontSize: 14.5,
     fontWeight: '700',
     color: '#111827',
   },
   feeTotalAmount: {
-    fontSize: 18,
+    fontSize: 14.5,
     fontWeight: '700',
     color: '#111827',
   },
