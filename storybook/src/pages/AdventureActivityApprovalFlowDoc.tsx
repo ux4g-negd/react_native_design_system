@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'jVKgOPMLIweZBhrLOZSMf';
+const SNACK_ID = '9tFetS0zsPZFgrEt4YQKI';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -105,8 +105,8 @@ const STEP_METADATA = {
     subtitle: 'Where the activity runs, down to the plot and the point on the map.',
   },
   5: {
-    title: 'Equipment & inspection',
-    subtitle: 'Inventory of safety gear, fitness certificates, and technical standards compliance.',
+    title: 'Activity & safety',
+    subtitle: 'What you will operate, who will lead it, and how people are kept safe.',
   },
   6: {
     title: 'Guides & instructors',
@@ -217,6 +217,48 @@ const LAND_HOLDING_OPTIONS = [
   { id: 'panchayat', label: 'Gram Panchayat permission deed' },
 ];
 
+const SITE_ACTIVITIES_OPTIONS = [
+  { id: 'trekking_hiking', label: 'Trekking and hiking' },
+  { id: 'rock_climbing', label: 'Rock climbing and bouldering' },
+  { id: 'rappelling_ferrata', label: 'Rappelling and via ferrata' },
+  { id: 'zipline_rope', label: 'Zip line and rope course' },
+  { id: 'mountain_biking', label: 'Mountain biking' },
+  { id: 'camping_bivouac', label: 'Camping and bivouac' },
+  { id: 'caving', label: 'Caving' },
+  { id: 'off_road', label: 'All-terrain and off-road driving' },
+];
+
+const OPERATING_SEASON_OPTIONS = [
+  { id: 'all_year', label: 'All year, or specified months' },
+  { id: 'all_year_round', label: 'All year (12 months uninterrupted)' },
+  { id: 'sep_jun', label: 'September to June (Standard hill season)' },
+  { id: 'oct_mar', label: 'October to March (Winter / dry season)' },
+  { id: 'may_sep', label: 'May to September (High altitude summer season)' },
+];
+
+const DAILY_OPERATING_HOURS_OPTIONS = [
+  { id: 'window_operating', label: 'Select the window you operate in' },
+  { id: 'daylight', label: 'Sunrise to Sunset (Daylight hours only)' },
+  { id: '6am_6pm', label: '06:00 AM to 06:00 PM' },
+  { id: '8am_5pm', label: '08:00 AM to 05:00 PM' },
+  { id: '24hours', label: '24 Hours (Overnight camping / expeditions)' },
+];
+
+const LEAD_QUALIFICATION_OPTIONS = [
+  { id: 'moi', label: 'Method of Instruction (MOI) - National Institute' },
+  { id: 'amc', label: 'Advance Mountaineering Course (AMC) - Grade A' },
+  { id: 'bmc', label: 'Basic Mountaineering Course (BMC) - Grade A' },
+  { id: 'wfr', label: 'WFR / Wilderness First Responder (NOLS / WMA)' },
+  { id: 'federation', label: 'National / International Federations Certified Lead' },
+];
+
+const EQUIPMENT_HOLD_OPTIONS = [
+  { id: 'owned', label: 'Owned by the operating organisation' },
+  { id: 'hired', label: 'Hired from a certified technical equipment supplier' },
+  { id: 'leased_amc', label: 'Leased with annual maintenance contract (AMC)' },
+  { id: 'combination', label: 'Combination of owned and leased gear' },
+];
+
 const LAND_ACTIVITIES = [
   { id: 'trekking', label: 'Trekking & Mountaineering Expedition' },
   { id: 'rock_climbing', label: 'Rock Climbing & Bouldering' },
@@ -242,7 +284,7 @@ const AIR_ACTIVITIES = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(4); // Directly land on Step 4 for testing as requested
+  const [step, setStep] = useState(5); // Directly land on Step 5 for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
@@ -257,6 +299,10 @@ export default function App() {
   const [isVillageDropdownOpen, setIsVillageDropdownOpen] = useState(false);
   const [isUnitAreaDropdownOpen, setIsUnitAreaDropdownOpen] = useState(false);
   const [isLandHoldingDropdownOpen, setIsLandHoldingDropdownOpen] = useState(false);
+  const [isSeasonDropdownOpen, setIsSeasonDropdownOpen] = useState(false);
+  const [isHoursDropdownOpen, setIsHoursDropdownOpen] = useState(false);
+  const [isQualificationDropdownOpen, setIsQualificationDropdownOpen] = useState(false);
+  const [isEquipmentHoldDropdownOpen, setIsEquipmentHoldDropdownOpen] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
 
@@ -302,6 +348,25 @@ export default function App() {
     longitude: '',
     siteFullAddress: '',
     sitePinCode: '',
+
+    // Step 5: Activity & safety (Matches media_1794983740939_13a504aa.png)
+    selectedActivities: [],
+    maxBatchParticipants: '',
+    maxBatchesPerDay: '',
+    operatingSeason: '',
+    dailyOperatingHours: '',
+    certifiedLeadsCount: '',
+    leadHighestQualification: '',
+    certifyingBody: '',
+    supportStaffCount: '',
+    equipmentHoldType: '',
+    lastEquipmentInspectionDate: '',
+    inspectingAgency: '',
+    liabilityPolicyNumber: '',
+    policyValidUntilDate: '',
+    nearestHospitalAndDistance: '',
+    emergencyContactNumber: '',
+    hasWrittenEmergencyPlan: false,
 
     // Legacy / downstream compatibility
     enterpriseName: 'Himalayan Apex Adventures Pvt Ltd',
@@ -431,7 +496,24 @@ export default function App() {
         errors.sitePinCode = 'Please enter valid 6-digit PIN code';
       }
     } else if (step === 5) {
-      if (!formData.equipmentInventoryCount.trim()) errors.equipmentInventoryCount = 'Equipment summary is required';
+      if (!formData.selectedActivities || formData.selectedActivities.length === 0) {
+        errors.selectedActivities = 'Please select at least one activity offered at this site';
+      }
+      if (!formData.maxBatchParticipants.trim()) errors.maxBatchParticipants = 'Please enter maximum participants in one batch';
+      if (!formData.maxBatchesPerDay.trim()) errors.maxBatchesPerDay = 'Please enter maximum batches in one day';
+      if (!formData.operatingSeason) errors.operatingSeason = 'Please select operating season';
+      if (!formData.dailyOperatingHours) errors.dailyOperatingHours = 'Please select daily operating hours';
+      if (!formData.certifiedLeadsCount.trim()) errors.certifiedLeadsCount = 'Please enter number of certified activity leads';
+      if (!formData.leadHighestQualification) errors.leadHighestQualification = 'Please select highest qualification held by lead';
+      if (!formData.certifyingBody.trim()) errors.certifyingBody = 'Please enter certifying body';
+      if (!formData.equipmentHoldType) errors.equipmentHoldType = 'Please select how equipment is held';
+      if (!formData.lastEquipmentInspectionDate.trim()) errors.lastEquipmentInspectionDate = 'Please select date of the last equipment inspection';
+      if (!formData.inspectingAgency.trim()) errors.inspectingAgency = 'Please enter inspecting authority or agency';
+      if (!formData.liabilityPolicyNumber.trim()) errors.liabilityPolicyNumber = 'Please enter public liability policy number';
+      if (!formData.policyValidUntilDate.trim()) errors.policyValidUntilDate = 'Please select policy validity date';
+      if (!formData.nearestHospitalAndDistance.trim()) errors.nearestHospitalAndDistance = 'Please enter nearest hospital and distance from the site';
+      if (!formData.emergencyContactNumber.trim()) errors.emergencyContactNumber = 'Please enter emergency contact number at the site';
+      if (!formData.hasWrittenEmergencyPlan) errors.hasWrittenEmergencyPlan = 'Please confirm that a written emergency response plan exists';
     } else if (step === 6) {
       if (!formData.leadInstructorName.trim()) errors.leadInstructorName = 'Lead instructor name is required';
       if (!formData.instructorLicenseNo.trim()) errors.instructorLicenseNo = 'Instructor license number is required';
@@ -1892,63 +1974,519 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 5: EQUIPMENT & FITNESS INSPECTION                                    */}
+          {/* STEP 5: ACTIVITY & SAFETY (EXACT REPLICA OF USER REFERENCE IMAGE)         */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 5 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Technical Gear & Safety Equipment</Text>
+              {/* SECTION 1: Safety Requirements */}
+              <Text style={styles.sectionHeading}>Safety Requirements</Text>
 
+              {/* Cyan info callout */}
+              <View style={styles.requirementCard}>
+                <View style={styles.requirementIconCol}>
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} fill="#06B6D4" />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#FFFFFF" strokeWidth={2.2} strokeLinecap="round" />
+                  </Svg>
+                </View>
+                <Text style={styles.requirementCardText}>
+                  Safety is what this registration is for: who leads each activity, how the equipment is certified, what cover you hold, and what happens if something goes wrong on site.
+                </Text>
+              </View>
+
+              {/* SECTION 2: Activities Offered at This Site* */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>
+                Activities Offered at This Site<Text style={styles.requiredAsterisk}>*</Text>
+              </Text>
+
+              <View style={[styles.radioOptionGroup, { marginTop: 12 }]}>
+                {SITE_ACTIVITIES_OPTIONS.map((act) => {
+                  const isChecked = (formData.selectedActivities || []).includes(act.id);
+                  return (
+                    <View key={act.id} style={{ marginBottom: 12 }}>
+                      <Ux4gCheckbox
+                        label={act.label}
+                        value={isChecked}
+                        onChanged={() => {
+                          const list = formData.selectedActivities || [];
+                          const next = list.includes(act.id)
+                            ? list.filter((id) => id !== act.id)
+                            : [...list, act.id];
+                          updateField('selectedActivities', next);
+                        }}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+              {formErrors.selectedActivities && (
+                <Text style={styles.errorHelperText}>{formErrors.selectedActivities}</Text>
+              )}
+
+              {/* SECTION 3: Scale of Operation */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Scale of Operation</Text>
+
+              {/* Field 1: Maximum participants in one batch* */}
               <View style={styles.fieldBlock}>
                 <Text style={styles.fieldLabel}>
-                  Equipment Inventory Summary<Text style={styles.requiredAsterisk}>*</Text>
+                  Maximum participants in one batch<Text style={styles.requiredAsterisk}>*</Text>
                 </Text>
                 <TextInput
-                  style={[styles.textAreaInput, formErrors.equipmentInventoryCount && styles.inputErrorBorder]}
-                  value={formData.equipmentInventoryCount}
-                  onChangeText={(val) => updateField('equipmentInventoryCount', val)}
-                  multiline={true}
-                  numberOfLines={3}
+                  style={[styles.textInput, formErrors.maxBatchParticipants && styles.inputErrorBorder]}
+                  value={formData.maxBatchParticipants}
+                  onChangeText={(val) => updateField('maxBatchParticipants', val.replace(/\D/g, ''))}
+                  placeholder="Number of people"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
                 />
+                {formErrors.maxBatchParticipants && (
+                  <Text style={styles.errorHelperText}>{formErrors.maxBatchParticipants}</Text>
+                )}
               </View>
 
+              {/* Field 2: Maximum batches in one day* */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Safety Standard Compliance</Text>
+                <Text style={styles.fieldLabel}>
+                  Maximum batches in one day<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
                 <TextInput
-                  style={styles.textInput}
-                  value={formData.safetyStandard}
-                  onChangeText={(val) => updateField('safetyStandard', val)}
+                  style={[styles.textInput, formErrors.maxBatchesPerDay && styles.inputErrorBorder]}
+                  value={formData.maxBatchesPerDay}
+                  onChangeText={(val) => updateField('maxBatchesPerDay', val.replace(/\D/g, ''))}
+                  placeholder="Number of batches"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
                 />
+                {formErrors.maxBatchesPerDay && (
+                  <Text style={styles.errorHelperText}>{formErrors.maxBatchesPerDay}</Text>
+                )}
               </View>
 
+              {/* Field 3: Operating season* */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>Last Technical Safety Audit Date</Text>
-                <TextInput
-                  style={styles.textInput}
-                  value={formData.lastInspectionDate}
-                  onChangeText={(val) => updateField('lastInspectionDate', val)}
-                  placeholder="DD/MM/YYYY"
-                />
-              </View>
-
-              <View style={styles.uploadCard}>
-                <View style={styles.uploadIconContainer}>
-                  <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+                <Text style={styles.fieldLabel}>
+                  Operating season<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[styles.dropdownTrigger, formErrors.operatingSeason && styles.inputErrorBorder]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsSeasonDropdownOpen(!isSeasonDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.operatingSeason
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {OPERATING_SEASON_OPTIONS.find((o) => o.id === formData.operatingSeason)?.label ||
+                      'All year, or specified months'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
                     <Path
-                      d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"
-                      stroke={UX4GColors.primary}
+                      d={isSeasonDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
                       strokeWidth={2}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </Svg>
+                </TouchableOpacity>
+
+                {isSeasonDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {OPERATING_SEASON_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.operatingSeason === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === OPERATING_SEASON_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('operatingSeason', opt.id);
+                          setIsSeasonDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.operatingSeason === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.operatingSeason && (
+                  <Text style={styles.errorHelperText}>{formErrors.operatingSeason}</Text>
+                )}
+              </View>
+
+              {/* Field 4: Daily operating hours* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Daily operating hours<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[styles.dropdownTrigger, formErrors.dailyOperatingHours && styles.inputErrorBorder]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsHoursDropdownOpen(!isHoursDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.dailyOperatingHours
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {DAILY_OPERATING_HOURS_OPTIONS.find((o) => o.id === formData.dailyOperatingHours)?.label ||
+                      'Select the window you operate in'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isHoursDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isHoursDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {DAILY_OPERATING_HOURS_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.dailyOperatingHours === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === DAILY_OPERATING_HOURS_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('dailyOperatingHours', opt.id);
+                          setIsHoursDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.dailyOperatingHours === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.dailyOperatingHours && (
+                  <Text style={styles.errorHelperText}>{formErrors.dailyOperatingHours}</Text>
+                )}
+              </View>
+
+              {/* SECTION 4: Details of Activity Leads */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Details of Activity Leads</Text>
+
+              {/* Field 5: Number of certified activity leads* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Number of certified activity leads<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.certifiedLeadsCount && styles.inputErrorBorder]}
+                  value={formData.certifiedLeadsCount}
+                  onChangeText={(val) => updateField('certifiedLeadsCount', val.replace(/\D/g, ''))}
+                  placeholder="Headcount"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+                {formErrors.certifiedLeadsCount && (
+                  <Text style={styles.errorHelperText}>{formErrors.certifiedLeadsCount}</Text>
+                )}
+              </View>
+
+              {/* Field 6: Highest qualification held by the lead* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Highest qualification held by the lead<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[styles.dropdownTrigger, formErrors.leadHighestQualification && styles.inputErrorBorder]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsQualificationDropdownOpen(!isQualificationDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.leadHighestQualification
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {LEAD_QUALIFICATION_OPTIONS.find((o) => o.id === formData.leadHighestQualification)?.label ||
+                      'Select the certification level'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isQualificationDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isQualificationDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {LEAD_QUALIFICATION_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.leadHighestQualification === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === LEAD_QUALIFICATION_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('leadHighestQualification', opt.id);
+                          setIsQualificationDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.leadHighestQualification === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.leadHighestQualification && (
+                  <Text style={styles.errorHelperText}>{formErrors.leadHighestQualification}</Text>
+                )}
+              </View>
+
+              {/* Field 7: Certifying body* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Certifying body<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.certifyingBody && styles.inputErrorBorder]}
+                  value={formData.certifyingBody}
+                  onChangeText={(val) => updateField('certifyingBody', val)}
+                  placeholder="Institute or authority that issued it"
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.certifyingBody && (
+                  <Text style={styles.errorHelperText}>{formErrors.certifyingBody}</Text>
+                )}
+              </View>
+
+              {/* Field 8: Number of trained support staff (Optional) */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Number of trained support staff</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.supportStaffCount}
+                  onChangeText={(val) => updateField('supportStaffCount', val.replace(/\D/g, ''))}
+                  placeholder="Headcount"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
+                />
+              </View>
+
+              {/* SECTION 5: Equipment Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Equipment Details</Text>
+
+              {/* Field 9: How equipment is held* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  How equipment is held<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TouchableOpacity
+                  style={[styles.dropdownTrigger, formErrors.equipmentHoldType && styles.inputErrorBorder]}
+                  activeOpacity={0.8}
+                  onPress={() => setIsEquipmentHoldDropdownOpen(!isEquipmentHoldDropdownOpen)}
+                >
+                  <Text
+                    style={
+                      formData.equipmentHoldType
+                        ? styles.dropdownValueText
+                        : styles.dropdownPlaceholderText
+                    }
+                  >
+                    {EQUIPMENT_HOLD_OPTIONS.find((o) => o.id === formData.equipmentHoldType)?.label ||
+                      'Owned, hired from a certified supplier,...'}
+                  </Text>
+                  <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d={isEquipmentHoldDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                      stroke="#4B5563"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </TouchableOpacity>
+
+                {isEquipmentHoldDropdownOpen && (
+                  <View style={styles.dropdownMenu}>
+                    {EQUIPMENT_HOLD_OPTIONS.map((opt, oIdx) => (
+                      <TouchableOpacity
+                        key={opt.id}
+                        style={[
+                          styles.dropdownMenuItem,
+                          formData.equipmentHoldType === opt.id && styles.dropdownMenuItemActive,
+                          oIdx === EQUIPMENT_HOLD_OPTIONS.length - 1 && { borderBottomWidth: 0 },
+                        ]}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          updateField('equipmentHoldType', opt.id);
+                          setIsEquipmentHoldDropdownOpen(false);
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownMenuItemText,
+                            formData.equipmentHoldType === opt.id && styles.dropdownMenuItemTextActive,
+                          ]}
+                        >
+                          {opt.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+                {formErrors.equipmentHoldType && (
+                  <Text style={styles.errorHelperText}>{formErrors.equipmentHoldType}</Text>
+                )}
+              </View>
+
+              {/* Field 10: Date of the last equipment inspection* (Ux4gDatePicker) */}
+              <View style={styles.fieldBlock}>
+                <Ux4gDatePicker
+                  label="Date of the last equipment inspection"
+                  required
+                  placeholder="DD / MM / YYYY"
+                  initialDate={parseDate(formData.lastEquipmentInspectionDate)}
+                  onDateSelected={(date) => updateField('lastEquipmentInspectionDate', formatDate(date))}
+                  status={formErrors.lastEquipmentInspectionDate ? 'error' : 'defaultStatus'}
+                  description={formErrors.lastEquipmentInspectionDate}
+                />
+              </View>
+
+              {/* Field 11: Inspecting authority or agency* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Inspecting authority or agency<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.inspectingAgency && styles.inputErrorBorder]}
+                  value={formData.inspectingAgency}
+                  onChangeText={(val) => updateField('inspectingAgency', val)}
+                  placeholder="Who carried out the inspection"
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.inspectingAgency && (
+                  <Text style={styles.errorHelperText}>{formErrors.inspectingAgency}</Text>
+                )}
+              </View>
+
+              {/* SECTION 6: Insurance and Emergency Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Insurance and Emergency Details</Text>
+
+              {/* Field 12: Public liability policy number* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Public liability policy number<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.liabilityPolicyNumber && styles.inputErrorBorder]}
+                  value={formData.liabilityPolicyNumber}
+                  onChangeText={(val) => updateField('liabilityPolicyNumber', val)}
+                  placeholder="As printed on the policy"
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.liabilityPolicyNumber && (
+                  <Text style={styles.errorHelperText}>{formErrors.liabilityPolicyNumber}</Text>
+                )}
+              </View>
+
+              {/* Field 13: Policy valid until* (Ux4gDatePicker) */}
+              <View style={styles.fieldBlock}>
+                <Ux4gDatePicker
+                  label="Policy valid until"
+                  required
+                  placeholder="DD / MM / YYYY"
+                  initialDate={parseDate(formData.policyValidUntilDate)}
+                  onDateSelected={(date) => updateField('policyValidUntilDate', formatDate(date))}
+                  status={formErrors.policyValidUntilDate ? 'error' : 'defaultStatus'}
+                  description={formErrors.policyValidUntilDate}
+                />
+              </View>
+
+              {/* Field 14: Nearest hospital and distance from the site* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Nearest hospital and distance from the site<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.nearestHospitalAndDistance && styles.inputErrorBorder]}
+                  value={formData.nearestHospitalAndDistance}
+                  onChangeText={(val) => updateField('nearestHospitalAndDistance', val)}
+                  placeholder="Name and distance in km"
+                  placeholderTextColor="#9CA3AF"
+                />
+                {formErrors.nearestHospitalAndDistance && (
+                  <Text style={styles.errorHelperText}>{formErrors.nearestHospitalAndDistance}</Text>
+                )}
+              </View>
+
+              {/* Field 15: Emergency contact number at the site* */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Emergency contact number at the site<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={[styles.mobileUnifiedBox, formErrors.emergencyContactNumber && styles.inputErrorBorder]}>
+                  <Text style={styles.countryCodePrefix}>+91</Text>
+                  <TextInput
+                    style={styles.mobileUnifiedInput}
+                    value={formData.emergencyContactNumber}
+                    onChangeText={(val) => updateField('emergencyContactNumber', val)}
+                    placeholder="Reachable during operating hours"
+                    placeholderTextColor="#9CA3AF"
+                    keyboardType="phone-pad"
+                  />
                 </View>
-                <View style={{ flex: 1, marginLeft: 12 }}>
-                  <Text style={styles.uploadCardTitle}>Equipment Fitness Certificate</Text>
-                  <Text style={styles.uploadCardSubtitle}>Annual certificate issued by authorized testing lab</Text>
-                </View>
-                <View style={styles.uploadedCheck}>
-                  <Text style={styles.uploadedCheckText}>✓ Attached</Text>
-                </View>
+                {formErrors.emergencyContactNumber && (
+                  <Text style={styles.errorHelperText}>{formErrors.emergencyContactNumber}</Text>
+                )}
+              </View>
+
+              {/* Field 16: Checkbox: A written emergency response plan exists for this site* */}
+              <View style={[styles.declarationBlock, { marginTop: 16 }]}>
+                <Ux4gCheckbox
+                  label="A written emergency response plan exists for this site"
+                  isRequired={true}
+                  value={formData.hasWrittenEmergencyPlan}
+                  onChanged={(v) => updateField('hasWrittenEmergencyPlan', !!v)}
+                  hasError={!!formErrors.hasWrittenEmergencyPlan}
+                />
+                {formErrors.hasWrittenEmergencyPlan && (
+                  <Text style={[styles.errorHelperText, { marginTop: 6 }]}>
+                    {formErrors.hasWrittenEmergencyPlan}
+                  </Text>
+                )}
               </View>
             </View>
           )}
