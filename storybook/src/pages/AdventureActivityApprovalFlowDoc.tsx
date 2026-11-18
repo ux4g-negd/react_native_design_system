@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'DU1IJwB6mUid06OdkDHje';
+const SNACK_ID = 'ipDnCcaz47htRH9chZuF-';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -308,6 +308,7 @@ export default function App() {
   const [isOnRecordDocsExpanded, setIsOnRecordDocsExpanded] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
+  const [paymentSubStep, setPaymentSubStep] = useState('mode'); // 'breakdown' | 'mode' (direct landing on mode of payment as requested)
 
   // Form State
   const [formData, setFormData] = useState({
@@ -557,8 +558,24 @@ export default function App() {
       if (!formData.declarationAgreed) errors.declarationAgreed = 'Please confirm that the information is true';
       if (!formData.inspectionAgreed) errors.inspectionAgreed = 'Please agree to physical inspection of the site';
     } else if (step === 8) {
-      if (!formData.feeNonRefundableAgreed) {
-        errors.feeNonRefundableAgreed = 'Please confirm that you understand the fee is non-refundable';
+      if (paymentSubStep === 'breakdown') {
+        if (!formData.feeNonRefundableAgreed) {
+          errors.feeNonRefundableAgreed = 'Please confirm that you understand the fee is non-refundable';
+        }
+      } else {
+        if (formData.paymentMethod === 'upi') {
+          if (!formData.upiId || !formData.upiId.trim()) {
+            errors.upiId = 'Please enter a valid UPI ID';
+          }
+        } else if (formData.paymentMethod === 'card') {
+          if (!formData.cardNumber || !formData.cardNumber.trim()) {
+            errors.cardNumber = 'Please enter card number';
+          }
+        } else if (formData.paymentMethod === 'netbanking') {
+          if (!formData.selectedBank) {
+            errors.selectedBank = 'Please select your bank';
+          }
+        }
       }
     }
 
@@ -571,6 +588,13 @@ export default function App() {
       return;
     }
     if (step === 8) {
+      if (paymentSubStep === 'breakdown') {
+        setPaymentSubStep('mode');
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({ y: 0, animated: true });
+        }
+        return;
+      }
       // Process simulated payment
       setIsProcessingPayment(true);
       setTimeout(() => {
@@ -592,6 +616,13 @@ export default function App() {
   };
 
   const handlePrevious = () => {
+    if (step === 8 && paymentSubStep === 'mode') {
+      setPaymentSubStep('breakdown');
+      if (scrollRef.current) {
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
+      return;
+    }
     if (step > 1) {
       setStep(step - 1);
       if (scrollRef.current) {
@@ -3292,48 +3323,267 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 8: FEE & PAYMENT (MATCHES USER REFERENCE IMAGE)                      */}
+          {/* STEP 8: FEE & PAYMENT (MATCHES USER REFERENCE IMAGES)                     */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 8 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Fee Details</Text>
+              {/* SUB-STEP 1: FEE DETAILS */}
+              {paymentSubStep === 'breakdown' && (
+                <>
+                  <Text style={styles.sectionHeading}>Fee Details</Text>
 
-              {/* Fee Summary Card */}
-              <View style={styles.feeCard}>
-                <Text style={styles.feeCardHeader}>
-                  Adventure activity registration · {formData.feeApplicationId || 'AA-2026-000000'}
-                </Text>
+                  {/* Fee Summary Card */}
+                  <View style={styles.feeCard}>
+                    <Text style={styles.feeCardHeader}>
+                      Adventure activity registration · {formData.feeApplicationId || 'AA-2026-000000'}
+                    </Text>
 
-                <View style={styles.feeCardRow}>
-                  <Text style={styles.feeItemLabel}>
-                    Registration fee — {formData.registrationCategory ? (REGISTRATION_CATEGORY_OPTIONS.find((c) => c.id === formData.registrationCategory)?.label?.toLowerCase() || 'commercial operator') : 'commercial operator'}, {formData.activityDomain || 'land'}, {formData.registrationPeriod ? (formData.registrationPeriod.includes('1') ? 'one-year term' : formData.registrationPeriod.includes('2') ? 'two-year term' : formData.registrationPeriod.includes('5') ? 'five-year term' : 'three-year term') : 'three-year term'}
+                    <View style={styles.feeCardRow}>
+                      <Text style={styles.feeItemLabel}>
+                        Registration fee — {formData.registrationCategory ? (REGISTRATION_CATEGORY_OPTIONS.find((c) => c.id === formData.registrationCategory)?.label?.toLowerCase() || 'commercial operator') : 'commercial operator'}, {formData.activityDomain || 'land'}, {formData.registrationPeriod ? (formData.registrationPeriod.includes('1') ? 'one-year term' : formData.registrationPeriod.includes('2') ? 'two-year term' : formData.registrationPeriod.includes('5') ? 'five-year term' : 'three-year term') : 'three-year term'}
+                      </Text>
+                      <Text style={styles.feeItemAmount}>₹{formData.feeAmount || '5,000'}</Text>
+                    </View>
+
+                    <View style={styles.feeDivider} />
+
+                    <View style={styles.feeCardRowTotal}>
+                      <Text style={styles.feeTotalLabel}>Total payable</Text>
+                      <Text style={styles.feeTotalAmount}>₹{formData.feeAmount || '5,000'}</Text>
+                    </View>
+                  </View>
+
+                  {/* Checkbox: I understand the fee is non-refundable once the application is submitted */}
+                  <View style={[styles.declarationBlock, { marginTop: 14, marginBottom: 20 }]}>
+                    <Ux4gCheckbox
+                      label="I understand the fee is non-refundable once the application is submitted"
+                      isRequired={true}
+                      value={formData.feeNonRefundableAgreed}
+                      onChanged={(v) => updateField('feeNonRefundableAgreed', !!v)}
+                      hasError={!!formErrors.feeNonRefundableAgreed}
+                    />
+                    {formErrors.feeNonRefundableAgreed && (
+                      <Text style={[styles.errorHelperText, { marginTop: 6 }]}>
+                        {formErrors.feeNonRefundableAgreed}
+                      </Text>
+                    )}
+                  </View>
+                </>
+              )}
+
+              {/* SUB-STEP 2: MODE OF PAYMENT (MATCHES media_1794993299045_e5f2fe03.png) */}
+              {paymentSubStep === 'mode' && (
+                <>
+                  <Text style={styles.sectionHeading}>Mode of Payment</Text>
+                  <Text style={styles.paymentSubNoticeText}>
+                    ₹{formData.feeAmount || '5,000'} payable for {formData.feeApplicationId || 'AA-2026-000000'}.
                   </Text>
-                  <Text style={styles.feeItemAmount}>₹{formData.feeAmount || '5,000'}</Text>
-                </View>
 
-                <View style={styles.feeDivider} />
+                  {/* Option 1: UPI */}
+                  <TouchableOpacity
+                    style={[
+                      styles.paymentMethodCard,
+                      formData.paymentMethod === 'upi'
+                        ? styles.paymentMethodCardSelected
+                        : styles.paymentMethodCardUnselected,
+                    ]}
+                    activeOpacity={0.8}
+                    onPress={() => updateField('paymentMethod', 'upi')}
+                  >
+                    <View
+                      style={[
+                        styles.paymentRadioDonut,
+                        formData.paymentMethod === 'upi'
+                          ? styles.paymentRadioDonutSelected
+                          : styles.paymentRadioDonutUnselected,
+                      ]}
+                    />
+                    <View style={styles.paymentMethodTextCol}>
+                      <Text
+                        style={[
+                          styles.paymentMethodTitle,
+                          formData.paymentMethod === 'upi' && styles.paymentMethodTitleSelected,
+                        ]}
+                      >
+                        UPI
+                      </Text>
+                      <Text
+                        style={[
+                          styles.paymentMethodSub,
+                          formData.paymentMethod === 'upi' && styles.paymentMethodSubSelected,
+                        ]}
+                      >
+                        Pay with any UPI app
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
 
-                <View style={styles.feeCardRowTotal}>
-                  <Text style={styles.feeTotalLabel}>Total payable</Text>
-                  <Text style={styles.feeTotalAmount}>₹{formData.feeAmount || '5,000'}</Text>
-                </View>
-              </View>
+                  {/* Option 2: Net Banking */}
+                  <TouchableOpacity
+                    style={[
+                      styles.paymentMethodCard,
+                      formData.paymentMethod === 'netbanking'
+                        ? styles.paymentMethodCardSelected
+                        : styles.paymentMethodCardUnselected,
+                    ]}
+                    activeOpacity={0.8}
+                    onPress={() => updateField('paymentMethod', 'netbanking')}
+                  >
+                    <View
+                      style={[
+                        styles.paymentRadioDonut,
+                        formData.paymentMethod === 'netbanking'
+                          ? styles.paymentRadioDonutSelected
+                          : styles.paymentRadioDonutUnselected,
+                      ]}
+                    />
+                    <View style={styles.paymentMethodTextCol}>
+                      <Text
+                        style={[
+                          styles.paymentMethodTitle,
+                          formData.paymentMethod === 'netbanking' && styles.paymentMethodTitleSelected,
+                        ]}
+                      >
+                        Net Banking
+                      </Text>
+                      <Text
+                        style={[
+                          styles.paymentMethodSub,
+                          formData.paymentMethod === 'netbanking' && styles.paymentMethodSubSelected,
+                        ]}
+                      >
+                        60+ banks supported
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
 
-              {/* Checkbox: I understand the fee is non-refundable once the application is submitted */}
-              <View style={[styles.declarationBlock, { marginTop: 14, marginBottom: 20 }]}>
-                <Ux4gCheckbox
-                  label="I understand the fee is non-refundable once the application is submitted"
-                  isRequired={true}
-                  value={formData.feeNonRefundableAgreed}
-                  onChanged={(v) => updateField('feeNonRefundableAgreed', !!v)}
-                  hasError={!!formErrors.feeNonRefundableAgreed}
-                />
-                {formErrors.feeNonRefundableAgreed && (
-                  <Text style={[styles.errorHelperText, { marginTop: 6 }]}>
-                    {formErrors.feeNonRefundableAgreed}
-                  </Text>
-                )}
-              </View>
+                  {/* Option 3: Debit / Credit Card */}
+                  <TouchableOpacity
+                    style={[
+                      styles.paymentMethodCard,
+                      formData.paymentMethod === 'card'
+                        ? styles.paymentMethodCardSelected
+                        : styles.paymentMethodCardUnselected,
+                    ]}
+                    activeOpacity={0.8}
+                    onPress={() => updateField('paymentMethod', 'card')}
+                  >
+                    <View
+                      style={[
+                        styles.paymentRadioDonut,
+                        formData.paymentMethod === 'card'
+                          ? styles.paymentRadioDonutSelected
+                          : styles.paymentRadioDonutUnselected,
+                      ]}
+                    />
+                    <View style={styles.paymentMethodTextCol}>
+                      <Text
+                        style={[
+                          styles.paymentMethodTitle,
+                          formData.paymentMethod === 'card' && styles.paymentMethodTitleSelected,
+                        ]}
+                      >
+                        Debit / Credit Card
+                      </Text>
+                      <Text
+                        style={[
+                          styles.paymentMethodSub,
+                          formData.paymentMethod === 'card' && styles.paymentMethodSubSelected,
+                        ]}
+                      >
+                        Visa, MasterCard, RuPay
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  {/* DETAILS SECTION WHEN UPI IS SELECTED */}
+                  {formData.paymentMethod === 'upi' && (
+                    <View style={{ marginTop: 14 }}>
+                      <Text style={styles.sectionHeading}>Enter Your UPI ID</Text>
+
+                      <View style={styles.fieldBlock}>
+                        <Text style={styles.fieldLabel}>
+                          UPI ID<Text style={styles.requiredAsterisk}>*</Text>
+                        </Text>
+                        <TextInput
+                          style={[styles.textInput, formErrors.upiId && styles.inputErrorBorder]}
+                          placeholder="e.g. name@upi"
+                          placeholderTextColor="#9CA3AF"
+                          value={formData.upiId}
+                          onChangeText={(v) => updateField('upiId', v)}
+                          autoCapitalize="none"
+                        />
+                        {formErrors.upiId && (
+                          <Text style={styles.errorHelperText}>{formErrors.upiId}</Text>
+                        )}
+
+                        <View style={styles.upiInfoRow}>
+                          <Svg width={15} height={15} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6, marginTop: 2 }}>
+                            <Circle cx={12} cy={12} r={10} stroke="#6B7280" strokeWidth={1.8} />
+                            <Path d="M12 16v-4M12 8h.01" stroke="#6B7280" strokeWidth={2} strokeLinecap="round" />
+                          </Svg>
+                          <Text style={styles.upiInfoText}>
+                            You will get a request in your UPI app to approve ₹{formData.feeAmount || '5,000'}.
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  )}
+
+                  {/* DETAILS SECTION WHEN NETBANKING IS SELECTED */}
+                  {formData.paymentMethod === 'netbanking' && (
+                    <View style={{ marginTop: 14 }}>
+                      <Text style={styles.sectionHeading}>Choose Your Bank</Text>
+                      <View style={styles.bankGrid}>
+                        {['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Punjab National Bank'].map(
+                          (b) => (
+                            <TouchableOpacity
+                              key={b}
+                              style={[styles.bankChip, formData.selectedBank === b && styles.bankChipSelected]}
+                              onPress={() => updateField('selectedBank', b)}
+                            >
+                              <Text
+                                style={[
+                                  styles.bankChipText,
+                                  formData.selectedBank === b && styles.bankChipTextSelected,
+                                ]}
+                              >
+                                {b}
+                              </Text>
+                            </TouchableOpacity>
+                          )
+                        )}
+                      </View>
+                      {formErrors.selectedBank && (
+                        <Text style={styles.errorHelperText}>{formErrors.selectedBank}</Text>
+                      )}
+                    </View>
+                  )}
+
+                  {/* DETAILS SECTION WHEN CARD IS SELECTED */}
+                  {formData.paymentMethod === 'card' && (
+                    <View style={{ marginTop: 14 }}>
+                      <Text style={styles.sectionHeading}>Card Details</Text>
+                      <View style={styles.fieldBlock}>
+                        <Text style={styles.fieldLabel}>
+                          Card Number<Text style={styles.requiredAsterisk}>*</Text>
+                        </Text>
+                        <TextInput
+                          style={[styles.textInput, formErrors.cardNumber && styles.inputErrorBorder]}
+                          placeholder="XXXX - XXXX - XXXX - XXXX"
+                          placeholderTextColor="#9CA3AF"
+                          value={formData.cardNumber}
+                          onChangeText={(v) => updateField('cardNumber', v)}
+                          keyboardType="number-pad"
+                        />
+                        {formErrors.cardNumber && (
+                          <Text style={styles.errorHelperText}>{formErrors.cardNumber}</Text>
+                        )}
+                      </View>
+                    </View>
+                  )}
+                </>
+              )}
             </View>
           )}
 
@@ -3470,7 +3720,11 @@ export default function App() {
                   disabled={isProcessingPayment}
                 >
                   <Text style={styles.primaryActionButtonText}>
-                    {isProcessingPayment ? 'Processing...' : 'Pay and submit'}
+                    {isProcessingPayment
+                      ? 'Processing...'
+                      : paymentSubStep === 'mode'
+                      ? 'Pay ₹' + (formData.feeAmount || '5,000')
+                      : 'Pay and submit'}
                   </Text>
                 </TouchableOpacity>
 
@@ -4177,6 +4431,76 @@ const styles = StyleSheet.create({
     fontSize: 13.5,
     color: '#4B5563',
     marginBottom: 12,
+  },
+  paymentSubNoticeText: {
+    fontSize: 13.5,
+    color: '#4B5563',
+    marginBottom: 16,
+    lineHeight: 18,
+  },
+  paymentMethodCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    marginBottom: 12,
+  },
+  paymentMethodCardSelected: {
+    backgroundColor: '#F5F3FF',
+    borderWidth: 1.5,
+    borderColor: '#C4B5FD',
+  },
+  paymentMethodCardUnselected: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  paymentRadioDonut: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    marginRight: 14,
+  },
+  paymentRadioDonutSelected: {
+    borderWidth: 6,
+    borderColor: '#4A2BC2',
+    backgroundColor: '#FFFFFF',
+  },
+  paymentRadioDonutUnselected: {
+    borderWidth: 1.5,
+    borderColor: '#D1D5DB',
+    backgroundColor: '#FFFFFF',
+  },
+  paymentMethodTextCol: {
+    flex: 1,
+  },
+  paymentMethodTitle: {
+    fontSize: 14.5,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  paymentMethodTitleSelected: {
+    color: '#4A2BC2',
+  },
+  paymentMethodSub: {
+    fontSize: 13,
+    color: '#6B7280',
+    marginTop: 2,
+  },
+  paymentMethodSubSelected: {
+    color: '#6D28D9',
+  },
+  upiInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 8,
+  },
+  upiInfoText: {
+    fontSize: 12.5,
+    color: '#6B7280',
+    lineHeight: 18,
+    flex: 1,
   },
   paymentCard: {
     borderWidth: 1,
