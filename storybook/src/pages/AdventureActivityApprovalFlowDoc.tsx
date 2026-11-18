@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'hfx-Tq4lVBB8bJcAwgfEJ';
+const SNACK_ID = '9Keh_3GMnq3-Mctw_GO9b';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -295,12 +295,13 @@ const POPULAR_BANKS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(9); // Directly land on Step 9 (Screen 14) for testing as requested
+  const [step, setStep] = useState(1); // Connected complete end-to-end flow starting at Step 1
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
   const [showPrereqModal, setShowPrereqModal] = useState(false);
   const [showSectorRegModal, setShowSectorRegModal] = useState(false);
+  const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [isApplicantTypeDropdownOpen, setIsApplicantTypeDropdownOpen] = useState(false);
   const [isPeriodDropdownOpen, setIsPeriodDropdownOpen] = useState(false);
   const [isStateDropdownOpen, setIsStateDropdownOpen] = useState(false);
@@ -319,151 +320,151 @@ export default function App() {
   const [isOnRecordDocsExpanded, setIsOnRecordDocsExpanded] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
-  const [paymentSubStep, setPaymentSubStep] = useState('success'); // 'breakdown' | 'mode' | 'success' (direct landing on Screen 13 Payment Successful as requested)
+  const [paymentSubStep, setPaymentSubStep] = useState('breakdown'); // 'breakdown' | 'mode' | 'success'
   const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
   const [isRedirectingModalVisible, setIsRedirectingModalVisible] = useState(false);
 
-  // Form State
+  // Form State (Pre-populated with cohesive demo dataset matching user's screens)
   const [formData, setFormData] = useState({
     // Step 1: Before you start
     registrationType: 'new', // 'new' | 'renewal'
     activityDomain: 'land', // 'land' | 'water' | 'air'
-    hasPrerequisiteRegistrations: false,
+    hasPrerequisiteRegistrations: true,
 
     // Step 2: Applicant & entity (Matches media_1794976345102_2f0352d5.png)
-    applicantType: '',
-    applicantOrOrgName: '',
-    ownerOrDirectorName: '',
-    designation: '',
-    aadhaarNumber: '',
+    applicantType: 'llp',
+    applicantOrOrgName: 'Peak Trails Adventure LLP',
+    ownerOrDirectorName: 'Rajesh Kulkarni',
+    designation: 'Managing Partner',
+    aadhaarNumber: 'XXXX-XXXX-9012',
     isAadhaarMasked: true,
-    entityPan: '',
-    mobileNumber: '',
-    emailAddress: '',
-    registeredAddress: '',
-    sameAsRegisteredAddress: false,
-    correspondenceAddress: '',
+    entityPan: 'AABCP1234F',
+    mobileNumber: '9876543210',
+    emailAddress: 'contact@peaktrails.in',
+    registeredAddress: '104, Summit Heights, Senapati Bapat Road, Pune 411016',
+    sameAsRegisteredAddress: true,
+    correspondenceAddress: '104, Summit Heights, Senapati Bapat Road, Pune 411016',
 
     // Step 3: Registration category (Matches media_1794977065300_4ab5953d.png)
-    registrationCategory: '',
-    sectorTourismRegNumber: '',
+    registrationCategory: 'commercial_operator',
+    sectorTourismRegNumber: 'MAH-ADV-2024-00421',
     registrationIssueDate: '24/09/2024',
-    registrationPeriod: '',
+    registrationPeriod: '3_years',
 
     // Step 4: Location & site (Matches media_1794978281758_954b4266.png)
-    siteState: '',
-    siteDivision: '',
-    siteDistrict: '',
-    siteSubDistrict: '',
-    siteVillageOrTown: '',
-    surveyPlotNumber: '',
-    siteArea: '',
-    unitOfArea: '',
-    landHoldingType: '',
-    mapLink: '',
-    latitude: '',
-    longitude: '',
-    siteFullAddress: '',
-    sitePinCode: '',
+    siteState: 'maharashtra',
+    siteDivision: 'western',
+    siteDistrict: 'pune',
+    siteSubDistrict: 'mulshi',
+    siteVillageOrTown: 'tamhini',
+    surveyPlotNumber: '74/2B, Tamhini Ghat',
+    siteArea: '2.4',
+    unitOfArea: 'hectare',
+    landHoldingType: 'leased',
+    mapLink: 'https://maps.google.com/?q=18.4901,73.4219',
+    latitude: '18.4901',
+    longitude: '73.4219',
+    siteFullAddress: 'Survey No. 74/2B, Tamhini Ghat Road, Mulshi, Pune, Maharashtra',
+    sitePinCode: '412108',
 
     // Step 5: Activity & safety (Matches media_1794983740939_13a504aa.png)
-    selectedActivities: [],
-    maxBatchParticipants: '',
-    maxBatchesPerDay: '',
-    operatingSeason: '',
-    dailyOperatingHours: '',
-    certifiedLeadsCount: '',
-    leadHighestQualification: '',
-    certifyingBody: '',
-    supportStaffCount: '',
-    equipmentHoldType: '',
-    lastEquipmentInspectionDate: '',
-    inspectingAgency: '',
-    liabilityPolicyNumber: '',
-    policyValidUntilDate: '',
-    nearestHospitalAndDistance: '',
-    emergencyContactNumber: '',
-    hasWrittenEmergencyPlan: false,
+    selectedActivities: ['trekking', 'rock_climbing', 'rappelling', 'zipline'],
+    maxBatchParticipants: '25',
+    maxBatchesPerDay: '4',
+    operatingSeason: 'sep_jun',
+    dailyOperatingHours: '6am_6pm',
+    certifiedLeadsCount: '2',
+    leadHighestQualification: 'moi',
+    certifyingBody: 'Nehru Institute of Mountaineering',
+    supportStaffCount: '8',
+    equipmentHoldType: 'combination',
+    lastEquipmentInspectionDate: '15/08/2026',
+    inspectingAgency: 'Directorate of Adventure Tourism Safety Inspection',
+    liabilityPolicyNumber: 'NIA-ADV-2026-8819',
+    policyValidUntilDate: '31/03/2027',
+    nearestHospitalAndDistance: 'Mulshi Rural Hospital (14 km)',
+    emergencyContactNumber: '+91 98765 00112',
+    hasWrittenEmergencyPlan: true,
 
     // Step 6: Documents (Matches media_1794985978361_58fbc30a.png)
-    landRecordFiles: [],
-    landRecordDoc: null,
-    leaseDeedFiles: [],
-    leaseDeedDoc: null,
-    siteLayoutFiles: [],
-    siteLayoutDoc: null,
-    sopManualFiles: [],
-    sopManualDoc: null,
-    eapPlanFiles: [],
-    eapPlanDoc: null,
-    equipmentInspectionFiles: [],
-    equipmentInspectionDoc: null,
-    leadCertificatesFiles: [],
-    leadCertificatesDoc: null,
+    landRecordFiles: [{ name: 'Khasra_Extract_Plot74_Mulshi.pdf', size: 1024 * 1024 * 1.8 }],
+    landRecordDoc: { name: 'Khasra_Extract_Plot74_Mulshi.pdf' },
+    leaseDeedFiles: [{ name: 'Commercial_Lease_Deed_Registered.pdf', size: 1024 * 1024 * 3.2 }],
+    leaseDeedDoc: { name: 'Commercial_Lease_Deed_Registered.pdf' },
+    siteLayoutFiles: [{ name: 'Site_Layout_Plan_Zones.pdf', size: 1024 * 1024 * 2.1 }],
+    siteLayoutDoc: { name: 'Site_Layout_Plan_Zones.pdf' },
+    sopManualFiles: [{ name: 'PeakTrails_SOP_StandardSafety.pdf', size: 1024 * 1024 * 2.4 }],
+    sopManualDoc: { name: 'PeakTrails_SOP_StandardSafety.pdf' },
+    eapPlanFiles: [{ name: 'Emergency_Action_Plan_Mulshi.pdf', size: 1024 * 1024 * 1.9 }],
+    eapPlanDoc: { name: 'Emergency_Action_Plan_Mulshi.pdf' },
+    equipmentInspectionFiles: [{ name: 'Equipment_Inspection_Cert.pdf', size: 1024 * 1024 * 1.5 }],
+    equipmentInspectionDoc: { name: 'Equipment_Inspection_Cert.pdf' },
+    leadCertificatesFiles: [{ name: 'NIM_Lead_Certificates.pdf', size: 1024 * 1024 * 2.8 }],
+    leadCertificatesDoc: { name: 'NIM_Lead_Certificates.pdf' },
 
     // Legacy / downstream compatibility
-    enterpriseName: 'Himalayan Apex Adventures Pvt Ltd',
-    enterpriseType: 'Private Limited Company',
-    regNumber: 'UDYAM-UK-04-0091823',
-    panNumber: 'AABCH7821K',
-    gstin: '05AABCH7821K1ZB',
-    district: 'Tehri Garhwal',
-    state: 'Uttarakhand',
-    pinCode: '249192',
+    enterpriseName: 'Peak Trails Adventure LLP',
+    enterpriseType: 'Limited Liability Partnership',
+    regNumber: 'UDYAM-MH-26-0042918',
+    panNumber: 'AABCP1234F',
+    gstin: '27AABCP1234F1Z8',
+    district: 'Pune',
+    state: 'Maharashtra',
+    pinCode: '412108',
 
     // Step 3: Activity & location
     specificActivity: 'trekking',
-    activityLocation: 'Rishikesh to Shivpuri River Corridor',
-    geoCoordinates: '30.1378° N, 78.3842° E',
-    baseCampName: 'Camp Tapovan Alpha',
+    activityLocation: 'Mulshi Lake & Tamhini Ridge Corridor',
+    geoCoordinates: '18.4901° N, 73.4219° E',
+    baseCampName: 'Camp Tamhini Alpha',
     seasonFrom: '15/09/2026',
     seasonTo: '15/06/2027',
 
     // Step 4: Safety & emergency
     sopDocumentUploaded: true,
     emergencyPlanReady: true,
-    tieUpHospitalName: 'AIIMS Rishikesh Super Speciality Hospital',
-    hospitalDistanceKm: '12 km',
-    emergencyContact: '+91 98765 43210',
+    tieUpHospitalName: 'Mulshi Rural Hospital & Trauma Centre',
+    hospitalDistanceKm: '14 km',
+    emergencyContact: '+91 98765 00112',
     ambulanceStandby: 'Yes - On-call tie-up with local EMS',
 
     // Step 5: Equipment & fitness
     equipmentInventoryCount: '64 harness sets, 28 dynamic ropes, 120 helmets',
     safetyStandard: 'UIAA / CE / EN 12277 Standard Compliant',
-    lastInspectionDate: '10/08/2026',
+    lastInspectionDate: '15/08/2026',
     fitnessCertUploaded: true,
 
     // Step 6: Guides & instructors
-    leadInstructorName: 'Capt. Virendra Rawat (Retd.)',
+    leadInstructorName: 'Capt. Rajesh Kulkarni (Retd.)',
     certifyingBody: 'Nehru Institute of Mountaineering (NIM) & NIWS',
     instructorLicenseNo: 'NIM-ADV-INST-2018-884',
     wildernessFirstAidCertified: true,
     instructorRatio: '1 Instructor per 6 Participants',
 
     // Step 7: Review & declaration (Matches media_1794988137715_2ba63eff.png)
-    declarationPlace: '',
-    declarationDate: '',
-    declarationSignerName: '',
-    declarationAgreed: false,
-    inspectionAgreed: false,
+    declarationPlace: 'Mulshi, Pune',
+    declarationDate: '23/09/2026',
+    declarationSignerName: 'Rajesh Kulkarni',
+    declarationAgreed: true,
+    inspectionAgreed: true,
 
     // Legacy / downstream compatibility
-    insurancePolicyNo: 'NIA-ADV-LIAB-2026-992144',
+    insurancePolicyNo: 'NIA-ADV-LIAB-2026-8819',
     insurerName: 'The New India Assurance Co. Ltd.',
     liabilityCoverAmount: '₹ 50,00,000 (Fifty Lakhs)',
     passengerCoverPerPerson: '₹ 5,00,000 per participant',
-    insuranceValidTill: '30/09/2027',
+    insuranceValidTill: '31/03/2027',
 
-    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png, media_1794994493465_f72803a6.png, media_1794994521204_4a3745e4.png, media_1794995050454_49586869.png)
+    // Step 8: Fee & payment
     feeApplicationId: 'AA-2026-000000',
     feeAmount: '5,000',
-    feeNonRefundableAgreed: false,
-    paymentMethod: 'netbanking', // Net Banking with HDFC Bank as shown in Screen 12 image
-    upiId: '',
-    cardName: '',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCvv: '',
+    feeNonRefundableAgreed: true,
+    paymentMethod: 'netbanking',
+    upiId: 'peaktrails@upi',
+    cardName: 'Rajesh Kulkarni',
+    cardNumber: '4532 •••• •••• 8812',
+    cardExpiry: '08/28',
+    cardCvv: '•••',
     selectedBank: 'HDFC Bank',
   });
 
@@ -512,14 +513,7 @@ export default function App() {
   };
 
   const handleTrackApplication = () => {
-    if (Platform.OS === 'web') {
-      alert('Tracking Application AA-2026-000000: Status is Under Scrutiny at District Tourism Office, Pune.');
-    } else {
-      Alert.alert(
-        'Application Status',
-        'Application AA-2026-000000 is currently under scrutiny at the District Tourism Development Office, Pune. Site inspection window open until 22 December 2026.'
-      );
-    }
+    setShowTrackingModal(true);
   };
 
   const handleDownloadFile = (fileName) => {
@@ -4067,6 +4061,119 @@ export default function App() {
           </TouchableOpacity>
         </Modal>
 
+        {/* ─── MODAL: APPLICATION TRACKING STATUS (STEP 9) ─── */}
+        <Modal
+          visible={showTrackingModal}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowTrackingModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Application Tracking</Text>
+                <TouchableOpacity
+                  onPress={() => setShowTrackingModal(false)}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Text style={styles.modalCloseText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView style={styles.modalBody}>
+                <View style={styles.trackingRefBox}>
+                  <Text style={styles.trackingRefLabel}>Application Reference</Text>
+                  <Text style={styles.trackingRefValue}>AA-2026-000000</Text>
+                  <View style={styles.trackingStatusBadge}>
+                    <Text style={styles.trackingStatusBadgeText}>Under Scrutiny</Text>
+                  </View>
+                </View>
+
+                {/* Timeline stages */}
+                <View style={{ marginTop: 14 }}>
+                  {/* Stage 1 */}
+                  <View style={styles.timelineRow}>
+                    <View style={styles.timelineIconCol}>
+                      <View style={styles.timelineDotDone}>
+                        <Svg width={10} height={10} viewBox="0 0 24 24" fill="none">
+                          <Path d="M5 13l4 4L19 7" stroke="#FFFFFF" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+                        </Svg>
+                      </View>
+                      <View style={styles.timelineLineDone} />
+                    </View>
+                    <View style={styles.timelineTextCol}>
+                      <Text style={styles.timelineTitleDone}>Application Submitted & Fee Paid</Text>
+                      <Text style={styles.timelineSubText}>23 September 2026, 11:20 AM · ₹5,000 paid</Text>
+                    </View>
+                  </View>
+
+                  {/* Stage 2 */}
+                  <View style={styles.timelineRow}>
+                    <View style={styles.timelineIconCol}>
+                      <View style={styles.timelineDotActive}>
+                        <View style={styles.timelineInnerDotActive} />
+                      </View>
+                      <View style={styles.timelineLinePending} />
+                    </View>
+                    <View style={styles.timelineTextCol}>
+                      <Text style={styles.timelineTitleActive}>Scrutiny of Submitted Documents</Text>
+                      <Text style={styles.timelineSubText}>In Progress · District Tourism Development Office, Pune</Text>
+                    </View>
+                  </View>
+
+                  {/* Stage 3 */}
+                  <View style={styles.timelineRow}>
+                    <View style={styles.timelineIconCol}>
+                      <View style={styles.timelineDotPending} />
+                      <View style={styles.timelineLinePending} />
+                    </View>
+                    <View style={styles.timelineTextCol}>
+                      <Text style={styles.timelineTitlePending}>Site Technical & Safety Inspection</Text>
+                      <Text style={styles.timelineSubText}>Window: 23 Sep 2026 — 22 Dec 2026 (Appointment to be scheduled)</Text>
+                    </View>
+                  </View>
+
+                  {/* Stage 4 */}
+                  <View style={styles.timelineRow}>
+                    <View style={styles.timelineIconCol}>
+                      <View style={styles.timelineDotPending} />
+                    </View>
+                    <View style={styles.timelineTextCol}>
+                      <Text style={styles.timelineTitlePending}>Final Approval Decision & Certificate</Text>
+                      <Text style={styles.timelineSubText}>Digital Certificate with QR Credential will be issued</Text>
+                    </View>
+                  </View>
+                </View>
+              </ScrollView>
+
+              <View style={{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: 10 }}>
+                <TouchableOpacity
+                  style={[styles.modalPrimaryBtn, { backgroundColor: '#4F28D9', marginBottom: 10 }]}
+                  onPress={() => setShowTrackingModal(false)}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.modalPrimaryBtnText}>Close</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.modalPrimaryBtn, { backgroundColor: '#F3F4F6' }]}
+                  onPress={() => {
+                    setShowTrackingModal(false);
+                    setStep(1);
+                    setPaymentSubStep('breakdown');
+                    if (scrollRef.current) {
+                      scrollRef.current.scrollTo({ y: 0, animated: true });
+                    }
+                  }}
+                  activeOpacity={0.8}
+                >
+                  <Text style={[styles.modalPrimaryBtnText, { color: '#4B5563' }]}>Restart Flow from Step 1</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
         {/* ─── MODAL: HOW TO OBTAIN PREREQUISITE REGISTRATIONS ─── */}
         <Modal
           visible={showPrereqModal}
@@ -5118,6 +5225,116 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#4F28D9',
+  },
+  // Step 9: Application Tracking Modal Styles
+  trackingRefBox: {
+    backgroundColor: '#F9FAFB',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  trackingRefLabel: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginBottom: 2,
+  },
+  trackingRefValue: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#111827',
+    marginBottom: 6,
+  },
+  trackingStatusBadge: {
+    backgroundColor: '#FEF3C7',
+    borderWidth: 1,
+    borderColor: '#FCD34D',
+    borderRadius: 12,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+  },
+  trackingStatusBadgeText: {
+    color: '#92400E',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  timelineRow: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  timelineIconCol: {
+    width: 24,
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  timelineDotDone: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timelineDotActive: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#EDE9FE',
+    borderWidth: 2,
+    borderColor: '#4F28D9',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  timelineInnerDotActive: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#4F28D9',
+  },
+  timelineDotPending: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#E5E7EB',
+    marginTop: 2,
+  },
+  timelineLineDone: {
+    width: 2,
+    flex: 1,
+    backgroundColor: '#16A34A',
+    marginVertical: 4,
+  },
+  timelineLinePending: {
+    width: 2,
+    flex: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 4,
+  },
+  timelineTextCol: {
+    flex: 1,
+    paddingTop: 1,
+  },
+  timelineTitleDone: {
+    fontSize: 13.5,
+    fontWeight: '700',
+    color: '#16A34A',
+  },
+  timelineTitleActive: {
+    fontSize: 13.5,
+    fontWeight: '700',
+    color: '#4F28D9',
+  },
+  timelineTitlePending: {
+    fontSize: 13.5,
+    fontWeight: '600',
+    color: '#9CA3AF',
+  },
+  timelineSubText: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 2,
   },
   // Step 7: Preview cards styles
   previewCardSuccess: {
