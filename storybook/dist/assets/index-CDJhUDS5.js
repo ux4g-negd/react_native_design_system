@@ -100246,7 +100246,7 @@ const styles = StyleSheet.create({
   },
 
 });
-`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="ipDnCcaz47htRH9chZuF-",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="X13lnwGHTi_m-eCUp_Mmt",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -100515,6 +100515,16 @@ const AIR_ACTIVITIES = [
   { id: 'skydiving', label: 'Tandem Skydiving' },
 ];
 
+const POPULAR_BANKS = [
+  'Airtel Payments Bank',
+  'Axis Bank',
+  'HDFC Bank',
+  'ICICI Bank',
+  'Kotak Mahindra Bank',
+  'State Bank of India',
+  'Bank of Baroda',
+];
+
 export default function App() {
   const [step, setStep] = useState(8); // Directly land on Step 8 for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
@@ -100541,6 +100551,7 @@ export default function App() {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
   const [paymentSubStep, setPaymentSubStep] = useState('mode'); // 'breakdown' | 'mode' (direct landing on mode of payment as requested)
+  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(true);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -100673,11 +100684,11 @@ export default function App() {
     passengerCoverPerPerson: '₹ 5,00,000 per participant',
     insuranceValidTill: '30/09/2027',
 
-    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png)
+    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png, media_1794994493465_f72803a6.png, media_1794994521204_4a3745e4.png)
     feeApplicationId: 'AA-2026-000000',
     feeAmount: '5,000',
     feeNonRefundableAgreed: false,
-    paymentMethod: 'upi', // legacy fallback
+    paymentMethod: 'card', // 'card' (Screen 10) | 'netbanking' (Screen 11) | 'upi' (Screen 9)
     upiId: '',
     cardName: '',
     cardNumber: '',
@@ -100800,8 +100811,17 @@ export default function App() {
             errors.upiId = 'Please enter a valid UPI ID';
           }
         } else if (formData.paymentMethod === 'card') {
+          if (!formData.cardName || !formData.cardName.trim()) {
+            errors.cardName = 'Please enter name on card';
+          }
           if (!formData.cardNumber || !formData.cardNumber.trim()) {
             errors.cardNumber = 'Please enter card number';
+          }
+          if (!formData.cardExpiry || !formData.cardExpiry.trim()) {
+            errors.cardExpiry = 'Please enter expiry date';
+          }
+          if (!formData.cardCvv || !formData.cardCvv.trim()) {
+            errors.cardCvv = 'Please enter security code';
           }
         } else if (formData.paymentMethod === 'netbanking') {
           if (!formData.selectedBank) {
@@ -103762,43 +103782,107 @@ export default function App() {
                     </View>
                   )}
 
-                  {/* DETAILS SECTION WHEN NETBANKING IS SELECTED */}
+                  {/* DETAILS SECTION WHEN NETBANKING IS SELECTED (SCREEN 11: media_1794994521204_4a3745e4.png) */}
                   {formData.paymentMethod === 'netbanking' && (
                     <View style={{ marginTop: 14 }}>
                       <Text style={styles.sectionHeading}>Choose Your Bank</Text>
-                      <View style={styles.bankGrid}>
-                        {['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Punjab National Bank'].map(
-                          (b) => (
-                            <TouchableOpacity
-                              key={b}
-                              style={[styles.bankChip, formData.selectedBank === b && styles.bankChipSelected]}
-                              onPress={() => updateField('selectedBank', b)}
-                            >
-                              <Text
+
+                      <View style={styles.fieldBlock}>
+                        <Text style={styles.fieldLabel}>
+                          Bank<Text style={styles.requiredAsterisk}>*</Text>
+                        </Text>
+
+                        {/* Select Box */}
+                        <TouchableOpacity
+                          style={[
+                            styles.dropdownSelectBox,
+                            isBankDropdownOpen && styles.dropdownSelectBoxActive,
+                            formErrors.selectedBank && styles.inputErrorBorder,
+                          ]}
+                          activeOpacity={0.8}
+                          onPress={() => setIsBankDropdownOpen(!isBankDropdownOpen)}
+                        >
+                          <Text
+                            style={[
+                              styles.dropdownSelectText,
+                              !formData.selectedBank && styles.dropdownPlaceholderText,
+                            ]}
+                          >
+                            {formData.selectedBank || 'Select your bank'}
+                          </Text>
+                          <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                            <Path
+                              d={isBankDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                              stroke="#4B5563"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </Svg>
+                        </TouchableOpacity>
+
+                        {/* Open Menu List */}
+                        {isBankDropdownOpen && (
+                          <View style={styles.dropdownMenuList}>
+                            {POPULAR_BANKS.map((bank) => (
+                              <TouchableOpacity
+                                key={bank}
                                 style={[
-                                  styles.bankChipText,
-                                  formData.selectedBank === b && styles.bankChipTextSelected,
+                                  styles.dropdownMenuItem,
+                                  formData.selectedBank === bank && styles.dropdownMenuItemSelected,
                                 ]}
+                                activeOpacity={0.7}
+                                onPress={() => {
+                                  updateField('selectedBank', bank);
+                                  setIsBankDropdownOpen(false);
+                                }}
                               >
-                                {b}
-                              </Text>
-                            </TouchableOpacity>
-                          )
+                                <Text
+                                  style={[
+                                    styles.dropdownMenuItemText,
+                                    formData.selectedBank === bank && styles.dropdownMenuItemTextSelected,
+                                  ]}
+                                >
+                                  {bank}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        )}
+
+                        {formErrors.selectedBank && (
+                          <Text style={styles.errorHelperText}>{formErrors.selectedBank}</Text>
                         )}
                       </View>
-                      {formErrors.selectedBank && (
-                        <Text style={styles.errorHelperText}>{formErrors.selectedBank}</Text>
-                      )}
                     </View>
                   )}
 
-                  {/* DETAILS SECTION WHEN CARD IS SELECTED */}
+                  {/* DETAILS SECTION WHEN CARD IS SELECTED (SCREEN 10: media_1794994493465_f72803a6.png) */}
                   {formData.paymentMethod === 'card' && (
                     <View style={{ marginTop: 14 }}>
-                      <Text style={styles.sectionHeading}>Card Details</Text>
+                      <Text style={styles.sectionHeading}>Enter Card Details</Text>
+
+                      {/* Field 1: Name on card* */}
                       <View style={styles.fieldBlock}>
                         <Text style={styles.fieldLabel}>
-                          Card Number<Text style={styles.requiredAsterisk}>*</Text>
+                          Name on card<Text style={styles.requiredAsterisk}>*</Text>
+                        </Text>
+                        <TextInput
+                          style={[styles.textInput, formErrors.cardName && styles.inputErrorBorder]}
+                          placeholder="As printed on the card"
+                          placeholderTextColor="#9CA3AF"
+                          value={formData.cardName}
+                          onChangeText={(v) => updateField('cardName', v)}
+                        />
+                        {formErrors.cardName && (
+                          <Text style={styles.errorHelperText}>{formErrors.cardName}</Text>
+                        )}
+                      </View>
+
+                      {/* Field 2: Card number* */}
+                      <View style={styles.fieldBlock}>
+                        <Text style={styles.fieldLabel}>
+                          Card number<Text style={styles.requiredAsterisk}>*</Text>
                         </Text>
                         <TextInput
                           style={[styles.textInput, formErrors.cardNumber && styles.inputErrorBorder]}
@@ -103811,6 +103895,44 @@ export default function App() {
                         {formErrors.cardNumber && (
                           <Text style={styles.errorHelperText}>{formErrors.cardNumber}</Text>
                         )}
+                      </View>
+
+                      {/* Field 3 & 4: Expiry date* & Security code* */}
+                      <View style={styles.rowTwoCols}>
+                        <View style={{ flex: 1, marginRight: 8 }}>
+                          <Text style={styles.fieldLabel}>
+                            Expiry date<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <TextInput
+                            style={[styles.textInput, formErrors.cardExpiry && styles.inputErrorBorder]}
+                            placeholder="MM/YY"
+                            placeholderTextColor="#9CA3AF"
+                            value={formData.cardExpiry}
+                            onChangeText={(v) => updateField('cardExpiry', v)}
+                            maxLength={5}
+                          />
+                          {formErrors.cardExpiry && (
+                            <Text style={styles.errorHelperText}>{formErrors.cardExpiry}</Text>
+                          )}
+                        </View>
+                        <View style={{ flex: 1, marginLeft: 8 }}>
+                          <Text style={styles.fieldLabel}>
+                            Security code<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <TextInput
+                            style={[styles.textInput, formErrors.cardCvv && styles.inputErrorBorder]}
+                            placeholder="XXX"
+                            placeholderTextColor="#9CA3AF"
+                            value={formData.cardCvv}
+                            onChangeText={(v) => updateField('cardCvv', v)}
+                            maxLength={4}
+                            secureTextEntry={true}
+                            keyboardType="number-pad"
+                          />
+                          {formErrors.cardCvv && (
+                            <Text style={styles.errorHelperText}>{formErrors.cardCvv}</Text>
+                          )}
+                        </View>
                       </View>
                     </View>
                   )}
@@ -103954,9 +104076,11 @@ export default function App() {
                   <Text style={styles.primaryActionButtonText}>
                     {isProcessingPayment
                       ? 'Processing...'
-                      : paymentSubStep === 'mode'
-                      ? 'Pay ₹' + (formData.feeAmount || '5,000')
-                      : 'Pay and submit'}
+                      : paymentSubStep === 'breakdown'
+                      ? 'Pay and submit'
+                      : formData.paymentMethod === 'netbanking'
+                      ? 'Continue to bank'
+                      : 'Pay ₹' + (formData.feeAmount || '5,000')}
                   </Text>
                 </TouchableOpacity>
 
@@ -104733,6 +104857,56 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     lineHeight: 18,
     flex: 1,
+  },
+  dropdownSelectBox: {
+    height: 46,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+  },
+  dropdownSelectBoxActive: {
+    borderColor: '#4A2BC2',
+    borderWidth: 1.5,
+  },
+  dropdownSelectText: {
+    fontSize: 14,
+    color: '#111827',
+  },
+  dropdownPlaceholderText: {
+    color: '#6B7280',
+  },
+  dropdownMenuList: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    marginTop: 6,
+    paddingVertical: 6,
+    shadowColor: '#000000',
+    shadowOpacity: 0.06,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  dropdownMenuItem: {
+    paddingVertical: 11,
+    paddingHorizontal: 16,
+  },
+  dropdownMenuItemText: {
+    fontSize: 14,
+    color: '#111827',
+  },
+  dropdownMenuItemSelected: {
+    backgroundColor: '#F5F3FF',
+  },
+  dropdownMenuItemTextSelected: {
+    color: '#4A2BC2',
+    fontWeight: '600',
   },
   paymentCard: {
     borderWidth: 1,

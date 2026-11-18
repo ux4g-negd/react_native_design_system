@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'ipDnCcaz47htRH9chZuF-';
+const SNACK_ID = 'X13lnwGHTi_m-eCUp_Mmt';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -283,6 +283,16 @@ const AIR_ACTIVITIES = [
   { id: 'skydiving', label: 'Tandem Skydiving' },
 ];
 
+const POPULAR_BANKS = [
+  'Airtel Payments Bank',
+  'Axis Bank',
+  'HDFC Bank',
+  'ICICI Bank',
+  'Kotak Mahindra Bank',
+  'State Bank of India',
+  'Bank of Baroda',
+];
+
 export default function App() {
   const [step, setStep] = useState(8); // Directly land on Step 8 for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
@@ -309,6 +319,7 @@ export default function App() {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
   const [paymentSubStep, setPaymentSubStep] = useState('mode'); // 'breakdown' | 'mode' (direct landing on mode of payment as requested)
+  const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(true);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -441,11 +452,11 @@ export default function App() {
     passengerCoverPerPerson: '₹ 5,00,000 per participant',
     insuranceValidTill: '30/09/2027',
 
-    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png)
+    // Step 8: Fee & payment (Matches media_1794989021995_1078df00.png, media_1794994493465_f72803a6.png, media_1794994521204_4a3745e4.png)
     feeApplicationId: 'AA-2026-000000',
     feeAmount: '5,000',
     feeNonRefundableAgreed: false,
-    paymentMethod: 'upi', // legacy fallback
+    paymentMethod: 'card', // 'card' (Screen 10) | 'netbanking' (Screen 11) | 'upi' (Screen 9)
     upiId: '',
     cardName: '',
     cardNumber: '',
@@ -568,8 +579,17 @@ export default function App() {
             errors.upiId = 'Please enter a valid UPI ID';
           }
         } else if (formData.paymentMethod === 'card') {
+          if (!formData.cardName || !formData.cardName.trim()) {
+            errors.cardName = 'Please enter name on card';
+          }
           if (!formData.cardNumber || !formData.cardNumber.trim()) {
             errors.cardNumber = 'Please enter card number';
+          }
+          if (!formData.cardExpiry || !formData.cardExpiry.trim()) {
+            errors.cardExpiry = 'Please enter expiry date';
+          }
+          if (!formData.cardCvv || !formData.cardCvv.trim()) {
+            errors.cardCvv = 'Please enter security code';
           }
         } else if (formData.paymentMethod === 'netbanking') {
           if (!formData.selectedBank) {
@@ -3530,43 +3550,107 @@ export default function App() {
                     </View>
                   )}
 
-                  {/* DETAILS SECTION WHEN NETBANKING IS SELECTED */}
+                  {/* DETAILS SECTION WHEN NETBANKING IS SELECTED (SCREEN 11: media_1794994521204_4a3745e4.png) */}
                   {formData.paymentMethod === 'netbanking' && (
                     <View style={{ marginTop: 14 }}>
                       <Text style={styles.sectionHeading}>Choose Your Bank</Text>
-                      <View style={styles.bankGrid}>
-                        {['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Punjab National Bank'].map(
-                          (b) => (
-                            <TouchableOpacity
-                              key={b}
-                              style={[styles.bankChip, formData.selectedBank === b && styles.bankChipSelected]}
-                              onPress={() => updateField('selectedBank', b)}
-                            >
-                              <Text
+
+                      <View style={styles.fieldBlock}>
+                        <Text style={styles.fieldLabel}>
+                          Bank<Text style={styles.requiredAsterisk}>*</Text>
+                        </Text>
+
+                        {/* Select Box */}
+                        <TouchableOpacity
+                          style={[
+                            styles.dropdownSelectBox,
+                            isBankDropdownOpen && styles.dropdownSelectBoxActive,
+                            formErrors.selectedBank && styles.inputErrorBorder,
+                          ]}
+                          activeOpacity={0.8}
+                          onPress={() => setIsBankDropdownOpen(!isBankDropdownOpen)}
+                        >
+                          <Text
+                            style={[
+                              styles.dropdownSelectText,
+                              !formData.selectedBank && styles.dropdownPlaceholderText,
+                            ]}
+                          >
+                            {formData.selectedBank || 'Select your bank'}
+                          </Text>
+                          <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+                            <Path
+                              d={isBankDropdownOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'}
+                              stroke="#4B5563"
+                              strokeWidth={2}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </Svg>
+                        </TouchableOpacity>
+
+                        {/* Open Menu List */}
+                        {isBankDropdownOpen && (
+                          <View style={styles.dropdownMenuList}>
+                            {POPULAR_BANKS.map((bank) => (
+                              <TouchableOpacity
+                                key={bank}
                                 style={[
-                                  styles.bankChipText,
-                                  formData.selectedBank === b && styles.bankChipTextSelected,
+                                  styles.dropdownMenuItem,
+                                  formData.selectedBank === bank && styles.dropdownMenuItemSelected,
                                 ]}
+                                activeOpacity={0.7}
+                                onPress={() => {
+                                  updateField('selectedBank', bank);
+                                  setIsBankDropdownOpen(false);
+                                }}
                               >
-                                {b}
-                              </Text>
-                            </TouchableOpacity>
-                          )
+                                <Text
+                                  style={[
+                                    styles.dropdownMenuItemText,
+                                    formData.selectedBank === bank && styles.dropdownMenuItemTextSelected,
+                                  ]}
+                                >
+                                  {bank}
+                                </Text>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        )}
+
+                        {formErrors.selectedBank && (
+                          <Text style={styles.errorHelperText}>{formErrors.selectedBank}</Text>
                         )}
                       </View>
-                      {formErrors.selectedBank && (
-                        <Text style={styles.errorHelperText}>{formErrors.selectedBank}</Text>
-                      )}
                     </View>
                   )}
 
-                  {/* DETAILS SECTION WHEN CARD IS SELECTED */}
+                  {/* DETAILS SECTION WHEN CARD IS SELECTED (SCREEN 10: media_1794994493465_f72803a6.png) */}
                   {formData.paymentMethod === 'card' && (
                     <View style={{ marginTop: 14 }}>
-                      <Text style={styles.sectionHeading}>Card Details</Text>
+                      <Text style={styles.sectionHeading}>Enter Card Details</Text>
+
+                      {/* Field 1: Name on card* */}
                       <View style={styles.fieldBlock}>
                         <Text style={styles.fieldLabel}>
-                          Card Number<Text style={styles.requiredAsterisk}>*</Text>
+                          Name on card<Text style={styles.requiredAsterisk}>*</Text>
+                        </Text>
+                        <TextInput
+                          style={[styles.textInput, formErrors.cardName && styles.inputErrorBorder]}
+                          placeholder="As printed on the card"
+                          placeholderTextColor="#9CA3AF"
+                          value={formData.cardName}
+                          onChangeText={(v) => updateField('cardName', v)}
+                        />
+                        {formErrors.cardName && (
+                          <Text style={styles.errorHelperText}>{formErrors.cardName}</Text>
+                        )}
+                      </View>
+
+                      {/* Field 2: Card number* */}
+                      <View style={styles.fieldBlock}>
+                        <Text style={styles.fieldLabel}>
+                          Card number<Text style={styles.requiredAsterisk}>*</Text>
                         </Text>
                         <TextInput
                           style={[styles.textInput, formErrors.cardNumber && styles.inputErrorBorder]}
@@ -3579,6 +3663,44 @@ export default function App() {
                         {formErrors.cardNumber && (
                           <Text style={styles.errorHelperText}>{formErrors.cardNumber}</Text>
                         )}
+                      </View>
+
+                      {/* Field 3 & 4: Expiry date* & Security code* */}
+                      <View style={styles.rowTwoCols}>
+                        <View style={{ flex: 1, marginRight: 8 }}>
+                          <Text style={styles.fieldLabel}>
+                            Expiry date<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <TextInput
+                            style={[styles.textInput, formErrors.cardExpiry && styles.inputErrorBorder]}
+                            placeholder="MM/YY"
+                            placeholderTextColor="#9CA3AF"
+                            value={formData.cardExpiry}
+                            onChangeText={(v) => updateField('cardExpiry', v)}
+                            maxLength={5}
+                          />
+                          {formErrors.cardExpiry && (
+                            <Text style={styles.errorHelperText}>{formErrors.cardExpiry}</Text>
+                          )}
+                        </View>
+                        <View style={{ flex: 1, marginLeft: 8 }}>
+                          <Text style={styles.fieldLabel}>
+                            Security code<Text style={styles.requiredAsterisk}>*</Text>
+                          </Text>
+                          <TextInput
+                            style={[styles.textInput, formErrors.cardCvv && styles.inputErrorBorder]}
+                            placeholder="XXX"
+                            placeholderTextColor="#9CA3AF"
+                            value={formData.cardCvv}
+                            onChangeText={(v) => updateField('cardCvv', v)}
+                            maxLength={4}
+                            secureTextEntry={true}
+                            keyboardType="number-pad"
+                          />
+                          {formErrors.cardCvv && (
+                            <Text style={styles.errorHelperText}>{formErrors.cardCvv}</Text>
+                          )}
+                        </View>
                       </View>
                     </View>
                   )}
@@ -3722,9 +3844,11 @@ export default function App() {
                   <Text style={styles.primaryActionButtonText}>
                     {isProcessingPayment
                       ? 'Processing...'
-                      : paymentSubStep === 'mode'
-                      ? 'Pay ₹' + (formData.feeAmount || '5,000')
-                      : 'Pay and submit'}
+                      : paymentSubStep === 'breakdown'
+                      ? 'Pay and submit'
+                      : formData.paymentMethod === 'netbanking'
+                      ? 'Continue to bank'
+                      : 'Pay ₹' + (formData.feeAmount || '5,000')}
                   </Text>
                 </TouchableOpacity>
 
@@ -4501,6 +4625,56 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     lineHeight: 18,
     flex: 1,
+  },
+  dropdownSelectBox: {
+    height: 46,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FFFFFF',
+  },
+  dropdownSelectBoxActive: {
+    borderColor: '#4A2BC2',
+    borderWidth: 1.5,
+  },
+  dropdownSelectText: {
+    fontSize: 14,
+    color: '#111827',
+  },
+  dropdownPlaceholderText: {
+    color: '#6B7280',
+  },
+  dropdownMenuList: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    marginTop: 6,
+    paddingVertical: 6,
+    shadowColor: '#000000',
+    shadowOpacity: 0.06,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  dropdownMenuItem: {
+    paddingVertical: 11,
+    paddingHorizontal: 16,
+  },
+  dropdownMenuItemText: {
+    fontSize: 14,
+    color: '#111827',
+  },
+  dropdownMenuItemSelected: {
+    backgroundColor: '#F5F3FF',
+  },
+  dropdownMenuItemTextSelected: {
+    color: '#4A2BC2',
+    fontWeight: '600',
   },
   paymentCard: {
     borderWidth: 1,
