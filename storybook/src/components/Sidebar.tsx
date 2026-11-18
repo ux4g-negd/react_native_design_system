@@ -1594,6 +1594,11 @@ const NAV_ITEMS: NavItem[] = [
         label: 'Entry and Area Permit Flow',
         icon: 'layers',
       },
+      {
+        id: 'service-pattern-adventure-activity-approval',
+        label: 'Adventure Activity Approval Flow',
+        icon: 'layers',
+      },
     ],
   },
 ];

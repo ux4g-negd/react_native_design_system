@@ -198,12 +198,20 @@ import { TouristGuideRegistrationFlowDoc } from './pages/TouristGuideRegistratio
 import { TourismProjectApprovalFlowDoc } from './pages/TourismProjectApprovalFlowDoc';
 import { TourismEventSponsorshipFlowDoc } from './pages/TourismEventSponsorshipFlowDoc';
 import { EntryAndAreaPermitFlowDoc } from './pages/EntryAndAreaPermitFlowDoc';
+import { AdventureActivityApprovalFlowDoc } from './pages/AdventureActivityApprovalFlowDoc';
 import {
   getPageFromUrl,
   updateUrlForPage,
 } from './utils/router';
 
 const getMobileBreadcrumb = (page: string) => {
+  if (
+    page === 'service-pattern-adventure-activity-approval' ||
+    page.includes('adventure-activity') ||
+    page.includes('adventure')
+  ) {
+    return 'Service Patterns / Adventure Activity Approval Flow';
+  }
   if (
     page === 'service-pattern-entry-and-area-permit' ||
     page.includes('entry-and-area-permit') ||
@@ -998,6 +1006,13 @@ export const App: React.FC = () => {
       return <SideMenuDoc isDark={isDark} story={activePage} />;
     }
     if (
+      activePage === 'service-pattern-adventure-activity-approval' ||
+      activePage.includes('adventure-activity') ||
+      activePage.includes('adventure')
+    ) {
+      return <AdventureActivityApprovalFlowDoc isDark={isDark} />;
+    }
+    if (
       activePage === 'service-pattern-entry-and-area-permit' ||
       activePage.includes('entry-and-area-permit') ||
       activePage.includes('area-permit')
@@ -1574,6 +1589,8 @@ export const App: React.FC = () => {
     }
 
     switch (activePage) {
+      case 'service-pattern-adventure-activity-approval':
+        return <AdventureActivityApprovalFlowDoc isDark={isDark} />;
       case 'service-pattern-entry-and-area-permit':
         return <EntryAndAreaPermitFlowDoc isDark={isDark} />;
       case 'service-pattern-tourism-event-sponsorship':

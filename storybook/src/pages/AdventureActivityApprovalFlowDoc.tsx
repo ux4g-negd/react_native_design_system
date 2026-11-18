@@ -1,0 +1,2242 @@
+import React, { useState, useMemo, useRef } from 'react';
+import { UX4GColors } from '../../../src/foundation/colors';
+import { generateAdventureActivityApprovalZip } from '../utils/adventureActivityApprovalModularZip';
+
+interface AdventureActivityApprovalFlowDocProps {
+  isDark: boolean;
+}
+
+// Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
+const SNACK_ID = 'QiydLqYA3prtW_DhVHyN2';
+
+export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
+  const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const fullAppCodeString = useMemo(() => {
+    return `import React, { useState, useRef, useEffect } from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  StatusBar,
+  Modal,
+  Animated,
+  Easing,
+} from 'react-native';
+import Svg, { Path, Circle, Rect } from 'react-native-svg';
+import {
+  Ux4gThemeProvider,
+  UX4GColors,
+  Ux4gInputField,
+  Ux4gTextArea,
+  Ux4gDatePicker,
+  Ux4gSelectionDropdown,
+  Ux4gRadioButton,
+  Ux4gCheckbox,
+  Ux4gCard,
+  Ux4gButton,
+  Ux4gStatusBanner,
+  Ux4gCompactStepper,
+  Ux4gFileUpload,
+  Ux4gSpinner,
+  Ux4gModal,
+} from 'ux4g-react-native-components';
+
+import NationalEmblem from './NationalEmblem';
+
+// ─── UNION LOGO (Union.svg UX4G Logo) ───
+const UnionLogo = () => (
+  <Svg width={36} height={36} viewBox="0 0 40 40" fill="none">
+    <Path
+      d="M5.85059 34.2637C7.72048 34.1583 9.59495 34.1583 11.4648 34.2637C15.1962 34.4138 19.3146 35.089 23.4326 35.4141C26.7822 35.6892 30.1618 35.6794 33.3105 34.9141C29.5061 38.2986 24.5517 40.1148 19.4521 39.9942C14.3524 39.8734 9.48932 37.8246 5.85059 34.2637ZM3.76172 22.7647C6.67001 21.8966 9.72795 21.6388 12.7412 22.0088C16.1158 22.359 19.7919 23.4248 23.4326 24.3301C27.0735 25.2355 30.7448 25.9604 34.1045 25.5752C36.0384 25.3889 37.9173 24.8268 39.6338 23.9199C39.3117 25.5465 38.7848 27.1265 38.0664 28.6221C37.0142 29.1907 35.9026 29.6437 34.752 29.9727C31.2316 31.013 27.319 30.8223 23.417 30.2471C19.5151 29.6719 15.5982 28.7163 12.083 28.2461C9.04791 27.8043 5.97725 27.652 2.91309 27.791C2.3808 27.8261 1.87828 27.8262 1.40625 27.8262C0.894651 26.6003 0.505956 25.3266 0.246094 24.0244C1.22033 23.6593 2.41088 23.1648 3.76172 22.7647ZM5.76562 10.7139C8.31822 9.4568 11.2249 9.10423 14.0059 9.71389C17.019 10.2691 20.2236 11.7797 23.4326 13.3203C26.6416 14.861 29.8609 16.4215 32.874 17.0518C35.1426 17.6051 37.5198 17.531 39.749 16.8369C39.9066 17.8298 39.9904 18.8328 40 19.8379C38.0088 20.919 35.7745 21.4787 33.5068 21.4639C30.333 21.5089 26.8324 20.4784 23.3975 19.253C19.9624 18.0275 16.5174 16.6212 13.3535 15.9209C10.5966 15.2104 7.71373 15.1324 4.92188 15.6914C3.21225 16.1055 1.55924 16.7253 0 17.5371C0.105071 16.6264 0.272632 15.7238 0.501953 14.836C1.99816 13.1633 3.78068 11.7674 5.76562 10.7139ZM19.9121 2.51716e-05C24.0578 -0.00157692 28.1024 1.27476 31.4912 3.65335C34.8799 6.03187 37.4469 9.39617 38.8398 13.2852C36.744 13.9628 34.4987 14.0397 32.3613 13.5059C29.529 12.9006 26.4909 11.3695 23.4326 9.63381C20.3744 7.8982 17.3161 6.0477 14.5039 4.86721C12.6733 4.03008 10.7035 3.53465 8.69336 3.40628C12.0074 1.18013 15.9149 -0.00630153 19.9121 2.51716e-05Z"
+      fill={UX4GColors.primary}
+    />
+  </Svg>
+);
+
+const PERMIT_QR_PATH_D = 'M0,0h7v1h-7z M9,0h1v1h-1z M13,0h2v1h-2z M16,0h3v1h-3z M22,0h7v1h-7z M0,1h1v1h-1z M6,1h1v1h-1z M12,1h1v1h-1z M14,1h5v1h-5z M20,1h1v1h-1z M22,1h1v1h-1z M28,1h1v1h-1z M0,2h1v1h-1z M2,2h3v1h-3z M6,2h1v1h-1z M9,2h1v1h-1z M13,2h2v1h-2z M17,2h3v1h-3z M22,2h1v1h-1z M24,2h3v1h-3z M28,2h1v1h-1z M0,3h1v1h-1z M2,3h3v1h-3z M6,3h1v1h-1z M10,3h3v1h-3z M14,3h1v1h-1z M16,3h1v1h-1z M19,3h2v1h-2z M22,3h1v1h-1z M24,3h3v1h-3z M28,3h1v1h-1z M0,4h1v1h-1z M2,4h3v1h-3z M6,4h1v1h-1z M8,4h1v1h-1z M11,4h2v1h-2z M15,4h1v1h-1z M17,4h4v1h-4z M22,4h1v1h-1z M24,4h3v1h-3z M28,4h1v1h-1z M0,5h1v1h-1z M6,5h1v1h-1z M8,5h1v1h-1z M10,5h1v1h-1z M13,5h1v1h-1z M18,5h1v1h-1z M22,5h1v1h-1z M28,5h1v1h-1z M0,6h7v1h-7z M8,6h1v1h-1z M10,6h1v1h-1z M12,6h1v1h-1z M14,6h1v1h-1z M16,6h1v1h-1z M18,6h1v1h-1z M20,6h1v1h-1z M22,6h7v1h-7z M9,7h1v1h-1z M12,7h1v1h-1z M17,7h4v1h-4z M0,8h5v1h-5z M6,8h2v1h-2z M11,8h1v1h-1z M14,8h2v1h-2z M21,8h2v1h-2z M25,8h4v1h-4z M1,9h1v1h-1z M5,9h1v1h-1z M7,9h1v1h-1z M9,9h1v1h-1z M11,9h1v1h-1z M13,9h1v1h-1z M15,9h2v1h-2z M18,9h2v1h-2z M21,9h1v1h-1z M26,9h1v1h-1z M6,10h3v1h-3z M10,10h2v1h-2z M13,10h6v1h-6z M20,10h2v1h-2z M23,10h1v1h-1z M26,10h1v1h-1z M2,11h1v1h-1z M4,11h2v1h-2z M7,11h1v1h-1z M9,11h4v1h-4z M16,11h3v1h-3z M23,11h2v1h-2z M0,12h8v1h-8z M14,12h1v1h-1z M17,12h3v1h-3z M22,12h2v1h-2z M25,12h1v1h-1z M27,12h2v1h-2z M3,13h1v1h-1z M5,13h1v1h-1z M8,13h3v1h-3z M13,13h1v1h-1z M15,13h1v1h-1z M19,13h1v1h-1z M21,13h1v1h-1z M23,13h3v1h-3z M27,13h1v1h-1z M0,14h5v1h-5z M6,14h2v1h-2z M11,14h1v1h-1z M13,14h1v1h-1z M15,14h1v1h-1z M17,14h1v1h-1z M19,14h1v1h-1z M21,14h1v1h-1z M26,14h2v1h-2z M1,15h1v1h-1z M3,15h1v1h-1z M5,15h1v1h-1z M8,15h3v1h-3z M12,15h1v1h-1z M15,15h2v1h-2z M18,15h1v1h-1z M22,15h1v1h-1z M24,15h4v1h-4z M2,16h1v1h-1z M4,16h1v1h-1z M6,16h6v1h-6z M14,16h1v1h-1z M16,16h4v1h-4z M22,16h1v1h-1z M24,16h1v1h-1z M4,17h2v1h-2z M8,17h1v1h-1z M11,17h1v1h-1z M14,17h1v1h-1z M16,17h2v1h-2z M19,17h3v1h-3z M24,17h1v1h-1z M26,17h3v1h-3z M0,18h2v1h-2z M3,18h1v1h-1z M6,18h2v1h-2z M9,18h5v1h-5z M15,18h2v1h-2z M18,18h1v1h-1z M22,18h1v1h-1z M26,18h1v1h-1z M28,18h1v1h-1z M1,19h2v1h-2z M5,19h1v1h-1z M7,19h2v1h-2z M10,19h3v1h-3z M14,19h1v1h-1z M16,19h1v1h-1z M18,19h1v1h-1z M26,19h1v1h-1z M28,19h1v1h-1z M0,20h4v1h-4z M6,20h1v1h-1z M8,20h2v1h-2z M11,20h1v1h-1z M17,20h2v1h-2z M20,20h5v1h-5z M8,21h1v1h-1z M14,21h2v1h-2z M20,21h1v1h-1z M24,21h1v1h-1z M27,21h2v1h-2z M0,22h7v1h-7z M8,22h2v1h-2z M12,22h2v1h-2z M16,22h3v1h-3z M20,22h1v1h-1z M22,22h1v1h-1z M24,22h1v1h-1z M26,22h1v1h-1z M0,23h1v1h-1z M6,23h1v1h-1z M9,23h1v1h-1z M12,23h1v1h-1z M14,23h3v1h-3z M20,23h1v1h-1z M24,23h1v1h-1z M28,23h1v1h-1z M0,24h1v1h-1z M2,24h3v1h-3z M6,24h1v1h-1z M9,24h1v1h-1z M11,24h1v1h-1z M16,24h3v1h-3z M20,24h5v1h-5z M27,24h1v1h-1z M0,25h1v1h-1z M2,25h3v1h-3z M6,25h1v1h-1z M10,25h1v1h-1z M12,25h3v1h-3z M16,25h3v1h-3z M26,25h1v1h-1z M28,25h1v1h-1z M0,26h1v1h-1z M2,26h3v1h-3z M6,26h1v1h-1z M8,26h3v1h-3z M12,26h1v1h-1z M19,26h1v1h-1z M22,26h3v1h-3z M26,26h1v1h-1z M0,27h1v1h-1z M6,27h1v1h-1z M8,27h1v1h-1z M12,27h2v1h-2z M17,27h1v1h-1z M19,27h2v1h-2z M23,27h1v1h-1z M25,27h1v1h-1z M27,27h2v1h-2z M0,28h7v1h-7z M8,28h1v1h-1z M10,28h4v1h-4z M15,28h4v1h-4z M21,28h1v1h-1z M26,28h1v1h-1z';
+
+const STEP_METADATA = {
+  1: {
+    title: 'Before you start',
+    subtitle: 'Everything this registration depends on, named up front — so nothing is discovered by failing.',
+  },
+  2: {
+    title: 'Applicant & enterprise',
+    subtitle: 'Who operates this adventure unit, its corporate entity, and where it is headquartered.',
+  },
+  3: {
+    title: 'Activity & location',
+    subtitle: 'The specific adventure sport, domain, geographical coordinates, and base station.',
+  },
+  4: {
+    title: 'Safety & emergency',
+    subtitle: 'Standard operating procedures, emergency evacuation plans, and hospital linkages.',
+  },
+  5: {
+    title: 'Equipment & inspection',
+    subtitle: 'Inventory of safety gear, fitness certificates, and technical standards compliance.',
+  },
+  6: {
+    title: 'Guides & instructors',
+    subtitle: 'Certified adventure instructors, Wilderness First Aid licenses, and experience logs.',
+  },
+  7: {
+    title: 'Insurance & compliance',
+    subtitle: 'Third-party liability coverage, participant accident insurance, and policy bounds.',
+  },
+  8: {
+    title: 'Fee & payment',
+    subtitle: 'Inspection fee, departmental activity approval charges, and settlement gateway.',
+  },
+  9: {
+    title: 'Acknowledgement & credential',
+    subtitle: 'Your issued approval certificate, inspection order, and verifiable QR credential.',
+  },
+};
+
+const LAND_ACTIVITIES = [
+  { id: 'trekking', label: 'Trekking & Mountaineering Expedition' },
+  { id: 'rock_climbing', label: 'Rock Climbing & Bouldering' },
+  { id: 'zipline', label: 'Zipline & Aerial Rope Course' },
+  { id: 'all_terrain', label: 'All-Terrain Vehicle (ATV) Safari' },
+  { id: 'caving', label: 'Caving & Speleology' },
+];
+
+const WATER_ACTIVITIES = [
+  { id: 'white_water_rafting', label: 'White Water River Rafting (Grade II - IV)' },
+  { id: 'kayaking', label: 'Kayaking & River Canoeing' },
+  { id: 'scuba_diving', label: 'Scuba Diving & Snorkeling' },
+  { id: 'cliff_jumping', label: 'Cliff Jumping & Canyoneering' },
+  { id: 'jet_ski', label: 'Jet Skiing & Power Boating' },
+];
+
+const AIR_ACTIVITIES = [
+  { id: 'paragliding_tandem', label: 'Paragliding (Tandem & Solo)' },
+  { id: 'paramotor', label: 'Powered Paragliding / Paramotor' },
+  { id: 'hot_air_balloon', label: 'Hot Air Ballooning (Tethered & Free)' },
+  { id: 'bungee_jumping', label: 'Bungee Jumping & Reverse Bungee' },
+  { id: 'skydiving', label: 'Tandem Skydiving' },
+];
+
+export default function App() {
+  const [step, setStep] = useState(1);
+  const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
+  const [isDraftSaved, setIsDraftSaved] = useState(true);
+  const [showDraftToast, setShowDraftToast] = useState(false);
+  const [showPrereqModal, setShowPrereqModal] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(false);
+
+  // Form State
+  const [formData, setFormData] = useState({
+    // Step 1: Before you start
+    registrationType: 'new', // 'new' | 'renewal'
+    activityDomain: 'land', // 'land' | 'water' | 'air'
+    hasPrerequisiteRegistrations: false,
+
+    // Step 2: Applicant & enterprise
+    enterpriseName: 'Himalayan Apex Adventures Pvt Ltd',
+    enterpriseType: 'Private Limited Company',
+    regNumber: 'UDYAM-UK-04-0091823',
+    panNumber: 'AABCH7821K',
+    gstin: '05AABCH7821K1ZB',
+    registeredAddress: 'Plot 14, Riverside Industrial Area, Tapovan',
+    district: 'Tehri Garhwal',
+    state: 'Uttarakhand',
+    pinCode: '249192',
+
+    // Step 3: Activity & location
+    specificActivity: 'trekking',
+    activityLocation: 'Rishikesh to Shivpuri River Corridor',
+    geoCoordinates: '30.1378° N, 78.3842° E',
+    baseCampName: 'Camp Tapovan Alpha',
+    seasonFrom: '15/09/2026',
+    seasonTo: '15/06/2027',
+
+    // Step 4: Safety & emergency
+    sopDocumentUploaded: true,
+    emergencyPlanReady: true,
+    tieUpHospitalName: 'AIIMS Rishikesh Super Speciality Hospital',
+    hospitalDistanceKm: '12 km',
+    emergencyContact: '+91 98765 43210',
+    ambulanceStandby: 'Yes - On-call tie-up with local EMS',
+
+    // Step 5: Equipment & fitness
+    equipmentInventoryCount: '64 harness sets, 28 dynamic ropes, 120 helmets',
+    safetyStandard: 'UIAA / CE / EN 12277 Standard Compliant',
+    lastInspectionDate: '10/08/2026',
+    fitnessCertUploaded: true,
+
+    // Step 6: Guides & instructors
+    leadInstructorName: 'Capt. Virendra Rawat (Retd.)',
+    certifyingBody: 'Nehru Institute of Mountaineering (NIM) & NIWS',
+    instructorLicenseNo: 'NIM-ADV-INST-2018-884',
+    wildernessFirstAidCertified: true,
+    instructorRatio: '1 Instructor per 6 Participants',
+
+    // Step 7: Insurance & compliance
+    insurancePolicyNo: 'NIA-ADV-LIAB-2026-992144',
+    insurerName: 'The New India Assurance Co. Ltd.',
+    liabilityCoverAmount: '₹ 50,00,000 (Fifty Lakhs)',
+    passengerCoverPerPerson: '₹ 5,00,000 per participant',
+    insuranceValidTill: '30/09/2027',
+
+    // Step 8: Fee & payment
+    paymentMethod: 'upi', // 'upi' | 'card' | 'netbanking'
+    upiId: '',
+    cardName: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvv: '',
+    selectedBank: '',
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+  const scrollRef = useRef(null);
+
+  const updateField = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (formErrors[field]) {
+      setFormErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleSaveDraft = () => {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    setLastSavedTime(hours + ':' + minutes + ' ' + ampm);
+    setIsDraftSaved(true);
+    setShowDraftToast(true);
+    setTimeout(() => setShowDraftToast(false), 2500);
+  };
+
+  const validateCurrentStep = () => {
+    const errors = {};
+    if (step === 1) {
+      if (!formData.registrationType) {
+        errors.registrationType = 'Please select type of registration';
+      }
+      if (!formData.activityDomain) {
+        errors.activityDomain = 'Please select adventure activity domain';
+      }
+      if (!formData.hasPrerequisiteRegistrations) {
+        errors.hasPrerequisiteRegistrations =
+          'You must confirm that you have prerequisite registrations or will obtain them';
+      }
+    } else if (step === 2) {
+      if (!formData.enterpriseName.trim()) errors.enterpriseName = 'Enterprise name is required';
+      if (!formData.regNumber.trim()) errors.regNumber = 'Registration number is required';
+      if (!formData.panNumber.trim()) errors.panNumber = 'PAN number is required';
+    } else if (step === 3) {
+      if (!formData.activityLocation.trim()) errors.activityLocation = 'Location/stretch is required';
+      if (!formData.geoCoordinates.trim()) errors.geoCoordinates = 'GPS coordinates are required';
+    } else if (step === 4) {
+      if (!formData.tieUpHospitalName.trim()) errors.tieUpHospitalName = 'Hospital tie-up name is required';
+      if (!formData.emergencyContact.trim()) errors.emergencyContact = 'Emergency phone is required';
+    } else if (step === 5) {
+      if (!formData.equipmentInventoryCount.trim()) errors.equipmentInventoryCount = 'Equipment summary is required';
+    } else if (step === 6) {
+      if (!formData.leadInstructorName.trim()) errors.leadInstructorName = 'Lead instructor name is required';
+      if (!formData.instructorLicenseNo.trim()) errors.instructorLicenseNo = 'Instructor license number is required';
+    } else if (step === 7) {
+      if (!formData.insurancePolicyNo.trim()) errors.insurancePolicyNo = 'Insurance policy number is required';
+    } else if (step === 8) {
+      if (formData.paymentMethod === 'upi' && !formData.upiId.trim()) {
+        errors.upiId = 'Please enter a valid UPI ID';
+      } else if (formData.paymentMethod === 'card' && (!formData.cardNumber.trim() || !formData.cardExpiry.trim())) {
+        errors.card = 'Please enter card details';
+      } else if (formData.paymentMethod === 'netbanking' && !formData.selectedBank) {
+        errors.bank = 'Please select your bank';
+      }
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleContinue = () => {
+    if (!validateCurrentStep()) {
+      return;
+    }
+    if (step === 8) {
+      // Process simulated payment
+      setIsProcessingPayment(true);
+      setTimeout(() => {
+        setIsProcessingPayment(false);
+        setPaymentDone(true);
+        setStep(9);
+        handleSaveDraft();
+      }, 1800);
+      return;
+    }
+
+    if (step < 9) {
+      setStep(step + 1);
+      handleSaveDraft();
+      if (scrollRef.current) {
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
+    }
+  };
+
+  const handlePrevious = () => {
+    if (step > 1) {
+      setStep(step - 1);
+      if (scrollRef.current) {
+        scrollRef.current.scrollTo({ y: 0, animated: true });
+      }
+    }
+  };
+
+  const activeMeta = STEP_METADATA[step] || STEP_METADATA[1];
+
+  return (
+    <Ux4gThemeProvider>
+      <SafeAreaView style={styles.safeArea}>
+        <StatusBar barStyle="light-content" backgroundColor="#4A2BC2" />
+
+        {/* ─── TOP GOI BAR ─── */}
+        <View style={styles.goiTopBar}>
+          <View style={styles.goiLeft}>
+            {/* Indian Flag SVG */}
+            <Svg width={20} height={14} viewBox="0 0 60 40" style={styles.goiFlag}>
+              <Rect width={60} height={13.33} fill="#FF9933" />
+              <Rect y={13.33} width={60} height={13.33} fill="#FFFFFF" />
+              <Rect y={26.66} width={60} height={13.33} fill="#138808" />
+              <Circle cx={30} cy={20} r={4.5} fill="#000080" />
+            </Svg>
+            <Text style={styles.goiText}>Government of India</Text>
+            {/* External Link Icon */}
+            <Svg width={12} height={12} viewBox="0 0 24 24" fill="none" style={{ marginLeft: 3 }}>
+              <Path
+                d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"
+                stroke="#FFFFFF"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Svg>
+          </View>
+          <View style={styles.goiRight}>
+            {/* Accessibility Icon */}
+            <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+              <Circle cx={12} cy={4} r={2} fill="#FFFFFF" />
+              <Path
+                d="M4 8h16M12 8v13M8 21l4-7 4 7"
+                stroke="#FFFFFF"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Svg>
+          </View>
+        </View>
+
+        {/* ─── APP HEADER ─── */}
+        <View style={styles.appHeader}>
+          <View style={styles.headerBrand}>
+            <NationalEmblem width={36} height={36} />
+            <View style={{ width: 8 }} />
+            <UnionLogo />
+          </View>
+
+          {/* Hamburger Menu Button */}
+          <TouchableOpacity style={styles.menuButton} activeOpacity={0.7}>
+            <View style={styles.menuBar} />
+            <View style={[styles.menuBar, { marginVertical: 3.5 }]} />
+            <View style={styles.menuBar} />
+          </TouchableOpacity>
+        </View>
+
+        {/* ─── SAVED STATUS PILL BANNER ─── */}
+        <View style={styles.savedBannerRow}>
+          <View style={styles.savedPill}>
+            <Svg width={14} height={14} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
+              <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
+              <Path
+                d="M8 12.5l2.5 2.5 5.5-5.5"
+                stroke="#16A34A"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Svg>
+            <Text style={styles.savedText}>Saved {lastSavedTime}</Text>
+          </View>
+        </View>
+
+        {/* ─── 9-SEGMENT STEPPER PROGRESS (CENTERED BETWEEN LAYOUT) ─── */}
+        <Ux4gCompactStepper
+          totalSteps={9}
+          currentStep={step}
+          layout="centeredBetween"
+          stepLabel={activeMeta.title}
+          description={activeMeta.subtitle}
+          onPrevious={handlePrevious}
+          onNext={handleContinue}
+          cumulative={true}
+          activeColor={UX4GColors.primary}
+          inactiveColor={UX4GColors.neutral300}
+        />
+
+        <View style={styles.stepperDivider} />
+
+        {/* ─── MAIN SCROLLABLE FORM BODY ─── */}
+        <ScrollView
+          ref={scrollRef}
+          style={styles.mainScrollView}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 1: BEFORE YOU START (EXACT REPLICA OF USER REFERENCE IMAGE)          */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 1 && (
+            <View style={styles.formContainer}>
+              {/* SECTION 1: Prerequisite Registrations */}
+              <Text style={styles.sectionHeading}>Prerequisite Registrations</Text>
+
+              {/* Amber Callout Box */}
+              <View style={styles.warningCallout}>
+                <View style={styles.warningIconContainer}>
+                  {/* Filled Amber Circle with white ! */}
+                  <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={11} fill="#D97706" />
+                    <Path d="M12 7v6" stroke="#FFFFFF" strokeWidth={2.5} strokeLinecap="round" />
+                    <Circle cx={12} cy={16.5} r={1.25} fill="#FFFFFF" />
+                  </Svg>
+                </View>
+                <View style={styles.warningTextContainer}>
+                  <Text style={styles.warningParagraph}>
+                    Four registrations must exist before this application can be approved: a portal account, an
+                    applicant profile, a registered unit or establishment, and a sector tourism registration. You can
+                    fill this form now and save it as a draft, but you cannot submit until all four are in place.
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => setShowPrereqModal(true)}
+                    activeOpacity={0.7}
+                    style={styles.warningLinkTouch}
+                  >
+                    <Text style={styles.warningLinkText}>How to obtain each one</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* SECTION 2: Service Required */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Service Required</Text>
+
+              {/* Field 1: Type of registration */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Type of registration<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={styles.radioOptionGroup}>
+                  <Ux4gRadioButton
+                    label="New registration"
+                    value="new"
+                    groupValue={formData.registrationType}
+                    onChanged={(val) => updateField('registrationType', val)}
+                    size="medium"
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gRadioButton
+                    label="Renewal of an existing registration"
+                    value="renewal"
+                    groupValue={formData.registrationType}
+                    onChanged={(val) => updateField('registrationType', val)}
+                    size="medium"
+                  />
+                </View>
+                {formErrors.registrationType && (
+                  <Text style={styles.errorHelperText}>{formErrors.registrationType}</Text>
+                )}
+              </View>
+
+              {/* Field 2: Adventure activity domain */}
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Adventure activity domain<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={styles.radioOptionGroup}>
+                  <Ux4gRadioButton
+                    label="On land"
+                    value="land"
+                    groupValue={formData.activityDomain}
+                    onChanged={(val) => updateField('activityDomain', val)}
+                    size="medium"
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gRadioButton
+                    label="On or in water"
+                    value="water"
+                    groupValue={formData.activityDomain}
+                    onChanged={(val) => updateField('activityDomain', val)}
+                    size="medium"
+                  />
+                  <View style={{ height: 10 }} />
+                  <Ux4gRadioButton
+                    label="In the air"
+                    value="air"
+                    groupValue={formData.activityDomain}
+                    onChanged={(val) => updateField('activityDomain', val)}
+                    size="medium"
+                  />
+                </View>
+                {formErrors.activityDomain && (
+                  <Text style={styles.errorHelperText}>{formErrors.activityDomain}</Text>
+                )}
+              </View>
+
+              {/* SECTION 3: Declaration */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Declaration</Text>
+
+              <View style={styles.declarationBlock}>
+                <Ux4gCheckbox
+                  label="I have the registrations listed above, or I will obtain them before I submit"
+                  isRequired={true}
+                  value={formData.hasPrerequisiteRegistrations}
+                  onChanged={(v) => updateField('hasPrerequisiteRegistrations', !!v)}
+                  hasError={!!formErrors.hasPrerequisiteRegistrations}
+                />
+                {formErrors.hasPrerequisiteRegistrations && (
+                  <Text style={[styles.errorHelperText, { marginTop: 6 }]}>
+                    {formErrors.hasPrerequisiteRegistrations}
+                  </Text>
+                )}
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 2: APPLICANT & ENTERPRISE                                            */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 2 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Enterprise Information</Text>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Adventure Operator / Unit Name<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.enterpriseName && styles.inputErrorBorder]}
+                  value={formData.enterpriseName}
+                  onChangeText={(val) => updateField('enterpriseName', val)}
+                  placeholder="e.g. Himalayan Apex Adventures Pvt Ltd"
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Constitution of Enterprise</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.enterpriseType}
+                  onChangeText={(val) => updateField('enterpriseType', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Udyam Registration / Commercial License No<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.regNumber && styles.inputErrorBorder]}
+                  value={formData.regNumber}
+                  onChangeText={(val) => updateField('regNumber', val)}
+                  placeholder="UDYAM-XX-00-0000000"
+                />
+              </View>
+
+              <View style={styles.rowTwoCols}>
+                <View style={{ flex: 1, marginRight: 8 }}>
+                  <Text style={styles.fieldLabel}>
+                    PAN Number<Text style={styles.requiredAsterisk}>*</Text>
+                  </Text>
+                  <TextInput
+                    style={[styles.textInput, formErrors.panNumber && styles.inputErrorBorder]}
+                    value={formData.panNumber}
+                    onChangeText={(val) => updateField('panNumber', val.toUpperCase())}
+                    maxLength={10}
+                  />
+                </View>
+                <View style={{ flex: 1, marginLeft: 8 }}>
+                  <Text style={styles.fieldLabel}>GSTIN</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.gstin}
+                    onChangeText={(val) => updateField('gstin', val.toUpperCase())}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Registered Base Address</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.registeredAddress}
+                  onChangeText={(val) => updateField('registeredAddress', val)}
+                />
+              </View>
+
+              <View style={styles.rowTwoCols}>
+                <View style={{ flex: 1, marginRight: 8 }}>
+                  <Text style={styles.fieldLabel}>District</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.district}
+                    onChangeText={(val) => updateField('district', val)}
+                  />
+                </View>
+                <View style={{ flex: 1, marginLeft: 8 }}>
+                  <Text style={styles.fieldLabel}>Pincode</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.pinCode}
+                    onChangeText={(val) => updateField('pinCode', val)}
+                    keyboardType="number-pad"
+                    maxLength={6}
+                  />
+                </View>
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 3: ACTIVITY & LOCATION                                               */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 3 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Activity & Geographical Boundary</Text>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Domain Selected</Text>
+                <View style={styles.readonlyPill}>
+                  <Text style={styles.readonlyPillText}>
+                    {formData.activityDomain === 'land'
+                      ? 'On Land (Trekking, Climbing, Safaris)'
+                      : formData.activityDomain === 'water'
+                      ? 'On or In Water (Rafting, Kayaking, Scuba)'
+                      : 'In the Air (Paragliding, Paramotoring, Bungee)'}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Specific Adventure Activity<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <View style={styles.radioOptionGroup}>
+                  {(formData.activityDomain === 'water'
+                    ? WATER_ACTIVITIES
+                    : formData.activityDomain === 'air'
+                    ? AIR_ACTIVITIES
+                    : LAND_ACTIVITIES
+                  ).map((act) => (
+                    <View key={act.id} style={{ marginBottom: 10 }}>
+                      <Ux4gRadioButton
+                        label={act.label}
+                        value={act.id}
+                        groupValue={formData.specificActivity}
+                        onChanged={(val) => updateField('specificActivity', val)}
+                        size="medium"
+                      />
+                    </View>
+                  ))}
+                </View>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Designated Stretch / Airspace / Route<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.activityLocation && styles.inputErrorBorder]}
+                  value={formData.activityLocation}
+                  onChangeText={(val) => updateField('activityLocation', val)}
+                  placeholder="e.g. Rishikesh to Shivpuri River Corridor"
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  GPS Coordinates (Launch / Base)<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.geoCoordinates && styles.inputErrorBorder]}
+                  value={formData.geoCoordinates}
+                  onChangeText={(val) => updateField('geoCoordinates', val)}
+                  placeholder="Latitude, Longitude"
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Base Camp / Station Name</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.baseCampName}
+                  onChangeText={(val) => updateField('baseCampName', val)}
+                />
+              </View>
+
+              <View style={styles.rowTwoCols}>
+                <View style={{ flex: 1, marginRight: 8 }}>
+                  <Text style={styles.fieldLabel}>Season Start Date</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.seasonFrom}
+                    onChangeText={(val) => updateField('seasonFrom', val)}
+                    placeholder="DD/MM/YYYY"
+                  />
+                </View>
+                <View style={{ flex: 1, marginLeft: 8 }}>
+                  <Text style={styles.fieldLabel}>Season End Date</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.seasonTo}
+                    onChangeText={(val) => updateField('seasonTo', val)}
+                    placeholder="DD/MM/YYYY"
+                  />
+                </View>
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 4: SAFETY & EMERGENCY SOPS                                           */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 4 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Emergency & Evacuation Protocol</Text>
+
+              <View style={styles.infoCard}>
+                <Text style={styles.infoCardTitle}>Department Safety Norms Compliance</Text>
+                <Text style={styles.infoCardBody}>
+                  All operators must maintain verified linkages with local district disaster management authorities
+                  (DDMA) and designated trauma care facilities prior to taking tourists.
+                </Text>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Nearest Tie-Up Hospital / Trauma Centre<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.tieUpHospitalName && styles.inputErrorBorder]}
+                  value={formData.tieUpHospitalName}
+                  onChangeText={(val) => updateField('tieUpHospitalName', val)}
+                />
+              </View>
+
+              <View style={styles.rowTwoCols}>
+                <View style={{ flex: 1, marginRight: 8 }}>
+                  <Text style={styles.fieldLabel}>Distance to Hospital</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.hospitalDistanceKm}
+                    onChangeText={(val) => updateField('hospitalDistanceKm', val)}
+                  />
+                </View>
+                <View style={{ flex: 1, marginLeft: 8 }}>
+                  <Text style={styles.fieldLabel}>
+                    Emergency Phone<Text style={styles.requiredAsterisk}>*</Text>
+                  </Text>
+                  <TextInput
+                    style={[styles.textInput, formErrors.emergencyContact && styles.inputErrorBorder]}
+                    value={formData.emergencyContact}
+                    onChangeText={(val) => updateField('emergencyContact', val)}
+                    keyboardType="phone-pad"
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Ambulance & Evacuation Readiness</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.ambulanceStandby}
+                  onChangeText={(val) => updateField('ambulanceStandby', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Ux4gCheckbox
+                  label="Standard Operating Procedure (SOP) verified and signed by Technical Director"
+                  isRequired={true}
+                  value={formData.sopDocumentUploaded}
+                  onChanged={(v) => updateField('sopDocumentUploaded', !!v)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Ux4gCheckbox
+                  label="Comprehensive Emergency Action Plan (EAP) submitted to District Police & Forest Office"
+                  isRequired={true}
+                  value={formData.emergencyPlanReady}
+                  onChanged={(v) => updateField('emergencyPlanReady', !!v)}
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 5: EQUIPMENT & FITNESS INSPECTION                                    */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 5 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Technical Gear & Safety Equipment</Text>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Equipment Inventory Summary<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textAreaInput, formErrors.equipmentInventoryCount && styles.inputErrorBorder]}
+                  value={formData.equipmentInventoryCount}
+                  onChangeText={(val) => updateField('equipmentInventoryCount', val)}
+                  multiline={true}
+                  numberOfLines={3}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Safety Standard Compliance</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.safetyStandard}
+                  onChangeText={(val) => updateField('safetyStandard', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Last Technical Safety Audit Date</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.lastInspectionDate}
+                  onChangeText={(val) => updateField('lastInspectionDate', val)}
+                  placeholder="DD/MM/YYYY"
+                />
+              </View>
+
+              <View style={styles.uploadCard}>
+                <View style={styles.uploadIconContainer}>
+                  <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+                    <Path
+                      d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"
+                      stroke={UX4GColors.primary}
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={{ flex: 1, marginLeft: 12 }}>
+                  <Text style={styles.uploadCardTitle}>Equipment Fitness Certificate</Text>
+                  <Text style={styles.uploadCardSubtitle}>Annual certificate issued by authorized testing lab</Text>
+                </View>
+                <View style={styles.uploadedCheck}>
+                  <Text style={styles.uploadedCheckText}>✓ Attached</Text>
+                </View>
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 6: GUIDES & CERTIFIED INSTRUCTORS                                    */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 6 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Instructor Qualifications & Licenses</Text>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Lead Instructor / Guide Name<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.leadInstructorName && styles.inputErrorBorder]}
+                  value={formData.leadInstructorName}
+                  onChangeText={(val) => updateField('leadInstructorName', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Certifying Academy / Body</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.certifyingBody}
+                  onChangeText={(val) => updateField('certifyingBody', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  License / Certificate ID No<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.instructorLicenseNo && styles.inputErrorBorder]}
+                  value={formData.instructorLicenseNo}
+                  onChangeText={(val) => updateField('instructorLicenseNo', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Instructor to Participant Ratio</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.instructorRatio}
+                  onChangeText={(val) => updateField('instructorRatio', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Ux4gCheckbox
+                  label="All operating guides hold valid Wilderness First Aid (WFA) and CPR certification"
+                  isRequired={true}
+                  value={formData.wildernessFirstAidCertified}
+                  onChanged={(v) => updateField('wildernessFirstAidCertified', !!v)}
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 7: INSURANCE & COMPLIANCE                                            */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 7 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Liability & Passenger Cover</Text>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>
+                  Third-Party Comprehensive Policy No<Text style={styles.requiredAsterisk}>*</Text>
+                </Text>
+                <TextInput
+                  style={[styles.textInput, formErrors.insurancePolicyNo && styles.inputErrorBorder]}
+                  value={formData.insurancePolicyNo}
+                  onChangeText={(val) => updateField('insurancePolicyNo', val)}
+                />
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Insurance Underwriting Company</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.insurerName}
+                  onChangeText={(val) => updateField('insurerName', val)}
+                />
+              </View>
+
+              <View style={styles.rowTwoCols}>
+                <View style={{ flex: 1, marginRight: 8 }}>
+                  <Text style={styles.fieldLabel}>Total Liability Cover</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.liabilityCoverAmount}
+                    onChangeText={(val) => updateField('liabilityCoverAmount', val)}
+                  />
+                </View>
+                <View style={{ flex: 1, marginLeft: 8 }}>
+                  <Text style={styles.fieldLabel}>Passenger Personal Cover</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={formData.passengerCoverPerPerson}
+                    onChangeText={(val) => updateField('passengerCoverPerPerson', val)}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fieldBlock}>
+                <Text style={styles.fieldLabel}>Policy Valid Until</Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={formData.insuranceValidTill}
+                  onChangeText={(val) => updateField('insuranceValidTill', val)}
+                  placeholder="DD/MM/YYYY"
+                />
+              </View>
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 8: FEE & PAYMENT                                                     */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 8 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Fee Details</Text>
+
+              {/* Fee Summary Card */}
+              <View style={styles.feeCard}>
+                <Text style={styles.feeCardHeader}>Adventure Activity Approval · UK-ADV-2026-009412</Text>
+
+                <View style={styles.feeCardRow}>
+                  <Text style={styles.feeItemLabel}>Technical Safety Inspection Fee</Text>
+                  <Text style={styles.feeItemAmount}>₹5,000</Text>
+                </View>
+                <View style={styles.feeCardRow}>
+                  <Text style={styles.feeItemLabel}>Departmental Registration & License Fee</Text>
+                  <Text style={styles.feeItemAmount}>₹2,500</Text>
+                </View>
+
+                <View style={styles.feeDivider} />
+
+                <View style={styles.feeCardRowTotal}>
+                  <Text style={styles.feeTotalLabel}>Total payable</Text>
+                  <Text style={styles.feeTotalAmount}>₹7,500</Text>
+                </View>
+              </View>
+
+              {/* Mode of Payment */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Mode of Payment</Text>
+              <Text style={styles.feeSubNotice}>₹7,500 payable for UK-ADV-2026-009412.</Text>
+
+              {/* Payment Option 1: UPI */}
+              <TouchableOpacity
+                style={[styles.paymentCard, formData.paymentMethod === 'upi' && styles.paymentCardSelected]}
+                onPress={() => updateField('paymentMethod', 'upi')}
+                activeOpacity={0.8}
+              >
+                <View style={styles.paymentRadioRow}>
+                  <View style={styles.radioOuterCircle}>
+                    {formData.paymentMethod === 'upi' && <View style={styles.radioInnerCircle} />}
+                  </View>
+                  <View style={{ marginLeft: 12 }}>
+                    <Text style={styles.paymentOptionTitle}>UPI</Text>
+                    <Text style={styles.paymentOptionSub}>Pay with Google Pay, PhonePe, Paytm or BHIM</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              {formData.paymentMethod === 'upi' && (
+                <View style={styles.paymentDetailBox}>
+                  <Text style={styles.fieldLabel}>
+                    UPI ID<Text style={styles.requiredAsterisk}>*</Text>
+                  </Text>
+                  <TextInput
+                    style={[styles.textInput, formErrors.upiId && styles.inputErrorBorder]}
+                    placeholder="e.g. name@upi"
+                    value={formData.upiId}
+                    onChangeText={(v) => updateField('upiId', v)}
+                  />
+                  {formErrors.upiId && <Text style={styles.errorHelperText}>{formErrors.upiId}</Text>}
+                </View>
+              )}
+
+              {/* Payment Option 2: Card */}
+              <TouchableOpacity
+                style={[
+                  styles.paymentCard,
+                  formData.paymentMethod === 'card' && styles.paymentCardSelected,
+                  { marginTop: 12 },
+                ]}
+                onPress={() => updateField('paymentMethod', 'card')}
+                activeOpacity={0.8}
+              >
+                <View style={styles.paymentRadioRow}>
+                  <View style={styles.radioOuterCircle}>
+                    {formData.paymentMethod === 'card' && <View style={styles.radioInnerCircle} />}
+                  </View>
+                  <View style={{ marginLeft: 12 }}>
+                    <Text style={styles.paymentOptionTitle}>Debit / Credit Card</Text>
+                    <Text style={styles.paymentOptionSub}>Visa, MasterCard, RuPay</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              {formData.paymentMethod === 'card' && (
+                <View style={styles.paymentDetailBox}>
+                  <Text style={styles.fieldLabel}>
+                    Card Number<Text style={styles.requiredAsterisk}>*</Text>
+                  </Text>
+                  <TextInput
+                    style={[styles.textInput, formErrors.card && styles.inputErrorBorder]}
+                    placeholder="XXXX - XXXX - XXXX - XXXX"
+                    value={formData.cardNumber}
+                    onChangeText={(v) => updateField('cardNumber', v)}
+                    keyboardType="number-pad"
+                  />
+                  <View style={[styles.rowTwoCols, { marginTop: 12 }]}>
+                    <View style={{ flex: 1, marginRight: 8 }}>
+                      <Text style={styles.fieldLabel}>Expiry Date</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder="MM/YY"
+                        value={formData.cardExpiry}
+                        onChangeText={(v) => updateField('cardExpiry', v)}
+                      />
+                    </View>
+                    <View style={{ flex: 1, marginLeft: 8 }}>
+                      <Text style={styles.fieldLabel}>CVV</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholder="XXX"
+                        value={formData.cardCvv}
+                        onChangeText={(v) => updateField('cardCvv', v)}
+                        secureTextEntry={true}
+                        maxLength={4}
+                      />
+                    </View>
+                  </View>
+                </View>
+              )}
+
+              {/* Payment Option 3: Net Banking */}
+              <TouchableOpacity
+                style={[
+                  styles.paymentCard,
+                  formData.paymentMethod === 'netbanking' && styles.paymentCardSelected,
+                  { marginTop: 12 },
+                ]}
+                onPress={() => updateField('paymentMethod', 'netbanking')}
+                activeOpacity={0.8}
+              >
+                <View style={styles.paymentRadioRow}>
+                  <View style={styles.radioOuterCircle}>
+                    {formData.paymentMethod === 'netbanking' && <View style={styles.radioInnerCircle} />}
+                  </View>
+                  <View style={{ marginLeft: 12 }}>
+                    <Text style={styles.paymentOptionTitle}>Net Banking</Text>
+                    <Text style={styles.paymentOptionSub}>60+ major scheduled banks supported</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              {formData.paymentMethod === 'netbanking' && (
+                <View style={styles.paymentDetailBox}>
+                  <Text style={styles.fieldLabel}>
+                    Choose Your Bank<Text style={styles.requiredAsterisk}>*</Text>
+                  </Text>
+                  <View style={styles.bankGrid}>
+                    {['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Punjab National Bank'].map(
+                      (b) => (
+                        <TouchableOpacity
+                          key={b}
+                          style={[styles.bankChip, formData.selectedBank === b && styles.bankChipSelected]}
+                          onPress={() => updateField('selectedBank', b)}
+                        >
+                          <Text
+                            style={[
+                              styles.bankChipText,
+                              formData.selectedBank === b && styles.bankChipTextSelected,
+                            ]}
+                          >
+                            {b}
+                          </Text>
+                        </TouchableOpacity>
+                      )
+                    )}
+                  </View>
+                  {formErrors.bank && <Text style={styles.errorHelperText}>{formErrors.bank}</Text>}
+                </View>
+              )}
+            </View>
+          )}
+
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {/* STEP 9: ACKNOWLEDGEMENT & CREDENTIAL                                      */}
+          {/* ═════════════════════════════════════════════════════════════════════════ */}
+          {step === 9 && (
+            <View style={styles.formContainer}>
+              <Text style={styles.sectionHeading}>Approval Application Details</Text>
+
+              {/* Green Success Banner */}
+              <View style={styles.successBanner}>
+                <View style={styles.successIconCol}>
+                  <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} fill="#16A34A" />
+                    <Path
+                      d="M8 12.5l2.5 2.5 5.5-5.5"
+                      stroke="#FFFFFF"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </Svg>
+                </View>
+                <View style={{ flex: 1, marginLeft: 10 }}>
+                  <Text style={styles.successBannerText}>
+                    Adventure Activity Application <Text style={{ fontWeight: '700' }}>UK-ADV-2026-009412</Text>{' '}
+                    registered on 24 September 2026. On-site technical inspection is scheduled for{' '}
+                    <Text style={{ fontWeight: '700' }}>02 October 2026</Text>.
+                  </Text>
+                </View>
+              </View>
+
+              <Text style={styles.refNumberLabel}>Application Reference</Text>
+              <Text style={styles.refNumberValue}>UK-ADV-2026-009412</Text>
+
+              {/* High Quality Verifiable QR Credential */}
+              <View style={styles.qrContainer}>
+                <Svg width={230} height={230} viewBox="0 0 29 29">
+                  <Path d={PERMIT_QR_PATH_D} fill="#111827" />
+                </Svg>
+              </View>
+
+              <View style={styles.buttonActionGroup}>
+                <TouchableOpacity style={styles.primaryActionButton} activeOpacity={0.8}>
+                  <Text style={styles.primaryActionButtonText}>Download acknowledgement</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.secondaryActionButton} activeOpacity={0.8}>
+                  <Text style={styles.secondaryActionButtonText}>Save to phone</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Registered Unit Details */}
+              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Applicant & Activity Summary</Text>
+              <View style={styles.summaryCard}>
+                <View style={styles.summaryItem}>
+                  <Text style={styles.summaryItemLabel}>Operator</Text>
+                  <Text style={styles.summaryItemValue}>{formData.enterpriseName}</Text>
+                </View>
+                <View style={styles.summaryDivider} />
+                <View style={styles.summaryItem}>
+                  <Text style={styles.summaryItemLabel}>Activity</Text>
+                  <Text style={styles.summaryItemValue}>
+                    {formData.activityDomain === 'land'
+                      ? 'Trekking & Mountaineering'
+                      : formData.activityDomain === 'water'
+                      ? 'White Water Rafting'
+                      : 'Paragliding & Air Sports'}
+                  </Text>
+                </View>
+                <View style={styles.summaryDivider} />
+                <View style={styles.summaryItem}>
+                  <Text style={styles.summaryItemLabel}>Stretch / Zone</Text>
+                  <Text style={styles.summaryItemValue}>{formData.activityLocation}</Text>
+                </View>
+                <View style={styles.summaryDivider} />
+                <View style={styles.summaryItem}>
+                  <Text style={styles.summaryItemLabel}>Lead Instructor</Text>
+                  <Text style={styles.summaryItemValue}>{formData.leadInstructorName}</Text>
+                </View>
+              </View>
+
+              {/* Info Note on Inspection */}
+              <View style={styles.infoNoticeCard}>
+                <Svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8, marginTop: 2 }}>
+                  <Circle cx={12} cy={12} r={10} stroke="#0284C7" strokeWidth={2} />
+                  <Path d="M12 16v-4M12 8h.01" stroke="#0284C7" strokeWidth={2} strokeLinecap="round" />
+                </Svg>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.infoNoticeText}>
+                    The Joint Technical Inspection Committee will inspect the equipment stock, first-aid equipment,
+                    and guide certifications at the base camp before the final Certificate of Approval is issued.
+                  </Text>
+                </View>
+              </View>
+            </View>
+          )}
+
+          <View style={{ height: 100 }} />
+        </ScrollView>
+
+        {/* ─── STICKY BOTTOM ACTION BAR ─── */}
+        <View style={styles.bottomActionBar}>
+          {step < 8 && (
+            <>
+              <TouchableOpacity
+                style={styles.primaryActionButton}
+                onPress={handleContinue}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.primaryActionButtonText}>
+                  {step === 1 ? 'Start the application' : 'Continue'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.secondaryActionButton}
+                onPress={handleSaveDraft}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
+              </TouchableOpacity>
+            </>
+          )}
+
+          {step === 8 && (
+            <>
+              <TouchableOpacity
+                style={styles.primaryActionButton}
+                onPress={handleContinue}
+                activeOpacity={0.8}
+                disabled={isProcessingPayment}
+              >
+                <Text style={styles.primaryActionButtonText}>
+                  {isProcessingPayment ? 'Processing...' : 'Pay ₹7,500'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.secondaryActionButton}
+                onPress={handleSaveDraft}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
+              </TouchableOpacity>
+            </>
+          )}
+
+          {step === 9 && (
+            <TouchableOpacity
+              style={styles.primaryActionButton}
+              onPress={() => setStep(1)}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.primaryActionButtonText}>Back to my applications</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {/* ─── MODAL: HOW TO OBTAIN PREREQUISITE REGISTRATIONS ─── */}
+        <Modal
+          visible={showPrereqModal}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowPrereqModal(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalCard}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Required Prerequisite Registrations</Text>
+                <TouchableOpacity onPress={() => setShowPrereqModal(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                  <Text style={styles.modalCloseText}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <ScrollView style={styles.modalBody}>
+                <Text style={styles.modalParagraph}>
+                  The Adventure Tourism Safety and Operational Regulations require operators to possess four active
+                  registrations prior to departmental approval:
+                </Text>
+
+                <View style={styles.prereqItem}>
+                  <Text style={styles.prereqNumber}>1</Text>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.prereqTitle}>Portal Account</Text>
+                    <Text style={styles.prereqDesc}>
+                      An active single-sign-on login account on the National Single Window System or State Tourism
+                      Services Portal.
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.prereqItem}>
+                  <Text style={styles.prereqNumber}>2</Text>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.prereqTitle}>Applicant Profile</Text>
+                    <Text style={styles.prereqDesc}>
+                      A fully verified citizen/director profile authenticated with Aadhaar / DigiLocker eKYC.
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.prereqItem}>
+                  <Text style={styles.prereqNumber}>3</Text>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.prereqTitle}>Registered Unit or Establishment</Text>
+                    <Text style={styles.prereqDesc}>
+                      MSME Udyam Registration Certificate or Shops & Commercial Establishment Act license under local
+                      municipal jurisdiction.
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.prereqItem}>
+                  <Text style={styles.prereqNumber}>4</Text>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.prereqTitle}>Sector Tourism Registration</Text>
+                    <Text style={styles.prereqDesc}>
+                      State Department of Tourism Tour/Adventure Operator classification or provisional registration.
+                    </Text>
+                  </View>
+                </View>
+              </ScrollView>
+              <TouchableOpacity
+                style={styles.modalPrimaryBtn}
+                onPress={() => setShowPrereqModal(false)}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.modalPrimaryBtnText}>I Understand</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* ─── PAYMENT PROCESSING MODAL ─── */}
+        <Modal visible={isProcessingPayment} transparent={true} animationType="fade">
+          <View style={styles.modalOverlay}>
+            <View style={styles.redirectModalCard}>
+              <View style={styles.spinnerCircle}>
+                <Ux4gSpinner size="large" color={UX4GColors.primary} />
+              </View>
+              <Text style={styles.redirectTitle}>Redirecting..</Text>
+              <Text style={styles.redirectSubtitle}>
+                Please do not close or refresh this page. We are securely processing your payment.
+              </Text>
+            </View>
+          </View>
+        </Modal>
+
+        {/* ─── DRAFT SAVED TOAST ─── */}
+        {showDraftToast && (
+          <View style={styles.toastContainer}>
+            <Text style={styles.toastText}>✓ Draft saved successfully ({lastSavedTime})</Text>
+          </View>
+        )}
+      </SafeAreaView>
+    </Ux4gThemeProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  goiTopBar: {
+    height: 34,
+    backgroundColor: '#4A2BC2',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+  goiLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  goiFlag: {
+    marginRight: 8,
+  },
+  goiText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  goiRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  appHeader: {
+    height: 60,
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  headerBrand: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuButton: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+  },
+  menuBar: {
+    width: 18,
+    height: 2,
+    backgroundColor: '#374151',
+    borderRadius: 1,
+  },
+  savedBannerRow: {
+    backgroundColor: '#F7FEF7',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ECFDF5',
+  },
+  savedPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F2FCEF',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 16,
+  },
+  savedText: {
+    color: '#16A34A',
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  stepperDivider: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginHorizontal: 16,
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  mainScrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  },
+  formContainer: {
+    width: '100%',
+  },
+  sectionHeading: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 12,
+  },
+  warningCallout: {
+    backgroundColor: '#FFFBEB',
+    borderWidth: 1,
+    borderColor: '#FDE68A',
+    borderRadius: 8,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  warningIconContainer: {
+    marginRight: 12,
+    marginTop: 2,
+  },
+  warningTextContainer: {
+    flex: 1,
+  },
+  warningParagraph: {
+    fontSize: 13.5,
+    lineHeight: 20,
+    color: '#92400E',
+    fontWeight: '400',
+  },
+  warningLinkTouch: {
+    marginTop: 10,
+    alignSelf: 'flex-start',
+  },
+  warningLinkText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#B45309',
+  },
+  fieldBlock: {
+    marginBottom: 16,
+  },
+  fieldLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+    marginBottom: 8,
+  },
+  requiredAsterisk: {
+    color: '#DC2626',
+    fontWeight: '700',
+  },
+  radioOptionGroup: {
+    paddingLeft: 2,
+  },
+  declarationBlock: {
+    marginBottom: 16,
+    paddingLeft: 2,
+  },
+  errorHelperText: {
+    fontSize: 12,
+    color: '#DC2626',
+    marginTop: 4,
+    fontWeight: '500',
+  },
+  textInput: {
+    height: 46,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    fontSize: 14,
+    color: '#111827',
+    backgroundColor: '#FFFFFF',
+  },
+  textAreaInput: {
+    minHeight: 80,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 14,
+    color: '#111827',
+    backgroundColor: '#FFFFFF',
+    textAlignVertical: 'top',
+  },
+  inputErrorBorder: {
+    borderColor: '#DC2626',
+  },
+  rowTwoCols: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  readonlyPill: {
+    backgroundColor: '#F3F4F6',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  readonlyPillText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4B5563',
+  },
+  infoCard: {
+    backgroundColor: '#EFF6FF',
+    borderWidth: 1,
+    borderColor: '#BFDBFE',
+    borderRadius: 8,
+    padding: 14,
+    marginBottom: 16,
+  },
+  infoCardTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#1E40AF',
+    marginBottom: 4,
+  },
+  infoCardBody: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: '#1E3A8A',
+  },
+  uploadCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 12,
+    backgroundColor: '#F9FAFB',
+    marginBottom: 16,
+  },
+  uploadIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#EEF2FF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  uploadCardTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  uploadCardSubtitle: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 2,
+  },
+  uploadedCheck: {
+    backgroundColor: '#DEF7EC',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  uploadedCheckText: {
+    color: '#03543F',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  feeCard: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 16,
+  },
+  feeCardHeader: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 16,
+  },
+  feeCardRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  feeItemLabel: {
+    fontSize: 14,
+    color: '#4B5563',
+  },
+  feeItemAmount: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  feeDivider: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 12,
+  },
+  feeCardRowTotal: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  feeTotalLabel: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  feeTotalAmount: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  feeSubNotice: {
+    fontSize: 13.5,
+    color: '#4B5563',
+    marginBottom: 12,
+  },
+  paymentCard: {
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 14,
+    backgroundColor: '#FFFFFF',
+  },
+  paymentCardSelected: {
+    borderColor: '#4A2BC2',
+    backgroundColor: '#F5F3FF',
+  },
+  paymentRadioRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  radioOuterCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#4A2BC2',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioInnerCircle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#4A2BC2',
+  },
+  paymentOptionTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  paymentOptionSub: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginTop: 2,
+  },
+  paymentDetailBox: {
+    borderLeftWidth: 2,
+    borderLeftColor: '#4A2BC2',
+    paddingLeft: 12,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  bankGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  bankChip: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 6,
+    backgroundColor: '#FFFFFF',
+    marginBottom: 8,
+    marginRight: 8,
+  },
+  bankChipSelected: {
+    borderColor: '#4A2BC2',
+    backgroundColor: '#EDE9FE',
+  },
+  bankChipText: {
+    fontSize: 13,
+    color: '#374151',
+  },
+  bankChipTextSelected: {
+    color: '#4A2BC2',
+    fontWeight: '600',
+  },
+  successBanner: {
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#BBF7D0',
+    borderRadius: 8,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
+  successIconCol: {
+    marginTop: 2,
+  },
+  successBannerText: {
+    fontSize: 13.5,
+    lineHeight: 20,
+    color: '#15803D',
+  },
+  refNumberLabel: {
+    fontSize: 13,
+    color: '#6B7280',
+    marginBottom: 2,
+  },
+  refNumberValue: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#111827',
+    marginBottom: 16,
+  },
+  qrContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 12,
+    marginBottom: 20,
+  },
+  buttonActionGroup: {
+    marginBottom: 20,
+  },
+  summaryCard: {
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 14,
+    backgroundColor: '#FAFAFA',
+    marginBottom: 16,
+  },
+  summaryItem: {
+    paddingVertical: 6,
+  },
+  summaryItemLabel: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginBottom: 2,
+  },
+  summaryItemValue: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#111827',
+  },
+  summaryDivider: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 4,
+  },
+  infoNoticeCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#F0F9FF',
+    borderWidth: 1,
+    borderColor: '#BAE6FD',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 20,
+  },
+  infoNoticeText: {
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: '#0369A1',
+  },
+  bottomActionBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 24,
+  },
+  primaryActionButton: {
+    height: 48,
+    backgroundColor: '#4A2BC2',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryActionButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  secondaryActionButton: {
+    height: 48,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#4A2BC2',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  secondaryActionButtonText: {
+    color: '#4A2BC2',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalCard: {
+    width: '100%',
+    maxHeight: '80%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+    paddingBottom: 10,
+  },
+  modalTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  modalCloseText: {
+    fontSize: 18,
+    color: '#6B7280',
+    paddingHorizontal: 6,
+  },
+  modalBody: {
+    marginBottom: 16,
+  },
+  modalParagraph: {
+    fontSize: 13.5,
+    lineHeight: 20,
+    color: '#4B5563',
+    marginBottom: 14,
+  },
+  prereqItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 14,
+  },
+  prereqNumber: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#EDE9FE',
+    color: '#4A2BC2',
+    fontSize: 13,
+    fontWeight: '700',
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  prereqTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 2,
+  },
+  prereqDesc: {
+    fontSize: 12.5,
+    lineHeight: 18,
+    color: '#6B7280',
+  },
+  modalPrimaryBtn: {
+    height: 44,
+    backgroundColor: '#4A2BC2',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalPrimaryBtnText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  redirectModalCard: {
+    width: 280,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 24,
+    alignItems: 'center',
+  },
+  spinnerCircle: {
+    marginBottom: 16,
+  },
+  redirectTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 8,
+  },
+  redirectSubtitle: {
+    fontSize: 13,
+    color: '#6B7280',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  toastContainer: {
+    position: 'absolute',
+    top: 60,
+    alignSelf: 'center',
+    backgroundColor: '#111827',
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 6,
+  },
+  toastText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+});
+`;
+  }, []);
+
+  const handleDownloadZip = async () => {
+    try {
+      setIsDownloadingZip(true);
+      const blob = await generateAdventureActivityApprovalZip({
+        appCode: fullAppCodeString,
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ux4g-adventure-activity-approval-flow.zip';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setToastMessage('ZIP file downloaded successfully!');
+      setTimeout(() => setToastMessage(null), 3000);
+    } catch (e) {
+      console.error(e);
+      setToastMessage('Failed to download ZIP file.');
+      setTimeout(() => setToastMessage(null), 3000);
+    } finally {
+      setIsDownloadingZip(false);
+    }
+  };
+
+  const snackUrl = useMemo(() => {
+    return `https://snack.expo.dev/embedded/${SNACK_ID}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${
+      isDark ? 'dark' : 'light'
+    }`;
+  }, [isDark]);
+
+  return (
+    <div
+      style={{
+        padding: '24px 32px',
+        maxWidth: 1200,
+        margin: '0 auto',
+        fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+      }}
+    >
+      {/* Top Section Header */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          marginBottom: 20,
+          flexWrap: 'wrap',
+          gap: 16,
+        }}
+      >
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+            <h1
+              style={{
+                fontSize: 26,
+                fontWeight: 700,
+                color: isDark ? UX4GColors.neutral50 : UX4GColors.neutral900,
+                margin: 0,
+              }}
+            >
+              Adventure Activity Approval Flow
+            </h1>
+            <span
+              style={{
+                display: 'inline-block',
+                padding: '3px 10px',
+                borderRadius: 12,
+                fontSize: 12,
+                fontWeight: 600,
+                backgroundColor: isDark ? UX4GColors.primary800 : UX4GColors.primary50,
+                color: UX4GColors.primary600,
+                border: `1px solid ${isDark ? UX4GColors.primary700 : UX4GColors.primary200}`,
+              }}
+            >
+              Service Pattern • 9-Step Complete Flow
+            </span>
+          </div>
+          <p
+            style={{
+              fontSize: 14,
+              margin: 0,
+              color: isDark ? UX4GColors.neutral400 : UX4GColors.neutral500,
+              maxWidth: 720,
+              lineHeight: 1.5,
+            }}
+          >
+            The official UX4G Adventure Activity Approval service pattern for operators seeking safety, domain, and
+            operational clearance for adventure sports on land, water, and in the air.
+          </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button
+            onClick={handleDownloadZip}
+            disabled={isDownloadingZip}
+            style={{
+              backgroundColor: UX4GColors.primary,
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: 8,
+              padding: '10px 18px',
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: isDownloadingZip ? 'wait' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {isDownloadingZip ? 'Generating ZIP...' : 'Download Code (ZIP)'}
+          </button>
+        </div>
+      </div>
+
+      {/* Embedded Expo Snack Simulator */}
+      <div
+        style={{
+          borderRadius: 12,
+          overflow: 'hidden',
+          border: `1px solid ${isDark ? '#334155' : '#E2E8F0'}`,
+          backgroundColor: isDark ? '#0F172A' : '#FFFFFF',
+          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)',
+        }}
+      >
+        <div
+          style={{
+            padding: '12px 16px',
+            backgroundColor: isDark ? '#1E293B' : '#F8FAFC',
+            borderBottom: `1px solid ${isDark ? '#334155' : '#E2E8F0'}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span
+              style={{
+                display: 'inline-block',
+                width: 10,
+                height: 10,
+                borderRadius: '50%',
+                backgroundColor: '#22C55E',
+              }}
+            />
+            <span style={{ fontSize: 13, fontWeight: 600, color: isDark ? '#E2E8F0' : '#334155' }}>
+              Interactive Mobile Preview (Expo Snack)
+            </span>
+          </div>
+          <span style={{ fontSize: 12, color: isDark ? '#94A3B8' : '#64748B' }}>
+            9 Steps · Complete Unified Flow (Steps 1 → 9)
+          </span>
+        </div>
+        <div style={{ minHeight: 880, width: '100%' }}>
+          <iframe
+            src={snackUrl}
+            style={{
+              width: '100%',
+              height: '880px',
+              border: 'none',
+              borderRadius: '8px',
+              display: 'block',
+            }}
+            title="Expo Snack Adventure Activity Approval Flow Preview"
+          />
+        </div>
+      </div>
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 24,
+            right: 24,
+            backgroundColor: '#1E293B',
+            color: '#FFFFFF',
+            padding: '12px 20px',
+            borderRadius: 8,
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            zIndex: 9999,
+            fontSize: 14,
+            fontWeight: 500,
+          }}
+        >
+          {toastMessage}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AdventureActivityApprovalFlowDoc;
