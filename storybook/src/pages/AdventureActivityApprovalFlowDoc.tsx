@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'NtxSldA4p-N2Kh46ZAxo4';
+const SNACK_ID = 'qELgwsNZ5kZtzq9br5Ms5';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -28,6 +28,7 @@ import {
   Animated,
   Easing,
   Platform,
+  Alert,
 } from 'react-native';
 import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import {
@@ -318,9 +319,9 @@ export default function App() {
   const [isOnRecordDocsExpanded, setIsOnRecordDocsExpanded] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentDone, setPaymentDone] = useState(false);
-  const [paymentSubStep, setPaymentSubStep] = useState('mode'); // 'breakdown' | 'mode' (direct landing on mode of payment as requested)
+  const [paymentSubStep, setPaymentSubStep] = useState('success'); // 'breakdown' | 'mode' | 'success' (direct landing on Screen 13 Payment Successful as requested)
   const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
-  const [isRedirectingModalVisible, setIsRedirectingModalVisible] = useState(true); // Directly land on Screen 12 for testing as requested
+  const [isRedirectingModalVisible, setIsRedirectingModalVisible] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -488,6 +489,17 @@ export default function App() {
     setTimeout(() => setShowDraftToast(false), 2500);
   };
 
+  const handleDownloadReceipt = () => {
+    if (Platform.OS === 'web') {
+      alert('Payment receipt downloaded: PG2026HP00000TX.pdf');
+    } else {
+      Alert.alert(
+        'Receipt Downloaded',
+        'Payment receipt PG2026HP00000TX.pdf has been saved to your downloads.'
+      );
+    }
+  };
+
   const validateCurrentStep = () => {
     const errors = {};
     if (step === 1) {
@@ -574,7 +586,7 @@ export default function App() {
         if (!formData.feeNonRefundableAgreed) {
           errors.feeNonRefundableAgreed = 'Please confirm that you understand the fee is non-refundable';
         }
-      } else {
+      } else if (paymentSubStep === 'mode') {
         if (formData.paymentMethod === 'upi') {
           if (!formData.upiId || !formData.upiId.trim()) {
             errors.upiId = 'Please enter a valid UPI ID';
@@ -616,18 +628,28 @@ export default function App() {
         }
         return;
       }
-      // Process simulated payment with Screen 12 Redirecting Modal
-      setIsRedirectingModalVisible(true);
-      setTimeout(() => {
-        setIsRedirectingModalVisible(false);
-        setPaymentDone(true);
+      if (paymentSubStep === 'mode') {
+        // Process simulated payment with Screen 12 Redirecting Modal
+        setIsRedirectingModalVisible(true);
+        setTimeout(() => {
+          setIsRedirectingModalVisible(false);
+          setPaymentDone(true);
+          setPaymentSubStep('success'); // Advances to Screen 13 Payment Successful
+          handleSaveDraft();
+          if (scrollRef.current) {
+            scrollRef.current.scrollTo({ y: 0, animated: true });
+          }
+        }, 2500);
+        return;
+      }
+      if (paymentSubStep === 'success') {
         setStep(9);
         handleSaveDraft();
         if (scrollRef.current) {
           scrollRef.current.scrollTo({ y: 0, animated: true });
         }
-      }, 2500);
-      return;
+        return;
+      }
     }
 
     if (step < 9) {
@@ -640,15 +662,27 @@ export default function App() {
   };
 
   const handlePrevious = () => {
-    if (step === 8 && paymentSubStep === 'mode') {
-      setPaymentSubStep('breakdown');
-      if (scrollRef.current) {
-        scrollRef.current.scrollTo({ y: 0, animated: true });
+    if (step === 8) {
+      if (paymentSubStep === 'success') {
+        setPaymentSubStep('mode');
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({ y: 0, animated: true });
+        }
+        return;
       }
-      return;
+      if (paymentSubStep === 'mode') {
+        setPaymentSubStep('breakdown');
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({ y: 0, animated: true });
+        }
+        return;
+      }
     }
     if (step > 1) {
       setStep(step - 1);
+      if (step - 1 === 8) {
+        setPaymentSubStep('success');
+      }
       if (scrollRef.current) {
         scrollRef.current.scrollTo({ y: 0, animated: true });
       }
@@ -3723,6 +3757,68 @@ export default function App() {
                   )}
                 </>
               )}
+
+              {/* SUB-STEP 3: PAYMENT SUCCESSFUL (SCREEN 13: media_1794996136560_107affbd.png) */}
+              {paymentSubStep === 'success' && (
+                <View style={styles.paymentSuccessContainer}>
+                  {/* Big Green Success Badge */}
+                  <View style={styles.paymentSuccessBadgeOuter}>
+                    <View style={styles.paymentSuccessBadgeInner}>
+                      <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+                        <Path
+                          d="M5 13l4 4L19 7"
+                          stroke="#FFFFFF"
+                          strokeWidth={3}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    </View>
+                  </View>
+
+                  {/* Payment Successful Title */}
+                  <Text style={styles.paymentSuccessTitle}>Payment successful</Text>
+
+                  {/* Subtitle Description */}
+                  <Text style={styles.paymentSuccessSubtitle}>
+                    ₹{formData.feeAmount || '5,000'} paid to the Department of Tourism, Himachal Pradesh. Your application is now with the department.
+                  </Text>
+
+                  {/* Transaction Receipt Card */}
+                  <View style={styles.paymentReceiptCard}>
+                    <View style={styles.paymentReceiptRow}>
+                      <Text style={styles.paymentReceiptLabel}>Application number</Text>
+                      <Text style={styles.paymentReceiptValue}>{formData.feeApplicationId || 'AA-2026-000000'}</Text>
+                    </View>
+
+                    <View style={styles.paymentReceiptRow}>
+                      <Text style={styles.paymentReceiptLabel}>Amount paid</Text>
+                      <Text style={styles.paymentReceiptValue}>₹{formData.feeAmount || '5,000'}</Text>
+                    </View>
+
+                    <View style={styles.paymentReceiptRow}>
+                      <Text style={styles.paymentReceiptLabel}>Transaction ID</Text>
+                      <Text style={styles.paymentReceiptValue}>PG2026HP00000TX</Text>
+                    </View>
+
+                    <View style={styles.paymentReceiptRow}>
+                      <Text style={styles.paymentReceiptLabel}>Method</Text>
+                      <Text style={styles.paymentReceiptValue}>
+                        {formData.paymentMethod === 'netbanking'
+                          ? ('Net banking · ' + (formData.selectedBank ? formData.selectedBank.replace(' Bank', '').trim() : 'HDFC'))
+                          : formData.paymentMethod === 'upi'
+                          ? ('UPI · ' + (formData.upiId || 'GPay'))
+                          : 'Debit / Credit Card'}
+                      </Text>
+                    </View>
+
+                    <View style={[styles.paymentReceiptRow, { marginBottom: 0 }]}>
+                      <Text style={styles.paymentReceiptLabel}>Date and time</Text>
+                      <Text style={styles.paymentReceiptValue}>14 Sep 2026, 11:20 AM IST</Text>
+                    </View>
+                  </View>
+                </View>
+              )}
             </View>
           )}
 
@@ -3863,6 +3959,8 @@ export default function App() {
                       ? 'Processing...'
                       : paymentSubStep === 'breakdown'
                       ? 'Pay and submit'
+                      : paymentSubStep === 'success'
+                      ? 'Continue to acknowledgement'
                       : formData.paymentMethod === 'netbanking'
                       ? 'Continue to bank'
                       : 'Pay ₹' + (formData.feeAmount || '5,000')}
@@ -3871,10 +3969,12 @@ export default function App() {
 
                 <TouchableOpacity
                   style={styles.secondaryActionButton}
-                  onPress={handleSaveDraft}
+                  onPress={paymentSubStep === 'success' ? handleDownloadReceipt : handleSaveDraft}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
+                  <Text style={styles.secondaryActionButtonText}>
+                    {paymentSubStep === 'success' ? 'Download receipt' : 'Save as draft'}
+                  </Text>
                 </TouchableOpacity>
               </>
             )}
@@ -4760,6 +4860,72 @@ const styles = StyleSheet.create({
     color: '#4B5563',
     lineHeight: 22,
     textAlign: 'center',
+  },
+  // Screen 13: Payment Successful Styles (Matches media_1794996136560_107affbd.png)
+  paymentSuccessContainer: {
+    alignItems: 'center',
+    paddingTop: 8,
+    paddingBottom: 4,
+  },
+  paymentSuccessBadgeOuter: {
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    backgroundColor: '#DCFCE7',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+    marginTop: 6,
+  },
+  paymentSuccessBadgeInner: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#16A34A',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paymentSuccessTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  paymentSuccessSubtitle: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: '#374151',
+    textAlign: 'center',
+    paddingHorizontal: 8,
+    marginBottom: 24,
+  },
+  paymentReceiptCard: {
+    width: '100%',
+    backgroundColor: '#DCFCE7',
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+    borderRadius: 12,
+    paddingVertical: 18,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+  },
+  paymentReceiptRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  paymentReceiptLabel: {
+    fontSize: 14,
+    color: '#4B5563',
+    fontWeight: '400',
+  },
+  paymentReceiptValue: {
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '600',
+    textAlign: 'right',
   },
   paymentCard: {
     borderWidth: 1,
