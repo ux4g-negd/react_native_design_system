@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'Z8mVfWKHZIdzzQ3wiU2YJ';
+const SNACK_ID = 'u4xhZ_kINUkN46n4IJcN6';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -49,6 +49,31 @@ import {
 } from 'ux4g-react-native-components';
 
 import NationalEmblem from './NationalEmblem';
+
+// Helper to parse 'DD/MM/YYYY' or ISO string to Date object
+const parseDate = (str) => {
+  if (!str) return undefined;
+  if (str instanceof Date) return isNaN(str.getTime()) ? undefined : str;
+  const parts = String(str).replace(/\s+/g, '').split('/');
+  if (parts.length === 3) {
+    const d = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const y = parseInt(parts[2], 10);
+    const dt = new Date(y, m, d);
+    return isNaN(dt.getTime()) ? undefined : dt;
+  }
+  const dt = new Date(str);
+  return isNaN(dt.getTime()) ? undefined : dt;
+};
+
+// Helper to format Date object to 'DD/MM/YYYY' string
+const formatDate = (date) => {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) return '';
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = String(date.getFullYear());
+  return [d, m, y].join('/');
+};
 
 // ─── UNION LOGO (Union.svg UX4G Logo) ───
 const UnionLogo = () => (
@@ -189,7 +214,7 @@ export default function App() {
     // Step 3: Registration category (Matches media_1794977065300_4ab5953d.png)
     registrationCategory: '',
     sectorTourismRegNumber: '',
-    registrationIssueDate: '',
+    registrationIssueDate: '24/09/2024',
     registrationPeriod: '',
 
     // Legacy / downstream compatibility
@@ -1020,42 +1045,19 @@ export default function App() {
                 )}
               </View>
 
-              {/* Field 2: Date that registration was issued* */}
+              {/* Field 2: Date that registration was issued* (Ux4gDatePicker) */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>
-                  Date that registration was issued<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View
-                  style={[
-                    styles.dateInputWrapper,
-                    formErrors.registrationIssueDate && styles.inputErrorBorder,
-                  ]}
-                >
-                  <TextInput
-                    style={styles.dateTextInput}
-                    value={formData.registrationIssueDate}
-                    onChangeText={(val) => updateField('registrationIssueDate', val)}
-                    placeholder="DD / MM / YYYY"
-                    placeholderTextColor="#9CA3AF"
-                  />
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      if (!formData.registrationIssueDate) {
-                        updateField('registrationIssueDate', '24 / 09 / 2024');
-                      }
-                    }}
-                    style={styles.dateIconTouchable}
-                  >
-                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                      <Rect x={3} y={4} width={18} height={18} rx={2} stroke="#4B5563" strokeWidth={1.8} />
-                      <Path d="M16 2v4M8 2v4M3 10h18" stroke="#4B5563" strokeWidth={1.8} strokeLinecap="round" />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                {formErrors.registrationIssueDate && (
-                  <Text style={styles.errorHelperText}>{formErrors.registrationIssueDate}</Text>
-                )}
+                <Ux4gDatePicker
+                  label="Date that registration was issued"
+                  required
+                  placeholder="DD / MM / YYYY"
+                  initialDate={parseDate(formData.registrationIssueDate)}
+                  onDateSelected={(date) => {
+                    updateField('registrationIssueDate', formatDate(date));
+                  }}
+                  status={formErrors.registrationIssueDate ? 'error' : 'defaultStatus'}
+                  description={formErrors.registrationIssueDate}
+                />
 
                 {/* External link: I do not have this number — how do I get one? ↗ */}
                 <TouchableOpacity

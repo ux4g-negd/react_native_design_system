@@ -100246,7 +100246,7 @@ const styles = StyleSheet.create({
   },
 
 });
-`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="3pndB7MtFWluqVvfkBZ6O",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="u4xhZ_kINUkN46n4IJcN6",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -100281,6 +100281,31 @@ import {
 } from 'ux4g-react-native-components';
 
 import NationalEmblem from './NationalEmblem';
+
+// Helper to parse 'DD/MM/YYYY' or ISO string to Date object
+const parseDate = (str) => {
+  if (!str) return undefined;
+  if (str instanceof Date) return isNaN(str.getTime()) ? undefined : str;
+  const parts = String(str).replace(/s+/g, '').split('/');
+  if (parts.length === 3) {
+    const d = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const y = parseInt(parts[2], 10);
+    const dt = new Date(y, m, d);
+    return isNaN(dt.getTime()) ? undefined : dt;
+  }
+  const dt = new Date(str);
+  return isNaN(dt.getTime()) ? undefined : dt;
+};
+
+// Helper to format Date object to 'DD/MM/YYYY' string
+const formatDate = (date) => {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) return '';
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = String(date.getFullYear());
+  return [d, m, y].join('/');
+};
 
 // ─── UNION LOGO (Union.svg UX4G Logo) ───
 const UnionLogo = () => (
@@ -100421,7 +100446,7 @@ export default function App() {
     // Step 3: Registration category (Matches media_1794977065300_4ab5953d.png)
     registrationCategory: '',
     sectorTourismRegNumber: '',
-    registrationIssueDate: '',
+    registrationIssueDate: '24/09/2024',
     registrationPeriod: '',
 
     // Legacy / downstream compatibility
@@ -101252,42 +101277,19 @@ export default function App() {
                 )}
               </View>
 
-              {/* Field 2: Date that registration was issued* */}
+              {/* Field 2: Date that registration was issued* (Ux4gDatePicker) */}
               <View style={styles.fieldBlock}>
-                <Text style={styles.fieldLabel}>
-                  Date that registration was issued<Text style={styles.requiredAsterisk}>*</Text>
-                </Text>
-                <View
-                  style={[
-                    styles.dateInputWrapper,
-                    formErrors.registrationIssueDate && styles.inputErrorBorder,
-                  ]}
-                >
-                  <TextInput
-                    style={styles.dateTextInput}
-                    value={formData.registrationIssueDate}
-                    onChangeText={(val) => updateField('registrationIssueDate', val)}
-                    placeholder="DD / MM / YYYY"
-                    placeholderTextColor="#9CA3AF"
-                  />
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      if (!formData.registrationIssueDate) {
-                        updateField('registrationIssueDate', '24 / 09 / 2024');
-                      }
-                    }}
-                    style={styles.dateIconTouchable}
-                  >
-                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                      <Rect x={3} y={4} width={18} height={18} rx={2} stroke="#4B5563" strokeWidth={1.8} />
-                      <Path d="M16 2v4M8 2v4M3 10h18" stroke="#4B5563" strokeWidth={1.8} strokeLinecap="round" />
-                    </Svg>
-                  </TouchableOpacity>
-                </View>
-                {formErrors.registrationIssueDate && (
-                  <Text style={styles.errorHelperText}>{formErrors.registrationIssueDate}</Text>
-                )}
+                <Ux4gDatePicker
+                  label="Date that registration was issued"
+                  required
+                  placeholder="DD / MM / YYYY"
+                  initialDate={parseDate(formData.registrationIssueDate)}
+                  onDateSelected={(date) => {
+                    updateField('registrationIssueDate', formatDate(date));
+                  }}
+                  status={formErrors.registrationIssueDate ? 'error' : 'defaultStatus'}
+                  description={formErrors.registrationIssueDate}
+                />
 
                 {/* External link: I do not have this number — how do I get one? ↗ */}
                 <TouchableOpacity
