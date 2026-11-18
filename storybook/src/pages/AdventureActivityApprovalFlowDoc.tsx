@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'QiydLqYA3prtW_DhVHyN2';
+const SNACK_ID = '7c_s1HcU2I5PlWAV5Jn7-';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -27,6 +27,7 @@ import {
   Modal,
   Animated,
   Easing,
+  Platform,
 } from 'react-native';
 import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import {
@@ -1235,65 +1236,67 @@ export default function App() {
             </View>
           )}
 
-          <View style={{ height: 100 }} />
+          <View style={{ height: 20 }} />
         </ScrollView>
 
         {/* ─── STICKY BOTTOM ACTION BAR ─── */}
         <View style={styles.bottomActionBar}>
-          {step < 8 && (
-            <>
+          <View style={styles.bottomActionInner}>
+            {step < 8 && (
+              <>
+                <TouchableOpacity
+                  style={styles.primaryActionButton}
+                  onPress={handleContinue}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.primaryActionButtonText}>
+                    {step === 1 ? 'Start the application' : 'Continue'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.secondaryActionButton}
+                  onPress={handleSaveDraft}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
+                </TouchableOpacity>
+              </>
+            )}
+
+            {step === 8 && (
+              <>
+                <TouchableOpacity
+                  style={styles.primaryActionButton}
+                  onPress={handleContinue}
+                  activeOpacity={0.8}
+                  disabled={isProcessingPayment}
+                >
+                  <Text style={styles.primaryActionButtonText}>
+                    {isProcessingPayment ? 'Processing...' : 'Pay ₹7,500'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.secondaryActionButton}
+                  onPress={handleSaveDraft}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
+                </TouchableOpacity>
+              </>
+            )}
+
+            {step === 9 && (
               <TouchableOpacity
                 style={styles.primaryActionButton}
-                onPress={handleContinue}
+                onPress={() => setStep(1)}
                 activeOpacity={0.8}
               >
-                <Text style={styles.primaryActionButtonText}>
-                  {step === 1 ? 'Start the application' : 'Continue'}
-                </Text>
+                <Text style={styles.primaryActionButtonText}>Back to my applications</Text>
               </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.secondaryActionButton}
-                onPress={handleSaveDraft}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
-              </TouchableOpacity>
-            </>
-          )}
-
-          {step === 8 && (
-            <>
-              <TouchableOpacity
-                style={styles.primaryActionButton}
-                onPress={handleContinue}
-                activeOpacity={0.8}
-                disabled={isProcessingPayment}
-              >
-                <Text style={styles.primaryActionButtonText}>
-                  {isProcessingPayment ? 'Processing...' : 'Pay ₹7,500'}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.secondaryActionButton}
-                onPress={handleSaveDraft}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
-              </TouchableOpacity>
-            </>
-          )}
-
-          {step === 9 && (
-            <TouchableOpacity
-              style={styles.primaryActionButton}
-              onPress={() => setStep(1)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.primaryActionButtonText}>Back to my applications</Text>
-            </TouchableOpacity>
-          )}
+            )}
+          </View>
         </View>
 
         {/* ─── MODAL: HOW TO OBTAIN PREREQUISITE REGISTRATIONS ─── */}
@@ -1490,9 +1493,13 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 16,
+    paddingBottom: 175,
+    flexGrow: 1,
   },
   formContainer: {
     width: '100%',
+    maxWidth: 540,
+    alignSelf: 'center',
   },
   sectionHeading: {
     fontSize: 16,
@@ -1548,8 +1555,9 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
   },
   declarationBlock: {
-    marginBottom: 16,
+    marginBottom: 24,
     paddingLeft: 2,
+    width: '100%',
   },
   errorHelperText: {
     fontSize: 12,
@@ -1876,7 +1884,17 @@ const styles = StyleSheet.create({
     borderTopColor: '#E5E7EB',
     paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: 24,
+    paddingBottom: Platform.OS === 'ios' ? 24 : 16,
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  bottomActionInner: {
+    width: '100%',
+    maxWidth: 540,
   },
   primaryActionButton: {
     height: 48,

@@ -7,7 +7,7 @@ interface EntryAndAreaPermitFlowDocProps {
 }
 
 // Official Snack ID for Entry and Area Permit Flow (Complete 9-Step Flow)
-const SNACK_ID = 'KlOk2j3jPgi1YqIMj_oUN';
+const SNACK_ID = 'q6ZPgROtjerfRQx9HvTSE';
 
 export const EntryAndAreaPermitFlowDoc: React.FC<EntryAndAreaPermitFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -3211,10 +3211,13 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 24,
+    paddingBottom: 175,
+    flexGrow: 1,
   },
   formContainer: {
     width: '100%',
+    maxWidth: 540,
+    alignSelf: 'center',
   },
   sectionHeading: {
     fontSize: 16,

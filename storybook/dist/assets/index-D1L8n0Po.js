@@ -95928,7 +95928,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-`,[]),g=async()=>{i(!0);try{const u=new Ki,f=aV(n);Object.entries(f).forEach(([C,y])=>{u.file(C,y)});const m=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(m),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(he,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function lV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const dV="KlOk2j3jPgi1YqIMj_oUN",D1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),g=async()=>{i(!0);try{const u=new Ki,f=aV(n);Object.entries(f).forEach(([C,y])=>{u.file(C,y)});const m=await u.generateAsync({type:"blob"}),w=URL.createObjectURL(m),b=document.createElement("a");b.href=w,b.download="ux4g-tourism-event-sponsorship-flow.zip",document.body.appendChild(b),b.click(),document.body.removeChild(b),URL.revokeObjectURL(w),s("Downloaded modular project ZIP successfully!")}catch(u){console.error(u),s("Failed to generate ZIP package.")}finally{i(!1)}};return e.jsx(he,{isDark:t,children:e.jsxs("div",{style:{maxWidth:1200,margin:"0 auto",padding:"24px 20px"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8},children:[e.jsx("h1",{style:{fontSize:28,fontWeight:800,margin:0,color:t?r.neutral100:r.neutral900,letterSpacing:"-0.5px"},children:"Tourism Event Sponsorship Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • Complete 5-Step Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:680,lineHeight:1.5},children:"Government citizen service sponsorship flow for tourism events, festivals, and cultural conclaves. Rendered with Expo Snack and built with UX4G React Native components."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:g,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:p,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Tourism Event Sponsorship Flow Preview"})})]})})};async function lV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-entry-and-area-permit-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Entry and Area Permit Flow",slug:"ux4g-entry-and-area-permit-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4F46E5"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4F46E5"}}}},null,2)),o.file("README.md","# UX4G Entry and Area Permit Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen Service Pattern for **Entry and Area Permit** (Inner Line Permit / Protected Area Permit / Restricted Area Permit) built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Aadhaar Verification & eKYC**: Masked Aadhaar/VID input, consent gate, 6-digit OTP authentication, and auto-fetched citizen profile.\n- **Official UX4G Components**: Integrated with `Ux4gOtpInput`, `Ux4gAadhaarInputField`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, side drawer, review declarations, and permit generation.\n"),o.file("App.js",t.appCode),o.generateAsync({type:"blob"})}const dV="q6ZPgROtjerfRQx9HvTSE",D1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -99125,10 +99125,13 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 24,
+    paddingBottom: 175,
+    flexGrow: 1,
   },
   formContainer: {
     width: '100%',
+    maxWidth: 540,
+    alignSelf: 'center',
   },
   sectionHeading: {
     fontSize: 16,
@@ -100243,7 +100246,7 @@ const styles = StyleSheet.create({
   },
 
 });
-`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="QiydLqYA3prtW_DhVHyN2",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
+`,[]),p=async()=>{try{i(!0);const g=await lV({appCode:s}),u=URL.createObjectURL(g),f=document.createElement("a");f.href=u,f.download="ux4g-entry-and-area-permit-flow.zip",document.body.appendChild(f),f.click(),document.body.removeChild(f),URL.revokeObjectURL(u),d("ZIP file downloaded successfully!"),setTimeout(()=>d(null),3e3)}catch(g){console.error(g),d("Failed to download ZIP file."),setTimeout(()=>d(null),3e3)}finally{i(!1)}},n=x.useMemo(()=>`https://snack.expo.dev/embedded/${dV}?platform=android&supportedPlatforms=ios,android&preview=true&hideNavigation=true&hideDevTools=true&hideConsole=true&theme=${t?"dark":"light"}`,[t]);return e.jsxs("div",{style:{padding:"24px 32px",maxWidth:1200,margin:"0 auto",fontFamily:"Inter, system-ui, -apple-system, sans-serif"},children:[e.jsxs("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,flexWrap:"wrap",gap:16},children:[e.jsxs("div",{children:[e.jsxs("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:6},children:[e.jsx("h1",{style:{fontSize:26,fontWeight:700,color:t?r.neutral50:r.neutral900,margin:0},children:"Entry and Area Permit Flow"}),e.jsx("span",{style:{display:"inline-block",padding:"3px 10px",borderRadius:12,fontSize:12,fontWeight:600,backgroundColor:t?r.primary800:r.primary50,color:r.primary600,border:`1px solid ${t?r.primary700:r.primary200}`},children:"Service Pattern • 9-Step Complete Flow"})]}),e.jsx("p",{style:{fontSize:14,margin:0,color:t?r.neutral400:r.neutral500,maxWidth:720,lineHeight:1.5},children:"Citizen service pattern for Inner Line Permit (ILP), Protected Area Permit (PAP), and Restricted Area Permit (RAP) entry into designated protected or border areas."})]}),e.jsx("div",{style:{display:"flex",gap:12,alignItems:"center"},children:e.jsxs("button",{onClick:p,disabled:o,style:{display:"flex",alignItems:"center",gap:8,padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,backgroundColor:r.primary600,color:r.white,border:"none",cursor:o?"wait":"pointer",boxShadow:"0 2px 8px rgba(79, 70, 229, 0.3)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18},children:o?"hourglass_top":"download"}),o?"Preparing ZIP...":"Download Code (ZIP)"]})})]}),a&&e.jsxs("div",{style:{marginBottom:16,padding:"10px 16px",borderRadius:8,backgroundColor:t?r.neutral800:r.green50,border:`1px solid ${t?r.neutral700:r.green300}`,color:t?r.neutral100:r.green800,fontSize:13,fontWeight:500,display:"flex",alignItems:"center",gap:8,boxShadow:"0 4px 12px rgba(0,0,0,0.06)"},children:[e.jsx("span",{className:"material-symbols-outlined",style:{fontSize:18,color:r.green600},children:"check_circle"}),a]}),e.jsx("div",{className:`wb-preview-area ${t?"dark":""}`,style:{position:"relative",padding:0,overflow:"hidden",borderRadius:8,minHeight:880,backgroundColor:t?r.neutral800:r.neutral50,border:`1px solid ${t?r.neutral700:r.neutral200}`},children:e.jsx("iframe",{src:n,style:{width:"100%",height:"880px",border:"none",borderRadius:"8px",display:"block"},title:"Expo Snack Entry and Area Permit Flow Preview"})})]})};async function cV(t){const o=new Ki;return o.file("package.json",JSON.stringify({name:"ux4g-adventure-activity-approval-flow",version:"1.0.0",private:!0,scripts:{start:"expo start",android:"expo start --android",ios:"expo start --ios",web:"expo start --web"},dependencies:{expo:"~51.0.0",react:"18.2.0","react-native":"0.74.5","react-native-svg":"15.2.0","ux4g-react-native-components":"latest"},devDependencies:{"@babel/core":"^7.20.0",typescript:"~5.3.3"}},null,2)),o.file("app.json",JSON.stringify({expo:{name:"Adventure Activity Approval Flow",slug:"ux4g-adventure-activity-approval-flow",version:"1.0.0",orientation:"portrait",userInterfaceStyle:"light",splash:{resizeMode:"contain",backgroundColor:"#4A2BC2"},ios:{supportsTablet:!0},android:{adaptiveIcon:{backgroundColor:"#4A2BC2"}}}},null,2)),o.file("README.md","# UX4G Adventure Activity Approval Flow (9-Step Service Pattern)\n\nThis project contains the complete 9-step Citizen/Operator Service Pattern for **Adventure Activity Approval** built using the official UX4G React Native design system components and color palette.\n\n## Getting Started\n\n1. Install dependencies:\n   ```bash\n   npm install\n   ```\n\n2. Run on Expo:\n   ```bash\n   npx expo start\n   ```\n\n## Features\n- **Prerequisite Registrations & Verification**: Explicit gatekeeping and checklist for Portal Account, Applicant Profile, Unit Registration, and Sector Tourism License.\n- **Service Domain Classification**: Radio selection for Land, Water, and Air adventure activity operations.\n- **Official UX4G Components**: Integrated with `Ux4gCompactStepper`, `Ux4gRadioButton`, `Ux4gCheckbox`, `Ux4gButton`, `Ux4gStatusBanner`, and `UX4GColors` palette.\n- **Full 9-Step End-to-End Navigation**: Stepper progress bar, prerequisites check, enterprise info, safety protocols, inspection certs, guide credentials, liability insurance, payment, and issued approval tracking.\n"),o.file("App.js",t.appCode),o.file("NationalEmblem.js",qi),o.generateAsync({type:"blob"})}const uV="7c_s1HcU2I5PlWAV5Jn7-",A1=({isDark:t})=>{const[o,i]=x.useState(!1),[a,d]=x.useState(null),s=x.useMemo(()=>`import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -100256,6 +100259,7 @@ import {
   Modal,
   Animated,
   Easing,
+  Platform,
 } from 'react-native';
 import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import {
@@ -101464,65 +101468,67 @@ export default function App() {
             </View>
           )}
 
-          <View style={{ height: 100 }} />
+          <View style={{ height: 20 }} />
         </ScrollView>
 
         {/* ─── STICKY BOTTOM ACTION BAR ─── */}
         <View style={styles.bottomActionBar}>
-          {step < 8 && (
-            <>
+          <View style={styles.bottomActionInner}>
+            {step < 8 && (
+              <>
+                <TouchableOpacity
+                  style={styles.primaryActionButton}
+                  onPress={handleContinue}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.primaryActionButtonText}>
+                    {step === 1 ? 'Start the application' : 'Continue'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.secondaryActionButton}
+                  onPress={handleSaveDraft}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
+                </TouchableOpacity>
+              </>
+            )}
+
+            {step === 8 && (
+              <>
+                <TouchableOpacity
+                  style={styles.primaryActionButton}
+                  onPress={handleContinue}
+                  activeOpacity={0.8}
+                  disabled={isProcessingPayment}
+                >
+                  <Text style={styles.primaryActionButtonText}>
+                    {isProcessingPayment ? 'Processing...' : 'Pay ₹7,500'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.secondaryActionButton}
+                  onPress={handleSaveDraft}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
+                </TouchableOpacity>
+              </>
+            )}
+
+            {step === 9 && (
               <TouchableOpacity
                 style={styles.primaryActionButton}
-                onPress={handleContinue}
+                onPress={() => setStep(1)}
                 activeOpacity={0.8}
               >
-                <Text style={styles.primaryActionButtonText}>
-                  {step === 1 ? 'Start the application' : 'Continue'}
-                </Text>
+                <Text style={styles.primaryActionButtonText}>Back to my applications</Text>
               </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.secondaryActionButton}
-                onPress={handleSaveDraft}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
-              </TouchableOpacity>
-            </>
-          )}
-
-          {step === 8 && (
-            <>
-              <TouchableOpacity
-                style={styles.primaryActionButton}
-                onPress={handleContinue}
-                activeOpacity={0.8}
-                disabled={isProcessingPayment}
-              >
-                <Text style={styles.primaryActionButtonText}>
-                  {isProcessingPayment ? 'Processing...' : 'Pay ₹7,500'}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.secondaryActionButton}
-                onPress={handleSaveDraft}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.secondaryActionButtonText}>Save as draft</Text>
-              </TouchableOpacity>
-            </>
-          )}
-
-          {step === 9 && (
-            <TouchableOpacity
-              style={styles.primaryActionButton}
-              onPress={() => setStep(1)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.primaryActionButtonText}>Back to my applications</Text>
-            </TouchableOpacity>
-          )}
+            )}
+          </View>
         </View>
 
         {/* ─── MODAL: HOW TO OBTAIN PREREQUISITE REGISTRATIONS ─── */}
@@ -101719,9 +101725,13 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 16,
+    paddingBottom: 175,
+    flexGrow: 1,
   },
   formContainer: {
     width: '100%',
+    maxWidth: 540,
+    alignSelf: 'center',
   },
   sectionHeading: {
     fontSize: 16,
@@ -101777,8 +101787,9 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
   },
   declarationBlock: {
-    marginBottom: 16,
+    marginBottom: 24,
     paddingLeft: 2,
+    width: '100%',
   },
   errorHelperText: {
     fontSize: 12,
@@ -102105,7 +102116,17 @@ const styles = StyleSheet.create({
     borderTopColor: '#E5E7EB',
     paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: 24,
+    paddingBottom: Platform.OS === 'ios' ? 24 : 16,
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  bottomActionInner: {
+    width: '100%',
+    maxWidth: 540,
   },
   primaryActionButton: {
     height: 48,
