@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'qELgwsNZ5kZtzq9br5Ms5';
+const SNACK_ID = 'hfx-Tq4lVBB8bJcAwgfEJ';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -122,8 +122,8 @@ const STEP_METADATA = {
     subtitle: 'What the registration costs and how you pay it.',
   },
   9: {
-    title: 'Acknowledgement & credential',
-    subtitle: 'Your issued approval certificate, inspection order, and verifiable QR credential.',
+    title: 'Acknowledgement',
+    subtitle: 'Your application number, what happens next, and your certificate when it issues.',
   },
 };
 
@@ -295,7 +295,7 @@ const POPULAR_BANKS = [
 ];
 
 export default function App() {
-  const [step, setStep] = useState(8); // Directly land on Step 8 for testing as requested
+  const [step, setStep] = useState(9); // Directly land on Step 9 (Screen 14) for testing as requested
   const [lastSavedTime, setLastSavedTime] = useState('3:14 PM');
   const [isDraftSaved, setIsDraftSaved] = useState(true);
   const [showDraftToast, setShowDraftToast] = useState(false);
@@ -497,6 +497,36 @@ export default function App() {
         'Receipt Downloaded',
         'Payment receipt PG2026HP00000TX.pdf has been saved to your downloads.'
       );
+    }
+  };
+
+  const handleDownloadAcknowledgement = () => {
+    if (Platform.OS === 'web') {
+      alert('Acknowledgement receipt downloaded: AA-2026-000000_acknowledgement.pdf');
+    } else {
+      Alert.alert(
+        'Download Complete',
+        'Acknowledgement receipt AA-2026-000000_acknowledgement.pdf has been downloaded to your device.'
+      );
+    }
+  };
+
+  const handleTrackApplication = () => {
+    if (Platform.OS === 'web') {
+      alert('Tracking Application AA-2026-000000: Status is Under Scrutiny at District Tourism Office, Pune.');
+    } else {
+      Alert.alert(
+        'Application Status',
+        'Application AA-2026-000000 is currently under scrutiny at the District Tourism Development Office, Pune. Site inspection window open until 22 December 2026.'
+      );
+    }
+  };
+
+  const handleDownloadFile = (fileName) => {
+    if (Platform.OS === 'web') {
+      alert('Downloaded: ' + fileName);
+    } else {
+      Alert.alert('Download Complete', fileName + ' has been saved to your downloads.');
     }
   };
 
@@ -749,22 +779,24 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        {/* ─── SAVED STATUS PILL BANNER ─── */}
-        <View style={styles.savedBannerRow}>
-          <View style={styles.savedPill}>
-            <Svg width={14} height={14} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
-              <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
-              <Path
-                d="M8 12.5l2.5 2.5 5.5-5.5"
-                stroke="#16A34A"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </Svg>
-            <Text style={styles.savedText}>Saved {lastSavedTime}</Text>
+        {/* ─── SAVED STATUS PILL BANNER (HIDDEN ON FINAL STEP 9) ─── */}
+        {step < 9 && (
+          <View style={styles.savedBannerRow}>
+            <View style={styles.savedPill}>
+              <Svg width={14} height={14} viewBox="0 0 24 24" fill="none" style={{ marginRight: 6 }}>
+                <Circle cx={12} cy={12} r={10} stroke="#16A34A" strokeWidth={2} />
+                <Path
+                  d="M8 12.5l2.5 2.5 5.5-5.5"
+                  stroke="#16A34A"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </Svg>
+              <Text style={styles.savedText}>Saved {lastSavedTime}</Text>
+            </View>
           </View>
-        </View>
+        )}
 
         {/* ─── 9-SEGMENT STEPPER PROGRESS (CENTERED BETWEEN LAYOUT) ─── */}
         <Ux4gCompactStepper
@@ -3823,97 +3855,103 @@ export default function App() {
           )}
 
           {/* ═════════════════════════════════════════════════════════════════════════ */}
-          {/* STEP 9: ACKNOWLEDGEMENT & CREDENTIAL                                      */}
+          {/* STEP 9: ACKNOWLEDGEMENT (SCREEN 14: media_1794998462760_e15814f6.png)     */}
           {/* ═════════════════════════════════════════════════════════════════════════ */}
           {step === 9 && (
             <View style={styles.formContainer}>
-              <Text style={styles.sectionHeading}>Approval Application Details</Text>
+              {/* Section 1: Acknowledgement */}
+              <Text style={styles.sectionHeading}>Acknowledgement</Text>
 
-              {/* Green Success Banner */}
-              <View style={styles.successBanner}>
-                <View style={styles.successIconCol}>
-                  <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                    <Circle cx={12} cy={12} r={10} fill="#16A34A" />
-                    <Path
-                      d="M8 12.5l2.5 2.5 5.5-5.5"
-                      stroke="#FFFFFF"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+              {/* Acknowledgement Green Banner Card */}
+              <View style={styles.ackGreenCard}>
+                <View style={styles.ackGreenRow}>
+                  <View style={styles.ackGreenCheckCircle}>
+                    <Svg width={11} height={11} viewBox="0 0 24 24" fill="none">
+                      <Path
+                        d="M5 13l4 4L19 7"
+                        stroke="#FFFFFF"
+                        strokeWidth={3}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </Svg>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.ackGreenText}>
+                      Application {formData.feeApplicationId || 'AA-2026-000000'} filed on 23 September 2026 against the site at Mulshi, Pune. Quote this reference at the site inspection and in any correspondence. We have sent it to your registered mobile number and email address.
+                    </Text>
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={handleDownloadAcknowledgement}
+                      style={{ marginTop: 10 }}
+                    >
+                      <Text style={styles.ackGreenDownloadLink}>Download acknowledgement</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+
+              {/* Section 2: What Happens Next */}
+              <Text style={[styles.sectionHeading, { marginTop: 22 }]}>What Happens Next</Text>
+
+              {/* Cyan / Teal Info Notice Box */}
+              <View style={styles.whatNextNoticeBox}>
+                <View style={styles.whatNextNoticeIconCol}>
+                  <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                    <Circle cx={12} cy={12} r={10} fill="#06B6D4" />
+                    <Path d="M12 16v-4M12 8h.01" stroke="#FFFFFF" strokeWidth={2.2} strokeLinecap="round" />
                   </Svg>
                 </View>
                 <View style={{ flex: 1, marginLeft: 10 }}>
-                  <Text style={styles.successBannerText}>
-                    Adventure Activity Application <Text style={{ fontWeight: '700' }}>UK-ADV-2026-009412</Text>{' '}
-                    registered on 24 September 2026. On-site technical inspection is scheduled for{' '}
-                    <Text style={{ fontWeight: '700' }}>02 October 2026</Text>.
+                  <Text style={styles.whatNextNoticeText}>
+                    Decision due by 22 December 2026 — 90 days, 0 elapsed. A site inspection falls inside that window and you will be offered an appointment for it, not visited unannounced.
                   </Text>
                 </View>
               </View>
 
-              <Text style={styles.refNumberLabel}>Application Reference</Text>
-              <Text style={styles.refNumberValue}>UK-ADV-2026-009412</Text>
-
-              {/* High Quality Verifiable QR Credential */}
-              <View style={styles.qrContainer}>
-                <Svg width={230} height={230} viewBox="0 0 29 29">
-                  <Path d={PERMIT_QR_PATH_D} fill="#111827" />
-                </Svg>
+              {/* Numbered Process List (1 to 4) */}
+              <View style={styles.whatNextStepsContainer}>
+                <Text style={styles.whatNextStepText}>
+                  1. The department checks the application is complete. If something is missing you will be told here and by SMS, and the clock stops until you supply it.
+                </Text>
+                <Text style={styles.whatNextStepText}>
+                  2. An inspector is assigned and you are offered an appointment at the site.
+                </Text>
+                <Text style={styles.whatNextStepText}>
+                  3. The inspection checks batch size, equipment, leads and the assembly point against what you declared.
+                </Text>
+                <Text style={styles.whatNextStepText}>
+                  4. The decision is issued here and sent to your registered mobile number and email address.
+                </Text>
               </View>
 
-              <View style={styles.buttonActionGroup}>
-                <TouchableOpacity style={styles.primaryActionButton} activeOpacity={0.8}>
-                  <Text style={styles.primaryActionButtonText}>Download acknowledgement</Text>
+              {/* Section 3: Downloads */}
+              <Text style={[styles.sectionHeading, { marginTop: 20, marginBottom: 12 }]}>Downloads</Text>
+
+              <View style={styles.downloadsBlock}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => handleDownloadFile('acknowledgement_receipt_AA-2026-000000.pdf')}
+                  style={{ marginBottom: 14 }}
+                >
+                  <Text style={styles.purpleDownloadLink}>Download the acknowledgement receipt (PDF)</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.secondaryActionButton} activeOpacity={0.8}>
-                  <Text style={styles.secondaryActionButtonText}>Save to phone</Text>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => handleDownloadFile('provisional_registration_AA-2026-000000.pdf')}
+                  style={{ marginBottom: 14 }}
+                >
+                  <Text style={styles.purpleDownloadLink}>Download the provisional registration (PDF)</Text>
                 </TouchableOpacity>
-              </View>
 
-              {/* Registered Unit Details */}
-              <Text style={[styles.sectionHeading, { marginTop: 24 }]}>Applicant & Activity Summary</Text>
-              <View style={styles.summaryCard}>
-                <View style={styles.summaryItem}>
-                  <Text style={styles.summaryItemLabel}>Operator</Text>
-                  <Text style={styles.summaryItemValue}>{formData.enterpriseName}</Text>
-                </View>
-                <View style={styles.summaryDivider} />
-                <View style={styles.summaryItem}>
-                  <Text style={styles.summaryItemLabel}>Activity</Text>
-                  <Text style={styles.summaryItemValue}>
-                    {formData.activityDomain === 'land'
-                      ? 'Trekking & Mountaineering'
-                      : formData.activityDomain === 'water'
-                      ? 'White Water Rafting'
-                      : 'Paragliding & Air Sports'}
-                  </Text>
-                </View>
-                <View style={styles.summaryDivider} />
-                <View style={styles.summaryItem}>
-                  <Text style={styles.summaryItemLabel}>Stretch / Zone</Text>
-                  <Text style={styles.summaryItemValue}>{formData.activityLocation}</Text>
-                </View>
-                <View style={styles.summaryDivider} />
-                <View style={styles.summaryItem}>
-                  <Text style={styles.summaryItemLabel}>Lead Instructor</Text>
-                  <Text style={styles.summaryItemValue}>{formData.leadInstructorName}</Text>
-                </View>
-              </View>
-
-              {/* Info Note on Inspection */}
-              <View style={styles.infoNoticeCard}>
-                <Svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8, marginTop: 2 }}>
-                  <Circle cx={12} cy={12} r={10} stroke="#0284C7" strokeWidth={2} />
-                  <Path d="M12 16v-4M12 8h.01" stroke="#0284C7" strokeWidth={2} strokeLinecap="round" />
-                </Svg>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.infoNoticeText}>
-                    The Joint Technical Inspection Committee will inspect the equipment stock, first-aid equipment,
-                    and guide certifications at the base camp before the final Certificate of Approval is issued.
-                  </Text>
-                </View>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => handleDownloadFile('submitted_application_AA-2026-000000.pdf')}
+                  style={{ marginBottom: 14 }}
+                >
+                  <Text style={styles.purpleDownloadLink}>Download a copy of the submitted application (PDF)</Text>
+                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -3980,13 +4018,23 @@ export default function App() {
             )}
 
             {step === 9 && (
-              <TouchableOpacity
-                style={styles.primaryActionButton}
-                onPress={() => setStep(1)}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.primaryActionButtonText}>Back to my applications</Text>
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  style={styles.primaryActionButton}
+                  onPress={handleTrackApplication}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.primaryActionButtonText}>Track my application</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.secondaryActionButton}
+                  onPress={handleDownloadAcknowledgement}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.secondaryActionButtonText}>Download acknowledgement</Text>
+                </TouchableOpacity>
+              </>
             )}
           </View>
         </View>
@@ -5001,47 +5049,75 @@ const styles = StyleSheet.create({
     color: '#4A2BC2',
     fontWeight: '600',
   },
-  successBanner: {
+  // Screen 14: Step 9 Acknowledgement Styles (Matches media_1794998462760_e15814f6.png)
+  ackGreenCard: {
     backgroundColor: '#F0FDF4',
     borderWidth: 1,
-    borderColor: '#BBF7D0',
-    borderRadius: 8,
+    borderColor: '#86EFAC',
+    borderRadius: 10,
     padding: 14,
+    marginTop: 2,
+    marginBottom: 6,
+  },
+  ackGreenRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 16,
   },
-  successIconCol: {
-    marginTop: 2,
-  },
-  successBannerText: {
-    fontSize: 13.5,
-    lineHeight: 20,
-    color: '#15803D',
-  },
-  refNumberLabel: {
-    fontSize: 13,
-    color: '#6B7280',
-    marginBottom: 2,
-  },
-  refNumberValue: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#111827',
-    marginBottom: 16,
-  },
-  qrContainer: {
+  ackGreenCheckCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#16A34A',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
-    backgroundColor: '#FFFFFF',
+    marginRight: 10,
+    marginTop: 2,
+  },
+  ackGreenText: {
+    fontSize: 13.5,
+    color: '#14532D',
+    lineHeight: 20,
+  },
+  ackGreenDownloadLink: {
+    fontSize: 13.5,
+    fontWeight: '700',
+    color: '#15803D',
+  },
+  whatNextNoticeBox: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#ECFEFF',
     borderWidth: 1,
-    borderColor: '#E5E7EB',
-    borderRadius: 12,
+    borderColor: '#67E8F9',
+    borderRadius: 10,
+    padding: 14,
+    marginTop: 2,
+    marginBottom: 16,
+  },
+  whatNextNoticeIconCol: {
+    marginTop: 1,
+  },
+  whatNextNoticeText: {
+    fontSize: 13,
+    color: '#0E7490',
+    lineHeight: 19,
+  },
+  whatNextStepsContainer: {
+    marginBottom: 10,
+  },
+  whatNextStepText: {
+    fontSize: 13.5,
+    color: '#374151',
+    lineHeight: 21,
+    marginBottom: 14,
+  },
+  downloadsBlock: {
     marginBottom: 20,
   },
-  buttonActionGroup: {
-    marginBottom: 20,
+  purpleDownloadLink: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4F28D9',
   },
   // Step 7: Preview cards styles
   previewCardSuccess: {
