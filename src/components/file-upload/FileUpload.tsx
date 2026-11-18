@@ -105,14 +105,6 @@ export interface Ux4gFileUploadProps {
   errorTextStyle?: StyleProp<TextStyle>;
   /** Pre-populated initial files for testing / showcase */
   initialFiles?: UploadedFile[];
-  /** Optional custom dropzone title (e.g. 'Drop file here'). Defaults to 'Upload Documents' */
-  title?: string;
-  /** Optional custom description. Defaults to 'File type: ... Max size: ... MB' */
-  description?: string;
-  /** Whether to show the Scan button. Default true */
-  showScanButton?: boolean;
-  /** Whether to show the Or divider between description and upload button. Default false */
-  showOrDivider?: boolean;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -167,10 +159,6 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
   errorTitleStyle,
   errorTextStyle,
   initialFiles,
-  title,
-  description,
-  showScanButton = true,
-  showOrDivider = false,
 }) => {
   const theme = useUx4gTheme();
   const toast = useUx4gToastSafe?.() ?? null;
@@ -376,44 +364,7 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
           fileUri = asset.uri ?? '';
         } else {
           if (!DocumentPicker) {
-            // Graceful web or simulated document picking fallback
-            if (typeof document !== 'undefined') {
-              const input = document.createElement('input');
-              input.type = 'file';
-              input.accept = allowedExtensions.map((e) => `.${e}`).join(',');
-              input.onchange = (ev: any) => {
-                const file = ev.target?.files?.[0];
-                if (file) {
-                  const newFile: UploadedFile = {
-                    id: `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-                    name: file.name,
-                    fileSize: file.size,
-                    status: UploadStatus.success,
-                    progress: 1,
-                  };
-                  setFiles((prev) => {
-                    const next = [...prev, newFile];
-                    onFilesChanged?.(next);
-                    return next;
-                  });
-                }
-              };
-              input.click();
-              return;
-            }
-            const mockExt = allowedExtensions[0] || 'pdf';
-            const newFile: UploadedFile = {
-              id: `${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-              name: `uploaded_document_${Date.now()}.${mockExt}`,
-              fileSize: 1.8 * 1024 * 1024,
-              status: UploadStatus.success,
-              progress: 1,
-            };
-            setFiles((prev) => {
-              const next = [...prev, newFile];
-              onFilesChanged?.(next);
-              return next;
-            });
+            showError('Missing Dependency', 'react-native-document-picker is not installed.');
             return;
           }
 
@@ -552,13 +503,13 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
         ? Ux4gIcons.errorOutline({ size: 32, color: errorColor })
         : Ux4gIcons.cloudUpload({ size: 32, color: primary })}
 
-      <View style={{ height: title ? 10 : 16 }} />
+      <View style={{ height: 16 }} />
 
       {/* Title */}
       <Text
         style={[
           {
-            fontSize: hasGlobalError ? 16 : (title ? 15 : 24),
+            fontSize: hasGlobalError ? 16 : 24,
             fontWeight: '700',
             color: onBackground,
             textAlign: 'center',
@@ -566,10 +517,10 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
           hasGlobalError ? errorTitleStyle : undefined,
         ]}
       >
-        {hasGlobalError ? (currentErrorTitle ?? 'Could not scan') : (title ?? 'Upload Documents')}
+        {hasGlobalError ? (currentErrorTitle ?? 'Could not scan') : 'Upload Documents'}
       </Text>
 
-      <View style={{ height: 6 }} />
+      <View style={{ height: 8 }} />
 
       {/* Description */}
       <Text
@@ -585,23 +536,15 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
       >
         {hasGlobalError
           ? (currentErrorText ?? 'File exceeds the upload limit.')
-          : (description ?? `File type: ${allowedExtensions.map((e) => e.toUpperCase()).join(' ')} Max size: ${Math.floor(maxFileSize / (1024 * 1024))} MB`)}
+          : `File type: ${allowedExtensions.map((e) => e.toUpperCase()).join(' ')} Max size: ${Math.floor(maxFileSize / (1024 * 1024))} MB`}
       </Text>
 
-      {showOrDivider && (
-        <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: 220, marginVertical: 12 }}>
-          <View style={{ flex: 1, height: 1, backgroundColor: UX4GColors.neutral200 }} />
-          <Text style={{ marginHorizontal: 12, fontSize: 12, color: UX4GColors.neutral500, fontWeight: '500' }}>Or</Text>
-          <View style={{ flex: 1, height: 1, backgroundColor: UX4GColors.neutral200 }} />
-        </View>
-      )}
-
-      {!showOrDivider && <View style={{ height: 20 }} />}
+      <View style={{ height: 20 }} />
 
       {/* Buttons Row */}
-      <View style={[localStyles.buttonRow, !showScanButton && { justifyContent: 'center' }]}>
+      <View style={localStyles.buttonRow}>
         {/* Upload Button (Outline Variant) */}
-        <View style={showScanButton ? { flex: 1 } : { width: '100%', maxWidth: 140, alignSelf: 'center' }}>
+        <View style={{ flex: 1 }}>
           <Ux4gButton
             testID="upload-button"
             variant="outline"
@@ -618,29 +561,25 @@ export const Ux4gFileUpload: React.FC<Ux4gFileUploadProps> = ({
           />
         </View>
 
-        {showScanButton && (
-          <>
-            <View style={{ width: 12 }} />
+        <View style={{ width: 12 }} />
 
-            {/* Scan Button (Primary Variant) */}
-            <View style={{ flex: 1 }}>
-              <Ux4gButton
-                testID="scan-button"
-                variant="primary"
-                text="Scan"
-                size="medium"
-                leadingIcon={({ color, size }) =>
-                  Ux4gIcons.camera({ size, color: onPrimary })
-                }
-                backgroundColor={buttonColor ?? primary}
-                contentColor={onPrimary}
-                borderRadius={buttonBorderRadius}
-                style={buttonStyle}
-                onPress={() => pickFile(true)}
-              />
-            </View>
-          </>
-        )}
+        {/* Scan Button (Primary Variant) */}
+        <View style={{ flex: 1 }}>
+          <Ux4gButton
+            testID="scan-button"
+            variant="primary"
+            text="Scan"
+            size="medium"
+            leadingIcon={({ color, size }) =>
+              Ux4gIcons.camera({ size, color: onPrimary })
+            }
+            backgroundColor={buttonColor ?? primary}
+            contentColor={onPrimary}
+            borderRadius={buttonBorderRadius}
+            style={buttonStyle}
+            onPress={() => pickFile(true)}
+          />
+        </View>
       </View>
     </View>
   );

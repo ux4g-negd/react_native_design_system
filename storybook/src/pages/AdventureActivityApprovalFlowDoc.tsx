@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = '-0KGbyAZGH2RBd_ijVYKr';
+const SNACK_ID = 'L1y-3Yu-lTFtJ9SKlkPL8';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -2581,16 +2581,13 @@ export default function App() {
 
                       <View style={{ marginLeft: 28, marginTop: 10 }}>
                         <Ux4gFileUpload
-                          title="Drop file here"
-                          showScanButton={false}
-                          showOrDivider={true}
                           maxFiles={1}
                           maxFileSize={5 * 1024 * 1024}
                           allowedExtensions={['pdf', 'jpg', 'png']}
                           borderStyle="dashed"
-                          buttonBorderRadius={6}
+                          buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
-                          buttonBorderColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
                           initialFiles={formData.landRecordFiles}
                           onFilesChanged={(files) => {
                             updateField('landRecordFiles', files);
@@ -2631,16 +2628,13 @@ export default function App() {
 
                       <View style={{ marginLeft: 28, marginTop: 10 }}>
                         <Ux4gFileUpload
-                          title="Drop file here"
-                          showScanButton={false}
-                          showOrDivider={true}
                           maxFiles={1}
                           maxFileSize={5 * 1024 * 1024}
                           allowedExtensions={['pdf', 'jpg', 'png']}
                           borderStyle="dashed"
-                          buttonBorderRadius={6}
+                          buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
-                          buttonBorderColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
                           initialFiles={formData.leaseDeedFiles}
                           onFilesChanged={(files) => {
                             updateField('leaseDeedFiles', files);
@@ -2681,16 +2675,13 @@ export default function App() {
 
                       <View style={{ marginLeft: 28, marginTop: 10 }}>
                         <Ux4gFileUpload
-                          title="Drop file here"
-                          showScanButton={false}
-                          showOrDivider={true}
                           maxFiles={1}
                           maxFileSize={5 * 1024 * 1024}
                           allowedExtensions={['pdf', 'jpg', 'png']}
                           borderStyle="dashed"
-                          buttonBorderRadius={6}
+                          buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
-                          buttonBorderColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
                           initialFiles={formData.siteLayoutFiles}
                           onFilesChanged={(files) => {
                             updateField('siteLayoutFiles', files);
@@ -2774,16 +2765,13 @@ export default function App() {
                       </Text>
                       <View style={{ marginLeft: 28, marginTop: 10 }}>
                         <Ux4gFileUpload
-                          title="Drop file here"
-                          showScanButton={false}
-                          showOrDivider={true}
                           maxFiles={1}
                           maxFileSize={5 * 1024 * 1024}
                           allowedExtensions={['pdf', 'jpg', 'png']}
                           borderStyle="dashed"
-                          buttonBorderRadius={6}
+                          buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
-                          buttonBorderColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
                           initialFiles={formData.sopManualFiles}
                           onFilesChanged={(files) => {
                             updateField('sopManualFiles', files);
@@ -2812,16 +2800,13 @@ export default function App() {
                       </Text>
                       <View style={{ marginLeft: 28, marginTop: 10 }}>
                         <Ux4gFileUpload
-                          title="Drop file here"
-                          showScanButton={false}
-                          showOrDivider={true}
                           maxFiles={1}
                           maxFileSize={5 * 1024 * 1024}
                           allowedExtensions={['pdf', 'jpg', 'png']}
                           borderStyle="dashed"
-                          buttonBorderRadius={6}
+                          buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
-                          buttonBorderColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
                           initialFiles={formData.eapPlanFiles}
                           onFilesChanged={(files) => {
                             updateField('eapPlanFiles', files);
@@ -2850,16 +2835,13 @@ export default function App() {
                       </Text>
                       <View style={{ marginLeft: 28, marginTop: 10 }}>
                         <Ux4gFileUpload
-                          title="Drop file here"
-                          showScanButton={false}
-                          showOrDivider={true}
                           maxFiles={1}
                           maxFileSize={5 * 1024 * 1024}
                           allowedExtensions={['pdf', 'jpg', 'png']}
                           borderStyle="dashed"
-                          buttonBorderRadius={6}
+                          buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
-                          buttonBorderColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
                           initialFiles={formData.equipmentInspectionFiles}
                           onFilesChanged={(files) => {
                             updateField('equipmentInspectionFiles', files);
@@ -2888,15 +2870,20 @@ export default function App() {
                       </Text>
                       <View style={{ marginLeft: 28, marginTop: 10 }}>
                         <Ux4gFileUpload
-                          title="Drop file here"
-                          showScanButton={false}
-                          showOrDivider={true}
                           maxFiles={5}
                           maxFileSize={5 * 1024 * 1024}
                           allowedExtensions={['pdf', 'jpg', 'png']}
                           borderStyle="dashed"
-                          buttonBorderRadius={6}
+                          buttonBorderRadius={8}
                           buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.purple700}
+                          initialFiles={formData.leadCertificatesFiles}
+                          onFilesChanged={(files) => {
+                            updateField('leadCertificatesFiles', files);
+                            updateField('leadCertificatesDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                           buttonBorderColor={UX4GColors.primary}
                           initialFiles={formData.leadCertificatesFiles}
                           onFilesChanged={(files) => {
