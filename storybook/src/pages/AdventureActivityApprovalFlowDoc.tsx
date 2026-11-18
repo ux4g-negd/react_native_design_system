@@ -7,7 +7,7 @@ interface AdventureActivityApprovalFlowDocProps {
 }
 
 // Official Snack ID for Adventure Activity Approval Flow (Complete 9-Step Flow)
-const SNACK_ID = 'fTbDSJRG_8WQ82KfE7KoC';
+const SNACK_ID = '-0KGbyAZGH2RBd_ijVYKr';
 
 export const AdventureActivityApprovalFlowDoc: React.FC<AdventureActivityApprovalFlowDocProps> = ({ isDark }) => {
   const [isDownloadingZip, setIsDownloadingZip] = useState<boolean>(false);
@@ -372,12 +372,19 @@ export default function App() {
     hasWrittenEmergencyPlan: false,
 
     // Step 6: Documents (Matches media_1794985978361_58fbc30a.png)
+    landRecordFiles: [],
     landRecordDoc: null,
+    leaseDeedFiles: [],
     leaseDeedDoc: null,
+    siteLayoutFiles: [],
     siteLayoutDoc: null,
+    sopManualFiles: [],
     sopManualDoc: null,
+    eapPlanFiles: [],
     eapPlanDoc: null,
+    equipmentInspectionFiles: [],
     equipmentInspectionDoc: null,
+    leadCertificatesFiles: [],
     leadCertificatesDoc: null,
 
     // Legacy / downstream compatibility
@@ -2549,7 +2556,7 @@ export default function App() {
                     {/* Document 1: Land record */}
                     <View style={[styles.docItemBlock, { marginTop: 4 }]}>
                       <View style={styles.docItemTitleRow}>
-                        {formData.landRecordDoc ? (
+                        {formData.landRecordFiles && formData.landRecordFiles.length > 0 ? (
                           <View style={styles.docStatusCircleChecked}>
                             <Svg width={11} height={11} viewBox="0 0 24 24" fill="none">
                               <Path
@@ -2572,80 +2579,25 @@ export default function App() {
                         PDF or JPEG · 1 file · for the survey number entered at step 4
                       </Text>
 
-                      {formData.landRecordDoc ? (
-                        <View style={styles.docAttachedFileCard}>
-                          <View style={styles.docAttachedFileInfo}>
-                            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8 }}>
-                              <Path
-                                d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
-                                stroke="#4A2BC2"
-                                strokeWidth={2}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <Path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" />
-                            </Svg>
-                            <View>
-                              <Text style={styles.docAttachedFileName}>{formData.landRecordDoc.name}</Text>
-                              <Text style={styles.docAttachedFileSize}>{formData.landRecordDoc.size} · Uploaded</Text>
-                            </View>
-                          </View>
-                          <TouchableOpacity
-                            style={styles.docAttachedRemoveBtn}
-                            activeOpacity={0.7}
-                            onPress={() => updateField('landRecordDoc', null)}
-                          >
-                            <Text style={styles.docAttachedRemoveText}>Remove</Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <View style={styles.docDropzoneBox}>
-                          <Svg width={36} height={28} viewBox="0 0 24 24" fill="none">
-                            <Path
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9"
-                              stroke="#4A2BC2"
-                              strokeWidth={1.8}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <Path
-                              d="M12 11v8m-3-5l3-3 3 3"
-                              stroke="#4A2BC2"
-                              strokeWidth={1.8}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </Svg>
-                          <Text style={styles.docDropzoneTitle}>Drop file here</Text>
-                          <Text style={styles.docDropzoneSub}>File type: PDF JPG PNG Max size: 5 MB</Text>
-                          <View style={styles.docDropzoneOrRow}>
-                            <View style={styles.docDropzoneOrLine} />
-                            <Text style={styles.docDropzoneOrText}>Or</Text>
-                            <View style={styles.docDropzoneOrLine} />
-                          </View>
-                          <TouchableOpacity
-                            style={styles.docDropzoneUploadBtn}
-                            activeOpacity={0.8}
-                            onPress={() =>
-                              updateField('landRecordDoc', {
-                                name: 'khasra_extract_survey_402.pdf',
-                                size: '1.8 MB',
-                              })
-                            }
-                          >
-                            <Svg width={16} height={14} viewBox="0 0 24 24" fill="none">
-                              <Path
-                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 11v8m-3-5l3-3 3 3"
-                                stroke="#4A2BC2"
-                                strokeWidth={1.8}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </Svg>
-                            <Text style={styles.docDropzoneUploadBtnText}>Upload</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                      <View style={{ marginLeft: 28, marginTop: 10 }}>
+                        <Ux4gFileUpload
+                          title="Drop file here"
+                          showScanButton={false}
+                          showOrDivider={true}
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={6}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.primary}
+                          initialFiles={formData.landRecordFiles}
+                          onFilesChanged={(files) => {
+                            updateField('landRecordFiles', files);
+                            updateField('landRecordDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                       {formErrors.landRecordDoc && (
                         <Text style={[styles.errorHelperText, { marginLeft: 28, marginTop: 4 }]}>{formErrors.landRecordDoc}</Text>
                       )}
@@ -2654,7 +2606,7 @@ export default function App() {
                     {/* Document 2: Lease deed or landowner consent */}
                     <View style={styles.docItemBlock}>
                       <View style={styles.docItemTitleRow}>
-                        {formData.leaseDeedDoc ? (
+                        {formData.leaseDeedFiles && formData.leaseDeedFiles.length > 0 ? (
                           <View style={styles.docStatusCircleChecked}>
                             <Svg width={11} height={11} viewBox="0 0 24 24" fill="none">
                               <Path
@@ -2677,80 +2629,25 @@ export default function App() {
                         PDF · 1 file · asked because the land is leased or owned by someone else
                       </Text>
 
-                      {formData.leaseDeedDoc ? (
-                        <View style={styles.docAttachedFileCard}>
-                          <View style={styles.docAttachedFileInfo}>
-                            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8 }}>
-                              <Path
-                                d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
-                                stroke="#4A2BC2"
-                                strokeWidth={2}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <Path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" />
-                            </Svg>
-                            <View>
-                              <Text style={styles.docAttachedFileName}>{formData.leaseDeedDoc.name}</Text>
-                              <Text style={styles.docAttachedFileSize}>{formData.leaseDeedDoc.size} · Uploaded</Text>
-                            </View>
-                          </View>
-                          <TouchableOpacity
-                            style={styles.docAttachedRemoveBtn}
-                            activeOpacity={0.7}
-                            onPress={() => updateField('leaseDeedDoc', null)}
-                          >
-                            <Text style={styles.docAttachedRemoveText}>Remove</Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <View style={styles.docDropzoneBox}>
-                          <Svg width={36} height={28} viewBox="0 0 24 24" fill="none">
-                            <Path
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9"
-                              stroke="#4A2BC2"
-                              strokeWidth={1.8}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <Path
-                              d="M12 11v8m-3-5l3-3 3 3"
-                              stroke="#4A2BC2"
-                              strokeWidth={1.8}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </Svg>
-                          <Text style={styles.docDropzoneTitle}>Drop file here</Text>
-                          <Text style={styles.docDropzoneSub}>File type: PDF JPG PNG Max size: 5 MB</Text>
-                          <View style={styles.docDropzoneOrRow}>
-                            <View style={styles.docDropzoneOrLine} />
-                            <Text style={styles.docDropzoneOrText}>Or</Text>
-                            <View style={styles.docDropzoneOrLine} />
-                          </View>
-                          <TouchableOpacity
-                            style={styles.docDropzoneUploadBtn}
-                            activeOpacity={0.8}
-                            onPress={() =>
-                              updateField('leaseDeedDoc', {
-                                name: 'registered_lease_agreement_2024.pdf',
-                                size: '2.4 MB',
-                              })
-                            }
-                          >
-                            <Svg width={16} height={14} viewBox="0 0 24 24" fill="none">
-                              <Path
-                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 11v8m-3-5l3-3 3 3"
-                                stroke="#4A2BC2"
-                                strokeWidth={1.8}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </Svg>
-                            <Text style={styles.docDropzoneUploadBtnText}>Upload</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                      <View style={{ marginLeft: 28, marginTop: 10 }}>
+                        <Ux4gFileUpload
+                          title="Drop file here"
+                          showScanButton={false}
+                          showOrDivider={true}
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={6}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.primary}
+                          initialFiles={formData.leaseDeedFiles}
+                          onFilesChanged={(files) => {
+                            updateField('leaseDeedFiles', files);
+                            updateField('leaseDeedDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                       {formErrors.leaseDeedDoc && (
                         <Text style={[styles.errorHelperText, { marginLeft: 28, marginTop: 4 }]}>{formErrors.leaseDeedDoc}</Text>
                       )}
@@ -2759,7 +2656,7 @@ export default function App() {
                     {/* Document 3: Site layout plan */}
                     <View style={styles.docItemBlock}>
                       <View style={styles.docItemTitleRow}>
-                        {formData.siteLayoutDoc ? (
+                        {formData.siteLayoutFiles && formData.siteLayoutFiles.length > 0 ? (
                           <View style={styles.docStatusCircleChecked}>
                             <Svg width={11} height={11} viewBox="0 0 24 24" fill="none">
                               <Path
@@ -2782,80 +2679,25 @@ export default function App() {
                         PDF or JPEG · 1 file · activity zones, assembly point and approach route
                       </Text>
 
-                      {formData.siteLayoutDoc ? (
-                        <View style={styles.docAttachedFileCard}>
-                          <View style={styles.docAttachedFileInfo}>
-                            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8 }}>
-                              <Path
-                                d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
-                                stroke="#4A2BC2"
-                                strokeWidth={2}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <Path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" />
-                            </Svg>
-                            <View>
-                              <Text style={styles.docAttachedFileName}>{formData.siteLayoutDoc.name}</Text>
-                              <Text style={styles.docAttachedFileSize}>{formData.siteLayoutDoc.size} · Uploaded</Text>
-                            </View>
-                          </View>
-                          <TouchableOpacity
-                            style={styles.docAttachedRemoveBtn}
-                            activeOpacity={0.7}
-                            onPress={() => updateField('siteLayoutDoc', null)}
-                          >
-                            <Text style={styles.docAttachedRemoveText}>Remove</Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <View style={styles.docDropzoneBox}>
-                          <Svg width={36} height={28} viewBox="0 0 24 24" fill="none">
-                            <Path
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9"
-                              stroke="#4A2BC2"
-                              strokeWidth={1.8}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <Path
-                              d="M12 11v8m-3-5l3-3 3 3"
-                              stroke="#4A2BC2"
-                              strokeWidth={1.8}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </Svg>
-                          <Text style={styles.docDropzoneTitle}>Drop file here</Text>
-                          <Text style={styles.docDropzoneSub}>File type: PDF JPG PNG Max size: 5 MB</Text>
-                          <View style={styles.docDropzoneOrRow}>
-                            <View style={styles.docDropzoneOrLine} />
-                            <Text style={styles.docDropzoneOrText}>Or</Text>
-                            <View style={styles.docDropzoneOrLine} />
-                          </View>
-                          <TouchableOpacity
-                            style={styles.docDropzoneUploadBtn}
-                            activeOpacity={0.8}
-                            onPress={() =>
-                              updateField('siteLayoutDoc', {
-                                name: 'site_layout_zones_plan.pdf',
-                                size: '3.1 MB',
-                              })
-                            }
-                          >
-                            <Svg width={16} height={14} viewBox="0 0 24 24" fill="none">
-                              <Path
-                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 11v8m-3-5l3-3 3 3"
-                                stroke="#4A2BC2"
-                                strokeWidth={1.8}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </Svg>
-                            <Text style={styles.docDropzoneUploadBtnText}>Upload</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                      <View style={{ marginLeft: 28, marginTop: 10 }}>
+                        <Ux4gFileUpload
+                          title="Drop file here"
+                          showScanButton={false}
+                          showOrDivider={true}
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={6}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.primary}
+                          initialFiles={formData.siteLayoutFiles}
+                          onFilesChanged={(files) => {
+                            updateField('siteLayoutFiles', files);
+                            updateField('siteLayoutDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                       {formErrors.siteLayoutDoc && (
                         <Text style={[styles.errorHelperText, { marginLeft: 28, marginTop: 4 }]}>{formErrors.siteLayoutDoc}</Text>
                       )}
@@ -2874,13 +2716,13 @@ export default function App() {
                   <View style={styles.docAccordionHeaderLeft}>
                     <Text style={styles.docAccordionTitle}>Safety Documents</Text>
                     <Text style={styles.docAccordionSub}>
-                      {[formData.sopManualDoc, formData.eapPlanDoc, formData.equipmentInspectionDoc, formData.leadCertificatesDoc].filter(Boolean).length === 0
+                      {[formData.sopManualFiles, formData.eapPlanFiles, formData.equipmentInspectionFiles, formData.leadCertificatesFiles].filter((a) => a && a.length > 0).length === 0
                         ? '4 documents · none uploaded yet'
-                        : '4 documents · ' + [formData.sopManualDoc, formData.eapPlanDoc, formData.equipmentInspectionDoc, formData.leadCertificatesDoc].filter(Boolean).length + ' uploaded'}
+                        : '4 documents · ' + [formData.sopManualFiles, formData.eapPlanFiles, formData.equipmentInspectionFiles, formData.leadCertificatesFiles].filter((a) => a && a.length > 0).length + ' uploaded'}
                     </Text>
                     <View style={styles.docStatusDotsRow}>
-                      {[formData.sopManualDoc, formData.eapPlanDoc, formData.equipmentInspectionDoc, formData.leadCertificatesDoc].map((doc, idx) =>
-                        doc ? (
+                      {[formData.sopManualFiles, formData.eapPlanFiles, formData.equipmentInspectionFiles, formData.leadCertificatesFiles].map((docFiles, idx) =>
+                        docFiles && docFiles.length > 0 ? (
                           <View key={idx} style={styles.docMiniDotChecked}>
                             <Svg width={9} height={9} viewBox="0 0 24 24" fill="none">
                               <Path
@@ -2914,7 +2756,7 @@ export default function App() {
                     {/* Safety Doc 1: SOP manual */}
                     <View style={[styles.docItemBlock, { marginTop: 4 }]}>
                       <View style={styles.docItemTitleRow}>
-                        {formData.sopManualDoc ? (
+                        {formData.sopManualFiles && formData.sopManualFiles.length > 0 ? (
                           <View style={styles.docStatusCircleChecked}>
                             <Svg width={11} height={11} viewBox="0 0 24 24" fill="none">
                               <Path d="M5 13l4 4L19 7" stroke="#FFFFFF" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
@@ -2930,45 +2772,31 @@ export default function App() {
                       <Text style={styles.docItemSub}>
                         PDF · 1 file · standard safety and operating procedures for all activities
                       </Text>
-                      {formData.sopManualDoc ? (
-                        <View style={styles.docAttachedFileCard}>
-                          <View style={styles.docAttachedFileInfo}>
-                            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8 }}>
-                              <Path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                              <Path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" />
-                            </Svg>
-                            <View>
-                              <Text style={styles.docAttachedFileName}>{formData.sopManualDoc.name}</Text>
-                              <Text style={styles.docAttachedFileSize}>{formData.sopManualDoc.size} · Uploaded</Text>
-                            </View>
-                          </View>
-                          <TouchableOpacity style={styles.docAttachedRemoveBtn} activeOpacity={0.7} onPress={() => updateField('sopManualDoc', null)}>
-                            <Text style={styles.docAttachedRemoveText}>Remove</Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <View style={styles.docDropzoneBox}>
-                          <Svg width={36} height={28} viewBox="0 0 24 24" fill="none">
-                            <Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                            <Path d="M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                          </Svg>
-                          <Text style={styles.docDropzoneTitle}>Drop file here</Text>
-                          <Text style={styles.docDropzoneSub}>File type: PDF JPG PNG Max size: 5 MB</Text>
-                          <View style={styles.docDropzoneOrRow}>
-                            <View style={styles.docDropzoneOrLine} /><Text style={styles.docDropzoneOrText}>Or</Text><View style={styles.docDropzoneOrLine} />
-                          </View>
-                          <TouchableOpacity style={styles.docDropzoneUploadBtn} activeOpacity={0.8} onPress={() => updateField('sopManualDoc', { name: 'sop_safety_manual_2026.pdf', size: '2.9 MB' })}>
-                            <Svg width={16} height={14} viewBox="0 0 24 24" fill="none"><Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>
-                            <Text style={styles.docDropzoneUploadBtnText}>Upload</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                      <View style={{ marginLeft: 28, marginTop: 10 }}>
+                        <Ux4gFileUpload
+                          title="Drop file here"
+                          showScanButton={false}
+                          showOrDivider={true}
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={6}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.primary}
+                          initialFiles={formData.sopManualFiles}
+                          onFilesChanged={(files) => {
+                            updateField('sopManualFiles', files);
+                            updateField('sopManualDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                     </View>
 
                     {/* Safety Doc 2: Emergency Action Plan */}
                     <View style={styles.docItemBlock}>
                       <View style={styles.docItemTitleRow}>
-                        {formData.eapPlanDoc ? (
+                        {formData.eapPlanFiles && formData.eapPlanFiles.length > 0 ? (
                           <View style={styles.docStatusCircleChecked}>
                             <Svg width={11} height={11} viewBox="0 0 24 24" fill="none"><Path d="M5 13l4 4L19 7" stroke="#FFFFFF" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" /></Svg>
                           </View>
@@ -2982,45 +2810,31 @@ export default function App() {
                       <Text style={styles.docItemSub}>
                         PDF · 1 file · evacuation routes, emergency protocols, and hospital tie-up
                       </Text>
-                      {formData.eapPlanDoc ? (
-                        <View style={styles.docAttachedFileCard}>
-                          <View style={styles.docAttachedFileInfo}>
-                            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8 }}>
-                              <Path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                              <Path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" />
-                            </Svg>
-                            <View>
-                              <Text style={styles.docAttachedFileName}>{formData.eapPlanDoc.name}</Text>
-                              <Text style={styles.docAttachedFileSize}>{formData.eapPlanDoc.size} · Uploaded</Text>
-                            </View>
-                          </View>
-                          <TouchableOpacity style={styles.docAttachedRemoveBtn} activeOpacity={0.7} onPress={() => updateField('eapPlanDoc', null)}>
-                            <Text style={styles.docAttachedRemoveText}>Remove</Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <View style={styles.docDropzoneBox}>
-                          <Svg width={36} height={28} viewBox="0 0 24 24" fill="none">
-                            <Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                            <Path d="M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                          </Svg>
-                          <Text style={styles.docDropzoneTitle}>Drop file here</Text>
-                          <Text style={styles.docDropzoneSub}>File type: PDF JPG PNG Max size: 5 MB</Text>
-                          <View style={styles.docDropzoneOrRow}>
-                            <View style={styles.docDropzoneOrLine} /><Text style={styles.docDropzoneOrText}>Or</Text><View style={styles.docDropzoneOrLine} />
-                          </View>
-                          <TouchableOpacity style={styles.docDropzoneUploadBtn} activeOpacity={0.8} onPress={() => updateField('eapPlanDoc', { name: 'emergency_action_plan_aiims.pdf', size: '2.1 MB' })}>
-                            <Svg width={16} height={14} viewBox="0 0 24 24" fill="none"><Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>
-                            <Text style={styles.docDropzoneUploadBtnText}>Upload</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                      <View style={{ marginLeft: 28, marginTop: 10 }}>
+                        <Ux4gFileUpload
+                          title="Drop file here"
+                          showScanButton={false}
+                          showOrDivider={true}
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={6}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.primary}
+                          initialFiles={formData.eapPlanFiles}
+                          onFilesChanged={(files) => {
+                            updateField('eapPlanFiles', files);
+                            updateField('eapPlanDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                     </View>
 
                     {/* Safety Doc 3: Equipment fitness report */}
                     <View style={styles.docItemBlock}>
                       <View style={styles.docItemTitleRow}>
-                        {formData.equipmentInspectionDoc ? (
+                        {formData.equipmentInspectionFiles && formData.equipmentInspectionFiles.length > 0 ? (
                           <View style={styles.docStatusCircleChecked}>
                             <Svg width={11} height={11} viewBox="0 0 24 24" fill="none"><Path d="M5 13l4 4L19 7" stroke="#FFFFFF" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" /></Svg>
                           </View>
@@ -3034,45 +2848,31 @@ export default function App() {
                       <Text style={styles.docItemSub}>
                         PDF or JPEG · 1 file · fitness certificate from certified inspection authority
                       </Text>
-                      {formData.equipmentInspectionDoc ? (
-                        <View style={styles.docAttachedFileCard}>
-                          <View style={styles.docAttachedFileInfo}>
-                            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8 }}>
-                              <Path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                              <Path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" />
-                            </Svg>
-                            <View>
-                              <Text style={styles.docAttachedFileName}>{formData.equipmentInspectionDoc.name}</Text>
-                              <Text style={styles.docAttachedFileSize}>{formData.equipmentInspectionDoc.size} · Uploaded</Text>
-                            </View>
-                          </View>
-                          <TouchableOpacity style={styles.docAttachedRemoveBtn} activeOpacity={0.7} onPress={() => updateField('equipmentInspectionDoc', null)}>
-                            <Text style={styles.docAttachedRemoveText}>Remove</Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <View style={styles.docDropzoneBox}>
-                          <Svg width={36} height={28} viewBox="0 0 24 24" fill="none">
-                            <Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                            <Path d="M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                          </Svg>
-                          <Text style={styles.docDropzoneTitle}>Drop file here</Text>
-                          <Text style={styles.docDropzoneSub}>File type: PDF JPG PNG Max size: 5 MB</Text>
-                          <View style={styles.docDropzoneOrRow}>
-                            <View style={styles.docDropzoneOrLine} /><Text style={styles.docDropzoneOrText}>Or</Text><View style={styles.docDropzoneOrLine} />
-                          </View>
-                          <TouchableOpacity style={styles.docDropzoneUploadBtn} activeOpacity={0.8} onPress={() => updateField('equipmentInspectionDoc', { name: 'equipment_fitness_inspection_cert.pdf', size: '1.5 MB' })}>
-                            <Svg width={16} height={14} viewBox="0 0 24 24" fill="none"><Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>
-                            <Text style={styles.docDropzoneUploadBtnText}>Upload</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                      <View style={{ marginLeft: 28, marginTop: 10 }}>
+                        <Ux4gFileUpload
+                          title="Drop file here"
+                          showScanButton={false}
+                          showOrDivider={true}
+                          maxFiles={1}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={6}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.primary}
+                          initialFiles={formData.equipmentInspectionFiles}
+                          onFilesChanged={(files) => {
+                            updateField('equipmentInspectionFiles', files);
+                            updateField('equipmentInspectionDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                     </View>
 
                     {/* Safety Doc 4: Lead certificates */}
                     <View style={styles.docItemBlock}>
                       <View style={styles.docItemTitleRow}>
-                        {formData.leadCertificatesDoc ? (
+                        {formData.leadCertificatesFiles && formData.leadCertificatesFiles.length > 0 ? (
                           <View style={styles.docStatusCircleChecked}>
                             <Svg width={11} height={11} viewBox="0 0 24 24" fill="none"><Path d="M5 13l4 4L19 7" stroke="#FFFFFF" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" /></Svg>
                           </View>
@@ -3086,39 +2886,25 @@ export default function App() {
                       <Text style={styles.docItemSub}>
                         PDF or JPEG · up to 5 files · MOI/AMC/WFR certificates for certified leads
                       </Text>
-                      {formData.leadCertificatesDoc ? (
-                        <View style={styles.docAttachedFileCard}>
-                          <View style={styles.docAttachedFileInfo}>
-                            <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={{ marginRight: 8 }}>
-                              <Path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                              <Path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#4A2BC2" strokeWidth={2} strokeLinecap="round" />
-                            </Svg>
-                            <View>
-                              <Text style={styles.docAttachedFileName}>{formData.leadCertificatesDoc.name}</Text>
-                              <Text style={styles.docAttachedFileSize}>{formData.leadCertificatesDoc.size} · Uploaded</Text>
-                            </View>
-                          </View>
-                          <TouchableOpacity style={styles.docAttachedRemoveBtn} activeOpacity={0.7} onPress={() => updateField('leadCertificatesDoc', null)}>
-                            <Text style={styles.docAttachedRemoveText}>Remove</Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <View style={styles.docDropzoneBox}>
-                          <Svg width={36} height={28} viewBox="0 0 24 24" fill="none">
-                            <Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                            <Path d="M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-                          </Svg>
-                          <Text style={styles.docDropzoneTitle}>Drop file here</Text>
-                          <Text style={styles.docDropzoneSub}>File type: PDF JPG PNG Max size: 5 MB</Text>
-                          <View style={styles.docDropzoneOrRow}>
-                            <View style={styles.docDropzoneOrLine} /><Text style={styles.docDropzoneOrText}>Or</Text><View style={styles.docDropzoneOrLine} />
-                          </View>
-                          <TouchableOpacity style={styles.docDropzoneUploadBtn} activeOpacity={0.8} onPress={() => updateField('leadCertificatesDoc', { name: 'lead_nim_moi_wfa_certificates.pdf', size: '3.4 MB' })}>
-                            <Svg width={16} height={14} viewBox="0 0 24 24" fill="none"><Path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M12 11v8m-3-5l3-3 3 3" stroke="#4A2BC2" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>
-                            <Text style={styles.docDropzoneUploadBtnText}>Upload</Text>
-                          </TouchableOpacity>
-                        </View>
-                      )}
+                      <View style={{ marginLeft: 28, marginTop: 10 }}>
+                        <Ux4gFileUpload
+                          title="Drop file here"
+                          showScanButton={false}
+                          showOrDivider={true}
+                          maxFiles={5}
+                          maxFileSize={5 * 1024 * 1024}
+                          allowedExtensions={['pdf', 'jpg', 'png']}
+                          borderStyle="dashed"
+                          buttonBorderRadius={6}
+                          buttonColor={UX4GColors.primary}
+                          buttonBorderColor={UX4GColors.primary}
+                          initialFiles={formData.leadCertificatesFiles}
+                          onFilesChanged={(files) => {
+                            updateField('leadCertificatesFiles', files);
+                            updateField('leadCertificatesDoc', files && files.length > 0 ? files[0] : null);
+                          }}
+                        />
+                      </View>
                     </View>
                   </View>
                 )}
